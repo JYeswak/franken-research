@@ -1,0 +1,48 @@
+---
+type: rag-frameworks
+title: Retrieval-augmented generation (RAG) frameworks
+group: Memory and retrieval
+verdict: Adopt and wrap
+confidence: Low
+evidence_date: 2026-09-23
+author: VerdictsServing
+---
+
+## Bottom line
+Inference, low confidence: adopt and wrap an existing RAG framework (LlamaIndex, LangChain or Haystack; LightRAG or GraphRAG if you want graph-based retrieval) for loading, chunking and retrieving documents, rather than writing one. Wrap it with an evaluation you own: a frozen corpus with expected answers, a pinned judge model for any LLM-graded metric, and recorded LLM calls so CI runs without a live model, because published quality thresholds in this space do not name the judge that produced them. Confidence is low because the evidence pack read most of these repos by file path, not source.
+
+## Adopt, do not rebuild
+- **run-llama/llama_index**: document-processing and RAG framework with retrieval and generation evaluators in the core package. A fresh read on 2026-09-23 of https://raw.githubusercontent.com/run-llama/llama_index/main/llama-index-core/llama_index/core/evaluation/faithfulness.py showed a `FaithfulnessEvaluator(BaseEvaluator)` class with an async `aevaluate` method. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:7 "ships retrieval and generation evaluators in-tree")
+- **langchain-ai/langchain**: retrieval primitives with unit and integration CI separated and LLM calls replayed from recordings. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:8 "CI separates unit/integration and records LLM calls via VCR cassettes")
+- **deepset-ai/haystack**: pipeline framework whose evaluators are pipeline components. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:11 "evaluators (haystack/components/evaluators/) ship as first-class pipeline components")
+- **HKUDS/LightRAG** and **microsoft/graphrag**: graph-based RAG, one with a built-in evaluation harness and offline retrieval check, the other split into packages with tiered CI. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:9 "ships lightrag/evaluation/ with a RAGAS-based eval harness and an offline retrieval check"; ecosystem/pickup/_evidence/rag-frameworks.md:10 "with tiered CI (unit / integration / notebook / smoke)")
+- **confident-ai/deepeval**: evaluation framework with RAG metrics (contextual recall and precision, faithfulness, answer relevancy) if your framework's own evaluators are not enough. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:12 "includes RAG-specific metrics")
+
+## Copy these practices
+- **Replay recorded LLM calls in CI**: LangChain `.github/workflows/_test_vcr.yml`; a fresh read on 2026-09-23 of https://raw.githubusercontent.com/langchain-ai/langchain/master/.github/workflows/_test_vcr.yml showed it running cassette-backed integration tests in playback-only mode with no API keys. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:24 "Record/replay LLM calls (VCR cassettes) so tests don't hit live models")
+- **A frozen retrieval oracle checked offline**: LightRAG `lightrag/evaluation/offline_retrieval_check.py` with `sample_retrieval_oracle.json`; a fresh read on 2026-09-23 of https://raw.githubusercontent.com/HKUDS/LightRAG/main/lightrag/evaluation/offline_retrieval_check.py showed recall@k and reciprocal-rank scoring against that oracle file. Starter kit: A2. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:20 "Offline retrieval check with a frozen oracle + sample dataset")
+- **Pin the judge**: every LLM-graded metric names its judge model and revision, and a judge swap re-measures the noise floor (the companion's proposed GATE-RAG-1). Starter kit: A2. [Inference] (ecosystem/pickup/pickup-rag-frameworks.md:183 "Every LLM-judged metric names its judge")
+- **Checked-in ground truth with a comparison regression test**: azure-search-openai-demo `evals-test.yaml`, `evals/ground_truth.jsonl`, `tests/test_eval_compare.py`. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:22 "Nightly/CI-gated evals with checked-in ground truth")
+- **Run the documentation's code in CI**: Haystack `docs-website-test-docs-snippets.yml`. Starter kit: B6. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:25 "Docs-code coherence tests")
+- **Chunkers behind a registry, with snapshot tests**: LightRAG `lightrag/chunker/registry.py`; azure-search-openai-demo `tests/snapshots/`. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:21 "Pluggable chunkers behind a registry (makes chunking ablations trivial)"; ecosystem/pickup/_evidence/rag-frameworks.md:30 "Chunker/text-splitter unit tests with snapshots")
+- **Unit tests gate integration tests**: a fresh read on 2026-09-23 of https://raw.githubusercontent.com/deepset-ai/haystack/main/.github/workflows/tests.yml showed `integration-tests-linux` declaring `needs: unit-tests`. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/rag-frameworks.md:23 "Tiered CI: unit vs integration vs e2e vs slow")
+
+## Build only if
+- The evidence names no hard constraint that these frameworks fail. What is missing is evaluation provenance, so build the evaluation harness (frozen corpus, oracle, pinned judge), not a framework. [Inference] (ecosystem/pickup/pickup-rag-frameworks.md:362-363 "no evidence repo was found to freeze its LLM-judge backend")
+
+## Where FrankenSuite touches this
+- **frankensearch** is a retrieval primitive, not a RAG framework: BM25 plus static embeddings fused by reciprocal rank fusion, delivered as a fast first answer then a refined one. The maintainer states his relevance experiments do not certify its quality; TRL 5-6, NODUS ring Explore. [Verified] [Maintainer claim] [Inference] (packets/frankensearch-assessment.md:19 "fused via Reciprocal Rank Fusion and delivered progressively"; packets/frankensearch-assessment.md:102 "These Python results do not certify Quill quality"; packets/frankensearch-assessment.md:22 "TRL 5–6 — see §4.9). Substantive and partially validated")
+- **franken_nlp** lists RAG faithfulness judging among the local jobs it targets, but no model path executes yet (TRL 2-3). [Maintainer claim] [Inference] (packets/franken_nlp-assessment.md:53 "RAG faithfulness judging"; packets/franken_nlp-assessment.md:18 "TRL: 2–3; NODUS ring: Monitor")
+- **frankenterm** combines SQLite FTS5, Tantivy and fastembed with reciprocal rank fusion to search terminal output; the code exists and was not executed by its assessor. [Verified] (packets/frankenterm-assessment.md:79 "semantic fastembed + RRF hybrid")
+
+## What we cannot say
+- What most of these repos' tests and CI actually check: the pack read them by path, not source (ecosystem/pickup/_evidence/rag-frameworks.md:36 "other file-level claims are by path/name, not source-code review"). The fresh reads above cover four files only.
+- Whether, and by how much, chunking choices matter: the ablation machinery exists but no published experiment was verified (ecosystem/pickup/_evidence/rag-frameworks.md:35 "did not verify an actual published chunk-size ablation experiment").
+- Whether ragas, the metric vocabulary LightRAG and deepeval build on, stays maintained (ecosystem/pickup/_evidence/rag-frameworks.md:34 "ragas activity is soft.").
+- How good any framework is: stars show visibility, not adoption (ecosystem/pickup/_evidence/rag-frameworks.md:37 "Star counts establish category visibility, not adoption"). LightRAG's in-tree 0.80 thresholds are one framework's bar with an unnamed judge (ecosystem/pickup/pickup-rag-frameworks.md:134 "one framework's bar, not a category standard").
+- How the azure-search-openai-demo ground truth was generated (ecosystem/pickup/pickup-rag-frameworks.md:366 "Provenance of azure-search-openai-demo's checked-in ground truth"), and whether LangChain's cassettes also cover judge calls (ecosystem/pickup/pickup-rag-frameworks.md:371 "Whether cassette-based CI covers the judge calls or only the").
+
+## Revisit when
+- A framework publishes quality numbers with the judge model, corpus revision and measured judge noise named.
+- A maintained successor to ragas appears, or ragas resumes regular releases.
+- frankensearch commits a labeled-corpus relevance receipt.
