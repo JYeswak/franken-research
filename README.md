@@ -1,6 +1,6 @@
 # Franken Research
 
-An independent, evidence-tiered assessment of 44 repositories from Jeffrey Emanuel's FrankenSuite, published as a static site you can read online or offline.
+An independent, evidence-tiered assessment of 44 repositories from Jeffrey Emanuel's FrankenSuite, extended to 21 parts of the wider agent stack: what to adopt, what to copy, and when building from scratch is justified. Published as a static site you can read online or offline.
 
 **Live site: https://fr.zeststream.ai**
 
@@ -22,6 +22,18 @@ Around those three: bus factor 1 in all 44 [Verified, High], no release or tag i
 
 These are findings about evidence at a pin, not about the maintainer's ability. The briefs credit what is strong, and the honesty apparatus above is the reason many of these findings could be checked at all.
 
+## Beyond the 44: the agent stack
+
+The same evidence rules, applied outside the FrankenSuite to 21 kinds of agent infrastructure (inference engines, MCP, agent frameworks, memory, RAG, vector databases, evals, guardrails, sandboxes, browser and computer use, voice, fine-tuning, and more), using evidence packs covering 192 repositories checked against the GitHub API on 2026-09-23. Each area gets one verdict: **Adopt**, **Adopt and wrap**, **Build clean-room**, or **Watch** ([stack/METHOD.md](stack/METHOD.md)).
+
+- **20 of 21 areas are Adopt and wrap; 1 (computer use) is Watch; none justifies building from scratch.** In every adopted area the incumbents exist, and in every one the evidence shows a verification gap you have to close yourself: an unrun conformance suite, no replay harness, no false-positive norm for guardrails, no filtered-recall suite for vector search. It is the same "mechanism ahead of execution" finding as above, one layer out. [Inference; 13 verdicts Medium confidence, 8 Low, none High, because no evidence pack ran the software it describes]
+- **Licenses are checked, not assumed.** All 101 projects the verdicts recommend were license-checked; 13 carry non-permissive terms (AGPL-3.0, SSPL, Elastic License 2.0, open-core enterprise directories, field-of-use conditions), and each verdict names them where it recommends the project ([stack/licenses.tsv](stack/licenses.tsv)).
+- **Every verdict was reviewed by someone other than its author**, and signed only after the author fixed the findings. The review records, including the rounds where reviewers refused to sign, are in [stack/reviews/](stack/reviews/).
+
+**Rigor practices worth copying.** [stack/rigor-practices.tsv](stack/rigor-practices.tsv) indexes 135 practices found across the 44 packets and the 192 ecosystem repositories, each quoted from its source, mapped onto the starter kit, and marked for this repository: 15 adopted, 21 partial, 22 candidate, 77 not applicable. We first claimed 36 adopted; an independent audit found most of those were partial, and the index now says so.
+
+**Since the pin.** Verdicts describe each repository at its pin. [updates/](updates/) holds a dated census of what moved afterwards (32 of 44 repositories had new commits by 2026-09-24) and re-checks for material changes, such as `franken_code_browser` shipping a notarized developer-preview app the day after its pin. Pins and headline counts are never edited in place.
+
 ## Explore
 
 | Page | What it is for | Who it helps |
@@ -33,10 +45,14 @@ These are findings about evidence at a pin, not about the maintainer's ability. 
 | [Failure modes](https://fr.zeststream.ai/failure-modes/) | Patterns that recurred across the suite, with exact counts and named instances. | Teams building with coding agents who want to avoid the same drift. |
 | [Reproduce a verdict](https://fr.zeststream.ai/reproduce/) | The procedure for re-deriving a verdict at its pin, with a worked example. | Skeptics and independent reviewers. |
 | [Starter kit](https://fr.zeststream.ai/starter-kit/) | Templates, checklists, and scripts for running the same method on your own project. | Anyone starting an agent-built project. |
+| [Agent stack](https://fr.zeststream.ai/stack/) | Adopt, copy, or build verdicts for 21 parts of the agent stack, with licenses and cited evidence. | Anyone choosing agent infrastructure. |
+| [Rigor practices](https://fr.zeststream.ai/rigor/) | 135 practices worth copying, where each is evidenced, and whether this repository does it. | Teams hardening their own process. |
+| [Beyond FrankenSuite](https://fr.zeststream.ai/beyond/) | What big-vendor agent-assisted Rust ports and outside validation teach. | Engineers porting or rewriting with agents. |
+| [Updates](https://fr.zeststream.ai/updates/) | What moved in the 44 repositories since their pins, and dated re-checks. | Anyone quoting a verdict today. |
 
 ## Graded by our own method
 
-A repository that reports these findings should pass the same checks. [The self-assessment page](https://fr.zeststream.ai/self/) scores Franken Research on the master matrix columns: TRL, ring, license (MIT, no rider), bus factor (1: one maintainer, and help is welcome), contribution policy (open), CI at the pin (the badge above, not a claim), release posture (a v1.0.0 tag is planned at publication and does not exist yet), and independent validation (none yet). It also lists what we got wrong or cannot prove.
+A repository that reports these findings should pass the same checks. [The self-assessment page](https://fr.zeststream.ai/self/) scores Franken Research on the master matrix columns: TRL, ring, license (MIT, no rider), bus factor (1: one maintainer, and help is welcome), contribution policy (open), CI at the pin (the badge above, not a claim), release posture (tagged releases; see [Releases](https://github.com/JYeswak/franken-research/releases)), and independent validation (none yet). It also lists what we got wrong or cannot prove.
 
 ## Reproduce
 
@@ -49,7 +65,7 @@ bun install --frozen-lockfile
 bun run verify
 ```
 
-`bun run verify` runs `site/scripts/verify-site.sh`, the same command CI runs. It prints PASS or FAIL for eleven gates and exits nonzero if any fails:
+`bun run verify` runs `site/scripts/verify-site.sh`, the same command CI runs. It prints one PASS or FAIL line per gate below (gate K prints one line for each of its checks) and exits nonzero if any fails:
 
 | Gate | Proves |
 |---|---|
@@ -62,8 +78,10 @@ bun run verify
 | F | Every file a page references ships. |
 | G | Pages stay keyboard-operable, with no-JS, no-WebGL, and reduced-motion fallbacks. |
 | H | Copy passes a slop scan (em-dash density, filler words, unsupported superlatives). |
-| I | Five representative pages render in headless Chrome from `file://` at desktop and phone widths with zero console errors and zero horizontal overflow. |
+| I | Representative pages (front door, method, a brief, lessons, self, and the new stack, rigor, beyond, and updates pages) render in headless Chrome from `file://` at desktop and phone widths with zero console errors and zero horizontal overflow. |
 | J | No page references removed scaffolding. |
+| K | The agent-stack layer holds up: every verdict has the required fields and an independent reviewer's signature (K1); every citation resolves and its quoted text is on the cited line (K2); every rigor-practice source quote and every adopted or partial proof resolves (K3); the generated pages equal a fresh run of the generator (K4); every adopted project has a license row, and non-permissive licenses are named where they are recommended (K5). |
+| L | No personal email address appears in any tracked file. |
 
 CI also runs `bun run build:map` and fails if the committed `site/assets/app.bundle.js` differs from what its source builds, and scans the tree and history for secrets with gitleaks. [site/BUILD-GATES.md](site/BUILD-GATES.md) explains why each gate exists.
 
@@ -78,7 +96,9 @@ What the gates prove is that the site says what the packets say, consistently an
 | `RULEBOOK.md` | The assessment protocol: evidence tiers, source hierarchy, packet template, ring rules. |
 | `starter-kit/` | The method packaged for reuse: templates, checklists, scripts. |
 | `ecosystem/` | Design notes on how the pieces fit, the A-Z playbook, and the project-pickup planning system. |
-| `site/` | The static site served at fr.zeststream.ai. Runs from `file://` with no build step; `site/packets/` and `site/RULEBOOK.md` are byte-identical copies checked by gate A. |
+| `stack/` | The agent-stack layer: the method, 21 verdicts, the license census, the rigor-practices index, and the review records. |
+| `updates/` | Dated movement census and re-checks since the pins. Pins are never edited in place. |
+| `site/` | The static site served at fr.zeststream.ai. Runs from `file://` with no build step; `site/packets/` and `site/RULEBOOK.md` are byte-identical copies checked by gate A, and `site/stack/` and `site/rigor/` are generated from `stack/` by `node site/scripts/make-stack.mjs` (gate K4 checks they match). |
 
 ## Corrections and right of reply
 
@@ -94,6 +114,7 @@ How corrections are handled:
 ## Data notes
 
 - Maintainer commit email addresses quoted from public git metadata were redacted from the packets, their site copies, and one synthesis brief before publication (commit `bbc1bda`). No other evidence text was changed.
+- Commit-author email addresses are never recorded in the movement census either; gate L fails the build if a personal address appears in any tracked file.
 - Everything else is as assessed on 2026-09-22, at each repository's pin. The FrankenSuite moves fast; check the pin date before quoting a verdict.
 - The site's data file classifies one repository's CI (`frankenjax`) differently from the synthesis matrix. The difference is disclosed on the method page and changes no headline number.
 

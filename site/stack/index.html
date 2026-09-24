@@ -91,6 +91,10 @@ q.cq::after{content:"\201D"}
 a.kit{color:var(--ink);text-decoration-color:var(--gold)}
 a.cite:hover,a.cite:focus-visible{border-bottom-style:solid}
 .tier{font-family:var(--sans);font-size:12px;color:var(--gold);white-space:nowrap}
+.lic{display:inline-block;font-family:var(--sans);font-size:11.5px;font-weight:600;line-height:1.4;padding:0 7px;margin:0 2px;
+  border-radius:4px;border:1px solid #3a5a44;color:#9fd8b1;overflow-wrap:anywhere;vertical-align:1px}
+.lic.np{border-color:var(--amber);background:rgba(245,185,66,.14);color:var(--amber)}
+.licnote{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0 0 6px}
 .sources ul{padding-left:22px}
 .start{border-left:3px solid var(--green)}
 table.rp{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.55;margin:8px 0;table-layout:fixed}
@@ -103,7 +107,7 @@ table.rp td.prac b{color:var(--ink)}
 table.rp .rid{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 table.rp .small{display:block;font-size:13px;color:var(--ink-dim);margin-top:4px}
 .st{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-.st-adopted{color:var(--green)} .st-candidate{color:var(--amber)} .st-not-applicable{color:var(--muted)}
+.st-adopted{color:var(--green)} .st-partial{color:var(--blue)} .st-candidate{color:var(--amber)} .st-not-applicable{color:var(--muted)}
 .empty{color:var(--muted);font-style:italic}
 footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
 footer p{margin:0 0 8px;max-width:1000px}
@@ -135,6 +139,7 @@ footer a{color:var(--accent)}
     <a href="../stack/index.html" aria-current="page">Agent stack</a>
     <a href="../rigor/index.html">Rigor practices</a>
     <a href="../beyond/index.html">Beyond FrankenSuite</a>
+    <a href="../updates/index.html">Updates</a>
     <a href="../method/index.html">Method</a>
     <a href="../starter-kit/index.html">Starter kit</a>
   </span>
@@ -169,26 +174,26 @@ footer a{color:var(--accent)}
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="embedding-serving.html">Embedding model serving</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt and wrap an existing embedding server or library rather than writing one. Serve with Text Embeddings Inference (TEI), vLLM's pooling endpoints or infinity; run in-process with sentence-transformers, fastembed or llama-cpp-python. Wrap it in two ways the serving projects themselves do not: pin the model's Hugging Face revision and weight hashes (none of the surveyed serving repos pin revisions), and add a one-sided parity test that fails only when quality drops below a pinned score, as vLLM does with one MTEB task.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: adopt and wrap an existing embedding server or library rather than writing one. Serve with Text Embeddings Inference (TEI) or vLLM's pooling endpoints (infinity too, but it was last pushed in March 2026, so confirm it is maintained first); run in-process with sentence-transformers, fastembed or llama-cpp-python. Wrap it in two ways the serving projects themselves do not: pin the model's Hugging Face revision and weight hashes (none of the surveyed serving repos pin revisions), and add a one-sided parity test that fails only when quality drops below a pinned score, as vLLM does with one MTEB task.</p>
+      <div class="foot">Confidence Medium · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="inference-engines.html">LLM inference engines</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: adopt and wrap an existing engine (vLLM or SGLang for GPU serving, llama.cpp for local and CPU use) and do not write your own. They are maintained and already cover batching, KV-cache management (the per-request attention memory) and multi-vendor hardware. Wrap the one you pick: pin its commit and the model weight revision, check its outputs against a reference (llama.cpp perplexity or Hugging Face transformers), and measure speed on your own GPU, because the shared serving benchmark is a script the engine authors fork and tune, not a neutral referee.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <div class="foot">Confidence Medium · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="quantization.html">Model quantization toolkits</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, low confidence: adopt and wrap the quantizer your runtime already ships (llama.cpp's quantize tool for GGUF files, bitsandbytes through Hugging Face, torchao inside PyTorch, TensorRT-LLM or vLLM kernels for GPU serving) rather than writing a quantization toolkit. Wrap it with your own quality check: measure perplexity and at least one downstream task on your model before and after, against a like-for-like baseline, because the evidence confirms the ecosystem's measuring tools exist but did not verify any of their numbers or any threshold for negligible loss. Confidence is low because the evidence pack sampled rather than read most CI and eval results.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <div class="foot">Confidence Low · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="structured-output.html">Structured output and constrained decoding</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: adopt and wrap an existing constrained-decoding engine (a library that masks the model's next-token choices so output must match a JSON Schema, regex or grammar) instead of writing one or prompting for JSON and hoping. Use xgrammar or another engine through your serving stack (vLLM ships adapters for four), outlines as a front end, or llama.cpp grammars for local models. Wrap it with two tests of your own: feed the engine's accepted outputs through an independent validator such as Pydantic, and put a compile-time ceiling on pathological schemas, because no project in the evidence runs a fuzzer that checks the mask against the schema.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <div class="foot">Confidence Medium · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -199,25 +204,25 @@ footer a{color:var(--accent)}
       <h3><a href="agent-frameworks.html">Agent frameworks</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: adopt an existing agent framework (LangGraph, the OpenAI Agents SDK, smolagents or DSPy) and do not write your own agent loop. Wrap it, because an agent run is nondeterministic and no surveyed framework ships a record-and-replay harness for model calls: script the model and the tools in your tests, make a test fail when the script and the run disagree, and declare any model-graded (&quot;judge&quot;) test matrix before you run it.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="multi-agent-protocols.html">Agent-to-agent protocols (A2A class)</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, low confidence: if your agents must discover and delegate to agents from other teams, target A2A v1.x through one of its official SDKs, and do not design your own protocol. Wrap it: pin the shared compatibility test kit (the TCK) and run it against your build, test every transport the spec requires, and call any interop result &quot;self-interop&quot; until you have tested against an implementation from outside the A2A organization, because the evidence found none. Confidence is low because the evidence pack itself calls the category thin.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <div class="foot">Confidence Low · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="workflow-orchestrators.html">Durable workflow orchestrators</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, low confidence: run long or crash-prone agent work on an existing durable-execution engine (Temporal, Cadence or Conductor), and do not write your own event log and replay engine. Wrap it, because none of these engines checks your workflow code for determinism when you compile it: determinism is only caught when a recorded run is replayed, so your test suite must replay recorded histories, including one deliberately nondeterministic history that must fail, under a virtual clock. Confidence is low because the evidence pack calls itself thin and ran none of these suites.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <div class="foot">Confidence Low · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="mcp.html">MCP servers and clients</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: build MCP (Model Context Protocol) servers and clients on an official SDK, and do not hand-write the protocol. Wrap the SDK in the official conformance suite, pinned to a version and run once per spec revision you ship, with every known failure listed in a named file instead of skipped; the suite is still an alpha release that nobody in this program has run, so its pass is a floor, not a certificate.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -227,26 +232,26 @@ footer a{color:var(--accent)}
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="browser-use.html">Browser-use stacks</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt an existing agent-browser library or tool server (Playwright MCP, browser-use, Stagehand) and a maintained browser farm, and wrap them with your own flake and determinism controls. The incumbents already separate real-browser tests from unit tests and ship evaluation harnesses, but the evidence found no flake-rate budget and no recorded model responses for replay in any of them. Keep unit tests off the live web, pin the benchmark datasets you score against, and treat page content as untrusted input before letting an agent act on it.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: adopt an existing agent-browser library or tool server (Playwright MCP, browser-use, Stagehand) and a maintained browser farm, and wrap them with your own flake and determinism controls. The incumbents already separate real-browser tests from unit tests and ship evaluation harnesses, but the evidence found no flake-rate budget and no recorded model responses for replay in any of them. Keep unit tests off the live web, pin the benchmark datasets you score against, treat page content as untrusted input before letting an agent act on it, and check the farm's license first: browserless is SSPL or commercial.</p>
+      <div class="foot">Confidence Medium · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-watch">
       <h3><a href="computer-use.html">Computer-use agents</a></h3>
       <div><span class="chip v-watch">Watch</span></div>
-      <p>Inference, low confidence: watch computer-use agents (software that operates a desktop from screenshots, keyboard and mouse) and do not commit a product to one agent stack yet. The agent stacks you would adopt are evidenced by activity and by benchmark scores their own READMEs report, not by process evidence, and the category is mostly research code. If you experiment now, use the existing benchmark harness, grounding evaluation and VM infrastructure rather than building your own, and score the machine's end state, never the agent's own account of what it did.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <p>Inference, low confidence: watch computer-use agents (software that operates a desktop from screenshots, keyboard and mouse) and do not commit a product to one agent stack yet. The agent stacks you would adopt are evidenced by activity and by benchmark scores their own READMEs report, not by test, CI or conformance evidence, and the category is mostly research code. If you experiment now, use the existing benchmark harness, grounding evaluation and VM infrastructure rather than building your own, and score the machine's end state, never the agent's own account of what it did.</p>
+      <div class="foot">Confidence Low · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="sandbox-exec.html">Sandboxed code execution</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt a maintained isolation substrate (Firecracker microVMs, gVisor, or Kata) or an agent SDK built on one (E2B, Cloudflare Sandbox SDK), and wrap it with isolation tests of your own. Writing your own isolation layer would recreate years of adversarial test work, but no repository in the evidence publishes a sandbox-escape test suite, and the agent-facing SDKs test their API layer while leaving isolation to the substrate. Before you claim &quot;contained&quot;, write the threat model, pin the substrate and guest image by hash, and run a red-then-green confinement suite against that pin.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: adopt a maintained isolation substrate (Firecracker microVMs, gVisor, or Kata) or an agent SDK that delegates isolation to a substrate (E2B on Firecracker microVMs; Cloudflare Sandbox SDK on Cloudflare's own edge substrate), and wrap it with isolation tests of your own. Writing your own isolation layer would recreate years of adversarial test work, but no repository in the evidence publishes a sandbox-escape test suite, and the agent-facing SDKs test their API layer while leaving isolation to the substrate. Before you claim &quot;contained&quot;, write the threat model, pin the substrate and guest image by hash, and run a red-then-green confinement suite against that pin.</p>
+      <div class="foot">Confidence Medium · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="web-search-apis.html">Web search API layers</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt an existing web search and extraction layer, either Firecrawl self-hosted or a commercial API (Tavily, Exa, SerpApi) through its official SDK, and wrap it with your own quality and latency checks. The ranking machinery in this category is closed, and no repository in the evidence publishes a relevance benchmark or a latency budget, so &quot;the search is good&quot; is something you have to measure yourself. Keep a frozen, hashed set of recorded queries and responses as your test oracle, and treat live vendor APIs as references behind secrets, never as a requirement for a green build.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: adopt an existing web search and extraction layer, either Firecrawl self-hosted (AGPL-3.0) or a commercial API (Tavily, Exa, SerpApi) through its official SDK, and wrap it with your own quality and latency checks. The ranking machinery in this category is closed, and no repository in the evidence publishes a relevance benchmark or a latency budget, so &quot;the search is good&quot; is something you have to measure yourself. Keep a frozen, hashed set of recorded queries and responses as your test oracle, and keep live vendor API tests in a separate lane behind secrets rather than in the required build.</p>
+      <div class="foot">Confidence Medium · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -256,20 +261,20 @@ footer a{color:var(--accent)}
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="agent-memory.html">Agent memory systems</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, low confidence: adopt and wrap a maintained memory layer (Mem0's open-source SDK, Graphiti for a temporal knowledge graph, or Letta through letta-code) behind a thin interface of your own, rather than designing a new one. Do not rely on any published memory benchmark score: the scores are self-reported, sometimes from a managed platform or an ensemble of runs, and graded by LLM judges. Re-run LoCoMo or LongMemEval yourself with the dataset pinned by hash and the judge model pinned by name and date before you trust a number. Confidence is low because the evidence pack itself flags adoption evidence as thin.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <p>Inference, low confidence: adopt and wrap a maintained memory layer (Mem0's open-source SDK, or Graphiti for a temporal knowledge graph) behind a thin interface of your own, rather than designing a new one. Do not rely on any published memory benchmark score: the scores are self-reported, sometimes from a managed platform or an ensemble of runs, and graded by LLM judges. Re-run LoCoMo or LongMemEval yourself with the dataset pinned by hash and the judge model pinned by name and date before you trust a number. Confidence is low because the evidence pack itself flags adoption evidence as thin.</p>
+      <div class="foot">Confidence Low · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="rag-frameworks.html">Retrieval-augmented generation (RAG) frameworks</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, low confidence: adopt and wrap an existing RAG framework (LlamaIndex, LangChain or Haystack; LightRAG or GraphRAG if you want graph-based retrieval) for loading, chunking and retrieving documents, rather than writing one. Wrap it with an evaluation you own: a frozen corpus with expected answers, a pinned judge model for any LLM-graded metric, and recorded LLM calls so CI runs without a live model, because published quality thresholds in this space do not name the judge that produced them. Confidence is low because the evidence pack read most of these repos by file path, not source.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <p>Inference, low confidence: adopt and wrap an existing RAG framework (LlamaIndex, LangChain or Haystack; LightRAG if you want graph-based retrieval, with GraphRAG a watch-level option whose CI and tests were not read) for loading, chunking and retrieving documents, rather than writing one. Wrap it with an evaluation you own: a frozen corpus with expected answers, a pinned judge model for any LLM-graded metric, and recorded LLM calls so CI runs without a live model, because published quality thresholds in this space do not name the judge that produced them. Confidence is low because the evidence pack read most of these repos by file path, not source.</p>
+      <div class="foot">Confidence Low · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="vector-dbs.html">Vector databases</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt and wrap an existing vector store rather than writing an index. Use pgvector if you already run Postgres, an embedded library (Chroma, LanceDB) for single-process apps, or a server (Qdrant, Milvus, Weaviate, Vespa) at scale, with faiss as the exact-search reference. Wrap it with your own recall check against exact search on your data, including your metadata filters, before trusting any number: the public benchmark harness everyone submitted to is no longer maintained, and a dedicated filtered-recall test suite was not found in any vendor repo.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: adopt and wrap an existing vector store rather than writing an index. Use pgvector if you already run Postgres, an embedded library (Chroma) for single-process apps, or a Qdrant server at scale, with faiss as the exact-search reference; Milvus, Weaviate, LanceDB and Vespa are watch-level options whose CI and tests were not read. Wrap it with your own recall check against exact search on your data, including your metadata filters, before trusting any number: the public benchmark harness most server vendors submitted to is no longer maintained, and no dedicated filtered-recall suite was verified in any vendor repo (only Qdrant's filter-relevant tests were checked).</p>
+      <div class="foot">Confidence Medium · Reviewed by ReviewServing on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -279,20 +284,20 @@ footer a{color:var(--accent)}
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="observability.html">Agent observability and tracing</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: record agent runs with an existing open-source tracing stack (Langfuse, Arize Phoenix or Comet Opik, instrumented through OpenTelemetry packages such as OpenLLMetry or OpenLIT), and do not build your own trace store. Wrap it, because &quot;OpenTelemetry-compatible&quot; is mostly asserted rather than tested in this category: before you trust an integration, check that the spans it emits carry the attributes you depend on, that streamed calls close their spans, and that your cost numbers use an audited price table.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: record agent runs with an existing tracing stack (Langfuse, Arize Phoenix or Comet Opik, instrumented through OpenTelemetry packages such as OpenLLMetry or OpenLIT), and do not build your own trace store. Check the license first if you will host tracing for others: Phoenix is under the Elastic License 2.0, which forbids offering it as a hosted service, and Langfuse keeps its enterprise directories under a separate enterprise license. Wrap it, because &quot;OpenTelemetry-compatible&quot; is mostly asserted rather than tested in this category: before you trust an integration, check that the spans it emits carry the attributes you depend on, that streamed calls close their spans, and that your cost numbers use an audited price table.</p>
+      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="guardrails.html">Guardrails and red-teaming</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, low confidence: put an existing rail toolkit or scanner library in front of your model and its tools (NeMo Guardrails, Guardrails AI, LLM Guard, or LlamaFirewall for tool calls), attack it with an existing red-team tool (garak, PyRIT, promptfoo), and do not write your own. Wrap both, because no project in the evidence publishes a false-positive or false-negative threshold you can inherit: keep your own labeled corpus of prompts that must pass and prompts that must be blocked, calibrate the model you use as a judge on its own set, and treat any &quot;it blocks jailbreaks&quot; claim as unproven until those two receipts exist. Confidence is low because the evidence is file trees only: no test was run and no CI result was checked.</p>
-      <div class="foot">Confidence Low · Awaiting independent review</div>
+      <p>Inference, low confidence: put an existing rail toolkit or scanner library in front of your model and its tools (NeMo Guardrails, Guardrails AI, or LlamaFirewall for tool calls), attack it with an existing red-team tool (garak, PyRIT, promptfoo), and do not write your own. Wrap both, because no project in the evidence publishes a false-positive or false-negative threshold you can inherit: keep your own labeled corpus of prompts that must pass and prompts that must be blocked, calibrate the model you use as a judge on its own set, and treat any &quot;it blocks jailbreaks&quot; claim as unproven until those two receipts exist. Confidence is low because the evidence is file trees only: no test was run and no CI result was checked.</p>
+      <div class="foot">Confidence Low · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="eval-harnesses.html">LLM eval harnesses</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: run your evals on an existing harness (Inspect AI for agent and tool-use evals, lm-evaluation-harness for academic benchmarks, the SWE-bench harness for coding agents), and do not write your own runner. Wrap it with tests of your own graders: SWE-bench is the only harness whose adversarial grader tests (spoofed passes, truncated output) were read, the others were not checked for them, and no harness showed a checked pattern for model-graded (&quot;judge&quot;) verdicts, so a score is only as honest as the grader tests you add.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -303,19 +308,19 @@ footer a{color:var(--accent)}
       <h3><a href="fine-tuning.html">Fine-tuning infrastructure</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: adopt an existing fine-tuning stack (TRL as the reference trainer, or a launcher such as Unsloth, LlamaFactory, Axolotl or LitGPT) and wrap it with correctness checks for your own recipes. Several maintained launchers cover supervised, adapter and preference training, so writing a trainer would recreate them; but the evidence shows no conformance oracle for preference and RL trainers beyond &quot;it ran and the loss is finite&quot;, and exact-loss regression goldens appear only in a project that has since been retired. Pin versions, run a tiny smoke train on every change, commit expected loss values for your recipe, and evaluate after training.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <div class="foot">Confidence Medium · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="voice-agents.html">Realtime voice agents</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt an existing realtime voice-agent framework (Pipecat or LiveKit Agents, on a maintained media transport) and wrap it with a latency regression gate of your own. The frameworks already handle speech-to-text, language model and text-to-speech stages, turn-taking and interruptions, and test them with fake providers and a virtual clock; but in both, latency is measured by tests and never gated, and interruption thresholds have no published ground truth. Keep the fake-provider test surface, measure time-to-first-audio on your own harness with A/A baselines, and block releases on regressions.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, medium confidence: adopt an existing realtime voice-agent framework (Pipecat or LiveKit Agents, on a maintained media transport) and wrap it with a latency regression gate of your own. The frameworks already handle speech-to-text, language model and text-to-speech stages, turn-taking and interruptions, and LiveKit Agents tests them with fake providers and a virtual clock; but no latency regression gate was found in either framework, and interruption thresholds have no published ground truth. Keep the fake-provider test surface, measure time-to-first-audio on your own harness with A/A baselines, and block releases on regressions.</p>
+      <div class="foot">Confidence Medium · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="rl-envs.html">RL environments and RLHF training</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
-      <p>Inference, medium confidence: adopt the standard environment interfaces (Gymnasium, PettingZoo) and an existing RLHF trainer (TRL or verl), and wrap them with reward-hacking checks of your own. The environment standards ship conformance checkers and the trainers ship per-algorithm tests, so rebuilding either would recreate that work; but no repository in the evidence has tests aimed at reward hacking, where a policy scores well by gaming the reward instead of doing the task. Run the conformance checker on every environment you ship, assert same-seed determinism, test the reward math directly, and add a negative control showing a degenerate policy cannot inflate your reward.</p>
-      <div class="foot">Confidence Medium · Awaiting independent review</div>
+      <p>Inference, low confidence: adopt the standard environment interfaces (Gymnasium, PettingZoo) and an existing RLHF trainer (TRL or verl), and wrap them with reward-hacking and determinism checks of your own. The environment standards ship conformance checkers and the trainers ship per-algorithm tests, so rebuilding either would recreate that work; but no repository in the evidence ships tests named as reward-hacking checks (where a policy scores well by gaming the reward instead of doing the task), the closest being reward-shaping and reward unit tests, and the companion itself marks that finding contested. Run the conformance checker on every environment you ship, assert same-seed determinism, test the reward math directly, and add a negative control showing a degenerate policy cannot inflate your reward.</p>
+      <div class="foot">Confidence Low · Reviewed by ReviewTools on 2026-09-23</div>
     </article>
   </div>
 </section>

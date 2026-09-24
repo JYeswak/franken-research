@@ -91,6 +91,10 @@ q.cq::after{content:"\201D"}
 a.kit{color:var(--ink);text-decoration-color:var(--gold)}
 a.cite:hover,a.cite:focus-visible{border-bottom-style:solid}
 .tier{font-family:var(--sans);font-size:12px;color:var(--gold);white-space:nowrap}
+.lic{display:inline-block;font-family:var(--sans);font-size:11.5px;font-weight:600;line-height:1.4;padding:0 7px;margin:0 2px;
+  border-radius:4px;border:1px solid #3a5a44;color:#9fd8b1;overflow-wrap:anywhere;vertical-align:1px}
+.lic.np{border-color:var(--amber);background:rgba(245,185,66,.14);color:var(--amber)}
+.licnote{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0 0 6px}
 .sources ul{padding-left:22px}
 .start{border-left:3px solid var(--green)}
 table.rp{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.55;margin:8px 0;table-layout:fixed}
@@ -103,7 +107,7 @@ table.rp td.prac b{color:var(--ink)}
 table.rp .rid{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 table.rp .small{display:block;font-size:13px;color:var(--ink-dim);margin-top:4px}
 .st{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-.st-adopted{color:var(--green)} .st-candidate{color:var(--amber)} .st-not-applicable{color:var(--muted)}
+.st-adopted{color:var(--green)} .st-partial{color:var(--blue)} .st-candidate{color:var(--amber)} .st-not-applicable{color:var(--muted)}
 .empty{color:var(--muted);font-style:italic}
 footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
 footer p{margin:0 0 8px;max-width:1000px}
@@ -135,20 +139,21 @@ footer a{color:var(--accent)}
     <a href="../stack/index.html">Agent stack</a>
     <a href="../rigor/index.html" aria-current="page">Rigor practices</a>
     <a href="../beyond/index.html">Beyond FrankenSuite</a>
+    <a href="../updates/index.html">Updates</a>
     <a href="../method/index.html">Method</a>
     <a href="../starter-kit/index.html">Starter kit</a>
   </span>
 </nav>
 <header>
   <h1>Rigor practices worth copying</h1>
-  <p class="sub">Engineering practices that make claims checkable, gathered from the 21 agent-stack evidence packs and the FrankenSuite corpus. Every practice is evidenced in a named project with a quoted source line, mapped to the items of the <a href="../starter-kit/index.html">starter kit</a> it strengthens, and marked with whether this repository adopts it. Of 135 practices, this repository has adopted 36, lists 20 as candidates, and marks 79 as not applicable; adopted rows link their proof.</p>
+  <p class="sub">Engineering practices that make claims checkable, gathered from the 21 agent-stack evidence packs and the FrankenSuite corpus. Every practice is evidenced in a named project with a quoted source line, mapped to the items of the <a href="../starter-kit/index.html">starter kit</a> it strengthens, and marked with whether this repository adopts it. Of 135 practices, this repository has adopted 15, partly adopted 21, lists 22 as candidates, and marks 77 as not applicable; adopted and partial rows link their proof, and partial rows say what is done and what is missing. Adopted and partial claims about this repository were audited by a reviewer who did not write them; the audit record is in <a href="https://github.com/JYeswak/franken-research/tree/main/stack/reviews">stack/reviews/</a>.</p>
 </header>
-<div class="vocab"><b>NODUS</b> is the four-ring verdict scale (Invest, Pilot, Explore, Monitor) used for the FrankenSuite assessments; the agent-stack verdicts use their own scale (Adopt, Adopt and wrap, Build clean-room, Watch). <b>TRL</b> is technology readiness level, scored 1 to 9. <b>CI</b> is continuous integration: automated checks that run on every push. To <b>pin</b> is to freeze a dependency, oracle, or assessment at an exact commit or version, so later changes cannot silently alter what was checked.</div>
+<div class="vocab"><b>TRL</b> is technology readiness level, scored 1 to 9. <b>CI</b> is continuous integration: automated checks that run on every push. To <b>pin</b> is to freeze a dependency, oracle, or assessment at an exact commit or version, so later changes cannot silently alter what was checked.</div>
 <main id="main">
 <div class="filters" id="rfilter" hidden>
   <label>Area <select id="f-area"><option value="">All areas</option><option value="agent-frameworks">Agent frameworks</option><option value="agent-memory">Agent memory systems</option><option value="observability">Agent observability and tracing</option><option value="multi-agent-protocols">Agent-to-agent protocols (A2A class)</option><option value="browser-use">Browser-use stacks</option><option value="computer-use">Computer-use agents</option><option value="workflow-orchestrators">Durable workflow orchestrators</option><option value="embedding-serving">Embedding model serving</option><option value="fine-tuning">Fine-tuning infrastructure</option><option value="frankensuite">FrankenSuite</option><option value="guardrails">Guardrails and red-teaming</option><option value="eval-harnesses">LLM eval harnesses</option><option value="inference-engines">LLM inference engines</option><option value="mcp">MCP servers and clients</option><option value="quantization">Model quantization toolkits</option><option value="voice-agents">Realtime voice agents</option><option value="rag-frameworks">Retrieval-augmented generation (RAG) frameworks</option><option value="rl-envs">RL environments and RLHF training</option><option value="sandbox-exec">Sandboxed code execution</option><option value="structured-output">Structured output and constrained decoding</option><option value="vector-dbs">Vector databases</option><option value="web-search-apis">Web search API layers</option></select></label>
   <label>Starter kit <select id="f-check"><option value="">All items</option><option value="A2">Incumbent oracle pinned before implementation</option><option value="A4">Claim inventory registered before claims are made</option><option value="A5">Negative-evidence ledger initialized with its schema</option><option value="A7">Phase exit criteria defined before agents start</option><option value="A9">Anti-reward-hacking law adopted</option><option value="A11">Proof taxonomy declared (provisional)</option><option value="A13">Plan independently reviewed before execution</option><option value="A14">Release gate defined: what blocks publication</option><option value="B2">Close only on cited evidence; close_reason required</option><option value="B3">Receipts carry provenance; generation binding</option><option value="B4">Every falsified hypothesis banked with a retry predicate</option><option value="B5">Pre-commit honesty gate runs and self-tests with a canary</option><option value="B6">Claim discipline enforced: README claims cross-checked against proofs</option><option value="B7">Never weaken a gate to land a change; gate changes need two-direction evidence</option><option value="B8">Demotion rules executed on schedule</option><option value="B9">Waivers are public, time-bounded, and recorded</option><option value="B13">False-closure repair sweep</option><option value="B14">Gate self-test: deliberately break a gate</option></select></label>
-  <label>Our status <select id="f-status"><option value="">Any status</option><option value="adopted">Adopted</option><option value="candidate">Candidate</option><option value="not-applicable">Not applicable</option></select></label>
+  <label>Our status <select id="f-status"><option value="">Any status</option><option value="adopted">Adopted</option><option value="partial">Partial</option><option value="candidate">Candidate</option><option value="not-applicable">Not applicable</option></select></label>
   <span class="count" id="rcount" aria-live="polite"></span>
 </div>
 <p class="back">Source file: <a href="https://github.com/JYeswak/franken-research/blob/main/stack/rigor-practices.tsv">stack/rigor-practices.tsv</a>. Starter-kit items link to their entries in <a href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md">starter-kit/CHECKLIST.md</a>.</p>
@@ -179,13 +184,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L41">.github/workflows/verify.yml:41</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L68">.github/workflows/verify.yml:68</a>; <a href="https://github.com/JYeswak/franken-research/commit/a80abd0">commit a80abd0</a></span></td>
     </tr>
-    <tr id="rp-004" data-areas=" computer-use embedding-serving observability sandbox-exec structured-output fine-tuning inference-engines frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-004" data-areas=" computer-use embedding-serving observability sandbox-exec structured-output fine-tuning inference-engines frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-004</span><b>Scheduled runs so gates execute without pushes</b></td>
       <td data-label="What to copy">Add a nightly or weekly cron trigger so correctness, smoke, or benchmark jobs keep running when nobody pushes; drift then shows up on a date, not on the next unrelated change.</td>
       <td data-label="Evidenced in">trycua/cua, huggingface/text-embeddings-inference, michaelfeil/infinity, comet-ml/opik, cloudflare/sandbox-sdk, mlc-ai/xgrammar, meta-pytorch/torchtune, sgl-project/sglang, InternLM/lmdeploy, Dicklesworthstone/asupersync<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/computer-use.md?plain=1#L32">ecosystem/pickup/_evidence/computer-use.md:32</a> <q class="cq">scheduled live-environment smokes catch infra drift, not just unit failures</q></span></td>
       <td data-label="Areas"><a href="../stack/computer-use.html">Computer-use agents</a>, <a href="../stack/embedding-serving.html">Embedding model serving</a>, <a href="../stack/observability.html">Agent observability and tracing</a>, <a href="../stack/sandbox-exec.html">Sandboxed code execution</a>, <a href="../stack/structured-output.html">Structured output and constrained decoding</a>, <a href="../stack/fine-tuning.html">Fine-tuning infrastructure</a>, <a href="../stack/inference-engines.html">LLM inference engines</a>, <a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L15">.github/workflows/verify.yml:15</a>; <a href="https://github.com/JYeswak/franken-research/commit/a80abd0">commit a80abd0</a></span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> weekly cron declared in the workflow; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L15">.github/workflows/verify.yml:15</a>; <a href="https://github.com/JYeswak/franken-research/commit/a80abd0">commit a80abd0</a>; <i>missing:</i> the first scheduled run has not fired yet</span></td>
     </tr>
     <tr id="rp-005" data-areas=" mcp fine-tuning " data-check="  " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-005</span><b>Least-privilege CI token by default</b></td>
@@ -195,37 +200,37 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L25">.github/workflows/verify.yml:25</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a></span></td>
     </tr>
-    <tr id="rp-006" data-areas=" mcp agent-memory " data-check="  " data-status="not-applicable">
+    <tr id="rp-006" data-areas=" mcp agent-memory " data-check="  " data-status="candidate">
       <td class="prac" data-label="Practice"><span class="rid">RP-006</span><b>Single required all-green status check</b></td>
       <td data-label="What to copy">Aggregate every job into one required check (re-actors/alls-green or a gate workflow) so branch protection names one status that a renamed or skipped job cannot bypass.</td>
       <td data-label="Evidenced in">modelcontextprotocol/python-sdk, mem0ai/mem0<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/agent-memory.md?plain=1#L23">ecosystem/pickup/_evidence/agent-memory.md:23</a> <q class="cq">Single required status check + path-filtered builds</q></span></td>
       <td data-label="Areas"><a href="../stack/mcp.html">MCP servers and clients</a>, <a href="../stack/agent-memory.html">Agent memory systems</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">verify.yml has one job, so its status already is the single check; revisit if a second job is added.</span></td>
+      <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">Applies: main has no branch protection (gh api repos/JYeswak/franken-research/branches/main/protection returned HTTP 404 on 2026-09-24), so no status check is required at all. One job is not a required check.</span></td>
     </tr>
-    <tr id="rp-007" data-areas=" embedding-serving inference-engines frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-007" data-areas=" embedding-serving inference-engines frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-007</span><b>Pin the whole toolchain, not just dependencies</b></td>
       <td data-label="What to copy">Commit lockfiles and toolchain files, install with the frozen or locked flag, and pin vendored cores and cross-repo dependencies by exact version or content hash.</td>
       <td data-label="Evidenced in">huggingface/text-embeddings-inference, huggingface/sentence-transformers, huggingface/text-generation-inference, ollama/ollama, Dicklesworthstone/franken_lean, Dicklesworthstone/franken_threed, Dicklesworthstone/franken_native_capsule, Dicklesworthstone/frankensim<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/embedding-serving.md?plain=1#L28">ecosystem/pickup/_evidence/embedding-serving.md:28</a> <q class="cq">Pin the whole toolchain, not just deps</q></span></td>
       <td data-label="Areas"><a href="../stack/embedding-serving.html">Embedding model serving</a>, <a href="../stack/inference-engines.html">LLM inference engines</a>, <a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L4">.github/workflows/verify.yml:4</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/package.json#L11">package.json:11</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/bun.lock">bun.lock</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L68">.github/workflows/verify.yml:68</a></span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> esbuild pinned exactly, bun.lock installed frozen, bun pinned to 1.4.2; <a href="https://github.com/JYeswak/franken-research/blob/main/package.json#L11">package.json:11</a>; bun.lock; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L4">.github/workflows/verify.yml:4</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L68">.github/workflows/verify.yml:68</a>; <i>missing:</i> node is pinned only to major 22, and the python3 and Chrome versions the gates use are neither pinned nor recorded</span></td>
     </tr>
-    <tr id="rp-008" data-areas=" agent-memory guardrails frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-008" data-areas=" agent-memory guardrails frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-008</span><b>Supply-chain and secret gates as separate CI steps</b></td>
       <td data-label="What to copy">Run dependency audit, dependency firewall, and secret scanning as named gates of their own, before install touches the tree.</td>
       <td data-label="Evidenced in">getzep/graphiti, guardrails-ai/guardrails, Dicklesworthstone/franken_snowflake<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/agent-memory.md?plain=1#L30">ecosystem/pickup/_evidence/agent-memory.md:30</a> <q class="cq">Supply-chain hygiene in CI: pinned action SHAs, dependency firewall</q></span></td>
       <td data-label="Areas"><a href="../stack/agent-memory.html">Agent memory systems</a>, <a href="../stack/guardrails.html">Guardrails and red-teaming</a>, <a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L58">.github/workflows/verify.yml:58</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/.gitleaksignore">.gitleaksignore</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; secret scan only, no dependency audit (one exact-pinned devDependency)</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the secret scan is its own step and runs before install; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L58">.github/workflows/verify.yml:58</a>; .gitleaksignore; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; <i>missing:</i> no dependency audit step and no dependency firewall</span></td>
     </tr>
-    <tr id="rp-009" data-areas=" frankensuite " data-check=" A2 " data-status="adopted">
+    <tr id="rp-009" data-areas=" frankensuite " data-check=" A2 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-009</span><b>Verify tool and oracle integrity by hash before the suite runs</b></td>
       <td data-label="What to copy">Check the SHA-256 (or blob SHA) of the downloaded tool or oracle checkout before running anything with it; a mismatch fails the job.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_threed<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L192">synthesis/uniqueness-catalog.md:192</a> <q class="cq">The oracle checkout is verified by blob SHA-1</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a2--incumbent-oracle-pinned-before-implementation">Incumbent oracle pinned before implementation</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L53">.github/workflows/verify.yml:53</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; the pinned gitleaks binary is hash-checked before it runs</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the gitleaks tarball is sha256-checked before it runs; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L53">.github/workflows/verify.yml:53</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; <i>missing:</i> Chrome gets only an existence check, and the canonical packets and <a href="../assets/data.js">site/assets/data.js</a> the gates trust are not hashed before the suite runs</span></td>
     </tr>
     <tr id="rp-010" data-areas=" mcp observability vector-dbs frankensuite " data-check="  " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-010</span><b>Regenerate derived artifacts in CI and fail on diff</b></td>
@@ -243,13 +248,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">This repository ships a static site, not an API or tool surface.</span></td>
     </tr>
-    <tr id="rp-012" data-areas=" web-search-apis rag-frameworks guardrails quantization " data-check="  " data-status="adopted">
+    <tr id="rp-012" data-areas=" web-search-apis rag-frameworks guardrails quantization " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-012</span><b>Docs-as-tests: documented commands and examples run in CI</b></td>
       <td data-label="What to copy">Execute README commands, doc snippets, and example scripts in CI so documentation cannot drift away from what actually runs.</td>
       <td data-label="Evidenced in">exa-labs/exa-py, deepset-ai/haystack, vibrantlabsai/ragas, guardrails-ai/guardrails, mit-han-lab/llm-awq<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/web-search-apis.md?plain=1#L27">ecosystem/pickup/_evidence/web-search-apis.md:27</a> <q class="cq">Copy this ruthlessly: example code rots unless CI runs it.</q></span></td>
       <td data-label="Areas"><a href="../stack/web-search-apis.html">Web search API layers</a>, <a href="../stack/rag-frameworks.html">Retrieval-augmented generation (RAG) frameworks</a>, <a href="../stack/guardrails.html">Guardrails and red-teaming</a>, <a href="../stack/quantization.html">Model quantization toolkits</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L3">.github/workflows/verify.yml:3</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/README.md?plain=1#L49">README.md:49</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; CI runs the README Reproduce commands</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> CI runs the README Reproduce commands; <a href="https://github.com/JYeswak/franken-research/blob/main/README.md?plain=1#L49">README.md:49</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L3">.github/workflows/verify.yml:3</a>; <i>missing:</i> the README gate table ends at J while the script now has Gate K, and nothing fails when the README gate table disagrees with the script</span></td>
     </tr>
     <tr id="rp-013" data-areas=" eval-harnesses browser-use agent-memory embedding-serving web-search-apis " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-013</span><b>Path-filtered, change-aware CI</b></td>
@@ -313,7 +318,7 @@ footer a{color:var(--accent)}
       <td data-label="Evidenced in">huggingface/trl, browser-use/browser-use<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/fine-tuning.md?plain=1#L61">ecosystem/pickup/_evidence/fine-tuning.md:61</a> <q class="cq">only for OSError/Timeout/HTTP 502/504/OOM messages</q></span></td>
       <td data-label="Areas"><a href="../stack/fine-tuning.html">Fine-tuning infrastructure</a>, <a href="../stack/browser-use.html">Browser-use stacks</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">verify.yml has no retries and the gates make no network calls.</span></td>
+      <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">verify.yml has no retry step and no flaky network test. Its one network call, the gitleaks download, is hash-checked and fails the run on error rather than retrying.</span></td>
     </tr>
     <tr id="rp-021" data-areas=" sandbox-exec web-search-apis voice-agents fine-tuning " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-021</span><b>Privileged or expensive jobs only on explicit maintainer trigger</b></td>
@@ -361,7 +366,7 @@ footer a{color:var(--accent)}
       <td data-label="Evidenced in">NVIDIA-NeMo/Guardrails, langchain-ai/langchain, traceloop/openllmetry, lmnr-ai/lmnr-python<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/guardrails.md?plain=1#L32">ecosystem/pickup/_evidence/guardrails.md:32</a> <q class="cq">Copy: record once, replay in CI</q></span></td>
       <td data-label="Areas"><a href="../stack/guardrails.html">Guardrails and red-teaming</a>, <a href="../stack/rag-frameworks.html">Retrieval-augmented generation (RAG) frameworks</a>, <a href="../stack/observability.html">Agent observability and tracing</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">The gates make no network calls to record.</span></td>
+      <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">The gates call no model or HTTP API that could be recorded. The only network call is the pinned gitleaks download in CI.</span></td>
     </tr>
     <tr id="rp-027" data-areas=" browser-use mcp voice-agents workflow-orchestrators " data-check="  " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-027</span><b>Local deterministic test server or reference fixture instead of the live service</b></td>
@@ -627,13 +632,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">No unsafe code.</span></td>
     </tr>
-    <tr id="rp-060" data-areas=" eval-harnesses computer-use browser-use guardrails " data-check=" A2 " data-status="adopted">
+    <tr id="rp-060" data-areas=" eval-harnesses computer-use browser-use guardrails " data-check=" A2 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-060</span><b>Version and pin benchmark tasks and datasets; record the commit in every run</b></td>
       <td data-label="What to copy">Never mutate a benchmark silently: version task configs, pin dataset versions or upstream commits in run manifests, bundle third-party datasets with provenance, and keep old configs reproducible.</td>
       <td data-label="Evidenced in">EleutherAI/lm-evaluation-harness, harbor-framework/terminal-bench-1, xlang-ai/OSWorld, simular-ai/Agent-S, Skyvern-AI/skyvern, microsoft/PyRIT<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/eval-harnesses.md?plain=1#L25">ecosystem/pickup/_evidence/eval-harnesses.md:25</a> <q class="cq">Copy: never silently mutate a benchmark; bump a version.</q></span></td>
       <td data-label="Areas"><a href="../stack/eval-harnesses.html">LLM eval harnesses</a>, <a href="../stack/computer-use.html">Computer-use agents</a>, <a href="../stack/browser-use.html">Browser-use stacks</a>, <a href="../stack/guardrails.html">Guardrails and red-teaming</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a2--incumbent-oracle-pinned-before-implementation">Incumbent oracle pinned before implementation</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../RULEBOOK.md">RULEBOOK.md:68</a>; every packet is assessed at a pinned commit</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> every packet is assessed at a pinned commit recorded in its header; <a href="../RULEBOOK.md">RULEBOOK.md:68</a>; <a href="../packets/asupersync-assessment.md">packets/asupersync-assessment.md</a>; <i>missing:</i> no benchmark task or dataset versioning and no per-run manifest recording the commit of each CI run</span></td>
     </tr>
     <tr id="rp-061" data-areas=" eval-harnesses rag-frameworks " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-061</span><b>Separate benchmark data from harness code</b></td>
@@ -683,13 +688,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">No training or model pipeline.</span></td>
     </tr>
-    <tr id="rp-067" data-areas=" fine-tuning " data-check="  " data-status="adopted">
+    <tr id="rp-067" data-areas=" fine-tuning " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-067</span><b>Config validation as its own tested surface</b></td>
       <td data-label="What to copy">Expose config validation and normalization as an API and exercise it in every smoke test and per-recipe config test.</td>
       <td data-label="Evidenced in">axolotl-ai-cloud/axolotl, meta-pytorch/torchtune, Lightning-AI/litgpt<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/fine-tuning.md?plain=1#L49">ecosystem/pickup/_evidence/fine-tuning.md:49</a> <q class="cq">Config validation as its own testable surface</q></span></td>
       <td data-label="Areas"><a href="../stack/fine-tuning.html">Fine-tuning infrastructure</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a>; Gate K1 (site/scripts/verify-site.sh) validates verdict front matter and section names</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> Gate K1 inside bun run verify rejects missing front-matter keys, bad enums and missing sections; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> validation is not exposed as a separate API, and Gate K has not yet run on pushed CI</span></td>
     </tr>
     <tr id="rp-068" data-areas=" fine-tuning " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-068</span><b>Keep hardware CI tractable: cache priming and CPU legs for distributed logic</b></td>
@@ -731,13 +736,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">No live provider.</span></td>
     </tr>
-    <tr id="rp-073" data-areas=" eval-harnesses multi-agent-protocols " data-check="  " data-status="adopted">
+    <tr id="rp-073" data-areas=" eval-harnesses multi-agent-protocols " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-073</span><b>Automated checks a contribution must pass before merge</b></td>
       <td data-label="What to copy">Document the automated checks a new benchmark or spec change must pass (policy gate script, spec lint, spelling, conventional commits) and run them before human review.</td>
       <td data-label="Evidenced in">UKGovernmentBEIS/inspect_ai, UKGovernmentBEIS/inspect_evals, a2aproject/A2A<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/ecosystem/pickup/_evidence/multi-agent-protocols.md?plain=1#L25">ecosystem/pickup/_evidence/multi-agent-protocols.md:25</a> <q class="cq">Copy: spec changes go through machine-checked lint before human review.</q></span></td>
       <td data-label="Areas"><a href="../stack/eval-harnesses.html">LLM eval harnesses</a>, <a href="../stack/multi-agent-protocols.html">Agent-to-agent protocols (A2A class)</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml">.github/workflows/verify.yml</a>; every PR runs the same gate chain a contributor runs locally</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> every pull request runs the full gate chain; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L10">.github/workflows/verify.yml:10</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>; <i>missing:</i> main has no branch protection (HTTP 404 on 2026-09-24), so a red check does not block a merge</span></td>
     </tr>
     <tr id="rp-074" data-areas=" agent-memory rag-frameworks web-search-apis " data-check="  " data-status="candidate">
       <td class="prac" data-label="Practice"><span class="rid">RP-074</span><b>Change record enforced: changelog or release note per change</b></td>
@@ -755,13 +760,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a9--anti-reward-hacking-law-adopted">Anti-reward-hacking law adopted</a></td>
       <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">CONTRIBUTING.md covers humans; there is no AGENTS.md stating the 12 forbidden patterns for agents working in this repository.</span></td>
     </tr>
-    <tr id="rp-076" data-areas=" frankensuite " data-check=" A4 B6 " data-status="adopted">
+    <tr id="rp-076" data-areas=" frankensuite " data-check=" A4 B6 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-076</span><b>Claim-to-proof registry with machine gates</b></td>
       <td data-label="What to copy">Bind every public claim to a machine-checkable key and a proof; the gate refuses wording above its evidence grade, demotes on digest mismatch, and fails CI on drift.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_engine, Dicklesworthstone/frankengit, Dicklesworthstone/franken_markdown, Dicklesworthstone/franken_node, Dicklesworthstone/frankengraphdb, Dicklesworthstone/frankensim, Dicklesworthstone/frankensympy<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/cross-pollination.md?plain=1#L7">synthesis/cross-pollination.md:7</a> <q class="cq">Every public claim bound to a machine-checkable key and a proof script</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a4--claim-inventory-registered-before-claims-are-made">Claim inventory registered before claims are made</a>; <a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b6--claim-discipline-enforced-readme-claims-cross-checked-against-proofs">Claim discipline enforced: README claims cross-checked against proofs</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; Gate A2 requires each method-page claim to cite a packet line containing the quoted claim, and Gate K2 and K3 apply the same quote-on-line rule to verdicts and this file</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> Gate A2 checks method-page claims against their packet line, K2 checks verdict quotes on their cited lines, K3 resolves proof tokens; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> no gate compares wording with its evidence grade or demotes a claim on a digest mismatch</span></td>
     </tr>
     <tr id="rp-077" data-areas=" frankensuite " data-check=" B8 " data-status="candidate">
       <td class="prac" data-label="Practice"><span class="rid">RP-077</span><b>Freshness decay on evidence</b></td>
@@ -779,13 +784,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a5--negative-evidence-ledger-initialized-with-its-schema">Negative-evidence ledger initialized with its schema</a>; <a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b4--every-falsified-hypothesis-banked-with-a-retry-predicate">Every falsified hypothesis banked with a retry predicate</a></td>
       <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">Rejected approaches for this repository are recorded only in commit messages and synthesis prose; there is no ledger file with retry predicates.</span></td>
     </tr>
-    <tr id="rp-079" data-areas=" frankensuite " data-check=" A2 " data-status="adopted">
+    <tr id="rp-079" data-areas=" frankensuite " data-check=" A2 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-079</span><b>Anti-extrapolation: an unrun baseline is recorded as incomplete</b></td>
       <td data-label="What to copy">When the incumbent cannot be run within budget, record the comparison as incomplete or no admissible ratio; never extrapolate a ratio against a baseline that did not run.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_overlap, Dicklesworthstone/franken_tts<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/cross-pollination.md?plain=1#L31">synthesis/cross-pollination.md:31</a> <q class="cq">A baseline that exceeds the compute budget is recorded as</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a2--incumbent-oracle-pinned-before-implementation">Incumbent oracle pinned before implementation</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../RULEBOOK.md">RULEBOOK.md:80</a></span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the Rulebook forbids citing an ungated number; <a href="../RULEBOOK.md">RULEBOOK.md:80</a>; <i>missing:</i> no rule that a baseline which could not be run is recorded as incomplete with no ratio</span></td>
     </tr>
     <tr id="rp-080" data-areas=" frankensuite " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-080</span><b>Committed statistical baseline gate with environment tagging</b></td>
@@ -827,13 +832,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L84">.github/workflows/verify.yml:84</a>; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; <a href="https://github.com/JYeswak/franken-research/commit/07b681b">commit 07b681b</a>; no browser found is a FAIL, and zero data-stat slots or zero resolved links fail Gates B and E</span></td>
     </tr>
-    <tr id="rp-085" data-areas=" frankensuite " data-check=" A11 " data-status="not-applicable">
+    <tr id="rp-085" data-areas=" frankensuite " data-check=" A11 " data-status="candidate">
       <td class="prac" data-label="Practice"><span class="rid">RP-085</span><b>Maturity vocabulary and dated maturity registry</b></td>
       <td data-label="What to copy">Label every capability on a ladder (source-present to production-admitted) where no lower label implies a higher one, and publish the dated distribution; partial never rounds up.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_drone_geometry_reconstruction, Dicklesworthstone/frankensim, Dicklesworthstone/franken_ocr, Dicklesworthstone/frankensympy<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/cross-pollination.md?plain=1#L79">synthesis/cross-pollination.md:79</a> <q class="cq">no lower label implies a higher one</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a11--proof-taxonomy-declared-provisional">Proof taxonomy declared (provisional)</a></td>
-      <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">The repository assigns TRL and NODUS rings to others; it ships no capabilities of its own to label.</span></td>
+      <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">Applies: site/self/index.html scores this repository with the same TRL and ring vocabulary it applies to others (commit 4f4f0e3), but there is no dated maturity registry and no rule that a lower label never implies a higher one.</span></td>
     </tr>
     <tr id="rp-086" data-areas=" frankensuite " data-check=" A11 " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-086</span><b>Evidence color and no-laundering composition</b></td>
@@ -859,13 +864,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">No measured lanes.</span></td>
     </tr>
-    <tr id="rp-089" data-areas=" frankensuite " data-check=" B5 B14 " data-status="adopted">
+    <tr id="rp-089" data-areas=" frankensuite " data-check=" B5 B14 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-089</span><b>Adversarial self-audit: gates proven to trip on planted defects</b></td>
       <td data-label="What to copy">Plant defects (a laundered claim, a weakened gate, a one-byte drift) and record that the gate fails; keep a permanent self-test that proves the gates still trip, and a mutation-score floor where it fits.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_alignment, Dicklesworthstone/frankensympy, Dicklesworthstone/franken_code_browser, Dicklesworthstone/frankensim, Dicklesworthstone/franken_node, Dicklesworthstone/frankenredis<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/cross-pollination.md?plain=1#L111">synthesis/cross-pollination.md:111</a> <q class="cq">The evidence gate itself gets audited adversarially</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b5--pre-commit-honesty-gate-runs-and-self-tests-with-a-canary">Pre-commit honesty gate runs and self-tests with a canary</a>; <a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b14--gate-self-test-deliberately-break-a-gate">Gate self-test: deliberately break a gate</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/commit/07b681b">commit 07b681b</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; break-tests recorded per commit (one-byte packet drift fails A, planted console.error fails I, renamed data-stat and href attributes fail B and E); no permanent in-CI self-test yet</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> one-time planted defects recorded as failing: packet drift fails A and console.error fails I (07b681b), renamed data-stat and href fail B and E (4f4f0e3), planted bad copies fail Gate K (ac44c22); <a href="https://github.com/JYeswak/franken-research/commit/07b681b">commit 07b681b</a>; <a href="https://github.com/JYeswak/franken-research/commit/4f4f0e3">commit 4f4f0e3</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> no permanent known-bad fixture that CI runs every time</span></td>
     </tr>
     <tr id="rp-090" data-areas=" frankensuite " data-check="  " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-090</span><b>Registry-agreement gate: parallel registries must agree exactly</b></td>
@@ -873,7 +878,7 @@ footer a{color:var(--accent)}
       <td data-label="Evidenced in">Dicklesworthstone/franken_agent_detection<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L28">synthesis/uniqueness-catalog.md:28</a> <q class="cq">the connector registry, tilde-expansion table, canonical-slug map, and factory registry must agree</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; Gate D requires briefs, packets and data.js names to match one to one</span></td>
+      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; Gate D requires briefs, packets and <a href="../assets/data.js">site/assets/data.js</a> names to match one to one</span></td>
     </tr>
     <tr id="rp-091" data-areas=" frankensuite " data-check=" B6 " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-091</span><b>Statistics computed from data, not typed</b></td>
@@ -881,7 +886,7 @@ footer a{color:var(--accent)}
       <td data-label="Evidenced in">Dicklesworthstone/frankensim_website, Dicklesworthstone/frankenterm<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L331">synthesis/uniqueness-catalog.md:331</a> <q class="cq">Computed stats pipeline.</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b6--claim-discipline-enforced-readme-claims-cross-checked-against-proofs">Claim discipline enforced: README claims cross-checked against proofs</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; Gate B recomputes every aggregate from data.js and fails on bare N of 44 literals without a STAT source note</span></td>
+      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; Gate B recomputes every aggregate from <a href="../assets/data.js">site/assets/data.js</a> and fails on bare N of 44 literals without a STAT source note</span></td>
     </tr>
     <tr id="rp-092" data-areas=" frankensuite " data-check=" A11 " data-status="candidate">
       <td class="prac" data-label="Practice"><span class="rid">RP-092</span><b>Disclaim as data: unmeasured targets are machine-readable as unmeasured</b></td>
@@ -899,13 +904,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a14--release-gate-defined-what-blocks-publication">Release gate defined: what blocks publication</a></td>
       <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">v1.0.0 was tagged by hand after a green run; no workflow blocks a tag whose commit has not passed verify.</span></td>
     </tr>
-    <tr id="rp-094" data-areas=" frankensuite " data-check=" A2 " data-status="adopted">
+    <tr id="rp-094" data-areas=" frankensuite " data-check=" A2 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-094</span><b>Upstream-anchored contracts</b></td>
       <td data-label="What to copy">Anchor each contract rule to the exact upstream file and line at the pin with an expected token, and fail CI when upstream drifts.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_lean<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L72">synthesis/uniqueness-catalog.md:72</a> <q class="cq">line naming the exact upstream file/line at the pin</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a2--incumbent-oracle-pinned-before-implementation">Incumbent oracle pinned before implementation</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a>; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; Gate K2 fails a verdict citation whose line no longer contains its quote</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> K2 fails a verdict citation whose line no longer contains its quote, which is local citation integrity; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> nothing re-fetches an upstream pin and fails CI when upstream moves</span></td>
     </tr>
     <tr id="rp-095" data-areas=" frankensuite " data-check=" B6 " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-095</span><b>Reject fixture-only and synthetic artifacts as evidence</b></td>
@@ -915,13 +920,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b6--claim-discipline-enforced-readme-claims-cross-checked-against-proofs">Claim discipline enforced: README claims cross-checked against proofs</a></td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">No performance evidence of its own.</span></td>
     </tr>
-    <tr id="rp-096" data-areas=" frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-096" data-areas=" frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-096</span><b>Publish rejected and failed artifacts instead of regenerating them</b></td>
       <td data-label="What to copy">Keep failed receipts, rejected release artifacts, stale not-green suite results, and the reason CI is disabled, visible with identifiers, rather than regenerating into green.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_manim, Dicklesworthstone/frankensim, Dicklesworthstone/franken_markdown_website, Dicklesworthstone/franken_overlap, Dicklesworthstone/beads-for-frankentui<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L83">synthesis/uniqueness-catalog.md:83</a> <q class="cq">That artifact was rejected and is not attached</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L6">.github/workflows/verify.yml:6</a>; every CI run, red or green, stays public on GitHub Actions and the header forbids weakening a gate to turn it green</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the repository and every CI run are public; <a href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L6">.github/workflows/verify.yml:6</a>; <i>missing:</i> no step uploads a failed run log as an artifact, and no red run has yet been observed to be retained</span></td>
     </tr>
     <tr id="rp-097" data-areas=" frankensuite " data-check=" B2 " data-status="adopted">
       <td class="prac" data-label="Practice"><span class="rid">RP-097</span><b>Machine-greppable honesty trailers on commits</b></td>
@@ -931,21 +936,21 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b2--close-only-on-cited-evidence-close_reason-required">Close only on cited evidence; close_reason required</a></td>
       <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/CONTRIBUTING.md?plain=1#L49">CONTRIBUTING.md:49</a>; every commit subject ends with a verification level; convention only, not machine-checked in CI</span></td>
     </tr>
-    <tr id="rp-098" data-areas=" frankensuite " data-check=" A11 " data-status="adopted">
+    <tr id="rp-098" data-areas=" frankensuite " data-check=" A11 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-098</span><b>Evidence tier on every statement</b></td>
       <td data-label="What to copy">Label each statement in plans and findings with its epistemic status (fact, design, hypothesis, target; or evidence tier plus confidence) so readers never mistake a target for a result.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_surveillance_system, Dicklesworthstone/franken_nlp<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L185">synthesis/uniqueness-catalog.md:185</a> <q class="cq">Every statement labeled FACT / DESIGN / HYPOTHESIS / TARGET / OPEN</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a11--proof-taxonomy-declared-provisional">Proof taxonomy declared (provisional)</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../RULEBOOK.md">RULEBOOK.md:19</a>; every packet and verdict claim carries a tier and a confidence grade</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the Rulebook requires a tier and confidence on every claim, and K2 enforces a tier on verdict bullets; <a href="../RULEBOOK.md">RULEBOOK.md:19</a>; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> packet prose is not machine-checked statement by statement</span></td>
     </tr>
-    <tr id="rp-099" data-areas=" frankensuite " data-check=" B3 " data-status="adopted">
+    <tr id="rp-099" data-areas=" frankensuite " data-check=" B3 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-099</span><b>Receipts carry provenance and generation binding</b></td>
       <td data-label="What to copy">Every receipt or fixture records commit, tool versions, host, worker, oracle script hash, and generation command; a receipt from another generation is not evidence.</td>
       <td data-label="Evidenced in">Dicklesworthstone/franken_remote, Dicklesworthstone/franken_snowflake, Dicklesworthstone/franken_manim, Dicklesworthstone/frankenpandas, Dicklesworthstone/frankenterm<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L279">synthesis/uniqueness-catalog.md:279</a> <q class="cq">All 1,387 conformance packets carry</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b3--receipts-carry-provenance-generation-binding">Receipts carry provenance; generation binding</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../RULEBOOK.md">RULEBOOK.md:68</a>; every packet records repository, pinned commit, date and analyst method</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> every packet header records repository, pinned commit, date and analyst method; <a href="../RULEBOOK.md">RULEBOOK.md:68</a>; <i>missing:</i> tool versions, host, worker, oracle script hash and generation command are not recorded</span></td>
     </tr>
     <tr id="rp-100" data-areas=" frankensuite " data-check="  " data-status="candidate">
       <td class="prac" data-label="Practice"><span class="rid">RP-100</span><b>Machine-checked dependency admissibility</b></td>
@@ -979,13 +984,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b2--close-only-on-cited-evidence-close_reason-required">Close only on cited evidence; close_reason required</a>; <a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b13--false-closure-repair-sweep">False-closure repair sweep</a></td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">This repository keeps no bead graph of its own.</span></td>
     </tr>
-    <tr id="rp-104" data-areas=" frankensuite " data-check=" A11 " data-status="adopted">
+    <tr id="rp-104" data-areas=" frankensuite " data-check=" A11 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-104</span><b>Typed proof grammar for claims</b></td>
       <td data-label="What to copy">Give each claim proof a typed form (test, path, identifier, command, count, manual) so proof kinds can be checked and counted.</td>
       <td data-label="Evidenced in">Dicklesworthstone/frankentui<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/uniqueness-catalog.md?plain=1#L379">synthesis/uniqueness-catalog.md:379</a> <q class="cq">The claims ledger uses a typed proof grammar</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a11--proof-taxonomy-declared-provisional">Proof taxonomy declared (provisional)</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a>; our_proof in this file is typed as path:line, bare path, or commit sha, and Gate K3 resolves each form</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> our_proof tokens have two resolvable forms, a path with optional line and a commit sha, which K3 resolves; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> no typed kinds for test, identifier, command, count or manual proofs</span></td>
     </tr>
     <tr id="rp-105" data-areas=" frankensuite " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-105</span><b>SLO-as-code</b></td>
@@ -1035,13 +1040,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b7--never-weaken-a-gate-to-land-a-change-gate-changes-need-two-direction-evidence">Never weaken a gate to land a change; gate changes need two-direction evidence</a>; <a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#b9--waivers-are-public-time-bounded-and-recorded">Waivers are public, time-bounded, and recorded</a></td>
       <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">Gate A keeps the shipped packets byte-identical to the canonical ones, but nothing requires a second approver to change the canonical packets, RULEBOOK.md or the gate script.</span></td>
     </tr>
-    <tr id="rp-111" data-areas=" frankensuite " data-check=" A13 " data-status="adopted">
+    <tr id="rp-111" data-areas=" frankensuite " data-check=" A13 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-111</span><b>Split-context adversarial review, default-refute, with attribution</b></td>
       <td data-label="What to copy">Give the reviewer the diff and nothing else, tell it to assume the code is wrong, default verdicts to refuted unless it cites source and target lines, and attribute every caught bug in the fix commit.</td>
       <td data-label="Evidenced in">oven-sh/bun, github/copilot-agent-runtime<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md?plain=1#L247">synthesis/vendor-port-learnings.md:247</a> <q class="cq">The reviewer gets the diff and nothing else</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a13--plan-independently-reviewed-before-execution">Plan independently reviewed before execution</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md?plain=1#L82">stack/METHOD.md:82</a>; <a href="https://github.com/JYeswak/franken-research/commit/6d03cc1">commit 6d03cc1</a>; a verdict's author never reviews it and Gate K fails when reviewed_by equals author</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the author of a verdict never reviews it, and K1 fails when reviewed_by equals author; <a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md?plain=1#L83">stack/METHOD.md:83</a>; <a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="https://github.com/JYeswak/franken-research/commit/ac44c22">commit ac44c22</a>; <i>missing:</i> nothing gives the reviewer only the diff, defaults findings to refuted, or attributes caught bugs in fix commits</span></td>
     </tr>
     <tr id="rp-112" data-areas=" frankensuite " data-check=" A13 " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-112</span><b>Line-by-line old-versus-new review by several models</b></td>
@@ -1075,13 +1080,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">This v1.1 batch assigned exclusive file ownership per agent in the lead prompt; the rule is not recorded in the repository.</span></td>
     </tr>
-    <tr id="rp-116" data-areas=" frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-116" data-areas=" frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-116</span><b>A failure seen twice becomes standing machinery</b></td>
       <td data-label="What to copy">When a failure mode recurs, turn it into a standing instruction, a reusable skill, an eval, a protected baseline, or a gate, not a one-off fix.</td>
       <td data-label="Evidenced in">github/copilot-agent-runtime, Dicklesworthstone/frankenfs<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md?plain=1#L140">synthesis/vendor-port-learnings.md:140</a> <q class="cq">it belongs in standing instructions, a reusable skill, an eval</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/114d5f0">commit 114d5f0</a>; each gate names the audit gap it closes, e.g. Gate A2 was added after the adversarial regrade caught invented method-page claims</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> Gate A2 names the audit failure that created it; <a href="../BUILD-GATES.md">site/BUILD-GATES.md:64</a>; <i>missing:</i> not every gate names a recurring failure, and no rule says a repeat failure must become a gate</span></td>
     </tr>
     <tr id="rp-117" data-areas=" frankensuite " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-117</span><b>Translate first, redesign second</b></td>
@@ -1131,13 +1136,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-candidate">candidate</span><span class="small">The gate chain depends on the host Chrome, python3 and node versions; CI pins node 22 and bun 1.4.2 but Chrome floats with the runner image and nothing records the version used.</span></td>
     </tr>
-    <tr id="rp-123" data-areas=" frankensuite " data-check=" A13 " data-status="adopted">
+    <tr id="rp-123" data-areas=" frankensuite " data-check=" A13 " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-123</span><b>Porting rulebook adversarially reviewed before bulk work</b></td>
       <td data-label="What to copy">Write the idiom and type rulebook before any bulk work, have it adversarially reviewed, and make uncertainty markers greppable and budgeted: flagging is better than wrong output.</td>
       <td data-label="Evidenced in">oven-sh/bun<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md?plain=1#L220">synthesis/vendor-port-learnings.md:220</a> <q class="cq">adversarially reviewed before use</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit"><a class="kit" href="https://github.com/JYeswak/franken-research/blob/main/starter-kit/CHECKLIST.md#a13--plan-independently-reviewed-before-execution">Plan independently reviewed before execution</a></td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a>; <a href="https://github.com/JYeswak/franken-research/commit/6d03cc1">commit 6d03cc1</a>; the verdict method was revised after an independent stress-test before any verdict shipped</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> <a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a> was revised after a stress-test before any verdict shipped; <a href="https://github.com/JYeswak/franken-research/commit/6d03cc1">commit 6d03cc1</a>; <i>missing:</i> the reviewer findings are not in the repository, and the cited commit is itself marked pending</span></td>
     </tr>
     <tr id="rp-124" data-areas=" frankensuite " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-124</span><b>Pre-computed ownership table as an orthogonal source of truth</b></td>
@@ -1187,13 +1192,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-not-applicable">not applicable</span><span class="small">No binary layouts.</span></td>
     </tr>
-    <tr id="rp-130" data-areas=" frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-130" data-areas=" frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-130</span><b>Methodology preservation: never squash the rigor away</b></td>
       <td data-label="What to copy">Keep rulebooks, ownership tables, and review-attribution commits in the main history or an archived appendix; a squash merge that deletes them erases the method.</td>
       <td data-label="Evidenced in">oven-sh/bun<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md?plain=1#L727">synthesis/vendor-port-learnings.md:727</a> <q class="cq">Methodology-preservation rule [Bun].</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../RULEBOOK.md">RULEBOOK.md:197</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/v11-manifest.md">v11-manifest.md</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a>; the Rulebook versions its amendments and main keeps unsquashed history</span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the Rulebook versions its amendments, <a href="https://github.com/JYeswak/franken-research/blob/main/v11-manifest.md">v11-manifest.md</a> records the lineage, and main history is unsquashed; <a href="../RULEBOOK.md">RULEBOOK.md:197</a>; <a href="https://github.com/JYeswak/franken-research/blob/main/v11-manifest.md">v11-manifest.md</a>; <i>missing:</i> no merge policy prevents a squash merge</span></td>
     </tr>
     <tr id="rp-131" data-areas=" frankensuite " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-131</span><b>Unrepresentable before checked before tested</b></td>
@@ -1219,13 +1224,13 @@ footer a{color:var(--accent)}
       <td data-label="Starter kit">none</td>
       <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../scripts/verify-site.sh">site/scripts/verify-site.sh</a>; <a href="../BUILD-GATES.md">site/BUILD-GATES.md</a>; each gate prints PASS or FAIL with its reason and the script exits nonzero if any gate fails</span></td>
     </tr>
-    <tr id="rp-134" data-areas=" frankensuite " data-check="  " data-status="adopted">
+    <tr id="rp-134" data-areas=" frankensuite " data-check="  " data-status="partial">
       <td class="prac" data-label="Practice"><span class="rid">RP-134</span><b>Headline numbers carry their scope caveat</b></td>
       <td data-label="What to copy">Never quote a headline number without the caveat its author attached (workload-specific, attributed cost only, input versus diff size); quote a disavowal when the source gives one.</td>
       <td data-label="Evidenced in">github/copilot-agent-runtime, oven-sh/bun<span class="small">Source: <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md?plain=1#L21">synthesis/external-validation-2026-09.md:21</a> <q class="cq">That is a workload-specific result; the Rust runtime is not universally</q></span></td>
       <td data-label="Areas"><a href="../index.html">FrankenSuite</a></td>
       <td data-label="Starter kit">none</td>
-      <td data-label="Our status"><span class="st st-adopted">adopted</span><span class="small"><a href="../RULEBOOK.md">RULEBOOK.md:80</a></span></td>
+      <td data-label="Our status"><span class="st st-partial">partial</span><span class="small"><i>done:</i> the Rulebook requires quoting a source disavowal and forbids ungated numbers; <a href="../RULEBOOK.md">RULEBOOK.md:80</a>; <i>missing:</i> no rule that every headline number carries its author workload or cost caveat</span></td>
     </tr>
     <tr id="rp-135" data-areas=" frankensuite " data-check="  " data-status="not-applicable">
       <td class="prac" data-label="Practice"><span class="rid">RP-135</span><b>Managed breaking migration: named opt-in features and advance warning</b></td>

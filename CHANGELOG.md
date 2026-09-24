@@ -2,6 +2,32 @@
 
 Corrections to published findings are recorded here with the date, the issue, and what changed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## v1.1.0 (2026-09-23)
+
+Extends the assessment from the 44 FrankenSuite repositories to the wider agent stack, and turns every assessed project into a source of practices this repository also applies to itself.
+
+### Added
+
+- **Agent-stack verdicts** (`stack/`): one Adopt / Adopt and wrap / Build clean-room / Watch verdict for each of 21 kinds of agent infrastructure, from evidence packs covering 192 repositories. Result: 20 Adopt and wrap, 1 Watch, 0 Build clean-room; 13 Medium and 8 Low confidence. Every factual bullet carries an evidence tier and a quoted citation that must appear on the cited line (`stack/METHOD.md`, commits `d34f5ce`, `6d03cc1`).
+- **Independent review of every verdict** before release, with the author never reviewing their own work. Reviewers refused to sign until findings were fixed: 12 then 4 on the orchestration group, 36 then 4 on tools, 36 then 9 on serving. The records are in `stack/reviews/`.
+- **License census** (`stack/licenses.tsv`): all 101 recommended projects checked; 13 non-permissive (AGPL-3.0, SSPL, Elastic License 2.0, open-core enterprise directories, field-of-use conditions) and named in the verdicts that recommend them. One archived project (llm-guard) was removed from the adopt list (`f55db78`, `b5eb9d8`).
+- **Rigor practices index** (`stack/rigor-practices.tsv`): 135 practices, each quoted from the project that evidences it and mapped onto the starter kit; this repository adopts 15, partly does 21, and has 22 more as candidates.
+- **Pages** generated from those files: `/stack/`, 21 `/stack/<area>` pages with license chips and quoted citations, `/rigor/`, plus `/beyond/` (vendor-port and outside-validation lessons) and `/updates/` (`ac44c22`, `cb51a1d`, `2da9fb4`, `ad13ffc`).
+- **Since-the-pin census and re-check** (`updates/`): 32 of 44 repositories moved after their pins; `franken_code_browser` shipped v0.1.0 as a notarized developer preview, re-checked cell by cell with signature and notarization verified (the app is signed and notarized; the DMG container is not signed). Pins and suite counts are not edited.
+- **Gates K and L**: K1 to K5 enforce the verdict format and review signatures, quoted citations, rigor-index proofs, generated pages matching their sources, and the license rule; L fails on any personal email address in a tracked file. Each was proven to trip on planted known-bad copies.
+
+### Changed
+
+- CI adopts four practices from the index: a timeout sized from measured runs, cancelling superseded pull-request runs, actions pinned by commit SHA, and a weekly scheduled run so the gates execute without pushes (`a80abd0`).
+
+### Corrected before release
+
+- The method was stress-tested before use; all 8 findings were adopted (quoted citations instead of line existence, a fixed verdict order, a stated failed constraint for any rebuild, Rulebook-correct tiers).
+- We first claimed 36 of the index's practices as adopted. An independent audit confirmed 12 and found 24 partial and 2 mislabeled; the index now has a `partial` status and claims 15 adopted.
+- Verdicts had recommended projects without checking their licenses; the license rule and census above are the fix.
+- Three recommended "practices to copy" did not do what their file names suggested (a benchmark with no quality output, a retrieval check that never starts the retriever, a conformance test that only checks dispatch). A reviewer re-fetched the files and the verdicts were corrected.
+- The movement census first recorded commit-author email addresses; they were redacted before publication and gate L now prevents a recurrence.
+
 ## v1.0.0 (2026-09-23)
 
 First public repository, tagged `v1.0.0`.
