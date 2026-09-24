@@ -1,0 +1,47 @@
+---
+type: guardrails
+title: Guardrails and red-teaming
+group: Eval and safety
+verdict: Adopt and wrap
+confidence: Medium
+evidence_date: 2026-09-23
+author: VerdictsOrchestration
+---
+
+## Bottom line
+Inference, medium confidence: put an existing rail toolkit or scanner library in front of your model and its tools (NeMo Guardrails, Guardrails AI, LLM Guard, or LlamaFirewall for tool calls), attack it with an existing red-team tool (garak, PyRIT, promptfoo), and do not write your own. Wrap both, because no project in the evidence publishes a false-positive or false-negative threshold you can inherit: keep your own labeled corpus of prompts that must pass and prompts that must be blocked, calibrate the model you use as a judge on its own set, and treat any "it blocks jailbreaks" claim as unproven until those two receipts exist.
+
+## Adopt, do not rebuild
+- **NVIDIA-NeMo/Guardrails**: input, output, dialog, retrieval and execution rails configured in Colang, with jailbreak detection and LlamaGuard integration built in; it tests rails against recorded model responses and keeps real-model tests in a separately gated tier. [Verified] (ecosystem/pickup/_evidence/guardrails.md:7 "Reference input/output/dialog/retrieval/execution rails toolkit (Colang), shipped by NVIDIA"; ecosystem/pickup/_evidence/guardrails.md:24 "real-LLM QA tier separated from unit tier")
+- **guardrails-ai/guardrails and protectai/llm-guard**: a guard-and-validator framework with a hub of validators, and a scanner library for inputs (PII anonymization, banned topics and code, jailbreak heuristics) and outputs; LLM Guard ships a labeled example corpus and a timing harness. [Verified] (ecosystem/pickup/_evidence/guardrails.md:8 "Guard + Validator architecture with a validators Hub"; ecosystem/pickup/_evidence/guardrails.md:9 "Scanner library: input scanners (Anonymize, BanSubstrings, BanTopics, BanCode, jailbreak heuristics)")
+- **meta-llama/PurpleLlama (LlamaFirewall, Llama Guard, Prompt Guard)**: moderation classifiers and a separate firewall that gates agent tool calls, the family of rails for tools rather than prompt text. [Verified] (ecosystem/pickup/_evidence/guardrails.md:10 "LlamaFirewall (agent tool-call gating)"; ecosystem/pickup/_evidence/guardrails.md:34 "guardrails for tool input/output are a separate category from prompt text rails")
+- **NVIDIA/garak, microsoft/PyRIT, promptfoo/promptfoo**: red-team tools with enumerated attack probes, jailbreak datasets and evasion strategies; writing your own attack library would recreate them. [Verified] (ecosystem/pickup/_evidence/guardrails.md:12 "probes (attack generation) cleanly separated from detectors (success judging)"; ecosystem/pickup/_evidence/guardrails.md:13 "Red-teaming is a first-class eval surface, not a bolt-on.")
+
+## Copy these practices
+- **Keep attacks and verdicts in separate code**: the code that generates attacks and the code that judges success share no helpers and have mirrored test trees, so an attack cannot quietly grade itself. Starter kit: A9. [Verified] (ecosystem/pickup/_evidence/guardrails.md:23 "Split attack generation from success detection")
+- **Pass and block cases as parameters in code**: every scanner carries a labeled corpus, and the must-pass and must-block prompts sit in the tests as parameter tables, not in a spreadsheet. Starter kit: A10. [Verified] (ecosystem/pickup/_evidence/guardrails.md:27 "FP/FN cases live in code as parameters, not in a spreadsheet"; ecosystem/pickup/_evidence/guardrails.md:26 "every scanner ships with a labeled example corpus and a timing harness")
+- **Calibrate the judge on its own set**: the model that scores refusals gets its own validation set, kept and versioned apart from the attack corpus, so judge drift is measured. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/guardrails.md:30 "the judge that scores refusal gets its own FP/FN calibration set; judge drift is measured, not assumed"; ecosystem/pickup/_evidence/guardrails.md:29 "keep the attack corpus and the judge-calibration set (scorer_evals) as separate, versioned artifacts")
+- **Record model calls once, replay them in CI**: rail logic tests replay recorded responses or mock outputs and never call a live model; real-model tests run only in a flagged tier. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/guardrails.md:32 "record once, replay in CI; rails' LLM calls never hit the network in unit tests")
+- **Split CI by concern**: separate workflows for fast pull-request tests, the full suite, latest dependencies, documentation examples that must run, and a dependency audit. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/guardrails.md:33 "PR-fast suite, full suite, latest-deps suite, examples-check (docs examples must run), dependency audit")
+
+## Build only if
+- You need an enforcement boundary that the agent cannot route around, where every path to a protected action provably crosses a check. franken_alignment's maintainer argues text rails and middleware cannot give that property, but the design that would is not built and disclaims being a security boundary today, so this motive is real for some builders and unmet by anyone in the evidence, including FrankenSuite. [Maintainer claim] (packets/franken_alignment-assessment.md:67 "guardrails are advisory text filters or client-side middleware") and [Verified] (packets/franken_alignment-assessment.md:96 "DecisionClosure / effect gate / broker / adapters are G1+ work — not implemented")
+
+## Where FrankenSuite touches this
+- franken_alignment designs an external control plane for tool-using agents (one-shot permits, conserved rights, independently checkable receipts); only an in-memory reference model exists, its security notes say it is not a boundary, and its packet grades it TRL 3, Explore. [Verified] (packets/franken_alignment-assessment.md:106 "The Rust reference model is not a sandbox, credential broker"; packets/franken_alignment-assessment.md:22 "(TRL 3 — see §4.9). It clears")
+- franken_engine drives a six-step decision ladder from allow to quarantine for untrusted JavaScript extensions, with signed evidence per decision; TRL 4 to 5, Explore. [Verified] (packets/franken_engine-assessment.md:119 "allow / challenge / sandbox / suspend / terminate / quarantine"; packets/franken_engine-assessment.md:197 "Technology readiness | TRL 4–5 | Lab-validated components")
+- franken_node's threat model already has a row for agent tool abuse (capability chains, attenuated delegation, signed action receipts); the packet reads that as an agent-safety fit, not a shipped guardrail; TRL 4, Explore. [Inference] (packets/franken_node-assessment.md:300 "the threat model's MCP-mutation-abuse row (audience-bound capability chains, attenuated delegation, signed action receipts)"; packets/franken_node-assessment.md:205 "Technology readiness | TRL 4")
+- franken_snowflake gates agent writes behind explicit arming: nothing mutates a warehouse until the profile opts in, with a dry-run and confirm step; TRL 6, Explore. [Verified] (packets/franken_snowflake-assessment.md:143 "nothing mutating until the profile opts in (WRITE_ENABLED)"; packets/franken_snowflake-assessment.md:182 "Technology readiness (TRL 1–9) | 6")
+
+## What we cannot say
+- Whether any of these rails or detectors work as described: the evidence is repository metadata and file trees, no test was executed and no CI result was checked (ecosystem/pickup/_evidence/guardrails.md:42 "I did not execute tests or verify CI pass/fail state").
+- What false-positive and false-negative thresholds are defensible: no evidence repository publishes one, so each project must set its own (ecosystem/pickup/pickup-guardrails.md:360 "no evidence repo publishes a norm").
+- HarmBench is cited only through its downstream use: the repository has not changed since 2024 and is treated as a benchmark spec, not maintained code (ecosystem/pickup/_evidence/guardrails.md:38 "treat it as the canonical benchmark spec, not a maintained codebase").
+- PyRIT's use in 100+ red-team operations is Microsoft's own statement (ecosystem/pickup/_evidence/guardrails.md:11 "used in 100+ red-team operations per its paper").
+- whylabs/langkit, rebuff and strongreject are left out: stalled, missing, or too thin (ecosystem/pickup/_evidence/guardrails.md:40 "a guardrail clean-room should not model a stalled project"; ecosystem/pickup/_evidence/guardrails.md:41 "via API; do not cite it. (A third-party awesome-list"; ecosystem/pickup/_evidence/guardrails.md:39 "verified but too thin to carry a trend line").
+- Stars are a point-in-time trend signal, not a safety score (ecosystem/pickup/_evidence/guardrails.md:43 "use them as trend signal, not as quality scores").
+
+## Revisit when
+- A rail project publishes measured false-positive and false-negative rates on a pinned, labeled corpus with a calibrated judge: that becomes the threshold to beat.
+- An open tool-call enforcement layer shows, with a checked coverage argument, that every path to a protected action crosses it; that would test the one motive this verdict leaves for building.
+- HarmBench's published judge numbers are reproduced without the original classifier weights, which would make it a runnable oracle rather than a spec.
