@@ -18,7 +18,7 @@ list, `SITE_PAGES` at the top of the script: the front door, the six section
 pages (`method/`, `failure-modes/`, `lessons/`, `techniques/`, `reproduce/`,
 `starter-kit/`), the self-assessment page `self/index.html`, the agent-stack
 pages (`stack/index.html`, `rigor/index.html`, the hand-written
-`beyond/index.html`), plus every generated `stack/<slug>.html` and every
+`beyond/index.html`), the hand-written "Since the pin" page `updates/index.html`, plus every generated `stack/<slug>.html` and every
 `briefs/*.html`. A listed page that does not exist fails every gate that opens
 it.
 
@@ -173,7 +173,7 @@ valid copy.
 `method/index.html`, `briefs/asupersync.html`, `lessons/index.html`,
 `self/index.html`, `stack/index.html`, the first generated
 `stack/<slug>.html` by name (all verdict pages share one template; none
-existing is a FAIL), `rigor/index.html`, and `beyond/index.html` via `file://` — the site is designed to run straight from
+existing is a FAIL), `rigor/index.html`, `beyond/index.html`, and `updates/index.html` via `file://` — the site is designed to run straight from
 the ZIP, so the gate tests exactly that — at 1440×900 and 390×844. Collects
 `Runtime.consoleAPICalled`, `Runtime.exceptionThrown`, and `Log.entryAdded`;
 fails on any console error, any exception, any page rendering blank (<200
@@ -205,7 +205,9 @@ evidence packs into adopt/wrap/build/watch verdicts. Its pages are generated:
 `METHOD.md`, and writes `site/stack/index.html`, `site/stack/<slug>.html`, and
 `site/rigor/index.html`. Output is deterministic (sorted inputs, no
 timestamps). A verdict file that does not exist is not rendered, and a page
-whose source is gone is deleted. Gate K has four sub-gates, each reported on
+whose source is gone is deleted. The generator also reads `stack/licenses.tsv`
+to put a license chip after each adopted `owner/repo` and a "License checked on
+<date>" line under "Adopt, do not rebuild". Gate K has five sub-gates, each reported on
 its own line; the checker for K1 to K3 is independent Python, not the
 generator's parser.
 
@@ -238,17 +240,48 @@ generator's parser.
   `source_quote` (same matching as K2), `areas` drawn from the 21 slugs plus
   `frankensuite`, `checklist` ids that exist as `### <id> ` headings in
   `starter-kit/CHECKLIST.md` (or `none`), and `our_status` in adopted,
-  candidate, not-applicable. An `adopted` row's `our_proof` is split on `;`:
-  `path` or `path:line` tokens must exist, `<sha>` or `commit <sha>` tokens
-  must pass `git cat-file -e`, and at least one token must resolve.
+  partial, candidate, not-applicable. An `adopted` or `partial` row's
+  `our_proof` is split on `;`. A token may start with a label such as
+  `done:`; tokens labelled `missing:`, `todo:`, `gap:` or `not yet:` name what
+  is absent and are skipped. In every other token, each path reference (it
+  has a `/` or a known file extension, with an optional `:line`) must exist
+  in the repo (a directory counts), and each `commit <sha>`, or a token that
+  is only a sha, must pass `git cat-file -e`. URLs are not path references.
+  At least one reference must resolve and none may fail.
 - **K4 generated pages match their sources.** The generator runs into a temp
   directory and `diff -rq` compares it with `site/stack/` and `site/rigor/`.
   Any difference, extra file, or missing file fails, so a hand edit to a
   generated page or a source edit without a rebuild cannot ship. Fix: rerun
   `node site/scripts/make-stack.mjs`.
+- **K5 adopted incumbents have a checked license, named when not
+  permissive** (METHOD rule 9). `stack/licenses.tsv` has the exact header
+  `repo spdx license_class checked command note` (tab-separated), six
+  columns per row, `repo` shaped `owner/repo` and not duplicated
+  (case-insensitive), `license_class` one of the eight classes, `checked` a
+  YYYY-MM-DD date. Every `owner/repo` inside `**bold**` in an "Adopt, do not
+  rebuild" bullet needs a row. When the class is not `permissive`, that
+  bullet's own prose must name the license. Quoted citations and the adopted
+  repo names are removed first, so neither an evidence quote nor the repo's
+  own name counts. Matching ignores case and needs whole words. Accepted names:
+  each component of the SPDX expression (split on AND, OR, WITH) except
+  permissive ids such as MIT, Apache-2.0 and BSD-3-Clause, because "MIT" says
+  nothing about an AGPL-3.0 part; that component's family (`AGPL` for
+  `AGPL-3.0`, `Elastic` for `Elastic-2.0`) and fixed aliases (BUSL: BSL,
+  Business Source; SSPL: Server Side Public License; AGPL: Affero; LGPL: Lesser
+  General Public; MPL: Mozilla Public); for a `LicenseRef-<Name>-...`
+  component, `<Name>` followed within a few words by "license" (for example
+  "Llama 3.2 Community License", "Weaviate license"); a class phrase
+  (source-available: "source-available"; permissive-with-conditions:
+  "condition(s)"; none: "no license", "unlicensed", "without a license";
+  unknown: "license unknown", "unknown license", "license unclear"); and any
+  license name from a fixed list that the row's `note` uses (SSPL, ELv2, AGPL,
+  GPL, Community License, Enterprise License, commercial license, proprietary,
+  LTX-2, and others listed in the script). A missing TSV, no rows, or no
+  adopted `owner/repo` anywhere fails.
 
 **Why:** a verdict layer that recommends software to strangers is only worth
-the evidence under it. K1 enforces the independence rule (author never
+the evidence under it. K5 keeps "adopt X" from hiding a license that
+blocks the builder's product. K1 enforces the independence rule (author never
 reviews), K2 makes every quoted fact checkable against the line it cites, K3
 holds the practices index to the same standard, and K4 stops the site from
 drifting away from the files the gates check.
@@ -258,6 +291,25 @@ Quotes are delimited by ASCII double quotes, so a quote cannot itself contain
 one.
 **Proven to trip:** each sub-check was run once against a planted known-bad
 copy of the tree (see History).
+
+## Gate L — no personal email addresses
+
+**What:** every git-tracked text file in the repository (`git ls-files`,
+binary files skipped by a NUL byte in the first 8 KB) is scanned for
+`[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}`. Allowed: `noreply@*`,
+`*@users.noreply.github.com`, and `you@example.com`, the starter kit's
+documented placeholder in its `git config --global user.email` instructions
+(`starter-kit/README.md:36`, `starter-kit/scripts/init.sh:53`, and their
+`site/starter-kit/` copies). Any other address fails with `file:line`. A
+failed `git ls-files` or zero scanned files fails.
+**Why:** commit-author email addresses leaked into published files twice:
+first in the original assessment packets, then in a movement census of the
+44 repos, which printed a maintainer's address nine times, a third-party
+contributor's personal address, and an agent persona's address before it was
+redacted. Git history makes these easy to copy by accident, so the check has
+to be mechanical.
+**Accepted:** only tracked files are scanned, so a leak in an untracked
+working-copy file is caught when it is added, not before.
 
 ## Accepted limitations (all gates)
 
@@ -310,3 +362,18 @@ caveats section"). K3: a `source_quote` not on its line, checklist id `Z99`,
 an adopted row whose proof names a missing file and an unknown commit, an
 out-of-sequence id with an unknown area, and `our_status` `maybe`. K4: a
 one-word hand edit to `site/stack/index.html` ("Files ... differ").
+
+Method v3 pass: Gate K5 (licenses of adopted incumbents), `partial` status in
+K3, Gate L (no personal email addresses), and the Updates page
+(`updates/index.html`) joined `SITE_PAGES` and the gate I render set. Planted
+runs on scratch copies: K5 failed on a deleted licenses row, an SSPL-1.0 row
+whose bullet did not name it, a conditions row not named, a class outside the
+eight, a `checked` value of "yesterday", a duplicate row, and a
+`MIT AND AGPL-3.0` row whose bullet named only MIT. A control row
+(`BSD-3-Clause AND LicenseRef-Acme`, bullet saying "Acme license") passed, as
+did an AGPL-3.0 row whose bullet named AGPL-3.0. K3 failed on a partial row
+with only a `missing:` token, a partial row whose `done:` path does not exist,
+an adopted row whose only reference was an unknown commit (its URL is skipped,
+not resolved), and status `partly`; a partial row with a resolving `done:`
+path and a `missing:` note passed. L failed on a personal address appended to
+a tracked synthesis file, reporting `file:line`.

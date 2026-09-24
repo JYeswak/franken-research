@@ -17,7 +17,7 @@ CANON="${CANON:-$(cd "$SITE_DIR/.." && pwd)}"
 # scripts/make-stack.mjs (Gate K4 proves they match their sources); beyond/ is hand-written.
 SITE_PAGES="index.html method/index.html failure-modes/index.html lessons/index.html
 techniques/index.html reproduce/index.html starter-kit/index.html self/index.html
-stack/index.html rigor/index.html beyond/index.html"
+stack/index.html rigor/index.html beyond/index.html updates/index.html"
 for _p in "$SITE_DIR"/stack/*.html; do
   case "$_p" in */stack/index.html|*'/stack/*.html') ;; *) SITE_PAGES="$SITE_PAGES stack/${_p##*/}" ;; esac
 done
@@ -595,7 +595,7 @@ const SLUG = (fs.existsSync(SITE + '/stack') ? fs.readdirSync(SITE + '/stack') :
   .filter((f) => f !== 'index.html' && f.endsWith('.html')).sort()[0];
 if (!SLUG) { console.log('RENDER_BAD'); console.log('  no generated stack/<slug>.html to render'); process.exit(1); }
 const PAGES = ['/index.html', '/method/index.html', '/briefs/asupersync.html', '/lessons/index.html', '/self/index.html',
-  '/stack/index.html', '/stack/' + SLUG, '/rigor/index.html', '/beyond/index.html'];
+  '/stack/index.html', '/stack/' + SLUG, '/rigor/index.html', '/beyond/index.html', '/updates/index.html'];
 const VIEWPORTS = [[1440, 900], [390, 844]];
 
 // file:// loading: the site is designed to run straight from the ZIP with no
@@ -723,6 +723,9 @@ FACTUAL = SECTIONS[1:5]
 QUOTED = FACTUAL + ['What we cannot say']
 # <path with extension>:<line>[-<line>] "<quote>"; same shape make-stack.mjs renders.
 CITE = re.compile(r'(?<![\w/.:#-])((?:[\w.-]+/)*[\w-][\w.-]*\.[A-Za-z][A-Za-z0-9]*):(\d+)(?:[-\u2013](\d+))?(?!\w)(?:\s+"([^"\n]*)")?')
+# References inside an our_proof token: "commit <sha>" / a sha, or a repo path (has a "/" or a known
+# extension) with an optional :line. URLs are skipped by the look-behind. make-stack.mjs links the same shapes.
+PROOF_REF = re.compile(r'(commit\s+)?\b([0-9a-f]{7,40})\b|(?<![\w/:.-])((?:\.?[\w-][\w.-]*/)+[\w.-]*[\w-]|[\w-][\w.-]*\.(?:md|sh|yml|yaml|tsv|json|mjs|js|py|html|toml|txt))(?::(\d+))?')
 TIER_OK = re.compile(r'\[(?:' + '|'.join(re.escape(t) for t in TIERS) + r')(?:[,;][^\]\n]*)?\]')
 TIERISH = re.compile(r'(?i)^T\d|verified|observed|claim|external|inference|counted|absence')
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
@@ -908,28 +911,149 @@ else:
         ck = [x.strip() for x in r['checklist'].split(';') if x.strip()]
         if ck != ['none'] and (not ck or any(x not in kit for x in ck)):
             out['K3'].append('%s: checklist %r has ids not headed "### <id> " in starter-kit/CHECKLIST.md' % (rid, r['checklist']))
-        if r['our_status'] not in ('adopted', 'candidate', 'not-applicable'):
-            out['K3'].append('%s: our_status %r not adopted|candidate|not-applicable' % (rid, r['our_status']))
-        if r['our_status'] == 'adopted':
+        if r['our_status'] not in ('adopted', 'partial', 'candidate', 'not-applicable'):
+            out['K3'].append('%s: our_status %r not adopted|partial|candidate|not-applicable' % (rid, r['our_status']))
+        if r['our_status'] in ('adopted', 'partial'):
+            # our_proof is ';'-separated. A token may carry a label ("done: ...", "missing: ...");
+            # missing/todo/gap tokens name what is absent and are not proofs. In every other token,
+            # each path reference (with a "/" or a known file extension, optional :line) must exist,
+            # and each "commit <sha>" (or a token that is only a sha) must pass git cat-file -e.
             ok, bad = 0, []
             for tok in [t.strip() for t in r['our_proof'].split(';') if t.strip()]:
-                cm = re.match(r'^(?:commit\s+)?([0-9a-f]{7,40})$', tok)
-                pm = re.match(r'^([\w./-]+?)(?::(\d+))?$', tok)
-                if cm:
-                    rc = subprocess.run(['git', '-C', root, 'cat-file', '-e', cm.group(1) + '^{commit}'],
-                                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode
-                    (bad.append(tok) if rc else None); ok += (rc == 0)
-                elif pm and re.search(r'[./]', pm.group(1)):
-                    ls = lines_of(pm.group(1))
-                    good = ls is not None and (not pm.group(2) or 1 <= int(pm.group(2)) <= len(ls))
-                    (None if good else bad.append(tok)); ok += good
+                lm = re.match(r'^([A-Za-z][A-Za-z ]*):\s+(.*)$', tok)
+                if lm:
+                    if lm.group(1).strip().lower() in ('missing', 'todo', 'gap', 'not yet'):
+                        continue
+                    tok = lm.group(2).strip()
+                for pm in PROOF_REF.finditer(tok):
+                    sha, ref, line = pm.group(2), pm.group(3), pm.group(4)
+                    if sha:
+                        if not pm.group(1) and tok != sha:
+                            continue  # a bare hex word inside prose is not a commit reference
+                        rc = subprocess.run(['git', '-C', root, 'cat-file', '-e', sha + '^{commit}'],
+                                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode
+                        (bad.append(pm.group(0)) if rc else None); ok += (rc == 0)
+                    else:
+                        ls = lines_of(ref)
+                        good = ls is not None and (not line or 1 <= int(line) <= len(ls))
+                        if ls is None and os.path.isdir(os.path.join(root, ref)) and not line:
+                            good = True
+                        (None if good else bad.append(pm.group(0))); ok += good
             if bad or not ok:
-                out['K3'].append('%s: adopted but proof does not resolve: %r' % (rid, bad or r['our_proof']))
+                out['K3'].append('%s: %s but proof does not resolve: %r' % (rid, r['our_status'], bad or r['our_proof']))
     if not stats['rows']:
         out['K3'].append('empty scan set: %s has no rows' % TSV)
 
-print('KSTATS files=%d/%d cites=%d rows=%d' % (stats['files'], len(slugs), stats['cites'], stats['rows']))
-for k in ('K1', 'K2', 'K3'):
+# K5: every owner/repo in **bold** in an "Adopt, do not rebuild" bullet has a stack/licenses.tsv row,
+# and a non-permissive license is named in that bullet's own words (METHOD rule 9).
+out['K5'] = []
+LTSV = 'stack/licenses.tsv'
+LHEAD = 'repo\tspdx\tlicense_class\tchecked\tcommand\tnote'
+LCLASSES = ['permissive', 'weak-copyleft', 'strong-copyleft', 'network-copyleft', 'source-available',
+            'permissive-with-conditions', 'none', 'unknown']
+REPO = re.compile(r'(?<![\w./-])([A-Za-z0-9][\w.-]*/[A-Za-z0-9](?:[\w.-]*[A-Za-z0-9_])?)')
+NO_SPDX = {'', '-', 'NOASSERTION', 'NONE', 'OTHER', 'UNKNOWN'}
+ALIASES = {'BUSL': ['BSL', 'Business Source'], 'SSPL': ['Server Side Public License'], 'AGPL': ['Affero'],
+           'Elastic': ['Elastic License'], 'LGPL': ['Lesser General Public'], 'MPL': ['Mozilla Public']}
+NOTE_NAMES = ['SSPL', 'Server-Side Public License', 'BSL', 'BUSL', 'Elastic', 'ELv2', 'AGPL', 'Affero', 'LGPL', 'GPL',
+              'MPL', 'EPL', 'Commons Clause', 'OpenRAIL', 'RAIL', 'CC-BY-NC', 'non-commercial', 'noncommercial',
+              'Community License', 'Enterprise License', 'Enterprise Edition', 'commercial license', 'proprietary',
+              'LTX-2']
+# Permissive SPDX ids never "name" a non-permissive license: "MIT" in a bullet says nothing about an AGPL part.
+PERMISSIVE_IDS = {'MIT', 'MIT-0', 'Apache-2.0', 'Apache-1.1', 'BSD-2-Clause', 'BSD-3-Clause', 'ISC', '0BSD',
+                  'Unlicense', 'Zlib', 'BSL-1.0', 'CC0-1.0', 'PSF-2.0', 'Python-2.0', 'X11', 'UPL-1.0'}
+CLASS_WORDS = {
+    'source-available': ['source-available', 'source available'],
+    'permissive-with-conditions': ['condition', 'conditions'],
+    'none': ['no license', 'no licence', 'unlicensed', 'without a license', 'no open-source license', 'no LICENSE file'],
+    'unknown': ['license unknown', 'unknown license', 'license is unknown', 'license unclear', 'unclear license',
+                'license could not be determined', 'license not determined'],
+}
+lic = {}
+stats['lic'] = 0; stats['adopted'] = 0
+if not os.path.isfile(os.path.join(root, LTSV)):
+    out['K5'].append('%s missing' % LTSV)
+else:
+    ll = [l for l in open(os.path.join(root, LTSV), encoding='utf-8').read().split('\n') if l.strip()]
+    if not ll or ll[0] != LHEAD:
+        out['K5'].append('%s header is not exactly: %s' % (LTSV, LHEAD.replace('\t', ' | ')))
+    for i, l in enumerate(ll[1:], 2):
+        c = [x.strip() for x in l.split('\t')]
+        if len(c) != 6:
+            out['K5'].append('%s line %d: %d columns, want 6' % (LTSV, i, len(c))); continue
+        r = dict(zip(LHEAD.split('\t'), c))
+        stats['lic'] += 1
+        if not re.fullmatch(REPO.pattern, r['repo']):
+            out['K5'].append('%s line %d: repo %r is not owner/repo' % (LTSV, i, r['repo']))
+        if r['license_class'] not in LCLASSES:
+            out['K5'].append('%s line %d: license_class %r not in the eight classes' % (LTSV, i, r['license_class']))
+        if not DATE.match(r['checked']):
+            out['K5'].append('%s line %d: checked %r is not YYYY-MM-DD' % (LTSV, i, r['checked']))
+        if r['repo'].lower() in lic:
+            out['K5'].append('%s line %d: duplicate row for %s' % (LTSV, i, r['repo']))
+        lic[r['repo'].lower()] = r
+    if not stats['lic']:
+        out['K5'].append('empty scan set: %s has no rows' % LTSV)
+
+def license_names(r):
+    """(label, regex) pairs; any one found in the bullet's prose names this row's license."""
+    names = []
+    word = lambda s: (s, r'(?<![\w])%s(?![\w])' % re.escape(s))
+    for comp in re.split(r'\s+(?:AND|OR|WITH)\s+|[()]', r['spdx']):
+        comp = comp.strip()
+        if not comp or comp.upper() in NO_SPDX or comp in PERMISSIVE_IDS:
+            continue
+        if comp.startswith('LicenseRef-'):
+            # LicenseRef-Llama-3.2-Community -> "Llama ... license" within a few words.
+            first = comp[len('LicenseRef-'):].split('-')[0]
+            if len(first) >= 3:
+                names.append(('%s ... license' % first, r'(?<![\w])%s[\w\s.,/-]{0,40}?licen[cs]e' % re.escape(first)))
+            continue
+        names.append(word(comp))
+        fam = re.match(r'[A-Za-z]+', comp)
+        if fam and len(fam.group(0)) >= 3:
+            names.append(word(fam.group(0)))
+            names.extend(word(a) for a in ALIASES.get(fam.group(0), []))
+    names.extend(word(w) for w in CLASS_WORDS.get(r['license_class'], []))
+    names.extend(word(n) for n in NOTE_NAMES if re.search(r'(?<![\w-])%s(?![\w])' % re.escape(n), r['note'], re.I))
+    return list(dict.fromkeys(names))
+
+for slug in slugs:
+    rel = 'stack/%s.md' % slug
+    if not os.path.isfile(os.path.join(root, rel)):
+        continue
+    body = open(os.path.join(root, rel), encoding='utf-8').read()
+    sm = re.search(r'^## Adopt, do not rebuild\s*\n(.*?)(?=^## |\Z)', body, re.S | re.M)
+    items = []
+    for l in (sm.group(1).split('\n') if sm else []):
+        if re.match(r'\s{0,1}[-*]\s+', l):
+            items.append(l)
+        elif items and re.match(r'\s+\S', l):
+            items[-1] += ' ' + l.strip()
+    for it in items:
+        # The author's words: quoted evidence and the adopted repo names themselves do not count.
+        prose = CITE.sub(lambda c: c.group(1), it)
+        prose = re.sub(r'\*\*(.+?)\*\*', lambda m: REPO.sub('', m.group(1)), prose)
+        for b in re.findall(r'\*\*(.+?)\*\*', it):
+            for repo in REPO.findall(b):
+                stats['adopted'] += 1
+                r = lic.get(repo.lower())
+                if r is None:
+                    out['K5'].append('%s: adopted %s has no %s row' % (rel, repo, LTSV))
+                    continue
+                if r['license_class'] == 'permissive':
+                    continue
+                names = license_names(r)
+                if not any(re.search(rx, prose, re.I) for _, rx in names):
+                    out['K5'].append('%s: adopted %s is %s (%s) but its bullet does not name the license (looked for: %s)'
+                                     % (rel, repo, r['license_class'], r['spdx'] or 'no spdx',
+                                        ', '.join(n for n, _ in names) or 'nothing to match'))
+if stats['files'] and not stats['adopted']:
+    out['K5'].append('empty scan set: no owner/repo in bold under "Adopt, do not rebuild" in any verdict')
+
+print('KSTATS files=%d/%d cites=%d rows=%d licenses=%d adopted=%d' % (
+    stats['files'], len(slugs), stats['cites'], stats['rows'], stats['lic'], stats['adopted']))
+for k in ('K1', 'K2', 'K3', 'K5'):
     for e in out[k]:
         print('%s %s' % (k, e))
 print('K_DONE')
@@ -973,6 +1097,51 @@ elif [ -n "$K4_DIFF" ]; then
   fail "K4 generated pages match their sources" "rerun node site/scripts/make-stack.mjs: $(echo "$K4_DIFF" | head -4 | tr '\n' ';')"
 else
   pass "K4 generated pages match their sources ($K4_N pages byte-identical to a fresh run)"
+fi
+k_report K5 "adopted incumbents have a checked license, named when not permissive"
+
+# ============ Gate L: no personal email addresses ============
+# Every git-tracked text file in the repo. Allowed: noreply@*, *@users.noreply.github.com, and the
+# starter kit's documented placeholder you@example.com (starter-kit/README.md, starter-kit/scripts/init.sh).
+echo "== L  no personal email addresses =="
+L_OUT="$(python3 - <<'PYEOF'
+import re, os, subprocess
+root = os.environ['REPO_ROOT']
+EMAIL = re.compile(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}')
+def allowed(e):
+    e = e.lower()
+    return e.startswith('noreply@') or e.endswith('@users.noreply.github.com') or e == 'you@example.com'
+p = subprocess.run(['git', '-C', root, 'ls-files', '-z'], capture_output=True)
+files = [f for f in p.stdout.decode('utf-8', 'replace').split('\0') if f] if p.returncode == 0 else []
+hits, scanned = [], 0
+for f in files:
+    full = os.path.join(root, f)
+    if not os.path.isfile(full):
+        continue
+    b = open(full, 'rb').read()
+    if b'\0' in b[:8192]:
+        continue  # binary
+    scanned += 1
+    for i, line in enumerate(b.decode('utf-8', 'replace').split('\n'), 1):
+        for e in EMAIL.findall(line):
+            if not allowed(e):
+                hits.append('%s:%d %s' % (f, i, e))
+print('SCANNED %d' % scanned)
+if p.returncode != 0:
+    print('  git ls-files failed: %s' % p.stderr.decode('utf-8', 'replace').strip()[:200])
+elif scanned == 0:
+    print('  empty scan set: no tracked text files')
+for h in hits:
+    print('  ' + h)
+PYEOF
+)"
+L_N="$(count_of "$L_OUT" SCANNED)"
+L_BAD="$(printf '%s\n' "$L_OUT" | grep '^  ' || true)"
+if [ "${L_N:-0}" -gt 0 ] && [ -z "$L_BAD" ]; then
+  pass "L no personal email addresses ($L_N tracked text files)"
+else
+  fail "L no personal email addresses" "$(printf '%s\n' "$L_BAD" | wc -l | tr -d ' ') finding(s):"
+  printf '%s\n' "$L_BAD" | head -40 | sed 's/^/      /'
 fi
 
 # ============ summary ============

@@ -101,7 +101,7 @@ function inline(text, ctx) {
     });
     s = s.replace(TIER, (m) => put('<span class="tier">' + esc(m) + '</span>'));
     s = s.replace(/https?:\/\/[^\s)<>\]]+[^\s)<>\].,;:]/g, (u) => put('<a href="' + esc(u) + '">' + esc(u) + '</a>'));
-    s = esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+    s = esc(s).replace(/\*\*(.+?)\*\*/g, (_, b) => '<b>' + b + '</b>' + (ctx.lic ? ctx.lic(b) : ''));
     return s.replace(/\u0000(\d+)\u0000/g, (_, i) => hold[+i]);
   }).join('').replace(/\u0001(\d+)\u0001/g, (_, i) => outer[+i]);
 }
@@ -255,6 +255,10 @@ q.cq::after{content:"\\201D"}
 a.kit{color:var(--ink);text-decoration-color:var(--gold)}
 a.cite:hover,a.cite:focus-visible{border-bottom-style:solid}
 .tier{font-family:var(--sans);font-size:12px;color:var(--gold);white-space:nowrap}
+.lic{display:inline-block;font-family:var(--sans);font-size:11.5px;font-weight:600;line-height:1.4;padding:0 7px;margin:0 2px;
+  border-radius:4px;border:1px solid #3a5a44;color:#9fd8b1;overflow-wrap:anywhere;vertical-align:1px}
+.lic.np{border-color:var(--amber);background:rgba(245,185,66,.14);color:var(--amber)}
+.licnote{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0 0 6px}
 .sources ul{padding-left:22px}
 .start{border-left:3px solid var(--green)}
 table.rp{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.55;margin:8px 0;table-layout:fixed}
@@ -267,7 +271,7 @@ table.rp td.prac b{color:var(--ink)}
 table.rp .rid{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 table.rp .small{display:block;font-size:13px;color:var(--ink-dim);margin-top:4px}
 .st{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-.st-adopted{color:var(--green)} .st-candidate{color:var(--amber)} .st-not-applicable{color:var(--muted)}
+.st-adopted{color:var(--green)} .st-partial{color:var(--blue)} .st-candidate{color:var(--amber)} .st-not-applicable{color:var(--muted)}
 .empty{color:var(--muted);font-style:italic}
 footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
 footer p{margin:0 0 8px;max-width:1000px}
@@ -298,6 +302,7 @@ function nav(current) {
     ${link('../stack/index.html', 'Agent stack', 'stack')}
     ${link('../rigor/index.html', 'Rigor practices', 'rigor')}
     ${link('../beyond/index.html', 'Beyond FrankenSuite', 'beyond')}
+    ${link('../updates/index.html', 'Updates', 'updates')}
     ${link('../method/index.html', 'Method', 'method')}
     ${link('../starter-kit/index.html', 'Starter kit', 'kit')}
   </span>
@@ -367,6 +372,34 @@ const reviewText = (fm) => fm.reviewed_by
 const areaTitle = (slug) => (bySlug[slug] && bySlug[slug].fm.title) || slug;
 const firstSentences = (md) => md.split('\n').filter((l) => l.trim()).join(' ');
 
+// Licenses of adopted incumbents (METHOD rule 9): stack/licenses.tsv, keyed by lowercase owner/repo.
+const LIC = {};
+if (exists('stack/licenses.tsv')) {
+  const [head, ...rows] = read('stack/licenses.tsv').split('\n').filter((l) => l.trim());
+  const cols = head.split('\t');
+  for (const l of rows) {
+    const r = Object.fromEntries(cols.map((k, i) => [k, (l.split('\t')[i] || '').trim()]));
+    if (r.repo) LIC[r.repo.toLowerCase()] = r;
+  }
+}
+// Same owner/repo token shape Gate K5 checks inside **bold** in "Adopt, do not rebuild".
+const REPO = /(?<![\w.\/-])([A-Za-z0-9][\w.-]*\/[A-Za-z0-9](?:[\w.-]*[A-Za-z0-9_])?)/g;
+const NO_SPDX = new Set(['', '-', 'NOASSERTION', 'NONE', 'OTHER', 'UNKNOWN']);
+const CLASS_LABEL = { none: 'no license', unknown: 'license unknown', 'source-available': 'source-available',
+  'permissive-with-conditions': 'conditions apply' };
+function licChips(bold, dates) {
+  const out = [];
+  for (const m of bold.matchAll(REPO)) {
+    const r = LIC[m[1].toLowerCase()];
+    if (!r) continue;
+    if (r.checked) dates.add(r.checked);
+    const np = r.license_class !== 'permissive';
+    const label = NO_SPDX.has((r.spdx || '').toUpperCase()) ? (CLASS_LABEL[r.license_class] || r.license_class) : r.spdx;
+    out.push(`<span class="lic${np ? ' np' : ''}" title="${esc(m[1] + ': ' + r.license_class + ' license, checked ' + r.checked)}">${esc(label)}</span>`);
+  }
+  return out.length ? ' ' + out.join(' ') : '';
+}
+
 // ---------- /stack/<slug> ----------
 const written = [];
 function write(rel, html) {
@@ -390,9 +423,17 @@ for (const v of verdicts) {
   for (const name of SECTIONS) {
     if (!(name in v.sections)) continue;
     const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const adopt = name === 'Adopt, do not rebuild';
+    const dates = new Set();
+    const sctx = adopt ? { ...ctx, lic: (b) => licChips(b, dates) } : ctx;
+    const html = blocks(v.sections[name], sctx);
+    const d = [...dates].sort();
+    const note = adopt && d.length
+      ? `<p class="licnote">License checked on ${esc(d.length === 1 ? d[0] : d[0] + ' to ' + d[d.length - 1])}; non-permissive licenses are named in the text.</p>\n`
+      : '';
     secs.push(`<section class="card${name === 'Bottom line' ? ' bottom' : ''}" id="${id}" aria-labelledby="h-${id}">
   <h2 id="h-${id}">${esc(name)}</h2>
-${blocks(v.sections[name], ctx) || '<p class="empty">Nothing recorded.</p>'}
+${note}${html || '<p class="empty">Nothing recorded.</p>'}
 </section>`);
   }
   if (fm.rejected_alternative) {
@@ -527,12 +568,25 @@ if (exists(TSV)) {
     return Object.fromEntries(cols.map((k, i) => [k, (c[i] || '').trim()]));
   });
   const list = (s) => (s || '').split(';').map((x) => x.trim()).filter(Boolean);
+  // Same reference shapes Gate K3 resolves: "commit <sha>" (or a token that is only a sha) and repo
+  // paths (a "/" or a known extension, optional :line). "done:" / "missing:" labels are kept as text.
+  const PROOF_REF = /(commit\s+)?\b([0-9a-f]{7,40})\b|(?<![\w/:.-])((?:\.?[\w-][\w.-]*\/)+[\w.-]*[\w-]|[\w-][\w.-]*\.(?:md|sh|yml|yaml|tsv|json|mjs|js|py|html|toml|txt))(?::(\d+))?/g;
   const proofHtml = (s) => list(s).map((tok) => {
-    const cm = /^(?:commit\s+)?([0-9a-f]{7,40})$/.exec(tok);
-    if (cm) return `<a href="https://github.com/JYeswak/franken-research/commit/${cm[1]}">commit ${cm[1]}</a>`;
-    const pm = /^([\w./-]+?)(?::(\d+))?$/.exec(tok);
-    if (pm && /[./]/.test(pm[1]) && exists(pm[1])) return `<a href="${esc(fileHref(pm[1], pm[2]))}">${esc(tok)}</a>`;
-    return inline(tok, { dir: 'stack' });
+    let label = '';
+    const lm = /^([A-Za-z][A-Za-z ]*):\s+([\s\S]*)$/.exec(tok);
+    if (lm) { label = lm[1]; tok = lm[2]; }
+    let out = ''; let last = 0;
+    for (const m of tok.matchAll(PROOF_REF)) {
+      let html = null;
+      if (m[2]) {
+        if (m[1] || tok.trim() === m[2]) html = `<a href="https://github.com/JYeswak/franken-research/commit/${m[2]}">${esc(m[0])}</a>`;
+      } else if (exists(m[3])) {
+        const dir = fs.statSync(path.join(ROOT, m[3])).isDirectory();
+        html = `<a href="${esc(dir ? GH.replace('/blob/', '/tree/') + m[3] : fileHref(m[3], m[4]))}">${esc(m[0])}</a>`;
+      }
+      if (html) { out += esc(tok.slice(last, m.index)) + html; last = m.index + m[0].length; }
+    }
+    return (label ? '<i>' + esc(label) + ':</i> ' : '') + out + esc(tok.slice(last));
   }).join('; ');
   const areaSet = new Set(); const checkSet = new Set();
   const trs = rows.map((r) => {
@@ -548,22 +602,22 @@ if (exists(TSV)) {
       <td data-label="Evidenced in">${list(r.evidenced_in).map((x) => esc(x)).join(', ')}${src ? `<span class="small">Source: <a class="cite" href="${esc(fileHref(src[1], src[2]))}">${esc(r.source)}</a>${r.source_quote ? ' <q class="cq">' + esc(r.source_quote.replace(/[*`]/g, '')) + '</q>' : ''}</span>` : ''}</td>
       <td data-label="Areas">${areaHtml}</td>
       <td data-label="Starter kit">${ck.length ? ck.map(kitLink).join('; ') : 'none'}</td>
-      <td data-label="Our status"><span class="st st-${esc(st)}">${esc(st.replace('-', ' '))}</span><span class="small">${st === 'adopted' ? proofHtml(r.our_proof) : inline(r.our_proof || '', { dir: 'stack' })}</span></td>
+      <td data-label="Our status"><span class="st st-${esc(st)}">${esc(st.replace('-', ' '))}</span><span class="small">${st === 'adopted' || st === 'partial' ? proofHtml(r.our_proof) : inline(r.our_proof || '', { dir: 'stack' })}</span></td>
     </tr>`;
   }).join('\n    ');
   const byAreaOrder = [...areaSet].sort((a, b) => areaTitle(a).localeCompare(areaTitle(b)));
   const ckOrder = [...checkSet].sort((a, b) => a[0].localeCompare(b[0]) || (+a.slice(1)) - (+b.slice(1)));
-  const counts = { adopted: 0, candidate: 0, 'not-applicable': 0 };
+  const counts = { adopted: 0, partial: 0, candidate: 0, 'not-applicable': 0 };
   rows.forEach((r) => { if (r.our_status in counts) counts[r.our_status]++; });
   const header = `<header>
   <h1>Rigor practices worth copying</h1>
-  <p class="sub">Engineering practices that make claims checkable, gathered from the ${areas.length} agent-stack evidence packs and the FrankenSuite corpus. Every practice is evidenced in a named project with a quoted source line, mapped to the items of the <a href="../starter-kit/index.html">starter kit</a> it strengthens, and marked with whether this repository adopts it. Of ${rows.length} practices, this repository has adopted ${counts.adopted}, lists ${counts.candidate} as candidates, and marks ${counts['not-applicable']} as not applicable; adopted rows link their proof.</p>
+  <p class="sub">Engineering practices that make claims checkable, gathered from the ${areas.length} agent-stack evidence packs and the FrankenSuite corpus. Every practice is evidenced in a named project with a quoted source line, mapped to the items of the <a href="../starter-kit/index.html">starter kit</a> it strengthens, and marked with whether this repository adopts it. Of ${rows.length} practices, this repository has adopted ${counts.adopted}, partly adopted ${counts.partial}, lists ${counts.candidate} as candidates, and marks ${counts['not-applicable']} as not applicable; adopted and partial rows link their proof, and partial rows say what is done and what is missing. Adopted and partial claims about this repository were audited by a reviewer who did not write them; the audit record is in <a href="https://github.com/JYeswak/franken-research/tree/main/stack/reviews">stack/reviews/</a>.</p>
 </header>`;
   const opt = (v, label) => `<option value="${esc(v)}">${esc(label)}</option>`;
   const main = `<div class="filters" id="rfilter" hidden>
   <label>Area <select id="f-area"><option value="">All areas</option>${byAreaOrder.map((a) => opt(a, a === 'frankensuite' ? 'FrankenSuite' : areaTitle(a))).join('')}</select></label>
   <label>Starter kit <select id="f-check"><option value="">All items</option>${ckOrder.map((c) => opt(c, KIT[c] ? KIT[c].title : c)).join('')}</select></label>
-  <label>Our status <select id="f-status"><option value="">Any status</option>${opt('adopted', 'Adopted')}${opt('candidate', 'Candidate')}${opt('not-applicable', 'Not applicable')}</select></label>
+  <label>Our status <select id="f-status"><option value="">Any status</option>${opt('adopted', 'Adopted')}${opt('partial', 'Partial')}${opt('candidate', 'Candidate')}${opt('not-applicable', 'Not applicable')}</select></label>
   <span class="count" id="rcount" aria-live="polite"></span>
 </div>
 <p class="back">Source file: <a href="${esc(fileHref(TSV))}">${TSV}</a>. Starter-kit items link to their entries in <a href="${GH}starter-kit/CHECKLIST.md">starter-kit/CHECKLIST.md</a>.</p>
