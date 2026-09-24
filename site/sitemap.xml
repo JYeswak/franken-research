@@ -8,6 +8,30 @@
   <url><loc>https://fr.zeststream.ai/reproduce/</loc></url>
   <url><loc>https://fr.zeststream.ai/starter-kit/</loc></url>
   <url><loc>https://fr.zeststream.ai/self/</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/agent-frameworks</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/agent-memory</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/browser-use</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/computer-use</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/embedding-serving</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/eval-harnesses</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/fine-tuning</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/guardrails</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/inference-engines</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/mcp</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/multi-agent-protocols</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/observability</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/quantization</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/rag-frameworks</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/rl-envs</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/sandbox-exec</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/structured-output</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/vector-dbs</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/voice-agents</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/web-search-apis</loc></url>
+  <url><loc>https://fr.zeststream.ai/stack/workflow-orchestrators</loc></url>
+  <url><loc>https://fr.zeststream.ai/rigor/</loc></url>
+  <url><loc>https://fr.zeststream.ai/beyond/</loc></url>
   <url><loc>https://fr.zeststream.ai/briefs/asupersync</loc></url>
   <url><loc>https://fr.zeststream.ai/briefs/beads-for-frankentui</loc></url>
   <url><loc>https://fr.zeststream.ai/briefs/beads_for_franken_engine</loc></url>

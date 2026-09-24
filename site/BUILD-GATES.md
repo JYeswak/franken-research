@@ -16,7 +16,9 @@ ZIP.
 **Pages scanned.** The structural gates (B, C, E, F, G1, H) scan one shared
 list, `SITE_PAGES` at the top of the script: the front door, the six section
 pages (`method/`, `failure-modes/`, `lessons/`, `techniques/`, `reproduce/`,
-`starter-kit/`), and the self-assessment page `self/index.html`, plus every
+`starter-kit/`), the self-assessment page `self/index.html`, the agent-stack
+pages (`stack/index.html`, `rigor/index.html`, the hand-written
+`beyond/index.html`), plus every generated `stack/<slug>.html` and every
 `briefs/*.html`. A listed page that does not exist fails every gate that opens
 it.
 
@@ -36,7 +38,9 @@ is a FAIL, never a skip: an unrun render gate is not a pass.
 
 **Empty scan sets fail.** A gate that checked nothing has not passed. Gate B
 fails if it finds zero `[data-stat]` slots and gate E fails if it resolves zero
-relative links; both summary lines report the real count.
+relative links; both summary lines report the real count. Gate K fails on no
+verdict types, no citations, no TSV rows, or a fresh generator run that
+produces no pages.
 
 ## Gate A — packet/Rulebook byte integrity
 
@@ -166,8 +170,10 @@ valid copy.
 
 **What:** dependency-free Node CDP script drives the discovered browser
 (`--headless=new`, unique temp profile) loading `index.html`,
-`method/index.html`, `briefs/asupersync.html`, `lessons/index.html`, and
-`self/index.html` via `file://` — the site is designed to run straight from
+`method/index.html`, `briefs/asupersync.html`, `lessons/index.html`,
+`self/index.html`, `stack/index.html`, the first generated
+`stack/<slug>.html` by name (all verdict pages share one template; none
+existing is a FAIL), `rigor/index.html`, and `beyond/index.html` via `file://` — the site is designed to run straight from
 the ZIP, so the gate tests exactly that — at 1440×900 and 390×844. Collects
 `Runtime.consoleAPICalled`, `Runtime.exceptionThrown`, and `Log.entryAdded`;
 fails on any console error, any exception, any page rendering blank (<200
@@ -189,6 +195,69 @@ link instead and makes no network request.
 (`reader-template/`, `/old/`, `/drafts/`, `packets-transfer/`, `*.bak`,
 lorem-ipsum filler).
 **Why:** P2-navigation (internal scaffolding shipped publicly).
+
+## Gate K — agent stack evidence
+
+The `stack/` layer (rules in [`../stack/METHOD.md`](../stack/METHOD.md)) turns
+evidence packs into adopt/wrap/build/watch verdicts. Its pages are generated:
+`node site/scripts/make-stack.mjs` reads `stack/<slug>.md` (every file except
+`METHOD.md`), `stack/rigor-practices.tsv`, and the verdict legend in
+`METHOD.md`, and writes `site/stack/index.html`, `site/stack/<slug>.html`, and
+`site/rigor/index.html`. Output is deterministic (sorted inputs, no
+timestamps). A verdict file that does not exist is not rendered, and a page
+whose source is gone is deleted. Gate K has four sub-gates, each reported on
+its own line; the checker for K1 to K3 is independent Python, not the
+generator's parser.
+
+- **K1 verdict files complete and independently reviewed.** One
+  `stack/<slug>.md` per `ecosystem/pickup/pickup-<slug>.md` (a missing file
+  fails; a verdict file with no matching type fails). Front matter has every
+  key: `type` (equal to the slug), `title`, `group` (one of the six),
+  `verdict` (Adopt, Adopt and wrap, Build clean-room, Watch), `confidence`
+  (High, Medium, Low), `evidence_date`, `author`, `reviewed_by` (different
+  from `author`), `review_date` (dates as YYYY-MM-DD). All seven `##` sections
+  are present, "What we cannot say" is not empty, and the Bottom line starts
+  with `Inference`. A Build clean-room verdict needs `rejected_alternative`
+  with a citation.
+- **K2 quoted citations resolve.** Any token `<path with extension>:<N>` or
+  `:<N>-<M>`, optionally followed by `"<quote>"`, is a citation. The file
+  must exist in the repo, the lines must exist, and the first and last cited
+  lines must be non-empty. A quote must be at least 20 characters and appear
+  on the cited line (a range is joined with spaces); `*`, backticks, and runs
+  of whitespace are ignored on both sides. Every citation in the Adopt, Copy,
+  Build, FrankenSuite, and What-we-cannot-say sections and in
+  `rejected_alternative` must carry a quote. Every bullet in the first four of
+  those sections needs at least one citation and one of the Rulebook's five
+  tier tags; a bracket token that looks like a tier but is not one of the five
+  (for example `[T1]`, `[Code-verified]`) fails. Each file must cite at least
+  one line inside its evidence pack's `## Notes / caveats` section when the
+  pack has one.
+- **K3 rigor practices sources and proofs.** `stack/rigor-practices.tsv` has
+  the exact header from `METHOD.md`, ten columns per row, ids `RP-001`
+  onward in order, a `source` of one `path:line` whose line contains
+  `source_quote` (same matching as K2), `areas` drawn from the 21 slugs plus
+  `frankensuite`, `checklist` ids that exist as `### <id> ` headings in
+  `starter-kit/CHECKLIST.md` (or `none`), and `our_status` in adopted,
+  candidate, not-applicable. An `adopted` row's `our_proof` is split on `;`:
+  `path` or `path:line` tokens must exist, `<sha>` or `commit <sha>` tokens
+  must pass `git cat-file -e`, and at least one token must resolve.
+- **K4 generated pages match their sources.** The generator runs into a temp
+  directory and `diff -rq` compares it with `site/stack/` and `site/rigor/`.
+  Any difference, extra file, or missing file fails, so a hand edit to a
+  generated page or a source edit without a rebuild cannot ship. Fix: rerun
+  `node site/scripts/make-stack.mjs`.
+
+**Why:** a verdict layer that recommends software to strangers is only worth
+the evidence under it. K1 enforces the independence rule (author never
+reviews), K2 makes every quoted fact checkable against the line it cites, K3
+holds the practices index to the same standard, and K4 stops the site from
+drifting away from the files the gates check.
+**Accepted:** K2 proves a quote sits on the cited line, not that it supports
+the bullet; that is the reviewer's job under METHOD.md's independence rule.
+Quotes are delimited by ASCII double quotes, so a quote cannot itself contain
+one.
+**Proven to trip:** each sub-check was run once against a planted known-bad
+copy of the tree (see History).
 
 ## Accepted limitations (all gates)
 
@@ -223,3 +292,21 @@ door, method page, and briefs to every scanned page. The B and E summary lines
 had printed blank counts on macOS (`grep -P` is GNU-only); counts are now
 extracted portably, and an empty scan set fails both gates. Each new fail path
 was shown to trip on a planted known-bad copy of the tree before landing.
+
+Agent-stack pass (v1.1): Gate K added with the `stack/` layer, and
+`SITE_PAGES` gained `stack/index.html`, `rigor/index.html`,
+`beyond/index.html`, and every generated `stack/<slug>.html`, so B, C, E, F,
+G1, and H cover them; gate I renders the stack index, one verdict page, the
+rigor index, and the beyond page. Every K sub-check was shown to trip on a
+planted known-bad copy of the tree (rsync to a scratch directory, never the
+real tree). K1: `reviewed_by` set equal to `author`, a Bottom line starting
+"We think", a Build clean-room verdict with no `rejected_alternative`, and a
+deleted verdict file each produced their own K1 line. K2: a quote prefixed
+with extra words ("quote not on the cited line"), a line number of 99999
+("line out of range"), a bullet with no citation, a `[T1]` tier ("non-Rulebook
+tier token" and "bullet without a Rulebook tier"), and an evidence pack whose
+caveats section was moved to a new heading at its end ("no citation into ...
+caveats section"). K3: a `source_quote` not on its line, checklist id `Z99`,
+an adopted row whose proof names a missing file and an unknown commit, an
+out-of-sequence id with an unknown area, and `our_status` `maybe`. K4: a
+one-word hand edit to `site/stack/index.html` ("Files ... differ").
