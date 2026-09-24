@@ -128,6 +128,7 @@ const LICENSE_LABEL = { rider: 'MIT + AI-lab rider', mit: 'Plain MIT', none: 'No
   set('ringMonitor', STATS.rings.Monitor);
   set('trlRange', STATS.trlMin + '\u2013' + STATS.trlMax);
   set('greenNames', STATS.greenNames.map((n) => '<b>' + esc(n) + '</b>').join(' and '));
+  for (const k of ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']) set('ci' + k, STATS.ci[k] || 0);
 })();
 
 /* ---------- renderer / scene / camera ---------- */
@@ -168,11 +169,16 @@ applyFraming();
    real bottom edge as it collapses, expands, or reflows. */
 const headerEl = document.getElementById('main');
 function layoutMap(){
+  const root = document.documentElement.style;
+  const b = Math.round(headerEl.getBoundingClientRect().bottom);
   if (isMobileView()){
-    const b = Math.round(headerEl.getBoundingClientRect().bottom);
-    document.documentElement.style.setProperty('--maptop', b + 'px');
+    root.setProperty('--maptop', b + 'px');
+    root.removeProperty('--paneltop');
   } else {
-    document.documentElement.style.removeProperty('--maptop');
+    root.removeProperty('--maptop');
+    // desktop: the panel docks in the left column, under the compact intro bar when collapsed
+    if (document.body.classList.contains('intro-min')) root.setProperty('--paneltop', (b + 10) + 'px');
+    else root.removeProperty('--paneltop');
   }
 }
 layoutMap();
@@ -190,7 +196,10 @@ function setIntro(expanded, persist){
   sizeRenderer();
 }
 introToggle.addEventListener('click', () => {
-  setIntro(document.body.classList.contains('intro-min'), true);
+  const expand = document.body.classList.contains('intro-min');
+  // desktop: panel and expanded intro share the left column; the intro wins
+  if (expand && selected && !isMobileView()){ kbFocus = null; deselect(); }
+  setIntro(expand, true);
 });
 
 /* Size the renderer to the scene container, not the window: on narrow screens
@@ -201,10 +210,20 @@ function sizeRenderer(){
   const h = container.clientHeight || window.innerHeight;
   renderer.setSize(w, h);
   camera.aspect = w / h;
-  // desktop with the intro card open: slide the projection centre right so the
-  // node field sits in the free space beside the card instead of under it
-  const shift = (!isMobileView() && !document.body.classList.contains('intro-min'))
-    ? Math.round(Math.min(140, w * 0.1)) : 0;
+  // desktop: slide the projection centre so the focus sits in free space.
+  // Panel open: midway between the docked panel and the right rail (the selected
+  // node lands there). Intro card open: right of the card, where the field reads best.
+  let shift = 0;
+  if (!isMobileView()){
+    if (document.body.classList.contains('panel-open')){
+      const pEl = document.getElementById('panel');  // layout box: ignores the slide-in transform
+      const left = pEl.offsetLeft + pEl.offsetWidth;
+      const right = document.getElementById('controls').getBoundingClientRect().left;
+      if (right > left) shift = Math.round((left + right) / 2 - w / 2);
+    } else if (!document.body.classList.contains('intro-min')){
+      shift = Math.round(Math.min(140, w * 0.1));
+    }
+  }
   if (shift) camera.setViewOffset(w, h, -shift, 0, w, h);
   else camera.clearViewOffset();  // both paths update the projection matrix
 }
@@ -216,7 +235,7 @@ sizeRenderer();
 }
 // the intro reflows (fonts, wrapping, collapse): keep the phone map band glued to it
 if (typeof ResizeObserver === 'function'){
-  new ResizeObserver(() => { if (isMobileView()){ layoutMap(); sizeRenderer(); } }).observe(headerEl);
+  new ResizeObserver(() => { layoutMap(); if (isMobileView()) sizeRenderer(); }).observe(headerEl);
 }
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -524,8 +543,8 @@ function select(mesh){
     // phone: the panel is a bottom sheet; give it the room the intro and filters were using
     setSheet(false, false);
     if (!document.body.classList.contains('intro-min')) setIntro(false, false);
-    sizeRenderer();  // the map band shrank to sit above the panel sheet
   }
+  sizeRenderer();  // phone: the band shrank above the panel sheet; desktop: recentre beside the panel
   selHalo.visible = true;
   selHalo.scale.setScalar(size * 1.7);
   focusTarget.copy(mesh.position);
@@ -545,7 +564,7 @@ function deselect(){
   }
   panel.classList.remove('open');
   document.body.classList.remove('panel-open');
-  if (isMobileView()) sizeRenderer();  // the map band grows back under the closed panel
+  sizeRenderer();  // the map band / projection centre returns to its no-panel layout
   setHash('');
   focusTarget.copy(TGT_HOME);
   if (REDUCED) controls.target.copy(TGT_HOME);  // no camera glide under reduced motion
@@ -568,14 +587,28 @@ function setHash(want){
   try { history.replaceState(history.state, '', url); } catch (e) { /* file:// quirks: the link just doesn't follow */ }
 }
 const copyBtn = document.getElementById('copylink');
+const copyFallback = document.getElementById('copyfallback');
+const copyUrl = document.getElementById('copyurl');
 let copyTimer = null;
 function resetCopyButton(){
   clearTimeout(copyTimer);
   copyBtn.textContent = 'Copy link';
   copyBtn.classList.remove('copied');
+  copyFallback.hidden = true;
 }
+/* Every outcome is visible: the async clipboard (raced against a timeout, since a
+   pending permission prompt can leave it unresolved), then the legacy execCommand
+   path; if both fail, the caller shows the URL in a selectable field. */
 async function copyText(text){
-  try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* fall through */ }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    try {
+      await Promise.race([
+        navigator.clipboard.writeText(text),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('clipboard timed out')), 1200)),
+      ]);
+      return true;
+    } catch (e) { /* fall through to execCommand */ }
+  }
   const ta = document.createElement('textarea');
   ta.value = text;
   ta.setAttribute('readonly', '');
@@ -591,19 +624,39 @@ async function copyText(text){
 copyBtn.addEventListener('click', async () => {
   if (!selected) return;
   const url = SITE_ORIGIN + '/briefs/' + encodeURIComponent(selected.userData.repo.name);
+  copyBtn.textContent = 'Copying\u2026';
   const ok = await copyText(url);
   clearTimeout(copyTimer);
-  copyBtn.textContent = ok ? 'Copied' : 'Copy failed';
-  copyBtn.classList.toggle('copied', ok);
-  live.textContent = ok ? 'Link copied: ' + url : 'Could not copy. The link is ' + url;
-  copyTimer = setTimeout(resetCopyButton, 2200);
+  if (ok){
+    copyFallback.hidden = true;
+    copyBtn.textContent = 'Copied';
+    copyBtn.classList.add('copied');
+    live.textContent = 'Link copied: ' + url;
+    copyTimer = setTimeout(resetCopyButton, 2200);
+  } else {
+    // blocked clipboard: hand the reader the link, selected and ready for Ctrl/Cmd+C
+    copyBtn.textContent = 'Copy link';
+    copyBtn.classList.remove('copied');
+    copyUrl.value = url;
+    copyFallback.hidden = false;
+    copyUrl.focus();
+    copyUrl.select();
+    live.textContent = 'Copying was blocked. The link is selected in a text field: ' + url;
+  }
 });
 
 document.querySelector('#panel .close').addEventListener('click', () => { deselect(); container.focus(); });
+// the filter sheet is a modal on phones: Escape closes it before anything else sees the key
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape' || !document.body.classList.contains('sheet-open')) return;
+  if (!searchDrop.hidden) return;  // the search dropdown's own Escape closes it first
+  e.preventDefault();
+  e.stopPropagation();
+  setSheet(false, true);
+}, true);
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape'){
     if (tableOpen){ closeTableView(); return; }  // table view closes first
-    if (document.body.classList.contains('sheet-open')){ setSheet(false, true); return; }  // then the filter sheet
     const wasOpen = panel.classList.contains('open');
     deselect();
     if (wasOpen) container.focus();  // return focus to the map on close
@@ -640,6 +693,16 @@ function applyFilter(){
   // match-count feedback (Wave-1): visible "N of 44 match", or a zero-match note
   const fc = document.getElementById('filtercount');
   if (fc) fc.textContent = n === 0 ? 'No repos match these filters.' : n + ' of ' + nodeMeshes.length + ' match';
+  // phone: the bar button carries the active filter once the sheet is closed
+  const sb = document.getElementById('sheetbtn');
+  const deep = fLic !== 'all' || fCi !== 'all' || fTrl !== 'all';
+  const ringLabel = activeFilter === 'all' ? '' : activeFilter === 'green' ? 'CI green' : activeFilter;
+  let label = 'Filters';
+  if (ringLabel && !deep) label += ' \u00b7 ' + ringLabel + ' ' + n;
+  else if (ringLabel || deep) label += ' \u00b7 ' + n + ' of ' + nodeMeshes.length;
+  sb.textContent = label;
+  sb.classList.toggle('filtered', label !== 'Filters');
+  sb.setAttribute('aria-label', label === 'Filters' ? 'Filters' : label.replace(' \u00b7 ', ': ') + ' shown. Change filters');
 }
 document.getElementById('filters').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
@@ -1070,15 +1133,36 @@ document.head.appendChild(kbCss);
    display:contents and these calls only flip an unused class. */
 const sheetBtn = document.getElementById('sheetbtn');
 const sheetDone = document.getElementById('sheetdone');
+const sheetEl = document.getElementById('sheet');
 function setSheet(open, moveFocus){
   const was = document.body.classList.contains('sheet-open');
   document.body.classList.toggle('sheet-open', open);
   sheetBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  // phone: an open sheet is a modal dialog; on desktop #sheet is layout-transparent and carries no role
+  if (open && isMobileView()){
+    sheetEl.setAttribute('role', 'dialog');
+    sheetEl.setAttribute('aria-modal', 'true');
+    sheetEl.setAttribute('aria-labelledby', 'sheettitle');
+  } else {
+    sheetEl.removeAttribute('role');
+    sheetEl.removeAttribute('aria-modal');
+    sheetEl.removeAttribute('aria-labelledby');
+  }
   if (!moveFocus || was === open) return;
   (open ? sheetDone : sheetBtn).focus();
 }
 sheetBtn.addEventListener('click', () => setSheet(!document.body.classList.contains('sheet-open'), true));
 sheetDone.addEventListener('click', () => setSheet(false, true));
+// modal focus trap: Tab cycles inside the open sheet
+sheetEl.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || !document.body.classList.contains('sheet-open')) return;
+  const f = [...sheetEl.querySelectorAll('button, [href], input, select, summary, [tabindex]:not([tabindex="-1"])')]
+    .filter((el) => !el.disabled && el.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
 
 /* ---------- camera flight + "Surprise me" ---------- */
 function flyTo(mesh){
@@ -1160,7 +1244,8 @@ function updateLabels(){
     } else {
       const { repo, isGreen } = d.mesh.userData;
       const labeled = repo.nodus === 'Pilot' || isGreen || d.mesh === hovered || d.mesh === selected;
-      if (labeled && inFilter(d.mesh)){
+      // filtered-out repos lose their label (the one you selected keeps it)
+      if (labeled && (inFilter(d.mesh) || d.mesh === selected)){
         proj.copy(d.mesh.position);
         proj.y += d.mesh.userData.size * 1.6;
         proj.project(camera);
@@ -1170,6 +1255,7 @@ function updateLabels(){
       }
     }
     if (show) cands.push({ d, x, y, pri, below });
+    else if (d.el.style.display !== 'none') d.el.style.display = 'none';  // filtered out / off screen: never a stale label
   }
   // position + measure (sizes are cached; label text never changes)
   for (const c of cands){
@@ -1184,11 +1270,23 @@ function updateLabels(){
     const box = c.below
       ? { x0: c.x - c.d.w/2, y0: c.y,         x1: c.x + c.d.w/2, y1: c.y + c.d.h }
       : { x0: c.x - c.d.w/2, y0: c.y - c.d.h, x1: c.x + c.d.w/2, y1: c.y };
-    if (kept.some((k) => rectsOverlap(box, k, 4))){
-      c.d.el.style.display = 'none';  // crowded: lower-priority label yields
-    } else {
-      kept.push(box);
+    if (!kept.some((k) => rectsOverlap(box, k, 4))){ kept.push(box); continue; }
+    if (!c.below){
+      // crowded: try one slot higher, then one below the node, before giving up,
+      // so neighbouring labels stack instead of vanishing
+      let placed = false;
+      for (const dy of [-(c.d.h + 6), 2 * c.d.h + 14]){
+        const alt = { x0: box.x0, y0: box.y0 + dy, x1: box.x1, y1: box.y1 + dy };
+        if (alt.y0 > 0 && alt.y1 < h && !kept.some((k) => rectsOverlap(alt, k, 4))){
+          c.d.el.style.top = (c.y + dy) + 'px';
+          kept.push(alt);
+          placed = true;
+          break;
+        }
+      }
+      if (placed) continue;
     }
+    c.d.el.style.display = 'none';  // still crowded: the lower-priority label yields
   }
 }
 function animate(){

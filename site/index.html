@@ -125,7 +125,7 @@
   #search::placeholder{color:var(--faint);}
   #searchmsg{font-size:11px; color:var(--muted); min-height:14px; text-align:right;}
   /* disambiguating search dropdown (P1-8): every match listed, pick on Enter/click */
-  #searchdrop{position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:30;
+  #searchdrop{position:absolute; top:calc(100% + 6px); right:0; width:max(100%, 340px); z-index:30;
     background:#0b0e16; border:1px solid var(--line); border-radius:12px; overflow:hidden;
     max-height:320px; overflow-y:auto; box-shadow:0 18px 60px rgba(0,0,0,.5);}
   .comb-opt{display:flex; align-items:center; gap:8px; width:100%; text-align:left;
@@ -146,7 +146,8 @@
   #vtab thead th button:focus-visible, .tbar button:focus-visible, .schema summary:focus-visible,
   #pagenav a:focus-visible, .cta:focus-visible, #introtoggle:focus-visible, .finding a:focus-visible,
   .busline a:focus-visible, #mbar button:focus-visible, #sheetdone:focus-visible,
-  #copylink:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
+  #copylink:focus-visible, #filters button:focus-visible,
+  #search:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
   /* verdict table view (P1-10): full-screen overlay, the map hidden behind body.tableon */
   body.tableon{overflow-y:auto; overflow-x:hidden;}
   body.tableon #scene, body.tableon #labels, body.tableon header, body.tableon #controls,
@@ -220,11 +221,22 @@
   #tip .m{color:var(--muted); font-size:11px; margin-top:2px;}
   #tip .g{color:var(--green); font-size:11px; margin-top:2px; font-weight:600;}
 
-  #panel{position:fixed; top:18px; right:22px; bottom:18px; width:344px; max-width:92vw; z-index:8;
+  /* desktop detail panel: docks in the left column (where the intro card sits), so the
+     right rail (filters, search, view buttons) is never covered. Its top follows the
+     compact intro bar when the intro is collapsed (--paneltop, set in app.src.js);
+     its bottom clears the "How to read it" summary. */
+  #panel{position:fixed; top:var(--paneltop, 18px); left:22px; bottom:66px; width:420px; max-width:92vw; z-index:8;
     background:var(--panel); border:1px solid var(--line); border-radius:14px;
     box-shadow:0 18px 60px rgba(0,0,0,.5);
-    transform:translateX(calc(100% + 40px)); transition:transform .32s ease; overflow-y:auto; padding:22px;}
+    transform:translateX(calc(-100% - 40px)); transition:transform .32s ease; overflow-y:auto; padding:22px;}
   #panel.open{transform:translateX(0);}
+  /* the open panel takes the expanded intro's place (hidden, so it also leaves the tab order) */
+  @media (min-width:901px){ body.panel-open:not(.intro-min) header{visibility:hidden;} }
+  #copyfallback{margin-top:10px; font-size:12px; color:var(--muted);}
+  #copyfallback[hidden]{display:none;}
+  #copyurl{display:block; width:100%; margin-top:6px; font:inherit; font-size:12.5px; color:var(--ink);
+    background:#05070d; border:1px solid var(--pilot); border-radius:8px; padding:8px 10px;}
+  #copyurl:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
   #panel .close{position:absolute; top:14px; right:16px; background:none; border:none;
     color:var(--muted); font-size:20px; cursor:pointer;}
   #panel h2{font-size:19px; font-weight:650; word-break:break-word; padding-right:28px;}
@@ -307,14 +319,15 @@
     body.intro-min header h1{font-size:14px; padding-right:108px;}
     body.intro-min #pagenav{display:none;}
     /* the map is the band between the intro and the bottom bar (app.src.js keeps --maptop in sync) */
-    #scene, #labels{top:var(--maptop, 40vh); bottom:60px;}
+    #scene, #labels{top:var(--maptop, 40vh); bottom:64px;}
     body.panel-open #scene, body.panel-open #labels{bottom:calc(58vh + 16px);}  /* node stays above the panel */
-    #mbar{display:flex; position:fixed; left:0; right:0; bottom:0; height:60px; z-index:8; gap:8px;
+    #mbar{display:flex; position:fixed; left:0; right:0; bottom:0; height:64px; z-index:8; gap:8px;
       align-items:center; padding:8px 12px; background:rgba(8,11,19,.97); border-top:1px solid var(--line);}
     #mbar button{flex:1 1 0; min-width:0; font:inherit; font-size:13px; font-weight:600; color:var(--ink);
       background:rgba(11,14,22,.9); border:1px solid var(--line); border-radius:99px; padding:10px 6px;
-      cursor:pointer; white-space:nowrap;}
-    #mbar #sheetbtn{background:var(--ink); color:#0b0e16; border-color:var(--ink);}
+      min-height:46px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    #mbar #sheetbtn{flex-grow:1.5; background:var(--ink); color:#0b0e16; border-color:var(--ink);}
+    #mbar #sheetbtn.filtered{background:var(--pilot); border-color:var(--pilot); color:#06130a;}
     #sheet{display:block; position:fixed; left:0; right:0; bottom:0; z-index:11; max-height:82vh;
       overflow-y:auto; overscroll-behavior:contain; background:#0b0e16; border-top:1px solid var(--line);
       border-radius:16px 16px 0 0; padding:0 14px 18px; box-shadow:0 -18px 60px rgba(0,0,0,.6);
@@ -332,13 +345,14 @@
     #filters2 label{font-size:11px; flex-wrap:wrap;}
     #filters2 select{max-width:100%;}
     #searchrow{display:block;}
+    #searchdrop{width:100%;}
     #search{width:100%;}
     #filtercount, #searchmsg, #searchhint{text-align:left;}
     #legend{position:static; max-width:none; max-height:none; margin-top:12px;}
     #caveat{position:static; max-width:none; text-align:left; margin-top:12px;}
     #hint{position:static; transform:none; margin-top:8px; text-align:left;}
     .hint-desk{display:none;} .hint-touch{display:inline;}
-    #domecap{left:12px; right:12px; bottom:70px; transform:none; max-width:none; z-index:7; font-size:11px;}
+    #domecap{left:12px; right:12px; bottom:74px; transform:none; max-width:none; z-index:7; font-size:11px;}
     /* detail panel: a bottom sheet over the bar */
     #panel{top:auto; left:8px; right:8px; bottom:8px; width:auto; max-width:none; height:58vh; z-index:10;
       transform:translateY(calc(100% + 40px));}
@@ -375,7 +389,7 @@ window.addEventListener('error', function(){
     <p class="lede"><span id="framesentence">Jeffrey Emanuel&rsquo;s FrankenSuite is <span data-stat="total">44</span> ambitious repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.</span> The <span data-stat="ringPilot">3</span> worth a bounded trial on real work sit on the amber ring near the center.</p>
     <div id="stats">
       <div class="finding grn"><span class="big"><span data-stat="greenCount">2</span> of <span data-stat="total">44</span></span>
-        show CI (continuous integration) passing at the commit we pinned (the single assessed commit). The other <span data-stat="notGreen">42</span> are red, disabled, absent, run only on the maintainer&rsquo;s own machines, or show no result at the pin.</div>
+        show CI (continuous integration) passing at the commit we pinned (the single assessed commit). The other <span data-stat="notGreen">42</span> can&rsquo;t show a passing build at the pin: <span data-stat="ciC2">11</span> fail there, and the rest have CI disabled, missing, private, or silent at that commit.</div>
       <div class="finding gold"><span class="big">The honesty machinery is real.</span>
         Negative-evidence ledgers, claim registries, fail-closed gates: unusually well built, and mostly not running where it counts. <a href="./techniques/index.html">What is worth stealing</a></div>
       <div class="finding"><span class="big"><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></span>
@@ -407,7 +421,7 @@ window.addEventListener('error', function(){
 </div>
 
 <div id="sheet" aria-label="Map filters and key">
-<div id="sheethead"><h2>Filters and key</h2><button id="sheetdone" type="button">Done</button></div>
+<div id="sheethead"><h2 id="sheettitle">Filters and key</h2><button id="sheetdone" type="button">Done</button></div>
 <div id="controls">
   <div id="filters">
     <button data-f="all" class="active">All <span data-stat="total">44</span></button>
@@ -473,6 +487,8 @@ window.addEventListener('error', function(){
     <a id="brieflink" href="#">Read the full brief &rarr;</a>
     <button id="copylink" type="button">Copy link</button>
   </div>
+  <p id="copyfallback" hidden>Copying was blocked here. Copy this link:
+    <input id="copyurl" type="text" readonly aria-label="Link to this repo's brief"></p>
   <h3>The bottom line</h3>
   <p id="p-blurb"></p>
   <h3>CI at the pin</h3>
