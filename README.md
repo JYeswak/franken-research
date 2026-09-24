@@ -113,7 +113,7 @@ How corrections are handled:
 
 ## Data notes
 
-- Maintainer commit email addresses quoted from public git metadata were redacted from the packets, their site copies, and one synthesis brief before publication (commit `bbc1bda`). No other evidence text was changed.
+- Maintainer commit email addresses quoted from public git metadata are redacted in the packets, their site copies, and one synthesis brief, in every commit of this repository's history: the history was rewritten on 2026-09-23 so that no published commit contains them ([old-to-new commit map](stack/reviews/history-rewrite-2026-09-23.tsv)). No other evidence text was changed.
 - Commit-author email addresses are never recorded in the movement census either; gate L fails the build if a personal address appears in any tracked file.
 - Everything else is as assessed on 2026-09-22, at each repository's pin. The FrankenSuite moves fast; check the pin date before quoting a verdict.
 - The site's data file classifies one repository's CI (`frankenjax`) differently from the synthesis matrix. The difference is disclosed on the method page and changes no headline number.

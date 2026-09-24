@@ -2,10 +2,10 @@
 
 # Independent review: tools-and-environment and training-and-voice verdicts
 
-- Reviewer: ReviewTools. Author under review: VerdictsTools. Commit: 36de0d4 (`stack/sandbox-exec.md`, `browser-use.md`, `computer-use.md`, `web-search-apis.md`, `fine-tuning.md`, `rl-envs.md`, `voice-agents.md`).
-- Rules applied: stack/METHOD.md v2 (6d03cc1), RULEBOOK.md section 1.
+- Reviewer: ReviewTools. Author under review: VerdictsTools. Commit: d3881fc (`stack/sandbox-exec.md`, `browser-use.md`, `computer-use.md`, `web-search-apis.md`, `fine-tuning.md`, `rl-envs.md`, `voice-agents.md`).
+- Rules applied: stack/METHOD.md v2 (16deb8c), RULEBOOK.md section 1.
 - Review date: 2026-09-23. Read-only pass: no verdict file was edited, and `reviewed_by` is not signed.
-- How to read this: severity **H** / **M** means fix before sign-off. **L** means recommended. Line numbers are the verdict file's lines at 36de0d4. Every replacement quote proposed below was checked mechanically against its line (45 of 45 match).
+- How to read this: severity **H** / **M** means fix before sign-off. **L** means recommended. Line numbers are the verdict file's lines at d3881fc. Every replacement quote proposed below was checked mechanically against its line (45 of 45 match).
 
 ## Result
 
@@ -30,7 +30,7 @@
 
 ## Mechanical citation check
 
-Method: an inline Python script, not committed. It read each verdict file from `git show 36de0d4:stack/<file>` and extracted every `path:line "quote"` with a regex. That count equals the loose count of `.md:\d+` references in each file, so no citation was missed. For each quote it confirmed the file exists, the line exists, the quote is at least 20 characters, and the normalised quote is a substring of the normalised line (`*` and backticks removed, whitespace collapsed). The cited corpus files have no diff between 36de0d4 and the working tree.
+Method: an inline Python script, not committed. It read each verdict file from `git show d3881fc:stack/<file>` and extracted every `path:line "quote"` with a regex. That count equals the loose count of `.md:\d+` references in each file, so no citation was missed. For each quote it confirmed the file exists, the line exists, the quote is at least 20 characters, and the normalised quote is a substring of the normalised line (`*` and backticks removed, whitespace collapsed). The cited corpus files have no diff between d3881fc and the working tree.
 
 | File | Citations | Missing file/line | Quote not on line | Quote < 20 chars |
 |---|---|---|---|---|
@@ -157,18 +157,18 @@ The TRL and NODUS ring in every row match synthesis/00-overview.md: capsule 3–
 - The site renderer (`site/scripts/make-stack.mjs`, untracked) and how it maps starter-kit ids to titles (METHOD rule 8) were not reviewed.
 - Gate K was not run. The mechanical check above reimplements only its quote-on-line rule.
 - The fresh license reads above are the reviewer's own and were not re-verified by a third party.
-- Evidence levels used in this review: the mechanical check is a script run (N=241 citations, 7 files, 2026-09-23, at 36de0d4); the support, order, confidence and caveat findings are the reviewer's reads of the cited lines ([Inference] where they judge wording); the license facts are GitHub API responses (36 repos, 2026-09-23).
+- Evidence levels used in this review: the mechanical check is a script run (N=241 citations, 7 files, 2026-09-23, at d3881fc); the support, order, confidence and caveat findings are the reviewer's reads of the cited lines ([Inference] where they judge wording); the license facts are GitHub API responses (36 repos, 2026-09-23).
 - Not run: no clones, installs, tests, benchmarks or CI observation for any incumbent or FrankenSuite project; no re-reading of packets beyond the lines cited or quoted here.
 
 ---
 
-## Re-check at 0eb4488 (2026-09-23)
+## Re-check at bfbcac9 (2026-09-23)
 
-Scope: I re-read all seven files at 0eb4488, METHOD v3 rule 9 (stack/METHOD.md:79, from f55db78), and stack/licenses.tsv (b5eb9d8, plus 05de96d, which changed only the zep row). The seven files at 0eb4488 match the working tree, and so do the corpus files they cite.
+Scope: I re-read all seven files at bfbcac9, METHOD v3 rule 9 (stack/METHOD.md:79, from 9c92cf9), and stack/licenses.tsv (ce4186e, plus 45c7bc6, which changed only the zep row). The seven files at bfbcac9 match the working tree, and so do the corpus files they cite.
 
 ### Mechanical check (rerun)
 
-The same inline script, with fresh variables, run on `git show 0eb4488:stack/<file>`. **All 295 citations pass:** file and line exist, quote is at least 20 characters, and the normalised quote is on its line. Per file: sandbox-exec 59, browser-use 39, computer-use 41, web-search-apis 37, fine-tuning 46, rl-envs 35, voice-agents 38. The regex count equals the loose `.md|.tsv:\d+` count in every file. Every citation my first report asked for was checked by substring and is present (54 of 54).
+The same inline script, with fresh variables, run on `git show bfbcac9:stack/<file>`. **All 295 citations pass:** file and line exist, quote is at least 20 characters, and the normalised quote is on its line. Per file: sandbox-exec 59, browser-use 39, computer-use 41, web-search-apis 37, fine-tuning 46, rl-envs 35, voice-agents 38. The regex count equals the loose `.md|.tsv:\d+` count in every file. Every citation my first report asked for was checked by substring and is present (54 of 54).
 
 ### Rule 9 coverage
 
@@ -250,7 +250,7 @@ What this re-check did not do:
 - No incumbent was cloned, installed or tested.
 - The license facts rest on the author's tsv rows, cross-checked against my own GitHub API reads from 2026-09-23 (36 repos in the first pass, plus `microsoft/playwright` in this one).
 
-## Re-check of N1–N4 at 4976010 (2026-09-23)
+## Re-check of N1–N4 at 29ef847 (2026-09-23)
 
 - **N1: fixed.** browser-use.md:32 now cites `gh api repos/microsoft/playwright --jq .license.spdx_id`. My own read of that repo returns Apache-2.0.
 - **N2: fixed.** web-search-apis.md:30 now names the AGPL-free adoption paths before the build option:
@@ -261,4 +261,4 @@ What this re-check did not do:
 - **N3: fixed.** fine-tuning.md:16 now reads "running a modified copy of those parts as a network service, or distributing them".
 - **N4: fixed.** computer-use.md:16 now covers the MIT badge and the AGPL on the older detector weights, cited to licenses.tsv:56.
 
-The quote check at 4976010 found no failures in the four edited files (browser-use 39, web-search-apis 38, fine-tuning 46, computer-use 42 citations). I re-signed those four files in b6a0c20 (4 files, 8 insertions; the pre-commit hook passed). sandbox-exec, rl-envs and voice-agents keep their signatures from d263aa8.
+The quote check at 29ef847 found no failures in the four edited files (browser-use 39, web-search-apis 38, fine-tuning 46, computer-use 42 citations). I re-signed those four files in fdbea14 (4 files, 8 insertions; the pre-commit hook passed). sandbox-exec, rl-envs and voice-agents keep their signatures from 428d68e.

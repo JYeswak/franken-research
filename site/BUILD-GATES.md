@@ -331,7 +331,7 @@ definitions; the front door gained inline pin/bus-factor glosses;
 `starter-kit/` gained a CI definition); hardcoded "all 44 briefs" labels
 reworded; synthesis-sourced counts annotated with provenance.
 
-2026-09-23, commit `07b681b`: the gates moved in-repo. Gate A reads the
+2026-09-23, commit `9a99982`: the gates moved in-repo. Gate A reads the
 canonical packets and Rulebook from the repo root instead of an external
 workspace path (`CANON` still overrides), and gate I discovers the browser via
 `CHROME_PATH` or a fixed list of install locations, failing when none exists,

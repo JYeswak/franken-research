@@ -1,8 +1,8 @@
-<!-- Review record, published as written. Adversarial review of stack/METHOD.md v1 by control-plane pane 2; all 8 findings adopted in METHOD v2 (6d03cc1). Scratch paths refer to the reviewer's machine. -->
+<!-- Review record, published as written. Adversarial review of stack/METHOD.md v1 by control-plane pane 2; all 8 findings adopted in METHOD v2 (16deb8c). Scratch paths refer to the reviewer's machine. -->
 
 # Adversarial review of stack/METHOD.md
 
-Read at commit `d34f5ce` (working tree byte-identical to `git show d34f5ce:stack/METHOD.md`). Compared with `RULEBOOK.md` §1, `ecosystem/pickup/INTENT.md`, `pickup-mcp.md`, `_evidence/mcp.md`, and `starter-kit/CHECKLIST.md` headings. No files edited.
+Read at commit `9cd29ec` (working tree byte-identical to `git show 9cd29ec:stack/METHOD.md`). Compared with `RULEBOOK.md` §1, `ecosystem/pickup/INTENT.md`, `pickup-mcp.md`, `_evidence/mcp.md`, and `starter-kit/CHECKLIST.md` headings. No files edited.
 
 Ranked by how easily a wrong verdict ships. Eight findings. The rest of the file is usable.
 

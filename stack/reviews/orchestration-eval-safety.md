@@ -2,7 +2,7 @@
 
 # Review of 7 stack verdicts
 
-Commit `3909dac`. Author VerdictsOrchestration. Rules: `stack/METHOD.md` at that commit (v2). Citations checked with `git show 3909dac:<path>` against the quoted line. 213 citations: 212 quotes sit on the named line. One quote wraps across `pickup-agent-frameworks.md:176-177` and the joined lines do carry the mutation-test fact; not filed.
+Commit `eef87ef`. Author VerdictsOrchestration. Rules: `stack/METHOD.md` at that commit (v2). Citations checked with `git show eef87ef:<path>` against the quoted line. 213 citations: 212 quotes sit on the named line. One quote wraps across `pickup-agent-frameworks.md:176-177` and the joined lines do carry the mutation-test fact; not filed.
 
 `reviewed_by` is empty on all 7. That is expected in this pass. Do not treat it as a finding.
 
@@ -72,7 +72,7 @@ Order is right. `pickup-guardrails.md:360` says no evidence repo publishes an FP
 
 Pack caveats for HarmBench, strongreject, langkit, rebuff, and stars are cited in "What we cannot say".
 
-## Re-check at 90fcf54
+## Re-check at c6c4e56
 
 Not signed. `reviewed_by` was not added. The starter-kit id finding was not a gate.
 
@@ -81,7 +81,7 @@ RESOLVED:
 - agent-frameworks.md:41. The world-fact "no test suite was run" is gone. The bullet now says the pack records that file pointers were fetched, and quotes `_evidence/agent-frameworks.md:39` for that sentence.
 - agent-frameworks.md:43. Stars caveat now cites `_evidence/agent-frameworks.md:35`. The quote is on that line.
 - mcp.md:33. Quote `Medium]; not executed here` is on `packets/franken_markdown-assessment.md:78`.
-- mcp.md:36. The snowflake line is no longer cited. The replacement (`mcp.md:38`) states the grep command and date. `git grep -c modelcontextprotocol 90fcf54 -- packets` returned no matches, so the absence claim is true.
+- mcp.md:36. The snowflake line is no longer cited. The replacement (`mcp.md:38`) states the grep command and date. `git grep -c modelcontextprotocol c6c4e56 -- packets` returned no matches, so the absence claim is true.
 - multi-agent-protocols.md:25. The interop-label rule is no longer under Copy these practices. It is in Build only if, tagged [Inference], citing the companion charter.
 - workflow-orchestrators.md confidence. Front matter and the first sentence are Low. Quotes for "Thin evidence, stated honestly" and "not by running the suites" are on lines 42 and 48.
 - workflow-orchestrators.md Restate. Removed from the adopt list. The bottom line names Temporal, Cadence, and Conductor only.
@@ -99,7 +99,7 @@ New problems on changed bullets:
 3. `multi-agent-protocols.md:27` says no surveyed repository was shown applying the interop label. The citations support the charter rule and the A2A-as-target sentence. They do not say a search found no repo applying the label. Fix: delete that clause, or cite the pack line that says the tested interop is self-interop (`_evidence/multi-agent-protocols.md:32`).
 4. `observability.md:26` says no surveyed repository was shown doing the seven-day demotion. The quote is only the companion's proposed rule. Fix: delete that clause. The [Inference] tag already says it is a proposal.
 
-## Re-check at 33a4a36
+## Re-check at 1209043
 
 All 11 findings RESOLVED. Signed. Starter-kit ids were not a gate.
 
@@ -107,7 +107,7 @@ All 11 findings RESOLVED. Signed. Starter-kit ids were not a gate.
 - agent-frameworks.md:43 RESOLVED. Stars caveat cites line 35. Quote is on the line.
 - mcp.md:15 RESOLVED. Quotes now include the dated expected-failures filenames (`_evidence/mcp.md:21`) and "conformance.yml runs three legs: 2025-11-25 wire, 2026-07-28 wire, default wire" (`:22`). Those carry "per spec revision" and "one conformance leg per wire revision."
 - mcp.md:33 RESOLVED. "not executed here" is quoted from `packets/franken_markdown-assessment.md:78`.
-- mcp.md:38 RESOLVED. The contradictory snowflake citation is gone. The grep command and date are in the bullet. `git grep` at `90fcf54` found no `modelcontextprotocol` under `packets/`.
+- mcp.md:38 RESOLVED. The contradictory snowflake citation is gone. The grep command and date are in the bullet. `git grep` at `c6c4e56` found no `modelcontextprotocol` under `packets/`.
 - multi-agent-protocols.md:27 RESOLVED. The interop-label rule is under Build only if, tagged [Inference]. The new clause "interop tested in this category is inside the A2A organization's own SDKs" is quoted from `_evidence/multi-agent-protocols.md:32`.
 - workflow-orchestrators.md confidence RESOLVED. Low in the front matter and the first sentence, with the thin and not-run quotes.
 - workflow-orchestrators.md Restate RESOLVED. Not on the adopt list. The cannot-say bullet quotes "no verified replay harness or time-skipping test framework found" from `_evidence/workflow-orchestrators.md:43`.
@@ -115,4 +115,4 @@ All 11 findings RESOLVED. Signed. Starter-kit ids were not a gate.
 - observability.md:26 RESOLVED. The seven-day rule is [Inference] only. The "no surveyed repository" clause is deleted.
 - guardrails.md confidence RESOLVED. Low in the front matter and the first sentence.
 
-No new unsupported clause on the four changed bullets. Signed in `de94fd4`. `git show --stat HEAD` is those 7 files, 14 insertions, nothing else.
+No new unsupported clause on the four changed bullets. Signed in `9546e4d`. `git show --stat HEAD` is those 7 files, 14 insertions, nothing else.

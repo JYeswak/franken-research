@@ -1,14 +1,14 @@
 <!-- Review record, published as written. Review of 7 verdicts (author VerdictsServing) by ReviewServing, with re-checks until signing. Scratch paths refer to the reviewer's machine. -->
 
-# Review: model-serving and memory/retrieval verdicts (commit 4a518ba)
+# Review: model-serving and memory/retrieval verdicts (commit d189043)
 
 Reviewer: ReviewServing. Author under review: VerdictsServing. Read-only pass; no verdict file was edited.
-Rules applied: stack/METHOD.md v2 (6d03cc1), RULEBOOK.md §1.
+Rules applied: stack/METHOD.md v2 (16deb8c), RULEBOOK.md §1.
 Scope: stack/inference-engines.md, quantization.md, structured-output.md, embedding-serving.md, agent-memory.md, rag-frameworks.md, vector-dbs.md.
 
 ## Summary
 
-- Mechanical check: **7/7 files pass** — 224 citations, 0 failures (no missing file, no out-of-range line, no quote under 20 chars, no quote missing from its line). No citation-shaped text escaped the parser. `git diff 4a518ba -- stack/ ecosystem/ packets/ synthesis/` is empty, so the check matches the working tree.
+- Mechanical check: **7/7 files pass** — 224 citations, 0 failures (no missing file, no out-of-range line, no quote under 20 chars, no quote missing from its line). No citation-shaped text escaped the parser. `git diff d189043 -- stack/ ecosystem/ packets/ synthesis/` is empty, so the check matches the working tree.
 - Review verdict: **0/7 files pass as-is; 36 findings** (4 P1, 17 P2, 15 P3), counting M6 from the rule-9 addendum at the end. P1 means a builder would act on something the evidence contradicts, or a FrankenSuite project is misrepresented. P2 means a tier or accuracy error, or a citation that does not carry its bullet. P3 means wording or a tag.
 - Verdict order: all seven "Adopt and wrap" verdicts rest on a real, cited gap, so none is a reflex and none should change. But four files name individual incumbents whose evidence is existence, activity and file names only. Under METHOD step 1 those incumbents belong at Watch level (agent-memory M2, rag-frameworks R2, vector-dbs V3, and inference-engines I1 in part).
 - Confidence (rule 3): all seven grades are consistent with the rule. No file claims High. The three Low grades (quantization, agent-memory, rag-frameworks) each cite the pack saying its evidence is thin or unread.
@@ -129,30 +129,30 @@ Checks: Verdict order PASS for pgvector, Qdrant, Chroma and faiss, which have fr
 
 ## Reproduction notes
 
-- Mechanical checker (inline Python, not committed). It extracts every `(<path>:<line>[-<line>] "<quote>")` from `git show 4a518ba:stack/<f>.md`, reads the cited file at 4a518ba, strips `*` and backticks from both sides, collapses whitespace, and requires the quote to be ≥20 chars and a substring of the cited line or range. Result: inference-engines 40, quantization 33, structured-output 26, embedding-serving 32, agent-memory 30, rag-frameworks 28, vector-dbs 35; 224 citations, 0 fail.
+- Mechanical checker (inline Python, not committed). It extracts every `(<path>:<line>[-<line>] "<quote>")` from `git show d189043:stack/<f>.md`, reads the cited file at d189043, strips `*` and backticks from both sides, collapses whitespace, and requires the quote to be ≥20 chars and a substring of the cited line or range. Result: inference-engines 40, quantization 33, structured-output 26, embedding-serving 32, agent-memory 30, rag-frameworks 28, vector-dbs 35; 224 citations, 0 fail.
 - The same checker validated all 57 quotes proposed in the fixes above against their cited lines: 57/57 present, each ≥20 chars.
 - UNVERIFIED: whether the vLLM `test_correctness_mteb.py` gate runs per PR (the verdict already carries this as unknown); TEI's `integration-test.yaml` cron (not re-fetched).
 
 ## Evidence level of this review, and what I did not run
 
-- Evidence level: [Verified] for every table row (live HTTP 200 reads at the stated time) and for the mechanical check (script output at 4a518ba). Finding rationales that turn on analyst judgment are [Inference]: the verdict-order calls, whether a starter-kit mapping fits, and whether a FrankenSuite omission is unfair.
-- Not run: no engine, library, benchmark or test suite named in any verdict was installed or executed; no repository was cloned; no CI run page was opened, so nothing here is [CI-observed]. The `tests/benchmarks/*` and `test_correctness_mteb.py` bodies in vLLM, TEI's workflows, Graphiti's `unit_tests.yml`, and letta-code's workflows were not re-read. After this report was written, `git diff --stat 4a518ba -- stack/` showed none of the seven verdict files changed; other stack files and METHOD.md had changed. No verdict file was edited; `reviewed_by` stays unset until the author's fixes are re-checked.
-- Superseded by the addendum below. When first written, rule 9 was uncommitted and `stack/licenses.tsv` was absent. It has since landed at b5eb9d8, and the file is in the working tree at HEAD 4f5bc86.
+- Evidence level: [Verified] for every table row (live HTTP 200 reads at the stated time) and for the mechanical check (script output at d189043). Finding rationales that turn on analyst judgment are [Inference]: the verdict-order calls, whether a starter-kit mapping fits, and whether a FrankenSuite omission is unfair.
+- Not run: no engine, library, benchmark or test suite named in any verdict was installed or executed; no repository was cloned; no CI run page was opened, so nothing here is [CI-observed]. The `tests/benchmarks/*` and `test_correctness_mteb.py` bodies in vLLM, TEI's workflows, Graphiti's `unit_tests.yml`, and letta-code's workflows were not re-read. After this report was written, `git diff --stat d189043 -- stack/` showed none of the seven verdict files changed; other stack files and METHOD.md had changed. No verdict file was edited; `reviewed_by` stays unset until the author's fixes are re-checked.
+- Superseded by the addendum below. When first written, rule 9 was uncommitted and `stack/licenses.tsv` was absent. It has since landed at ce4186e, and the file is in the working tree at HEAD d24c92d.
 
-## Addendum: METHOD rule 9 (licenses.tsv committed at b5eb9d8), expectations for the re-check
+## Addendum: METHOD rule 9 (licenses.tsv committed at ce4186e), expectations for the re-check
 
-Cross-check run 2026-09-23 with inline Python. It parsed every `**owner/repo**` in the "Adopt, do not rebuild" sections of the seven files and compared them against `git show b5eb9d8:stack/licenses.tsv`. **Every adopted repository has a row, and names match exactly** [Verified]. The author must carry these non-permissive or status items, citing the row or a dated `gh api repos/<o>/<r> --jq .license` read, and say in "Build only if" whether each could justify building:
+Cross-check run 2026-09-23 with inline Python. It parsed every `**owner/repo**` in the "Adopt, do not rebuild" sections of the seven files and compared them against `git show ce4186e:stack/licenses.tsv`. **Every adopted repository has a row, and names match exactly** [Verified]. The author must carry these non-permissive or status items, citing the row or a dated `gh api repos/<o>/<r> --jq .license` read, and say in "Build only if" whether each could justify building:
 
 - inference-engines:18 and quantization:18, **NVIDIA/TensorRT-LLM**: `Apache-2.0 AND LicenseRef-LTX-2-Community`, permissive-with-conditions (the `ltx2/` path falls under the LTX-2 Community License).
 - rag-frameworks:15, **run-llama/llama_index**: core MIT; several separately published integration packages are AGPL-3.0 or GPL.
 - vector-dbs:20, **weaviate/weaviate**: `BSD-3-Clause AND LicenseRef-Weaviate`; the `wl/` directory is under the Weaviate license.
 - agent-memory:18, **getzep/zep** (new accuracy finding, M6, P2): the licenses.tsv note records that the README now reads "Zep Cloud: Examples & Integrations" and "Zep Community Edition is no longer supported. Its code has been moved to the legacy/ folder". The bullet's "Zep's product repo" is therefore wrong. Fix: describe it as Zep Cloud's examples repository whose deprecated Community Edition sits in `legacy/`. Keep it only as the source of its LoCoMo and LongMemEval harnesses, not as an adoptable memory layer. With M6, agent-memory has 6 findings and the total is 36.
 
-## Re-check against 9663da8 (2026-09-23)
+## Re-check against 3074f81 (2026-09-23)
 
-**Mechanical check at 9663da8:** 7/7 pass [Verified]. This time the parser also covers `stack/licenses.tsv` citations: 307 citations, 0 failures, no unparsed path:line text. The working tree matched 9663da8 for all seven files before signing.
+**Mechanical check at 3074f81:** 7/7 pass [Verified]. This time the parser also covers `stack/licenses.tsv` citations: 307 citations, 0 failures, no unparsed path:line text. The working tree matched 3074f81 for all seven files before signing.
 
-**Original 36 findings:** 36/36 resolved as specified [Verified by reading each line at 9663da8]. This includes the rule-9 license items (TensorRT-LLM LTX-2, llama_index copyleft integrations, Weaviate `wl/`) and M6 (Zep moved to Copy, with the Community Edition deprecation stated).
+**Original 36 findings:** 36/36 resolved as specified [Verified by reading each line at 3074f81]. This includes the rule-9 license items (TensorRT-LLM LTX-2, llama_index copyleft integrations, Weaviate `wl/`) and M6 (Zep moved to Copy, with the Community Edition deprecation stated).
 
 **Fresh license reads by the reviewer** (`gh api repos/<o>/<r> --jq '[.license.spdx_id, .archived] | @tsv'`, 2026-09-23, 14 repos) [Verified]:
 - TensorRT-LLM and Weaviate return NOASSERTION; llama_index returns MIT; zep returns Apache-2.0. None of the four is archived.
@@ -166,9 +166,9 @@ Cross-check run 2026-09-23 with inline Python. It parsed every `**owner/repo**` 
 - vector-dbs:40 (frankengraphdb hybrid operator not integrated) is correct and cited.
 - R-I2 and R-M2 come from gaps in fix text I proposed myself.
 
-**Signed (commit bced21d):** stack/structured-output.md and stack/embedding-serving.md. The commit adds only the `reviewed_by: ReviewServing` / `review_date: 2026-09-23` lines (4 insertions).
+**Signed (commit 785fee3):** stack/structured-output.md and stack/embedding-serving.md. The commit adds only the `reviewed_by: ReviewServing` / `review_date: 2026-09-23` lines (4 insertions).
 
-**Returned unsigned, 9 residual items.** All are P3 (a citation gap or wording); none changes a verdict. Every proposed quote below was checked on its line at 9663da8.
+**Returned unsigned, 9 residual items.** All are P3 (a citation gap or wording); none changes a verdict. Every proposed quote below was checked on its line at 3074f81.
 1. **R-I1 inference-engines:31** and **R-Q1 quantization:18, :31**: "video-generation model directory" is not in the evidence. The path, the row and the fresh LICENSE/NOTICE reads support only visual generation. Fix: "a visual-generation model directory (`visual_gen/models/ltx2/`)".
 2. **R-I2 inference-engines:39**: the frankensearch reranker's use of frankentorch is uncited here. Add (packets/frankensearch-assessment.md:119 "pure-Rust frankentorch int8 BERT by default"; packets/franken_whisper-assessment.md:9 "encoder/decoder transformer on FrankenTorch CPU kernels").
 3. **R-Q2 quantization:31**: vLLM is adopted at :18, but its license row is uncited. Add (stack/licenses.tsv:99 "vllm-project/vllm Apache-2.0 permissive").
@@ -182,10 +182,10 @@ Non-blocking note: structured-output:32 carries the same placeholder command as 
 
 Not run in the re-check: no engines or suites; no clones; no CI pages. The five unsigned files carry no `reviewed_by`.
 
-## Final re-check against d98b944 (2026-09-23)
+## Final re-check against 35ca868 (2026-09-23)
 
-- **Mechanical check at d98b944:** 7/7 pass [Verified]. 321 citations, `stack/licenses.tsv` included, 0 failures, no unparsed path:line text. The two files signed in bced21d are unchanged since, and bced21d is an ancestor of HEAD.
-- **Residual items:** 9/9 closed [Verified by reading each hunk]. The 9663da8→d98b944 diff touches only the lines named in R-I1, R-I2, R-Q1, R-Q2, R-M1, R-M2, R-R1, R-V1 and R-V2. The replacement quotes are the ones proposed above, and each is on its cited line.
-- **Signed in b158b58:** inference-engines, quantization, agent-memory, rag-frameworks and vector-dbs. The commit adds only `reviewed_by: ReviewServing` / `review_date: 2026-09-23` to each (10 insertions, 0 deletions).
-- **All seven verdicts are now signed:** bced21d covers structured-output and embedding-serving; b158b58 covers the other five.
+- **Mechanical check at 35ca868:** 7/7 pass [Verified]. 321 citations, `stack/licenses.tsv` included, 0 failures, no unparsed path:line text. The two files signed in 785fee3 are unchanged since, and 785fee3 is an ancestor of HEAD.
+- **Residual items:** 9/9 closed [Verified by reading each hunk]. The 3074f81→35ca868 diff touches only the lines named in R-I1, R-I2, R-Q1, R-Q2, R-M1, R-M2, R-R1, R-V1 and R-V2. The replacement quotes are the ones proposed above, and each is on its cited line.
+- **Signed in 59fb66b:** inference-engines, quantization, agent-memory, rag-frameworks and vector-dbs. The commit adds only `reviewed_by: ReviewServing` / `review_date: 2026-09-23` to each (10 insertions, 0 deletions).
+- **All seven verdicts are now signed:** 785fee3 covers structured-output and embedding-serving; 59fb66b covers the other five.
 - Not run: no engines or suites; no clones; no CI pages. Gate K / K5 was not run by me; the site verify chain is the lead's job.

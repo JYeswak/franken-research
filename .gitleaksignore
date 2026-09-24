@@ -11,8 +11,8 @@ packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
 packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
 site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
 site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
-# History-scan fingerprints (gitleaks git), introduced by commit 114d5f0:
-114d5f0e9804511f646169be2b7efe0f40742f80:packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
-114d5f0e9804511f646169be2b7efe0f40742f80:packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
-114d5f0e9804511f646169be2b7efe0f40742f80:site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
-114d5f0e9804511f646169be2b7efe0f40742f80:site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
+# History-scan fingerprints (gitleaks git), introduced by commit 1ef0f8e:
+1ef0f8ecf57d671c9a5334e63d5fe6fd898c3478:packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
+1ef0f8ecf57d671c9a5334e63d5fe6fd898c3478:packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
+1ef0f8ecf57d671c9a5334e63d5fe6fd898c3478:site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
+1ef0f8ecf57d671c9a5334e63d5fe6fd898c3478:site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:25

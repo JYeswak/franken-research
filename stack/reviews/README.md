@@ -1,6 +1,6 @@
 # Review records
 
-Every agent-stack verdict and every self-claim in this directory's parent was checked by someone other than its author before release (see [../METHOD.md](../METHOD.md), Independence). These are those reviews, published as written, including the rounds where the reviewer refused to sign. One edit was made after the fact: before first publication, the unpushed history was rewritten to remove email addresses from one commit (see [../../CHANGELOG.md](../../CHANGELOG.md)), which renamed later commits, so commit hashes cited in these records were updated to the published ones.
+Every agent-stack verdict and every self-claim in this directory's parent was checked by someone other than its author before release (see [../METHOD.md](../METHOD.md), Independence). These are those reviews, published as written, including the rounds where the reviewer refused to sign. One edit was made after the fact: the repository history was rewritten on 2026-09-23 to remove email addresses (see [../../CHANGELOG.md](../../CHANGELOG.md)), which renamed commits, so commit hashes cited in these records were updated to the published ones.
 
 | Record | What was reviewed | Outcome |
 |---|---|---|
@@ -10,3 +10,4 @@ Every agent-stack verdict and every self-claim in this directory's parent was ch
 | [serving-memory-retrieval.md](serving-memory-retrieval.md) | 7 model-serving and memory/retrieval verdicts | 36 findings, then 9 residual, then signed |
 | [rigor-index-adopted-audit.md](rigor-index-adopted-audit.md) | Every practice this repository claimed to have adopted | 36 claimed; 12 confirmed, 24 partial, 2 mislabeled; the index now claims 15 adopted and 21 partial |
 | [franken_code_browser-recheck.md](franken_code_browser-recheck.md) | The dated re-check of franken_code_browser after its v0.1.0 release | 1 finding, fixed |
+| [history-rewrite-2026-09-23.tsv](history-rewrite-2026-09-23.tsv) | The commit history, after email addresses were removed from every commit | Old and new commit hash for all 44 pre-rewrite commits, so CI runs and links from before the rewrite stay traceable |
