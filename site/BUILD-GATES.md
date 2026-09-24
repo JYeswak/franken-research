@@ -134,7 +134,9 @@ fetched (offline gate). Resolving zero links is a failure. A fragment
 `repo=<name>` on `index.html` is a map route, not an element id: the map
 opens the repository of that name, and gate D makes the `data.js` names
 equal the brief names, so the route passes only when `briefs/<name>.html`
-exists.
+exists. The only query a local link may carry is the asset stamp
+`assets/<file>?v=<10 hex>` (gate S checks its value); the link resolves
+without it, and any other query on a local link fails.
 **Why:** "zero dead links, zero dead anchors, all 311 relative links resolve
 on disk (fully offline-capable)" — do not regress.
 **Accepted:** external URLs are not fetched; `href="#"` placeholders owned by
@@ -144,7 +146,8 @@ JS are tolerated.
 
 **What:** every `../starter-kit/…` link on the method page resolves to a
 shipped file, and every local asset (`assets/…`, `favicon.svg`) referenced by
-any scanned page exists.
+any scanned page exists. A trailing `?v=<10 hex>` stamp is removed before
+the file is looked up; any other suffix is kept, so it fails as a missing file.
 **Why:** P0-1 (stations cited files that weren't shipped), P0-2 (the runnable
 kit must actually ship). The animation may reenact, but everything it points
 at must be inspectable.
@@ -188,6 +191,11 @@ the ZIP, so the gate tests exactly that — at 1440×900 and 390×844. Collects
 `Runtime.consoleAPICalled`, `Runtime.exceptionThrown`, and `Log.entryAdded`;
 fails on any console error, any exception, any page rendering blank (<200
 chars of text), or any horizontal overflow (`scrollWidth > clientWidth`).
+It also fails when a page loads no stamped asset, when a stylesheet from
+`assets/` did not load (its rules cannot be read: a stylesheet that failed to
+load from `file://` still has a sheet object, but reading its rules throws),
+or when a page loads `assets/data.js` and `window.FRANKEN_DATA` is undefined:
+the `?v=` stamps must not stop assets loading from `file://`.
 Only known-harmless headless software-WebGL deprecation noise is filtered,
 and the filter pattern is documented in the script.
 **Why:** "0 console errors, 0 blank pages, 0 overflows" (do-not-regress render
@@ -443,15 +451,30 @@ canonical page list in `shell.mjs` and the section URLs in `sitemap.xml`
 prefills (`repository`, `page`) is missing from its form in
 `.github/ISSUE_TEMPLATE/`, and when a brief is not an option of the
 correction form's repository dropdown. Zero pages found is a failure.
+**Asset stamps.** Every `<script src>` and `<link rel="stylesheet" href>` on
+these pages that loads a file from `assets/` must end in `?v=` and the first
+10 hex digits of that file's sha256, for example
+`../assets/shell.css?v=0323daf6e7`. The gate fails, naming the page and the
+reference, when a stamp is missing or stale, when a loaded asset does not
+exist, and when no page loads anything from `assets/`. Links that cite an
+asset without loading it (`<a href="../assets/data.js">` on the rigor page)
+are left alone. **Anyone who edits a file in `site/assets/` must run
+`bun run build:shell`** and commit the restamped pages; `bun run build:map`
+does it after rebuilding the bundle.
 **The fix for drift is `bun run build:shell`** (same as
-`node site/scripts/shell.mjs`), which rewrites every region and then runs the
-check. `make-stack.mjs` fills the same regions in the pages it generates, so
-gate K4 and gate S agree. The home page is a full-screen map with its own
-layout: it carries only the head and dir regions.
+`node site/scripts/shell.mjs`), which rewrites every region and stamp and then
+runs the check. `make-stack.mjs` fills the same regions in the pages it
+generates, so gate K4 and gate S agree. The home page is a full-screen map
+with its own layout: it carries only the head and dir regions.
 **Why:** the v1.2 audits found three nav systems, six labels for the home
 page, no directory in any footer, no way to suggest a fix from a page, and no
 statement of who made the project. One renderer and a gate keep one label per
-page everywhere.
+page everywhere. The stamps exist because `_headers` sets `max-age=0` on
+`/assets/*` and the deployment's `pages.dev` URL honours it, but the
+`zeststream.ai` zone's browser cache TTL raised it to `max-age=14400` on
+fr.zeststream.ai (observed 2026-09-24), so a returning visitor could get new
+HTML with a stylesheet or script up to four hours old. A changed file now has
+a new URL.
 **Accepted:** the gate compares markup, not rendering; gate I and a
 screenshot pass cover what the shell looks like. `404.html` has no shell: the
 host serves it at any depth, so relative links would point at the wrong
@@ -670,3 +693,25 @@ when frankenredis's link said `repository=frankensqlite`, with the page named
 when its `page` pointed at frankenfs, and with "no correction link" when the
 link was deleted from frankenfs. The ten earlier planted faults still failed,
 and the unchanged copy passed.
+
+Asset stamps (v1.2 re-audit): fr.zeststream.ai served `/assets/*` with
+`max-age=14400` although `_headers` says `max-age=0`, and the re-audit saw the
+new phone menu rendered with the old `shell.css`. `shell.mjs` now stamps every
+script and stylesheet a shell page loads from `assets/` with `?v=` and the
+first 10 hex digits of the file's sha256 (92 references on 78 pages at the
+time); gate S checks the stamps, gates E and F resolve the file without the
+stamp, gate E rejects any other query on a local link, and gate I asserts
+stamped stylesheets and `data.js` load from `file://`. `bun run build:map` runs
+`build:shell` after the bundle. The gate blocks, copied verbatim out of
+`verify-site.sh`, were run against scratch copies of the tree (never the real
+tree): the unchanged copy passed E, F, S and I. S failed with the new stamp
+named after one comment line was appended to `shell.css` and, separately,
+to `data.js` without a rebuild, and with "has no ?v= stamp" after the stamp
+was removed from the method page's `fill-stats.js` tag. E failed on
+`../updates/index.html?x=1`. A stamped stylesheet link to a missing file
+failed F and S; in I it failed with "stylesheet did not load from file://"
+(a probe showed a failed `file://` stylesheet still has a sheet object whose
+rules throw on read, so the check reads the rules). An emptied `data.js`
+failed I with "window.FRANKEN_DATA undefined". The live host answered
+`/assets/shell.css?v=0323daf6e7` with 200 `text/css` and `cf-cache-status:
+MISS`, a separate cache entry from the unstamped URL.

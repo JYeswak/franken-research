@@ -40,9 +40,11 @@ bun install --frozen-lockfile
 bun run verify
 ```
 
-Every change to `site/` must leave every gate passing (the README lists them; `bun run verify` prints one line per gate). Never weaken, skip, or narrow a gate to get a green run; fix the page instead. If you think a gate is wrong, say so in the issue or pull request and leave the gate in place. What each gate checks is in [site/BUILD-GATES.md](site/BUILD-GATES.md). The pull request template asks for the `bun run verify` output. Generated files have their own commands: `bun run build:map` (the map bundle), `bun run build:feed` (feed and OPML, gate M), `bun run build:shell` (shared navigation and footer, gate S), and `node site/scripts/make-stack.mjs` (stack and rigor pages, gate K4).
+Every change to `site/` must leave every gate passing (the README lists them; `bun run verify` prints one line per gate). Never weaken, skip, or narrow a gate to get a green run; fix the page instead. If you think a gate is wrong, say so in the issue or pull request and leave the gate in place. What each gate checks is in [site/BUILD-GATES.md](site/BUILD-GATES.md). The pull request template asks for the `bun run verify` output. Generated files have their own commands: `bun run build:map` (the map bundle), `bun run build:feed` (feed and OPML, gate M), `bun run build:shell` (shared navigation and footer, and the `?v=` content stamps on every script and stylesheet a page loads from `site/assets/`, gate S), and `node site/scripts/make-stack.mjs` (stack and rigor pages, gate K4).
 
-If you edit `site/assets/app.src.js`, rebuild the bundle and commit both files; CI fails when they disagree:
+After editing any file in `site/assets/` (`shell.css`, `data.js`, `fill-stats.js`, `live-watch.js`, or the bundle), run `bun run build:shell` and commit the pages it restamps. Each page loads those files as `assets/<file>?v=<first 10 hex of its sha256>`, so a changed file gets a new URL and a returning visitor cannot pair new HTML with a cached old stylesheet or script. Gate S fails until the stamps match the files.
+
+If you edit `site/assets/app.src.js`, rebuild the bundle and commit both files; CI fails when they disagree. `build:map` runs `build:shell` after the bundle, so the home page's stamp follows:
 
 ```bash
 bun run build:map

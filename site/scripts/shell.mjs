@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-// site/scripts/shell.mjs: the shared shell (head links, site nav, footer) on every page of site/.
+// site/scripts/shell.mjs: the shared shell (head links, site nav, footer) on every page of site/, and the
+// content-hash stamps on the stylesheets and scripts pages load from site/assets/.
 //
-//   node site/scripts/shell.mjs                  rewrite the shell regions of every page, then run --check
+//   node site/scripts/shell.mjs                  rewrite the shell regions and asset stamps of every page, then run --check
 //   node site/scripts/shell.mjs --check          exit 1 if a page lacks a region, a region differs from a fresh
-//                                                render, the page list and sitemap.xml disagree, or a prefilled
-//                                                issue link names a field the issue forms do not have
+//                                                render, an asset stamp is missing or stale, the page list and
+//                                                sitemap.xml disagree, or a prefilled issue link names a field
+//                                                the issue forms do not have
 //   --site DIR                                   operate on another copy of site/ (issue forms read from DIR/../.github)
 //
 // A region is everything between <!-- shell:NAME --> and <!-- /shell:NAME -->. This script owns it and
@@ -17,11 +19,20 @@
 //           markers by hand, this script fills them
 // The home page is a full-screen map with its own layout; its directory comes from renderDirectory().
 // 404.html gets no shell: the host serves it at any depth, so relative links would point at the wrong folder.
+//
+// Asset stamps: every <script src> and <link rel="stylesheet" href> on a shell page that points into
+// assets/*.js or assets/*.css ends in ?v=<first 10 hex of the file's sha256>. The custom domain's
+// browser cache keeps assets for hours whatever _headers says, so a changed file needs a new URL. Anyone
+// who edits a file in assets/ (or rebuilds app.bundle.js) must run this script again; gate S fails until
+// they do. Links to assets that are not loaded (an <a href> citing data.js) are left alone.
 // verify-site.sh gate S runs --check. No dependencies beyond node's standard library.
 
 import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+
+const DEFAULT_SITE = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const SITE_ORIGIN = 'https://fr.zeststream.ai';
 export const REPO_URL = 'https://github.com/JYeswak/franken-research';
@@ -95,8 +106,52 @@ export function renderDirectory(rel = HOME, { className = '' } = {}) {
   return `<ul${className ? ` class="${esc(className)}"` : ''}>\n${items.join('\n')}\n</ul>`;
 }
 
-export function renderHead(rel) {
-  return `<link rel="stylesheet" href="${upOf(rel)}assets/shell.css">
+// ---------- asset stamps ----------
+const hashes = new Map();
+/** First 10 hex of the sha256 of site/assets/<name>; throws when the file is missing. */
+export function assetVersion(name, site = DEFAULT_SITE) {
+  const f = join(site, 'assets', name);
+  if (!hashes.has(f)) {
+    if (!existsSync(f)) throw new ShellError(`assets/${name}: missing`);
+    hashes.set(f, createHash('sha256').update(readFileSync(f)).digest('hex').slice(0, 10));
+  }
+  return hashes.get(f);
+}
+
+// A loading reference to a local asset: script src, or stylesheet link href, pointing at assets/*.js|css.
+const LOAD_TAG = /<(script|link)\b[^>]*>/gi;
+const ASSET_URL = /^((?:\.\.?\/)*)assets\/([A-Za-z0-9._\/-]+\.(?:js|css))(\?[^"#]*)?$/;
+/** Every loading asset reference in `html` with the stamp it should carry. */
+function assetRefs(rel, html, site) {
+  const out = [];
+  for (const m of html.matchAll(LOAD_TAG)) {
+    const tag = m[0];
+    const isScript = m[1].toLowerCase() === 'script';
+    if (!isScript && !/\brel="stylesheet"/i.test(tag)) continue;
+    const a = new RegExp(`\\b${isScript ? 'src' : 'href'}="([^"]*)"`).exec(tag);
+    if (!a) continue;
+    const u = ASSET_URL.exec(a[1]);
+    if (!u) continue;
+    // the path must resolve, from this page, into site/assets/ (a wrong number of ../ is not an asset of ours)
+    const target = resolve(site, dirname(rel), u[1] + 'assets/' + u[2]);
+    if (target !== join(site, 'assets', u[2])) throw new ShellError(`${rel}: ${a[1]} does not resolve into assets/`);
+    let v;
+    try { v = assetVersion(u[2], site); } catch (e) { throw new ShellError(`${rel}: loads ${a[1]}, but ${e.message}`); }
+    const want = `${u[1]}assets/${u[2]}?v=${v}`;
+    const start = m.index + a.index + a[0].indexOf('"') + 1;
+    out.push({ start, end: start + a[1].length, have: a[1], want, asset: u[2], query: u[3] || '' });
+  }
+  return out;
+}
+/** `html` with every loading asset reference stamped with its current content hash. */
+export function stampAssets(rel, html, site = DEFAULT_SITE) {
+  let out = html;
+  for (const r of assetRefs(rel, html, site).reverse()) out = out.slice(0, r.start) + r.want + out.slice(r.end);
+  return out;
+}
+
+export function renderHead(rel, site = DEFAULT_SITE) {
+  return `<link rel="stylesheet" href="${upOf(rel)}assets/shell.css?v=${assetVersion('shell.css', site)}">
 <link rel="alternate" type="application/atom+xml" title="${BRAND}" href="${SITE_ORIGIN}/feed.xml">`;
 }
 
@@ -161,8 +216,8 @@ ${renderDirectory(rel)}
 }
 
 /** The regions a page carries, in the order they are placed on a first run. */
-export function regionsFor(rel) {
-  const out = { head: renderHead(rel) };
+export function regionsFor(rel, site = DEFAULT_SITE) {
+  const out = { head: renderHead(rel, site) };
   if (rel !== HOME) { out.nav = renderNav(rel); out.footer = renderFooter(rel); }
   else out.dir = renderDirectory(HOME, { className: 'moredir' });
   return out;
@@ -210,9 +265,10 @@ function firstPlacement(rel, html, name, text) {
   throw new ShellError(`${rel}: no site nav to replace; put <!-- shell:nav --><!-- /shell:nav --> where the nav belongs`);
 }
 
-/** Returns `html` with every region of `rel` rendered fresh. Idempotent: applyShell(r, applyShell(r, h)) === applyShell(r, h). */
-export function applyShell(rel, html) {
-  const want = regionsFor(rel);
+/** Returns `html` with every region of `rel` rendered fresh and every asset stamp current.
+    Idempotent: applyShell(r, applyShell(r, h)) === applyShell(r, h). */
+export function applyShell(rel, html, site = DEFAULT_SITE) {
+  const want = regionsFor(rel, site);
   for (const name of ['head', 'nav', 'footer', 'dir']) {
     if (!(name in want) && regionOf(rel, html, name)) throw new ShellError(`${rel}: has a shell:${name} region this page should not carry`);
   }
@@ -222,7 +278,7 @@ export function applyShell(rel, html) {
     const r = regionOf(rel, out, name);
     out = r ? out.slice(0, r.start) + text + out.slice(r.end) : firstPlacement(rel, out, name, text);
   }
-  return out;
+  return stampAssets(rel, out, site);
 }
 
 // ---------- the tree ----------
@@ -274,16 +330,24 @@ export function check(site) {
   const errs = [];
   const pages = shellPages(site);
   let regions = 0;
+  let stamps = 0;
   for (const rel of pages) {
     const html = readFileSync(join(site, rel), 'utf8');
     try {
-      for (const [name, content] of Object.entries(regionsFor(rel))) {
+      for (const r of assetRefs(rel, html, site)) {
+        stamps++;
+        if (r.have === r.want) continue;
+        errs.push(r.query
+          ? `${rel}: ${r.have} carries a stale stamp; assets/${r.asset} is now ${r.want.slice(r.want.indexOf('?'))} (run: bun run build:shell)`
+          : `${rel}: ${r.have} has no ?v= stamp (run: bun run build:shell)`);
+      }
+      for (const [name, content] of Object.entries(regionsFor(rel, site))) {
         const r = regionOf(rel, html, name);
         if (!r) { errs.push(`${rel}: missing the shell:${name} region`); continue; }
         regions++;
         if (r.text !== block(name, content)) errs.push(`${rel}: shell:${name} differs from the render (run: bun run build:shell)`);
       }
-      if (applyShell(rel, html) !== html && !errs.some((e) => e.startsWith(rel + ':'))) errs.push(`${rel}: not idempotent under a rerun`);
+      if (applyShell(rel, html, site) !== html && !errs.some((e) => e.startsWith(rel + ':'))) errs.push(`${rel}: not idempotent under a rerun`);
     } catch (e) {
       if (!(e instanceof ShellError)) throw e;
       errs.push(e.message);
@@ -315,20 +379,20 @@ export function check(site) {
       }
     }
   }
-  return { errs, pages: pages.length, regions };
+  return { errs, pages: pages.length, regions, stamps };
 }
 
 // ---------- command line ----------
 function main(argv) {
   const si = argv.indexOf('--site');
-  const site = si >= 0 ? resolve(argv[si + 1]) : resolve(dirname(fileURLToPath(import.meta.url)), '..');
+  const site = si >= 0 ? resolve(argv[si + 1]) : DEFAULT_SITE;
   if (!existsSync(site) || !statSync(site).isDirectory()) { console.log('SHELL_BAD'); console.log(`  no site directory at ${site}`); return 1; }
   if (!argv.includes('--check')) {
     const changed = [];
     try {
       const next = shellPages(site).map((rel) => {
         const html = readFileSync(join(site, rel), 'utf8');
-        return [rel, html, applyShell(rel, html)];
+        return [rel, html, applyShell(rel, html, site)];
       });
       for (const [rel, before, after] of next) if (after !== before) { writeFileSync(join(site, rel), after); changed.push(rel); }
     } catch (e) {
@@ -337,15 +401,16 @@ function main(argv) {
     }
     console.log(`shell: ${changed.length} page(s) rewritten${changed.length ? ': ' + changed.join(', ') : ''}`);
   }
-  const { errs, pages, regions } = check(site);
+  const { errs, pages, regions, stamps } = check(site);
   if (!pages) errs.unshift('empty scan set: no pages found (a gate that checks nothing is not a pass)');
+  else if (!stamps) errs.unshift('empty scan set: no page loads anything from assets/ (a gate that checks nothing is not a pass)');
   if (errs.length) {
     console.log('SHELL_BAD');
     errs.slice(0, 20).forEach((e) => console.log('  ' + e));
     if (errs.length > 20) console.log(`  ... and ${errs.length - 20} more`);
     return 1;
   }
-  console.log(`SHELL_OK pages=${pages} regions=${regions} canonical=${PAGES.length}`);
+  console.log(`SHELL_OK pages=${pages} regions=${regions} canonical=${PAGES.length} stamps=${stamps}`);
   return 0;
 }
 

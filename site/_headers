@@ -1,11 +1,11 @@
 # Cloudflare Pages response headers (https://developers.cloudflare.com/pages/configuration/headers/).
 #
-# Asset URLs carry no content hash, and the site deploys automatically on every
-# push and after every watch run. With Pages' default max-age=14400 a returning
-# visitor could get a new page with a stale stylesheet or script for up to four
-# hours (seen on 2026-09-24: the new phone menu rendered with the old shell.css).
-# Revalidating every load costs one 304 per asset and keeps HTML, CSS, and JS
-# from the same deploy.
+# The site deploys automatically on every push and after every watch run. Revalidating
+# /assets/* on every load keeps HTML, CSS, and JS from the same deploy on the deployment's
+# pages.dev URL. On fr.zeststream.ai the zone's browser cache TTL raises max-age to four
+# hours whatever this file says (seen on 2026-09-24: the new phone menu rendered with the
+# old shell.css), so pages load assets as assets/<file>?v=<sha256 prefix>, written by
+# site/scripts/shell.mjs and checked by gate S: a changed file gets a new URL.
 /assets/*
   Cache-Control: public, max-age=0, must-revalidate
 

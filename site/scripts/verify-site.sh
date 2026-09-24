@@ -406,8 +406,13 @@ for p in pages:
                 continue
             if raw == '#':
                 continue  # JS-owned placeholder (verified in gate G)
-            url = unquote(raw.split('#')[0])
-            frag = raw.split('#')[1] if '#' in raw else None
+            path_q, frag = (raw.split('#', 1) + [None])[:2]
+            path, query = (path_q.split('?', 1) + [None])[:2]
+            # The only query a local link may carry is shell.mjs's content stamp on an asset, ?v=<10 hex>;
+            # the stamp's value is checked by gate S. Anything else would be ignored on file:// and on Pages.
+            if query is not None and not (re.fullmatch(r'v=[0-9a-f]{10}', query) and re.search(r'(^|/)assets/[^/]', path)):
+                errs.append('%s: query on a local link: %r (only assets/*?v=<10 hex> is allowed)' % (short, raw)); continue
+            url = unquote(path)
             base = os.path.dirname(rel)
             target = os.path.normpath(os.path.join(base, url))
             if not target.startswith(site):
@@ -465,9 +470,13 @@ for p in (os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.
     rel = p if p.startswith(site) else site + '/' + p
     tt = open(rel).read()
     for m in re.finditer(r'(?:src|href)="((?:\.\./|\./)?assets/[^"]+|favicon\.svg|\.\./favicon\.svg)"', tt):
-        a = os.path.normpath(os.path.join(os.path.dirname(rel), m.group(1)))
+        ref = m.group(1)
+        # shell.mjs stamps loaded assets with ?v=<10 hex> (gate S checks the value); resolve the file
+        # without it. Any other query or fragment is not stripped, so it fails as a missing file.
+        path = re.sub(r'\?v=[0-9a-f]{10}$', '', ref)
+        a = os.path.normpath(os.path.join(os.path.dirname(rel), path))
         if not os.path.isfile(a):
-            errs.append('%s: asset missing: %s' % (os.path.basename(p), m.group(1)))
+            errs.append('%s: asset missing: %s' % (os.path.basename(p), ref))
 print('ART_OK' if not errs else 'ART_BAD')
 for e in errs[:10]:
     print('  ' + e)
@@ -685,13 +694,24 @@ for (const page of PAGES) {
     const ev = await send('Runtime.evaluate', { returnByValue: true, expression: `(() => ({
       overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       blank: document.body ? document.body.innerText.trim().length : 0,
-      title: document.title
+      title: document.title,
+      // Local assets are loaded as assets/<file>?v=<hash> (gate S). From file:// the query must not stop
+      // them loading: every stylesheet from assets/ has readable rules (a sheet that failed to load still
+      // exists, but reading its rules throws), and data.js defined FRANKEN_DATA.
+      stamped: document.querySelectorAll('link[rel="stylesheet"][href*="assets/"][href*="?v="], script[src*="assets/"][src*="?v="]').length,
+      unloadedCss: [...document.querySelectorAll('link[rel="stylesheet"][href*="assets/"]')].filter((l) => {
+        try { return !l.sheet || !l.sheet.cssRules.length; } catch (e) { return true; }
+      }).map((l) => l.getAttribute('href')),
+      dataMissing: !!document.querySelector('script[src*="assets/data.js"]') && typeof window.FRANKEN_DATA !== 'object'
     }))()` });
     const v = ev.result.result.value;
     const label = `${page} @${vp[0]}x${vp[1]}`;
     if (!v || !v.title) { errors.push(`${label}: navigation failed`); continue; }
     if (v.overflowX > 1) errors.push(`${label}: horizontal overflow ${v.overflowX}px`);
     if (v.blank < 200) errors.push(`${label}: page looks blank (${v.blank} chars)`);
+    if (!v.stamped) errors.push(`${label}: loads no stamped asset (want assets/*?v=<hash>; run bun run build:shell)`);
+    for (const h of v.unloadedCss) errors.push(`${label}: stylesheet did not load from file://: ${h}`);
+    if (v.dataMissing) errors.push(`${label}: assets/data.js did not load from file:// (window.FRANKEN_DATA undefined)`);
     for (const e of consoleEvents) {
       const txt = JSON.stringify(e.params || e).slice(0, 300);
       // ignore known-harmless software-WebGL deprecation noise from headless Chromium
@@ -1243,11 +1263,13 @@ fi
 # ============ Gate S: shared shell (head links, site nav, footer) ============
 # scripts/shell.mjs owns four marked regions: shell:head on every page, shell:nav and shell:footer on every
 # page except the home page, and shell:dir on the home page only. --check re-renders each region and fails on a missing
-# or hand-edited one, on a page list that disagrees with sitemap.xml, or on a prefilled issue link that
-# names a field the issue forms lack. Fix drift with `bun run build:shell`. Details: ../BUILD-GATES.md.
+# or hand-edited one, on a missing or stale ?v=<content hash> on a script or stylesheet loaded from
+# assets/, on a page list that disagrees with sitemap.xml, or on a prefilled issue link that names a
+# field the issue forms lack. Fix drift (including after any edit to a file in assets/) with
+# `bun run build:shell`. Details: ../BUILD-GATES.md.
 echo "== S  shared shell =="
 S_OUT="$(node "$SITE_DIR/scripts/shell.mjs" --check --site "$SITE_DIR" 2>&1)"; S_RC=$?
-S_N="$(printf '%s\n' "$S_OUT" | sed -n 's/^SHELL_OK pages=\([0-9][0-9]*\) regions=\([0-9][0-9]*\).*/\1 pages, \2 regions/p')"
+S_N="$(printf '%s\n' "$S_OUT" | sed -n 's/^SHELL_OK pages=\([0-9][0-9]*\) regions=\([0-9][0-9]*\) .*stamps=\([0-9][0-9]*\).*/\1 pages, \2 regions, \3 asset stamps/p')"
 if [ $S_RC -eq 0 ] && [ -n "$S_N" ]; then
   pass "S shared shell matches its render on every page ($S_N)"
 else
