@@ -38,9 +38,9 @@ Inference, medium confidence: adopt an existing agent framework (LangGraph, the 
 - Only LangGraph has verified production adopters; adopter claims for the other frameworks were not checked (ecosystem/pickup/_evidence/agent-frameworks.md:35 "Adopter claims for other frameworks are not verified here").
 - microsoft/autogen is not listed above because its last push was 2026-04-15 and its claimed continuation was unverified in the pack (ecosystem/pickup/_evidence/agent-frameworks.md:36 "AutoGen is stale-ish: last push 2026-04-15"). A fresh read on 2026-09-23 of `https://api.github.com/repos/microsoft/agent-framework` returned an active repository (pushed 2026-09-23) describing itself as a framework for "building, orchestrating and deploying AI agents and multi-agent workflows" [Verified]; whether it is AutoGen's successor was not established, and its CI and tests were not read.
 - crewAI and agno were checked for test-directory layout only, so no practice is claimed from them and they are not listed as incumbents (ecosystem/pickup/_evidence/agent-frameworks.md:38 "Thin test evidence for crewAI and agno").
-- File pointers were fetched one by one, but no test suite was run (ecosystem/pickup/_evidence/agent-frameworks.md:39 "all file pointers above were individually fetched and confirmed to exist").
+- The pack records that its file pointers were fetched and confirmed to exist; it does not record any of these test suites being executed (ecosystem/pickup/_evidence/agent-frameworks.md:39 "all file pointers above were individually fetched and confirmed to exist").
 - The record/replay gap is an absence finding over the surveyed test trees only; such a harness may exist elsewhere (ecosystem/pickup/_evidence/agent-frameworks.md:40 "That is a gap a clean-room project could fill rather than copy").
-- Stars and same-day pushes show these projects are alive and used, not that they are good.
+- Stars and same-day pushes show these projects are alive and used, not that they are good (ecosystem/pickup/_evidence/agent-frameworks.md:35 "trend evidence is star-count + same-day push activity").
 
 ## Revisit when
 - An incumbent ships a record/replay harness for model calls, or a surveyed repo turns out to have one: the wrap shrinks to configuration.

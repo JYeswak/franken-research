@@ -3,13 +3,13 @@ type: guardrails
 title: Guardrails and red-teaming
 group: Eval and safety
 verdict: Adopt and wrap
-confidence: Medium
+confidence: Low
 evidence_date: 2026-09-23
 author: VerdictsOrchestration
 ---
 
 ## Bottom line
-Inference, medium confidence: put an existing rail toolkit or scanner library in front of your model and its tools (NeMo Guardrails, Guardrails AI, LLM Guard, or LlamaFirewall for tool calls), attack it with an existing red-team tool (garak, PyRIT, promptfoo), and do not write your own. Wrap both, because no project in the evidence publishes a false-positive or false-negative threshold you can inherit: keep your own labeled corpus of prompts that must pass and prompts that must be blocked, calibrate the model you use as a judge on its own set, and treat any "it blocks jailbreaks" claim as unproven until those two receipts exist.
+Inference, low confidence: put an existing rail toolkit or scanner library in front of your model and its tools (NeMo Guardrails, Guardrails AI, LLM Guard, or LlamaFirewall for tool calls), attack it with an existing red-team tool (garak, PyRIT, promptfoo), and do not write your own. Wrap both, because no project in the evidence publishes a false-positive or false-negative threshold you can inherit: keep your own labeled corpus of prompts that must pass and prompts that must be blocked, calibrate the model you use as a judge on its own set, and treat any "it blocks jailbreaks" claim as unproven until those two receipts exist. Confidence is low because the evidence is file trees only: no test was run and no CI result was checked.
 
 ## Adopt, do not rebuild
 - **NVIDIA-NeMo/Guardrails**: input, output, dialog, retrieval and execution rails configured in Colang, with jailbreak detection and LlamaGuard integration built in; it tests rails against recorded model responses and keeps real-model tests in a separately gated tier. [Verified] (ecosystem/pickup/_evidence/guardrails.md:7 "Reference input/output/dialog/retrieval/execution rails toolkit (Colang), shipped by NVIDIA"; ecosystem/pickup/_evidence/guardrails.md:24 "real-LLM QA tier separated from unit tier")

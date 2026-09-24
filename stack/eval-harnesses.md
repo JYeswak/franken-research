@@ -9,7 +9,7 @@ author: VerdictsOrchestration
 ---
 
 ## Bottom line
-Inference, medium confidence: run your evals on an existing harness (Inspect AI for agent and tool-use evals, lm-evaluation-harness for academic benchmarks, the SWE-bench harness for coding agents), and do not write your own runner. Wrap it with tests of your own graders: in the evidence only SWE-bench attacks its own scoring with spoofed passes and truncated output, and no harness showed a checked pattern for model-graded ("judge") verdicts, so a score is only as honest as the grader tests you add.
+Inference, medium confidence: run your evals on an existing harness (Inspect AI for agent and tool-use evals, lm-evaluation-harness for academic benchmarks, the SWE-bench harness for coding agents), and do not write your own runner. Wrap it with tests of your own graders: SWE-bench is the only harness whose adversarial grader tests (spoofed passes, truncated output) were read, the others were not checked for them, and no harness showed a checked pattern for model-graded ("judge") verdicts, so a score is only as honest as the grader tests you add.
 
 ## Adopt, do not rebuild
 - **UKGovernmentBEIS/inspect_ai**: a task, solver and scorer framework with 40+ model providers and sandboxed tool execution in Docker or Kubernetes; it also ships a mock model provider for offline tests. [Verified] (ecosystem/pickup/_evidence/eval-harnesses.md:7 "Task/solver/scorer DSL, 40+ model providers, sandboxed tool execution (Docker/k8s)"; ecosystem/pickup/_evidence/eval-harnesses.md:23 "A mock implementation of the ModelAPI class for testing purposes")
