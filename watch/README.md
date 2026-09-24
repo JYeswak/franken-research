@@ -17,14 +17,14 @@ Material means the event could move a master-matrix cell in [`synthesis/00-overv
 |---|---|---|
 | New GitHub release or tag (or an existing one moved or removed) | `release` | Release class R1 to R3, TRL, NODUS ring |
 | License SPDX id changed, or a license file's text changed with the same SPDX id (the rider lives in the text) | `license` | License |
-| `.github/workflows` file added or removed | `ci` | CI class C1 to C6 |
+| `.github/workflows` file removed (any removal, including down to none), or workflow files appearing where there were none | `ci` | CI class C1 to C6 |
 | Archived or unarchived | `archived` | NODUS ring, TRL, bus factor |
 | Renamed (same id, new name) | `renamed` | none directly; links name the old repository |
 | Deleted, made private, or transferred | `deleted` | every cell |
 | Pin no longer an ancestor of HEAD (compare 404, diverged, or behind) | `pin-rewritten` | every cell |
 | New public repository whose name starts with `franken` or whose primary language is Rust (and is not a fork) | `new-repo` | candidate for a new packet |
 
-Informational, never material: commit volume, new repositories that are neither `franken*` nor Rust, and renames, deletions, or archiving of repositories outside the assessed 44.
+Informational, never material: commit volume; workflow files added to a set that already had files (they arrive almost daily and cannot move the CI cell on their own, which depends on whether checks run and pass); new repositories that are neither `franken*` nor Rust; and renames, deletions, or archiving of repositories outside the assessed 44. Added workflow files still show in the census column `workflows_changed_since_pin` and in the report, and the daily ones are listed in the day's changes file; they get no issue. The same rule applies to `--backfill-since-pin`.
 
 ## Files
 
@@ -33,8 +33,13 @@ Informational, never material: commit volume, new repositories that are neither 
 - `watch/state.json`: the full current snapshot, sorted, with `checked_at` and `previous_checked_at`. `checked_at` is the only field that changes when nothing upstream changed. The daily commit of this file also keeps the repository active, so GitHub does not disable the schedule after 60 idle days.
 - `watch/census/YYYY-MM-DD.tsv`: one row per assessed repository: `repo, pin, head, head_date, commits_since_pin, releases_since_pin, license_spdx, license_changed_since_pin, workflows_count, workflows_changed_since_pin, archived, material_since_pin`.
 - `watch/changes/YYYY-MM-DD.json`: material and informational changes new since the previous state, with before, after, and evidence URLs. The first run has no previous state and is recorded as a baseline with no changes.
+- `watch/latest.json`: a summary of the run for the website (421 bytes in a local run on 2026-09-24; gate W fails it at 2 KB), keys in a fixed order: `schema` (1), `checked_at`, `previous_checked_at`, `assessed`, `found`, `moved_since_pin`, `commits_since_pin_total`, `material_since_pin_count` (events, as in the census), `material_new_today_count` (material changes in the day's changes file), `public_repos`, `new_public_repos_today` (names), `census_path`, and `changes_path`. Every count is computed from the same snapshot as the census, and gate W re-derives each one from the rendered fixture census. The scheduled run writes and commits it; until it has, the site shows its static line.
 
 No commit author name or email is ever requested or recorded.
+
+### On the website
+
+The site has no deploy step for the watch. [`site/assets/live-watch.js`](../site/assets/live-watch.js) reads `watch/latest.json` from `raw.githubusercontent.com`, and the open issues labelled `watch` from the GitHub API, when someone views the map or `/updates/`. It fills the `#live-watch` line with when the last check ran, how many repositories moved since the pin, and how many watch issues are open, linking the census file and the issue list. Both requests are unauthenticated, and the result is cached in the browser for ten minutes. If `latest.json` cannot be read (offline, blocked), the page keeps the static line written into the HTML, which links to the same two places; if only the issue count fails (the API allows 60 unauthenticated requests an hour per address), the line leaves the count out. Opened from `file://` (the downloaded ZIP, and the gate I render), the script makes no requests and the static line stays.
 
 ## Running it
 
@@ -65,7 +70,7 @@ Each issue carries what changed, before and after, API evidence, the pinned matr
 
 ## Selftest and fixtures
 
-`--selftest` runs the same collect, diff, and dedupe code on `watch/fixtures/` with no network and no token. `day1.json` holds GitHub API responses recorded on 2026-09-24 for six assessed repositories and part of the public listing (GraphQL nodes as returned; REST compare trimmed to `status`, `ahead_by`, `behind_by`). `day2.json` is a synthetic next day derived from it: a new release, a license text change with the same SPDX id, a removed workflow, commits only, a rename of an assessed and of an unassessed repository, a pin that returns 404, and two new repositories. Its `_note` lists every edit. The cases assert that each of those is classified correctly, that dedupe returns `exists` for a filed title, and that output does not depend on API ordering. Gate W in `bun run verify` fails if any case fails or none run ([site/BUILD-GATES.md](../site/BUILD-GATES.md)).
+`--selftest` runs the same collect, diff, and dedupe code on `watch/fixtures/` with no network and no token. `day1.json` holds GitHub API responses recorded on 2026-09-24 for six assessed repositories and part of the public listing (GraphQL nodes as returned; REST compare trimmed to `status`, `ahead_by`, `behind_by`). `day2.json` is a synthetic next day derived from it: a new release, a license text change with the same SPDX id, a removed workflow, commits only, a rename of an assessed and of an unassessed repository, a pin that returns 404, and two new repositories. Its `_note` lists every edit. The cases assert that each of those is classified correctly, that dedupe returns `exists` for a filed title, that output does not depend on API ordering, that workflow files added to an existing set stay informational while one removal or a first workflow file is material (daily and since the pin, on day-1 variants), and that every `latest.json` count matches the census rendered from the same state. Gate W in `bun run verify` fails if any case fails or none run ([site/BUILD-GATES.md](../site/BUILD-GATES.md)).
 
 ## What it does not do
 

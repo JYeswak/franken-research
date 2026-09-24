@@ -7,7 +7,7 @@
 // packets, or synthesis. See watch/README.md.
 //
 //   node watch/watch.mjs                  dry report on stdout, writes nothing
-//   node watch/watch.mjs --apply          also write watch/state.json, census/<date>.tsv, changes/<date>.json
+//   node watch/watch.mjs --apply          also write watch/state.json, census/<date>.tsv, changes/<date>.json, latest.json
 //   node watch/watch.mjs --issues         also open or comment on issues for changes new since the last state
 //   node watch/watch.mjs --json           machine-readable report
 //   node watch/watch.mjs --fail-on-change dry report; exit 1 if anything material is new since the last state
@@ -491,6 +491,10 @@ export async function collect(source, assessed, prev, checkedAt) {
 }
 
 // ---------------------------------------------------------------- material since the pin
+// A workflow-file set change can move the CI cell only when a file goes away (any removal, down to
+// none) or CI appears where there was none. Additions to a set that already had files arrive almost
+// daily and cannot move a cell on their own: informational (census column, report), never an issue.
+export const workflowsMaterial = (before, added, removed) => removed.length > 0 || (before === 0 && added.length > 0);
 export function materialSincePin(r) {
   if (!r.found) return [{ kind: 'deleted', text: 'deleted or private' }];
   const m = [];
@@ -504,7 +508,7 @@ export function materialSincePin(r) {
   if (r.license_changed_since_pin) m.push({ kind: 'license', text: `LICENSE text changed (SPDX now ${r.license_spdx})` });
   const a = r.workflows_added_since_pin;
   const d = r.workflows_removed_since_pin;
-  if (a && d && (a.length || d.length)) m.push({ kind: 'workflows', text: `workflows +${a.length} -${d.length} (${r.workflows.length} now)` });
+  if (a && d && workflowsMaterial(r.workflows.length - a.length + d.length, a, d)) m.push({ kind: 'workflows', text: `workflows +${a.length} -${d.length} (${r.workflows.length} now)` });
   return m;
 }
 
@@ -690,11 +694,12 @@ export function diffSnapshots(prev, cur) {
     const added = c.workflows.filter((w) => !p.workflows.includes(w));
     const removed = p.workflows.filter((w) => !c.workflows.includes(w));
     if (added.length || removed.length) {
-      material.push(change(repo, 'workflows', digest(c.workflows), TITLE.workflows(added.length, removed.length, c.workflows.length), {
+      const mat = workflowsMaterial(p.workflows.length, added, removed);
+      (mat ? material : informational).push(change(repo, 'workflows', digest(c.workflows), TITLE.workflows(added.length, removed.length, c.workflows.length), {
         summary: workflowSummary(added, removed),
         before: `${p.workflows.length} files at ${short(p.head)}`, after: `${c.workflows.length} files at ${short(c.head)}`,
         value: digest(c.workflows),
-        evidence: EVIDENCE.workflows(name, p.head, c.head),
+        evidence: EVIDENCE.workflows(name, p.head, c.head), material: mat,
       }));
     }
     if (c.commits_since_pin != null && p.commits_since_pin != null && c.commits_since_pin > p.commits_since_pin) {
@@ -785,6 +790,32 @@ function renderChanges(snap, diff, existing) {
   };
 }
 
+// watch/latest.json: the small summary the site reads at view time (site/assets/live-watch.js).
+// Every count comes from the same snapshot as the census; key order is fixed here, not sorted.
+export const movedSincePin = (found) => found.filter((r) => (r.commits_since_pin ?? 0) > 0 || r.head !== r.pin).length;
+export const commitsSincePin = (found) => found.reduce((s, r) => s + (r.commits_since_pin ?? 0), 0);
+export function renderLatest(snap, changes) {
+  const day = snap.checked_at.slice(0, 10);
+  const recs = Object.values(snap.assessed);
+  const found = recs.filter((r) => r.found);
+  const newRepos = [...changes.material, ...changes.informational].filter((c) => c.kind === 'new_repo').map((c) => c.repo);
+  return JSON.stringify({
+    schema: 1,
+    checked_at: snap.checked_at,
+    previous_checked_at: snap.previous_checked_at,
+    assessed: recs.length,
+    found: found.length,
+    moved_since_pin: movedSincePin(found),
+    commits_since_pin_total: commitsSincePin(found),
+    material_since_pin_count: recs.reduce((s, r) => s + materialSincePin(r).length, 0),
+    material_new_today_count: changes.material.length,
+    public_repos: snap.discovery.length,
+    new_public_repos_today: [...new Set(newRepos)].sort(cmp),
+    census_path: `watch/census/${day}.tsv`,
+    changes_path: `watch/changes/${day}.json`,
+  }, null, 2) + '\n';
+}
+
 function writeOutputs(snap, diff) {
   const day = snap.checked_at.slice(0, 10);
   const files = {
@@ -795,6 +826,7 @@ function writeOutputs(snap, diff) {
   const existing = existsSync(changesFile) ? JSON.parse(readFileSync(changesFile, 'utf8')) : null;
   const changes = renderChanges(snap, diff, existing);
   files[changesFile] = toJson(changes);
+  files[join(WATCH_DIR, 'latest.json')] = renderLatest(snap, changes);
   for (const f of Object.keys(files)) mkdirSync(dirname(f), { recursive: true });
   for (const [f, body] of Object.entries(files)) writeFileSync(`${f}.tmp`, body);
   for (const f of Object.keys(files)) renameSync(`${f}.tmp`, f);
@@ -944,6 +976,9 @@ function buildReport(snap, diff, prev, opts, api, elapsedMs) {
   const recs = Object.values(snap.assessed);
   const found = recs.filter((r) => r.found);
   const perRepo = recs.map((r) => ({ repo: r.repo, events: materialSincePin(r) })).filter((x) => x.events.length);
+  // Workflow files added since the pin to a set that already had some: informational, still reported.
+  const wfAdded = found.filter((r) => r.workflows_added_since_pin?.length && !materialSincePin(r).some((e) => e.kind === 'workflows'))
+    .map((r) => ({ repo: r.repo, added: r.workflows_added_since_pin.length, now: r.workflows.length }));
   const assessedIds = new Set(found.map((r) => r.id));
   const newSincePin = snap.discovery.filter((d) => !assessedIds.has(d.id) && d.created_at >= `${ASSESSMENT_DATE}T00:00:00Z`)
     .map((d) => ({ name: d.name, language: d.language, created_at: d.created_at, candidate: isCandidate(d) }));
@@ -959,8 +994,8 @@ function buildReport(snap, diff, prev, opts, api, elapsedMs) {
       deleted_or_private: recs.length - found.length,
       pin_unreachable: found.filter((r) => !r.pin_reachable).length,
       archived: found.filter((r) => r.archived).length,
-      moved_since_pin: found.filter((r) => (r.commits_since_pin ?? 0) > 0 || r.head !== r.pin).length,
-      commits_since_pin_total: found.reduce((s, r) => s + (r.commits_since_pin ?? 0), 0),
+      moved_since_pin: movedSincePin(found),
+      commits_since_pin_total: commitsSincePin(found),
     },
     discovered: {
       public_repos: snap.discovery.length,
@@ -970,6 +1005,7 @@ function buildReport(snap, diff, prev, opts, api, elapsedMs) {
       created_since_assessment: newSincePin,
     },
     material_since_pin: { events: perRepo.reduce((s, x) => s + x.events.length, 0), repos: perRepo.length, by_repo: perRepo },
+    workflow_additions_since_pin: wfAdded,
     since_previous: {
       baseline: diff.baseline,
       material: diff.material.map((c) => ({ title: c.title, kind: c.kind, evidence: c.evidence[0] })),
@@ -990,6 +1026,8 @@ function printReport(rep) {
   L.push(`moved since pin: ${a.moved_since_pin} of ${a.found} (${a.commits_since_pin_total} commits; commits alone are informational)`);
   L.push(`material since pin: ${rep.material_since_pin.events} event(s) in ${rep.material_since_pin.repos} repo(s)`);
   for (const x of rep.material_since_pin.by_repo) for (const e of x.events) L.push(`  ${x.repo}: ${e.text}`);
+  const wa = rep.workflow_additions_since_pin;
+  L.push(`workflow files added since pin (informational: additions to an existing set): ${wa.length} repo(s)${wa.length ? `: ${wa.map((x) => `${x.repo} +${x.added} (${x.now} now)`).join(', ')}` : ''}`);
   const ns = rep.discovered.created_since_assessment;
   L.push(`public repos created since ${ASSESSMENT_DATE}, not assessed: ${ns.length}`);
   for (const d of ns) L.push(`  ${d.name} (${d.language ?? 'no language'}, created ${d.created_at.slice(0, 10)}): ${d.candidate ? 'assessment candidate' : 'informational'}`);
@@ -1085,6 +1123,55 @@ async function selftest() {
     const m = mat('franken_agent_detection', 'workflows');
     expect(m.length === 1 && / -1 /.test(m[0].title), `got ${JSON.stringify(m.map((c) => c.title))}`);
   });
+  // Variants of the day-1 snapshot with one repository's workflow set replaced (now, and at the pin).
+  const wfSnap = (now, atPin) => {
+    const s = JSON.parse(JSON.stringify(s1));
+    const r = s.assessed.frankenlibc;
+    r.workflows = [...now].sort(cmp);
+    r.workflows_added_since_pin = r.workflows.filter((w) => !atPin.includes(w));
+    r.workflows_removed_since_pin = atPin.filter((w) => !r.workflows.includes(w));
+    return s;
+  };
+  const wfBase = s1.assessed.frankenlibc.workflows;
+  const wfDaily = (prev, cur) => {
+    const x = diffSnapshots(prev, cur);
+    return { m: x.material.filter((c) => c.kind === 'workflows').map((c) => c.title), i: x.informational.filter((c) => c.kind === 'workflows').map((c) => c.title) };
+  };
+  const wfPin = (snap) => ({
+    material: materialSincePin(snap.assessed.frankenlibc).filter((e) => e.kind === 'workflows').map((e) => e.text),
+    backfill: sincePinChanges(snap).filter((c) => c.kind === 'workflows').map((c) => c.title),
+  });
+  test('workflow additions to a set that already had files are informational, daily and since the pin', () => {
+    expect(wfBase.length > 0, 'fixture frankenlibc has no workflows');
+    const cur = wfSnap([...wfBase, 'zz-added.yml'], wfBase);
+    const d1 = wfDaily(s1, cur);
+    expect(d1.m.length === 0 && d1.i.length === 1 && d1.i[0] === `[watch] frankenlibc: workflows +1 -0 (${wfBase.length + 1} now)`, `daily ${JSON.stringify(d1)}`);
+    const p = wfPin(cur);
+    expect(p.material.length === 0 && p.backfill.length === 0, `since pin ${JSON.stringify(p)}`);
+    // The recorded fixture itself: frankenlibc added 7 files to the 2 it had at the pin.
+    expect(JSON.stringify(wfPin(s1)) === '{"material":[],"backfill":[]}', `recorded frankenlibc ${JSON.stringify(wfPin(s1))}`);
+    const row = renderCensus(s1).split('\n').find((ln) => ln.startsWith('frankenlibc\t')).split('\t');
+    expect(row[CENSUS_COLUMNS.indexOf('workflows_changed_since_pin')] === '+7 -0', `census still lists the additions: ${row}`);
+  });
+  test('one workflow removal is material, daily and since the pin, even with additions', () => {
+    const now = [...wfBase.slice(1), 'zz-added.yml'];
+    const cur = wfSnap(now, wfBase);
+    const title = `[watch] frankenlibc: workflows +1 -1 (${wfBase.length} now)`;
+    const d1 = wfDaily(s1, cur);
+    expect(d1.m.length === 1 && d1.m[0] === title && d1.i.length === 0, `daily ${JSON.stringify(d1)}`);
+    const p = wfPin(cur);
+    expect(p.material.length === 1 && p.backfill.length === 1 && p.backfill[0] === title, `since pin ${JSON.stringify(p)}`);
+    const gone = wfDaily(s1, wfSnap([], wfBase));
+    expect(gone.m.length === 1 && gone.m[0] === `[watch] frankenlibc: workflows +0 -${wfBase.length} (0 now)`, `non-empty to empty ${JSON.stringify(gone)}`);
+  });
+  test('workflows appearing where there were none is material, daily and since the pin', () => {
+    const cur = wfSnap(['ci.yml'], []);
+    const title = '[watch] frankenlibc: workflows +1 -0 (1 now)';
+    const d1 = wfDaily(wfSnap([], []), cur);
+    expect(d1.m.length === 1 && d1.m[0] === title && d1.i.length === 0, `daily ${JSON.stringify(d1)}`);
+    const p = wfPin(cur);
+    expect(p.material.length === 1 && p.backfill.length === 1 && p.backfill[0] === title, `since pin ${JSON.stringify(p)}`);
+  });
   test('commits-only change is not material', () => {
     const before = s1.assessed.franken_alignment;
     const after = s2.assessed.franken_alignment;
@@ -1134,25 +1221,53 @@ async function selftest() {
   });
   test('backfill on day1 files each since-pin event once; a second backfill finds only existing issues', async () => {
     const titles = sincePinChanges(s1).map((c) => c.title);
-    const want = ['[watch] franken_code_browser: release v0.1.0', '[watch] frankenlibc: workflows +7 -0 (9 now)'];
+    // frankenlibc's since-pin workflow change is additions only (+7 to the 2 at the pin): not filed.
+    const want = ['[watch] franken_code_browser: release v0.1.0'];
     expect(JSON.stringify(titles) === JSON.stringify(want), `titles ${JSON.stringify(titles)}`);
     const daily = mat('franken_code_browser', 'release')[0].title;
     expect(daily === '[watch] franken_code_browser: release v0.1.1', 'daily and backfill title formats differ');
     const store = memoryIssues();
     const first = await syncIssues(store.api, s1, sincePinChanges(s1));
-    expect(first.created.length === 2 && first.exists.length === 0 && !first.rollup, `first: ${JSON.stringify(first)}`);
-    expect(store.labels.has('watch') && store.labels.has('release') && store.labels.has('ci'), `labels ${[...store.labels]}`);
+    expect(first.created.length === 1 && first.exists.length === 0 && !first.rollup, `first: ${JSON.stringify(first)}`);
+    expect(store.labels.has('watch') && store.labels.has('release') && !store.labels.has('ci'), `labels ${[...store.labels]}`);
     const rc = first.rechecks;
     expect(rc.length === 1 && rc[0].title === want[0] && rc[0].files.join() === 'updates/franken_code_browser-2026-09-24.md', `re-check pointers ${JSON.stringify(rc)}`);
     const second = await syncIssues(store.api, s1, sincePinChanges(s1));
-    expect(second.exists.length === 2 && second.created.length === 0 && second.commented.length === 0 && second.rechecks.length === 0 && !second.rollup, `second: ${JSON.stringify(second)}`);
-    expect(store.issues.length === 2 && store.issues.every((i) => i.state === 'open') && store.comments.get(1).length === 1, 'duplicate issue or comment, or an issue was closed');
+    expect(second.exists.length === 1 && second.created.length === 0 && second.commented.length === 0 && second.rechecks.length === 0 && !second.rollup, `second: ${JSON.stringify(second)}`);
+    expect(store.issues.length === 1 && store.issues.every((i) => i.state === 'open') && store.comments.get(1).length === 1, 'duplicate issue or comment, or an issue was closed');
   });
   test('outputs are deterministic regardless of API node order', async () => {
     const shuffled = { ...day1, discovery: [...day1.discovery].reverse() };
     const again = await collect(fixtureSource(shuffled), [...day1.assessed].reverse(), null, s1.checked_at);
     expect(toJson(again) === toJson(s1), 'state differs');
     expect(renderCensus(again) === renderCensus(s1), 'census differs');
+  });
+
+  test('latest.json counts match the census rendered from the same state', () => {
+    const latestOf = (snap, diff) => renderLatest(snap, renderChanges(snap, diff, null));
+    const text = latestOf(s2, d);
+    const l = JSON.parse(text);
+    const keys = ['schema', 'checked_at', 'previous_checked_at', 'assessed', 'found', 'moved_since_pin', 'commits_since_pin_total',
+      'material_since_pin_count', 'material_new_today_count', 'public_repos', 'new_public_repos_today', 'census_path', 'changes_path'];
+    expect(JSON.stringify(Object.keys(l)) === JSON.stringify(keys), `keys ${Object.keys(l)}`);
+    expect(Buffer.byteLength(text) < 2048, `${Buffer.byteLength(text)} bytes`);
+    const col = Object.fromEntries(CENSUS_COLUMNS.map((c, i) => [c, i]));
+    const rows = renderCensus(s2).split('\n').filter((ln) => ln && !ln.startsWith('#')).slice(1).map((ln) => ln.split('\t'));
+    const found = rows.filter((r) => r[col.head] !== '-');
+    const want = {
+      schema: 1, checked_at: s2.checked_at, previous_checked_at: s1.checked_at,
+      assessed: rows.length, found: found.length,
+      moved_since_pin: found.filter((r) => (Number(r[col.commits_since_pin]) || 0) > 0 || r[col.head] !== r[col.pin]).length,
+      commits_since_pin_total: found.reduce((s, r) => s + (Number(r[col.commits_since_pin]) || 0), 0),
+      material_since_pin_count: rows.reduce((s, r) => s + (r[col.material_since_pin] === 'no' ? 0 : r[col.material_since_pin].slice(5).split('; ').length), 0),
+      material_new_today_count: d.material.length, public_repos: day2.discovery.length,
+      new_public_repos_today: ['dotfiles_extra', 'franken_newthing'],
+      census_path: 'watch/census/2026-09-25.tsv', changes_path: 'watch/changes/2026-09-25.json',
+    };
+    for (const [k, v] of Object.entries(want)) expect(JSON.stringify(l[k]) === JSON.stringify(v), `${k}: latest ${JSON.stringify(l[k])}, census ${JSON.stringify(v)}`);
+    expect(l.moved_since_pin > 0 && l.material_since_pin_count > 0 && l.material_new_today_count === 6, 'fixture exercises nothing');
+    const base = JSON.parse(latestOf(s1, diffSnapshots(null, s1)));
+    expect(base.previous_checked_at === null && base.material_new_today_count === 0 && base.new_public_repos_today.length === 0, `baseline ${JSON.stringify(base)}`);
   });
 
   let failed = 0;
@@ -1173,7 +1288,7 @@ async function selftest() {
 // ---------------------------------------------------------------- main
 const USAGE = `usage: node watch/watch.mjs [--apply] [--issues [--backfill-since-pin]] [--json] [--fail-on-change] | --selftest
   (no flags)        dry report on stdout; writes nothing
-  --apply           write watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json
+  --apply           write watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json, watch/latest.json
   --issues          open or comment on issues in ${ISSUE_REPO} for material changes new since the last state
   --backfill-since-pin  with --issues: also file every material-since-pin event (events older than the
                     first state never reach a daily diff); same titles, dedupe, and 20-per-run cap

@@ -125,6 +125,13 @@ footer a{color:var(--accent)}
 
 <main id="main">
 
+<div class="card" id="watch">
+  <h2><span class="n">Live watch</span>Checked every day, filed as issues</h2>
+  <p id="live-watch">Watched daily by a GitHub Action: see the <a href="https://github.com/JYeswak/franken-research/tree/main/watch/census">latest census</a> and the <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">changes open for triage</a>.</p>
+  <p>Every day at 11:23 UTC a scheduled workflow reads all <span data-stat="total">44</span> repositories through the GitHub API and compares each with its pin and with the previous day. It writes a census, and opens an issue labelled <code>watch</code> for any change that could move a matrix cell: a new release or tag, a license edit, workflow files removed or appearing where there were none, archiving, a rename, a deletion, a rewritten pin, or a new franken or Rust repository. New commits and added workflow files are counted in the census but never filed.</p>
+  <p>Each issue then goes through the same loop: triage (could this move a cell?), a dated re-check under <code>updates/</code> if it could, a review of that re-check by a separate agent session, any new practice added to the <a href="../rigor/index.html">rigor table</a>, and a close that links all of it. The watch reports and never edits a verdict. The rules are in <a href="https://github.com/JYeswak/franken-research/blob/main/updates/METHOD.md">updates/METHOD.md</a>, and what the watch reads is in <a href="https://github.com/JYeswak/franken-research/blob/main/watch/README.md">watch/README.md</a>.</p>
+</div>
+
 <div class="card" id="why">
   <h2><span class="n">Why pins</span>A verdict needs a fixed object</h2>
   <p>Some of these repositories take dozens of commits a day. A finding about "the repo" with no commit attached is out of date before anyone reads it, and nobody can check it. So every packet names one commit and its date, and every claim in it is about that commit. When the code moves, the packet stays true about what it read; it just stops being the newest reading.</p>
@@ -532,5 +539,6 @@ footer a{color:var(--accent)}
 </div>
 <script src="../assets/data.js"></script>
 <script src="../assets/fill-stats.js"></script>
+<script src="../assets/live-watch.js" defer></script>
 </body>
 </html>
