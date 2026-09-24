@@ -86,6 +86,13 @@ The author of a verdict never reviews it. A reviewer checks every citation again
 
 `stack/rigor-practices.tsv` collects the practices worth copying across the 21 evidence packs and the FrankenSuite corpus, one row each, and maps them onto the starter kit and onto this repository. Columns:
 
-`id` (RP-NNN) · `practice` · `what_to_copy` · `areas` (slugs, or `frankensuite`, `;`-separated) · `evidenced_in` (owner/repo, `;`-separated) · `source` (`path:line`) · `source_quote` (at least 20 characters, verbatim from that line) · `checklist` (starter-kit ids like `A2;B6`, or `none`) · `our_status` (`adopted` | `candidate` | `not-applicable`) · `our_proof` (commit, file, or the reason it does not apply).
+`id` (RP-NNN) · `practice` · `what_to_copy` · `areas` (slugs, or `frankensuite`, `;`-separated) · `evidenced_in` (owner/repo, `;`-separated) · `source` (`path:line`) · `source_quote` (at least 20 characters, verbatim from that line) · `checklist` (starter-kit ids like `A2;B6`, or `none`) · `our_status` (`adopted` | `partial` | `candidate` | `not-applicable`) · `our_proof` (commit, file, or the reason it does not apply; for `partial`, what we do and what is missing).
 
-Gate K fails if a `source` line does not contain its `source_quote`, or if an `adopted` row has no proof that resolves in this repository.
+**What each status claims about this repository:**
+
+- `adopted`: the proof does the whole practice as `what_to_copy` describes it, and it runs where it matters: a CI practice is in the workflow GitHub runs on the pushed commit; a gate practice is inside `bun run verify`; a scheduled practice has fired at least once. Existing is not implementing.
+- `partial`: we do part of the practice. `our_proof` names the part we do (with its proof) and the part that is missing. Prefer this to either rounding up to `adopted` or rounding down to `candidate`.
+- `candidate`: applies here and is not done.
+- `not-applicable`: does not apply to this repository, with the reason.
+
+Gate K fails if a `source` line does not contain its `source_quote`, or if an `adopted` or `partial` row has no proof that resolves in this repository. The gate can only check that a proof exists, not that it does the practice, so every `adopted` claim is also audited by someone other than the index's author before release; the audit record lives in `stack/reviews/`.
