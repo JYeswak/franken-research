@@ -55,15 +55,17 @@ jobs:
       - name: Install (lockfile must be current)
         run: bun install --frozen-lockfile
 
-      - name: Watch (census, changes, issues)
+      - name: Watch (census, changes, issues, feed)
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           node watch/watch.mjs --apply --issues
+          # A new census is a feed entry; gate M fails if site/feed.xml is stale.
+          node site/scripts/make-feed.mjs
           # Stage the new files so gate L (tracked files only) scans them.
-          git add watch/
+          git add watch/ site/feed.xml
 
-      - name: Gate chain (A..L, W)
+      - name: Gate chain (A..M, W)
         env:
           CHROME_PATH: /usr/bin/google-chrome
         run: |
@@ -71,18 +73,18 @@ jobs:
           "$CHROME_PATH" --version
           bun run verify
 
-      - name: Commit watch/ only
+      - name: Commit watch/ and the feed only
         run: |
-          git add watch/
-          if git diff --cached --quiet -- watch/; then
-            echo "watch/ unchanged; nothing to commit"
+          git add watch/ site/feed.xml
+          if git diff --cached --quiet -- watch/ site/feed.xml; then
+            echo "watch/ and feed unchanged; nothing to commit"
             exit 0
           fi
           day="$(node -p "require('./watch/state.json').checked_at.slice(0, 10)")"
           n="$(node -p "require('./watch/changes/${day}.json').material.length")"
           git -c user.name='github-actions[bot]' \
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
-              commit -m "watch: ${day} census (${n} material) [live]" -- watch/
+              commit -m "watch: ${day} census (${n} material) [live]" -- watch/ site/feed.xml
           # A plain push: if main moved during the run, this fails rather than
           # landing a combination the gate chain did not check. The next run
           # starts from the new main.
