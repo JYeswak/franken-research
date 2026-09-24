@@ -1241,8 +1241,8 @@ else
 fi
 
 # ============ Gate S: shared shell (head links, site nav, footer) ============
-# scripts/shell.mjs owns three marked regions on every page: shell:head everywhere, shell:nav and
-# shell:footer everywhere except the home page. --check re-renders each region and fails on a missing
+# scripts/shell.mjs owns four marked regions: shell:head on every page, shell:nav and shell:footer on every
+# page except the home page, and shell:dir on the home page only. --check re-renders each region and fails on a missing
 # or hand-edited one, on a page list that disagrees with sitemap.xml, or on a prefilled issue link that
 # names a field the issue forms lack. Fix drift with `bun run build:shell`. Details: ../BUILD-GATES.md.
 echo "== S  shared shell =="
@@ -1256,9 +1256,10 @@ fi
 
 # ============ Gate V: verdict strip on every brief ============
 # scripts/brief-strip.mjs owns two marked regions on every brief: brief:style in <head> and brief:strip
-# under the title (ring, TRL, CI class, license, the brief's own bottom line, a Why link, and one sentence
-# of FrankenSuite context). --check re-renders both from assets/data.js and the map's palette and CI words
-# in assets/app.src.js, and fails on a missing or hand-edited region, on a strip or a ring widget or TRL
+# under the title (ring, TRL, CI class, license, the brief's own bottom line, a Why link, a link to the
+# prefilled correction form, and one sentence of FrankenSuite context). --check re-renders both from
+# assets/data.js and the map's palette and CI words in assets/app.src.js, and fails on a missing or
+# hand-edited region, on a correction link whose repository or page is not this brief, on a strip or a ring widget or TRL
 # gauge whose ring or TRL disagrees with data.js, and on a "What would change the verdict" list collapsed
 # into one item or carrying its "Until then" sentence as an item. Fix drift with
 # `node site/scripts/brief-strip.mjs`. Details: ../BUILD-GATES.md.

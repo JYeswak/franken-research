@@ -12,7 +12,9 @@
 //           ring widget's colours, and touch-target sizes. First run: inserted after the first </style>.
 //   strip   in the hero, directly under the title: ring, TRL, CI class, license, the brief's own bottom line
 //           ("Use it? ... Learn from it? ...", cut from its verdict cards) with a Why link to the section that
-//           holds them, and one sentence placing the repo in FrankenSuite. First run: replaces p.hero__dek.
+//           holds them, a "Correct this brief" link to the same prefilled correction form the shell footer
+//           links (taken from shell.mjs renderFooter), and one sentence placing the repo in FrankenSuite.
+//           First run: replaces p.hero__dek.
 // Sources: ring, TRL, CI class, license class and the repo count from assets/data.js (the map's data); ring
 // colours, the CI-green colour and the CI class words from assets/app.src.js (the map's palette), so a colour
 // on a brief means what it means on the map. make-og.mjs imports the same palette for the share cards.
@@ -22,6 +24,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from '
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import vm from 'node:vm';
+import { renderFooter, SITE_ORIGIN, REPO_URL } from './shell.mjs';
 
 export const RINGS = ['Invest', 'Pilot', 'Explore', 'Monitor']; // inner to outer, as on the map
 const PILL_ORDER = ['Monitor', 'Explore', 'Pilot', 'Invest']; // the order of the brief ring widget's pills
@@ -103,6 +106,13 @@ function verdictSection(rel, html) {
   return secs[secs.length - 1][1];
 }
 
+/** The prefilled correction-form URL for a brief, exactly as the shell footer renders it (so the two can't drift). */
+export function correctionUrl(rel) {
+  const m = /<a href="([^"]*template=correction\.yml[^"]*)"/.exec(renderFooter(rel));
+  if (!m) throw new StripError(`${rel}: shell.mjs renderFooter has no correction.yml link for this page`);
+  return m[1].replace(/&amp;/g, '&');
+}
+
 /** The pin date the brief's hero states ("Assessment pinned September 22, 2026 (the assessed commit)"). */
 function pinDate(rel, html) {
   const m = /<div class="hero__meta"><span>Assessment pinned ([A-Z][a-z]+ \d{1,2}, \d{4}) \(the assessed commit\)<\/span>/.exec(html);
@@ -128,7 +138,7 @@ export function renderStrip(repo, rel, html, data, map) {
 <div class="bstrip__fact"><dt>CI (continuous integration)</dt><dd${repo.ciKey === 'C1' ? ' class="bstrip__green"' : ''}>${esc(ciText)}</dd></div>
 <div class="bstrip__fact"><dt>License</dt><dd>${esc(lic)}</dd></div>
 </dl>
-<p class="bstrip__line"><span class="bstrip__part"><span class="bstrip__q">Use it?</span> ${use}</span> <span class="bstrip__part"><span class="bstrip__q">Learn from it?</span> ${learn}</span> <a class="bstrip__why" href="#${esc(why)}">Why<span class="bstrip__sr"> this verdict</span><span class="bstrip__arrow" aria-hidden="true">&darr;</span></a></p>
+<p class="bstrip__line"><span class="bstrip__part"><span class="bstrip__q">Use it?</span> ${use}</span> <span class="bstrip__part"><span class="bstrip__q">Learn from it?</span> ${learn}</span> <span class="bstrip__acts"><a class="bstrip__why" href="#${esc(why)}">Why<span class="bstrip__sr"> this verdict</span><span class="bstrip__arrow" aria-hidden="true">&darr;</span></a> <a class="bstrip__fix" href="${esc(correctionUrl(rel))}">Spot an error? Correct this brief<span class="bstrip__sr"> (opens a GitHub issue form)</span><span class="bstrip__arrow" aria-hidden="true">&nearr;</span></a></span></p>
 </div>
 <p class="bstrip__ctx">FrankenSuite is Jeffrey Emanuel&rsquo;s set of <span data-stat="total">${data.repos.length}</span> repos written mostly by AI coding agents, and this brief grades one of them. See it <a href="../index.html#repo=${encodeURIComponent(repo.name)}">on the map</a> or <a href="../index.html#tableview">in the verdict table</a>.</p>`;
 }
@@ -155,6 +165,9 @@ export function renderStyle(repo, map) {
 .bstrip__q { margin-right: 0.35em; font-family: var(--sans); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
 .bstrip__why { font-family: var(--sans); font-size: 14px; font-weight: 600; white-space: nowrap; }
 .bstrip__arrow { margin-left: 0.3em; }
+.bstrip__acts { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; }
+.bstrip__fix { font-family: var(--sans); font-size: 14px; color: var(--ink-dim); white-space: nowrap; }
+.bstrip__fix:hover { color: var(--accent); }
 .bstrip__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .bstrip__ctx { max-width: 640px; margin: 0 auto 2rem; font-size: 17px; line-height: 1.6; font-style: italic; color: var(--ink-dim); }
 .verdict-list + .prose { margin-top: 1.6rem; }
@@ -234,6 +247,17 @@ function agreement(rel, html, repo) {
     const trl = /class="bstrip"[^>]*\bdata-trl="([^"]*)"/.exec(strip.text);
     const shown = /<span class="bstrip__ring">([^<]*)<\/span>/.exec(strip.text);
     const shownTrl = /<dd class="bstrip__trl">TRL ([^<]*)<\/dd>/.exec(strip.text);
+    const fix = /<a class="bstrip__fix" href="([^"]*)"/.exec(strip.text);
+    const name = rel.slice('briefs/'.length, -'.html'.length);
+    if (!fix) errs.push(`${rel}: strip has no correction link`);
+    else {
+      let u = null;
+      try { u = new URL(fix[1].replace(/&amp;/g, '&')); } catch { /* reported below */ }
+      const q = u ? u.searchParams : new URLSearchParams();
+      if (!u || u.origin + u.pathname !== REPO_URL + '/issues/new' || q.get('template') !== 'correction.yml') errs.push(`${rel}: strip correction link is not ${REPO_URL}/issues/new?template=correction.yml`);
+      if (q.get('repository') !== name) errs.push(`${rel}: strip correction link names repository ${JSON.stringify(q.get('repository'))}, the brief is ${name}`);
+      if (q.get('page') !== `${SITE_ORIGIN}/briefs/${name}`) errs.push(`${rel}: strip correction link names page ${JSON.stringify(q.get('page'))}, want ${SITE_ORIGIN}/briefs/${name}`);
+    }
     if (!ring || ring[1] !== repo.nodus || !shown || shown[1] !== repo.nodus) errs.push(`${rel}: strip ring ${ring ? ring[1] : 'missing'} / shown ${shown ? shown[1] : 'missing'}, data.js says ${repo.nodus}`);
     if (!trl || textOf(trl[1]) !== String(repo.trl) || !shownTrl || textOf(shownTrl[1]) !== String(repo.trl)) errs.push(`${rel}: strip TRL ${trl ? textOf(trl[1]) : 'missing'} / shown ${shownTrl ? textOf(shownTrl[1]) : 'missing'}, data.js says ${repo.trl}`);
   }

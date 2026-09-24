@@ -429,11 +429,12 @@ feed validator service is called (offline gate).
 
 ## Gate S — shared shell (head links, site nav, footer)
 
-**What:** `site/scripts/shell.mjs` owns three marked regions on every page in
+**What:** `site/scripts/shell.mjs` owns four marked regions on pages in
 `site/` except `404.html` and the evidence copies (`packets/`, `synthesis/`):
 `<!-- shell:head -->` (the `assets/shell.css` link and the Atom feed link) on
-every page, and `<!-- shell:nav -->` and `<!-- shell:footer -->` on every
-page except the home page. The gate runs `shell.mjs --check`, which fails,
+every page, `<!-- shell:nav -->` and `<!-- shell:footer -->` on every
+page except the home page, and `<!-- shell:dir -->` (the page directory inside
+the "More pages" disclosure) on the home page only. The gate runs `shell.mjs --check`, which fails,
 naming the page and region, when a region is missing, repeated, present where
 it does not belong, or different from a fresh render. It also fails when the
 canonical page list in `shell.mjs` and the section URLs in `sitemap.xml`
@@ -446,8 +447,7 @@ correction form's repository dropdown. Zero pages found is a failure.
 `node site/scripts/shell.mjs`), which rewrites every region and then runs the
 check. `make-stack.mjs` fills the same regions in the pages it generates, so
 gate K4 and gate S agree. The home page is a full-screen map with its own
-layout: it carries only the head region, and it imports `renderDirectory()`
-from `shell.mjs` for its page list.
+layout: it carries only the head and dir regions.
 **Why:** the v1.2 audits found three nav systems, six labels for the home
 page, no directory in any footer, no way to suggest a fix from a page, and no
 statement of who made the project. One renderer and a gate keep one label per
@@ -466,13 +466,17 @@ pointers) and `<!-- brief:strip -->` in the hero, directly under the title.
 The strip shows the ring, TRL, CI class and license class from
 `assets/data.js`, the brief's own bottom line ("Use it? ... Learn from it?
 ...", cut to its first clause from the two verdict cards) with a Why link to
-the section that holds those cards, and one sentence saying what FrankenSuite
+the section that holds those cards, a "Spot an error? Correct this brief" link
+to the same prefilled correction form the footer links (the URL is taken from
+`shell.mjs` `renderFooter`, so the two cannot drift), and one sentence saying what FrankenSuite
 is, with links to the repo on the map and to the verdict table. Ring colours,
 the CI-green colour and the CI class words are read from `assets/app.src.js`,
 so a colour means the same ring on the map, on a brief, and on its share card
 (`make-og.mjs` imports the same palette). The gate runs
 `brief-strip.mjs --check`, which fails, naming the brief, when a region is
-missing, repeated, or different from a fresh render; when the strip's ring or
+missing, repeated, or different from a fresh render; when the strip's correction
+link is not `issues/new?template=correction.yml` or its `repository` or `page`
+parameter names a different brief; when the strip's ring or
 TRL, the ring widget's active pill, or the TRL gauge caption disagrees with
 `data.js`; when the ring widget's pills are not in the order its colours are
 keyed to; when a "What would change the verdict" list has fewer than two items
@@ -657,3 +661,12 @@ in `app.src.js` (every brief's style region differs, since each carries all
 four pill colours), on frankensqlite's ring widget marking Pilot, on its TRL
 gauge saying 7, and on an empty briefs directory. In a clean clone of `eadcf57`
 with this pass applied, all 22 gates passed, V among them with 44 briefs.
+
+Correction link (v1.2 re-audit item 9): the strip gained "Spot an error?
+Correct this brief", whose URL `brief-strip.mjs` takes from `shell.mjs`
+`renderFooter`, so it is byte-identical to the footer's correction link. Gate V
+now parses that link. On scratch copies it failed with the repository named
+when frankenredis's link said `repository=frankensqlite`, with the page named
+when its `page` pointed at frankenfs, and with "no correction link" when the
+link was deleted from frankenfs. The ten earlier planted faults still failed,
+and the unchanged copy passed.

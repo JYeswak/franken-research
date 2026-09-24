@@ -311,6 +311,9 @@ html:not(.js) .share { display: none; }
 .bstrip__q { margin-right: 0.35em; font-family: var(--sans); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
 .bstrip__why { font-family: var(--sans); font-size: 14px; font-weight: 600; white-space: nowrap; }
 .bstrip__arrow { margin-left: 0.3em; }
+.bstrip__acts { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; }
+.bstrip__fix { font-family: var(--sans); font-size: 14px; color: var(--ink-dim); white-space: nowrap; }
+.bstrip__fix:hover { color: var(--accent); }
 .bstrip__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .bstrip__ctx { max-width: 640px; margin: 0 auto 2rem; font-size: 17px; line-height: 1.6; font-style: italic; color: var(--ink-dim); }
 .verdict-list + .prose { margin-top: 1.6rem; }
@@ -406,7 +409,7 @@ html:not(.js) .share { display: none; }
 <div class="bstrip__fact"><dt>CI (continuous integration)</dt><dd>Tests only on maintainer-private machines</dd></div>
 <div class="bstrip__fact"><dt>License</dt><dd>MIT with a clause barring OpenAI and Anthropic; not open source</dd></div>
 </dl>
-<p class="bstrip__line"><span class="bstrip__part"><span class="bstrip__q">Use it?</span> No.</span> <span class="bstrip__part"><span class="bstrip__q">Learn from it?</span> Yes.</span> <a class="bstrip__why" href="#s4">Why<span class="bstrip__sr"> this verdict</span><span class="bstrip__arrow" aria-hidden="true">&darr;</span></a></p>
+<p class="bstrip__line"><span class="bstrip__part"><span class="bstrip__q">Use it?</span> No.</span> <span class="bstrip__part"><span class="bstrip__q">Learn from it?</span> Yes.</span> <span class="bstrip__acts"><a class="bstrip__why" href="#s4">Why<span class="bstrip__sr"> this verdict</span><span class="bstrip__arrow" aria-hidden="true">&darr;</span></a> <a class="bstrip__fix" href="https://github.com/JYeswak/franken-research/issues/new?template=correction.yml&amp;repository=franken_surveillance_system&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fbriefs%2Ffranken_surveillance_system">Spot an error? Correct this brief<span class="bstrip__sr"> (opens a GitHub issue form)</span><span class="bstrip__arrow" aria-hidden="true">&nearr;</span></a></span></p>
 </div>
 <p class="bstrip__ctx">FrankenSuite is Jeffrey Emanuel&rsquo;s set of <span data-stat="total">44</span> repos written mostly by AI coding agents, and this brief grades one of them. See it <a href="../index.html#repo=franken_surveillance_system">on the map</a> or <a href="../index.html#tableview">in the verdict table</a>.</p>
 <!-- /brief:strip -->
