@@ -151,35 +151,44 @@ scene.fog = new THREE.FogExp2(0x05070d, 0.0045);
 
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000);
 const CAM_HOME = new THREE.Vector3(0, 27, 54);
-const CAM_HOME_MOBILE = new THREE.Vector3(0, 48, 50);  // frames all 44 nodes in the ~390x440 phone band
 const TGT_HOME = new THREE.Vector3(0, 2.5, 0);
-// one breakpoint for layout and framing; must match the (max-width:900px) block in index.html
-const MOBILE_MQ = window.matchMedia('(max-width: 900px)');
+// one breakpoint for layout and framing; must match the flow-layout block
+// (@media (max-width:900px), (max-height:560px)) in index.html
+const MOBILE_MQ = window.matchMedia('(max-width: 900px), (max-height: 560px)');
 const isMobileView = () => MOBILE_MQ.matches;
+const FIELD_HALF_WIDTH = 31;  // Monitor ring radius 27, plus radial jitter, node size and a margin
 function applyFraming(){
-  // framing per breakpoint; mobile keeps every node inside the viewport at load
-  camera.fov = isMobileView() ? 60 : 50;
+  if (!isMobileView()){
+    camera.fov = 50;
+    camera.position.copy(CAM_HOME);
+    camera.updateProjectionMatrix();
+    return;
+  }
+  // phones: every node inside the band at load. A tall band (portrait phone) gets a wider
+  // lens, a steeper look down so the rings fill more of its height, and whatever distance
+  // fits the whole field across its width; a squat band keeps the old 42-degree view.
+  const w = container.clientWidth || window.innerWidth;
+  const h = container.clientHeight || window.innerHeight;
+  const tall = w / h < 0.8;
+  camera.fov = tall ? 68 : 60;
+  const halfH = Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * (w / h));
+  const dist = Math.max(67.6, FIELD_HALF_WIDTH / Math.tan(halfH));
+  const elev = THREE.MathUtils.degToRad(tall ? 58 : 42.3);
+  camera.position.set(0, TGT_HOME.y + dist * Math.sin(elev), dist * Math.cos(elev));
   camera.updateProjectionMatrix();
-  camera.position.copy(isMobileView() ? CAM_HOME_MOBILE : CAM_HOME);
 }
 applyFraming();
 
-/* Narrow-screen layout: index.html insets #scene to the band between the intro
-   sheet and the bottom bar via --maptop; this keeps --maptop equal to the intro's
-   real bottom edge as it collapses, expands, or reflows. */
-const headerEl = document.getElementById('main');
+/* Desktop layout: the detail panel docks in the left column, under the compact
+   intro bar when the intro is collapsed (--paneltop). The flow layout (phones)
+   needs nothing here: the map is a band in the document below the intro. */
+const headerEl = document.getElementById('intro');
+const mapWrap = document.getElementById('mapwrap');
 function layoutMap(){
   const root = document.documentElement.style;
-  const b = Math.round(headerEl.getBoundingClientRect().bottom);
-  if (isMobileView()){
-    root.setProperty('--maptop', b + 'px');
-    root.removeProperty('--paneltop');
-  } else {
-    root.removeProperty('--maptop');
-    // desktop: the panel docks in the left column, under the compact intro bar when collapsed
-    if (document.body.classList.contains('intro-min')) root.setProperty('--paneltop', (b + 10) + 'px');
-    else root.removeProperty('--paneltop');
-  }
+  if (!isMobileView() && document.body.classList.contains('intro-min'))
+    root.setProperty('--paneltop', (Math.round(headerEl.getBoundingClientRect().bottom) + 10) + 'px');
+  else root.removeProperty('--paneltop');
 }
 layoutMap();
 
@@ -202,9 +211,8 @@ introToggle.addEventListener('click', () => {
   setIntro(expand, true);
 });
 
-/* Size the renderer to the scene container, not the window: on narrow screens
-   CSS insets #scene to the band above, so the camera frames the node field
-   into the visible region at a usable size. */
+/* Size the renderer to the scene container, not the window: on phones the map is
+   a band in the page, so the camera frames the node field into that band. */
 function sizeRenderer(){
   const w = container.clientWidth || window.innerWidth;
   const h = container.clientHeight || window.innerHeight;
@@ -212,7 +220,7 @@ function sizeRenderer(){
   camera.aspect = w / h;
   // desktop: slide the projection centre so the focus sits in free space.
   // Panel open: midway between the docked panel and the right rail (the selected
-  // node lands there). Intro card open: right of the card, where the field reads best.
+  // node lands there). Intro card open: toward the free space right of the card.
   let shift = 0;
   if (!isMobileView()){
     if (document.body.classList.contains('panel-open')){
@@ -221,7 +229,7 @@ function sizeRenderer(){
       const right = document.getElementById('controls').getBoundingClientRect().left;
       if (right > left) shift = Math.round((left + right) / 2 - w / 2);
     } else if (!document.body.classList.contains('intro-min')){
-      shift = Math.round(Math.min(140, w * 0.1));
+      shift = Math.round(Math.min(headerEl.getBoundingClientRect().right / 2, w * 0.12));
     }
   }
   if (shift) camera.setViewOffset(w, h, -shift, 0, w, h);
@@ -233,10 +241,8 @@ sizeRenderer();
   try { stored = sessionStorage.getItem('fr-intro'); } catch (e) {}
   if (stored === 'min') setIntro(false, false);
 }
-// the intro reflows (fonts, wrapping, collapse): keep the phone map band glued to it
-if (typeof ResizeObserver === 'function'){
-  new ResizeObserver(() => { layoutMap(); if (isMobileView()) sizeRenderer(); }).observe(headerEl);
-}
+// the collapsed intro bar can reflow (fonts, wrapping): keep the docked panel under it
+if (typeof ResizeObserver === 'function') new ResizeObserver(layoutMap).observe(headerEl);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.copy(TGT_HOME);
@@ -246,6 +252,10 @@ controls.minDistance = 6;
 controls.maxDistance = 160;
 controls.autoRotate = !REDUCED;  // reduced motion: no auto-orbit, ever
 controls.autoRotateSpeed = 0.45;
+// flow layout (the page scrolls): vertical swipes over the map scroll the page and
+// sideways drags orbit; the desktop layout keeps every gesture for the map
+function setTouchAction(){ renderer.domElement.style.touchAction = isMobileView() ? 'pan-y' : 'none'; }
+setTouchAction();
 let idleTimer = null;
 let userDrove = false;
 let camGoal = null;  // "Surprise me" / deep-link camera flight; any user drag cancels it
@@ -425,11 +435,15 @@ const selHalo = new THREE.Mesh(
 selHalo.visible = false;
 scene.add(selHalo);
 
-/* ---------- labels ---------- */
+/* ---------- labels ----------
+   Repo labels are buttons: a click or tap on one opens that repo's panel (a
+   double-click opens its brief, like the node). They sit in an aria-hidden layer
+   and stay out of the tab order: they move and hide every frame, so keyboard
+   and screen-reader users get the map's arrow keys and the "Jump to repo" list. */
 const labelLayer = document.getElementById('labels');
 const labelDefs = [];
-function makeLabel(html, cls){
-  const el = document.createElement('div');
+function makeLabel(html, cls, tag){
+  const el = document.createElement(tag || 'div');
   el.className = cls; el.innerHTML = html; el.style.display = 'none';
   labelLayer.appendChild(el);
   return el;
@@ -440,7 +454,11 @@ const nodeLabels = new Map();
 for (const mesh of nodeMeshes){
   const { repo, isGreen } = mesh.userData;
   const tag = isGreen ? '<span class="grntag">CI green</span>' : '';
-  const el = makeLabel(`<span class="dot" style="background:${isGreen ? GREEN.css : RING[repo.nodus].css}"></span>${repo.name}${tag}`, 'nodelabel');
+  const el = makeLabel(`<span class="dot" style="background:${isGreen ? GREEN.css : RING[repo.nodus].css}"></span>${repo.name}${tag}`, 'nodelabel', 'button');
+  el.type = 'button';
+  el.tabIndex = -1;
+  el.addEventListener('click', () => { select(mesh); jumpSelect.value = repo.name; });
+  el.addEventListener('dblclick', () => { window.location.href = briefUrl(repo); });
   labelDefs.push({ el, kind:'node', mesh });
   nodeLabels.set(mesh, el);
 }
@@ -470,25 +488,43 @@ renderer.domElement.addEventListener('pointermove', (e) => {
   pointerDirty = true;
 });
 renderer.domElement.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
-renderer.domElement.addEventListener('pointerup', (e) => {
-  if (Math.hypot(e.clientX - downX, e.clientY - downY) > 6) return;  // it was a drag
+/* A tap picks the node under the finger, or failing that the nearest node whose
+   on-screen disc lies within TOUCH_SLOP px: a fingertip is wider than most nodes.
+   Mouse clicks keep exact picking. Nodes the filters dim cost a few px extra. */
+const TOUCH_SLOP = 22;
+const pickP = new THREE.Vector3(), pickEdge = new THREE.Vector3(), camUp = new THREE.Vector3();
+function pickAt(clientX, clientY, slop){
   const r = renderer.domElement.getBoundingClientRect();
-  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
-  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  pointer.x = ((clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((clientY - r.top) / r.height) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
   hits.length = 0;
   raycaster.intersectObjects(nodeMeshes, false, hits);
-  if (hits.length) select(hits[0].object);
+  if (hits.length) return hits[0].object;
+  if (!slop) return null;
+  camUp.set(0, 1, 0).applyQuaternion(camera.quaternion);
+  let best = null, bestD = slop;
+  for (const m of nodeMeshes){
+    pickP.copy(m.position).project(camera);
+    if (pickP.z > 1 || pickP.z < -1) continue;  // behind the camera or outside the depth range
+    pickEdge.copy(m.position).addScaledVector(camUp, m.userData.size).project(camera);
+    const rad = Math.abs(pickEdge.y - pickP.y) * 0.5 * r.height;  // the node's on-screen radius
+    const sx = r.left + (pickP.x * 0.5 + 0.5) * r.width;
+    const sy = r.top + (-pickP.y * 0.5 + 0.5) * r.height;
+    const d = Math.hypot(clientX - sx, clientY - sy) - rad + (inFilter(m) ? 0 : 8);
+    if (d < bestD){ best = m; bestD = d; }
+  }
+  return best;
+}
+renderer.domElement.addEventListener('pointerup', (e) => {
+  if (Math.hypot(e.clientX - downX, e.clientY - downY) > 6) return;  // it was a drag
+  const m = pickAt(e.clientX, e.clientY, e.pointerType === 'touch' ? TOUCH_SLOP : 0);
+  if (m) select(m);
   else { kbFocus = null; deselect(); }
 });
 renderer.domElement.addEventListener('dblclick', (e) => {
-  const r = renderer.domElement.getBoundingClientRect();
-  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
-  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
-  raycaster.setFromCamera(pointer, camera);
-  hits.length = 0;
-  raycaster.intersectObjects(nodeMeshes, false, hits);
-  if (hits.length) window.location.href = briefUrl(hits[0].object.userData.repo);
+  const m = pickAt(e.clientX, e.clientY, 0);
+  if (m) window.location.href = briefUrl(m.userData.repo);
 });
 
 function doHover(){
@@ -535,16 +571,22 @@ function select(mesh){
   document.getElementById('p-lic').innerHTML = '<b>' + esc(repo.license) + '</b>';
   document.getElementById('p-rel').innerHTML = '<b>' + esc(repo.release) + '</b>';
   document.getElementById('p-ring').textContent = RING_NOTE[repo.nodus];
+  panel.inert = false;
+  panel.removeAttribute('aria-hidden');
   panel.classList.add('open');
   document.body.classList.add('panel-open');
   setHash('#repo=' + encodeURIComponent(repo.name));
   resetCopyButton();
   if (isMobileView()){
-    // phone: the panel is a bottom sheet; give it the room the intro and filters were using
+    // phone: the panel is a bottom sheet; close the filter sheet and bring the map up
     setSheet(false, false);
-    if (!document.body.classList.contains('intro-min')) setIntro(false, false);
+    revealMap();
   }
   sizeRenderer();  // phone: the band shrank above the panel sheet; desktop: recentre beside the panel
+  // phone: the band above the panel is short, and the portrait framing sits far back; glide in
+  // toward the chosen node unless a flight (Surprise me, a shared link) is already under way
+  if (isMobileView() && !camGoal && camera.position.distanceTo(mesh.position) > 50) flyTo(mesh, 45);
+  wake();
   selHalo.visible = true;
   selHalo.scale.setScalar(size * 1.7);
   focusTarget.copy(mesh.position);
@@ -562,12 +604,22 @@ function deselect(){
   } else {
     selHalo.visible = false;
   }
+  // the closed panel leaves the tab order and the accessibility tree
+  if (panel.contains(document.activeElement)) container.focus({ preventScroll: true });
+  panel.inert = true;
+  panel.setAttribute('aria-hidden', 'true');
   panel.classList.remove('open');
   document.body.classList.remove('panel-open');
   sizeRenderer();  // the map band / projection centre returns to its no-panel layout
+  wake();
   setHash('');
   focusTarget.copy(TGT_HOME);
   if (REDUCED) controls.target.copy(TGT_HOME);  // no camera glide under reduced motion
+}
+/* phone: scroll the page so the map band's top meets the top of the screen */
+function revealMap(){
+  const top = mapWrap.getBoundingClientRect().top;
+  if (Math.abs(top) > 2) window.scrollTo({ top: window.scrollY + top, behavior: REDUCED ? 'auto' : 'smooth' });
 }
 
 /* ---------- shareable links ----------
@@ -645,8 +697,9 @@ copyBtn.addEventListener('click', async () => {
   }
 });
 
-document.querySelector('#panel .close').addEventListener('click', () => { deselect(); container.focus(); });
-// the filter sheet is a modal on phones: Escape closes it before anything else sees the key
+document.querySelector('#panel .close').addEventListener('click', () => { deselect(); container.focus({ preventScroll: true }); });
+// Escape closes the filter sheet (a modal on phones, the Filters panel on desktop)
+// before anything else sees the key
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape' || !document.body.classList.contains('sheet-open')) return;
   if (!searchDrop.hidden) return;  // the search dropdown's own Escape closes it first
@@ -659,7 +712,7 @@ window.addEventListener('keydown', (e) => {
     if (tableOpen){ closeTableView(); return; }  // table view closes first
     const wasOpen = panel.classList.contains('open');
     deselect();
-    if (wasOpen) container.focus();  // return focus to the map on close
+    if (wasOpen) container.focus({ preventScroll: true });  // return focus to the map on close
   }
 });
 
@@ -693,16 +746,17 @@ function applyFilter(){
   // match-count feedback (Wave-1): visible "N of 44 match", or a zero-match note
   const fc = document.getElementById('filtercount');
   if (fc) fc.textContent = n === 0 ? 'No repos match these filters.' : n + ' of ' + nodeMeshes.length + ' match';
-  // phone: the bar button carries the active filter once the sheet is closed
-  const sb = document.getElementById('sheetbtn');
+  // the Filters buttons (phone bar, desktop rail) carry the active filter while the panel is closed
   const deep = fLic !== 'all' || fCi !== 'all' || fTrl !== 'all';
   const ringLabel = activeFilter === 'all' ? '' : activeFilter === 'green' ? 'CI green' : activeFilter;
   let label = 'Filters';
   if (ringLabel && !deep) label += ' \u00b7 ' + ringLabel + ' ' + n;
   else if (ringLabel || deep) label += ' \u00b7 ' + n + ' of ' + nodeMeshes.length;
-  sb.textContent = label;
-  sb.classList.toggle('filtered', label !== 'Filters');
-  sb.setAttribute('aria-label', label === 'Filters' ? 'Filters' : label.replace(' \u00b7 ', ': ') + ' shown. Change filters');
+  for (const b of [document.getElementById('sheetbtn'), document.getElementById('filtersbtn')]){
+    b.textContent = label;
+    b.classList.toggle('filtered', label !== 'Filters');
+    b.setAttribute('aria-label', label === 'Filters' ? 'Filters' : label.replace(' \u00b7 ', ': ') + ' shown. Change filters');
+  }
 }
 document.getElementById('filters').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
@@ -876,8 +930,6 @@ document.getElementById('resetview').addEventListener('click', resetView);
 
 const domeToggle = document.getElementById('dometoggle');
 const domeCap = document.getElementById('domecap');
-const legendEl = document.getElementById('legend');
-if (isMobileView()) legendEl.removeAttribute('open');  // legend starts collapsed on small screens
 domeToggle.addEventListener('click', () => {
   const on = !riderDomes.visible;
   riderDomes.visible = on;
@@ -885,8 +937,9 @@ domeToggle.addEventListener('click', () => {
   domeToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
   domeToggle.textContent = on ? 'Hide the rider ceiling' : 'Show the rider ceiling';
   domeCap.style.display = on ? 'block' : 'none';
-  document.body.classList.toggle('dome-on', on);  // mobile: caption takes the legend's slot
-  if (on && isMobileView()) legendEl.removeAttribute('open');  // keep the caption unobstructed
+  // desktop: the caption stacks above the bottom-right caveat (phones place it above the bar in CSS)
+  const cavTop = document.getElementById('caveat').getBoundingClientRect().top;
+  if (cavTop > 0) document.documentElement.style.setProperty('--domebottom', Math.round(window.innerHeight - cavTop + 10) + 'px');
 });
 
 /* ---------- verdict table view (P1-10) + CSV/JSON export (P1-11) ----------
@@ -949,28 +1002,33 @@ document.querySelectorAll('#vtab thead th button').forEach((btn) => {
   });
 });
 let tableOpener = null;  // the control that opened the table gets focus back on close
+let tableScrollY = 0;    // phone: the page position to return to
 function openTableView(){
   const a = document.activeElement;
-  tableOpener = (a && a !== document.body && a.tagName === 'BUTTON') ? a : null;
+  tableOpener = (a && a !== document.body && (a.tagName === 'BUTTON' || a.tagName === 'A')) ? a : null;
   setSheet(false, false);
   renderTable();
+  tableScrollY = window.scrollY;
   tableOpen = true;
   tableView.hidden = false;
   document.body.classList.add('tableon');
+  window.scrollTo(0, 0);
   tableToggle.setAttribute('aria-pressed', 'true');
-  tableBack.focus();  // focus moves into the table view on open
-  setHash('#tableview');  // shareable: index.html#tableview opens straight into the table
+  tableBack.focus({ preventScroll: true });  // focus moves into the table view on open
+  setHash('#tableview');  // shareable: index.html#tableview (or #table) opens straight into the table
 }
 function closeTableView(){
   tableOpen = false;
   tableView.hidden = true;
   document.body.classList.remove('tableon');
+  window.scrollTo(0, tableScrollY);
   tableToggle.setAttribute('aria-pressed', 'false');
   setHash(selected ? '#repo=' + encodeURIComponent(selected.userData.repo.name) : '');
   // focus returns to whichever control opened it; on phones the sheet is closed by then
   let back = tableOpener || tableToggle;
   if (isMobileView() && back.closest('#sheet')) back = document.getElementById('sheetbtn');
-  back.focus();
+  back.focus({ preventScroll: true });
+  wake();
 }
 tableToggle.addEventListener('click', openTableView);
 document.querySelectorAll('.js-table').forEach((b) => b.addEventListener('click', openTableView));
@@ -1055,7 +1113,7 @@ jumpSelect.setAttribute('aria-label', 'Jump to repo: choose one of the 44 assess
   });
 }
 jumpWrap.appendChild(jumpSelect);
-document.getElementById('controls').appendChild(jumpWrap);
+document.getElementById('fpanel').insertBefore(jumpWrap, document.getElementById('viewrow'));
 jumpSelect.addEventListener('change', () => {
   if (!jumpSelect.value) return;
   const mesh = nodeMeshes.find((m) => m.userData.repo.name === jumpSelect.value);
@@ -1085,7 +1143,7 @@ function openPanelFor(mesh){
   select(mesh);
   jumpSelect.value = mesh.userData.repo.name;
   const closeBtn = panel.querySelector('.close');
-  if (closeBtn) closeBtn.focus();  // focus moves into the panel on open
+  if (closeBtn) closeBtn.focus({ preventScroll: true });  // focus moves into the panel on open
 }
 container.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown'){
@@ -1114,31 +1172,34 @@ kbCss.textContent = [
   '#scene:focus-visible{outline:3px solid #f2a93b; outline-offset:-3px;}',
   '#kb-live{position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; ' +
     'overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}',
-  '#jumpnav summary{font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85); ' +
+  '#jumpnav{align-self:flex-start; max-width:100%;}',
+  '#jumpnav summary{font:inherit; font-size:13px; color:var(--ink); background:rgba(11,14,22,.85); ' +
     'border:1px solid var(--line); border-radius:99px; padding:7px 14px; cursor:pointer; list-style:none;}',
   '#jumpnav summary::-webkit-details-marker{display:none;}',
   '#jumpnav summary::after{content:" \\25be"; color:var(--faint);}',
   '#jumpnav:not([open]) summary::after{content:" \\25b8"; color:var(--pilot);}',
   '#jumpnav summary:hover{border-color:var(--faint);}',
-  '#jumpnav select{font:inherit; font-size:12px; color:var(--ink); background:#0b0e16; ' +
-    'border:1px solid var(--line); border-radius:10px; padding:7px 10px; margin-top:6px; max-width:230px;}',
-  '#jumpnav summary:focus-visible, #jumpnav select:focus-visible, ' +
-    '#panel .close:focus-visible, #brieflink:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}',
+  '#jumpnav select{font:inherit; font-size:13px; color:var(--ink); background:#0b0e16; ' +
+    'border:1px solid var(--line); border-radius:10px; padding:7px 10px; margin-top:6px; max-width:100%;}',
+  '@media (pointer:coarse){ #jumpnav summary, #jumpnav select{min-height:44px;} #jumpnav select{font-size:16px;} }',
 ].join('\n');
 document.head.appendChild(kbCss);
 
-/* ---------- phone filter sheet ----------
-   Under 900px the filters, search, view buttons and key live in a bottom sheet
-   (#sheet) opened from the bar's "Filters" button. On desktop #sheet is
-   display:contents and these calls only flip an unused class. */
+/* ---------- the filter sheet ----------
+   Phones: the filters, search, view buttons and key live in a bottom sheet (#sheet),
+   a modal opened from the bar's "Filters" button. Desktop: #sheet is display:contents
+   and the same state (body.sheet-open) opens the Filters panel under the rail's
+   "Filters" toggle, a plain disclosure. */
 const sheetBtn = document.getElementById('sheetbtn');
 const sheetDone = document.getElementById('sheetdone');
 const sheetEl = document.getElementById('sheet');
+const filtersBtn = document.getElementById('filtersbtn');
+const fpanel = document.getElementById('fpanel');
 function setSheet(open, moveFocus){
   const was = document.body.classList.contains('sheet-open');
   document.body.classList.toggle('sheet-open', open);
   sheetBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  // phone: an open sheet is a modal dialog; on desktop #sheet is layout-transparent and carries no role
+  filtersBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   if (open && isMobileView()){
     sheetEl.setAttribute('role', 'dialog');
     sheetEl.setAttribute('aria-modal', 'true');
@@ -1148,14 +1209,17 @@ function setSheet(open, moveFocus){
     sheetEl.removeAttribute('aria-modal');
     sheetEl.removeAttribute('aria-labelledby');
   }
+  wake();  // an open sheet can cover the map band; the render loop checks
   if (!moveFocus || was === open) return;
-  (open ? sheetDone : sheetBtn).focus();
+  if (isMobileView()) (open ? sheetDone : sheetBtn).focus();
+  else if (!open && fpanel.contains(document.activeElement)) filtersBtn.focus();
 }
 sheetBtn.addEventListener('click', () => setSheet(!document.body.classList.contains('sheet-open'), true));
 sheetDone.addEventListener('click', () => setSheet(false, true));
-// modal focus trap: Tab cycles inside the open sheet
+filtersBtn.addEventListener('click', () => setSheet(!document.body.classList.contains('sheet-open'), false));
+// phone modal focus trap: Tab cycles inside the open sheet
 sheetEl.addEventListener('keydown', (e) => {
-  if (e.key !== 'Tab' || !document.body.classList.contains('sheet-open')) return;
+  if (e.key !== 'Tab' || !isMobileView() || !document.body.classList.contains('sheet-open')) return;
   const f = [...sheetEl.querySelectorAll('button, [href], input, select, summary, [tabindex]:not([tabindex="-1"])')]
     .filter((el) => !el.disabled && el.offsetParent !== null);
   if (!f.length) return;
@@ -1165,11 +1229,11 @@ sheetEl.addEventListener('keydown', (e) => {
 });
 
 /* ---------- camera flight + "Surprise me" ---------- */
-function flyTo(mesh){
+function flyTo(mesh, dist){
   const p = mesh.position;
   const dir = camera.position.clone().sub(controls.target);
   dir.y = Math.abs(dir.y) + 0.001;  // always look down onto the node, never from below the plane
-  dir.setLength(isMobileView() ? 30 : 20);
+  dir.setLength(dist || (isMobileView() ? 30 : 20));
   const goal = p.clone().add(dir);
   userDrove = true;  // a resize must not snap the camera back home mid-tour
   controls.autoRotate = false;
@@ -1193,14 +1257,16 @@ function surprise(){
 document.querySelectorAll('.js-surprise').forEach((b) => b.addEventListener('click', surprise));
 
 document.getElementById('explorecta').addEventListener('click', () => {
-  setIntro(false, true);
+  if (isMobileView()) revealMap();  // phone: the map is the band below the intro
+  else setIntro(false, true);        // desktop: the intro folds into a bar over the map
   container.focus({ preventScroll: true });
 });
 
 /* deep links (on load and on hash edits): index.html#repo=<name> opens that
-   repo's panel; index.html#tableview opens the verdict table */
+   repo's panel; index.html#tableview (alias #table) opens the verdict table */
 function openFromHash(){
-  if (window.location.hash === '#tableview'){ if (!tableOpen) openTableView(); return; }
+  const h = window.location.hash;
+  if (h === '#tableview' || h === '#table'){ if (!tableOpen) openTableView(); return; }
   const mesh = repoFromHash();
   if (!mesh || mesh === selected) return;
   flyTo(mesh);
@@ -1210,14 +1276,38 @@ function openFromHash(){
   jumpSelect.value = mesh.userData.repo.name;
 }
 window.addEventListener('hashchange', openFromHash);
+// Links in the intro that point at this page ("See all 44 verdicts", the directory's
+// "Verdict table" and "Map") act in place instead of reloading it
+headerEl.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href]');
+  if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const u = new URL(a.href, window.location.href);
+  const page = (p) => p.replace(/index\.html$/, '');
+  if (u.origin !== window.location.origin || page(u.pathname) !== page(window.location.pathname)) return;
+  e.preventDefault();
+  if (u.hash){ setHash(u.hash); openFromHash(); }
+});
+// desktop: the card scrolls inside itself, so an opened "More pages" list is brought into view
+document.getElementById('morepages').addEventListener('toggle', (e) => {
+  if (e.target.open && !isMobileView())
+    headerEl.scrollTo({ top: headerEl.scrollHeight, behavior: REDUCED ? 'auto' : 'smooth' });
+});
 
 /* ---------- resize ---------- */
 window.addEventListener('resize', () => {
-  if (!isMobileView()) setSheet(false, false);  // the sheet only exists below the breakpoint
   layoutMap();
   sizeRenderer();
   if (!userDrove) applyFraming();  // keep breakpoint framing until the user takes over
+  wake();
 });
+// crossing the breakpoint swaps the sheet between modal and disclosure: start closed
+const onLayoutChange = () => {
+  setSheet(false, false);
+  setTouchAction();
+  for (const d of labelDefs) d.w = undefined;  // label type size differs per layout: measure again
+};
+if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onLayoutChange);
+else if (MOBILE_MQ.addListener) MOBILE_MQ.addListener(onLayoutChange);
 
 /* ---------- animation loop ---------- */
 const proj = new THREE.Vector3();
@@ -1257,12 +1347,15 @@ function updateLabels(){
     if (show) cands.push({ d, x, y, pri, below });
     else if (d.el.style.display !== 'none') d.el.style.display = 'none';  // filtered out / off screen: never a stale label
   }
-  // position + measure (sizes are cached; label text never changes)
+  // position + measure (sizes are cached; label text never changes); a label near the
+  // band's side edge slides inward so its name is never cut off
   for (const c of cands){
     c.d.el.style.display = 'block';
+    if (c.d.w === undefined){ c.d.w = c.d.el.offsetWidth; c.d.h = c.d.el.offsetHeight; }
+    const half = c.d.w / 2 + 4;
+    if (w > 2 * half) c.x = Math.min(Math.max(c.x, half), w - half);
     c.d.el.style.left = c.x + 'px';
     c.d.el.style.top = c.y + 'px';
-    if (c.d.w === undefined){ c.d.w = c.d.el.offsetWidth; c.d.h = c.d.el.offsetHeight; }
   }
   cands.sort((a, b) => b.pri - a.pri);
   const kept = [];
@@ -1289,8 +1382,7 @@ function updateLabels(){
     c.d.el.style.display = 'none';  // still crowded: the lower-priority label yields
   }
 }
-function animate(){
-  requestAnimationFrame(animate);
+function tick(){
   const t = clock.getElapsedTime();
 
   if (!REDUCED){
@@ -1323,7 +1415,40 @@ function animate(){
   renderer.render(scene, camera);
   updateLabels();
 }
-animate();
+
+/* The loop runs only while someone can see the map: it stops while the tab is
+   hidden, while the verdict table is open, while the map band is scrolled off
+   screen (phones), and while the phone filter sheet covers the visible part of
+   the band. wake() restarts it; every state change that can uncover the map calls it. */
+let rafId = 0;
+let mapOnScreen = true;
+function sheetCoversMap(){
+  if (!isMobileView() || !document.body.classList.contains('sheet-open')) return false;
+  const m = mapWrap.getBoundingClientRect();
+  const top = Math.max(0, m.top), bottom = Math.min(window.innerHeight, m.bottom);
+  if (bottom <= top) return true;
+  return window.innerHeight - sheetEl.offsetHeight <= top + 1;  // the sheet's resting top, not mid-slide
+}
+const loopWanted = () => !document.hidden && !tableOpen && mapOnScreen && !sheetCoversMap();
+function frame(){
+  rafId = 0;
+  if (!loopWanted()) return;
+  rafId = requestAnimationFrame(frame);
+  tick();
+}
+function wake(){ if (!rafId && loopWanted()) rafId = requestAnimationFrame(frame); }
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden){ cancelAnimationFrame(rafId); rafId = 0; } else wake();
+});
+window.addEventListener('scroll', wake, { passive: true });
+if (typeof IntersectionObserver === 'function'){
+  new IntersectionObserver((entries) => {
+    mapOnScreen = entries[entries.length - 1].isIntersecting;
+    wake();
+  }, { rootMargin: '120px 0px' }).observe(mapWrap);
+}
+tick();  // the first frame now, even if the map starts below the fold
+wake();
 
 // debug/testing handle
 window.__viz = { nodeMeshes, greenMeshes, camera, controls, renderer, select, deselect, riderDomes,
@@ -1341,6 +1466,7 @@ window.__viz = { nodeMeshes, greenMeshes, camera, controls, renderer, select, de
                            active: () => dropActive },
                  csv: buildCSV, json: buildJSON,
                  surprise, flyTo, openFromHash, selected: () => selected,
+                 loop: { running: () => rafId !== 0, wake }, pick: pickAt,
                  screenXY(i){
                    const m = nodeMeshes[i];
                    const r = container.getBoundingClientRect();

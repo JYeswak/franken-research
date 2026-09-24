@@ -13,7 +13,9 @@
 //   nav     every page except the home page: replaces the page's own site nav on the first run
 //           (<nav aria-label="Site">, nav.topnav, nav.sitenav or nav.back)
 //   footer  every page except the home page: placed just before </body> on the first run
-// The home page is a full-screen map with its own layout; it imports renderDirectory() from here.
+//   dir     the home page only: the page directory inside its "More pages" disclosure; place the
+//           markers by hand, this script fills them
+// The home page is a full-screen map with its own layout; its directory comes from renderDirectory().
 // 404.html gets no shell: the host serves it at any depth, so relative links would point at the wrong folder.
 // verify-site.sh gate S runs --check. No dependencies beyond node's standard library.
 
@@ -144,6 +146,7 @@ ${renderDirectory(rel)}
 export function regionsFor(rel) {
   const out = { head: renderHead(rel) };
   if (rel !== HOME) { out.nav = renderNav(rel); out.footer = renderFooter(rel); }
+  else out.dir = renderDirectory(HOME, { className: 'moredir' });
   return out;
 }
 
@@ -174,6 +177,7 @@ function firstPlacement(rel, html, name, text) {
     const i = html.indexOf(tag);
     return html.slice(0, i) + text + '\n' + html.slice(i);
   }
+  if (name === 'dir') throw new ShellError(`${rel}: no shell:dir region; put <!-- shell:dir --><!-- /shell:dir --> where the page directory belongs`);
   // nav: the page's own site nav, replaced in place
   for (const m of html.matchAll(/<nav\b([^>]*)>/g)) {
     const attrs = m[1];
@@ -191,7 +195,7 @@ function firstPlacement(rel, html, name, text) {
 /** Returns `html` with every region of `rel` rendered fresh. Idempotent: applyShell(r, applyShell(r, h)) === applyShell(r, h). */
 export function applyShell(rel, html) {
   const want = regionsFor(rel);
-  for (const name of ['head', 'nav', 'footer']) {
+  for (const name of ['head', 'nav', 'footer', 'dir']) {
     if (!(name in want) && regionOf(rel, html, name)) throw new ShellError(`${rel}: has a shell:${name} region this page should not carry`);
   }
   let out = html;

@@ -23,151 +23,179 @@
 <link rel="icon" href="./favicon.svg">
 <style>
   :root{
-    --bg:#05070d; --ink:#e9e7df; --muted:#9b98a5; --faint:#5b5a66;
+    --bg:#05070d; --ink:#e9e7df; --muted:#9b98a5; --faint:#8a8997;
     --pilot:#f2a93b; --explore:#2fd4bf; --monitor:#7f8fb4; --green:#39ff7d;
     --panel:#0b0e16; --line:#232838;
+    --cardw:clamp(460px, 44vw, 600px);  /* the intro card on the desktop layout */
   }
   *{box-sizing:border-box; margin:0; padding:0;}
+  /* desktop layout: a full-screen map with a card and a rail over it; the document does not scroll.
+     The flow layout (max-width:900px or max-height:560px, below) scrolls like a page. */
   html,body{height:100%; background:var(--bg); color:var(--ink);
     font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     overflow:hidden;}
-  #scene{position:fixed; inset:0;}
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible{
+    outline:2px solid var(--pilot); outline-offset:2px;}
+  #mapwrap{position:fixed; inset:0;}
+  #scene{position:absolute; inset:0;}
   #scene canvas{display:block;}
-  #labels{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
-  .nodelabel{position:absolute; transform:translate(-50%,-140%); white-space:nowrap;
-    font-size:11px; letter-spacing:.02em; color:var(--ink);
-    background:rgba(5,7,13,.72); border:1px solid var(--line);
-    padding:2px 8px; border-radius:99px; pointer-events:none;}
+  #labels{position:absolute; inset:0; pointer-events:none; overflow:hidden;}
+  /* repo labels are buttons: click or tap one to open that repo */
+  .nodelabel{position:absolute; transform:translate(-50%,-140%); white-space:nowrap; pointer-events:auto; cursor:pointer;
+    font:inherit; font-size:11px; line-height:1.35; letter-spacing:.02em; color:var(--ink);
+    background:rgba(5,7,13,.78); border:1px solid var(--line); padding:2px 8px; border-radius:99px;}
+  .nodelabel:hover{border-color:var(--faint); background:rgba(11,14,22,.95);}
   .nodelabel .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px; vertical-align:1px;}
   .nodelabel .grntag{font-size:10px; color:var(--green); margin-left:6px; font-weight:600;}
   .corelabel{position:absolute; transform:translate(-50%,0); white-space:nowrap;
     font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; pointer-events:none;}
 
-  /* ---------- intro card (header#main): left-hand card on desktop, top sheet on phones ---------- */
-  header{position:fixed; top:18px; left:22px; width:420px; z-index:7;
-    max-height:calc(100vh - 92px); overflow-y:auto; overscroll-behavior:contain;
-    background:rgba(8,11,19,.93); border:1px solid var(--line); border-radius:16px;
-    padding:16px 18px 14px; box-shadow:0 18px 60px rgba(0,0,0,.45);}
-  #introtoggle{position:absolute; top:12px; right:12px; font:inherit; font-size:11px; color:var(--muted);
-    background:transparent; border:1px solid var(--line); border-radius:99px; padding:5px 11px; cursor:pointer;}
+  /* ---------- intro card (header#intro) ---------- */
+  #intro{position:fixed; top:18px; left:22px; width:var(--cardw); z-index:7;
+    max-height:calc(100vh - 36px); overflow-y:auto; overscroll-behavior:contain;
+    background:rgba(8,11,19,.94); border:1px solid var(--line); border-radius:18px;
+    padding:20px 26px 16px; box-shadow:0 18px 60px rgba(0,0,0,.45);}
+  #introtoggle{position:absolute; top:14px; right:14px; font:inherit; font-size:12px; color:var(--muted);
+    background:transparent; border:1px solid var(--line); border-radius:99px; padding:6px 12px; cursor:pointer;}
   #introtoggle:hover{color:var(--ink); border-color:var(--faint);}
-  .eyebrow{font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
-    padding-right:96px; line-height:1.5;}
-  header h1{font-size:27px; line-height:1.12; font-weight:700; letter-spacing:-.015em; margin-top:8px;}
-  header h1 .brand{display:none; color:var(--pilot);}
-  p.lede{margin-top:9px; font-size:14px; line-height:1.5; color:#cfccc3;}
-  #stats{display:grid; gap:7px; margin-top:12px;}
-  .finding{background:rgba(255,255,255,.025); border:1px solid var(--line); border-radius:12px;
-    padding:8px 11px; font-size:12px; line-height:1.45; color:var(--muted);}
-  .finding .big{display:block; font-size:17px; line-height:1.25; font-weight:700; color:var(--ink);
-    letter-spacing:-.01em; margin-bottom:2px;}
-  .finding.grn .big{color:var(--green);}
-  .finding.gold .big{color:var(--pilot);}
-  .finding a, .busline a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
-  .busline{margin-top:10px; font-size:12px; line-height:1.5; color:var(--muted);}
-  #ctas{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
-  .cta{font:inherit; font-size:12.5px; font-weight:650; line-height:1.2; border-radius:99px; padding:9px 13px;
-    cursor:pointer; text-decoration:none; border:1px solid var(--line); background:rgba(11,14,22,.85); color:var(--ink);}
+  .eyebrow{font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted);
+    padding-right:100px; line-height:1.5;}
+  #intro h1{font-size:clamp(34px, min(3.4vw, 6.2vh), 52px); line-height:1.04; font-weight:750;
+    letter-spacing:-.025em; margin-top:10px;}
+  #intro h1 .h1b{display:block; color:var(--pilot);}
+  #intro h1 .brand{display:none; color:var(--pilot);}
+  p.lede{margin-top:12px; font-size:15px; line-height:1.5; color:#d3d0c7;}
+  #ctas{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
+  .cta{display:inline-block; text-align:center; min-height:44px;
+    font:inherit; font-size:14px; font-weight:650; line-height:20px; border-radius:12px; padding:11px 15px;
+    cursor:pointer; text-decoration:none; white-space:nowrap;
+    border:1px solid #3a4054; background:rgba(11,14,22,.85); color:var(--ink);}
   .cta:hover{border-color:var(--faint);}
   .cta.primary{background:var(--pilot); color:#06130a; border-color:var(--pilot);}
   .cta.primary:hover{filter:brightness(1.1);}
-  .cta.secondary{border-color:rgba(242,169,59,.6); color:var(--pilot);}
-  #pagenav{margin-top:12px; padding-top:10px; border-top:1px solid var(--line); font-size:12px;
-    display:flex; flex-wrap:wrap; gap:5px 14px;}
-  #pagenav a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
-  #pagenav a:hover{border-bottom-color:var(--pilot);}
-  /* collapsed intro: a compact bar, the map unobstructed */
-  body.intro-min header{width:auto; max-width:460px; padding:11px 16px 12px;}
-  body.intro-min .eyebrow, body.intro-min #introbody{display:none;}
-  body.intro-min header h1{font-size:15px; font-weight:650; margin-top:0; padding-right:112px; line-height:1.4;}
-  body.intro-min header h1 .brand{display:inline;}
-  body.intro-min #introtoggle{top:9px;}
-  body.intro-min #pagenav{margin-top:8px; padding-top:8px;}
+  .trust{margin-top:12px; font-size:13px; line-height:1.5;}
+  .trust a{color:var(--ink); text-decoration:underline; text-decoration-color:rgba(233,231,223,.35); text-underline-offset:3px;}
+  .trust a:hover{color:var(--pilot); text-decoration-color:currentColor;}
+  .busline{margin-top:10px; font-size:12.5px; line-height:1.5; color:var(--muted);}
+  #live-watch{margin-top:4px;}
+  .finding a, .busline a, .stackline a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
+  .finding a:hover, .busline a:hover, .stackline a:hover{border-bottom-color:var(--pilot);}
+  /* three findings: a bold lead, then the plain sentence */
+  #stats{display:grid; gap:8px; margin-top:14px;}
+  .finding{border-left:2px solid var(--line); padding:1px 0 1px 12px; font-size:12.5px; line-height:1.5; color:var(--muted);}
+  .finding .big{font-size:16px; line-height:1.3; font-weight:700; color:var(--ink); letter-spacing:-.01em; margin-right:3px;}
+  .finding.grn{border-left-color:rgba(57,255,125,.55);} .finding.grn .big{color:var(--green);}
+  .finding.gold{border-left-color:rgba(242,169,59,.55);} .finding.gold .big{color:var(--pilot);}
+  /* "More pages": the site directory (rendered by scripts/shell.mjs into the shell:dir region) */
+  #morepages{margin-top:12px; border-top:1px solid var(--line); padding-top:4px;}
+  #morepages summary{display:block; cursor:pointer; list-style:none; padding:8px 0; font-size:13px; font-weight:600; color:var(--ink);}
+  #morepages summary::-webkit-details-marker{display:none;}
+  #morepages summary::after{content:" \25b8"; color:var(--pilot);}
+  #morepages[open] summary::after{content:" \25be";}
+  #morepages summary:hover{color:var(--pilot);}
+  .moredir{list-style:none; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:2px 18px; margin:2px 0 8px;}
+  .moredir a{display:block; padding:5px 0; font-size:13px; color:var(--ink); text-decoration:none; border-bottom:1px solid #161b28;}
+  .moredir a:hover{color:var(--pilot);}
+  .moredir a[aria-current]{color:var(--muted);}
+  .stackline{margin:6px 0 4px; font-size:12.5px; line-height:1.5; color:var(--muted);}
   /* skip link: off-screen until focused */
   .skip{position:absolute; left:-9999px; top:0; z-index:99; background:var(--pilot); color:#06130a;
-    font-weight:650; font-size:13px; padding:9px 16px; border-radius:0 0 10px 0; text-decoration:none;}
+    font-weight:650; font-size:14px; padding:10px 16px; border-radius:0 0 10px 0; text-decoration:none;}
   .skip:focus{left:0;}
-  /* filter match count + search-scope note */
-  #filtercount{font-size:11px; color:var(--muted); text-align:right; min-height:14px; margin-top:2px;}
-  #searchhint{font-size:10px; color:var(--faint); text-align:right; margin-top:2px;}
-  .stat{font-size:11px; color:var(--ink); background:rgba(11,14,22,.8);
-    border:1px solid var(--line); border-radius:8px; padding:6px 10px; line-height:1.35;}
-  .stat b{color:var(--pilot); font-weight:650;}
-  .stat.neutral b{color:var(--ink);}
-  .stat.grn b{color:var(--green);}
+  #content:focus{outline:none;}
 
-  #controls{position:fixed; top:18px; right:22px; z-index:6; width:min(470px, calc(100vw - 490px));
-    display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
-  /* one-line ring key and the inline cage/dome note: the map explains itself */
-  #ringkey, #licnote{font-size:11px; line-height:1.5; color:var(--muted); text-align:right;
-    background:rgba(5,7,13,.72); border-radius:8px; padding:4px 8px;}
+  /* ---------- right rail: search, the Filters toggle and Surprise me; everything else waits behind Filters ---------- */
+  #controls{position:fixed; top:18px; right:22px; z-index:6; width:min(500px, calc(100vw - var(--cardw) - 70px));
+    display:flex; flex-direction:column; gap:8px; align-items:stretch;}
+  /* desktop: the sheet wrapper is invisible to layout; its children keep their own slots */
+  #sheet{display:contents;}
+  #sheethead, #mbar{display:none;}
+  #toprow{display:flex; gap:8px; justify-content:flex-end; align-items:flex-start;}
+  #searchrow{position:relative; flex:1 1 auto; max-width:250px; min-width:0;}
+  #search{font:inherit; font-size:14px; color:var(--ink); background:rgba(11,14,22,.92);
+    border:1px solid #3a4054; border-radius:12px; padding:9px 14px; width:100%; min-height:40px;}
+  #search::placeholder{color:var(--faint);}
+  .railbtn{flex:none; font:inherit; font-size:14px; font-weight:600; color:var(--ink); background:rgba(11,14,22,.92);
+    border:1px solid #3a4054; border-radius:12px; padding:9px 14px; min-height:40px; cursor:pointer; white-space:nowrap;}
+  .railbtn:hover{border-color:var(--faint);}
+  #filtersbtn::after{content:" \25be"; color:var(--pilot);}
+  #filtersbtn[aria-expanded="true"]{background:var(--ink); color:#0b0e16; border-color:var(--ink);}
+  #filtersbtn[aria-expanded="true"]::after{content:" \25b4"; color:#0b0e16;}
+  #filtersbtn.filtered{border-color:var(--pilot); color:var(--pilot);}
+  #searchmsg{font-size:12px; color:var(--muted); text-align:right;}
+  #searchmsg:empty{display:none;}
+  /* ring key + map hint: the only always-on text on the rail */
+  #ringkey, #hint{font-size:12px; line-height:1.5; color:var(--muted); text-align:right;
+    background:rgba(5,7,13,.78); border-radius:8px; padding:4px 8px; margin-left:auto; max-width:500px;}
+  #hint{color:var(--faint); pointer-events:none;}
+  .nw{white-space:nowrap;}
   #ringkey b{font-weight:650; color:var(--ink);}
   #ringkey .k-pilot{color:var(--pilot);} #ringkey .k-explore{color:var(--explore);}
   #ringkey .k-monitor{color:var(--monitor);}
+  .hint-touch{display:none;}
+  @media (pointer:coarse){ .hint-desk{display:none;} .hint-touch{display:inline;} }
+  /* the Filters panel: closed until #filtersbtn opens it (body.sheet-open) */
+  #fpanel{display:none; flex-direction:column; gap:10px; background:#0b0e16;
+    border:1px solid var(--line); border-radius:14px; padding:14px 16px 16px;
+    max-height:calc(100vh - 170px); overflow-y:auto; overscroll-behavior:contain; box-shadow:0 18px 60px rgba(0,0,0,.5);}
+  body.sheet-open #fpanel{display:flex;}
+  #licnote{font-size:12px; line-height:1.5; color:var(--muted);}
   #licnote .w{color:#fff; font-weight:650;} #licnote .r{color:#ff6b5e; font-weight:650;}
   #licnote .d{color:var(--pilot); font-weight:650;}
-  /* desktop: the sheet wrapper is invisible to layout; its children keep their fixed slots */
-  #sheet{display:contents;}
-  #sheethead, #mbar{display:none;}
-  .hint-touch{display:none;}
-  #filters{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+  #filters{display:flex; gap:6px; flex-wrap:wrap;}
   #filters button, #viewrow button{
-    font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
+    font:inherit; font-size:13px; color:var(--ink); background:rgba(11,14,22,.85);
     border:1px solid var(--line); border-radius:99px; padding:7px 14px; cursor:pointer;}
   #filters button:hover, #viewrow button:hover{border-color:var(--faint);}
+  #filters button:disabled{cursor:not-allowed; color:var(--muted);}
   #filters button.active{background:var(--ink); color:#0b0e16; border-color:var(--ink); font-weight:600;}
   #filters button.grnbtn.active{background:var(--green); border-color:var(--green); color:#06130a;}
-  #dometoggle{border-color:rgba(242,169,59,.55); color:var(--pilot);}
+  #dometoggle{border-color:rgba(242,169,59,.55) !important; color:var(--pilot) !important;}
   #dometoggle.on{background:rgba(242,169,59,.18); font-weight:600;}
-  #searchrow{display:flex; gap:6px; position:relative;}
-  #search{font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
-    border:1px solid var(--line); border-radius:99px; padding:7px 14px; width:210px; outline:none;}
-  #search::placeholder{color:var(--faint);}
-  #searchmsg{font-size:11px; color:var(--muted); min-height:14px; text-align:right;}
+  #filtercount{font-size:12px; color:var(--muted); min-height:16px;}
+  #searchhint{font-size:12px; color:var(--faint);}
   /* disambiguating search dropdown (P1-8): every match listed, pick on Enter/click */
   #searchdrop{position:absolute; top:calc(100% + 6px); right:0; width:max(100%, 340px); z-index:30;
     background:#0b0e16; border:1px solid var(--line); border-radius:12px; overflow:hidden;
     max-height:320px; overflow-y:auto; box-shadow:0 18px 60px rgba(0,0,0,.5);}
   .comb-opt{display:flex; align-items:center; gap:8px; width:100%; text-align:left;
-    font:inherit; font-size:12px; color:var(--ink); background:none; border:none;
-    border-bottom:1px solid #161b28; padding:8px 12px; cursor:pointer;}
+    font:inherit; font-size:13px; color:var(--ink); background:none; border:none;
+    border-bottom:1px solid #161b28; padding:9px 12px; cursor:pointer;}
   .comb-opt:last-child{border-bottom:none;}
   .comb-opt:hover, .comb-opt.active{background:rgba(242,169,59,.14);}
   .comb-opt .oname{font-weight:600; word-break:break-all;}
-  .comb-opt .ometa{margin-left:auto; font-size:10.5px; color:var(--muted); white-space:nowrap; flex:none;}
-  /* deep filters (P1-9): license, CI state, TRL — built from the data contract */
-  #filters2{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
-  #filters2 label{font-size:11px; color:var(--muted); display:flex; align-items:center; gap:6px;}
-  #filters2 select{font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
-    border:1px solid var(--line); border-radius:99px; padding:6px 10px; max-width:200px;}
-  #viewrow{display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap;}
-  /* focus-visible for the new controls */
-  #filters2 select:focus-visible, #viewrow button:focus-visible, #searchdrop .comb-opt:focus-visible,
-  #vtab thead th button:focus-visible, .tbar button:focus-visible, .schema summary:focus-visible,
-  #pagenav a:focus-visible, .cta:focus-visible, #introtoggle:focus-visible, .finding a:focus-visible,
-  .busline a:focus-visible, #mbar button:focus-visible, #sheetdone:focus-visible,
-  #copylink:focus-visible, #filters button:focus-visible,
-  #search:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
+  .comb-opt .ometa{margin-left:auto; font-size:12px; color:var(--muted); white-space:nowrap; flex:none;}
+  /* deep filters (P1-9): license, CI state, TRL, built from the data contract */
+  #filters2{display:flex; gap:8px 12px; flex-wrap:wrap;}
+  #filters2 label{font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  #filters2 select{font:inherit; font-size:13px; color:var(--ink); background:#0b0e16;
+    border:1px solid var(--line); border-radius:99px; padding:6px 10px; max-width:220px;}
+  #viewrow{display:flex; gap:6px; flex-wrap:wrap;}
+  /* bottom-right caveat on the desktop layout */
+  #caveat{position:fixed; right:22px; bottom:18px; z-index:5; max-width:360px;
+    font-size:12px; line-height:1.5; color:var(--faint); text-align:right;
+    background:rgba(5,7,13,.78); border-radius:8px; padding:4px 8px;}
+
   /* verdict table view (P1-10): full-screen overlay, the map hidden behind body.tableon */
   body.tableon{overflow-y:auto; overflow-x:hidden;}
-  body.tableon #scene, body.tableon #labels, body.tableon header, body.tableon #controls,
-  body.tableon #legend, body.tableon #caveat, body.tableon #hint, body.tableon #tip,
+  body.tableon #mapwrap, body.tableon #intro, body.tableon #controls,
+  body.tableon #caveat, body.tableon #tip,
   body.tableon #panel, body.tableon #domecap, body.tableon #mbar, body.tableon #sheethead{display:none !important;}
   body.tableon #tableview{display:block !important;}
   #tableview{position:relative; z-index:20; min-height:100vh; background:var(--bg);
     padding:28px 24px 80px; max-width:1440px; margin:0 auto;}
   .tbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
   .tbar h2{font-size:22px; font-weight:650;}
-  .tbar button{font:inherit; font-size:12px; color:var(--ink); background:#0b0e16;
+  .tbar button{font:inherit; font-size:13px; color:var(--ink); background:#0b0e16;
     border:1px solid var(--line); border-radius:99px; padding:7px 14px; cursor:pointer;}
   .tbar button:hover{border-color:var(--faint);}
   .tsp{flex:1;}
   .tcount{font-size:12px; color:var(--muted);}
-  .tnote{font-size:12px; color:var(--muted); margin:2px 0 14px;}
+  .tnote{font-size:12.5px; color:var(--muted); margin:2px 0 14px;}
   .twrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px;}
   #vtab{border-collapse:collapse; width:100%; min-width:960px; font-size:12.5px;}
   #vtab thead th{position:sticky; top:0; background:#0b0e16; text-align:left; border-bottom:1px solid var(--line); padding:0;}
-  #vtab thead th button{font:inherit; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+  #vtab thead th button{font:inherit; font-size:12px; text-transform:uppercase; letter-spacing:.06em;
     color:var(--muted); background:none; border:none; cursor:pointer; padding:10px 12px; width:100%; text-align:left;}
   #vtab thead th button:hover{color:var(--ink);}
   #vtab th[aria-sort="ascending"] button::after{content:" \25b2"; color:var(--pilot);}
@@ -188,145 +216,185 @@
   .schema dd{margin:0;}
   .schema code{color:var(--ink); font-size:12px;}
 
-  #legend{position:fixed; left:22px; bottom:18px; z-index:5; background:rgba(11,14,22,.9);
-    border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:12px; max-width:400px;
-    max-height:calc(100vh - 36px); overflow-y:auto;}
-  #legend[open]{z-index:9;}
-  #legend h2{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; font-weight:600;}
+  /* "How to read it": inside the Filters panel, collapsed until opened */
+  #legend{background:rgba(255,255,255,.02); border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:12.5px;}
+  #legend h2{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600;}
   #legend .row{display:flex; align-items:center; gap:8px; margin:3px 0; color:var(--ink);}
+  #legend .row:first-of-type{margin-top:8px;}
   #legend .sw{width:10px; height:10px; border-radius:50%; flex:none;}
   #legend .glow{width:14px; height:14px; flex:none; border-radius:50%;
     background:radial-gradient(circle, #baffd6 0%, var(--green) 45%, rgba(57,255,125,0) 72%);}
-  #legend .row small{color:var(--muted);}
-  #legend .note{margin-top:6px; color:var(--muted); font-size:11px; line-height:1.45;}
+  #legend .row small{color:var(--muted); font-size:12px;}
+  #legend .note{margin-top:6px; color:var(--muted); font-size:12px; line-height:1.45;}
   #legend .cage{display:inline-block; width:10px; height:10px; flex:none;
     border:1.5px solid #fff; border-radius:2px; transform:rotate(45deg);}
   #legend .cage.red{border-color:#ff6b5e;}
+  #legend summary{cursor:pointer; list-style:none;}
+  #legend summary::-webkit-details-marker{display:none;}
+  #legend summary::after{content:" \25be"; color:var(--faint);}
+  #legend:not([open]) summary::after{content:" \25b8"; color:var(--pilot);}
 
-  #domecap{position:fixed; left:50%; bottom:64px; transform:translateX(-50%); z-index:5;
-    max-width:560px; display:none; text-align:center;
-    background:rgba(11,14,22,.9); border:1px solid rgba(242,169,59,.5);
-    border-radius:12px; padding:10px 16px; font-size:12px; line-height:1.5; color:var(--ink);}
+  #domecap{position:fixed; right:22px; bottom:var(--domebottom, 96px); z-index:5;
+    max-width:360px; display:none; text-align:right;
+    background:rgba(11,14,22,.92); border:1px solid rgba(242,169,59,.5);
+    border-radius:12px; padding:10px 14px; font-size:12px; line-height:1.5; color:var(--ink);}
   #domecap b{color:var(--pilot);}
-
-  #caveat{position:fixed; right:22px; bottom:18px; z-index:5; max-width:330px;
-    font-size:11px; line-height:1.5; color:var(--faint); text-align:right;}
-  #hint{position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:5;
-    font-size:11px; color:var(--faint); letter-spacing:.03em; pointer-events:none;}
 
   #tip{position:fixed; z-index:9; pointer-events:none; display:none;
     background:rgba(11,14,22,.95); border:1px solid var(--line); border-radius:10px;
     padding:8px 12px; font-size:12px; max-width:260px;}
   #tip .t{font-weight:650;}
-  #tip .m{color:var(--muted); font-size:11px; margin-top:2px;}
-  #tip .g{color:var(--green); font-size:11px; margin-top:2px; font-weight:600;}
+  #tip .m{color:var(--muted); font-size:12px; margin-top:2px;}
+  #tip .g{color:var(--green); font-size:12px; margin-top:2px; font-weight:600;}
 
-  /* desktop detail panel: docks in the left column (where the intro card sits), so the
-     right rail (filters, search, view buttons) is never covered. Its top follows the
-     compact intro bar when the intro is collapsed (--paneltop, set in app.src.js);
-     its bottom clears the "How to read it" summary. */
-  #panel{position:fixed; top:var(--paneltop, 18px); left:22px; bottom:66px; width:420px; max-width:92vw; z-index:8;
+  /* desktop detail panel: docks in the left column (where the intro card sits), so the right
+     rail is never covered. Its top follows the compact intro bar when the intro is collapsed
+     (--paneltop, set in app.src.js). Inert and hidden from assistive tech until a repo is open. */
+  #panel{position:fixed; top:var(--paneltop, 18px); left:22px; bottom:18px; width:420px; max-width:92vw; z-index:8;
     background:var(--panel); border:1px solid var(--line); border-radius:14px;
     box-shadow:0 18px 60px rgba(0,0,0,.5);
-    transform:translateX(calc(-100% - 40px)); transition:transform .32s ease; overflow-y:auto; padding:22px;}
-  #panel.open{transform:translateX(0);}
-  /* the open panel takes the expanded intro's place (hidden, so it also leaves the tab order) */
-  @media (min-width:901px){ body.panel-open:not(.intro-min) header{visibility:hidden;} }
+    transform:translateX(calc(-100% - 40px)); visibility:hidden; transition:transform .32s ease, visibility 0s linear .32s;
+    overflow-y:auto; padding:22px;}
+  #panel.open{transform:translateX(0); visibility:visible; transition:transform .32s ease;}
   #copyfallback{margin-top:10px; font-size:12px; color:var(--muted);}
   #copyfallback[hidden]{display:none;}
   #copyurl{display:block; width:100%; margin-top:6px; font:inherit; font-size:12.5px; color:var(--ink);
     background:#05070d; border:1px solid var(--pilot); border-radius:8px; padding:8px 10px;}
-  #copyurl:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
-  #panel .close{position:absolute; top:14px; right:16px; background:none; border:none;
-    color:var(--muted); font-size:20px; cursor:pointer;}
-  #panel h2{font-size:19px; font-weight:650; word-break:break-word; padding-right:28px;}
+  #panel .close{position:absolute; top:10px; right:10px; width:36px; height:36px; background:none; border:none;
+    border-radius:8px; color:var(--muted); font-size:22px; line-height:1; cursor:pointer;}
+  #panel .close:hover{color:var(--ink); background:rgba(255,255,255,.05);}
+  #panel h2{font-size:19px; font-weight:650; word-break:break-word; padding-right:36px;}
   #chips{display:flex; gap:6px; margin:10px 0 4px; flex-wrap:wrap;}
-  .chip{font-size:11px; font-weight:600; border-radius:99px; padding:4px 11px; letter-spacing:.02em;}
+  .chip{font-size:12px; font-weight:600; border-radius:99px; padding:4px 11px; letter-spacing:.02em;}
   .chip.Pilot{background:rgba(242,169,59,.16); color:var(--pilot); border:1px solid rgba(242,169,59,.5);}
   .chip.Explore{background:rgba(47,212,191,.14); color:var(--explore); border:1px solid rgba(47,212,191,.45);}
   .chip.Monitor{background:rgba(127,143,180,.16); color:var(--monitor); border:1px solid rgba(127,143,180,.5);}
   .chip.trl{background:transparent; color:var(--ink); border:1px solid var(--line);}
   .chip.green{background:rgba(57,255,125,.12); color:var(--green); border:1px solid rgba(57,255,125,.5);}
   .plinks{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px;}
-  #brieflink{display:inline-block; font-size:13px; font-weight:600;
+  #brieflink{display:inline-flex; align-items:center; font-size:13px; font-weight:600;
     color:#06130a; background:var(--ink); border-radius:99px; padding:9px 18px; text-decoration:none;}
   #brieflink:hover{background:#fff;}
   #copylink{font:inherit; font-size:13px; font-weight:600; color:var(--ink); background:transparent;
     border:1px solid var(--line); border-radius:99px; padding:8px 16px; cursor:pointer;}
   #copylink:hover{border-color:var(--faint);}
   #copylink.copied{border-color:var(--green); color:var(--green);}
-  #panel h3{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);
+  #panel h3{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);
     margin:18px 0 6px; font-weight:600;}
-  #panel p{font-size:13px; line-height:1.6; color:var(--ink);}
+  #panel p{font-size:13.5px; line-height:1.6; color:var(--ink);}
   #panel p.fact{color:var(--muted);}
   #panel p.fact b{color:var(--ink); font-weight:600;}
   #panel p.fact b.grn{color:var(--green);}
-  #panel .ringnote{border-left:2px solid var(--line); padding-left:12px; color:var(--muted); font-size:13px; line-height:1.6;}
+  #panel .ringnote{border-left:2px solid var(--line); padding-left:12px; color:var(--muted); font-size:13.5px; line-height:1.6;}
 
   /* ---------- static index fallback (no WebGL / init threw) + noscript list ---------- */
   body.fb{overflow-y:auto;}
-  body.fb #scene, body.fb #labels, body.fb header, body.fb #controls,
-  body.fb #legend, body.fb #caveat, body.fb #hint, body.fb #tip,
+  body.fb #mapwrap, body.fb #intro, body.fb #controls, body.fb #caveat, body.fb #tip,
   body.fb #panel, body.fb #domecap, body.fb #mbar, body.fb #sheethead{display:none !important;}
   #fallback{position:relative; z-index:10; background:var(--bg); min-height:100vh;}
   .fb-inner, #nojs{max-width:1060px; margin:0 auto; padding:56px 22px 80px;}
   #nojs{position:relative; z-index:5; background:var(--bg); min-height:100vh;}
-  .fb-kicker{font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); margin-bottom:10px;}
+  .fb-kicker{font-size:12px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); margin-bottom:10px;}
   .fb-inner h1, .fb-inner h2, #nojs h1, #nojs h2{font-size:clamp(26px,4.5vw,40px); letter-spacing:-.01em; font-weight:650;}
   .fb-inner h1 .sys, .fb-inner h2 .sys, #nojs h1 .sys, #nojs h2 .sys{color:var(--pilot);}
   .fb-sub{margin-top:10px; font-size:14px; line-height:1.6; color:var(--muted); max-width:640px;}
   .fb-method{margin-top:14px; font-size:13px;}
   .fb-method a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
+  .stat{font-size:12px; color:var(--ink); background:rgba(11,14,22,.8);
+    border:1px solid var(--line); border-radius:8px; padding:6px 10px; line-height:1.35;}
+  .stat b{color:var(--pilot); font-weight:650;}
+  .stat.neutral b{color:var(--ink);}
+  .stat.grn b{color:var(--green);}
   .fb-stats{display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 6px;}
   .fb-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; margin-top:18px;}
   .fb-card{display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px;
     padding:14px 16px; text-decoration:none; color:var(--ink);}
   .fb-card:hover{border-color:var(--faint);}
   .fb-name{font-weight:650; font-size:14px; word-break:break-word;}
-  .fb-meta{display:flex; gap:6px; align-items:center; margin:8px 0; font-size:11px; color:var(--muted);}
-  .fb-blurb{display:block; font-size:12px; line-height:1.55; color:var(--muted);}
+  .fb-meta{display:flex; gap:6px; align-items:center; margin:8px 0; font-size:12px; color:var(--muted);}
+  .fb-blurb{display:block; font-size:12.5px; line-height:1.55; color:var(--muted);}
   .nojs-list{list-style:none; margin:26px 0 0; padding:0; display:grid;
     grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:4px 18px;}
   .nojs-list li{padding:7px 0; border-bottom:1px solid var(--line); font-size:14px;}
   .nojs-list a{color:var(--ink); text-decoration:none; font-weight:600; word-break:break-word;}
   .nojs-list a:hover{color:var(--pilot);}
-  .nojs-tag{display:block; font-size:11px; color:var(--muted); margin-top:2px;}
-
-  /* legend is a <details>: collapsible everywhere, open by default on desktop */
-  #legend summary{cursor:pointer; list-style:none;}
-  #legend summary::-webkit-details-marker{display:none;}
-  #legend summary::after{content:" \25be"; color:var(--faint);}
-  #legend:not([open]) summary::after{content:" \25b8"; color:var(--pilot);}
+  .nojs-tag{display:block; font-size:12px; color:var(--muted); margin-top:2px;}
 
   @media (prefers-reduced-motion: reduce){
     #panel, #sheet, body.sheet-open #sheet{transition:none !important;}
     *{animation:none !important;}
   }
-  /* phones and small tablets: intro on top, map band in the middle, controls in a bottom sheet */
-  @media (max-width:900px){
-    header{top:0; left:0; right:0; width:auto; max-width:none; max-height:40vh;
-      border-radius:0 0 16px 16px; border-width:0 0 1px; padding:12px 14px 14px;}
-    .eyebrow{font-size:9.5px; padding-right:92px;}
-    header h1{font-size:22px; margin-top:6px;}
-    p.lede{font-size:13.5px; line-height:1.5; margin-top:8px;}
-    #stats{gap:6px; margin-top:10px;}
-    .finding{font-size:12px; padding:8px 10px;}
-    .finding .big{font-size:16px;}
-    .busline{font-size:12px;}
-    .cta{font-size:12.5px; padding:8px 13px;}
-    #pagenav{font-size:11.5px; gap:6px 14px;}
-    body.intro-min header{max-width:none; padding:10px 14px;}
-    body.intro-min header h1{font-size:14px; padding-right:108px;}
-    body.intro-min #pagenav{display:none;}
-    /* the map is the band between the intro and the bottom bar (app.src.js keeps --maptop in sync) */
-    #scene, #labels{top:var(--maptop, 40vh); bottom:64px;}
-    body.panel-open #scene, body.panel-open #labels{bottom:calc(58vh + 16px);}  /* node stays above the panel */
+
+  /* desktop layout only: the collapsed intro is a compact bar, the map unobstructed */
+  @media (min-width:901px) and (min-height:561px){
+    body.intro-min #intro{width:auto; max-width:480px; padding:11px 16px 12px;}
+    body.intro-min .eyebrow, body.intro-min #introbody{display:none;}
+    body.intro-min #intro h1{font-size:15px; font-weight:650; letter-spacing:0; margin-top:0; padding-right:124px; line-height:1.5;}
+    body.intro-min #intro h1 .h1b{display:inline; color:inherit;}
+    body.intro-min #intro h1 .brand{display:inline;}
+    body.intro-min #introtoggle{top:8px; right:10px;}
+    /* the open panel takes the expanded intro's place (hidden, so it also leaves the tab order) */
+    body.panel-open:not(.intro-min) #intro{visibility:hidden;}
+  }
+  /* short desktop windows: tighter type so the whole card still fits */
+  @media (min-width:901px) and (min-height:561px) and (max-height:760px){
+    #intro{padding:16px 24px 12px;}
+    p.lede{font-size:14.5px; line-height:1.45; margin-top:10px;}
+    #ctas{margin-top:14px;}
+    #stats{margin-top:12px; gap:6px;}
+    .finding{line-height:1.45;}
+  }
+
+  /* coarse pointers (touch): 44px targets, 16px inputs (no zoom-on-focus) */
+  @media (pointer:coarse){
+    #search, #controls select, #jumplist, #copyurl{font-size:16px;}
+    .cta, .railbtn, #search, #controls select, #filters button, #viewrow button, #jumpnav summary,
+    #sheetdone, #brieflink, #copylink, .comb-opt, #mbar button, .tbar button, #introtoggle,
+    #vtab thead th button{min-height:44px;}
+    .skip{min-height:44px;}
+    #legend summary, #morepages summary, .schema summary{padding-top:12px; padding-bottom:12px; line-height:20px;}
+    #legend{padding-top:0; padding-bottom:0;}
+    #legend[open]{padding-bottom:12px;}
+    .moredir a{display:flex; align-items:center; min-height:44px; padding:0;}
+    #panel .close{width:44px; height:44px; top:6px; right:6px;}
+    /* a label's tap area reaches 44px tall without making the pill bigger */
+    .nodelabel::after{content:""; position:absolute; inset:-11px -6px;}
+  }
+
+  /* ---------- flow layout: phones, small tablets, short windows ----------
+     The document scrolls: the intro first, then the map (a band that fills the screen above the
+     bar once scrolled to). Filters, search, key and caveat live in a bottom sheet opened from the bar. */
+  @media (max-width:900px), (max-height:560px){
+    html, body{height:auto; overflow:visible;}
+    body{padding-bottom:64px;}  /* clears the fixed bar */
+    #intro{position:static; width:auto; max-width:760px; max-height:none; margin:0 auto; overflow:visible;
+      background:none; border:0; border-radius:0; box-shadow:none; padding:22px 16px 26px;}
+    #introtoggle{display:none;}
+    .eyebrow{font-size:12px; padding-right:0;}
+    #intro h1{font-size:clamp(30px, 8.6vw, 46px); line-height:1.06; margin-top:8px;}
+    p.lede{font-size:16px; line-height:1.55; margin-top:12px;}
+    #ctas{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:18px;}
+    #ctas .cta.primary{grid-column:1 / -1;}
+    .cta{min-height:48px; font-size:15px; padding:13px 12px;}
+    .trust{font-size:14px; margin-top:14px;}
+    .busline, .stackline{font-size:13.5px;}
+    #stats{gap:10px; margin-top:16px;}
+    .finding{font-size:14px; line-height:1.5;}
+    .finding .big{font-size:18px;}
+    #morepages summary{font-size:15px;}
+    .moredir a{font-size:14px;}
+    #mapwrap{position:relative; inset:auto; height:calc(100vh - 64px); height:calc(100svh - 64px); min-height:300px;
+      border-top:1px solid var(--line); overflow:hidden;}
+    body.panel-open #scene, body.panel-open #labels{bottom:auto; height:calc(42vh - 16px);}  /* node stays above the panel */
+    .nodelabel{font-size:12px; padding:3px 9px;}
+    .nodelabel .grntag{font-size:12px;}
+    .corelabel{font-size:12px;}
     #mbar{display:flex; position:fixed; left:0; right:0; bottom:0; height:64px; z-index:8; gap:8px;
       align-items:center; padding:8px 12px; background:rgba(8,11,19,.97); border-top:1px solid var(--line);}
-    #mbar button{flex:1 1 0; min-width:0; font:inherit; font-size:13px; font-weight:600; color:var(--ink);
-      background:rgba(11,14,22,.9); border:1px solid var(--line); border-radius:99px; padding:10px 6px;
+    #mbar button{flex:1 1 0; min-width:0; font:inherit; font-size:14px; font-weight:600; color:var(--ink);
+      background:rgba(11,14,22,.9); border:1px solid var(--line); border-radius:12px; padding:10px 6px;
       min-height:46px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-    #mbar #sheetbtn{flex-grow:1.5; background:var(--ink); color:#0b0e16; border-color:var(--ink);}
+    #mbar #sheetbtn{flex-grow:1.2; background:var(--ink); color:#0b0e16; border-color:var(--ink);}
     #mbar #sheetbtn.filtered{background:var(--pilot); border-color:var(--pilot); color:#06130a;}
     #sheet{display:block; position:fixed; left:0; right:0; bottom:0; z-index:11; max-height:82vh;
       overflow-y:auto; overscroll-behavior:contain; background:#0b0e16; border-top:1px solid var(--line);
@@ -335,24 +403,20 @@
     body.sheet-open #sheet{transform:none; visibility:visible; transition:transform .28s ease;}
     #sheethead{display:flex; align-items:center; justify-content:space-between; position:sticky; top:0;
       z-index:2; background:#0b0e16; padding:12px 0 10px; border-bottom:1px solid var(--line); margin-bottom:10px;}
-    #sheethead h2{font-size:14px; font-weight:650;}
-    #sheetdone{font:inherit; font-size:13px; font-weight:650; color:#06130a; background:var(--pilot);
-      border:none; border-radius:99px; padding:8px 16px; cursor:pointer;}
-    #controls{position:static; width:auto; align-items:stretch; gap:8px;}
-    #ringkey, #licnote{text-align:left; background:none; padding:0;}
-    #filters, #filters2, #viewrow{justify-content:flex-start;}
-    #filters button, #viewrow button{font-size:12px; padding:7px 12px;}
-    #filters2 label{font-size:11px; flex-wrap:wrap;}
-    #filters2 select{max-width:100%;}
-    #searchrow{display:block;}
+    #sheethead h2{font-size:15px; font-weight:650;}
+    #sheetdone{font:inherit; font-size:14px; font-weight:650; color:#06130a; background:var(--pilot);
+      border:none; border-radius:12px; padding:8px 18px; cursor:pointer;}
+    #controls{position:static; width:auto; gap:10px;}
+    #toprow{display:block;}
+    #filtersbtn, #toprow .js-surprise{display:none;}
+    #searchrow{max-width:none;}
+    #filters2 label{width:100%;}
+    #filters2 select{flex:1 1 200px; max-width:none;}
     #searchdrop{width:100%;}
-    #search{width:100%;}
-    #filtercount, #searchmsg, #searchhint{text-align:left;}
-    #legend{position:static; max-width:none; max-height:none; margin-top:12px;}
-    #caveat{position:static; max-width:none; text-align:left; margin-top:12px;}
-    #hint{position:static; transform:none; margin-top:8px; text-align:left;}
-    .hint-desk{display:none;} .hint-touch{display:inline;}
-    #domecap{left:12px; right:12px; bottom:74px; transform:none; max-width:none; z-index:7; font-size:11px;}
+    #searchmsg, #ringkey, #hint{text-align:left; margin-left:0; max-width:none; background:none; padding:0;}
+    #fpanel{display:flex; background:none; border:0; border-radius:0; padding:0; max-height:none; overflow:visible; box-shadow:none;}
+    #caveat{position:static; max-width:none; text-align:left; margin-top:14px; background:none; padding:0;}
+    #domecap{left:12px; right:12px; bottom:74px; max-width:none; z-index:7; text-align:left;}
     /* detail panel: a bottom sheet over the bar */
     #panel{top:auto; left:8px; right:8px; bottom:8px; width:auto; max-width:none; height:58vh; z-index:10;
       transform:translateY(calc(100% + 40px));}
@@ -363,15 +427,20 @@
     .schema dl{grid-template-columns:1fr;}
     .schema dt{margin-top:6px;}
   }
+  @media (max-width:480px){
+    #ctas{grid-template-columns:1fr;}
+  }
 </style>
 <script>
 /* Front-door backstop: the app bundle catches its own init failures and renders
-   the static index itself. This only fires for errors outside that path
-   (e.g. the bundle never ran). Never an error dump: worst case is the index. */
+   the static index itself. This only fires for errors from our own scripts outside
+   that path (e.g. the bundle failed to parse). Third-party scripts never trip it.
+   Never an error dump: worst case is the index. */
 window.__FRONTDOOR_READY = false;
-window.addEventListener('error', function(){
+window.addEventListener('error', function(e){
   if (window.__FRONTDOOR_READY) return;
-  if (window.__frontdoorFallback){ try { window.__frontdoorFallback(); } catch(e){} }
+  if (!e || !/\/assets\/(app\.bundle|data)\.js/.test(e.filename || '')) return;
+  if (window.__frontdoorFallback){ try { window.__frontdoorFallback(); } catch(err){} }
   document.body.classList.add('fb');
 });
 </script>
@@ -381,48 +450,57 @@ window.addEventListener('error', function(){
 <!-- /shell:head -->
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
-<div id="scene"></div>
-<div id="labels"></div>
+<a class="skip" href="#content">Skip to the map</a>
 
-<header id="main">
+<header id="intro">
   <button id="introtoggle" type="button" aria-expanded="true" aria-controls="introbody">Hide intro</button>
   <p class="eyebrow">Franken Research &middot; independent assessment &middot; Sep 2026</p>
-  <h1><span class="brand">FR &middot; </span><span data-stat="total">44</span> AI-built projects. Every claim checked.</h1>
+  <h1><span class="brand">FR &middot; </span><span data-stat="total">44</span> AI-built projects. <span class="h1b">Every claim checked.</span></h1>
   <div id="introbody">
     <p class="lede"><span id="framesentence">Jeffrey Emanuel&rsquo;s FrankenSuite is <span data-stat="total">44</span> ambitious repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.</span> The <span data-stat="ringPilot">3</span> worth a bounded trial on real work sit on the amber ring near the center.</p>
-    <div id="stats">
-      <div class="finding grn"><span class="big"><span data-stat="greenCount">2</span> of <span data-stat="total">44</span></span>
-        show CI (continuous integration) passing at the commit we pinned (the single assessed commit). The other <span data-stat="notGreen">42</span> can&rsquo;t show a passing build at the pin: <span data-stat="ciC2">11</span> fail there, and the rest have CI disabled, missing, private, or silent at that commit.</div>
-      <div class="finding gold"><span class="big">The honesty machinery is real.</span>
-        Negative-evidence ledgers, claim registries, fail-closed gates: unusually well built, and mostly not running where it counts. <a href="./techniques/index.html">What is worth stealing</a></div>
-      <div class="finding"><span class="big"><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></span>
-        carry an AI-lab license rider: a clause that bars OpenAI and Anthropic from any use, even testing and benchmarking.</div>
-    </div>
-    <p class="busline" id="live-watch" data-compact style="margin-top:8px; font-size:11.5px;">Watched daily by a GitHub Action: <a href="https://github.com/JYeswak/franken-research/tree/main/watch/census">census</a>, <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">open issues</a>.</p>
-    <p class="busline">All <span data-stat="total">44</span> have a bus factor of 1 (one maintainer, no backup): the number of people who can leave before a project stalls. <a href="./self/index.html">Ours is 1 too: see how we graded ourselves</a></p>
-    <p class="busline stackline">Beyond the <span data-stat="total">44</span>: <a href="./stack/index.html">adopt-or-build verdicts for <!-- STAT: 21 = the agent-stack types, one per ecosystem/pickup/pickup-*.md; stack/<slug>.md holds each verdict -->21 parts of the agent stack</a></p>
     <div id="ctas">
       <button id="explorecta" class="cta primary" type="button">Explore the map</button>
-      <a class="cta secondary" href="starter-kit/index.html">Steal the method</a>
-      <button class="cta js-surprise" type="button">Surprise me</button>
+      <a id="tablecta" class="cta" href="#tableview">See all <span data-stat="total">44</span> verdicts</a>
+      <a class="cta" href="starter-kit/index.html">Check your own repo</a>
     </div>
+    <p class="trust"><a href="./self/index.html">Made by Joshua Nowak (ZestStream), independent of the maintainer.</a></p>
+    <p class="busline" id="live-watch" data-compact>Watched daily by a GitHub Action: <a href="https://github.com/JYeswak/franken-research/tree/main/watch/census">census</a>, <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">open issues</a>.</p>
+    <div id="stats">
+      <p class="finding grn"><span class="big"><span data-stat="greenCount">2</span> of <span data-stat="total">44</span></span>
+        show CI (continuous integration) passing at the commit we pinned (the single assessed commit). Of the other <span data-stat="notGreen">42</span>, <span data-stat="ciC2">11</span> fail there and the rest have CI disabled, missing, private, or silent.</p>
+      <p class="finding gold"><span class="big">The honesty machinery is real.</span>
+        Negative-evidence ledgers, claim registries, fail-closed gates: unusually well built, and mostly not running where it counts. <a href="./techniques/index.html">What is worth stealing</a></p>
+      <p class="finding"><span class="big"><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></span>
+        carry an AI-lab license rider: a clause that bars OpenAI and Anthropic from any use, even testing and benchmarking.</p>
+    </div>
+    <p class="busline">All <span data-stat="total">44</span> have a bus factor of 1 (one maintainer, no backup): the number of people who can leave before a project stalls. Ours is 1 too.</p>
+    <details id="morepages">
+      <summary>More pages</summary>
+<!-- shell:dir -->
+<ul class="moredir">
+<li><a href="index.html" aria-current="page">Map</a></li>
+<li><a href="index.html#tableview">Verdict table</a></li>
+<li><a href="method/index.html">Method</a></li>
+<li><a href="techniques/index.html">Techniques</a></li>
+<li><a href="failure-modes/index.html">Failure modes</a></li>
+<li><a href="lessons/index.html">Lessons</a></li>
+<li><a href="reproduce/index.html">Reproduce a verdict</a></li>
+<li><a href="starter-kit/index.html">Starter kit</a></li>
+<li><a href="stack/index.html">Agent stack</a></li>
+<li><a href="rigor/index.html">Rigor practices</a></li>
+<li><a href="beyond/index.html">Beyond FrankenSuite</a></li>
+<li><a href="updates/index.html">Updates</a></li>
+<li><a href="follow/index.html">Follow</a></li>
+<li><a href="self/index.html">Graded by our own method</a></li>
+</ul>
+<!-- /shell:dir -->
+      <p class="stackline">Beyond the <span data-stat="total">44</span>: <a href="./stack/index.html">adopt-or-build verdicts for <!-- STAT: 21 = the agent-stack types, one per ecosystem/pickup/pickup-*.md; stack/<slug>.md holds each verdict -->21 parts of the agent stack</a>. <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a></p>
+    </details>
   </div>
-  <nav id="pagenav" aria-label="Research pages">
-    <a href="./method/index.html">Method</a>
-    <a href="./techniques/index.html">Techniques</a>
-    <a href="./failure-modes/index.html">Failure modes</a>
-    <a href="./lessons/index.html">Lessons</a>
-    <a href="./reproduce/index.html">Reproduce a verdict</a>
-    <a href="starter-kit/index.html">Starter kit</a>
-    <a href="./stack/index.html">Agent stack</a>
-    <a href="./rigor/index.html">Rigor practices</a>
-    <a href="./beyond/index.html">Beyond FrankenSuite</a>
-    <a href="./updates/index.html">Updates</a>
-    <a href="./self/index.html">Graded by our own method</a>
-    <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a>
-  </nav>
 </header>
+
+<main id="content" tabindex="-1">
+<div id="mapwrap"><div id="scene"></div><div id="labels" aria-hidden="true"></div></div>
 
 <div id="mbar">
   <button id="sheetbtn" type="button" aria-expanded="false" aria-controls="sheet">Filters</button>
@@ -430,67 +508,69 @@ window.addEventListener('error', function(){
   <button class="js-table" type="button">Table</button>
 </div>
 
-<div id="sheet" aria-label="Map filters and key">
-<div id="sheethead"><h2 id="sheettitle">Filters and key</h2><button id="sheetdone" type="button">Done</button></div>
+<div id="sheet" aria-label="Map search, filters and key">
+<div id="sheethead"><h2 id="sheettitle">Search, filters and key</h2><button id="sheetdone" type="button">Done</button></div>
 <div id="controls">
-  <div id="filters">
-    <button data-f="all" class="active">All <span data-stat="total">44</span></button>
-    <button data-f="Invest" disabled title="Empty in this program: no repo reached Invest">Invest · <span data-stat="ringInvest">0</span></button>
-    <button data-f="Pilot">Pilot · <span data-stat="ringPilot">3</span></button>
-    <button data-f="Explore">Explore · <span data-stat="ringExplore">34</span></button>
-    <button data-f="Monitor">Monitor · <span data-stat="ringMonitor">7</span></button>
-    <button data-f="green" class="grnbtn">CI green · <span data-stat="greenCount">2</span></button>
-  </div>
-  <p id="ringkey">Rings are our verdict. <b class="k-pilot">Pilot</b>: try it on bounded real work. <b class="k-explore">Explore</b>: real code, unproven claims. <b class="k-monitor">Monitor</b>: watch, don&rsquo;t land. <b>Invest</b>: none reached it.</p>
-  <div id="filters2">
-    <label>License <select id="flic"></select></label>
-    <label>CI state <select id="fci"></select></label>
-    <label>TRL &middot; technology readiness level <select id="ftrl"></select></label>
-  </div>
-  <div id="filtercount" aria-live="polite"></div>
-  <div id="searchrow">
-    <input id="search" aria-label="Find a repo" type="text" role="combobox" aria-expanded="false" aria-controls="searchdrop" aria-autocomplete="list" placeholder="find a repo&hellip; e.g. redis" autocomplete="off" spellcheck="false">
-    <div id="searchdrop" role="listbox" aria-label="Matching repos" hidden></div>
+  <div id="toprow">
+    <div id="searchrow">
+      <input id="search" aria-label="Find a repo" type="text" role="combobox" aria-expanded="false" aria-controls="searchdrop" aria-autocomplete="list" placeholder="Find a repo, e.g. redis" autocomplete="off" spellcheck="false">
+      <div id="searchdrop" role="listbox" aria-label="Matching repos" hidden></div>
+    </div>
+    <button id="filtersbtn" class="railbtn" type="button" aria-expanded="false" aria-controls="fpanel">Filters</button>
+    <button class="railbtn js-surprise" type="button">Surprise me</button>
   </div>
   <div id="searchmsg"></div>
-  <div id="searchhint">Search covers all <span data-stat="total">44</span> repos, regardless of filters.</div>
-  <div id="viewrow">
-    <button class="js-surprise" type="button">Surprise me</button>
-    <button id="resetview">Reset view</button>
-    <button id="tabletoggle" aria-pressed="false">Verdict table</button>
-    <button id="dometoggle" aria-pressed="false">Show the rider ceiling</button>
+  <p id="ringkey">Rings are our verdict. <b class="k-pilot">Pilot</b>: try it on bounded real work. <b class="k-explore">Explore</b>: real code, unproven claims. <b class="k-monitor">Monitor</b>: watch, don&rsquo;t land. <b>Invest</b>: none reached it.</p>
+  <p id="hint"><span class="hint-desk">drag to orbit &nbsp;&middot;&nbsp; scroll to zoom &nbsp;&middot;&nbsp; click a name or node for the bottom line &nbsp;&middot;&nbsp; <span class="nw">double&#8209;click opens its brief</span></span><span class="hint-touch">drag sideways to orbit &nbsp;&middot;&nbsp; pinch to zoom &nbsp;&middot;&nbsp; tap a name or node for the bottom line</span></p>
+  <div id="fpanel">
+    <div id="filters">
+      <button data-f="all" class="active">All <span data-stat="total">44</span></button>
+      <button data-f="Invest" disabled title="Empty in this program: no repo reached Invest">Invest · <span data-stat="ringInvest">0</span></button>
+      <button data-f="Pilot">Pilot · <span data-stat="ringPilot">3</span></button>
+      <button data-f="Explore">Explore · <span data-stat="ringExplore">34</span></button>
+      <button data-f="Monitor">Monitor · <span data-stat="ringMonitor">7</span></button>
+      <button data-f="green" class="grnbtn">CI green · <span data-stat="greenCount">2</span></button>
+    </div>
+    <div id="filters2">
+      <label>License <select id="flic"></select></label>
+      <label>CI state <select id="fci"></select></label>
+      <label>TRL &middot; technology readiness level <select id="ftrl"></select></label>
+    </div>
+    <div id="filtercount" aria-live="polite"></div>
+    <div id="searchhint">Search covers all <span data-stat="total">44</span> repos, regardless of filters.</div>
+    <div id="viewrow">
+      <button id="resetview">Reset view</button>
+      <button id="tabletoggle" aria-pressed="false">Verdict table</button>
+      <button id="dometoggle" aria-pressed="false">Show the rider ceiling</button>
+    </div>
+    <p id="licnote">Wireframe cages mark the <span data-stat="noRiderCount">6</span> repos without the rider: <span class="w">white</span> = plain MIT (<span data-stat="mitCount">1</span>), <span class="r">red</span> = no license file, all rights reserved (<span data-stat="noneCount">5</span>). <span class="d">Domes</span>, when shown, mark the rider.</p>
+    <details id="legend">
+      <summary><h2 style="display:inline">How to read it</h2></summary>
+      <div class="row"><span class="sw" style="background:#f5f2e8"></span>Invest <small>(<span data-stat="ringInvest">0</span>): independent validation plus governance. Empty in this program.</small></div>
+      <div class="row"><span class="sw" style="background:#f2a93b"></span>Pilot <small>(<span data-stat="ringPilot">3</span>): release artifact + a bounded, real workload fit. Not a recommendation to ship.</small></div>
+      <div class="row"><span class="sw" style="background:#2fd4bf"></span>Explore <small>(<span data-stat="ringExplore">34</span>): real code, unproven claims</small></div>
+      <div class="row"><span class="sw" style="background:#7f8fb4"></span>Monitor <small>(<span data-stat="ringMonitor">7</span>): watch, don&rsquo;t land</small></div>
+      <div class="row"><span class="glow"></span><small>green glow = CI green at the pin: CI (continuous integration) builds passing on the assessed commit. The pin is the single commit the assessor fixed for the whole evaluation. <span data-stat="greenNames">frankenscipy and franken_threed</span>, the only <span data-stat="greenCount">2</span></small></div>
+      <div class="row"><span class="sw" style="background:#f2a93b"></span><small><b>The rider</b> = MIT + OpenAI/Anthropic rider, barring the AI labs from training, use, or benchmarking. <span data-stat="riderCount">38</span> of <span data-stat="total">44</span> carry it: the domed ones when you toggle the ceiling.</small></div>
+      <div class="row"><span class="cage"></span><small>white cage = plain MIT, the suite&rsquo;s only plain-MIT repo (<span data-stat="mitCount">1</span> of <span data-stat="noRiderCount">6</span> without the rider)</small></div>
+      <div class="row"><span class="cage red"></span><small>red cage = no license file: all rights reserved, the most restricted state (<span data-stat="noneCount">5</span>)</small></div>
+      <div class="note"><b>bus factor</b> = how many people can leave before the project stalls. It is 1 across the suite: one maintainer, checked by no one.</div>
+      <!-- trlRange fallback copy: must match the STATS.trlRange computed in app.src.js
+           (excludes the techNA support asset), not the raw max -->
+      <div class="note">Bigger node = higher TRL (<span data-stat="trlRange">2&ndash;8</span>); height above the plane climbs with TRL too. A thin vertical band marks a TRL range, plotted as a span, never a midpoint. <b>frankentui_website</b> is a support asset, so it sits flat on the plane: N/A as technology. The <span data-stat="riderCount">38</span> rider-bound repos show a dome with &ldquo;Show the rider ceiling&rdquo;, every dome the same size, by design.</div>
+      <div class="note">No license file is <b>not</b> freer than plain MIT. It means no operative grant at all: more restricted than the rider, which still grants rights to everyone outside the AI labs.</div>
+      <div class="note">Map exceptions, not the rule: <b>frankentui_website</b> is ~36k lines of TypeScript, the two beads repos are static dashboard exports, and <b>franken_agent_detection</b> is not a rewrite of an incumbent.</div>
+    </details>
   </div>
-  <p id="licnote">Wireframe cages mark the <span data-stat="noRiderCount">6</span> repos without the rider: <span class="w">white</span> = plain MIT (<span data-stat="mitCount">1</span>), <span class="r">red</span> = no license file, all rights reserved (<span data-stat="noneCount">5</span>). <span class="d">Domes</span>, when shown, mark the rider.</p>
 </div>
-
-<details id="legend">
-  <summary><h2 style="display:inline">How to read it</h2></summary>
-  <div class="row"><span class="sw" style="background:#f5f2e8"></span>Invest <small>(<span data-stat="ringInvest">0</span>): independent validation plus governance. Empty in this program.</small></div>
-  <div class="row"><span class="sw" style="background:#f2a93b"></span>Pilot <small>(<span data-stat="ringPilot">3</span>): release artifact + a bounded, real workload fit. Not a recommendation to ship.</small></div>
-  <div class="row"><span class="sw" style="background:#2fd4bf"></span>Explore <small>(<span data-stat="ringExplore">34</span>): real code, unproven claims</small></div>
-  <div class="row"><span class="sw" style="background:#7f8fb4"></span>Monitor <small>(<span data-stat="ringMonitor">7</span>): watch, don&rsquo;t land</small></div>
-  <div class="row"><span class="glow"></span><small>green glow = CI green at the pin: CI (continuous integration) builds passing on the assessed commit. The pin is the single commit the assessor fixed for the whole evaluation. <span data-stat="greenNames">frankenscipy and franken_threed</span>, the only <span data-stat="greenCount">2</span></small></div>
-  <div class="row"><span class="sw" style="background:#f2a93b"></span><small><b>The rider</b> = MIT + OpenAI/Anthropic rider, barring the AI labs from training, use, or benchmarking. <span data-stat="riderCount">38</span> of <span data-stat="total">44</span> carry it: the domed ones when you toggle the ceiling.</small></div>
-  <div class="row"><span class="cage"></span><small>white cage = plain MIT, the suite&rsquo;s only plain-MIT repo (<span data-stat="mitCount">1</span> of <span data-stat="noRiderCount">6</span> without the rider)</small></div>
-  <div class="row"><span class="cage red"></span><small>red cage = no license file: all rights reserved, the most restricted state (<span data-stat="noneCount">5</span>)</small></div>
-  <div class="note"><b>bus factor</b> = how many people can leave before the project stalls. It is 1 across the suite: one maintainer, checked by no one.</div>
-  <!-- trlRange fallback copy: must match the STATS.trlRange computed in app.src.js
-       (excludes the techNA support asset), not the raw max -->
-  <div class="note">Bigger node = higher TRL (<span data-stat="trlRange">2&ndash;8</span>); height above the plane climbs with TRL too. A thin vertical band marks a TRL range, plotted as a span, never a midpoint. <b>frankentui_website</b> is a support asset, so it sits flat on the plane: N/A as technology. The <span data-stat="riderCount">38</span> rider-bound repos show a dome with &ldquo;Show the rider ceiling&rdquo;, every dome the same size, by design.</div>
-  <div class="note">No license file is <b>not</b> freer than plain MIT. It means no operative grant at all: more restricted than the rider, which still grants rights to everyone outside the AI labs.</div>
-  <div class="note">Map exceptions, not the rule: <b>frankentui_website</b> is ~36k lines of TypeScript, the two beads repos are static dashboard exports, and <b>franken_agent_detection</b> is not a rewrite of an incumbent.</div>
-</details>
-
-<div id="caveat">A judgment map, not a measurement. Every verdict is an analyst&rsquo;s inference from a packet frozen at one commit (Sep 2026), confidence: medium. Size is readiness, not quality: a big Monitor node is still a website.</div>
-
-<div id="hint"><span class="hint-desk">drag to orbit &nbsp;&middot;&nbsp; scroll to zoom &nbsp;&middot;&nbsp; click a node for the bottom line &nbsp;&middot;&nbsp; double-click opens its brief</span><span class="hint-touch">drag to orbit &nbsp;&middot;&nbsp; pinch to zoom &nbsp;&middot;&nbsp; tap a node for the bottom line</span></div>
+<p id="caveat">A judgment map, not a measurement. Every verdict is an analyst&rsquo;s inference from a packet frozen at one commit (Sep 2026), confidence: medium. Size is readiness, not quality: a big Monitor node is still a website.</p>
 </div>
 
 <div id="domecap"><b>The rider ceiling.</b> Dome = MIT + OpenAI/Anthropic rider. The rider withholds rights only from the AI labs and their affiliates.</div>
 <div id="tip"><div class="t"></div><div class="m"></div><div class="g"></div></div>
 
-<aside id="panel">
-  <button class="close" aria-label="close">&times;</button>
+<aside id="panel" aria-labelledby="p-name" inert aria-hidden="true">
+  <button class="close" type="button" aria-label="Close">&times;</button>
   <h2 id="p-name"></h2>
   <div id="chips"></div>
   <div class="plinks">
@@ -560,11 +640,12 @@ window.addEventListener('error', function(){
     </div>
   </details>
 </section>
+</main>
 
 <noscript>
 <style>
-html,body{overflow-y:auto !important;}
-header,#controls,#legend,#caveat,#hint,#domecap,#panel,#tip,#labels,#scene,#mbar,#sheethead{display:none !important;}
+html,body{height:auto !important; overflow-y:auto !important;}
+#intro,#content{display:none !important;}
 </style>
 <div id="nojs">
   <p class="fb-kicker">Franken Research &middot; independent assessment</p>
@@ -621,7 +702,7 @@ header,#controls,#legend,#caveat,#hint,#domecap,#panel,#tip,#labels,#scene,#mbar
 </noscript>
 
 <script src="./assets/data.js"></script>
-<script src="./assets/app.bundle.js"></script>
+<script src="./assets/app.bundle.js" async></script>
 <script src="./assets/live-watch.js" defer></script>
 
 </html>
