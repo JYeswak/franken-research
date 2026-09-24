@@ -289,6 +289,7 @@ html:not(.js) .share { display: none; }
 .share__btn.is-done { border-color: var(--green); color: var(--green); }
 .share__btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 .share__status { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.share__url { font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--bg-3); border: 1px solid var(--line); border-radius: 4px; padding: 0.15em 0.45em; -webkit-user-select: all; user-select: all; }
 </style>
 </head>
 <body>
@@ -297,7 +298,7 @@ html:not(.js) .share { display: none; }
 <div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
 
 <nav class="topnav" aria-label="Site">
-  <a href="../index.html">&larr; Back to the brief index</a>
+  <a href="../index.html">&larr; Back to the map</a>
   <a href="../method/index.html">How claims here were governed</a>
 </nav>
 
@@ -431,7 +432,7 @@ html:not(.js) .share { display: none; }
 <footer class="colophon">
   <div class="prose">
     <p><strong>asupersync: Rebuilding the Floor Everyone Stands On.</strong> An independent brief from Franken Research, rendered from the reader template. Assessment pinned September 22, 2026.</p>
-    <p class="colophon__small">Single-file page: styles and script inlined, no network calls, no tracking. Motion respects <code>prefers-reduced-motion</code>. Read the methodology behind these claims: <a href="../method/index.html">how claims here were governed</a>. <a href="../index.html">Back to the brief index</a>.</p>
+    <p class="colophon__small">Single-file page: styles and script inlined, no network calls, no tracking. Motion respects <code>prefers-reduced-motion</code>. Read the methodology behind these claims: <a href="../method/index.html">how claims here were governed</a>. <a href="../index.html">Back to the map</a>.</p>
   </div>
 </footer>
 
@@ -527,26 +528,44 @@ html:not(.js) .share { display: none; }
     });
   });
 
-  /* ---------- share: the native share sheet when the browser has one,
-     otherwise copy the canonical URL. The button ships hidden and is only
-     revealed here, so a no-JS reader never sees a dead control. ---------- */
+  /* ---------- share: on touch devices, the native share sheet; everywhere
+     else, and whenever the sheet fails, copy the canonical URL. Every outcome
+     is visible: 'Copied', or the URL shown and pre-selected for a manual copy.
+     The button ships hidden and is only revealed here, so a no-JS reader
+     never sees a dead control. ---------- */
   var shareBtn = document.getElementById('shareBtn');
   if (shareBtn) {
     var shareUrl = shareBtn.getAttribute('data-url') || location.href;
+    var shareTitle = shareBtn.getAttribute('data-title') || document.title;
     var shareLabel = shareBtn.querySelector('.share__label');
     var shareStatus = document.getElementById('shareStatus');
     var shareTimer = null;
-    var shareReset = function () {
-      shareLabel.textContent = 'Share this brief';
-      shareBtn.classList.remove('is-done');
-      shareStatus.textContent = '';
-    };
-    var shareSay = function (msg, copied, ms) {
+    var shareShow = function (label, done, content) {
       clearTimeout(shareTimer);
-      shareLabel.textContent = copied ? 'Copied' : 'Share this brief';
-      shareBtn.classList.toggle('is-done', copied);
-      shareStatus.textContent = msg;
-      shareTimer = setTimeout(shareReset, ms);
+      shareLabel.textContent = label;
+      shareBtn.classList.toggle('is-done', done);
+      shareStatus.textContent = '';
+      if (content) shareStatus.appendChild(content);
+    };
+    var shareCopied = function () {
+      shareShow('Copied', true, document.createTextNode('Link copied to clipboard.'));
+      shareTimer = setTimeout(function () { shareShow('Share this brief', false); }, 2500);
+    };
+    var shareManual = function () {
+      var box = document.createDocumentFragment();
+      var url = document.createElement('span');
+      url.className = 'share__url';
+      url.textContent = shareUrl;
+      box.appendChild(document.createTextNode('Copy this link: '));
+      box.appendChild(url);
+      shareShow('Share this brief', false, box);
+      var sel = window.getSelection && window.getSelection();
+      if (sel && document.createRange) {
+        var range = document.createRange();
+        range.selectNodeContents(url);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
     };
     var legacyCopy = function () {
       var ta = document.createElement('textarea');
@@ -563,20 +582,21 @@ html:not(.js) .share { display: none; }
       return ok;
     };
     var copyLink = function () {
-      var done = function () { shareSay('Link copied to clipboard.', true, 2500); };
-      var fallback = function () {
-        if (legacyCopy()) done();
-        else shareSay('Copy this link: ' + shareUrl, false, 12000);
-      };
+      var settled = false;
+      var finish = function (fn) { return function () { if (!settled) { settled = true; fn(); } }; };
+      var fallback = finish(function () { if (legacyCopy()) shareCopied(); else shareManual(); });
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shareUrl).then(done, fallback);
+        // a clipboard call that never settles must not leave the click silent
+        setTimeout(finish(shareManual), 1500);
+        navigator.clipboard.writeText(shareUrl).then(finish(shareCopied), fallback);
       } else {
         fallback();
       }
     };
+    var shareTouch = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
     shareBtn.addEventListener('click', function () {
-      if (navigator.share) {
-        navigator.share({ title: shareBtn.getAttribute('data-title') || document.title, url: shareUrl })
+      if (shareTouch && navigator.share) {
+        navigator.share({ title: shareTitle, url: shareUrl })
           .catch(function (e) { if (!e || e.name !== 'AbortError') copyLink(); });
       } else {
         copyLink();
