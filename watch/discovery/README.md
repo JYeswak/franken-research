@@ -42,7 +42,9 @@ One file per ISO week (the week of the run date, e.g. `2026-W39`). A rerun in th
 
 ## The rollup issue
 
-`--issues` keeps exactly one issue per ISO week, titled `[discovery] Rust candidates, week <YYYY-Www>` and labelled `candidate` and `discovery` (both labels are created if missing). Its body is a table of the top 15 with their signals and a triage checklist that links the screening rule. The issue is found by exact title, open or closed. A hidden marker records a digest of the listed repositories and their signals (not their star counts): a rerun with the same listing does nothing, a changed listing edits the body of the same issue, and a closed rollup is never reopened or edited.
+`--issues` keeps one issue per ISO week, titled `[discovery] Rust candidates, week <YYYY-Www>` and labelled `candidate` and `discovery` (both labels are created if missing). Its body is a table of the top 15 with their signals and a triage checklist that links the screening rule. Repository names in the table are escaped (`|`, backslash, backtick, `*`, `_`, `~`, brackets, `<`, `>`, `&`; newlines become spaces), and links are built from the percent-encoded name, not taken from the API.
+
+Titles are public and predictable, so a title match alone proves nothing: anyone can open an issue with next week's title first. An issue counts as the week's rollup only if the token's own identity opened it (`github-actions[bot]` under GitHub Actions, otherwise the login `GET /user` returns for the token), it carries both labels, and its body holds this week's `discovery-week` and `discovery-value` markers. Any other issue with the title is ignored and never edited or commented on; the sweep opens its own issue beside it and names the ignored numbers in its report. The value marker is a digest of the listed repositories and their signals, not their star counts. A rerun with the same listing does nothing, a changed listing edits the body of the trusted issue, and a closed rollup is never reopened or edited.
 
 ## Selftest (Gate W2)
 

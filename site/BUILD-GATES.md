@@ -374,7 +374,7 @@ synthetic) and `discover-prior-2026-W38.json` (an earlier week's listing)
 through the same transport, exclusion, scoring, and rollup-issue code the
 weekly sweep (`.github/workflows/discover.yml`) runs against GitHub. Issues
 are an in-memory store behind the same transport. No network and no token.
-The 9 cases assert: the ISO week and the search window come from the run
+The 12 cases assert: the ISO week and the search window come from the run
 date (including the week-53 and week-1 year boundaries); the candidates come
 out in the hand-derived order with the expected signals and scores (signal
 count first, stars only within a count); the Dicklesworthstone repository
@@ -383,15 +383,21 @@ left out; a repository named by a `[candidate]` issue and one listed in an
 earlier week are excluded, while one named by a non-candidate issue stays;
 the rollup is one issue per week (created once, `exists` on a rerun and when
 only star counts moved, the same issue edited when the listing changed, a
-closed rollup left alone); the output and the issue body hold no email
+closed rollup left alone); a same-title issue opened by anyone but the bot
+identity is ignored and never edited, even when it copies our labels and
+markers, and the bot opens its own issue instead; a bot issue missing either
+label or this week's markers is not trusted either; a repository name
+carrying `|`, a backslash, a newline, or formatting characters renders as
+exactly one table cell with an intact link; the output and the issue body hold no email
 address and no author, committer, name, login, or message field; the output
 is byte-identical when the API returns results in reverse order, also with
 the check cap below the pool size; and a 403 ends the run with exit 3 and
 writes nothing. **Fails** on a nonzero exit, any failed case, or a `CASES`
 count of zero or missing.
-**Why:** the sweep opens a public issue every week with nobody reading its
-code first, and search results never replay, so exclusions, ordering, and
-dedupe can only be checked on recorded inputs.
+**Why:** the sweep opens and edits a public issue every week with nobody
+reading its code first, issue titles are public and predictable, and search
+results never replay, so exclusions, ordering, dedupe, and which issue the
+bot may edit can only be checked on recorded inputs.
 **Accepted:** the fixture covers the shapes the sweep reads from 12
 repositories, not every shape the API returns; rate-limit timing and
 pagination past one page run only live.
@@ -644,6 +650,18 @@ before the allow list is read. In a clean clone, a planted wrong expectation
 (the first two expected ranks swapped in the fixture) made W2 fail with the
 ordering case named and `bun run verify` exit 1 (19 passed, 1 failed); the
 real fixture passed all 20 gates.
+
+Issue-trust pass (after the cross-lineage security review): the rollup is
+matched by exact title only when the token's own identity opened it
+(`github-actions[bot]` under Actions, else `GET /user`), it carries both
+labels, and its body has this week's markers; any other same-title issue is
+ignored and left untouched. Table cells from the API are escaped and repo
+links are percent-encoded. Three cases were added (12 in all), and nine
+more scratch-copy mutants each failed with the case named: not checking the
+author, the labels, or the week marker; matching on title alone; taking
+`github-actions[bot]` as the identity outside Actions; not escaping `|`;
+not escaping the repository name at all; keeping newlines; and leaving
+parentheses unencoded in the link URL.
 
 Shell pass (v1.2): Gate S added with `site/scripts/shell.mjs`,
 `site/assets/shell.css`, and `bun run build:shell`. The first run replaced the

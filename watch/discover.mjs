@@ -324,19 +324,49 @@ const LABELS = {
   candidate: ['0e8a16', 'A project suggested or found for a possible assessment (candidates/README.md)'],
   discovery: ['5319e7', 'Weekly Rust discovery sweep (watch/discover.mjs)'],
 };
-const VALUE_MARK = /<!-- discovery-value: (.*?) -->/;
+const VALUE_MARK = /<!-- discovery-value: ([0-9a-f]{12}) -->/;
+const WEEK_MARK = /<!-- discovery-week: (\d{4}-W\d{2}) -->/;
+const REQUIRED_LABELS = Object.keys(LABELS);
 // The value is the listing itself (repositories and their signals), not star counts, so a rerun in the
 // same week with the same list is 'exists' even when stars moved.
 export const rollupValue = (res) => digest(res.candidates.slice(0, LIMITS.listed).map((c) => [c.repo, c.signals]));
 
-// 'create' when no issue has this week's title (open or closed); 'exists' when its body already records
-// this listing; 'update' (edit the one issue's body) when the listing changed; 'closed' when triage
-// already closed it: a closed rollup is never reopened or edited. One issue per week, always.
+// The login the token acts as. A workflow's GITHUB_TOKEN acts as github-actions[bot] and cannot read
+// GET /user (403), so under Actions the login is fixed; anywhere else it is whoever the token belongs to.
+// Never a hardcoded human login.
+export async function botIdentity(api, env = process.env) {
+  if (env.GITHUB_ACTIONS === 'true') return 'github-actions[bot]';
+  const login = (await api.get('/user')).body?.login;
+  if (!login) throw apiError('GET /user returned no login; cannot tell which issues this token wrote');
+  return login;
+}
+
+// Issue titles are public and predictable: anyone can open '[discovery] Rust candidates, week <W>'
+// first. An issue is this sweep's rollup only when this token's identity opened it, it carries both
+// labels, and its body has this week's machine markers. Anything else with the title is ignored and
+// never edited.
+export function trustedRollup(issue, week, bot) {
+  const labels = new Set((issue.labels ?? []).map((l) => l.name ?? l));
+  const body = issue.body ?? '';
+  return issue.user?.login === bot && REQUIRED_LABELS.every((l) => labels.has(l))
+    && body.match(WEEK_MARK)?.[1] === week && VALUE_MARK.test(body);
+}
+
+// 'create' when no trusted rollup exists for the week (open or closed); 'exists' when its body already
+// records this listing; 'update' (edit that one bot issue's body) when the listing changed; 'closed'
+// when triage already closed it: a closed rollup is never reopened or edited.
 export function dedupeRollup(issue, value) {
   if (!issue) return 'create';
   if ((issue.body ?? '').match(VALUE_MARK)?.[1] === value) return 'exists';
   return issue.state === 'closed' ? 'closed' : 'update';
 }
+
+// One Markdown table cell from text the API supplied: no line breaks, and every character that could
+// end the cell, start formatting, or open a link, tag, or entity (| \ ` * _ ~ [ ] < > &) backslash-escaped.
+export const mdCell = (v) => String(v ?? '').replace(/[\r\n\t]+/g, ' ').replace(/[\\`*_~[\]<>|&]/g, '\\$&');
+// encodeURIComponent leaves ( ) ! * ' ~ alone; ( and ) would end the Markdown link early.
+const urlPart = (s) => encodeURIComponent(s).replace(/[()!*'~]/g, (ch) => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+const ghRepoUrl = (full) => `https://github.com/${full.split('/').map(urlPart).join('/')}`;
 
 const yes = (b) => (b ? 'yes' : '-');
 export function rollupBody(res) {
@@ -352,7 +382,7 @@ export function rollupBody(res) {
     '',
     '| # | Repository | Stars | Pushed | AGENTS.md | CLAUDE.md | Agent trailers (last 30 commits) | README says agent-built | Score |',
     '|---|---|---|---|---|---|---|---|---|',
-    ...top.map((c, i) => `| ${i + 1} | [${c.repo}](${c.url}) | ${c.stars} | ${c.pushed_at.slice(0, 10)} | ${yes(c.signals.agents_md)} | ${yes(c.signals.claude_md)} | ${c.signals.agent_trailers || '-'} | ${yes(c.signals.readme_statement)} | ${c.score} |`),
+    ...top.map((c, i) => `| ${i + 1} | [${mdCell(c.repo)}](${ghRepoUrl(c.repo)}) | ${Number(c.stars)} | ${mdCell(String(c.pushed_at).slice(0, 10))} | ${yes(c.signals.agents_md)} | ${yes(c.signals.claude_md)} | ${Number(c.signals.agent_trailers) || '-'} | ${yes(c.signals.readme_statement)} | ${Number(c.score)} |`),
     ...(top.length ? [] : ['| - | no repository passed this week | | | | | | | |']),
     '',
     '**Triage checklist**',
@@ -367,13 +397,15 @@ export function rollupBody(res) {
   ].join('\n');
 }
 
-export async function syncRollup(api, res, issues) {
+export async function syncRollup(api, res, issues, bot) {
+  if (!bot) throw usageError('syncRollup needs the bot identity');
   const title = rollupTitle(res.week);
   const value = rollupValue(res);
-  const issue = issues.find((i) => i.title === title) ?? null;
+  const issue = issues.find((i) => i.title === title && trustedRollup(i, res.week, bot)) ?? null;
   const decision = dedupeRollup(issue, value);
   const ref = (i) => ({ number: i.number, title: i.title, url: i.html_url });
-  if (decision === 'exists' || decision === 'closed') return { decision, issue: ref(issue) };
+  const ignored = issues.filter((i) => i.title === title && i !== issue).map((i) => i.number);
+  if (decision === 'exists' || decision === 'closed') return { decision, issue: ref(issue), ignored };
   const base = `/repos/${ISSUE_REPO}`;
   const have = new Set();
   for (let page = 1; ; page++) {
@@ -386,10 +418,10 @@ export async function syncRollup(api, res, issues) {
   }
   if (decision === 'create') {
     const made = (await api.send('POST', `${base}/issues`, { title, body: rollupBody(res), labels: ['candidate', 'discovery'] })).body;
-    return { decision, issue: ref(made) };
+    return { decision, issue: ref(made), ignored };
   }
   const edited = (await api.send('PATCH', `${base}/issues/${issue.number}`, { body: rollupBody(res) })).body;
-  return { decision, issue: ref(edited) };
+  return { decision, issue: ref(edited), ignored };
 }
 
 // ---------------------------------------------------------------- one run
@@ -397,12 +429,14 @@ export async function syncRollup(api, res, issues) {
 // tree as it was.
 export async function runOnce(api, { now, apply = false, issues: fileIssues = false, outDir = OUT_DIR, priorFiles, cohortsDir = COHORTS, check }) {
   const week = isoWeek(now);
+  // The identity is resolved before anything is written, like every other API read.
+  const bot = fileIssues ? await botIdentity(api) : null;
   const issueList = await listIssues(api);
   const known = knownCandidates(issueList, priorFiles ?? priorDiscovery(outDir), week);
   const res = await discover(api, { now, known, assessed: assessedRepos(cohortsDir), check });
   const out = { result: res, wrote: null, issue: null };
   if (apply) out.wrote = writeResult(res, outDir);
-  if (fileIssues) out.issue = await syncRollup(api, res, issueList);
+  if (fileIssues) out.issue = await syncRollup(api, res, issueList, bot);
   return out;
 }
 
@@ -422,14 +456,16 @@ function printReport(out, api, elapsedMs) {
   });
   console.log('');
   console.log(out.wrote ? `wrote ${out.wrote.replace(`${ROOT}/`, '')}` : 'dry run: nothing written (use --apply)');
-  if (out.issue) console.log(`rollup issue: ${out.issue.decision} #${out.issue.issue.number} ${out.issue.issue.url}`);
+  if (out.issue) console.log(`rollup issue: ${out.issue.decision} #${out.issue.issue.number} ${out.issue.issue.url}${out.issue.ignored.length ? `; ignored untrusted same-title issue(s) #${out.issue.ignored.join(', #')}` : ''}`);
   const st = api.stats;
   console.log(`api: ${st.search_calls} search + ${st.rest_calls} REST calls; remaining search ${st.search_remaining ?? '?'}, core ${st.rest_remaining ?? '?'}; ${(elapsedMs / 1000).toFixed(1)} s`);
 }
 
 // ---------------------------------------------------------------- selftest (offline)
-// In-memory stand-in for the issue and label endpoints, served through the real transport.
-function memoryGitHub(recorded) {
+// In-memory stand-in for the issue, label, and /user endpoints, served through the real transport.
+// Issues it creates are authored by `author`, as GitHub records the token's identity.
+const SELFTEST_BOT = 'github-actions[bot]';
+function memoryGitHub(recorded, author = SELFTEST_BOT) {
   const issues = [];
   const labels = new Set();
   const calls = [];
@@ -442,11 +478,12 @@ function memoryGitHub(recorded) {
     const page = Number(path.match(/[?&]page=(\d+)/)?.[1] ?? 1);
     const payload = init.body ? JSON.parse(init.body) : null;
     if (path.startsWith(`/repos/${ISSUE_REPO}/`)) calls.push(`${method} ${p}`);
+    if (method === 'GET' && p === '/user') return json(200, { login: 'selftest-token-owner' });
     if (method === 'GET' && p === '/labels') return json(200, page === 1 ? [...labels].map((name) => ({ name })) : []);
     if (method === 'POST' && p === '/labels') { labels.add(payload.name); return json(201, payload); }
     if (method === 'GET' && p === '/issues') return json(200, page === 1 ? issues.map((i) => ({ ...i })) : []);
     if (method === 'POST' && p === '/issues') {
-      const i = { number: issues.length + 1, title: payload.title, body: payload.body, labels: payload.labels.map((name) => ({ name })), state: 'open', html_url: `memory:issues/${issues.length + 1}` };
+      const i = { number: issues.length + 1, title: payload.title, body: payload.body, user: { login: author }, labels: payload.labels.map((name) => ({ name })), state: 'open', html_url: `memory:issues/${issues.length + 1}` };
       issues.push(i);
       return json(201, { ...i });
     }
@@ -505,22 +542,71 @@ async function selftest() {
   test('rollup: one issue per week; rerun finds it (exists); a changed listing edits it; closed is left alone', async () => {
     const gh = memoryGitHub(fx.responses);
     const api = makeApi({ token: null, fetchImpl: gh.fetchImpl, ...quiet });
-    const first = await syncRollup(api, res, await listIssues(api));
+    const first = await syncRollup(api, res, await listIssues(api), SELFTEST_BOT);
     expect(first.decision === 'create' && gh.issues.length === 1, `first ${first.decision}, ${gh.issues.length} issues`);
     const made = gh.issues[0];
     expect(made.title === '[discovery] Rust candidates, week 2026-W39', `title ${made.title}`);
     expect(JSON.stringify(made.labels.map((l) => l.name)) === '["candidate","discovery"]' && gh.labels.has('candidate') && gh.labels.has('discovery'), 'labels');
-    const again = await syncRollup(api, res, await listIssues(api));
+    const again = await syncRollup(api, res, await listIssues(api), SELFTEST_BOT);
     expect(again.decision === 'exists' && gh.issues.length === 1, `second ${again.decision}, ${gh.issues.length} issues`);
     const starsMoved = { ...res, candidates: res.candidates.map((c) => ({ ...c, stars: c.stars + 7 })) };
-    expect((await syncRollup(api, starsMoved, await listIssues(api))).decision === 'exists', 'star counts alone changed the value');
+    expect((await syncRollup(api, starsMoved, await listIssues(api), SELFTEST_BOT)).decision === 'exists', 'star counts alone changed the value');
     const changed = { ...res, candidates: res.candidates.slice(1) };
-    const upd = await syncRollup(api, changed, await listIssues(api));
+    const upd = await syncRollup(api, changed, await listIssues(api), SELFTEST_BOT);
     expect(upd.decision === 'update' && gh.issues.length === 1 && gh.issues[0].body === rollupBody(changed), `update ${upd.decision}, ${gh.issues.length} issues`);
     gh.issues[0].state = 'closed';
     const before = gh.calls.length;
-    const closed = await syncRollup(api, res, await listIssues(api));
+    const closed = await syncRollup(api, res, await listIssues(api), SELFTEST_BOT);
     expect(closed.decision === 'closed' && gh.issues.length === 1 && gh.calls.slice(before).every((c) => c.startsWith('GET')), `closed ${closed.decision}`);
+  });
+  // Seeds the store with issues that already carry this week's title, then syncs as the bot.
+  const seeded = async (seed) => {
+    const gh = memoryGitHub(fx.responses);
+    for (const s of seed) gh.issues.push({ number: gh.issues.length + 1, state: 'open', html_url: `memory:issues/${gh.issues.length + 1}`, title: rollupTitle(res.week), ...s });
+    const api = makeApi({ token: null, fetchImpl: gh.fetchImpl, ...quiet });
+    const snapshot = JSON.stringify(gh.issues);
+    return { gh, api, snapshot };
+  };
+  const both = [{ name: 'candidate' }, { name: 'discovery' }];
+  const touched = (gh, n) => gh.calls.some((c) => c === `PATCH /issues/${n}` || c.startsWith(`POST /issues/${n}/`));
+  test('a same-title issue opened by anyone but the bot is ignored and left untouched, even with our labels and markers', async () => {
+    expect(await botIdentity(null, { GITHUB_ACTIONS: 'true' }) === 'github-actions[bot]', 'Actions identity');
+    const who = await seeded([]);
+    expect(await botIdentity(who.api, {}) === 'selftest-token-owner', 'local identity is not read from GET /user');
+    const { gh, api, snapshot } = await seeded([{ user: { login: 'stranger' }, labels: both, body: rollupBody(res) }]);
+    const first = await syncRollup(api, res, await listIssues(api), SELFTEST_BOT);
+    expect(first.decision === 'create' && first.issue.number === 2 && JSON.stringify(first.ignored) === '[1]', `first ${JSON.stringify(first)}`);
+    const changed = { ...res, candidates: res.candidates.slice(1) };
+    const upd = await syncRollup(api, changed, await listIssues(api), SELFTEST_BOT);
+    expect(upd.decision === 'update' && upd.issue.number === 2 && gh.issues.length === 2, `then ${JSON.stringify(upd)}`);
+    expect(!touched(gh, 1) && JSON.stringify(gh.issues[0]) === JSON.stringify(JSON.parse(snapshot)[0]), 'the stranger issue was edited');
+  });
+  test('a bot issue without both labels or without the week markers is not trusted', async () => {
+    const { gh, api, snapshot } = await seeded([
+      { user: { login: SELFTEST_BOT }, labels: [{ name: 'candidate' }], body: rollupBody(res) },
+      { user: { login: SELFTEST_BOT }, labels: both, body: 'A hand-written note with the same title.' },
+      { user: { login: SELFTEST_BOT }, labels: both, body: rollupBody({ ...res, week: '2026-W38' }) },
+    ]);
+    const r = await syncRollup(api, res, await listIssues(api), SELFTEST_BOT);
+    expect(r.decision === 'create' && r.issue.number === 4 && JSON.stringify(r.ignored) === '[1,2,3]', `got ${JSON.stringify(r)}`);
+    expect([1, 2, 3].every((n) => !touched(gh, n)) && JSON.stringify(gh.issues.slice(0, 3)) === JSON.stringify(JSON.parse(snapshot)), 'an untrusted issue was edited');
+  });
+  test('a repository name with | and formatting characters renders as one table cell', () => {
+    const cells = (line) => {
+      const out = [''];
+      for (let i = 0; i < line.length; i++) {
+        if (line[i] === '\\') { out[out.length - 1] += line[i] + (line[i + 1] ?? ''); i++; } else if (line[i] === '|') out.push(''); else out[out.length - 1] += line[i];
+      }
+      return out;
+    };
+    const header = rollupBody(res).split('\n').find((l) => l.startsWith('| # |'));
+    const nasty = ['ev|il/re*po_`x`', 'a\\|b/c', 'x/<b>[y](z)\n| 9 |', 'o/~~s~~ & &amp;'];
+    const body = rollupBody({ ...res, candidates: nasty.map((repo, i) => ({ ...res.candidates[i], repo, pushed_at: `2026-09-2${i}|x` })) });
+    const rows = body.split('\n').filter((l) => /^\| \d+ \|/.test(l));
+    expect(rows.length === nasty.length, `${rows.length} rows for ${nasty.length} repositories`);
+    for (const row of rows) expect(cells(row).length === cells(header).length, `${cells(row).length - 2} cells, want ${cells(header).length - 2}: ${row}`);
+    for (const row of rows) expect(!/(?<!\\)[*_`<>~&[\]]/.test(cells(row)[2].replace(/^\s*\[(.*)\]\([^)]*\)\s*$/, '$1')), `unescaped formatting in ${row}`);
+    expect(rows.every((r) => /\(https:\/\/github\.com\/[^\s()|<>]+\)/.test(r)), 'a link URL carries a raw special character');
   });
   test('output and rollup carry no email address and no author, committer, name, or login field', () => {
     const text = renderResult(res) + rollupBody(res);
