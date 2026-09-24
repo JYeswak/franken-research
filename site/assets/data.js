@@ -426,7 +426,7 @@ window.FRANKEN_DATA = {
    "ci": "CI red at the pin",
    "ciKey": "C2",
    "release": "Release exists, but targets an earlier commit",
-   "blurb": "The pandas API in Rust chasing parity with pandas 2.2.3 — 648k lines, 8,621 commits. The agent co-authorship record lives here too (398 Claude-family co-authored commits in the older window), under the same rider that bars the AI labs from even benchmarking it."
+   "blurb": "The pandas API in Rust chasing parity with pandas 2.2.3 — 648k lines, 8,621 commits. The agent co-authorship record lives here too (398 Claude-family co-authored commits in the older window). The rider bars the two AI labs themselves from even benchmarking it; it does not bar people who build with their models."
   },
   {
    "name": "frankenredis",
