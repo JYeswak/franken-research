@@ -1,0 +1,88 @@
+name: discover
+
+# Weekly Rust discovery sweep (watch/discovery/README.md). Searches GitHub
+# for recently active public Rust repositories with agent-built signals,
+# writes watch/discovery/<ISO-week>.json, creates or updates ONE rollup
+# issue for the week (labels candidate, discovery), runs the full gate chain,
+# and commits watch/discovery/ only if every gate passes. A push made with
+# GITHUB_TOKEN does not trigger verify.yml, so the gate chain here is the
+# only gate this commit gets.
+
+on:
+  schedule:
+    # Mondays 12:17 UTC, after the daily watch (11:23 UTC) has committed.
+    - cron: "17 12 * * 1"
+  workflow_dispatch:
+
+# One sweep at a time, never cancelled: a run that edited the rollup issue
+# must also get to commit the file that issue links to.
+concurrency:
+  group: discover
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    # Sized from measurements, not guessed. A local dry run on 2026-09-24
+    # took 23 s (3 search + 121 REST calls, search calls spaced 2.5 s).
+    # The verify job's own guard is 4 minutes (verify.yml). About twice the
+    # sweep plus that guard gives 5 minutes. Re-derive from
+    # `gh run list --workflow discover.yml` once runs exist; do not guess.
+    timeout-minutes: 5
+    steps:
+      # Actions pinned to the same commits as verify.yml.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # Full history, not depth 1: gate K3 resolves the commits cited in
+          # stack/rigor-practices.tsv with `git cat-file`, and fails on a
+          # shallow clone.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+
+      - name: Install (lockfile must be current)
+        run: bun install --frozen-lockfile
+
+      - name: Discover (file, rollup issue)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          node watch/discover.mjs --apply --issues
+          # Stage the new file so gate L (tracked files only) scans it.
+          git add watch/discovery/
+
+      - name: Gate chain (A..L, W, W2)
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          test -x "$CHROME_PATH" || { echo "Chrome not found at $CHROME_PATH"; exit 1; }
+          "$CHROME_PATH" --version
+          bun run verify
+
+      - name: Commit watch/discovery/ only
+        run: |
+          git add watch/discovery/
+          if git diff --cached --quiet -- watch/discovery/; then
+            echo "watch/discovery/ unchanged; nothing to commit"
+            exit 0
+          fi
+          # The one file this run wrote (a rerun in the same week rewrites it).
+          file="$(git diff --cached --name-only -- 'watch/discovery/*.json' | head -n 1)"
+          week="$(basename "$file" .json)"
+          n="$(node -p "require('./watch/discovery/${week}.json').candidates.length")"
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "discover: ${week} Rust candidates (${n}) [live]" -- watch/discovery/
+          # A plain push: if main moved during the run, this fails rather than
+          # landing a combination the gate chain did not check.
+          git push origin "HEAD:${GITHUB_REF_NAME}"

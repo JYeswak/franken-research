@@ -1,0 +1,3525 @@
+{
+ "_note": [
+  "Recorded from the GitHub API on 2026-09-24 by a live dry run of watch/discover.mjs (3 search pages, 40 repositories checked), then cut down to one search page of the repositories below. Kept fields are the ones discover.mjs reads.",
+  "Commit messages keep the subject line and agent Co-Authored-By trailer lines only, emails replaced by noreply@redacted.invalid; READMEs keep a window around the agent statement (or the first 1200 characters). The builder checked that every trimmed repository gives the same signals as its full recorded responses.",
+  "Synthetic: example-fork-owner/ai-memory is a copy of akitaonrails/ai-memory marked fork: true, with the same signal responses, so a broken fork exclusion lists it. Dicklesworthstone/franken_ocr's signal responses were fetched separately (the live sweep excludes it by owner) for the same reason.",
+  "issues: the repository's issue list as the selftest's in-memory store starts it: one suggest-a-project issue naming alphaXiv/OpenResearch, and one watch issue (not labelled candidate) naming h4ckf0r0day/obscura, which must stay listed. discover-prior-2026-W38.json is an earlier week listing kvcache-ai/AgentENV."
+ ],
+ "recorded_at": "2026-09-24T18:42:51.080Z",
+ "issues": [
+  {
+   "number": 1,
+   "title": "[candidate] alphaXiv/OpenResearch",
+   "body": "### Repository URL\n\nhttps://github.com/alphaXiv/OpenResearch\n\n### Why it fits\n\nAGENTS.md and CLAUDE.md at the root.",
+   "labels": [
+    {
+     "name": "candidate"
+    }
+   ],
+   "state": "open",
+   "html_url": "memory:issues/1"
+  },
+  {
+   "number": 2,
+   "title": "[watch] example issue that names another repository",
+   "body": "Compare with https://github.com/h4ckf0r0day/obscura for context.",
+   "labels": [
+    {
+     "name": "watch"
+    }
+   ],
+   "state": "open",
+   "html_url": "memory:issues/2"
+  }
+ ],
+ "expect": {
+  "_how": "Hand-derived from the signals the builder printed: score = signal count + log10(stars)/10, rounded to 3 places; order by score, then stars, then name. capped_4: the four most-starred of the eligible pool (CodexPlusPlus 31496, obscura 27814, OpenLogi 22083, ai-memory 8313), in listing order.",
+  "order": [
+   "akitaonrails/ai-memory",
+   "tokio-rs/topcoat",
+   "BigPizzaV3/CodexPlusPlus",
+   "h4ckf0r0day/obscura",
+   "AprilNEA/OpenLogi",
+   "graykode/abtop",
+   "therealaleph/MasterHttpRelayVPN-RUST"
+  ],
+  "scores": {
+   "akitaonrails/ai-memory": {
+    "signal_count": 4,
+    "score": 4.392,
+    "signals": {
+     "agents_md": true,
+     "claude_md": true,
+     "agent_trailers": 14,
+     "readme_statement": true
+    }
+   },
+   "tokio-rs/topcoat": {
+    "signal_count": 3,
+    "score": 3.371,
+    "signals": {
+     "agents_md": true,
+     "claude_md": true,
+     "agent_trailers": 1,
+     "readme_statement": false
+    }
+   },
+   "BigPizzaV3/CodexPlusPlus": {
+    "signal_count": 2,
+    "score": 2.45,
+    "signals": {
+     "agents_md": true,
+     "claude_md": false,
+     "agent_trailers": 6,
+     "readme_statement": false
+    }
+   },
+   "graykode/abtop": {
+    "signal_count": 2,
+    "score": 2.356,
+    "signals": {
+     "agents_md": true,
+     "claude_md": true,
+     "agent_trailers": 0,
+     "readme_statement": false
+    }
+   },
+   "therealaleph/MasterHttpRelayVPN-RUST": {
+    "signal_count": 1,
+    "score": 1.355,
+    "signals": {
+     "agents_md": false,
+     "claude_md": false,
+     "agent_trailers": 0,
+     "readme_statement": true
+    }
+   }
+  },
+  "excluded_owner_fork": [
+   "Dicklesworthstone/franken_ocr",
+   "example-fork-owner/ai-memory"
+  ],
+  "zero_signal": "orhun/ratty",
+  "already_candidate": [
+   "alphaXiv/OpenResearch",
+   "kvcache-ai/AgentENV"
+  ],
+  "capped_4": [
+   "akitaonrails/ai-memory",
+   "BigPizzaV3/CodexPlusPlus",
+   "h4ckf0r0day/obscura",
+   "AprilNEA/OpenLogi"
+  ]
+ },
+ "responses": {
+  "/search/repositories?q=language%3ARust%20pushed%3A%3E%3D2026-08-25%20created%3A%3E%3D2026-03-28%20stars%3A%3E%3D25%20fork%3Afalse&sort=stars&order=desc&per_page=100&page=1": {
+   "status": 200,
+   "body": {
+    "total_count": 12,
+    "incomplete_results": false,
+    "items": [
+     {
+      "full_name": "BigPizzaV3/CodexPlusPlus",
+      "html_url": "https://github.com/BigPizzaV3/CodexPlusPlus",
+      "owner": {
+       "login": "BigPizzaV3"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 31496,
+      "pushed_at": "2026-09-23T17:51:13Z",
+      "created_at": "2026-05-06T09:32:49Z"
+     },
+     {
+      "full_name": "h4ckf0r0day/obscura",
+      "html_url": "https://github.com/h4ckf0r0day/obscura",
+      "owner": {
+       "login": "h4ckf0r0day"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 27814,
+      "pushed_at": "2026-09-20T23:45:55Z",
+      "created_at": "2026-04-13T10:31:41Z"
+     },
+     {
+      "full_name": "AprilNEA/OpenLogi",
+      "html_url": "https://github.com/AprilNEA/OpenLogi",
+      "owner": {
+       "login": "AprilNEA"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 22083,
+      "pushed_at": "2026-09-24T15:42:20Z",
+      "created_at": "2026-05-24T10:10:36Z"
+     },
+     {
+      "full_name": "akitaonrails/ai-memory",
+      "html_url": "https://github.com/akitaonrails/ai-memory",
+      "owner": {
+       "login": "akitaonrails"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 8313,
+      "pushed_at": "2026-09-23T22:37:36Z",
+      "created_at": "2026-05-21T23:23:51Z"
+     },
+     {
+      "full_name": "example-fork-owner/ai-memory",
+      "html_url": "https://github.com/example-fork-owner/ai-memory",
+      "owner": {
+       "login": "example-fork-owner"
+      },
+      "fork": true,
+      "archived": false,
+      "stargazers_count": 8313,
+      "pushed_at": "2026-09-23T22:37:36Z",
+      "created_at": "2026-05-21T23:23:51Z"
+     },
+     {
+      "full_name": "alphaXiv/OpenResearch",
+      "html_url": "https://github.com/alphaXiv/OpenResearch",
+      "owner": {
+       "login": "alphaXiv"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 5682,
+      "pushed_at": "2026-09-24T06:50:27Z",
+      "created_at": "2026-06-07T01:51:39Z"
+     },
+     {
+      "full_name": "tokio-rs/topcoat",
+      "html_url": "https://github.com/tokio-rs/topcoat",
+      "owner": {
+       "login": "tokio-rs"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 5161,
+      "pushed_at": "2026-09-24T18:42:14Z",
+      "created_at": "2026-04-03T14:27:27Z"
+     },
+     {
+      "full_name": "graykode/abtop",
+      "html_url": "https://github.com/graykode/abtop",
+      "owner": {
+       "login": "graykode"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 3634,
+      "pushed_at": "2026-09-14T04:45:00Z",
+      "created_at": "2026-03-29T10:12:20Z"
+     },
+     {
+      "full_name": "therealaleph/MasterHttpRelayVPN-RUST",
+      "html_url": "https://github.com/therealaleph/MasterHttpRelayVPN-RUST",
+      "owner": {
+       "login": "therealaleph"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 3588,
+      "pushed_at": "2026-09-01T18:37:20Z",
+      "created_at": "2026-04-21T14:46:31Z"
+     },
+     {
+      "full_name": "kvcache-ai/AgentENV",
+      "html_url": "https://github.com/kvcache-ai/AgentENV",
+      "owner": {
+       "login": "kvcache-ai"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 3534,
+      "pushed_at": "2026-09-24T07:18:07Z",
+      "created_at": "2026-07-23T02:48:07Z"
+     },
+     {
+      "full_name": "orhun/ratty",
+      "html_url": "https://github.com/orhun/ratty",
+      "owner": {
+       "login": "orhun"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 3246,
+      "pushed_at": "2026-09-22T22:40:00Z",
+      "created_at": "2026-04-20T21:22:09Z"
+     },
+     {
+      "full_name": "Dicklesworthstone/franken_ocr",
+      "html_url": "https://github.com/Dicklesworthstone/franken_ocr",
+      "owner": {
+       "login": "Dicklesworthstone"
+      },
+      "fork": false,
+      "archived": false,
+      "stargazers_count": 330,
+      "pushed_at": "2026-09-22T17:22:49Z",
+      "created_at": "2026-06-25T01:38:58Z"
+     }
+    ]
+   }
+  },
+  "/repos/akitaonrails/ai-memory/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".config",
+     "type": "dir"
+    },
+    {
+     "name": ".dockerignore",
+     "type": "file"
+    },
+    {
+     "name": ".gitattributes",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": ".gitleaks.toml",
+     "type": "file"
+    },
+    {
+     "name": ".gitleaksignore",
+     "type": "file"
+    },
+    {
+     "name": ".ignore",
+     "type": "file"
+    },
+    {
+     "name": ".mailmap",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CHANGELOG.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "DATA_HANDLING.md",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SECURITY.md",
+     "type": "file"
+    },
+    {
+     "name": "bin",
+     "type": "dir"
+    },
+    {
+     "name": "companions",
+     "type": "dir"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "deny.toml",
+     "type": "file"
+    },
+    {
+     "name": "docker",
+     "type": "dir"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "evals",
+     "type": "dir"
+    },
+    {
+     "name": "flake.nix",
+     "type": "file"
+    },
+    {
+     "name": "hooks",
+     "type": "dir"
+    },
+    {
+     "name": "packaging",
+     "type": "dir"
+    },
+    {
+     "name": "rust-toolchain.toml",
+     "type": "file"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "tests",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/akitaonrails/ai-memory/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "Merge branch 'test/boundary-adversarial'"
+     }
+    },
+    {
+     "commit": {
+      "message": "test: five adversarial security-boundary regressions across handoff, page-sharing, message, and lifecycle-guard invariants\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: security-boundary inventory + mandatory adversarial-test rule\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(setup-agent): fence the docker example so its doctest compiles; run doctests in CI\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(authz): close the enforcement-gap in the per-project authz design (#708)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-850'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-856'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-852'"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(messages): diagnose an empty inbox read under an inferred scope (#854)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(cookbook): note band false positives"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(llm): handle gpt-6 in the openai provider"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(llm): omit temperature for gpt-6 models"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(changelog): add (#850) to the auto-improve path sanitizer fix"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(auto-improve): sanitize Windows-illegal LLM page paths"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'docs/comparison-2026-new-entrants'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'issue/848-consolidator-portable-path'"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: add Engram, Caura, TencentDB Agent Memory, memU, EverOS to comparison docs (#810)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(consolidate): sanitize LLM page paths in per-session consolidation\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-849'"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(run): export native store env (CLAUDE_CONFIG_DIR) before ai-memory run\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(changelog): reference PR #849 for macOS companion build fix\nCo-authored-by: Cursor <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(macos): route companion build through Xcode for SwiftUIMacros\nCo-authored-by: Cursor <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'issue/792-tcp-keepalive'"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(serve): enable TCP keepalive on accepted connections (#792)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(llm-providers): note LLM and embedding base URLs are independent\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'issue/847-bootstrap-portable-path'"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(bootstrap): sanitize Windows-illegal chars in LLM page paths\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-838'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-845'"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(windows-ci): record the CoW-off re-measure (Phase 1)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    }
+   ]
+  },
+  "/repos/akitaonrails/ai-memory/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "czogc2NoZWR1bGVkIHJldmlldywgYXV0by1hcHByb3ZhbCBkZWZhdWx0LCBtYW51YWwgcmV2aWV3IG9wdC1pbiwgcGVuZGluZyBwcm9wb3NhbCBzdG9yYWdlLCBhbmQgY3VyYXRvciB3b3JrLiB8CgojIyBMaWNlbnNlCgpNSVQgLSBzZWUgW0xJQ0VOU0VdKExJQ0VOU0UpLgoKIyMgQWNrbm93bGVkZ2VtZW50cwoKVGhpcyBjb2RlYmFzZSBpcyBiZWluZyBidWlsdCBjb2xsYWJvcmF0aXZlbHkgd2l0aCBDbGF1ZGUgQ29kZQooQW50aHJvcGljIENsYXVkZSBPcHVzIDQuNykgZm9sbG93aW5nIHRoZSBwbGFuIGRvY3VtZW50ZWQgaW4KYGRvY3MvZGVzaWduLWRlY2lzaW9ucy5tZGAuCg=="
+   }
+  },
+  "/repos/tokio-rs/topcoat/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".agents",
+     "type": "dir"
+    },
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".claude",
+     "type": "symlink"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "Topcoat.toml",
+     "type": "file"
+    },
+    {
+     "name": "benchmarks",
+     "type": "dir"
+    },
+    {
+     "name": "clippy.toml",
+     "type": "file"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "demos",
+     "type": "dir"
+    },
+    {
+     "name": "examples",
+     "type": "dir"
+    },
+    {
+     "name": "flake.lock",
+     "type": "file"
+    },
+    {
+     "name": "flake.nix",
+     "type": "file"
+    },
+    {
+     "name": "media",
+     "type": "dir"
+    },
+    {
+     "name": "release-plz.toml",
+     "type": "file"
+    },
+    {
+     "name": "rust-toolchain.toml",
+     "type": "file"
+    },
+    {
+     "name": "rustfmt.toml",
+     "type": "file"
+    }
+   ]
+  },
+  "/repos/tokio-rs/topcoat/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "feat(runtime): support streaming for shards (#444)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(runtime): add WebSocket connections for streaming live updates (#443)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(runtime): make procedure and shard paths customizable (#441)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(runtime): rewrite pages reruns without changing the URL (#440)"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: rewrite all docs 3 (#439)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(view): suspense mode (#436)"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(skills): add test style"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: rewrite all docs (#435)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(view): improved `suspense` behavior, dedicated error boundary view, refactor (#432)"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: upgrade syn to 3.0.6 (#428)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(view): stable region IDs across rerenders (#427)"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(router): `RouteWithLayers`, `handle_inner` (#426)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(router): strip prefix layer (#397)\nCo-authored-by: Cursor <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: improve documentation skill"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(router): `client_ip(cx)` accessor and trusted proxies (#425)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(router): serving a file directory with `DirectoryRoute`, `.serve_dir()`, and `.public_dir()` (#424)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(example): add routerless example project (#422)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(cli): stateful hot reload (#421)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ui): form field components (#420)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ui): sidebar component (#419)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(runtime): better reactivity support for (Topcoat-) UI components (#418)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ui): minor design improvements (#417)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(runtime): support Vec, slices and arrays (#416)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(runtime): integer support (#415)"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(runtime): get rid of maverick-js dependency (#414)"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(runtime)!: refactor browser runtime (#413)"
+     }
+    },
+    {
+     "commit": {
+      "message": "test(runtime): add Rust vs. JavaScript cross-compiler coherence tests (#412)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(view)!: new way to specify identities (`#[key(...)]` and `cx.keyed(...)`) (#410)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(core)!: make Error cheap to clone (#396)"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: release v0.8.1 (#395)"
+     }
+    }
+   ]
+  },
+  "/repos/tokio-rs/topcoat/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "PGRpdiBhbGlnbj0iY2VudGVyIj4KICA8cGljdHVyZT4KICAgIDxzb3VyY2UgbWVkaWE9IihwcmVmZXJzLWNvbG9yLXNjaGVtZTogZGFyaykiIHNyY3NldD0iaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Rva2lvLXJzL3RvcGNvYXQvbWFpbi9tZWRpYS9sb2dvLWRhcmsuc3ZnIj4KICAgIDxpbWcgc3JjPSJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vdG9raW8tcnMvdG9wY29hdC9tYWluL21lZGlhL2xvZ28tbGlnaHQuc3ZnIiBhbHQ9IlRvcGNvYXQiIHdpZHRoPSIyMjAiPgogIDwvcGljdHVyZT4KPC9kaXY+Cgo8ZGl2IGFsaWduPSJjZW50ZXIiPgogIDxoMz5UaGUgZnVsbCBmdWxsLXN0YWNrIGZyYW1ld29yayBmb3IgUnVzdDwvaDM+CjwvZGl2PgoKPGRpdiBhbGlnbj0iY2VudGVyIj4KClshW0NyYXRlcy5pb11bY3JhdGVzLWJhZGdlXV1bY3JhdGVzLXVybF0KWyFbRG9jcy5yc11bZG9jcy1iYWRnZV1dW2RvY3MtdXJsXQpbIVtNSVQgbGljZW5zZWRdW21pdC1iYWRnZV1dW21pdC11cmxdClshW0J1aWxkIFN0YXR1c11bYWN0aW9ucy1iYWRnZV1dW2FjdGlvbnMtdXJsXQpbIVtEaXNjb3JkIGNoYXRdW2Rpc2NvcmQtYmFkZ2VdXVtkaXNjb3JkLXVybF0KCjwvZGl2PgoKW2NyYXRlcy1iYWRnZV06IGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vY3JhdGVzL3YvdG9wY29hdC5zdmc/c3R5bGU9ZmxhdC1zcXVhcmUKW2NyYXRlcy11cmxdOiBodHRwczovL2NyYXRlcy5pby9jcmF0ZXMvdG9wY29hdApbZG9jcy1iYWRnZV06IGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vZG9jc3JzL3RvcGNvYXQ/c3R5bGU9ZmxhdC1zcXVhcmUKW2RvY3MtdXJsXTogaHR0cHM6Ly9kb2NzLnJzL3RvcGNvYXQvbGF0ZXN0L3RvcGNvYXQKW21pdC1iYWRnZV06IGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvbGljZW5zZS1NSVQtYmx1ZS5zdmc/c3R5bGU9ZmxhdC1zcXVhcmUKW21pdC11cmxdOiBodHRwczovL2dpdGh1Yi5jb20vdG9raW8tcnMvdG9wY29hdC9ibG9iL21haW4vTElDRU5TRQpbYWN0aW9ucy1iYWRnZV06IGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vZ2l0aHViL2FjdGlvbnMvd29ya2Zsb3cvc3RhdHVzL3Rva2lvLXJzL3RvcGNvYXQvY2kueW1sP2JyYW5jaD1tYWluJnN0eWxlPWZsYXQtc3F1YXJlClthY3Rpb25zLXVybF06IGh0dHBzOi8vZ2l0aHViLmNvbS90b2tpby1ycy90b3Bjb2F0L2FjdGlvbnM/"
+   }
+  },
+  "/repos/graykode/abtop/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "assets",
+     "type": "dir"
+    },
+    {
+     "name": "dist-workspace.toml",
+     "type": "file"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "src",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/graykode/abtop/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "fix(codex): parse the new rollout schema (item_completed) from Codex ≥ ~0.149 (#170)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: preserve privacy and lifecycle in rollout item parsing"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(codex): track code-mode status lifecycle (#161)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'main' into fix/codex-status-lifecycle"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: omit private custom tool payloads from display data"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.5.5"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.5.4"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: distinguish Claude Desktop App / IDE / CLI sessions (#175)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: distinguish Claude Desktop App / IDE / CLI sessions"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: remove outdated Claude peak-hours warning (#174)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: remove outdated Claude peak-hours warning"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(codex): parse the new rollout schema (item_completed) from Codex ≥ ~0.149"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'main' into fix/codex-status-lifecycle"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: keep parent active for async subagents (#157)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(codex): track code-mode status lifecycle"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: keep parent active for async subagents"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.5.3"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #151 from graykode/fix/cmux-jump-rendering"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: refine cmux jump fallback"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: stabilize cmux jump and session rendering"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.5.2"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: allow terminal drag selection (#150)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: allow terminal drag selection"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: display Codex free quota as 30-day window (#149)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: display Codex free quota as 30-day window"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.5.1"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: gate macOS jump helpers"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.5.0"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: jump to session via terminal adapter registry (cmux/tmux/iTerm2) (#138)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: align terminal jump backends"
+     }
+    }
+   ]
+  },
+  "/repos/graykode/abtop/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "IyBhYnRvcAoKKipMaWtlIFtidG9wXShodHRwczovL2dpdGh1Yi5jb20vYXJpc3RvY3JhdG9zL2J0b3ApLCBidXQgZm9yIHlvdXIgQUkgY29kaW5nIGFnZW50cy4qKgoKU2VlIGV2ZXJ5IENsYXVkZSBDb2RlLCBDb2RleCBDTEksIGFuZCBPcGVuQ29kZSBzZXNzaW9uIGF0IGEgZ2xhbmNlIOKAlCB0b2tlbiB1c2FnZSwgY29udGV4dCB3aW5kb3cgJSwgcmF0ZSBsaW1pdHMsIGNoaWxkIHByb2Nlc3Nlcywgb3BlbiBwb3J0cywgYW5kIG1vcmUuCkNsYXVkZSBDb2RlLCBDb2RleCBDTEksIGFuZCBPcGVuQ29kZSBzZXNzaW9ucyBhcmUgZGlzY292ZXJlZCBmcm9tIGxvY2FsIHByb2Nlc3MvZmlsZSBzdGF0ZSwgc28gbXVsdGlwbGUgYWN0aXZlIHByb2ZpbGVzIGFyZSBzdXBwb3J0ZWQgYWNyb3NzIG1hY09TLCBMaW51eCwgYW5kIFdpbmRvd3MuCgohW2RlbW9dKGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9ncmF5a29kZS9hYnRvcC9tYWluL2Fzc2V0cy9kZW1vLmdpZikKCiMjIFdoeQoKLSBSdW5uaW5nIDMrIGFnZW50cyBhY3Jvc3MgcHJvamVjdHM/IFNlZSB0aGVtIGFsbCBpbiBvbmUgc2NyZWVuLgotIEhpdHRpbmcgcmF0ZSBsaW1pdHM/IFdhdGNoIHlvdXIgcXVvdGEgaW4gcmVhbC10aW1lLgotIEFnZW50IHNwYXduZWQgYSBzZXJ2ZXIgYW5kIGZvcmdvdCB0byBraWxsIGl0PyBPcnBoYW4gcG9ydCBkZXRlY3Rpb24uCi0gQ29udGV4dCB3aW5kb3cgZmlsbGluZyB1cD8gUGVyLXNlc3Npb24gJSBiYXJzIHdpdGggd2FybmluZ3MuCgpBbGwgcmVhZC1vbmx5LiBObyBBUEkga2V5cy4gTm8gYXV0aC4KCiMjIEluc3RhbGwKCiMjIyBtYWNPUyAvIExpbnV4Cgo+IFshSU1QT1JUQU5UXQo+IE9uIExpbnV4LCBlbnN1cmUgYHNxbGl0ZTNgIGlzIGluc3RhbGxlZCB0byBlbmFibGUgbW9uaXRvcmluZyBmb3IgT3BlbkNvZGUgc2Vzc2lvbnMuCgpgYGBiYXNoCmN1cmwgLS1wcm90byAnPWh0dHBzJyAtLXRsc3YxLjIgLUxzU2YgaHR0cHM6Ly9naXRodWIuY29tL2dyYXlrb2RlL2FidG9wL3JlbGVhc2VzL2xhdGVzdC9kb3dubG9hZC9hYnRvcC1pbnN0YWxsZXIuc2ggfCBzaApgYGAKCiMjIyBDYXJnbwoKYGBgYmFzaApjYXJnbyBpbnN0YWxsIGFidG9wCmBgYAoKIyMjIFdpbmRvd3MKCk5hdGl2ZSBzdXBwb3J0IOKAlCBubyBXU0wgcmVxdWlyZWQuIFVzZXMgYHN5c2luZm9gIGZvciBwcm9jZXNzIGluZm8gYW5kIGhvc3QgQ1BVLw=="
+   }
+  },
+  "/repos/AprilNEA/OpenLogi/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".agents",
+     "type": "dir"
+    },
+    {
+     "name": ".ast-grep",
+     "type": "dir"
+    },
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".claude",
+     "type": "dir"
+    },
+    {
+     "name": ".config",
+     "type": "dir"
+    },
+    {
+     "name": ".editorconfig",
+     "type": "file"
+    },
+    {
+     "name": ".envrc",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": ".zed",
+     "type": "dir"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CHANGELOG.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE-APACHE",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE-MIT",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "clippy.toml",
+     "type": "file"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "design",
+     "type": "dir"
+    },
+    {
+     "name": "devenv.lock",
+     "type": "file"
+    },
+    {
+     "name": "devenv.nix",
+     "type": "file"
+    },
+    {
+     "name": "devenv.yaml",
+     "type": "file"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "fixtures",
+     "type": "dir"
+    },
+    {
+     "name": "flake.lock",
+     "type": "file"
+    },
+    {
+     "name": "flake.nix",
+     "type": "file"
+    },
+    {
+     "name": "packaging",
+     "type": "dir"
+    },
+    {
+     "name": "prek.toml",
+     "type": "file"
+    },
+    {
+     "name": "release-plz.toml",
+     "type": "file"
+    },
+    {
+     "name": "rust-toolchain.toml",
+     "type": "file"
+    },
+    {
+     "name": "rustfmt.toml",
+     "type": "file"
+    },
+    {
+     "name": "sgconfig.yml",
+     "type": "file"
+    },
+    {
+     "name": "skills-lock.json",
+     "type": "file"
+    },
+    {
+     "name": "xtask",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/AprilNEA/OpenLogi/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "fix(gui): prefer firmware codename over catalog name for M650 variants (#1366)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(i18n): clarify which app editors close after deletion"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(gui): add safe per-app profile reset and complete removal"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(gui): render profile confirmation dialogs in the main window"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(agent): divert a single-bound gesture button (#1569)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(hid): recognise Nano receiver 046d:c534 (MK270, MK295) (#1456)"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: release v0.8.7 (#1567)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(agent): default mouse profiles to pointer context"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(hook): expose native pointer window context"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: release v0.8.6 (#1481)"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(gui): mend the desktop crate's intra-doc links"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(gui): show installation source in update settings"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(gui): detect installation ownership across platforms"
+     }
+    },
+    {
+     "commit": {
+      "message": "build(gui): pin gpui-kit footer backport"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(gui): move the camera panel's row builders into controls/rows.rs"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(gui): move the mouse view's binding labels and tests out of view.rs"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(inject): break the macOS injector into scroll, browser and SPI modules"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(agent): move the button runtime's worker loop into button/worker.rs"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(device): move the host-switch session's tests to host_switch/tests.rs"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(hidpp): split the channel tests by what they exercise"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(agent): split the orchestrator tests by what they exercise"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(device): split the gesture capture tests by what they exercise"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(device): split the inventory tests by what they exercise"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(core): split the config tests by what they exercise"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(inject): run scripts and workflows once, over four platform hooks"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(gui): split the AppState tests by what they exercise"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(agent): move the device list and re-apply plan into orchestrator/devices.rs"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(gui): move the F-key geometry into function_row/key_points.rs"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(camera): suffix the macOS backends like the other platforms'"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(device): let ProbeTimeouts carry the postfix its fields repeated"
+     }
+    }
+   ]
+  },
+  "/repos/AprilNEA/OpenLogi/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "PiBbIVdBUk5JTkddCj4gKipPcGVuTG9naSBpcyB1bmRlciBhY3RpdmUgZGV2ZWxvcG1lbnQqKiBhbmQgbm90IHlldCBzdGFibGUg4oCUIGZlYXR1cmVzIGFuZCBjb25maWcgbWF5IHN0aWxsIGNoYW5nZS4gR2l2ZSB0aGUgcmVwbyBhICoqU3RhcioqIOKtkCBhbmQgKipXYXRjaCoqIPCfkYAgaXQgdG8gZ2V0IG5vdGlmaWVkIHdoZW4gYSBuZXcgcmVsZWFzZSBsYW5kcy4KCjxoNCBhbGlnbj0icmlnaHQiPjxzdHJvbmc+RW5nbGlzaDwvc3Ryb25nPiB8IDxhIGhyZWY9ImRvY3MvUkVBRE1FLnpoLUNOLm1kIj7nroDkvZPkuK3mloc8L2E+IHwgPGEgaHJlZj0iZG9jcy9SRUFETUUuamEubWQiPuaXpeacrOiqnjwvYT4gfCA8YSBocmVmPSJkb2NzL1JFQURNRS5kZS5tZCI+RGV1dHNjaDwvYT4gfCA8YSBocmVmPSJkb2NzL1JFQURNRS5mci5tZCI+RnJhbsOnYWlzPC9hPiB8IDxhIGhyZWY9ImRvY3MvUkVBRE1FLmtvLm1kIj7tlZzqta3slrQ8L2E+IHwgPGEgaHJlZj0iZG9jcy9SRUFETUUucnUubWQiPtCg0YPRgdGB0LrQuNC5PC9hPjwvaDQ+Cgo8cCBhbGlnbj0iY2VudGVyIj4KICAgIDxpbWcgc3JjPSJodHRwczovL2Fzc2V0cy5vcGVubG9naS5vcmcvYnJhbmQvb3BlbmxvZ2ktaWNvbi5wbmciIHdpZHRoPSIxMzgiIGFsdD0iT3BlbkxvZ2kiLz4KPC9wPgoKPGgxIGFsaWduPSJjZW50ZXIiPk9wZW5Mb2dpPC9oMT4KPHAgYWxpZ249ImNlbnRlciI+PHN0cm9uZz7imqHvuI8gQSBuYXRpdmUsIGxvY2FsLWZpcnN0IGFsdGVybmF0aXZlIHRvIExvZ2l0ZWNoIE9wdGlvbnMrLCB3cml0dGVuIGluIFJ1c3Qg8J+mgDxici8+VW5sb2NrIHRoZSBmdWxsIGNhcGFiaWxpdGllcyBvZiBMb2dpdGVjaCBtaWNlLCBrZXlib2FyZHMsIGFuZCB3ZWJjYW1zIG92ZXIgSElEKysgYW5kIFVWQzwvc3Ryb25nPjwvcD4KCjxkaXYgYWxpZ249ImNlbnRlciI+CiAgICA8YSBocmVmPSJodHRwczovL3R3aXR0ZXIuY29tL0FwcmlsTkVBIiB0YXJnZXQ9Il9ibGFuayI+CiAgICA8aW1nIGFsdD0idHdpdHRlciIgc3JjPSJodHRwczovL2ltZy5zaGllbGRzLmlvL2JhZGdlL2ZvbGxvdy1BcHJpbE5FQS1ncmVlbj9zdHlsZT1zb2NpYWwmbG9nbz1Ud2l0dGVyIj48L2E+CiAgICA8YSBocmVmPSJodHRwczovL3QubWUvK1ZEdGtSNU9TQVQwNE56VmgiIHRhcmdldD0iX2JsYW5rIj4KICAgIDxpbWcgYWx0PSJ0ZWxlZ3JhbSIgc3JjPSJodHRwczovL2ltZy5zaGllbGRzLmlvL2JhZGdlL2NoYXQtdGVsZWdyYW0tYmx1ZXZpb2xldA=="
+   }
+  },
+  "/repos/BigPizzaV3/CodexPlusPlus/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".gitattributes",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CHANGELOG.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "HANDOVER.md",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "README_EN.md",
+     "type": "file"
+    },
+    {
+     "name": "THIRD_PARTY_NOTICES.md",
+     "type": "file"
+    },
+    {
+     "name": "apps",
+     "type": "dir"
+    },
+    {
+     "name": "assets",
+     "type": "dir"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "services",
+     "type": "dir"
+    },
+    {
+     "name": "tools",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/BigPizzaV3/CodexPlusPlus/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "fix(installer): 恢复 detach 重试循环内的强制卸载，修复 macOS 打包稳定失败\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Revert \"feat: add standalone Taskboard application (#2206)\""
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: add standalone Taskboard application (#2206)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(weixin): validate desktop CLI and restore connections on launcher startup (#2239)\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: 写盘前用 live 补齐 mcp_servers 条目，修掉 node_repl 被打散 (#2288)\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(models): 内置 15 家供应商模型元数据并接入 catalog 查找链 (#2280)\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: 供应商支持配置自定义上游请求头（issue #1685） (#2285)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(composer): 修复混合 API 被官方额度阻止发送 (#2286)\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(inject): 在用量状态入口处理官登额度提示和功能锁 (#2282)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: 补全 GPT-6 Sol/Luna 模型元数据 (#2281)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: 让 Responses 工具默认值不受会话身份影响 (#2225)"
+     }
+    },
+    {
+     "commit": {
+      "message": "ci(models): add official metadata sync check (#2290)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: 聚合模式切换保留 auth.json 认证状态，修复弹登录页（issue #1604） (#2283)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: 写盘前用 live 补齐 mcp_servers 条目，修掉 node_repl 被打散"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: 只把 hooks 定义类子表从 live 补回，避免带入本机标量设置"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: 防止 config.toml 被重复表头打散"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2250'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2241'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2276'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2229'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2243'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2251'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2265'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2274'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2234'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2245'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2278'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-2277'"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(models): 内置 15 家供应商元数据并接入 catalog 查找链 (issue #2279)"
+     }
+    },
+    {
+     "commit": {
+      "message": "test(protocol-proxy): 压缩测试服务器按 Content-Length 读满请求\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    }
+   ]
+  },
+  "/repos/BigPizzaV3/CodexPlusPlus/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "IyBDb2RleCsrCgo8cCBhbGlnbj0iY2VudGVyIj4KICA8aW1nIHNyYz0iZG9jcy9pbWFnZXMvY29kZXgtcGx1cy1wbHVzLnBuZyIgYWx0PSJDb2RleCsrIOWbvuaghyIgd2lkdGg9IjE2MCI+CjwvcD4KCjxwIGFsaWduPSJjZW50ZXIiPgogIOS4reaWhyB8IDxhIGhyZWY9IlJFQURNRV9FTi5tZCI+RW5nbGlzaDwvYT4KPC9wPgoKPHAgYWxpZ249ImNlbnRlciI+CiAgPGltZyBhbHQ9IlJlbGVhc2UiIHNyYz0iaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9naXRodWIvdi9yZWxlYXNlL0JpZ1BpenphVjMvQ29kZXhQbHVzUGx1cyI+CiAgPGltZyBhbHQ9IlN0YXJzIiBzcmM9Imh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vZ2l0aHViL3N0YXJzL0JpZ1BpenphVjMvQ29kZXhQbHVzUGx1cyI+CiAgPGltZyBhbHQ9IkxpY2Vuc2UiIHNyYz0iaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9naXRodWIvbGljZW5zZS9CaWdQaXp6YVYzL0NvZGV4UGx1c1BsdXMiPgogIDxpbWcgYWx0PSJSdXN0IiBzcmM9Imh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvcnVzdC0xLjg1JTJCLW9yYW5nZSI+CiAgPGltZyBhbHQ9IlRhdXJpIiBzcmM9Imh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvdGF1cmktMi54LTI0QzhEQiI+CjwvcD4KCkNvZGV4Kysg5piv6Z2i5ZCRIE9wZW5BSSBDb2RleCAvIENoYXRHUFQg5qGM6Z2i5bqU55So55qE5aSW6YOo5ZCv5Yqo5Zmo5LiO566h55CG5bel5YW344CC5a6D6YCa6L+HIENocm9taXVtIERldlRvb2xzIFByb3RvY29sIOWSjOacrOWcsOi+heWKqeacjeWKoeaPkOS+m+S+m+W6lOWVhuWIh+aNouOAgeWNj+iurui9rOaNouOAgeS8muivneeuoeeQhuS4jueVjOmdouWinuW8uu+8jOS4jeS/ruaUueWumOaWueW6lOeUqOeahCBgYXBwLmFzYXJg77yM5Lmf5LiN5ZCR5a6J6KOF55uu5b2V5YaZ5YWl6KGl5LiB5paH5Lu244CCCgojIyDlv6vpgJ/kvb/nlKgKCuS7jiBbR2l0SHViIFJlbGVhc2VzXShodHRwczovL2dpdGh1Yi5jb20vQmlnUGl6emFWMy9Db2RleFBsdXNQbHVzL3JlbGVhc2VzKSDkuIvovb3mnIDmlrDniYjlronoo4XljIXvvJoKCi0gV2luZG93c++8mmBDb2RleFBsdXNQbHVzLSotd2luZG93cy14NjQtc2V0dXAuZXhlYAotIG1hY09TIEludGVs77yaYENvZGV4UGx1c1BsdXMtKi1tYWNvcy14NjQuZG1nYAotIG1hY09TIEFwcGxlIFNpbGljb27vvJpgQ29kZXhQbHVzUGx1cy0qLW1hY29zLWFybTY0LmRtZ2AKCuWuieijheWQjuS8muacieS4pOS4quWFpeWPo++8mgoKLSBgQ29kZXgrK2DvvJrpnZnpu5jlkK/liqjlrpjmlrnmoYzpnaLlupTnlKjvvIzlubbliqDovb3lt7Lkv53lrZjnmoTkvpvlupTllYbphY3nva7kuI7lop7lvLrlip/og73jgIIKLSBgQ29kZXgrKyDnrqHnkIblt6Xlhbdg77ya566h55CG5L6b5bqU5ZWG44CB5qih5Z6L44CB5bel5YW35o+S5Lu244CB5Lya6K+d44CB5aKe5by65Yqf6IO944CB6ISa5pys44CB5pu05paw5ZKM6K+K5pat44CCCgrpppbmrKHkvb/nlKjlu7rorq7lhYjmiZPlvIDnrqHnkIblt6XlhbfvvIznoa7orqTlupTnlKjot6/lvoTlkozov5DooYznirbmgIHvvIzlho3phY3nva7kvpvlupTllYbkuI7lop7lvLrlip/og73vvIzmnIDlkI7ku44gYENvZGV4KytgIOWFpeWPo+WQr+WKqOOAgldpbmRvd3Mg5a6J6KOF5YyF5Lya5Yib5bu65qGM6Z2i5ZKM5byA5aeL6I+c5Y2V5b+r5o235pa5"
+   }
+  },
+  "/repos/therealaleph/MasterHttpRelayVPN-RUST/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SF_README.md",
+     "type": "file"
+    },
+    {
+     "name": "android",
+     "type": "dir"
+    },
+    {
+     "name": "assets",
+     "type": "dir"
+    },
+    {
+     "name": "config.direct.example.toml",
+     "type": "file"
+    },
+    {
+     "name": "config.example.toml",
+     "type": "file"
+    },
+    {
+     "name": "config.exit-node.example.toml",
+     "type": "file"
+    },
+    {
+     "name": "config.fronting-groups.example.toml",
+     "type": "file"
+    },
+    {
+     "name": "config.full.example.toml",
+     "type": "file"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "ios",
+     "type": "dir"
+    },
+    {
+     "name": "releases",
+     "type": "dir"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "src",
+     "type": "dir"
+    },
+    {
+     "name": "tunnel-node",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/therealaleph/MasterHttpRelayVPN-RUST/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.37"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: v1.9.37 relay and tunnel performance"
+     }
+    },
+    {
+     "commit": {
+      "message": "perf(relay): improve tunnel throughput and connection reuse (#1417)"
+     }
+    },
+    {
+     "commit": {
+      "message": "perf(tunnel-node): improve relay backpressure and DNS handling (#1414)"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.36"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: v1.9.36 release"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(quota): track Apps Script account usage"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ios): full-tunnel VPN app"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(tunnel-node): bound per-session memory to prevent OOM"
+     }
+    },
+    {
+     "commit": {
+      "message": "ci: use GitHub-hosted release runners"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.35"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: prepare v1.9.35 release"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1346 from CaptainMirage/fix/download-res-reli"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(logging): compact coloured timestamp + fix UI compile error"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(domain_fronter): resume large downloads reliably"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: WebSocket passthrough and stream timeout decoupling"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.34"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: v1.9.34 - TOML config migration"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(config): migrate config format to TOML"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.33"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: v1.9.33 — idle keepalive backoff"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(pipeline): reduce idle keepalive polls"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.32"
+     }
+    },
+    {
+     "commit": {
+      "message": "release: prepare v1.9.32 (#1321)"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: zstd compression — requires tunnel-node + CodeFull.gs update - 30% saving download - Full Tunnel (#1314)"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.31"
+     }
+    },
+    {
+     "commit": {
+      "message": "release: prepare v1.9.31"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(pipeline): reduce idle poll flooding"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(releases): refresh prebuilt binaries for v1.9.30"
+     }
+    },
+    {
+     "commit": {
+      "message": "release: prepare v1.9.30"
+     }
+    }
+   ]
+  },
+  "/repos/therealaleph/MasterHttpRelayVPN-RUST/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "LCB0aGUgQXBwcyBTY3JpcHQgcHJvdG9jb2wsIHRoZSBwcm94eSBhcmNoaXRlY3R1cmUg4oCUIGFsbCBoaXMuIFRoaXMgUnVzdCBwb3J0IGV4aXN0cyB0byBtYWtlIGNsaWVudC1zaWRlIGRpc3RyaWJ1dGlvbiBlYXNpZXIgKHNpbmdsZSBiaW5hcnksIG5vIFB5dGhvbiBpbnN0YWxsKS4KCk1vc3Qgb2YgdGhlIFJ1c3QgY29kZSBpbiB0aGlzIHBvcnQgd2FzIHdyaXR0ZW4gd2l0aCBbQW50aHJvcGljJ3MgQ2xhdWRlXShodHRwczovL2NsYXVkZS5jb20pLCByZXZpZXdlZCBieSBhIGh1bWFuIG9uIGV2ZXJ5IGNvbW1pdC4KCiMjIFN1cHBvcnQgdGhpcyBwcm9qZWN0Cgpb4p2k77iPIERvbmF0ZSBhdCBzaDFuLm9yZ10oaHR0cHM6Ly9zaDFuLm9yZy9kb25hdGUpIOKAlCBjb3ZlcnMgaG9zdGluZyBhbmQgQ0kgcnVubmVyIGNvc3RzLiBTdGFycmluZyB0aGUgcmVwbyBhbHNvIGhlbHBzIHNpZ25hbCB0aGUgcHJvamVjdCBpcyB3b3J0aCBrZWVwaW5nIGFsaXZlLgoKLS0tCgo8ZGl2IGRpcj0icnRsIj4KCg=="
+   }
+  },
+  "/repos/h4ckf0r0day/obscura/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".gitattributes",
+     "type": "file"
+    },
+    {
+     "name": ".gitbook.yaml",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "Dockerfile",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SECURITY.md",
+     "type": "file"
+    },
+    {
+     "name": "assets",
+     "type": "dir"
+    },
+    {
+     "name": "build.log",
+     "type": "file"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "deny.toml",
+     "type": "file"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "render-repros",
+     "type": "dir"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "skills",
+     "type": "dir"
+    },
+    {
+     "name": "tools",
+     "type": "dir"
+    },
+    {
+     "name": "vendor",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/h4ckf0r0day/obscura/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "Merge pull request #1048 from h4ckf0r0day/feat/jev-obscura-cdp"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(browser): improve CDP compatibility and concurrency"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1032 from h4ckf0r0day/fix/1029-document-write-blocking"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(js): preserve document.write script order"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1031 from h4ckf0r0day/fix/deno-v8-security-20260919"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1030 from h4ckf0r0day/fix/security-advisories-20260919"
+     }
+    },
+    {
+     "commit": {
+      "message": "upgrade: update deno_core and V8"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix: harden security boundaries"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1025 from AntonioRossi/fix/rustls-advisory-20260917"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1010 from lisa0314/fix/995-stealth-tracker-opt-out"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1004 from Railly/fix/accessible-names-and-visibility"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1000 from Yubo-Cao/fix/999-webidl-operations-enumerable"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #998 from michabbb/fix/render-screenshot-network-policy"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1006 from mnaza/fix/backspace-surrogate-pair-1005"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1009 from mnaza/fix/url-setter-conformance-1008"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #997 from mnaza/fix/btoa-latin1-encoding-996"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1014 from mnaza/fix/remove-attribute-id-index-1013"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #1020 from mnaza/fix/transform-layer-paint-resilience-1019"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(obscura-render): cap transform-layer dimensions to avoid OOM-aborting the page paint (#1019)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(obscura-js): remove_attribute must update the id_index (#1013)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Update AGENTS.md"
+     }
+    },
+    {
+     "commit": {
+      "message": "Update README.md"
+     }
+    },
+    {
+     "commit": {
+      "message": "Update README.md"
+     }
+    },
+    {
+     "commit": {
+      "message": "Add files via upload"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(net): allow disabling stealth tracker blocking"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(obscura-js): WHATWG-correct URL search/hash/port setters (#1008)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Update rustls to address RUSTSEC-2026-0285"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(obscura-cdp): Backspace deletes a whole surrogate pair, not one code unit (#1005)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(cdp): correct accessible names and visibility"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(js): make Web IDL operations enumerable on interface prototypes\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@redacted.invalid>"
+     }
+    }
+   ]
+  },
+  "/repos/h4ckf0r0day/obscura/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "PHAgYWxpZ249ImNlbnRlciI+CiAgPGltZyBzcmM9Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9oNGNrZjByMGRheS9vYnNjdXJhL21haW4vYXNzZXRzL2ljb24ucG5nIiBhbHQ9Ik9ic2N1cmEiIHdpZHRoPSI4MCIgLz4KPC9wPgo8aDIgYWxpZ249ImNlbnRlciI+T2JzY3VyYTwvaDI+CjxwIGFsaWduPSJjZW50ZXIiPgogIDxhIGhyZWY9Imh0dHBzOi8vdHJlbmRzaGlmdC5pby9yZXBvc2l0b3JpZXMvMjU4Mzc/dXRtX3NvdXJjZT10cmVuZHNoaWZ0LWJhZGdlJmFtcDt1dG1fbWVkaXVtPWJhZGdlJmFtcDt1dG1fY2FtcGFpZ249YmFkZ2UtdHJlbmRzaGlmdC0yNTgzNyIgdGFyZ2V0PSJfYmxhbmsiIHJlbD0ibm9vcGVuZXIgbm9yZWZlcnJlciI+PGltZyBzcmM9Imh0dHBzOi8vdHJlbmRzaGlmdC5pby9hcGkvYmFkZ2UvdHJlbmRzaGlmdC9yZXBvc2l0b3JpZXMvMjU4MzcvZGFpbHkiIGFsdD0iaDRja2YwcjBkYXklMkZvYnNjdXJhIHwgVHJlbmRzaGlmdCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSI1NSIvPjwvYT4KPC9wPgo8cCBhbGlnbj0iY2VudGVyIj4KICA8YSBocmVmPSJodHRwczovL2RvY3Mub2JzY3VyYS5zaCI+PGltZyBzcmM9Imh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvRG9jcy0xYTFhMWE/c3R5bGU9Zm9yLXRoZS1iYWRnZSZsb2dvPWdpdGJvb2smbG9nb0NvbG9yPXdoaXRlIiBhbHQ9IkRvY3VtZW50YXRpb24iIC8+PC9hPgogIDxhIGhyZWY9Imh0dHBzOi8vb2JzY3VyYS5zaCI+PGltZyBzcmM9Imh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvV2Vic2l0ZS0xYTFhMWE/c3R5bGU9Zm9yLXRoZS1iYWRnZSZsb2dvPWRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqRTVNQ0F4TnpBZ05ESXdJRFF5TUNJK1BIQmhkR2dnWm1sc2JEMGlJMFpHUmtaR1JpSWdabWxzYkMxeWRXeGxQU0psZG1WdWIyUmtJaUJrUFNKTk5EQTJMREUzTlM0d01EQTBNVElnUXpRME1DNDBPVGc1TXpJc01UYzFMakF3TURNMU1TQTBOelF1TkRrNE1UQTRMREUzTlM0d09EQTVPVFFnTlRBNExqUTVOamN6TlN3eE56UXVPVGMxTmpZeUlFTTFNemN1TnpNek5qUXpMREUzTkM0NE9EVXdPRFlnTlRZeExqSTNNRFk1TVN3eE9EY3VNakl3TlRVeElEVTNPUzQ1TXprMk16WXNNakE0TGpjNE5qWXlNU0JETlRr"
+   }
+  },
+  "/repos/orhun/ratty/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": "CHANGELOG.md",
+     "type": "file"
+    },
+    {
+     "name": "CODE_OF_CONDUCT.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SECURITY.md",
+     "type": "file"
+    },
+    {
+     "name": "assets",
+     "type": "dir"
+    },
+    {
+     "name": "build.rs",
+     "type": "file"
+    },
+    {
+     "name": "cliff.toml",
+     "type": "file"
+    },
+    {
+     "name": "config",
+     "type": "dir"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "dist-workspace.toml",
+     "type": "file"
+    },
+    {
+     "name": "examples",
+     "type": "dir"
+    },
+    {
+     "name": "flake.lock",
+     "type": "file"
+    },
+    {
+     "name": "flake.nix",
+     "type": "file"
+    },
+    {
+     "name": "nix",
+     "type": "dir"
+    },
+    {
+     "name": "protocols",
+     "type": "dir"
+    },
+    {
+     "name": "src",
+     "type": "dir"
+    },
+    {
+     "name": "website",
+     "type": "dir"
+    },
+    {
+     "name": "widget",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/orhun/ratty/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "fix: change default shortcuts for copy and paste (#151)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #153 from orhun/refactor/extract-ratty-vt"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor: extract ratty-vt into a workspace crate"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge pull request #150 from orhun/refactor/bevy-terminal-ratatui-v2"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(ci): preserve colors in headless smoke captures"
+     }
+    },
+    {
+     "commit": {
+      "message": "deps: use published bevy_terminal_ratatui 0.7.3"
+     }
+    },
+    {
+     "commit": {
+      "message": "ci: verify packaging and headless renderer output"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(example): honor fonts and finish headless captures reliably"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(widget): preserve wide glyphs when emitting escapes"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(terminal): preserve long graphemes with bounded processing"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(example): note which Ratty systems the harness mirrors"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(example): --send-after replaces the hard-coded first-send delay"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(example): capture when the renderer is idle instead of after N readbacks"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(example): --diagnose replaces the RATTY_TRACE_FG environment gate"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(systems): share the PTY drain between the app and the harness"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(widget): track hidden runs with a bool in render_test"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(ratty-vt): name the cluster break"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor: export ratty-vt's KITTY_PLACEHOLDER and use it everywhere"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(terminal): drop the unused TerminalLayout::render_scale field"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(widget): share emit_sequence for escape-carrying cells"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(config): shorten the font comments"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: drop the font rendering section from the README"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(config): add font.line_height"
+     }
+    },
+    {
+     "commit": {
+      "message": "ratty-vt: cluster graphemes into one cell and restore attributes on SCORC"
+     }
+    },
+    {
+     "commit": {
+      "message": "build: track the bevy_terminal line-box and block-element fix"
+     }
+    },
+    {
+     "commit": {
+      "message": "build: pin bevy_terminal_ratatui to the box-drawing overshoot fix branch"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(widget): require ratatui-image 11.0.6 for the document demo"
+     }
+    },
+    {
+     "commit": {
+      "message": "ratty-vt: handle CSI s / CSI u cursor save and restore"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(widget): emit SGR 8 for hidden text in render_test"
+     }
+    },
+    {
+     "commit": {
+      "message": "ratty-vt: parse SGR 8/9/58 hidden, strikeout and underline color"
+     }
+    }
+   ]
+  },
+  "/repos/orhun/ratty/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "PHAgYWxpZ249ImNlbnRlciI+CjxpbWcgd2lkdGg9IjMwMCIgc3JjPSJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vb3JodW4vcmF0dHkvcmVmcy9oZWFkcy9tYWluL3dlYnNpdGUvYXNzZXRzL2ltYWdlcy9yYXR0eS1sb2dvLmdpZiIgLz4KPGJyPgo8YnI+CjxiPlJhdHR5OiBBIEdQVS1yZW5kZXJlZCB0ZXJtaW5hbCBlbXVsYXRvciB3aXRoIGlubGluZSAzRCBncmFwaGljczwvYj4g8J+ngAo8YnI+CjxzdXA+Ckluc3BpcmVkIGJ5IFRlbXBsZU9TIHwgQnVpbHQgd2l0aCBSdXN0ICYgUmF0YXR1aQo8L3N1cD4KPGJyPgo8aW1nIHNyYz0iaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9iYWRnZS9CdWlsdF93aXRoLVJhdGF0dWktMDAwP2xvZ289cmF0YXR1aSZhbXA7bG9nb0NvbG9yPWZmZiZhbXA7bGFiZWxDb2xvcj0yMDFhMTYmYW1wO2NvbG9yPWZmZDk3MCIgYWx0PSJCdWlsdCB3aXRoIFJhdGF0dWkgYmFkZ2UiPgo8L3A+Cgo8ZGl2PgogIDx2aWRlbyBzcmM9Imh0dHBzOi8vZ2l0aHViLmNvbS91c2VyLWF0dGFjaG1lbnRzL2Fzc2V0cy8xN2VkYTg2Yi1kMDBmLTQwMWItOWNmNC0zODM0M2ZhNzEzODYiIGFsdD0iUmF0dHkgRGVtbyIvPgo8L2Rpdj4KClsiUm9kZW50LW9ic2Vzc2VkIGRldmVsb3BlciBjcmVhdGVzIFJhdHR5IHRvIGJyaW5nIDNEIGdyYXBoaWNzIHRvIHRoZSBjb21tYW5kIGxpbmUiXShodHRwczovL3d3dy50aGVyZWdpc3Rlci5jb20vc29mdHdhcmUvMjAyNi8wNS8xMS9yYXR0eS10ZXJtaW5hbC1lbXVsYXRvci1icmluZ3MtM2QtZ3JhcGhpY3MtdG8tdGhlLWNvbW1hbmQtbGluZS81MjM4Mjk5KSAtIFRoZSBSZWdpc3RlciAgClsiVGhpcyBOZXcgVGVybWluYWwgaXMgQWJzdXJkIChCdXQgVG90YWxseSBGdW4pIl0oaHR0cHM6Ly9pdHNmb3NzLmNvbS9yYXR0eS10ZXJtaW5hbC8pIC0gSXQncyBGT1NTICAKWyIxMCB3ZWlyZCBPU1MgcHJvamVjdHMgeW91IG5lZWQgcmlnaHQgbm93Li4uICJdKGh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9cVB1eldGdlJhamspIC0gRmlyZXNoaXAgIApbIllvdXIgdGVybWluYWwgY2FuIHJlbmRlciBpbiAzRCBub3csIGFuZCBSdXN0IG1hZGUgaXQgc3VycHJpc2luZ2x5IHVzYWJsZSJdKGh0dHBzOi8vd3d3Lm1ha2V1c2VvZi5jb20vdGVybWluYWwtcmVuZGVyLTNkLXJ1c3QtbWFkZS1zdXJwcmlzaW5nbHktdXNhYmxlLykgLSBNYWtlVXNlT2YKCiMjIEY="
+   }
+  },
+  "/repos/Dicklesworthstone/franken_ocr/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".beads",
+     "type": "dir"
+    },
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".claude",
+     "type": "dir"
+    },
+    {
+     "name": ".gitattributes",
+     "type": "file"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": ".rchignore",
+     "type": "file"
+    },
+    {
+     "name": ".ubsignore",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CHANGELOG.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "artifacts",
+     "type": "dir"
+    },
+    {
+     "name": "benches",
+     "type": "dir"
+    },
+    {
+     "name": "dist-v0.3.0",
+     "type": "dir"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "examples",
+     "type": "dir"
+    },
+    {
+     "name": "focr-ios",
+     "type": "dir"
+    },
+    {
+     "name": "focr-wasm",
+     "type": "dir"
+    },
+    {
+     "name": "franken_ocr_illustration.webp",
+     "type": "file"
+    },
+    {
+     "name": "fuzz",
+     "type": "dir"
+    },
+    {
+     "name": "gh_og_share_image.jpg",
+     "type": "file"
+    },
+    {
+     "name": "install.ps1",
+     "type": "file"
+    },
+    {
+     "name": "install.sh",
+     "type": "file"
+    },
+    {
+     "name": "ios",
+     "type": "dir"
+    },
+    {
+     "name": "models",
+     "type": "dir"
+    },
+    {
+     "name": "rust-toolchain.toml",
+     "type": "file"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "site",
+     "type": "dir"
+    },
+    {
+     "name": "src",
+     "type": "dir"
+    },
+    {
+     "name": "tests",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/Dicklesworthstone/franken_ocr/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "docs(agents): synchronize suite-wide rules and canonical multi-agent conventions"
+     }
+    },
+    {
+     "commit": {
+      "message": "style(fixtures): format native engine manifests and model test fixtures"
+     }
+    },
+    {
+     "commit": {
+      "message": "style(site): format web demo site scripts, harnesses, and iOS catalog JSON"
+     }
+    },
+    {
+     "commit": {
+      "message": "style(gauntlet): format release gauntlet bundle receipts and bench history"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): sync fsqlite WAL certification state\nCo-Authored-By: Claude <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge remote-tracking branch 'origin/main'"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ios): restore model-specific sample inputs (bd-n2p7)"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(deps): pin asupersync 0.5.0 and fsqlite 0.4.0"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(ios): bump FrankenOCR marketing version to 1.2"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): refresh tracker snapshot"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): record Share cancellation proof"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(ios): cancel staged Share handoffs safely"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(beads): record interface zoom proof"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): record Share batch proof"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge remote-tracking branch 'origin/main'"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ios): text-size scale plus share-extension history handoff"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(music): fold MTDT-audited TrOMR snapshot files onto main"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): record figure extraction proof"
+     }
+    },
+    {
+     "commit": {
+      "message": "test(ios): scroll figure control into reach"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ios): return lossless figure PNG crops beside recognition JSON"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ios): add load-once image batches"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(ios): keep cross-page runs reproducible and honest"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(ios): add a shared-context cross-page PDF recognition path"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): record linked Apple DSR proof"
+     }
+    },
+    {
+     "commit": {
+      "message": "test(ios): run linked Apple gates through DSR"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(dsr): parse Swift regex literals under project mode"
+     }
+    },
+    {
+     "commit": {
+      "message": "Record DSR-only Apple proof boundary"
+     }
+    },
+    {
+     "commit": {
+      "message": "build: route Apple validation through DSR"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(beads): record Apple CI proof boundary"
+     }
+    },
+    {
+     "commit": {
+      "message": "ci(ios): validate Apple source contract"
+     }
+    }
+   ]
+  },
+  "/repos/Dicklesworthstone/franken_ocr/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "IyBmcmFua2VuX29jcgoKPGRpdiBhbGlnbj0iY2VudGVyIj4KICA8aW1nIHNyYz0iZnJhbmtlbl9vY3JfaWxsdXN0cmF0aW9uLndlYnAiIGFsdD0iZnJhbmtlbl9vY3IgLSBQdXJlLVJ1c3QgQ1BVLW9ubHkgT0NSIGZvciBCYWlkdSBVbmxpbWl0ZWQtT0NSIj4KPC9kaXY+Cgo8ZGl2IGFsaWduPSJjZW50ZXIiPgoKWyFbTGljZW5zZTogTUlUXShodHRwczovL2ltZy5zaGllbGRzLmlvL2JhZGdlL0xpY2Vuc2UtTUlULWJsdWUuc3ZnKV0oLi9MSUNFTlNFKQpbIVtzb3VyY2UgdGFnOiB2MC44LjBdKGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2Uvc291cmNlX3RhZy12MC44LjAtYmx1ZS5zdmcpXShodHRwczovL2dpdGh1Yi5jb20vRGlja2xlc3dvcnRoc3RvbmUvZnJhbmtlbl9vY3IvdHJlZS92MC44LjApClshW2JpbmFyeSByZWxlYXNlOiB2MC44LjBdKGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvYmluYXJ5X3JlbGVhc2UtdjAuOC4wLWJsdWUuc3ZnKV0oaHR0cHM6Ly9naXRodWIuY29tL0RpY2tsZXN3b3J0aHN0b25lL2ZyYW5rZW5fb2NyL3JlbGVhc2VzL3RhZy92MC44LjApClshW3N0YXR1czogd29ya2luZ10oaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9iYWRnZS9zdGF0dXMtd29ya2luZy1zdWNjZXNzLnN2ZyldKCNxdWljay1leGFtcGxlKQpbIVtSdXN0IEVkaXRpb25dKGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvUnVzdC0yMDI0X0VkaXRpb24tb3JhbmdlLnN2ZyldKGh0dHBzOi8vZG9jLnJ1c3QtbGFuZy5vcmcvZWRpdGlvbi1ndWlkZS9ydXN0LTIwMjQvKQpbIVt0b29sY2hhaW46IG5pZ2h0bHldKGh0dHBzOi8vaW1nLnNoaWVsZHMuaW8vYmFkZ2UvdG9vbGNoYWluLW5pZ2h0bHktcHVycGxlLnN2ZyldKC4vcnVzdC10b29sY2hhaW4udG9tbCkKWyFbdW5zYWZlOiBmb3JiaWRkZW4qXShodHRwczovL2ltZy5zaGllbGRzLmlvL2JhZGdlL3Vuc2FmZS1mb3JiaWRkZW4qLXN1Y2Nlc3Muc3ZnKV0oaHR0cHM6Ly9naXRodWIuY29tL3J1c3Qtc2VjdXJlLWNvZGUvc2FmZXR5LWRhbmNlLykKWyFbZGVmYXVsdCBtb2RlbDogQmFpZHUgVW5saW1pdGVkLU9DUl0oaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9iYWRnZS9kZWZhdWx0X21vZGVsLUJhaWR1X1VubGltaXRlZC0tT0NSLXRlYWwuc3ZnKV0oaHR0cHM6Ly9odWdnaW5nZmFjZS5jby9iYWlkdS9VbmxpbWl0ZWQtT0NSKQpbIVt2MC43LjA6IHJlbGVhc2Ug"
+   }
+  },
+  "/repos/alphaXiv/OpenResearch/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".gitattributes",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": ".port-workflow.mjs",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SKILL.md",
+     "type": "file"
+    },
+    {
+     "name": "SYSTEM_PROMPT.md",
+     "type": "file"
+    },
+    {
+     "name": "agent-skills",
+     "type": "dir"
+    },
+    {
+     "name": "build.rs",
+     "type": "file"
+    },
+    {
+     "name": "demo",
+     "type": "dir"
+    },
+    {
+     "name": "dist-workspace.toml",
+     "type": "file"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "macos",
+     "type": "dir"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "src",
+     "type": "dir"
+    },
+    {
+     "name": "ui",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/alphaXiv/OpenResearch/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "Fix copying file contents in the viewer (#423)"
+     }
+    },
+    {
+     "commit": {
+      "message": "OR-319 Sign and notarize the macOS CLI binaries in releases (#427)\nCo-Authored-By: Claude Opus 5.5 <noreply@redacted.invalid>\nCo-Authored-By: Claude Opus 5.5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5.5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Point managed Macs at the signed app in the README (#426)\nCo-authored-by: Claude Opus 5.5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Require fork PRs to link an issue (#425)\nCo-authored-by: Claude Opus 5.5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Let agents report OpenResearch feedback with orx feedback (#418)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Show a visible hint while starter prompts load (#416)\nCo-authored-by: Claude Opus 5.5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.2.9 (#420)\nCo-authored-by: Claude Opus 5.5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Add PubMed as a literature source (#419)\nCo-authored-by: Claude Opus 5.5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Add \"Reveal in file manager\" action to the file viewer (#342)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Retry ETXTBSY on detection spawns to fix flaky main CI (#408)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Let /resume adopt chats from the agents' own CLIs (#413)\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Add /goal, a standing objective every turn is reminded of (#412)\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Add /compact, which every coding agent can run (#411)\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Add composer commands that work the same on every coding agent (#376)\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Fix OpenCode 2.0.6+ health probe and WSL browser launch (#409)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Fix first-install onboarding stall via two-phase harness detection (#400)\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-authored-by: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Run SSH experiments in existing Docker containers (#407)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Fix orx paper for old-style arXiv ids (#380)\nCo-Authored-By: Claude Opus 5 <noreply@redacted.invalid>\nCo-authored-by: Claude Opus 5 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Keep unsent composer content scoped to its chat (OR-301) (#398)\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-authored-by: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump version to 0.2.7 (#399)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Expose SSH workspace picker on the project home screen (#396)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Show original paper figures inline and improve literature review (#367)"
+     }
+    },
+    {
+     "commit": {
+      "message": "test: cover every harness in the telemetry release gate (#397)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Fix harness setup recovery and release v0.2.6 (#393)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(harness): auto-allow tool actions in Antigravity bypass permissions mode (#391)"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: add Rust Trendshift badge beside existing badge (#386)"
+     }
+    },
+    {
+     "commit": {
+      "message": "✨ feat(harness): add agy coding agent integration (#332)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Fix Windows job cancellation and stabilize Cursor pipe test (#379)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Fix OpenCode 2.0.4 startup and API compatibility (#378)"
+     }
+    },
+    {
+     "commit": {
+      "message": "Release v0.2.4 with harness setup fixes (#368)"
+     }
+    }
+   ]
+  },
+  "/repos/alphaXiv/OpenResearch/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "PGRpdiBhbGlnbj0iY2VudGVyIj4KCjxoMT48aW1nIHNyYz0iLmdpdGh1Yi9yZWFkbWUtYXNzZXRzL29wZW5yZXNlYXJjaC5zdmciIGFsdD0iIiB3aWR0aD0iMzYiIC8+IE9wZW5SZXNlYXJjaDwvaDE+CgoqKlRoZSBsb2NhbC1maXJzdCB3b3Jrc3BhY2UgZm9yIHJlc2VhcmNoIGFnZW50cyBhbmQgYXV0b3Jlc2VhcmNoLioqCgo8cD5UdXJuIDxpbWcgc3JjPSIuZ2l0aHViL3JlYWRtZS1hc3NldHMvY2xhdWRlLnN2ZyIgYWx0PSIiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgYWxpZ249InRleHR0b3AiIC8+IENsYXVkZSBDb2RlLAo8aW1nIHNyYz0iLmdpdGh1Yi9yZWFkbWUtYXNzZXRzL2NvZGV4LnN2ZyIgYWx0PSIiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgYWxpZ249InRleHR0b3AiIC8+IENvZGV4LAo8aW1nIHNyYz0iLmdpdGh1Yi9yZWFkbWUtYXNzZXRzL29wZW5jb2RlLnN2ZyIgYWx0PSIiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgYWxpZ249InRleHR0b3AiIC8+IE9wZW5Db2RlLAo8aW1nIHNyYz0iLmdpdGh1Yi9yZWFkbWUtYXNzZXRzL2N1cnNvci5zdmciIGFsdD0iIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGFsaWduPSJ0ZXh0dG9wIiAvPiBDdXJzb3IsIG9yIEdvb2dsZSBBbnRpZ3Jhdml0eSBpbnRvIHJlc2VhcmNoIGFnZW50cyB0aGF0IGNhbiByZXZpZXcKbGl0ZXJhdHVyZSwgZGV2ZWxvcCBoeXBvdGhlc2VzLCBydW4gZXhwZXJpbWVudHMsIGFuZCBwcm9kdWNlIHJlc2VhcmNoIGFydGlmYWN0cy48L3A+Cgo8cD4KPGEgaHJlZj0iaHR0cHM6Ly9naXRodWIuY29tL2FscGhhWGl2L09wZW5SZXNlYXJjaC9yZWxlYXNlcy9sYXRlc3QvZG93bmxvYWQvT3BlblJlc2VhcmNoLmRtZyI+PHBpY3R1cmU+PHNvdXJjZSBtZWRpYT0iKHByZWZlcnMtY29sb3Itc2NoZW1lOiBkYXJrKSIgc3Jjc2V0PSIuZ2l0aHViL3JlYWRtZS1hc3NldHMvZG93bmxvYWQtbWFjb3MtZGFyay5zdmciPjxpbWcgc3JjPSIuZ2l0aHViL3JlYWRtZS1hc3NldHMvZG93bmxvYWQtbWFjb3Muc3ZnIiBhbHQ9IkRvd25sb2FkIE9wZW5SZXNlYXJjaCBmb3IgbWFjT1MiIHdpZHRoPSIyMjAiIGhlaWdodD0iNDQiIC8+PC9waWN0dXJlPjwvYT4KPGEgaHJlZj0iaHR0cHM6Ly9naXRodWIuY29tL2FscGhhWGl2L09wZW5SZXNlYXJjaC9yZWxlYXNlcy9sYXRlc3QvZG93bmxvYWQvb3BlbnJlc2VhcmNoLWNsaS14ODZfNjQtcGMtd2luZG93cy1tc3Zj"
+   }
+  },
+  "/repos/kvcache-ai/AgentENV/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".dockerignore",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": ".opencodereview",
+     "type": "dir"
+    },
+    {
+     "name": ".vscode",
+     "type": "dir"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "Makefile",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SECURITY.md",
+     "type": "file"
+    },
+    {
+     "name": "adev",
+     "type": "dir"
+    },
+    {
+     "name": "assets",
+     "type": "dir"
+    },
+    {
+     "name": "build.rs",
+     "type": "file"
+    },
+    {
+     "name": "cliff.toml",
+     "type": "file"
+    },
+    {
+     "name": "config",
+     "type": "dir"
+    },
+    {
+     "name": "containerd-plain-snapshotter",
+     "type": "dir"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "deploy",
+     "type": "dir"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "openapitools.json",
+     "type": "file"
+    },
+    {
+     "name": "rust-toolchain.toml",
+     "type": "file"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "services",
+     "type": "dir"
+    },
+    {
+     "name": "src",
+     "type": "dir"
+    },
+    {
+     "name": "storage",
+     "type": "dir"
+    },
+    {
+     "name": "tests",
+     "type": "dir"
+    },
+    {
+     "name": "thirdparty",
+     "type": "dir"
+    },
+    {
+     "name": "tools-image",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/kvcache-ai/AgentENV/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "perf(overlaybd): query only upper index when sealing"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(containerd): add plain snapshotter for running containers from a rootfs directory"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(cli): install a rustls crypto provider so aenv build works over HTTPS\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "cli: add examples to build help"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat: add sandbox metrics collection APIs"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(aenv): document Codex sandbox workflow"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(aenv): add native Codex sandbox sessions"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(template): use bundled busybox for default readiness"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(api): support E2B v2 sandbox create and connect"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(overlaybd): dispatch remote image I/O onto a dedicated remote-io runtime"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(cli): complete template and snapshot names dynamically (#250)\nCo-authored-by: Claude Code <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(snapshot): prefetch startup manifests concurrently at resume"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(snapshot): record startup first-touch and upload manifests decoupled"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore(release): bump version to v0.2.2"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(ublk): raise device limit during host setup"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(ublk): back off failed idle pool refills"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(p2p): send range header during URL probes (#293)"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(cli): tolerate BuildKit tunnel closure during publication"
+     }
+    },
+    {
+     "commit": {
+      "message": "chore: bump tools version to 0.1.1"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(sandbox): resolve tools version from launch config"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(cli): reliably fall back to sh when bash is unavailable"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(template): build templates on any sandbox backend"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(sandbox): carry manifest on captured snapshot"
+     }
+    },
+    {
+     "commit": {
+      "message": "refactor(sandbox): decouple snapshot manifest from Firecracker"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(tools): support reproducible OCI tools releases"
+     }
+    },
+    {
+     "commit": {
+      "message": "test(tools): cover sharing and version retention in lifecycle tests"
+     }
+    },
+    {
+     "commit": {
+      "message": "feat(tools): resolve immutable releases for launch and restore"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: clarify template builder workflow"
+     }
+    },
+    {
+     "commit": {
+      "message": "perf: tune DAMON reclaim profile and cover full guest memory"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(tools-image): bootstrap required paths for minimal images"
+     }
+    }
+   ]
+  },
+  "/repos/kvcache-ai/AgentENV/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "PGRpdiBhbGlnbj0iY2VudGVyIj4KICA8cGljdHVyZT4KICAgIDxzb3VyY2UgbWVkaWE9IihwcmVmZXJzLWNvbG9yLXNjaGVtZTogZGFyaykiIHNyY3NldD0iYXNzZXRzL2hlYWRpbmctbG9nby1kYXJrLnN2ZyIgLz4KICAgIDxpbWcgc3JjPSJhc3NldHMvaGVhZGluZy1sb2dvLnN2ZyIgYWx0PSJBZ2VudEVOViIgLz4KICA8L3BpY3R1cmU+CiAgPHA+PHN0cm9uZz5SdW5uaW5nIGFnZW50IGVudmlyb25tZW50cyBhdCBzY2FsZTwvc3Ryb25nPjwvcD4KICA8cD4KICAgIDxhIGhyZWY9Imh0dHBzOi8vZ2l0aHViLmNvbS9rdmNhY2hlLWFpL0FnZW50RU5WL2FjdGlvbnMvd29ya2Zsb3dzL2NvdmVyYWdlLnltbCI+CiAgICAgIDxpbWcgc3JjPSJodHRwczovL2dpdGh1Yi5jb20va3ZjYWNoZS1haS9BZ2VudEVOVi9hY3Rpb25zL3dvcmtmbG93cy9jb3ZlcmFnZS55bWwvYmFkZ2Uuc3ZnP2JyYW5jaD1tYWluJmV2ZW50PXB1c2giIGFsdD0iQ292ZXJhZ2Ugd29ya2Zsb3cgc3RhdHVzIj4KICAgIDwvYT4KICAgIDxhIGhyZWY9Imh0dHBzOi8vZ2l0aHViLmNvbS9rdmNhY2hlLWFpL0FnZW50RU5WL2Jsb2IvY292ZXJhZ2UtZGF0YS9jb3ZlcmFnZS9jb3ZlcmFnZS5qc29uIj4KICAgICAgPGltZyBzcmM9Imh0dHBzOi8vZ2l0aHViLmNvbS9rdmNhY2hlLWFpL0FnZW50RU5WL2Jsb2IvY292ZXJhZ2UtZGF0YS9jb3ZlcmFnZS9iYWRnZS5zdmc/cmF3PTEiIGFsdD0iTGF0ZXN0IGNvdmVyYWdlIHJlcG9ydCI+CiAgICA8L2E+CiAgPC9wPgogIDxwPgogICAg8J+TliBGdWxsIGRvY3VtZW50YXRpb246CiAgICA8YSBocmVmPSJodHRwczovL2t2Y2FjaGUtYWkuZ2l0aHViLmlvL0FnZW50RU5WL2xhdGVzdC8iPlN0YWJsZTwvYT4gfAogICAgPGEgaHJlZj0iaHR0cHM6Ly9rdmNhY2hlLWFpLmdpdGh1Yi5pby9BZ2VudEVOVi9kZXYvIj5EZXY8L2E+CiAgPC9wPgo8L2Rpdj4KCkFnZW50RU5WIChBRU5WKSBpcyBhIHBsYXRmb3JtIGZvciBydW5uaW5nIGFnZW50IGVudmlyb25tZW50cyBhdCBzY2FsZSwgcG93ZXJpbmcgYWdlbnRpYyBSTCB0cmFpbmluZyBmb3IgKipLaW1pIEszKiouCgotLS0KCiMjIPCfmoAgV2h5IEFnZW50RU5WCgotICoqU2NhbGUgYWNyb3NzIGRpdmVyc2UgZW52aXJvbm1lbnRzKio6IEFFTlYgcnVucyBtYXNzaXZlIG51bWJlcnMgb2YgRmlyZWNyYWNrZXIgZW52aXJvbm1lbnRzIGFjcm9zcyBtYWNoaW5lcywgbG9hZGluZyBkaQ=="
+   }
+  },
+  "/repos/example-fork-owner/ai-memory/contents/": {
+   "status": 200,
+   "body": [
+    {
+     "name": ".cargo",
+     "type": "dir"
+    },
+    {
+     "name": ".config",
+     "type": "dir"
+    },
+    {
+     "name": ".dockerignore",
+     "type": "file"
+    },
+    {
+     "name": ".gitattributes",
+     "type": "file"
+    },
+    {
+     "name": ".github",
+     "type": "dir"
+    },
+    {
+     "name": ".gitignore",
+     "type": "file"
+    },
+    {
+     "name": ".gitleaks.toml",
+     "type": "file"
+    },
+    {
+     "name": ".gitleaksignore",
+     "type": "file"
+    },
+    {
+     "name": ".ignore",
+     "type": "file"
+    },
+    {
+     "name": ".mailmap",
+     "type": "file"
+    },
+    {
+     "name": "AGENTS.md",
+     "type": "file"
+    },
+    {
+     "name": "CHANGELOG.md",
+     "type": "file"
+    },
+    {
+     "name": "CLAUDE.md",
+     "type": "file"
+    },
+    {
+     "name": "CONTRIBUTING.md",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.lock",
+     "type": "file"
+    },
+    {
+     "name": "Cargo.toml",
+     "type": "file"
+    },
+    {
+     "name": "DATA_HANDLING.md",
+     "type": "file"
+    },
+    {
+     "name": "LICENSE",
+     "type": "file"
+    },
+    {
+     "name": "README.md",
+     "type": "file"
+    },
+    {
+     "name": "SECURITY.md",
+     "type": "file"
+    },
+    {
+     "name": "bin",
+     "type": "dir"
+    },
+    {
+     "name": "companions",
+     "type": "dir"
+    },
+    {
+     "name": "crates",
+     "type": "dir"
+    },
+    {
+     "name": "deny.toml",
+     "type": "file"
+    },
+    {
+     "name": "docker",
+     "type": "dir"
+    },
+    {
+     "name": "docs",
+     "type": "dir"
+    },
+    {
+     "name": "evals",
+     "type": "dir"
+    },
+    {
+     "name": "flake.nix",
+     "type": "file"
+    },
+    {
+     "name": "hooks",
+     "type": "dir"
+    },
+    {
+     "name": "packaging",
+     "type": "dir"
+    },
+    {
+     "name": "rust-toolchain.toml",
+     "type": "file"
+    },
+    {
+     "name": "scripts",
+     "type": "dir"
+    },
+    {
+     "name": "tests",
+     "type": "dir"
+    }
+   ]
+  },
+  "/repos/example-fork-owner/ai-memory/commits?per_page=30": {
+   "status": 200,
+   "body": [
+    {
+     "commit": {
+      "message": "Merge branch 'test/boundary-adversarial'"
+     }
+    },
+    {
+     "commit": {
+      "message": "test: five adversarial security-boundary regressions across handoff, page-sharing, message, and lifecycle-guard invariants\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: security-boundary inventory + mandatory adversarial-test rule\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(setup-agent): fence the docker example so its doctest compiles; run doctests in CI\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(authz): close the enforcement-gap in the per-project authz design (#708)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-850'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-856'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-852'"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(messages): diagnose an empty inbox read under an inferred scope (#854)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(cookbook): note band false positives"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(llm): handle gpt-6 in the openai provider"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(llm): omit temperature for gpt-6 models"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(changelog): add (#850) to the auto-improve path sanitizer fix"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(auto-improve): sanitize Windows-illegal LLM page paths"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'docs/comparison-2026-new-entrants'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'issue/848-consolidator-portable-path'"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs: add Engram, Caura, TencentDB Agent Memory, memU, EverOS to comparison docs (#810)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(consolidate): sanitize LLM page paths in per-session consolidation\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-849'"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(run): export native store env (CLAUDE_CONFIG_DIR) before ai-memory run\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(changelog): reference PR #849 for macOS companion build fix\nCo-authored-by: Cursor <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(macos): route companion build through Xcode for SwiftUIMacros\nCo-authored-by: Cursor <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'issue/792-tcp-keepalive'"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(serve): enable TCP keepalive on accepted connections (#792)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(llm-providers): note LLM and embedding base URLs are independent\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'issue/847-bootstrap-portable-path'"
+     }
+    },
+    {
+     "commit": {
+      "message": "fix(bootstrap): sanitize Windows-illegal chars in LLM page paths\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-838'"
+     }
+    },
+    {
+     "commit": {
+      "message": "Merge branch 'pr-845'"
+     }
+    },
+    {
+     "commit": {
+      "message": "docs(windows-ci): record the CoW-off re-measure (Phase 1)\nCo-Authored-By: Claude Opus 4.8 <noreply@redacted.invalid>"
+     }
+    }
+   ]
+  },
+  "/repos/example-fork-owner/ai-memory/readme": {
+   "status": 200,
+   "body": {
+    "encoding": "base64",
+    "content": "czogc2NoZWR1bGVkIHJldmlldywgYXV0by1hcHByb3ZhbCBkZWZhdWx0LCBtYW51YWwgcmV2aWV3IG9wdC1pbiwgcGVuZGluZyBwcm9wb3NhbCBzdG9yYWdlLCBhbmQgY3VyYXRvciB3b3JrLiB8CgojIyBMaWNlbnNlCgpNSVQgLSBzZWUgW0xJQ0VOU0VdKExJQ0VOU0UpLgoKIyMgQWNrbm93bGVkZ2VtZW50cwoKVGhpcyBjb2RlYmFzZSBpcyBiZWluZyBidWlsdCBjb2xsYWJvcmF0aXZlbHkgd2l0aCBDbGF1ZGUgQ29kZQooQW50aHJvcGljIENsYXVkZSBPcHVzIDQuNykgZm9sbG93aW5nIHRoZSBwbGFuIGRvY3VtZW50ZWQgaW4KYGRvY3MvZGVzaWduLWRlY2lzaW9ucy5tZGAuCg=="
+   }
+  }
+ }
+}

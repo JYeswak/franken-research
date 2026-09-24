@@ -1,0 +1,8 @@
+{
+  "_note": "An earlier week's watch/discovery file, cut to the fields discover.mjs reads from it (week, listed). The selftest uses it to show that a repository listed in an earlier week is not listed again.",
+  "week": "2026-W38",
+  "checked_on": "2026-09-14",
+  "listed": [
+    "kvcache-ai/AgentENV"
+  ]
+}

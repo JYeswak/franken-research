@@ -352,6 +352,38 @@ has to run on recorded inputs.
 the API can return; the transport itself (HTTP, pagination, rate limits) is
 exercised only by live runs.
 
+## Gate W2 — discovery selftest
+
+**What:** runs `node watch/discover.mjs --selftest`, which serves the recorded
+GitHub responses in `watch/fixtures/discover-2026-W39.json` (one search page
+and the contents, commits, and readme responses of 12 repositories, recorded
+by a live dry run on 2026-09-24 and trimmed as its `_note` says; one fork is
+synthetic) and `discover-prior-2026-W38.json` (an earlier week's listing)
+through the same transport, exclusion, scoring, and rollup-issue code the
+weekly sweep (`.github/workflows/discover.yml`) runs against GitHub. Issues
+are an in-memory store behind the same transport. No network and no token.
+The 9 cases assert: the ISO week and the search window come from the run
+date (including the week-53 and week-1 year boundaries); the candidates come
+out in the hand-derived order with the expected signals and scores (signal
+count first, stars only within a count); the Dicklesworthstone repository
+and the fork are excluded before checking; a repository with no signal is
+left out; a repository named by a `[candidate]` issue and one listed in an
+earlier week are excluded, while one named by a non-candidate issue stays;
+the rollup is one issue per week (created once, `exists` on a rerun and when
+only star counts moved, the same issue edited when the listing changed, a
+closed rollup left alone); the output and the issue body hold no email
+address and no author, committer, name, login, or message field; the output
+is byte-identical when the API returns results in reverse order, also with
+the check cap below the pool size; and a 403 ends the run with exit 3 and
+writes nothing. **Fails** on a nonzero exit, any failed case, or a `CASES`
+count of zero or missing.
+**Why:** the sweep opens a public issue every week with nobody reading its
+code first, and search results never replay, so exclusions, ordering, and
+dedupe can only be checked on recorded inputs.
+**Accepted:** the fixture covers the shapes the sweep reads from 12
+repositories, not every shape the API returns; rate-limit timing and
+pagination past one page run only live.
+
 ## Gate M — feed and OPML fresh and well-formed
 
 **What:** `site/feed.xml` (Atom 1.0) and `site/follow/franken-suite.opml`
@@ -502,3 +534,17 @@ to `</entri>` (the Node parser and `xmllint` each named line 18); and, with
 `--check` alone failed on an `http://` entry link, on a feed with every entry
 removed (which `xmllint` accepts as well-formed), and on an OPML `xmlUrl`
 without a scheme.
+
+Discovery pass: Gate W2 added with `watch/discover.mjs`. Twelve of thirteen
+scratch-copy mutants of `discover.mjs` (never the real tree) failed the
+selftest with the case named: dropping the owner exclusion, the fork
+exclusion, the zero-signal filter, the known-candidate check, or the
+`candidate` label filter; ignoring the issue's value marker; putting star
+counts in that value; editing a closed rollup; letting stars outweigh a
+signal; not sorting the pool before the check cap; storing trailer text in
+the output; and writing a file before the API calls finish. The thirteenth
+(allowing 403 on the readme call) is equivalent: the transport stops on 403
+before the allow list is read. In a clean clone, a planted wrong expectation
+(the first two expected ranks swapped in the fixture) made W2 fail with the
+ordering case named and `bun run verify` exit 1 (19 passed, 1 failed); the
+real fixture passed all 20 gates.
