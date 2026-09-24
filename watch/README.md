@@ -43,12 +43,15 @@ bun run watch                   # dry report on stdout; writes nothing
 bun run watch -- --apply        # also write state, census, and changes
 bun run watch -- --json         # the report as JSON
 bun run watch -- --fail-on-change   # dry; exit 1 if anything material is new since the last state
+node watch/watch.mjs --issues --backfill-since-pin   # file issues for material events since the pins (one-off)
 node watch/watch.mjs --selftest # offline check on recorded fixtures (gate W)
 ```
 
 The token comes from `GITHUB_TOKEN` or `GH_TOKEN`, else `gh auth token`; it is never printed. Exit codes: 0 ok; 1 a material change with `--fail-on-change`, or a failed selftest; 2 usage, packet parse, or token error; 3 GitHub API failure, in which case nothing is written. Two local runs on 2026-09-24 used 11 GraphQL and 32 REST calls each and took 15.9 and 16.9 seconds.
 
 `--issues` (the scheduled run uses it; local runs normally do not) opens one issue per repository, change type, and identifying value in `JYeswak/franken-research`, titled `[watch] <repo>: <change>` (for example `[watch] franken_code_browser: release v0.1.1`) and labelled `watch` plus the label above. Labels are created if missing. Before creating, it looks for an open or closed issue with the exact title: same value, nothing happens; a changed value adds a comment; a closed issue is never reopened. At most 20 issue actions per run; the rest go into one `[watch] rollup YYYY-MM-DD` issue.
+
+`--backfill-since-pin` (only with `--issues`) closes the gap before the first state. The baseline was taken after the pins, so events between a pin and the baseline (for example `franken_code_browser` v0.1.0) never appear in a daily diff. The backfill turns each material-since-pin event in the report into an issue. It uses the same titles as the daily path for the same event (`release <tag>`, `tag <tag>`, `workflows +A -R (N now)`, where the counts compare HEAD with the pin), and the same labels, body builder, dedupe, and cap. Running it again finds the filed titles and files nothing new, unless a count has moved since, which gives a new title. A since-pin license change is titled `license text changed since the pin (...)`, because the SPDX id at the pin is not available from the API. When a dated re-check in `updates/<repo>-YYYY-MM-DD.md` names the release or tag, the issue gets one comment linking it, marked so it is never posted twice. The issue stays open; the analyst closes it. The daily path adds the same pointer if such a re-check exists.
 
 ## From issue to re-check
 

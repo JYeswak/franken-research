@@ -499,7 +499,7 @@ export function materialSincePin(r) {
   if (r.archived) m.push({ kind: 'archived', text: 'archived' });
   for (const e of r.since_pin) {
     const where = e.target === r.pin ? 'the pin itself' : short(e.target);
-    m.push({ kind: e.kind, text: `${e.kind} ${e.name} (${e.date.slice(0, 10)}, ${where})` });
+    m.push({ kind: e.kind, text: `${e.kind} ${e.name} (${e.date.slice(0, 10)}, ${where})`, event: e });
   }
   if (r.license_changed_since_pin) m.push({ kind: 'license', text: `LICENSE text changed (SPDX now ${r.license_spdx})` });
   const a = r.workflows_added_since_pin;
@@ -513,11 +513,95 @@ function change(repo, kind, ident, title, f) {
   return {
     repo, kind, label: KINDS[kind].label, ident, title: `[watch] ${repo}: ${title}`,
     summary: f.summary, before: f.before, after: f.after, value: f.value,
-    evidence: f.evidence, affects: KINDS[kind].affects, material: f.material ?? true,
+    evidence: f.evidence, affects: KINDS[kind].affects, material: f.material ?? true, origin: 'previous',
   };
 }
 const byKey = (a, b) => cmp(a.repo, b.repo) || cmp(a.kind, b.kind) || cmp(a.ident, b.ident);
 export const isCandidate = (d) => !d.fork && (/^franken/i.test(d.name) || d.language === 'Rust');
+
+// Titles and evidence shared by the daily diff and the since-pin backfill, so one event always gets
+// one issue title (issues are deduplicated by exact title).
+const TITLE = {
+  release: (tag) => `release ${tag}`,
+  tag: (tag) => `tag ${tag}`,
+  workflows: (added, removed, now) => `workflows +${added} -${removed} (${now} now)`,
+  renamed: (name) => `renamed to ${name}`,
+  deleted: 'deleted or made private',
+  pinGone: (pin) => `pin ${short(pin)} no longer an ancestor of HEAD`,
+};
+const EVIDENCE = {
+  release: (name, tag, target) => [ghUrl(name, `/releases/tag/${encodeURIComponent(tag)}`), apiUrl(`/repos/${OWNER}/${name}/releases/tags/${encodeURIComponent(tag)}`), ghUrl(name, `/commit/${target}`)],
+  tag: (name, tag) => [ghUrl(name, `/tree/${encodeURIComponent(tag)}`), apiUrl(`/repos/${OWNER}/${name}/git/ref/tags/${encodeURIComponent(tag)}`)],
+  workflows: (name, base, head) => [ghUrl(name, `/tree/${head}/.github/workflows`), ghUrl(name, `/compare/${base}...${head}`), ghUrl(name, '/actions')],
+  pinGone: (name, pin, head) => [apiUrl(`/repos/${OWNER}/${name}/compare/${pin}...${head}`), ghUrl(name, `/commit/${pin}`)],
+};
+const workflowSummary = (added, removed) => `The .github/workflows file set changed: ${[...added.map((w) => `+${w}`), ...removed.map((w) => `-${w}`)].join(', ')}.`;
+
+// One change per material-since-pin event (--backfill-since-pin): events that predate the first
+// state never appear in a daily diff, so this is how they reach the issue queue.
+export function sincePinChanges(snap) {
+  const day = snap.checked_at.slice(0, 10);
+  const out = [];
+  for (const r of Object.values(snap.assessed)) {
+    const name = r.name ?? r.repo;
+    const atPin = `at the pin (${short(r.pin)}, ${r.pin_date ?? 'date unknown'})`;
+    for (const ev of materialSincePin(r)) {
+      const e = ev.event;
+      if (ev.kind === 'deleted') {
+        out.push(change(r.repo, 'deleted', 'gone', TITLE.deleted, {
+          summary: `${OWNER}/${r.repo} is not readable through the API (deleted, made private, or transferred).`,
+          before: `public ${atPin}`, after: 'not found', value: `gone@${day}`,
+          evidence: [r.id != null ? apiUrl(`/repositories/${r.id}`) : apiUrl(`/repos/${OWNER}/${r.repo}`), ghUrl(r.repo)],
+        }));
+      } else if (ev.kind === 'renamed') {
+        out.push(change(r.repo, 'renamed', r.name, TITLE.renamed(r.name), {
+          summary: `${OWNER}/${r.repo}, the name in the packet, is now ${OWNER}/${r.name} (GitHub id ${r.id}).`,
+          before: r.repo, after: r.name, value: `${r.repo}->${r.name}`, evidence: [apiUrl(`/repositories/${r.id}`), ghUrl(r.name)],
+        }));
+      } else if (ev.kind === 'pin_unreachable') {
+        out.push(change(r.repo, 'pin_unreachable', r.pin, TITLE.pinGone(r.pin), {
+          summary: `The pinned commit ${r.pin} is not an ancestor of the default branch (compare: ${r.compare_status}). History was rewritten or the branch reset.`,
+          before: `the pin ${short(r.pin)}`, after: `${r.compare_status} at HEAD ${short(r.head)}`, value: r.compare_status,
+          evidence: EVIDENCE.pinGone(name, r.pin, r.head),
+        }));
+      } else if (ev.kind === 'archived') {
+        out.push(change(r.repo, 'archived', 'archived', 'archived', {
+          summary: `${OWNER}/${name} is archived.`, before: `active ${atPin}`, after: 'archived', value: `archived@${day}`,
+          evidence: [apiUrl(`/repos/${OWNER}/${name}`), ghUrl(name)],
+        }));
+      } else if (ev.kind === 'release') {
+        out.push(change(r.repo, 'release', e.name, TITLE.release(e.name), {
+          summary: `GitHub release ${e.name}${r.releases[e.name]?.prerelease ? ' (prerelease)' : ''} was published after the pin.`,
+          before: `no release ${e.name} ${atPin}`, after: `release ${e.name} -> ${short(e.target)}, published ${e.date}`,
+          value: e.target ?? 'none', evidence: EVIDENCE.release(name, e.name, e.target),
+        }));
+      } else if (ev.kind === 'tag') {
+        out.push(change(r.repo, 'tag', e.name, TITLE.tag(e.name), {
+          summary: `Tag ${e.name} was created after the pin${e.target === r.pin ? ', on the pinned commit itself' : ''}; there is no GitHub release for it.`,
+          before: `no tag ${e.name} ${atPin}`, after: `tag ${e.name} -> ${short(e.target)} (${e.date})`,
+          value: e.target ?? 'none', evidence: EVIDENCE.tag(name, e.name),
+        }));
+      } else if (ev.kind === 'license') {
+        const files = licenseText(r.license_files);
+        out.push(change(r.repo, 'license', digest(licenseKey(r.license_files)), `license text changed since the pin (SPDX now ${r.license_spdx}, ${files})`, {
+          summary: `A license file differs from the pin; GitHub now detects ${r.license_spdx}. A rider lives in the text, so read the diff.`,
+          before: `${licenseText(r.license_files_at_pin ?? [])} ${atPin}`, after: `${r.license_spdx}; ${files}`,
+          value: `${r.license_spdx}|${licenseKey(r.license_files)}`,
+          evidence: [...r.license_files.map((f) => ghUrl(name, `/blob/${r.head}/${f.name}`)), ghUrl(name, `/compare/${r.pin}...${r.head}`)],
+        }));
+      } else if (ev.kind === 'workflows') {
+        const a = r.workflows_added_since_pin;
+        const d = r.workflows_removed_since_pin;
+        out.push(change(r.repo, 'workflows', digest(r.workflows), TITLE.workflows(a.length, d.length, r.workflows.length), {
+          summary: workflowSummary(a, d),
+          before: `${r.workflows.length - a.length + d.length} files ${atPin}`, after: `${r.workflows.length} files at ${short(r.head)}`,
+          value: digest(r.workflows), evidence: EVIDENCE.workflows(name, r.pin, r.head),
+        }));
+      }
+    }
+  }
+  return out.map((c) => ({ ...c, origin: 'pin' })).sort(byKey);
+}
 
 export function diffSnapshots(prev, cur) {
   if (!prev) return { baseline: true, material: [], informational: [], commits: { repos: 0, total: 0 } };
@@ -531,7 +615,7 @@ export function diffSnapshots(prev, cur) {
     const name = c.name ?? p.name ?? repo;
     const home = ghUrl(name);
     if (p.found && !c.found) {
-      material.push(change(repo, 'deleted', 'gone', 'deleted or made private', {
+      material.push(change(repo, 'deleted', 'gone', TITLE.deleted, {
         summary: `${OWNER}/${p.name} is no longer readable through the API (deleted, made private, or transferred).`,
         before: `public, id ${p.id}, HEAD ${short(p.head)}`, after: 'not found', value: `gone@${day}`,
         evidence: [apiUrl(`/repositories/${p.id}`), ghUrl(p.name)],
@@ -540,18 +624,18 @@ export function diffSnapshots(prev, cur) {
     }
     if (!c.found || !p.found) continue;
     if (c.name !== p.name) {
-      material.push(change(repo, 'renamed', c.name, `renamed to ${c.name}`, {
+      material.push(change(repo, 'renamed', c.name, TITLE.renamed(c.name), {
         summary: `${OWNER}/${p.name} is now ${OWNER}/${c.name} (same GitHub id ${c.id}).`,
         before: p.name, after: c.name, value: `${p.name}->${c.name}`,
         evidence: [apiUrl(`/repositories/${c.id}`), home],
       }));
     }
     if (p.pin_reachable && !c.pin_reachable) {
-      material.push(change(repo, 'pin_unreachable', c.pin, `pin ${short(c.pin)} no longer an ancestor of HEAD`, {
+      material.push(change(repo, 'pin_unreachable', c.pin, TITLE.pinGone(c.pin), {
         summary: `The pinned commit ${c.pin} is no longer an ancestor of the default branch (compare: ${c.compare_status}). History was rewritten or the branch reset.`,
         before: `${p.compare_status}, ${p.commits_since_pin} commits since the pin`, after: `${c.compare_status} at HEAD ${short(c.head)}`,
         value: c.compare_status,
-        evidence: [apiUrl(`/repos/${OWNER}/${name}/compare/${c.pin}...${c.head}`), ghUrl(name, `/commit/${c.pin}`)],
+        evidence: EVIDENCE.pinGone(name, c.pin, c.head),
       }));
     }
     if (p.archived !== c.archived) {
@@ -564,12 +648,12 @@ export function diffSnapshots(prev, cur) {
     for (const [tag, r] of Object.entries(c.releases)) {
       const old = p.releases[tag];
       if (old && old.target === r.target) continue;
-      material.push(change(repo, 'release', tag, `release ${tag}`, {
+      material.push(change(repo, 'release', tag, TITLE.release(tag), {
         summary: old ? `Release ${tag} now targets a different commit.` : `New GitHub release ${tag}${r.prerelease ? ' (prerelease)' : ''}.`,
         before: old ? `release ${tag} -> ${short(old.target)}` : 'no such release',
         after: `release ${tag} -> ${short(r.target)}, published ${r.published_at ?? 'unknown'}`,
         value: r.target ?? 'none',
-        evidence: [ghUrl(name, `/releases/tag/${encodeURIComponent(tag)}`), apiUrl(`/repos/${OWNER}/${name}/releases/tags/${encodeURIComponent(tag)}`), ghUrl(name, `/commit/${r.target}`)],
+        evidence: EVIDENCE.release(name, tag, r.target),
       }));
     }
     for (const [tag, old] of Object.entries(p.releases)) {
@@ -583,11 +667,11 @@ export function diffSnapshots(prev, cur) {
       const old = p.tags[tag];
       if (c.releases[tag] && !p.releases[tag]) continue; // reported as the release
       if (old && old.target === t.target) continue;
-      material.push(change(repo, 'tag', tag, `tag ${tag}`, {
+      material.push(change(repo, 'tag', tag, TITLE.tag(tag), {
         summary: old ? `Tag ${tag} was moved to another commit.` : `New tag ${tag} (no GitHub release for it at this check).`,
         before: old ? `tag ${tag} -> ${short(old.target)}` : 'no such tag', after: `tag ${tag} -> ${short(t.target)} (${t.date ?? 'undated'})`,
         value: t.target ?? 'none',
-        evidence: [ghUrl(name, `/tree/${encodeURIComponent(tag)}`), apiUrl(`/repos/${OWNER}/${name}/git/ref/tags/${encodeURIComponent(tag)}`)],
+        evidence: EVIDENCE.tag(name, tag),
       }));
     }
     if (c.license_spdx !== p.license_spdx || licenseKey(c.license_files) !== licenseKey(p.license_files)) {
@@ -606,11 +690,11 @@ export function diffSnapshots(prev, cur) {
     const added = c.workflows.filter((w) => !p.workflows.includes(w));
     const removed = p.workflows.filter((w) => !c.workflows.includes(w));
     if (added.length || removed.length) {
-      material.push(change(repo, 'workflows', digest(c.workflows), `workflows +${added.length} -${removed.length} (${c.workflows.length} now)`, {
-        summary: `The .github/workflows file set changed: ${[...added.map((w) => `+${w}`), ...removed.map((w) => `-${w}`)].join(', ')}.`,
+      material.push(change(repo, 'workflows', digest(c.workflows), TITLE.workflows(added.length, removed.length, c.workflows.length), {
+        summary: workflowSummary(added, removed),
         before: `${p.workflows.length} files at ${short(p.head)}`, after: `${c.workflows.length} files at ${short(c.head)}`,
         value: digest(c.workflows),
-        evidence: [ghUrl(name, `/tree/${c.head}/.github/workflows`), ghUrl(name, `/compare/${p.head}...${c.head}`), ghUrl(name, '/actions')],
+        evidence: EVIDENCE.workflows(name, p.head, c.head),
       }));
     }
     if (c.commits_since_pin != null && p.commits_since_pin != null && c.commits_since_pin > p.commits_since_pin) {
@@ -743,7 +827,9 @@ function issueBody(ch, snap, matrix) {
     `| Before | ${ch.before} |`,
     `| After | ${ch.after} |`,
     '',
-    `Observed by the daily watch at ${snap.checked_at}; previous check ${snap.previous_checked_at ?? 'none'}.${run ? ` Run: ${run}` : ''}`,
+    ch.origin === 'pin'
+      ? `Found by the since-pin backfill at ${snap.checked_at}. It compares with the pin, not with the previous check, because this event predates the watch's first state.`
+      : `Observed by the daily watch at ${snap.checked_at}; previous check ${snap.previous_checked_at ?? 'none'}.${run ? ` Run: ${run}` : ''}`,
     '',
     '**Evidence (GitHub API and web):**',
     ...ch.evidence.map((u) => `- ${u}`),
@@ -764,9 +850,23 @@ function issueBody(ch, snap, matrix) {
   ].join('\n');
 }
 
-export async function syncIssues(api, snap, diff) {
-  const result = { created: [], commented: [], exists: 0, rollup: null };
-  if (!diff.material.length) return result;
+// Dated re-checks under updates/ that name this release or tag (for example
+// updates/franken_code_browser-2026-09-24.md naming v0.1.0). They get one pointer comment on the
+// issue; the analyst still triages and closes it.
+export function recheckFiles(ch, root = ROOT) {
+  if (ch.kind !== 'release' && ch.kind !== 'tag') return [];
+  const dir = join(root, 'updates');
+  if (!existsSync(dir)) return [];
+  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const file = new RegExp(`^${esc(ch.repo)}-\\d{4}-\\d{2}-\\d{2}\\.md$`);
+  const names = new RegExp(`(?<![\\w.-])${esc(ch.ident)}(?![\\w-]|\\.\\d)`);
+  return readdirSync(dir).filter((f) => file.test(f)).sort()
+    .filter((f) => names.test(readFileSync(join(dir, f), 'utf8'))).map((f) => `updates/${f}`);
+}
+
+export async function syncIssues(api, snap, changes, root = ROOT) {
+  const result = { created: [], commented: [], exists: [], rechecks: [], rollup: null };
+  if (!changes.length) return result;
   const base = `/repos/${ISSUE_REPO}`;
   const have = new Set();
   for (let page = 1; ; page++) {
@@ -774,7 +874,7 @@ export async function syncIssues(api, snap, diff) {
     r.body.forEach((l) => have.add(l.name));
     if (r.body.length < 100) break;
   }
-  const needed = new Set(['watch', ...diff.material.map((c) => c.label)]);
+  const needed = new Set(['watch', ...changes.map((c) => c.label)]);
   for (const name of [...needed].sort()) {
     if (!have.has(name)) await api.rest('POST', `${base}/labels`, { name, color: LABELS[name][0], description: LABELS[name][1] });
   }
@@ -785,36 +885,56 @@ export async function syncIssues(api, snap, diff) {
     if (r.body.length < 100) break;
   }
   const matrix = existsSync(OVERVIEW) ? parseMatrix(readFileSync(OVERVIEW, 'utf8')) : {};
-  const comments = async (n) => (await api.rest('GET', `${base}/issues/${n}/comments?per_page=100`)).body;
+  const loadComments = async (n) => (await api.rest('GET', `${base}/issues/${n}/comments?per_page=100`)).body;
+  const post = async (n, body) => (await api.rest('POST', `${base}/issues/${n}/comments`, { body })).body;
+  const ref = (i) => ({ number: i.number, title: i.title, url: i.html_url });
+  const repoLink = (p) => `https://github.com/${ISSUE_REPO}/blob/main/${p}`;
   const commentBody = (ch) => `The watch saw this again with a new value.\n\n| | Value |\n|---|---|\n| Before | ${ch.before} |\n| After | ${ch.after} |\n\nEvidence:\n${ch.evidence.map((u) => `- ${u}`).join('\n')}\n\n<!-- watch-value: ${ch.value} -->`;
+  const recheckBody = (ch, files) => `A dated re-check that names ${ch.ident} already exists: ${files.map((p) => `[${p}](${repoLink(p)})`).join(', ')}. Triage against it. The watch does not close issues; the analyst does.\n\n${files.map((p) => `<!-- watch-recheck: ${p} -->`).join('\n')}`;
   const overflow = [];
   let actions = 0;
-  for (const ch of diff.material) {
-    const issue = byTitle.get(ch.title) ?? null;
+  for (const ch of changes) {
+    let issue = byTitle.get(ch.title) ?? null;
+    let comments = null;
     let decision = dedupe(issue, ch);
-    if (decision === 'check-comments') decision = dedupe({ ...issue, comments: await comments(issue.number) }, ch);
-    if (decision === 'exists') { result.exists++; continue; }
-    if (actions >= ISSUE_CAP) { overflow.push(ch); continue; }
-    actions++;
-    if (decision === 'create') {
-      const r = await api.rest('POST', `${base}/issues`, { title: ch.title, body: issueBody(ch, snap, matrix), labels: ['watch', ch.label] });
-      result.created.push(r.body.html_url);
+    if (decision === 'check-comments') {
+      comments = await loadComments(issue.number);
+      decision = dedupe({ ...issue, comments }, ch);
+    }
+    if (decision === 'exists') result.exists.push(ref(issue));
+    else if (actions >= ISSUE_CAP) { overflow.push(ch); continue; }
+    else if (decision === 'create') {
+      actions++;
+      issue = (await api.rest('POST', `${base}/issues`, { title: ch.title, body: issueBody(ch, snap, matrix), labels: ['watch', ch.label] })).body;
+      byTitle.set(ch.title, issue);
+      comments = [];
+      result.created.push(ref(issue));
     } else {
-      await api.rest('POST', `${base}/issues/${issue.number}/comments`, { body: commentBody(ch) });
-      result.commented.push(issue.html_url);
+      actions++;
+      comments = [...(comments ?? []), await post(issue.number, commentBody(ch))];
+      result.commented.push(ref(issue));
+    }
+    const files = recheckFiles(ch, root);
+    if (files.length) {
+      comments ??= await loadComments(issue.number);
+      const missing = files.filter((p) => !comments.some((c) => (c.body ?? '').includes(`<!-- watch-recheck: ${p} -->`)));
+      if (missing.length) {
+        await post(issue.number, recheckBody(ch, missing));
+        result.rechecks.push({ ...ref(issue), files: missing });
+      }
     }
   }
   if (overflow.length) {
     const day = snap.checked_at.slice(0, 10);
     const roll = { title: `[watch] rollup ${day}`, value: digest(overflow.map((c) => `${c.title}|${c.value}`)) };
     const list = overflow.map((c) => `- ${c.title}: ${c.summary} (${c.evidence[0]})`).join('\n');
-    const body = `The watch capped this run at ${ISSUE_CAP} issue actions. ${overflow.length} more material change(s) are listed here instead of opening one issue each; triage them from this list (full records in watch/changes/${day}.json).\n\n${list}\n\n<!-- watch-value: ${roll.value} -->`;
+    const body = `The watch capped this run at ${ISSUE_CAP} issue actions. ${overflow.length} more material change(s) are listed here instead of opening one issue each; triage them from this list (records for ${day} in watch/changes/ and watch/census/).\n\n${list}\n\n<!-- watch-value: ${roll.value} -->`;
     const issue = byTitle.get(roll.title) ?? null;
     let decision = dedupe(issue, roll);
-    if (decision === 'check-comments') decision = dedupe({ ...issue, comments: await comments(issue.number) }, roll);
-    if (decision === 'create') result.rollup = (await api.rest('POST', `${base}/issues`, { title: roll.title, body, labels: ['watch'] })).body.html_url;
-    else if (decision === 'comment') { await api.rest('POST', `${base}/issues/${issue.number}/comments`, { body }); result.rollup = issue.html_url; }
-    else result.rollup = issue.html_url;
+    if (decision === 'check-comments') decision = dedupe({ ...issue, comments: await loadComments(issue.number) }, roll);
+    if (decision === 'create') result.rollup = ref((await api.rest('POST', `${base}/issues`, { title: roll.title, body, labels: ['watch'] })).body);
+    else if (decision === 'comment') { await post(issue.number, body); result.rollup = ref(issue); }
+    else result.rollup = ref(issue);
   }
   return result;
 }
@@ -863,7 +983,7 @@ function buildReport(snap, diff, prev, opts, api, elapsedMs) {
 function printReport(rep) {
   const L = [];
   const a = rep.assessed;
-  L.push(`watch: ${rep.owner}, checked ${rep.checked_at} (${rep.mode === 'apply' ? 'apply' : 'dry run: nothing written'})`);
+  L.push(`watch: ${rep.owner}, checked ${rep.checked_at} (${rep.mode === 'apply' ? 'apply' : 'no files written'})`);
   L.push(`previous state: ${rep.previous_checked_at ?? 'none (first run: this run is the baseline)'}`);
   L.push(`assessed repos checked: ${a.checked} (found ${a.found}, renamed ${a.renamed}, deleted or private ${a.deleted_or_private}, pin unreachable ${a.pin_unreachable}, archived ${a.archived})`);
   L.push(`public repos discovered: ${rep.discovered.public_repos} (not assessed ${rep.discovered.not_assessed}, forks ${rep.discovered.forks}, archived ${rep.discovered.archived})`);
@@ -886,13 +1006,45 @@ function printReport(rep) {
   if (rep.wrote) L.push(`wrote: ${rep.wrote.files.join(', ')} (${rep.wrote.material} material today)`);
   if (rep.issues) {
     const i = rep.issues;
-    L.push(`issues: created ${i.created.length}, commented ${i.commented.length}, already filed ${i.exists}${i.rollup ? `, rollup ${i.rollup}` : ''}`);
-    for (const u of [...i.created, ...i.commented]) L.push(`  ${u}`);
+    const line = (tag, x) => L.push(`  ${tag} #${x.number} ${x.title}`);
+    L.push(`issues${rep.backfill ? ' (with since-pin backfill)' : ''}: created ${i.created.length}, commented ${i.commented.length}, already filed ${i.exists.length}, re-check pointers ${i.rechecks.length}${i.rollup ? `, rollup #${i.rollup.number}` : ''}`);
+    i.created.forEach((x) => line('created  ', x));
+    i.commented.forEach((x) => line('commented', x));
+    i.exists.forEach((x) => line('exists   ', x));
+    i.rechecks.forEach((x) => L.push(`  re-check #${x.number} -> ${x.files.join(', ')}`));
   }
   console.log(L.join('\n'));
 }
 
 // ---------------------------------------------------------------- selftest (offline)
+// In-memory stand-in for the GitHub issues and labels endpoints syncIssues calls.
+function memoryIssues() {
+  const issues = [];
+  const labels = new Set();
+  const comments = new Map();
+  const api = {
+    stats: {},
+    async rest(method, path, payload) {
+      const p = path.replace(`/repos/${ISSUE_REPO}`, '').replace(/\?.*$/, '');
+      const page = Number(path.match(/[?&]page=(\d+)/)?.[1] ?? 1);
+      if (method === 'GET' && p === '/labels') return { status: 200, body: page === 1 ? [...labels].map((name) => ({ name })) : [] };
+      if (method === 'POST' && p === '/labels') { labels.add(payload.name); return { status: 201, body: payload }; }
+      if (method === 'GET' && p === '/issues') return { status: 200, body: page === 1 ? issues.map((i) => ({ ...i })) : [] };
+      if (method === 'POST' && p === '/issues') {
+        const i = { number: issues.length + 1, title: payload.title, body: payload.body, labels: payload.labels, state: 'open', html_url: `memory:issues/${issues.length + 1}` };
+        issues.push(i);
+        comments.set(i.number, []);
+        return { status: 201, body: { ...i } };
+      }
+      const m = p.match(/^\/issues\/(\d+)\/comments$/);
+      if (m && method === 'GET') return { status: 200, body: [...comments.get(Number(m[1]))] };
+      if (m && method === 'POST') { comments.get(Number(m[1])).push({ body: payload.body }); return { status: 201, body: { body: payload.body } }; }
+      throw new Error(`memory issues: unexpected ${method} ${path}`);
+    },
+  };
+  return { api, issues, labels, comments };
+}
+
 async function selftest() {
   const fxDir = join(WATCH_DIR, 'fixtures');
   const load = (f) => JSON.parse(readFileSync(join(fxDir, f), 'utf8'));
@@ -980,6 +1132,22 @@ async function selftest() {
     expect(dedupe({ ...filed, comments: [{ body: `<!-- watch-value: ${moved.value} -->` }] }, moved) === 'exists', 'comment marker ignored');
     expect(dedupe(null, ch) === 'create', 'no issue should create');
   });
+  test('backfill on day1 files each since-pin event once; a second backfill finds only existing issues', async () => {
+    const titles = sincePinChanges(s1).map((c) => c.title);
+    const want = ['[watch] franken_code_browser: release v0.1.0', '[watch] frankenlibc: workflows +7 -0 (9 now)'];
+    expect(JSON.stringify(titles) === JSON.stringify(want), `titles ${JSON.stringify(titles)}`);
+    const daily = mat('franken_code_browser', 'release')[0].title;
+    expect(daily === '[watch] franken_code_browser: release v0.1.1', 'daily and backfill title formats differ');
+    const store = memoryIssues();
+    const first = await syncIssues(store.api, s1, sincePinChanges(s1));
+    expect(first.created.length === 2 && first.exists.length === 0 && !first.rollup, `first: ${JSON.stringify(first)}`);
+    expect(store.labels.has('watch') && store.labels.has('release') && store.labels.has('ci'), `labels ${[...store.labels]}`);
+    const rc = first.rechecks;
+    expect(rc.length === 1 && rc[0].title === want[0] && rc[0].files.join() === 'updates/franken_code_browser-2026-09-24.md', `re-check pointers ${JSON.stringify(rc)}`);
+    const second = await syncIssues(store.api, s1, sincePinChanges(s1));
+    expect(second.exists.length === 2 && second.created.length === 0 && second.commented.length === 0 && second.rechecks.length === 0 && !second.rollup, `second: ${JSON.stringify(second)}`);
+    expect(store.issues.length === 2 && store.issues.every((i) => i.state === 'open') && store.comments.get(1).length === 1, 'duplicate issue or comment, or an issue was closed');
+  });
   test('outputs are deterministic regardless of API node order', async () => {
     const shuffled = { ...day1, discovery: [...day1.discovery].reverse() };
     const again = await collect(fixtureSource(shuffled), [...day1.assessed].reverse(), null, s1.checked_at);
@@ -1003,27 +1171,31 @@ async function selftest() {
 }
 
 // ---------------------------------------------------------------- main
-const USAGE = `usage: node watch/watch.mjs [--apply] [--issues] [--json] [--fail-on-change] | --selftest
+const USAGE = `usage: node watch/watch.mjs [--apply] [--issues [--backfill-since-pin]] [--json] [--fail-on-change] | --selftest
   (no flags)        dry report on stdout; writes nothing
   --apply           write watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json
   --issues          open or comment on issues in ${ISSUE_REPO} for material changes new since the last state
+  --backfill-since-pin  with --issues: also file every material-since-pin event (events older than the
+                    first state never reach a daily diff); same titles, dedupe, and 20-per-run cap
   --json            print the report as JSON
   --fail-on-change  dry report; exit 1 if a material change is new since the last state
   --selftest        offline check of the diff and dedupe logic on watch/fixtures/
 exit: 0 ok, 1 change (--fail-on-change) or selftest failure, 2 usage/input/token, 3 GitHub API failure`;
 
 function parseArgs(argv) {
-  const known = new Set(['--apply', '--issues', '--json', '--fail-on-change', '--selftest', '--help', '-h']);
+  const known = new Set(['--apply', '--issues', '--backfill-since-pin', '--json', '--fail-on-change', '--selftest', '--help', '-h']);
   const flags = argv.filter((a) => a !== '--');
   const bad = flags.filter((a) => !known.has(a));
   if (bad.length) throw usageError(`unknown argument(s): ${bad.join(' ')}\n${USAGE}`);
   const o = {
     apply: flags.includes('--apply'), issues: flags.includes('--issues'), json: flags.includes('--json'),
+    backfill: flags.includes('--backfill-since-pin'),
     failOnChange: flags.includes('--fail-on-change'), selftest: flags.includes('--selftest'),
     help: flags.includes('--help') || flags.includes('-h'),
   };
   if (o.selftest && flags.length > 1) throw usageError(`--selftest takes no other flags\n${USAGE}`);
   if (o.failOnChange && (o.apply || o.issues)) throw usageError(`--fail-on-change is for the dry report only\n${USAGE}`);
+  if (o.backfill && !o.issues) throw usageError(`--backfill-since-pin requires --issues\n${USAGE}`);
   return o;
 }
 
@@ -1039,7 +1211,13 @@ async function main(argv) {
   const diff = diffSnapshots(prev, snap);
   const rep = buildReport(snap, diff, prev, opts, api, Date.now() - t0);
   if (opts.apply) rep.wrote = writeOutputs(snap, diff);
-  if (opts.issues) rep.issues = await syncIssues(api, snap, diff);
+  if (opts.issues) {
+    const seen = new Set();
+    const changes = [...diff.material, ...(opts.backfill ? sincePinChanges(snap) : [])]
+      .filter((c) => !seen.has(c.title) && seen.add(c.title));
+    rep.backfill = opts.backfill;
+    rep.issues = await syncIssues(api, snap, changes);
+  }
   rep.api = { ...api.stats, elapsed_s: Math.round((Date.now() - t0) / 100) / 10 };
   if (opts.json) console.log(JSON.stringify(rep, null, 2));
   else printReport(rep);

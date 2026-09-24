@@ -324,7 +324,7 @@ GitHub API responses in `watch/fixtures/` (`day1.json`, recorded 2026-09-24
 for six assessed repositories and part of the public listing; `day2.json`, a
 synthetic next day whose `_note` lists each edit) and passes them through the
 same collect, diff, and dedupe functions the scheduled watch runs against the
-live API. No network and no token. The 13 cases assert: the packets parse to
+live API. No network and no token. The 14 cases assert: the packets parse to
 exactly 44 repositories with 40-hex pins; a first run is a baseline with
 nothing material; a new release is material and its tag is not reported
 twice; a LICENSE blob change with the same SPDX id is material; a workflow
@@ -335,7 +335,12 @@ followed by the REST redirect when no id is recorded yet; a compare 404 is
 `pin_unreachable`; a new `franken*` or Rust repository is a candidate and
 anything else informational; nothing else is material; dedupe returns
 `exists` for a filed title with the same value, `comment` for a changed
-value, and `create` for a new title; and the state and census are byte-equal
+value, and `create` for a new title; the since-pin backfill on `day1.json`
+files exactly the expected titles (in the same title format as the daily
+diff) through the real issue-sync code against an in-memory issue store,
+adds one pointer comment to the issue whose release a dated re-check in
+`updates/` already names, and a second backfill finds only existing issues
+(no new issue, comment, or pointer); and the state and census are byte-equal
 when the API returns nodes in another order. **Fails** on a nonzero exit, any
 failed case, or a `CASES` count of zero or missing.
 **Why:** the watch opens public issues and commits a census every day with
@@ -439,3 +444,9 @@ also failed W.
 The scheduled workflow checks out full history rather than depth 1 because a
 depth-1 clone fails K3: the rigor index cites commits that `git cat-file`
 cannot resolve without history (16 rows failed on a scratch depth-1 clone).
+
+Since-pin backfill (`--backfill-since-pin`): the 14th case was shown to fail
+on three scratch-copy mutants: ignoring the re-check marker (the second
+backfill posted a second pointer), giving the backfill release a title that
+differs from the daily one, and treating a filed issue as new (the second
+backfill commented on both issues instead of finding them).
