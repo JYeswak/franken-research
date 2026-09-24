@@ -29,7 +29,9 @@ section 12). No agent executes an unsigned packet.
 ## 5-minute quickstart
 
 ```sh
-# 1. Install the kit into a new (or existing) project directory:
+# 1. Install the kit into a NEW project directory (a repo that already has
+#    AGENTS.md or a pre-commit hook: see "Adopting in an existing repo" below;
+#    init.sh replaces .git/hooks/pre-commit):
 sh /path/to/starter-kit/scripts/init.sh /path/to/my-project
 #    (runs `git init` for you unless KIT_NO_GIT=1 — the honesty hook needs a
 #    repo to live in. Set your git identity first or the first commit fails:
@@ -77,6 +79,34 @@ at `.git/hooks/pre-commit` (the one git actually executes). It self-tests
 with a canary false claim before it checks anything real. It deliberately
 does NOT create a `README.md` — write yours last (step 6).
 
+## Adopting in an existing repo
+
+Do not run `init.sh` here. Copy the parts by hand, from the repo's root
+(`KIT` is the path to this `starter-kit/` folder):
+
+```sh
+# 1. Copy the checkers and templates (cp -n never overwrites your files):
+mkdir -p docs/planning registries scripts
+cp -n "$KIT/CHECKLIST.md" docs/CHECKLIST.md
+cp -n "$KIT/templates/planning-packet.md" docs/planning/packet.md
+cp -n "$KIT/templates/claims.tsv" registries/claims.tsv
+cp -n "$KIT/scripts/check-readiness.sh" "$KIT/scripts/check-claim-discipline.sh" scripts/
+
+# 2. Add one tab-separated row to registries/claims.tsv for a sentence your
+#    README already makes and a file that proves it (enforce=yes), then:
+sh scripts/check-claim-discipline.sh registries/claims.tsv README.md   # must PASS before step 3
+sh scripts/check-readiness.sh docs/planning/packet.md                  # NOT READY until you fill it
+
+# 3. Install the hook only if nothing else owns your hooks (both print nothing):
+git config --get core.hooksPath; ls .git/hooks/pre-commit
+cp "$KIT/scripts/hooks/pre-commit" .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+#    Already have a hook? Keep it and append the claim check instead:
+#    echo 'sh scripts/check-claim-discipline.sh registries/claims.tsv README.md || exit 1' >> .git/hooks/pre-commit
+```
+
+Add `templates/kit-gates.yml` to `.github/workflows/` only once the packet
+reports READY: its readiness step fails CI until then.
+
 ## What's inside
 
 | Path | What it is |
@@ -113,3 +143,7 @@ does NOT create a `README.md` — write yours last (step 6).
 
 "A step you can satisfy by believing you did it is not a step."
 — frankentui AGENTS.md
+
+## Changes since the 2026-09-22 import
+
+- 2026-09-24: `scripts/check-claim-discipline.sh` splits rows with `awk -F'\t'`. The imported version split on `\001`, which macOS `/bin/sh` (bash 3.2) cannot do, so it read zero rows there and the hook blocked every commit in a repo with a README. Checked by test on a clone of dtolnay/itoa under bash 3.2, dash, zsh 5.9 and bash 5.3: after the change all four pass a real enforced claim and fail a violated one; before it, bash 3.2 read no rows. Not checked: Windows shells and busybox sh.

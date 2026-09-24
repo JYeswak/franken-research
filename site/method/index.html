@@ -17,35 +17,45 @@
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <style>
   :root{
-    --bg:#0f1319; --panel:#151b25; --panel2:#1a2230; --ink:#ece7da; --dim:#9aa3b2;
+    --bg:#0c0c0e; --panel:#121215; --panel2:#17171b; --ink:#ece5d8; --dim:#b7b0a2;
+    --accent:#ff7a3d; --line:#26262c;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
     --blue:#6aa8ff; --green:#4cc38a; --amber:#ffb224; --red:#ff5d5d; --purple:#b98cff;
     --metal:#39424f; --metal2:#4a5568; --gold:#f0a832;
   }
   *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
   body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.45; padding:20px 22px 40px;
+    background:var(--bg); color:var(--ink); --shell-max:1080px;
+    font-family:var(--sans); -webkit-font-smoothing:antialiased;
+    line-height:1.45; padding:0 20px 48px;
   }
-  header{max-width:1480px;margin:0 auto 14px}
-  h1{font-size:28px;margin:0 0 4px;letter-spacing:.5px}
-  h1 .sub{color:var(--dim);font-weight:400;font-size:15px;display:block;margin-top:6px;max-width:940px;line-height:1.55}
+  header{max-width:1080px;margin:0 auto 14px}
+  header h1{font-family:var(--serif);font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+  header .sub{font-family:var(--serif);color:var(--dim);font-size:17px;line-height:1.7;max-width:940px;margin:0 0 6px}
+  header .sub a{color:var(--accent)}
+  details.notes{max-width:1080px;margin:14px auto 0;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 16px}
+  details.notes > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:15px;font-weight:600;color:var(--ink)}
+  details.notes > summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+  details.notes[open]{padding-bottom:12px}
+  details.notes .vocab,details.notes .quote,details.notes .rulebook-cta{margin:10px 0}
   .quote{
     border-left:3px solid var(--gold); padding:6px 0 6px 14px; margin:12px 0;
     color:#d8d2c2; max-width:940px; font-size:14px; line-height:1.55;
   }
   .quote .src{display:block;font-size:12.5px;color:var(--dim);margin-top:4px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
-  .chip{background:var(--panel2);border:1px solid #2b3444;border-radius:20px;
+  .chip{background:var(--panel2);border:1px solid var(--line);border-radius:20px;
     padding:5px 14px;font-size:13px;color:var(--ink)}
   .chip b{color:var(--gold)}
   .chip.warn b{color:var(--red)}
-  .rulebook-cta{max-width:1480px;margin:12px auto;background:#1d2230;border:1px solid #3a4a6b;
+  .rulebook-cta{max-width:1080px;margin:12px auto;background:#1d2230;border:1px solid #3a4a6b;
     border-radius:8px;padding:10px 14px;font-size:13.5px;color:#cdd7ea}
-  .rulebook-cta a{color:var(--gold);font-weight:700}
-  #rmNotice,#jsRequired{max-width:1480px;margin:12px auto;background:#1d2a1d;border:1px solid var(--green);
+  .rulebook-cta a{color:var(--accent);font-weight:700}
+  #rmNotice,#jsRequired{max-width:1080px;margin:12px auto;background:#1d2a1d;border:1px solid var(--green);
     border-radius:8px;padding:10px 14px;font-size:13.5px;color:#cfe8d8}
-  #controls{max-width:1480px;margin:12px auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  #controls{max-width:1080px;margin:12px auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   button{
     background:#223041;color:var(--ink);border:1px solid #34425a;border-radius:8px;
     padding:9px 16px;font-size:14px;cursor:pointer;
@@ -55,29 +65,29 @@
   button.primary:hover{background:#4d3d14}
   button.danger{border-color:#6b2d2d;color:#ff9d9d}
   button.toggled{background:#14301f;border-color:var(--green);color:#9fe8c0}
-  #counters{max-width:1480px;margin:8px auto 0;display:flex;gap:16px;flex-wrap:wrap;
+  #counters{max-width:1080px;margin:8px auto 0;display:flex;gap:16px;flex-wrap:wrap;
     font-size:13px;color:var(--dim)}
   #counters b{font-size:16px;margin-right:4px}
   .c-reg b{color:var(--blue)} .c-enf b{color:var(--green)} .c-ch b{color:var(--amber)}
   .c-dem b{color:var(--red)} .c-led b{color:var(--purple)}
-  #stage{max-width:1480px;margin:6px auto;background:var(--panel);
-    border:1px solid #232c3c;border-radius:12px;overflow:hidden}
+  #stage{max-width:1080px;margin:6px auto;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden}
   #stage svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
-  #steps{max-width:1480px;margin:10px auto 0;background:var(--panel);
-    border:1px solid #232c3c;border-radius:12px;padding:12px 16px;font-size:13px;color:#c9c3b4}
-  #steps h2{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:0 0 8px}
+  #steps{max-width:1080px;margin:10px auto 0;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:13px;color:#c9c3b4}
+  #steps h2{font-family:var(--serif);font-size:20px;color:var(--ink);line-height:1.35;margin:0 0 8px}
   #steps ol{margin:0;padding-left:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px 18px}
   @media (max-width:900px){#steps ol{grid-template-columns:1fr 1fr}}
   @media (max-width:560px){#steps ol{grid-template-columns:1fr}}
   #steps li{margin:0}
   #steps b{color:var(--gold);font-weight:700}
-  #steps a{color:var(--gold)}
-  #wide{max-width:1480px;margin:14px auto 0;display:grid;gap:14px}
-  .card{background:var(--panel);border:1px solid #232c3c;border-radius:12px;padding:14px 16px}
-  .card h2{font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:0 0 10px}
-  .card p{font-size:13.5px;color:#c9c3b4;margin:0 0 10px;max-width:1000px}
-  .card a{color:var(--gold)}
-  #lower{max-width:1480px;margin:14px auto 0;display:grid;gap:14px;
+  #steps a{color:var(--accent)}
+  #wide{max-width:1080px;margin:14px auto 0;display:grid;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card h2{font-family:var(--serif);font-size:20px;color:var(--ink);line-height:1.35;margin:0 0 10px}
+  .card p{font-family:var(--serif);font-size:15.5px;line-height:1.65;color:#d8d2c2;margin:0 0 10px;max-width:1000px}
+  .card a{color:var(--accent)}
+  #lower{max-width:1080px;margin:14px auto 0;display:grid;gap:14px;
     grid-template-columns:1fr 1fr}
   @media (max-width:1100px){#lower{grid-template-columns:1fr}}
   .legend-item{margin:0 0 12px}
@@ -89,14 +99,14 @@
   .ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}
   @media (max-width:900px){.ring-grid{grid-template-columns:1fr 1fr}}
   @media (max-width:560px){.ring-grid{grid-template-columns:1fr}}
-  .ring{background:var(--panel2);border:1px solid #2b3444;border-radius:8px;padding:10px 12px}
+  .ring{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
   .ring .rn{font-size:13.5px;font-weight:700}
   .ring .rn .n{font-size:11px;color:var(--dim);font-weight:400;margin-left:6px}
   .ring p{margin:4px 0 0;font-size:12.5px;color:#c9c3b4}
   .tier{margin:0 0 8px;font-size:13px;color:#c9c3b4}
   .tier b{color:var(--ink)}
   .tier .tn{color:var(--gold);font-weight:700;margin-right:6px}
-  .claim-row{background:var(--panel2);border:1px solid #2b3444;border-radius:8px;
+  .claim-row{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
     padding:10px 12px;margin:0 0 10px}
   .claim-row.held{border-left:3px solid var(--green)}
   .claim-row.dem{border-left:3px solid var(--red)}
@@ -111,7 +121,7 @@
   .cr-note{font-size:12.5px;color:var(--dim);margin:2px 0 0}
   .cr-note b{color:#c9c3b4;font-weight:600}
   #ledgerList{display:flex;flex-direction:column;gap:8px;max-height:460px;overflow-y:auto}
-  .lrow{background:var(--panel2);border:1px solid #2b3444;border-left:3px solid var(--purple);
+  .lrow{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--purple);
     border-radius:6px;padding:8px 10px;font-size:12.5px}
   .lrow .t{color:var(--dim)}
   .lrow .claim{color:var(--ink);font-weight:600}
@@ -123,13 +133,13 @@
   #log .ts{color:#7f8a9c;margin-right:8px}
   #log .ok{color:var(--green)} #log .bad{color:var(--red)} #log .warn{color:var(--amber)}
   #log .info{color:var(--blue)} #log .led{color:var(--purple)}
-  footer{max-width:1480px;margin:18px auto 0;color:var(--dim);font-size:12.5px}
-  footer a{color:var(--gold)}
+  footer{max-width:1080px;margin:18px auto 0;color:var(--dim);font-size:12.5px}
+  footer a{color:var(--accent)}
   footer p{margin:0 0 8px;max-width:1000px}
-  .quote .src a{color:var(--gold)}
-  .vocab{max-width:1480px;margin:12px auto;background:#1a2030;border:1px solid #33415c;
+  .quote .src a{color:var(--accent)}
+  .vocab{max-width:1080px;margin:12px auto;background:#1a2030;border:1px solid #33415c;
     border-radius:8px;padding:10px 14px;font-size:13.5px;color:#cdd7ea;line-height:1.6}
-  .vocab a{color:var(--gold);font-weight:700}
+  .vocab a{color:var(--accent);font-weight:700}
   .vocab b{color:var(--ink)}
   /* ---- SVG scene (vertical) ---- */
   .pipe{fill:#1c2330;stroke:#2c3648;stroke-width:2}
@@ -152,17 +162,17 @@
     .flow{animation:none}
   }
   @media (max-width:560px){
-    body{padding:14px 10px 32px}
-    h1{font-size:24px}
+    body{padding:0 12px 36px}
+    header h1{font-size:27px}
   }
   /* skip link: off-screen until focused */
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
     font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
   .skip:focus{left:0}
 .secmap{font-family:var(--sans);font-size:13.5px;line-height:1.6;color:var(--dim);border-left:2px solid #2a3342;padding:2px 0 2px 12px;margin:14px 0}
-.secmap a{color:var(--gold)}
-.sitenav{max-width:1480px;margin:0 auto 10px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px}
-.sitenav a{color:var(--gold);text-decoration:none}
+.secmap a{color:var(--accent)}
+.sitenav{max-width:1080px;margin:0 auto 10px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px}
+.sitenav a{color:var(--accent);text-decoration:none}
 .sitenav a:hover,.sitenav a:focus-visible{text-decoration:underline}
 </style>
 <!-- shell:head -->
@@ -204,29 +214,17 @@
 <!-- /shell:nav -->
 
 <header id="main">
-  <h1>How claims are governed here
-    <span class="sub">A reenactment of the starter kit's governance loop: the runnable kit that distills this program's claim-governance machinery, downloadable on this site at <a href="../starter-kit/README.md" style="color:var(--gold)">starter-kit/</a>. Eight stations walk a claim from registration to the ledger, each naming a real file in the kit. The moving tokens are claims quoted verbatim from the 44 assessment packets, each cited below with its packet file and line. The machine does not decide verdicts. It reads the ones the packets already recorded. Said plainly: the 44 verdicts were produced under the assessment protocol in <a href="../RULEBOOK.md" style="color:var(--gold)">RULEBOOK.md</a>, not by running this kit. The kit came after the program, to make the machinery portable.</span>
-  </h1>
-  <div class="vocab"><b>Seven definitions before the machine.</b>
-  A <b>claim</b> is a checkable assertion a project makes in public (example on the belt: "Main CI passes at the pinned commit").
-  <b>CI</b> is continuous integration: the service that automatically runs a project's tests on each commit. <b>"CI green at the pin"</b> means those tests visibly passed on the project's public CI service at the assessed commit. The "pin" is the single commit the assessor fixed for the whole evaluation.
-  <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet.
-  The <b>letter codes</b> (A3, B5, D1) are item ids in the kit's checklist: <b>A</b> = Phase A planning, <b>B</b> = Phase B execution, <b>D</b> = the demotion rules. Every code on this page is defined in <a href="../starter-kit/CHECKLIST.md">starter-kit/CHECKLIST.md</a>.
-  The <b>license rider</b> is the MIT license plus an AI-lab rider: it bars OpenAI and Anthropic from training on the code, using it, or benchmarking it.
-  This page depicts the <b>kit's loop</b>, inspectable and runnable from <a href="../starter-kit/README.md">starter-kit/</a>. The 44 verdicts were made under <a href="../RULEBOOK.md">RULEBOOK.md</a>; the two pipelines are kept separate on purpose (see "Two different pipelines" below).</div>
-  <div class="quote">
-    Paraphrase: the maintainer-writing brief reads Emanuel's Apr 2025 thesis ("Protecting Against AI Prompt Injection") as arguing that internal guardrails always fail, and proposing external "inoculation" strategies instead. The brief quotes his Jun 2024 essay's alternative as "a system to closely monitor and control the AI that is fundamentally external to the AI and not controlled by it", with helper models required to "supply the hard evidence".
-    <span class="src">Paraphrase and quoted lines via <a href="../synthesis/briefs/maintainer-writing.md">synthesis/briefs/maintainer-writing.md</a> (the Apr 2025 thesis is paraphrased there, not quoted; the Jun 2024 lines are quoted there). The older claim that this page once carried, a verbatim Emanuel quote dated 2024 saying "internal guardrails fail", had no source and was removed.</span>
-  </div>
+  <h1>How claims are governed here</h1>
+  <p class="sub">Every verdict on this site comes from one packet per repository, written under the protocol in <a href="../RULEBOOK.md">RULEBOOK.md</a> against the code as pinned September 22, 2026 (the assessed commit). Each claim in a packet carries an evidence tier, from [Verified] by direct inspection and [CI-observed] runs of CI (continuous integration), through the maintainer's own word, down to labeled [Inference], and a confidence grade. From those claims the packet sets a technology readiness level (TRL, 1 to 9) and a NODUS ring (one of four assessment rings, Invest down to Monitor), and it must clear a QA checklist before it ships.</p>
+  <p class="sub">The machine below reenacts how the <a href="../starter-kit/index.html">starter kit</a> keeps claims like these honest after the fact: eight stations walk a claim from registration to the ledger, each naming a real file in the kit. It moves claims quoted from the packets and decides nothing; every demotion it shows is the packet's own recorded verdict.</p>
   <div class="chips">
     <span class="chip"><b><span data-stat="total">44</span></b> repos assessed</span>
     <span class="chip warn"><b><span data-stat="notGreen">42</span> of <span data-stat="total">44</span></b> couldn't show public CI green at the assessed pin</span>
-    <span class="chip"><b><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></b> carry the license rider</span>
+    <span class="chip"><b><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></b> carry the AI-lab license rider</span>
     <span class="chip warn"><b><span data-stat="ringInvest">0</span> of <span data-stat="total">44</span></b> independently validated</span>
   </div>
 </header>
 
-<div class="rulebook-cta">The assessment protocol behind every verdict on this site ships with it: <a href="../RULEBOOK.md">RULEBOOK.md</a> — evidence tiers, the claim-inventory rule, NODUS ring definitions, and the QA checklist each packet had to clear. The verdicts section below summarizes it.</div>
 
 <div id="rmNotice" hidden>Animation is off, because your system prefers reduced motion. The eight stations are shown at rest below, every label stays readable, and the full sequence is written out under the stage.</div>
 
@@ -366,6 +364,22 @@
     <li><b>Ledger:</b> hypothesis, verdict, retry predicate: banked in the row schema of <a href="../starter-kit/templates/negative-evidence-entry.md">templates/negative-evidence-entry.md</a>, never "later". (A5, B4)</li>
   </ol>
 </div>
+
+<details class="notes" id="notes">
+<summary>Notes: definitions, the letter codes, and where the quotes come from</summary>
+  <div class="vocab"><b>Seven definitions.</b>
+  A <b>claim</b> is a checkable assertion a project makes in public (example on the belt: "Main CI passes at the pinned commit").
+  <b>CI</b> is continuous integration: the service that automatically runs a project's tests on each commit. <b>"CI green at the pin"</b> means those tests visibly passed on the project's public CI service at the assessed commit. The "pin" is the single commit the assessor fixed for the whole evaluation.
+  <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet.
+  The <b>letter codes</b> (A3, B5, D1) are item ids in the kit's checklist: <b>A</b> = Phase A planning, <b>B</b> = Phase B execution, <b>D</b> = the demotion rules. Every code on this page is defined in <a href="../starter-kit/CHECKLIST.md">starter-kit/CHECKLIST.md</a>.
+  The <b>license rider</b> is the MIT license plus an AI-lab rider: it bars OpenAI and Anthropic from training on the code, using it, or benchmarking it.
+  This page depicts the <b>kit's loop</b>, inspectable and runnable from <a href="../starter-kit/README.md">starter-kit/</a>. The 44 verdicts were made under <a href="../RULEBOOK.md">RULEBOOK.md</a>; the two pipelines are kept separate on purpose (see "Two different pipelines" below).</div>
+  <div class="quote">
+    Paraphrase: the maintainer-writing brief reads Emanuel's Apr 2025 thesis ("Protecting Against AI Prompt Injection") as arguing that internal guardrails always fail, and proposing external "inoculation" strategies instead. The brief quotes his Jun 2024 essay's alternative as "a system to closely monitor and control the AI that is fundamentally external to the AI and not controlled by it", with helper models required to "supply the hard evidence".
+    <span class="src">Paraphrase and quoted lines via <a href="../synthesis/briefs/maintainer-writing.md">synthesis/briefs/maintainer-writing.md</a> (the Apr 2025 thesis is paraphrased there, not quoted; the Jun 2024 lines are quoted there). The older claim that this page once carried, a verbatim Emanuel quote dated 2024 saying "internal guardrails fail", had no source and was removed.</span>
+  </div>
+  <div class="rulebook-cta">The assessment protocol behind every verdict on this site ships with it: <a href="../RULEBOOK.md">RULEBOOK.md</a> — evidence tiers, the claim-inventory rule, NODUS ring definitions, and the QA checklist each packet had to clear. The verdicts section below summarizes it.</div>
+</details>
 
 <div id="wide">
   <div class="card">

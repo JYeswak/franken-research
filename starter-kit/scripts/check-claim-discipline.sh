@@ -27,17 +27,18 @@ if [ ! -f "$CLAIMS" ]; then
   exit 0
 fi
 
-# NOTE: tab is IFS *whitespace*, so IFS=<tab> read collapses empty fields.
-# Translate tabs to \001 (not IFS whitespace) to preserve empty columns.
-SOH=$(printf '\001')
+# Rows are split on tabs with awk, one field at a time. Tab is IFS whitespace,
+# so IFS=<tab> read would collapse empty columns; the earlier workaround (read
+# with IFS set to \001) read zero rows under macOS /bin/sh, which is bash 3.2
+# and cannot split on \001. awk -F'\t' keeps empty columns in every POSIX sh.
+# A line with no tab yields label = the whole line and empty other fields.
+field() { printf '%s\n' "$line" | awk -F'\t' -v n="$1" '{ print $n }'; }
 pass=0; fail=0; skipped=0; enforced=0; checked=0; unmatched=0
 rowlist=""
 
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ''|\#*) continue ;; esac
-  IFS="$SOH" read -r label pattern capkey substr proof enforce notes <<EOF
-$(printf '%s' "$line" | tr '\t' '\001')
-EOF
+  label=$(field 1); pattern=$(field 2); substr=$(field 4); proof=$(field 5); enforce=$(field 6)
   [ "$label" = "label" ] && continue   # header row
   [ -z "$label" ] && continue          # blank row
   rowlist="${rowlist}${label}=>${enforce} "
