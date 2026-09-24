@@ -66,6 +66,15 @@ header .meta b{color:var(--ink);font-weight:600}
 .filters label{color:var(--muted);display:flex;gap:6px;align-items:center;max-width:100%;min-width:0;white-space:nowrap}
 .filters select{font:inherit;color:var(--ink);background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:5px 8px;min-height:36px;max-width:22em;min-width:0;flex:1 1 auto}
 .filters .count{color:var(--muted);margin-left:auto}
+.tally{font-family:var(--sans);font-size:14px;color:var(--ink-dim);margin:6px 0 4px}
+.tally b{font-size:16px}
+.tally span{white-space:nowrap}
+.headline{font-size:17px;line-height:1.6;color:var(--ink);max-width:940px;margin:6px 0 10px}
+p#vempty{font-family:var(--sans);font-style:normal;font-size:15px;color:var(--ink);background:var(--bg-2);
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
+p#vempty[hidden]{display:none}
+button.linkish{font:inherit;color:var(--accent);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+button.linkish:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h2.group{font-family:var(--sans);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
   margin:28px 0 8px;font-weight:700}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
@@ -146,7 +155,7 @@ footer a{color:var(--accent)}
 </nav>
 <header>
   <h1>The agent stack: adopt, copy, or build</h1>
-  <p class="sub">The FrankenSuite assessment covered one developer’s repositories. This layer looks outward, at 21 parts of the stack an agent product is assembled from, from inference engines to voice agents. For each area it answers one question: adopt an existing project, copy its practices, or build your own. Every verdict is a judgment backed by cited evidence, checked by someone other than its author, and reflects the evidence as of 2026-09-23. </p>
+  <p class="sub">The FrankenSuite assessment covered one developer’s repositories. This layer looks outward, at 21 parts of the stack an agent product is assembled from, from inference engines to voice agents. For each area it answers one question: adopt an existing project, copy its practices, or build your own. Every verdict is a judgment backed by cited evidence, checked by someone other than its author, and reflects the evidence as of 2026-09-23. Verdicts were written and reviewed by separate AI agent sessions; a human maintainer coordinated the work and ruled on disputes. No human outside the project has reviewed them yet.</p>
 </header>
 <div class="vocab"><b>TRL</b> is technology readiness level, scored 1 to 9. <b>CI</b> is continuous integration: automated checks that run on every push. To <b>pin</b> is to freeze a dependency, oracle, or assessment at an exact commit or version, so later changes cannot silently alter what was checked.</div>
 <main id="main">
@@ -158,16 +167,20 @@ footer a{color:var(--accent)}
   <li><span class="chip v-build">Build clean-room</span><br>No incumbent meets a named hard constraint (license, determinism, safety boundary, runtime, footprint).</li>
   <li><span class="chip v-watch">Watch</span><br>Evidence is too thin, or the field moves faster than a commitment would survive (spec churn, no conformance suite).</li>
 </ul>
-<p class="back">The full rules, including the evidence bar for each verdict, are in <a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/METHOD.md</a>. Verdicts are decided in a fixed order: Watch first, then Adopt and wrap, then Adopt, and Build clean-room only when a cited line shows that no incumbent meets a hard constraint. Practices worth copying across all areas are collected in <a href="../rigor/index.html">Rigor practices</a>.</p>
+<p class="back">The full rules, including the evidence bar for each verdict, are in <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/stack/METHOD.md">stack/METHOD.md</a>. Verdicts are decided in a fixed order: Watch first, then Adopt and wrap, then Adopt, and Build clean-room only when a cited line shows that no incumbent meets a hard constraint. Practices worth copying across all areas are collected in <a href="../rigor/index.html">Rigor practices</a>.</p>
 </section>
 <div class="filters" id="vfilter" role="group" aria-label="Filter by verdict" hidden>
   <button type="button" data-f="all" aria-pressed="true">All</button>
-  <button type="button" data-f="v-adopt" aria-pressed="false">Adopt</button>
-  <button type="button" data-f="v-wrap" aria-pressed="false">Adopt and wrap</button>
-  <button type="button" data-f="v-build" aria-pressed="false">Build clean-room</button>
-  <button type="button" data-f="v-watch" aria-pressed="false">Watch</button>
+  <button type="button" data-f="v-adopt" data-name="Adopt" aria-pressed="false">Adopt</button>
+  <button type="button" data-f="v-wrap" data-name="Adopt and wrap" aria-pressed="false">Adopt and wrap</button>
+  <button type="button" data-f="v-build" data-name="Build clean-room" aria-pressed="false">Build clean-room</button>
+  <button type="button" data-f="v-watch" data-name="Watch" aria-pressed="false">Watch</button>
   <span class="count" id="vcount" aria-live="polite"></span>
 </div>
+<!-- STAT: the split and the headline are computed by site/scripts/make-stack.mjs from the verdict: field of stack/*.md -->
+<p class="tally" id="vtally"><span class="v-wrap"><b>20</b> Adopt and wrap</span> · <span class="v-watch"><b>1</b> Watch</span> · <span class="v-adopt"><b>0</b> Adopt</span> · <span class="v-build"><b>0</b> Build clean-room</span></p>
+<p class="headline">In every area with an established project, adopt it; in none of the 21 did the evidence justify building from scratch, and in 20 the evidence shows a verification gap you must close yourself. One area, Computer-use agents, is on Watch: the evidence is too thin to commit to a project yet.</p>
+<p class="empty" id="vempty" data-total="21" data-top-f="v-wrap" data-top-name="Adopt and wrap" aria-live="polite" hidden></p>
 <section class="groupwrap" aria-labelledby="g-model-serving">
   <h2 class="group" id="g-model-serving">Model serving</h2>
   <div class="cards">
@@ -204,25 +217,25 @@ footer a{color:var(--accent)}
       <h3><a href="agent-frameworks.html">Agent frameworks</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: adopt an existing agent framework (LangGraph, the OpenAI Agents SDK, smolagents or DSPy) and do not write your own agent loop. Wrap it, because an agent run is nondeterministic and no surveyed framework ships a record-and-replay harness for model calls: script the model and the tools in your tests, make a test fail when the script and the run disagree, and declare any model-graded (&quot;judge&quot;) test matrix before you run it.</p>
-      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="multi-agent-protocols.html">Agent-to-agent protocols (A2A class)</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, low confidence: if your agents must discover and delegate to agents from other teams, target A2A v1.x through one of its official SDKs, and do not design your own protocol. Wrap it: pin the shared compatibility test kit (the TCK) and run it against your build, test every transport the spec requires, and call any interop result &quot;self-interop&quot; until you have tested against an implementation from outside the A2A organization, because the evidence found none. Confidence is low because the evidence pack itself calls the category thin.</p>
-      <div class="foot">Confidence Low · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Low · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="workflow-orchestrators.html">Durable workflow orchestrators</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, low confidence: run long or crash-prone agent work on an existing durable-execution engine (Temporal, Cadence or Conductor), and do not write your own event log and replay engine. Wrap it, because none of these engines checks your workflow code for determinism when you compile it: determinism is only caught when a recorded run is replayed, so your test suite must replay recorded histories, including one deliberately nondeterministic history that must fail, under a virtual clock. Confidence is low because the evidence pack calls itself thin and ran none of these suites.</p>
-      <div class="foot">Confidence Low · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Low · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="mcp.html">MCP servers and clients</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: build MCP (Model Context Protocol) servers and clients on an official SDK, and do not hand-write the protocol. Wrap the SDK in the official conformance suite, pinned to a version and run once per spec revision you ship, with every known failure listed in a named file instead of skipped; the suite is still an alpha release that nobody in this program has run, so its pass is a floor, not a certificate.</p>
-      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -285,19 +298,19 @@ footer a{color:var(--accent)}
       <h3><a href="observability.html">Agent observability and tracing</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: record agent runs with an existing tracing stack (Langfuse, Arize Phoenix or Comet Opik, instrumented through OpenTelemetry packages such as OpenLLMetry or OpenLIT), and do not build your own trace store. Check the license first if you will host tracing for others: Phoenix is under the Elastic License 2.0, which forbids offering it as a hosted service, and Langfuse keeps its enterprise directories under a separate enterprise license. Wrap it, because &quot;OpenTelemetry-compatible&quot; is mostly asserted rather than tested in this category: before you trust an integration, check that the spans it emits carry the attributes you depend on, that streamed calls close their spans, and that your cost numbers use an audited price table.</p>
-      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="guardrails.html">Guardrails and red-teaming</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, low confidence: put an existing rail toolkit or scanner library in front of your model and its tools (NeMo Guardrails, Guardrails AI, or LlamaFirewall for tool calls), attack it with an existing red-team tool (garak, PyRIT, promptfoo), and do not write your own. Wrap both, because no project in the evidence publishes a false-positive or false-negative threshold you can inherit: keep your own labeled corpus of prompts that must pass and prompts that must be blocked, calibrate the model you use as a judge on its own set, and treat any &quot;it blocks jailbreaks&quot; claim as unproven until those two receipts exist. Confidence is low because the evidence is file trees only: no test was run and no CI result was checked.</p>
-      <div class="foot">Confidence Low · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Low · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
     <article class="vcard" data-verdict="v-wrap">
       <h3><a href="eval-harnesses.html">LLM eval harnesses</a></h3>
       <div><span class="chip v-wrap">Adopt and wrap</span></div>
       <p>Inference, medium confidence: run your evals on an existing harness (Inspect AI for agent and tool-use evals, lm-evaluation-harness for academic benchmarks, the SWE-bench harness for coding agents), and do not write your own runner. Wrap it with tests of your own graders: SWE-bench is the only harness whose adversarial grader tests (spoofed passes, truncated output) were read, the others were not checked for them, and no harness showed a checked pattern for model-graded (&quot;judge&quot;) verdicts, so a score is only as honest as the grader tests you add.</p>
-      <div class="foot">Confidence Medium · Reviewed by control-plane-pane-2 on 2026-09-23</div>
+      <div class="foot">Confidence Medium · Reviewed by control-plane pane 2 on 2026-09-23</div>
     </article>
   </div>
 </section>
@@ -326,7 +339,7 @@ footer a{color:var(--accent)}
 </section>
 </main>
 <footer>
-  <p>Generated from <a href="https://github.com/JYeswak/franken-research/blob/main/stack/METHOD.md">stack/</a> by <a href="https://github.com/JYeswak/franken-research/blob/main/site/scripts/make-stack.mjs">site/scripts/make-stack.mjs</a>; the build gates check every citation and fail if this page drifts from its sources. Franken Research is independent and MIT licensed. <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a>.</p>
+  <p>Generated from <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/stack/METHOD.md">stack/</a> by <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/site/scripts/make-stack.mjs">site/scripts/make-stack.mjs</a>; the build gates check every citation and fail if this page drifts from its sources. Franken Research is independent and MIT licensed. <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a>.</p>
 </footer>
 </div>
 <script>
@@ -347,6 +360,21 @@ footer a{color:var(--accent)}
     var groups = document.querySelectorAll('.groupwrap');
     for (var k = 0; k < groups.length; k++) groups[k].hidden = !groups[k].querySelector('.vcard:not([hidden])');
     count.textContent = shown + ' of ' + cards.length + ' verdicts shown';
+    var empty = document.getElementById('vempty');
+    empty.textContent = '';
+    empty.hidden = shown > 0;
+    if (!shown) {
+      var cur = bar.querySelector('button[data-f="' + f + '"]');
+      empty.appendChild(document.createTextNode('None of the ' + empty.getAttribute('data-total') + ' verdicts is ' +
+        (cur ? cur.getAttribute('data-name') : f) + '. See '));
+      var see = document.createElement('button');
+      see.type = 'button';
+      see.className = 'linkish';
+      see.textContent = empty.getAttribute('data-top-name');
+      see.addEventListener('click', function () { apply(empty.getAttribute('data-top-f')); });
+      empty.appendChild(see);
+      empty.appendChild(document.createTextNode('.'));
+    }
   }
   bar.addEventListener('click', function (e) {
     var b = e.target.closest('button');

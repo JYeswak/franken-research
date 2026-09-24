@@ -35,6 +35,12 @@ of these that exists: `/opt/meta-chromium/chrome`,
 `/usr/bin/chromium-browser`. CI sets `CHROME_PATH=/usr/bin/google-chrome`,
 where the ubuntu-latest runner image installs Google Chrome. No browser found
 is a FAIL, never a skip: an unrun render gate is not a pass.
+Gate I waits up to 45 seconds for Chrome's DevTools port and, if Chrome
+exits or never opens the port, kills it and relaunches once with a fresh
+profile before failing ("chrome launch failed twice"). This is harness
+robustness, not a change to what the gate asserts: a CI run once failed with
+"no devtools port" because Chrome took longer than the old 15-second wait
+to start on a loaded runner, and the rerun passed.
 
 **Empty scan sets fail.** A gate that checked nothing has not passed. Gate B
 fails if it finds zero `[data-stat]` slots and gate E fails if it resolves zero
@@ -377,3 +383,14 @@ an adopted row whose only reference was an unknown commit (its URL is skipped,
 not resolved), and status `partly`; a partial row with a resolving `done:`
 path and a `missing:` note passed. L failed on a personal address appended to
 a tracked synthesis file, reporting `file:line`.
+
+v1.1.0 QA pass: generated pages link GitHub at the release tag
+(`v<package.json version>`, now `v1.1.0`) instead of `main`, so a citation
+keeps landing on the quoted line after later pushes; the generator refuses to
+run without a semver `version`. K4 regenerates with the same ref. The
+`/stack/` page gained a computed verdict split and headline and an
+empty-filter message, and verdict pages link their batch's review record.
+Gate I's launch retry was shown both ways on scratch copies: with
+`CHROME_PATH=/usr/bin/false` it failed with "chrome launch failed twice", and
+with a wrapper that exits on its first call and starts Chrome on its second it
+passed.

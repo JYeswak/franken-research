@@ -21,7 +21,13 @@ const oi = process.argv.indexOf('--out');
 const OUT = oi > 0 ? path.resolve(process.argv[oi + 1]) : SITE;
 
 const BASE = 'https://fr.zeststream.ai';
-const GH = 'https://github.com/JYeswak/franken-research/blob/main/';
+// Every GitHub link points at the release tag (v<package.json version>), never at a moving branch,
+// so a citation keeps landing on the line it quotes after later pushes.
+const PKG = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+if (!/^\d+\.\d+\.\d+$/.test(PKG.version || '')) throw new Error('package.json needs a semver "version" for the pinned GitHub ref');
+const REF = 'v' + PKG.version;
+const GH = 'https://github.com/JYeswak/franken-research/blob/' + REF + '/';
+const GH_TREE = 'https://github.com/JYeswak/franken-research/tree/' + REF + '/';
 const GROUPS = ['Model serving', 'Orchestration', 'Tools and environment',
   'Memory and retrieval', 'Eval and safety', 'Training and voice'];
 const VERDICTS = [
@@ -230,6 +236,15 @@ header .meta b{color:var(--ink);font-weight:600}
 .filters label{color:var(--muted);display:flex;gap:6px;align-items:center;max-width:100%;min-width:0;white-space:nowrap}
 .filters select{font:inherit;color:var(--ink);background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:5px 8px;min-height:36px;max-width:22em;min-width:0;flex:1 1 auto}
 .filters .count{color:var(--muted);margin-left:auto}
+.tally{font-family:var(--sans);font-size:14px;color:var(--ink-dim);margin:6px 0 4px}
+.tally b{font-size:16px}
+.tally span{white-space:nowrap}
+.headline{font-size:17px;line-height:1.6;color:var(--ink);max-width:940px;margin:6px 0 10px}
+p#vempty{font-family:var(--sans);font-style:normal;font-size:15px;color:var(--ink);background:var(--bg-2);
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
+p#vempty[hidden]{display:none}
+button.linkish{font:inherit;color:var(--accent);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+button.linkish:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h2.group{font-family:var(--sans);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
   margin:28px 0 8px;font-weight:700}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
@@ -366,8 +381,20 @@ const asOf = verdicts.map((v) => v.fm.evidence_date).filter((d) => /^\d{4}-\d{2}
   || (/evidence_date:\s*(\d{4}-\d{2}-\d{2})/.exec(method) || [])[1];
 const vinfo = (name) => VERDICTS.find((v) => v.name === name) || { name: name || 'Unknown', cls: '' };
 const chip = (name) => '<span class="chip ' + vinfo(name).cls + '">' + esc(name || 'No verdict') + '</span>';
+// Authors and reviewers are AI agent session ids; a tmux-pane id reads "control-plane pane 2".
+const who = (id) => String(id || '').replace(/^(.*?)-pane-(\d+)$/, '$1 pane $2');
+// Each verdict group was reviewed as one batch; the batch's record lives in stack/reviews/.
+const REVIEW_FILE = {
+  'Orchestration': 'orchestration-eval-safety.md', 'Eval and safety': 'orchestration-eval-safety.md',
+  'Tools and environment': 'tools-training-voice.md', 'Training and voice': 'tools-training-voice.md',
+  'Model serving': 'serving-memory-retrieval.md', 'Memory and retrieval': 'serving-memory-retrieval.md',
+};
+const reviewRecord = (fm) => {
+  const f = 'stack/reviews/' + (REVIEW_FILE[fm.group] || '');
+  return REVIEW_FILE[fm.group] && exists(f) ? f : null;
+};
 const reviewText = (fm) => fm.reviewed_by
-  ? 'Reviewed by ' + esc(fm.reviewed_by) + (fm.review_date ? ' on ' + esc(fm.review_date) : '')
+  ? 'Reviewed by ' + esc(who(fm.reviewed_by)) + (fm.review_date ? ' on ' + esc(fm.review_date) : '')
   : 'Awaiting independent review';
 const areaTitle = (slug) => (bySlug[slug] && bySlug[slug].fm.title) || slug;
 const firstSentences = (md) => md.split('\n').filter((l) => l.trim()).join(' ');
@@ -417,7 +444,7 @@ for (const v of verdicts) {
   <p class="back"><a href="index.html">&larr; All agent-stack verdicts</a></p>
   <h1>${esc(title)}</h1>
   <p class="meta">${chip(fm.verdict)} <span>Confidence <b>${esc(fm.confidence || 'not stated')}</b></span> <span>Group <b>${esc(fm.group || 'not stated')}</b></span> <span>Evidence as of <b>${esc(fm.evidence_date || 'not stated')}</b></span></p>
-  <p class="meta"><span>Written by <b>${esc(fm.author || 'not stated')}</b></span> <span>${reviewText(fm)}</span></p>
+  <p class="meta"><span>Written by <b>${esc(who(fm.author) || 'not stated')}</b> \u00b7 ${fm.reviewed_by ? 'Reviewed by <b>' + esc(who(fm.reviewed_by)) + '</b>' + (fm.review_date ? ' on ' + esc(fm.review_date) : '') + ' (separate AI agent sessions' + (reviewRecord(fm) ? '; <a href="' + esc(GH + reviewRecord(fm)) + '">review record</a>' : '') + ')' : 'Awaiting independent review'}</span></p>
 </header>`;
   const secs = [];
   for (const name of SECTIONS) {
@@ -482,9 +509,23 @@ ${exists(companion) ? `<section class="card start" id="start" aria-labelledby="h
 // ---------- /stack/ ----------
 {
   const n = verdicts.length;
+  // The split and the headline are computed from the verdict files, never typed.
+  const tallyOf = Object.fromEntries(VERDICTS.map((v) => [v.name, verdicts.filter((x) => x.fm.verdict === v.name).length]));
+  const ranked = VERDICTS.slice().sort((a, b) => tallyOf[b.name] - tallyOf[a.name] || VERDICTS.indexOf(a) - VERDICTS.indexOf(b));
+  const top = ranked[0];
+  const nAdopt = tallyOf['Adopt'], nWrap = tallyOf['Adopt and wrap'], nBuild = tallyOf['Build clean-room'];
+  const watched = verdicts.filter((x) => x.fm.verdict === 'Watch').map((x) => x.fm.title || x.slug).sort();
+  const headline = n ? [
+    (nAdopt + nWrap ? 'In every area with an established project, adopt it; ' : '')
+      + (nBuild ? `in ${nBuild} of the ${n} the evidence justified building from scratch` : `in none of the ${n} did the evidence justify building from scratch`)
+      + (nWrap ? `, and in ${nWrap} the evidence shows a verification gap you must close yourself.` : '.'),
+    watched.length === 1 ? `One area, ${watched[0]}, is on Watch: the evidence is too thin to commit to a project yet.`
+      : watched.length ? `${watched.length} areas are on Watch: the evidence is too thin to commit to a project yet.` : '',
+  ].filter(Boolean).join(' ') : '';
+  const tally = ranked.map((v) => `<span class="${v.cls}"><b>${tallyOf[v.name]}</b> ${esc(v.name)}</span>`).join(' \u00b7 ');
   const header = `<header>
   <h1>The agent stack: adopt, copy, or build</h1>
-  <p class="sub">The FrankenSuite assessment covered one developer\u2019s repositories. This layer looks outward, at ${areas.length} parts of the stack an agent product is assembled from, from inference engines to voice agents. For each area it answers one question: adopt an existing project, copy its practices, or build your own. Every verdict is a judgment backed by cited evidence, checked by someone other than its author, and reflects the evidence as of ${esc(asOf)}. ${n === areas.length ? '' : n + ' of the ' + areas.length + ' areas have a published verdict so far.'}</p>
+  <p class="sub">The FrankenSuite assessment covered one developer\u2019s repositories. This layer looks outward, at ${areas.length} parts of the stack an agent product is assembled from, from inference engines to voice agents. For each area it answers one question: adopt an existing project, copy its practices, or build your own. Every verdict is a judgment backed by cited evidence, checked by someone other than its author, and reflects the evidence as of ${esc(asOf)}. Verdicts were written and reviewed by separate AI agent sessions; a human maintainer coordinated the work and ruled on disputes. No human outside the project has reviewed them yet.${n === areas.length ? '' : ' ' + n + ' of the ' + areas.length + ' areas have a published verdict so far.'}</p>
 </header>`;
   const legendHtml = VERDICTS.map((v) => `<li>${chip(v.name)}<br>${inline(legend[v.name] || '', { dir: 'stack' })}</li>`).join('\n  ');
   const groups = [];
@@ -514,7 +555,7 @@ ${exists(companion) ? `<section class="card start" id="start" aria-labelledby="h
 </section>`);
   }
   const filterBtns = ['<button type="button" data-f="all" aria-pressed="true">All</button>']
-    .concat(VERDICTS.map((v) => `<button type="button" data-f="${v.cls}" aria-pressed="false">${esc(v.name)}</button>`)).join('\n  ');
+    .concat(VERDICTS.map((v) => `<button type="button" data-f="${v.cls}" data-name="${esc(v.name)}" aria-pressed="false">${esc(v.name)}</button>`)).join('\n  ');
   const main = `<section aria-labelledby="h-legend">
 <h2 class="group" id="h-legend">The four verdicts</h2>
 <ul class="legend">
@@ -526,6 +567,10 @@ ${exists(companion) ? `<section class="card start" id="start" aria-labelledby="h
   ${filterBtns}
   <span class="count" id="vcount" aria-live="polite"></span>
 </div>
+<!-- STAT: the split and the headline are computed by site/scripts/make-stack.mjs from the verdict: field of stack/*.md -->
+<p class="tally" id="vtally">${tally}</p>
+${headline ? `<p class="headline">${esc(headline)}</p>` : ''}
+<p class="empty" id="vempty" data-total="${n}" data-top-f="${top ? top.cls : ''}" data-top-name="${top ? esc(top.name) : ''}" aria-live="polite" hidden></p>
 ${groups.join('\n') || '<p class="empty">No verdicts have been published yet.</p>'}`;
   const script = `(function () {
   var bar = document.getElementById('vfilter');
@@ -544,6 +589,21 @@ ${groups.join('\n') || '<p class="empty">No verdicts have been published yet.</p
     var groups = document.querySelectorAll('.groupwrap');
     for (var k = 0; k < groups.length; k++) groups[k].hidden = !groups[k].querySelector('.vcard:not([hidden])');
     count.textContent = shown + ' of ' + cards.length + ' verdicts shown';
+    var empty = document.getElementById('vempty');
+    empty.textContent = '';
+    empty.hidden = shown > 0;
+    if (!shown) {
+      var cur = bar.querySelector('button[data-f="' + f + '"]');
+      empty.appendChild(document.createTextNode('None of the ' + empty.getAttribute('data-total') + ' verdicts is ' +
+        (cur ? cur.getAttribute('data-name') : f) + '. See '));
+      var see = document.createElement('button');
+      see.type = 'button';
+      see.className = 'linkish';
+      see.textContent = empty.getAttribute('data-top-name');
+      see.addEventListener('click', function () { apply(empty.getAttribute('data-top-f')); });
+      empty.appendChild(see);
+      empty.appendChild(document.createTextNode('.'));
+    }
   }
   bar.addEventListener('click', function (e) {
     var b = e.target.closest('button');
@@ -582,7 +642,7 @@ if (exists(TSV)) {
         if (m[1] || tok.trim() === m[2]) html = `<a href="https://github.com/JYeswak/franken-research/commit/${m[2]}">${esc(m[0])}</a>`;
       } else if (exists(m[3])) {
         const dir = fs.statSync(path.join(ROOT, m[3])).isDirectory();
-        html = `<a href="${esc(dir ? GH.replace('/blob/', '/tree/') + m[3] : fileHref(m[3], m[4]))}">${esc(m[0])}</a>`;
+        html = `<a href="${esc(dir ? GH_TREE + m[3] : fileHref(m[3], m[4]))}">${esc(m[0])}</a>`;
       }
       if (html) { out += esc(tok.slice(last, m.index)) + html; last = m.index + m[0].length; }
     }
@@ -611,7 +671,7 @@ if (exists(TSV)) {
   rows.forEach((r) => { if (r.our_status in counts) counts[r.our_status]++; });
   const header = `<header>
   <h1>Rigor practices worth copying</h1>
-  <p class="sub">Engineering practices that make claims checkable, gathered from the ${areas.length} agent-stack evidence packs and the FrankenSuite corpus. Every practice is evidenced in a named project with a quoted source line, mapped to the items of the <a href="../starter-kit/index.html">starter kit</a> it strengthens, and marked with whether this repository adopts it. Of ${rows.length} practices, this repository has adopted ${counts.adopted}, partly adopted ${counts.partial}, lists ${counts.candidate} as candidates, and marks ${counts['not-applicable']} as not applicable; adopted and partial rows link their proof, and partial rows say what is done and what is missing. Adopted and partial claims about this repository were audited by a reviewer who did not write them; the audit record is in <a href="https://github.com/JYeswak/franken-research/tree/main/stack/reviews">stack/reviews/</a>.</p>
+  <p class="sub">Engineering practices that make claims checkable, gathered from the ${areas.length} agent-stack evidence packs and the FrankenSuite corpus. Every practice is evidenced in a named project with a quoted source line, mapped to the items of the <a href="../starter-kit/index.html">starter kit</a> it strengthens, and marked with whether this repository adopts it. Of ${rows.length} practices, this repository has adopted ${counts.adopted}, partly adopted ${counts.partial}, lists ${counts.candidate} as candidates, and marks ${counts['not-applicable']} as not applicable; adopted and partial rows link their proof, and partial rows say what is done and what is missing. Adopted and partial claims about this repository were audited by a reviewer who did not write them; the audit record is in <a href="${GH_TREE}stack/reviews">stack/reviews/</a>.</p>
 </header>`;
   const opt = (v, label) => `<option value="${esc(v)}">${esc(label)}</option>`;
   const main = `<div class="filters" id="rfilter" hidden>

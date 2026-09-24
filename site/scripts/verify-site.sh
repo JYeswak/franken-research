@@ -602,25 +602,40 @@ const VIEWPORTS = [[1440, 900], [390, 844]];
 // server, so the render gate tests exactly that. (An http://127.0.0.1 test
 // server is unusable here: Chrome 152's local-network access checks block
 // CDP-initiated navigation to loopback.)
-const prof = fs.mkdtempSync(path.join(os.tmpdir(), 'chrome-prof-'));
-const chrome = spawn(CHROME, [
-  // Software WebGL (SwiftShader) so the gate renders the real 3D path; current
-  // Chrome refuses the software fallback unless it is enabled explicitly.
-  '--headless=new', '--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
-  '--allow-file-access-from-files',
-  '--remote-debugging-port=0', `--user-data-dir=${prof}`,
-  '--no-first-run', '--disable-extensions', 'about:blank',
-], { stdio: ['ignore', 'pipe', 'pipe'] });
-
-let dbgPort = null;
-await new Promise((resolve, reject) => {
-  const t = setTimeout(() => reject(new Error('no devtools port')), 15000);
-  chrome.stderr.on('data', d => {
-    const m = /DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)/.exec(d.toString());
-    if (m) { dbgPort = m[1]; clearTimeout(t); resolve(); }
+// Chrome can take well over 15 s to start on a loaded CI runner. Wait up to 45 s for the
+// DevTools port, and relaunch once (fresh profile) before failing. Harness robustness only:
+// what the gate asserts about the pages is unchanged.
+const DEVTOOLS_WAIT_MS = 45000;
+let chrome = null, prof = null, dbgPort = null;
+function launch() {
+  prof = fs.mkdtempSync(path.join(os.tmpdir(), 'chrome-prof-'));
+  chrome = spawn(CHROME, [
+    // Software WebGL (SwiftShader) so the gate renders the real 3D path; current
+    // Chrome refuses the software fallback unless it is enabled explicitly.
+    '--headless=new', '--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
+    '--allow-file-access-from-files',
+    '--remote-debugging-port=0', `--user-data-dir=${prof}`,
+    '--no-first-run', '--disable-extensions', 'about:blank',
+  ], { stdio: ['ignore', 'pipe', 'pipe'] });
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`no devtools port after ${DEVTOOLS_WAIT_MS / 1000}s`)), DEVTOOLS_WAIT_MS);
+    chrome.stderr.on('data', d => {
+      const m = /DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)/.exec(d.toString());
+      if (m) { dbgPort = m[1]; clearTimeout(t); resolve(); }
+    });
+    chrome.on('exit', () => { clearTimeout(t); reject(new Error('chrome exited')); });
   });
-  chrome.on('exit', () => { clearTimeout(t); reject(new Error('chrome exited')); });
-});
+}
+for (let attempt = 1; ; attempt++) {
+  try { await launch(); break; } catch (e) {
+    if (chrome.exitCode === null && chrome.signalCode === null) {
+      await new Promise((r) => { chrome.once('exit', r); chrome.kill('SIGKILL'); setTimeout(r, 5000); });
+    }
+    try { fs.rmSync(prof, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); } catch {}
+    if (attempt >= 2) { console.log('RENDER_BAD'); console.log(`  chrome launch failed twice: ${e.message}`); process.exit(1); }
+    console.error(`chrome launch attempt ${attempt} failed (${e.message}); retrying once`);
+  }
+}
 
 const tabs = JSON.parse(execSync(`curl -s http://127.0.0.1:${dbgPort}/json/list`).toString());
 // Desktop Chrome lists built-in extension background pages first; drive the tab.
