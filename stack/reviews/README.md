@@ -1,6 +1,6 @@
 # Review records
 
-Every agent-stack verdict and every self-claim in this directory's parent was checked by someone other than its author before release (see [../METHOD.md](../METHOD.md), Independence). These are those reviews, published as written, including the rounds where the reviewer refused to sign.
+Every agent-stack verdict and every self-claim in this directory's parent was checked by someone other than its author before release (see [../METHOD.md](../METHOD.md), Independence). These are those reviews, published as written, including the rounds where the reviewer refused to sign. One edit was made after the fact: before first publication, the unpushed history was rewritten to remove email addresses from one commit (see [../../CHANGELOG.md](../../CHANGELOG.md)), which renamed later commits, so commit hashes cited in these records were updated to the published ones.
 
 | Record | What was reviewed | Outcome |
 |---|---|---|

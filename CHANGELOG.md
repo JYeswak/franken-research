@@ -12,7 +12,7 @@ Extends the assessment from the 44 FrankenSuite repositories to the wider agent 
 - **Independent review of every verdict** before release, with the author never reviewing their own work. Reviewers refused to sign until findings were fixed: 12 then 4 on the orchestration group, 36 then 4 on tools, 36 then 9 on serving. The records are in `stack/reviews/`.
 - **License census** (`stack/licenses.tsv`): all 101 recommended projects checked; 13 non-permissive (AGPL-3.0, SSPL, Elastic License 2.0, open-core enterprise directories, field-of-use conditions) and named in the verdicts that recommend them. One archived project (llm-guard) was removed from the adopt list (`f55db78`, `b5eb9d8`).
 - **Rigor practices index** (`stack/rigor-practices.tsv`): 135 practices, each quoted from the project that evidences it and mapped onto the starter kit; this repository adopts 15, partly does 21, and has 22 more as candidates.
-- **Pages** generated from those files: `/stack/`, 21 `/stack/<area>` pages with license chips and quoted citations, `/rigor/`, plus `/beyond/` (vendor-port and outside-validation lessons) and `/updates/` (`ac44c22`, `cb51a1d`, `2da9fb4`, `ad13ffc`).
+- **Pages** generated from those files: `/stack/`, 21 `/stack/<area>` pages with license chips and quoted citations, `/rigor/`, plus `/beyond/` (vendor-port and outside-validation lessons) and `/updates/` (`ac44c22`, `f01fea7`, `2da9fb4`, `4f5bc86`).
 - **Since-the-pin census and re-check** (`updates/`): 32 of 44 repositories moved after their pins; `franken_code_browser` shipped v0.1.0 as a notarized developer preview, re-checked cell by cell with signature and notarization verified (the app is signed and notarized; the DMG container is not signed). Pins and suite counts are not edited.
 - **Gates K and L**: K1 to K5 enforce the verdict format and review signatures, quoted citations, rigor-index proofs, generated pages matching their sources, and the license rule; L fails on any personal email address in a tracked file. Each was proven to trip on planted known-bad copies.
 
@@ -26,7 +26,7 @@ Extends the assessment from the 44 FrankenSuite repositories to the wider agent 
 - We first claimed 36 of the index's practices as adopted. An independent audit confirmed 12 and found 24 partial and 2 mislabeled; the index now has a `partial` status and claims 15 adopted.
 - Verdicts had recommended projects without checking their licenses; the license rule and census above are the fix.
 - Three recommended "practices to copy" did not do what their file names suggested (a benchmark with no quality output, a retrieval check that never starts the retriever, a conformance test that only checks dispatch). A reviewer re-fetched the files and the verdicts were corrected.
-- The movement census first recorded commit-author email addresses; they were redacted before publication and gate L now prevents a recurrence.
+- The movement census first recorded commit-author email addresses. They were redacted, the unpublished history was rewritten so no published commit contains them (commit hashes cited in this file and in `stack/reviews/` were updated to match), and gate L now fails the build on any personal address.
 
 ## v1.0.0 (2026-09-23)
 

@@ -162,13 +162,13 @@ The TRL and NODUS ring in every row match synthesis/00-overview.md: capsule 3–
 
 ---
 
-## Re-check at c9651ae (2026-09-23)
+## Re-check at 0eb4488 (2026-09-23)
 
-Scope: I re-read all seven files at c9651ae, METHOD v3 rule 9 (stack/METHOD.md:79, from f55db78), and stack/licenses.tsv (b5eb9d8, plus 38d645d, which changed only the zep row). The seven files at c9651ae match the working tree, and so do the corpus files they cite.
+Scope: I re-read all seven files at 0eb4488, METHOD v3 rule 9 (stack/METHOD.md:79, from f55db78), and stack/licenses.tsv (b5eb9d8, plus 05de96d, which changed only the zep row). The seven files at 0eb4488 match the working tree, and so do the corpus files they cite.
 
 ### Mechanical check (rerun)
 
-The same inline script, with fresh variables, run on `git show c9651ae:stack/<file>`. **All 295 citations pass:** file and line exist, quote is at least 20 characters, and the normalised quote is on its line. Per file: sandbox-exec 59, browser-use 39, computer-use 41, web-search-apis 37, fine-tuning 46, rl-envs 35, voice-agents 38. The regex count equals the loose `.md|.tsv:\d+` count in every file. Every citation my first report asked for was checked by substring and is present (54 of 54).
+The same inline script, with fresh variables, run on `git show 0eb4488:stack/<file>`. **All 295 citations pass:** file and line exist, quote is at least 20 characters, and the normalised quote is on its line. Per file: sandbox-exec 59, browser-use 39, computer-use 41, web-search-apis 37, fine-tuning 46, rl-envs 35, voice-agents 38. The regex count equals the loose `.md|.tsv:\d+` count in every file. Every citation my first report asked for was checked by substring and is present (54 of 54).
 
 ### Rule 9 coverage
 
@@ -250,7 +250,7 @@ What this re-check did not do:
 - No incumbent was cloned, installed or tested.
 - The license facts rest on the author's tsv rows, cross-checked against my own GitHub API reads from 2026-09-23 (36 repos in the first pass, plus `microsoft/playwright` in this one).
 
-## Re-check of N1–N4 at 22204e7 (2026-09-23)
+## Re-check of N1–N4 at 4976010 (2026-09-23)
 
 - **N1: fixed.** browser-use.md:32 now cites `gh api repos/microsoft/playwright --jq .license.spdx_id`. My own read of that repo returns Apache-2.0.
 - **N2: fixed.** web-search-apis.md:30 now names the AGPL-free adoption paths before the build option:
@@ -261,4 +261,4 @@ What this re-check did not do:
 - **N3: fixed.** fine-tuning.md:16 now reads "running a modified copy of those parts as a network service, or distributing them".
 - **N4: fixed.** computer-use.md:16 now covers the MIT badge and the AGPL on the older detector weights, cited to licenses.tsv:56.
 
-The quote check at 22204e7 found no failures in the four edited files (browser-use 39, web-search-apis 38, fine-tuning 46, computer-use 42 citations). I re-signed those four files in 4a25542 (4 files, 8 insertions; the pre-commit hook passed). sandbox-exec, rl-envs and voice-agents keep their signatures from fd9f48b.
+The quote check at 4976010 found no failures in the four edited files (browser-use 39, web-search-apis 38, fine-tuning 46, computer-use 42 citations). I re-signed those four files in b6a0c20 (4 files, 8 insertions; the pre-commit hook passed). sandbox-exec, rl-envs and voice-agents keep their signatures from d263aa8.
