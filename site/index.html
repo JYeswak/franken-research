@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrankenSuite — 44 verdicts, one map</title>
+<meta name="description" content="44 agent-built projects assessed under one claim-governance method. Tour the 3D verdict map: NODUS rings, TRL heights, CI evidence, the license-rider ceiling.">
+<meta property="og:title" content="FrankenSuite — 44 verdicts, one map">
+<meta property="og:description" content="44 agent-built projects assessed under one claim-governance method. Tour the 3D verdict map: NODUS rings, TRL heights, CI evidence, the license-rider ceiling.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./favicon.svg">
+<style>
+  :root{
+    --bg:#05070d; --ink:#e9e7df; --muted:#9b98a5; --faint:#5b5a66;
+    --pilot:#f2a93b; --explore:#2fd4bf; --monitor:#7f8fb4; --green:#39ff7d;
+    --panel:#0b0e16; --line:#232838;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%; background:var(--bg); color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    overflow:hidden;}
+  #scene{position:fixed; inset:0;}
+  #scene canvas{display:block;}
+  #labels{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
+  .nodelabel{position:absolute; transform:translate(-50%,-140%); white-space:nowrap;
+    font-size:11px; letter-spacing:.02em; color:var(--ink);
+    background:rgba(5,7,13,.72); border:1px solid var(--line);
+    padding:2px 8px; border-radius:99px; pointer-events:none;}
+  .nodelabel .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px; vertical-align:1px;}
+  .nodelabel .grntag{font-size:10px; color:var(--green); margin-left:6px; font-weight:600;}
+  .corelabel{position:absolute; transform:translate(-50%,0); white-space:nowrap;
+    font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; pointer-events:none;}
+
+  header{position:fixed; top:18px; left:22px; max-width:600px; pointer-events:none; z-index:5;}
+  header h1{font-size:22px; font-weight:650; letter-spacing:-.01em;}
+  header h1 .sys{color:var(--pilot);}
+  header p.sub{margin-top:6px; font-size:13px; line-height:1.5; color:var(--muted); max-width:600px;}
+  #stats{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; pointer-events:none;}
+  #pagenav{margin-top:10px; font-size:12px; pointer-events:auto; display:flex; flex-wrap:wrap; gap:4px 16px;}
+  #pagenav a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
+  #pagenav a:hover{border-bottom-color:var(--pilot);}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute; left:-9999px; top:0; z-index:99; background:var(--pilot); color:#06130a;
+    font-weight:650; font-size:13px; padding:9px 16px; border-radius:0 0 10px 0; text-decoration:none;}
+  .skip:focus{left:0;}
+  /* starter-kit CTA near the stats strip */
+  #kitcta{pointer-events:auto; display:inline-block; margin-top:10px; font-size:13px; font-weight:650;
+    color:#06130a; background:var(--pilot); border-radius:99px; padding:9px 18px; text-decoration:none;}
+  #kitcta:hover{filter:brightness(1.1);}
+  /* filter match count + search-scope note */
+  #filtercount{font-size:11px; color:var(--muted); text-align:right; min-height:14px; margin-top:2px;}
+  #searchhint{font-size:10px; color:var(--faint); text-align:right; margin-top:2px;}
+  .stat{font-size:11px; color:var(--ink); background:rgba(11,14,22,.8);
+    border:1px solid var(--line); border-radius:8px; padding:6px 10px; line-height:1.35;}
+  .stat b{color:var(--pilot); font-weight:650;}
+  .stat.neutral b{color:var(--ink);}
+  .stat.grn b{color:var(--green);}
+
+  #controls{position:fixed; top:18px; right:22px; z-index:6; display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+  #filters{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+  #filters button, #viewrow button{
+    font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
+    border:1px solid var(--line); border-radius:99px; padding:7px 14px; cursor:pointer;}
+  #filters button:hover, #viewrow button:hover{border-color:var(--faint);}
+  #filters button.active{background:var(--ink); color:#0b0e16; border-color:var(--ink); font-weight:600;}
+  #filters button.grnbtn.active{background:var(--green); border-color:var(--green); color:#06130a;}
+  #dometoggle{border-color:rgba(242,169,59,.55); color:var(--pilot);}
+  #dometoggle.on{background:rgba(242,169,59,.18); font-weight:600;}
+  #searchrow{display:flex; gap:6px; position:relative;}
+  #search{font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
+    border:1px solid var(--line); border-radius:99px; padding:7px 14px; width:210px; outline:none;}
+  #search::placeholder{color:var(--faint);}
+  #searchmsg{font-size:11px; color:var(--muted); min-height:14px; text-align:right;}
+  /* disambiguating search dropdown (P1-8): every match listed, pick on Enter/click */
+  #searchdrop{position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:30;
+    background:#0b0e16; border:1px solid var(--line); border-radius:12px; overflow:hidden;
+    max-height:320px; overflow-y:auto; box-shadow:0 18px 60px rgba(0,0,0,.5);}
+  .comb-opt{display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+    font:inherit; font-size:12px; color:var(--ink); background:none; border:none;
+    border-bottom:1px solid #161b28; padding:8px 12px; cursor:pointer;}
+  .comb-opt:last-child{border-bottom:none;}
+  .comb-opt:hover, .comb-opt.active{background:rgba(242,169,59,.14);}
+  .comb-opt .oname{font-weight:600; word-break:break-all;}
+  .comb-opt .ometa{margin-left:auto; font-size:10.5px; color:var(--muted); white-space:nowrap; flex:none;}
+  /* deep filters (P1-9): license, CI state, TRL — built from the data contract */
+  #filters2{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+  #filters2 label{font-size:11px; color:var(--muted); display:flex; align-items:center; gap:6px;}
+  #filters2 select{font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
+    border:1px solid var(--line); border-radius:99px; padding:6px 10px; max-width:200px;}
+  #viewrow{display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap;}
+  /* focus-visible for the new controls */
+  #filters2 select:focus-visible, #viewrow button:focus-visible, #searchdrop .comb-opt:focus-visible,
+  #vtab thead th button:focus-visible, .tbar button:focus-visible, .schema summary:focus-visible,
+  #pagenav a:focus-visible, #kitcta:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
+  /* verdict table view (P1-10): full-screen overlay, the map hidden behind body.tableon */
+  body.tableon{overflow-y:auto; overflow-x:hidden;}
+  body.tableon #scene, body.tableon #labels, body.tableon header, body.tableon #controls,
+  body.tableon #legend, body.tableon #caveat, body.tableon #hint, body.tableon #tip,
+  body.tableon #panel, body.tableon #domecap{display:none !important;}
+  body.tableon #tableview{display:block !important;}
+  #tableview{position:relative; z-index:20; min-height:100vh; background:var(--bg);
+    padding:28px 24px 80px; max-width:1440px; margin:0 auto;}
+  .tbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .tbar h2{font-size:22px; font-weight:650;}
+  .tbar button{font:inherit; font-size:12px; color:var(--ink); background:#0b0e16;
+    border:1px solid var(--line); border-radius:99px; padding:7px 14px; cursor:pointer;}
+  .tbar button:hover{border-color:var(--faint);}
+  .tsp{flex:1;}
+  .tcount{font-size:12px; color:var(--muted);}
+  .tnote{font-size:12px; color:var(--muted); margin:2px 0 14px;}
+  .twrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px;}
+  #vtab{border-collapse:collapse; width:100%; min-width:960px; font-size:12.5px;}
+  #vtab thead th{position:sticky; top:0; background:#0b0e16; text-align:left; border-bottom:1px solid var(--line); padding:0;}
+  #vtab thead th button{font:inherit; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--muted); background:none; border:none; cursor:pointer; padding:10px 12px; width:100%; text-align:left;}
+  #vtab thead th button:hover{color:var(--ink);}
+  #vtab th[aria-sort="ascending"] button::after{content:" \25b2"; color:var(--pilot);}
+  #vtab th[aria-sort="descending"] button::after{content:" \25bc"; color:var(--pilot);}
+  #vtab td{padding:9px 12px; border-bottom:1px solid #161b28; vertical-align:top;}
+  #vtab tbody tr:hover{background:rgba(255,255,255,.02);}
+  #vtab td.vname{white-space:nowrap; font-weight:600;}
+  #vtab td.vname a{color:var(--ink); text-decoration:none;}
+  #vtab td.vname a:hover{color:var(--pilot);}
+  #vtab td.vverdict{max-width:560px; line-height:1.55; color:var(--muted);}
+  .schema{margin-top:18px; border:1px solid var(--line); border-radius:12px;
+    padding:12px 16px; font-size:12.5px; background:#0b0e16; max-width:900px;}
+  .schema summary{cursor:pointer; font-weight:600;}
+  .schema .schemabody{margin-top:10px; color:var(--muted); line-height:1.6;}
+  .schema p{margin:8px 0;}
+  .schema dl{display:grid; grid-template-columns:170px 1fr; gap:5px 14px; margin:10px 0;}
+  .schema dt{color:var(--pilot);}
+  .schema dd{margin:0;}
+  .schema code{color:var(--ink); font-size:12px;}
+
+  #legend{position:fixed; left:22px; bottom:18px; z-index:5; background:rgba(11,14,22,.82);
+    border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:12px; max-width:380px;
+    max-height:calc(100vh - 470px); overflow-y:auto;}
+  #legend h2{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; font-weight:600;}
+  #legend .row{display:flex; align-items:center; gap:8px; margin:3px 0; color:var(--ink);}
+  #legend .sw{width:10px; height:10px; border-radius:50%; flex:none;}
+  #legend .glow{width:14px; height:14px; flex:none; border-radius:50%;
+    background:radial-gradient(circle, #baffd6 0%, var(--green) 45%, rgba(57,255,125,0) 72%);}
+  #legend .row small{color:var(--muted);}
+  #legend .note{margin-top:6px; color:var(--muted); font-size:11px; line-height:1.45;}
+  #legend .cage{display:inline-block; width:10px; height:10px; flex:none;
+    border:1.5px solid #fff; border-radius:2px; transform:rotate(45deg);}
+  #legend .cage.red{border-color:#ff6b5e;}
+
+  #domecap{position:fixed; left:50%; bottom:64px; transform:translateX(-50%); z-index:5;
+    max-width:560px; display:none; text-align:center;
+    background:rgba(11,14,22,.9); border:1px solid rgba(242,169,59,.5);
+    border-radius:12px; padding:10px 16px; font-size:12px; line-height:1.5; color:var(--ink);}
+  #domecap b{color:var(--pilot);}
+
+  #caveat{position:fixed; right:22px; bottom:18px; z-index:5; max-width:330px;
+    font-size:11px; line-height:1.5; color:var(--faint); text-align:right;}
+  #hint{position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:5;
+    font-size:11px; color:var(--faint); letter-spacing:.03em; pointer-events:none;}
+
+  #tip{position:fixed; z-index:9; pointer-events:none; display:none;
+    background:rgba(11,14,22,.95); border:1px solid var(--line); border-radius:10px;
+    padding:8px 12px; font-size:12px; max-width:260px;}
+  #tip .t{font-weight:650;}
+  #tip .m{color:var(--muted); font-size:11px; margin-top:2px;}
+  #tip .g{color:var(--green); font-size:11px; margin-top:2px; font-weight:600;}
+
+  #panel{position:fixed; top:200px; right:22px; bottom:18px; width:344px; max-width:92vw; z-index:8;
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    box-shadow:0 18px 60px rgba(0,0,0,.5);
+    transform:translateX(calc(100% + 40px)); transition:transform .32s ease; overflow-y:auto; padding:22px;}
+  #panel.open{transform:translateX(0);}
+  #panel .close{position:absolute; top:14px; right:16px; background:none; border:none;
+    color:var(--muted); font-size:20px; cursor:pointer;}
+  #panel h2{font-size:19px; font-weight:650; word-break:break-word; padding-right:28px;}
+  #chips{display:flex; gap:6px; margin:10px 0 4px; flex-wrap:wrap;}
+  .chip{font-size:11px; font-weight:600; border-radius:99px; padding:4px 11px; letter-spacing:.02em;}
+  .chip.Pilot{background:rgba(242,169,59,.16); color:var(--pilot); border:1px solid rgba(242,169,59,.5);}
+  .chip.Explore{background:rgba(47,212,191,.14); color:var(--explore); border:1px solid rgba(47,212,191,.45);}
+  .chip.Monitor{background:rgba(127,143,180,.16); color:var(--monitor); border:1px solid rgba(127,143,180,.5);}
+  .chip.trl{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .chip.green{background:rgba(57,255,125,.12); color:var(--green); border:1px solid rgba(57,255,125,.5);}
+  #brieflink{display:inline-block; margin-top:12px; font-size:13px; font-weight:600;
+    color:#06130a; background:var(--ink); border-radius:99px; padding:9px 18px; text-decoration:none;}
+  #brieflink:hover{background:#fff;}
+  #panel h3{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);
+    margin:18px 0 6px; font-weight:600;}
+  #panel p{font-size:13px; line-height:1.6; color:var(--ink);}
+  #panel p.fact{color:var(--muted);}
+  #panel p.fact b{color:var(--ink); font-weight:600;}
+  #panel p.fact b.grn{color:var(--green);}
+  #panel .ringnote{border-left:2px solid var(--line); padding-left:12px; color:var(--muted); font-size:13px; line-height:1.6;}
+
+  /* ---------- static index fallback (no WebGL / init threw) + noscript list ---------- */
+  body.fb{overflow-y:auto;}
+  body.fb #scene, body.fb #labels, body.fb header, body.fb #controls,
+  body.fb #legend, body.fb #caveat, body.fb #hint, body.fb #tip,
+  body.fb #panel, body.fb #domecap{display:none !important;}
+  #fallback{position:relative; z-index:10; background:var(--bg); min-height:100vh;}
+  .fb-inner, #nojs{max-width:1060px; margin:0 auto; padding:56px 22px 80px;}
+  #nojs{position:relative; z-index:5; background:var(--bg); min-height:100vh;}
+  .fb-kicker{font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); margin-bottom:10px;}
+  .fb-inner h1, .fb-inner h2, #nojs h1, #nojs h2{font-size:clamp(26px,4.5vw,40px); letter-spacing:-.01em; font-weight:650;}
+  .fb-inner h1 .sys, .fb-inner h2 .sys, #nojs h1 .sys, #nojs h2 .sys{color:var(--pilot);}
+  .fb-sub{margin-top:10px; font-size:14px; line-height:1.6; color:var(--muted); max-width:640px;}
+  .fb-method{margin-top:14px; font-size:13px;}
+  .fb-method a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
+  .fb-stats{display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 6px;}
+  .fb-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; margin-top:18px;}
+  .fb-card{display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; text-decoration:none; color:var(--ink);}
+  .fb-card:hover{border-color:var(--faint);}
+  .fb-name{font-weight:650; font-size:14px; word-break:break-word;}
+  .fb-meta{display:flex; gap:6px; align-items:center; margin:8px 0; font-size:11px; color:var(--muted);}
+  .fb-blurb{display:block; font-size:12px; line-height:1.55; color:var(--muted);}
+  .nojs-list{list-style:none; margin:26px 0 0; padding:0; display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:4px 18px;}
+  .nojs-list li{padding:7px 0; border-bottom:1px solid var(--line); font-size:14px;}
+  .nojs-list a{color:var(--ink); text-decoration:none; font-weight:600; word-break:break-word;}
+  .nojs-list a:hover{color:var(--pilot);}
+  .nojs-tag{display:block; font-size:11px; color:var(--muted); margin-top:2px;}
+
+  /* legend is a <details>: collapsible everywhere, open by default on desktop */
+  #legend summary{cursor:pointer; list-style:none;}
+  #legend summary::-webkit-details-marker{display:none;}
+  #legend summary::after{content:" \25be"; color:var(--faint);}
+  #legend:not([open]) summary::after{content:" \25b8"; color:var(--pilot);}
+
+  @media (prefers-reduced-motion: reduce){
+    #panel{transition:none;}
+    #controls{transition:none;}
+    *{animation:none !important;}
+  }
+  @media (max-width:760px){
+    /* header: full-width top sheet, everything visible, compact */
+    header{top:0; left:0; right:0; max-width:none; padding:10px 12px 14px;
+      background:linear-gradient(rgba(5,7,13,.94), rgba(5,7,13,.82) 75%, transparent);
+      max-height:36vh; overflow-y:auto;}
+    header h1{font-size:18px;}
+    header p.sub{display:block; font-size:12px; margin-top:4px;}
+    #stats{flex-wrap:wrap; gap:4px; margin-top:8px;}
+    .stat{font-size:10px; padding:4px 8px; white-space:normal;}
+    #pagenav{font-size:11px; margin-top:8px;}
+    /* controls: bottom toolbar, always tappable */
+    #controls{top:auto; left:12px; right:12px; bottom:150px; align-items:stretch;
+      background:rgba(11,14,22,.88); border:1px solid var(--line); border-radius:12px; padding:8px;}
+    #filters{flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; max-width:100%;}
+    #filters button{flex:none; font-size:11px; padding:6px 10px;}
+    #searchrow{flex:none;}
+    #search{width:100%; font-size:11px; padding:6px 10px;}
+    #searchdrop{top:auto; bottom:calc(100% + 6px); max-height:240px;}
+    .comb-opt{font-size:11px; padding:7px 10px;}
+    #searchmsg{flex-basis:100%; min-height:0; font-size:10px;}
+    #filters2{flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; max-width:100%; gap:8px;}
+    #filters2 label{flex:none; font-size:10px;}
+    #filters2 select{font-size:11px; padding:5px 8px; max-width:170px;}
+    #viewrow{justify-content:flex-start;}
+    #viewrow button{flex:none; font-size:11px; padding:6px 10px;}
+    /* table view on small screens */
+    #tableview{padding:16px 12px 60px;}
+    .tbar h2{font-size:18px;}
+    .schema dl{grid-template-columns:1fr;}
+    .schema dt{margin-top:6px;}
+    /* explanatory UI: restyled, never hidden */
+    #legend{left:12px; right:12px; bottom:110px; max-width:none; max-height:30vh;
+      overflow-y:auto; padding:10px 12px; font-size:11px;}
+    #legend .note{font-size:10px;}
+    #caveat{left:12px; right:12px; bottom:44px; max-width:none; font-size:10px; text-align:left;}
+    #hint{left:12px; right:12px; bottom:12px; transform:none; font-size:10px; text-align:center;}
+    #domecap{left:12px; right:12px; bottom:110px; transform:none; max-width:none; z-index:7; font-size:11px;}
+    /* dome mode: the caption takes the legend's slot; the legend is one tap away */
+    body.dome-on #legend{display:none;}
+    /* detail panel: bottom sheet of fixed height, can never cover the top controls.
+       While open, the toolbar slides up above it (body.panel-open). */
+    #panel{top:auto; left:12px; right:12px; bottom:12px; width:auto; max-width:none;
+      height:52vh; z-index:8; transform:translateY(calc(100% + 40px));}
+    #panel.open{transform:translateY(0);}
+    #controls{transition:bottom .32s ease;}
+    body.dome-on #controls{bottom:240px;}
+    body.panel-open #controls{bottom:calc(52vh + 24px);}
+  }
+</style>
+<script>
+/* Front-door backstop: the app bundle catches its own init failures and renders
+   the static index itself. This only fires for errors outside that path
+   (e.g. the bundle never ran). Never an error dump: worst case is the index. */
+window.__FRONTDOOR_READY = false;
+window.addEventListener('error', function(){
+  if (window.__FRONTDOOR_READY) return;
+  if (window.__frontdoorFallback){ try { window.__frontdoorFallback(); } catch(e){} }
+  document.body.classList.add('fb');
+});
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="scene"></div>
+<div id="labels"></div>
+
+<header id="main">
+  <h1>FrankenSuite <span class="sys">an independent assessment program</span></h1>
+  <p class="sub"><span id="framesentence"><span data-stat="total">44</span> agent-built software projects &mdash; written mostly by AI coding agents, from Jeffrey Emanuel&rsquo;s franken suite &mdash; assessed under one claim-governance method (Sep 2026). Placed by NODUS verdict (Monitor / Explore / Pilot / Invest &mdash; the program&rsquo;s four assessment rings). Headline finding: the methodology is the asset &mdash; <span data-stat="notGreen">42</span> of <span data-stat="total">44</span> can&rsquo;t show public CI (continuous integration) green at the assessed commit.</span> The <span data-stat="ringPilot">3</span> Pilot verdicts mark bounded, real workload fits; the <span data-stat="ringExplore">34</span> explorations form the belt. Node size and height are technology-readiness (TRL): higher readiness, bigger world. Click any node for the packet&rsquo;s bottom line and its full brief.</p>
+  <div id="stats">
+    <span class="stat neutral"><b><span data-stat="total">44</span></b> repos assessed, pinned Sep 2026 (the assessed commit)</span>
+    <span class="stat"><b><span data-stat="notGreen">42</span> of <span data-stat="total">44</span></b> can&rsquo;t show CI (continuous integration) green at the pin (the single assessed commit)</span>
+    <span class="stat grn"><b><span data-stat="greenCount">2</span></b> can &mdash; they glow green</span>
+    <span class="stat"><b><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></b> carry the AI-lab license rider</span>
+    <span class="stat neutral">bus factor <b>1</b> (one maintainer, no backup) &middot; independent validation: <b>zero</b></span>
+  </div>
+  <a id="kitcta" href="starter-kit/index.html">Get the claim-governance kit</a>
+  <nav id="pagenav" aria-label="Research pages">
+    <a href="./method/index.html">Method</a>
+    <a href="./techniques/index.html">Techniques</a>
+    <a href="./failure-modes/index.html">Failure modes</a>
+    <a href="./lessons/index.html">Lessons</a>
+    <a href="./reproduce/index.html">Reproduce a verdict</a>
+    <a href="starter-kit/index.html">Starter kit</a>
+  </nav>
+</header>
+
+<div id="controls">
+  <div id="filters">
+    <button data-f="all" class="active">All <span data-stat="total">44</span></button>
+    <button data-f="Invest" disabled title="Empty in this program — no repo reached Invest">Invest · <span data-stat="ringInvest">0</span></button>
+    <button data-f="Pilot">Pilot · <span data-stat="ringPilot">3</span></button>
+    <button data-f="Explore">Explore · <span data-stat="ringExplore">34</span></button>
+    <button data-f="Monitor">Monitor · <span data-stat="ringMonitor">7</span></button>
+    <button data-f="green" class="grnbtn">CI green · <span data-stat="greenCount">2</span></button>
+  </div>
+  <div id="filters2">
+    <label>License <select id="flic"></select></label>
+    <label>CI state <select id="fci"></select></label>
+    <label>TRL <select id="ftrl"></select></label>
+  </div>
+  <div id="filtercount" aria-live="polite"></div>
+  <div id="searchrow">
+    <input id="search" aria-label="Find a repo" type="text" role="combobox" aria-expanded="false" aria-controls="searchdrop" aria-autocomplete="list" placeholder="find a repo&hellip; e.g. redis" autocomplete="off" spellcheck="false">
+    <div id="searchdrop" role="listbox" aria-label="Matching repos" hidden></div>
+  </div>
+  <div id="searchmsg"></div>
+  <div id="searchhint">Search covers all 44 repos, regardless of filters.</div>
+  <div id="viewrow">
+    <button id="resetview">Reset view</button>
+    <button id="tabletoggle" aria-pressed="false">Verdict table</button>
+    <button id="dometoggle" aria-pressed="false">Show the rider ceiling</button>
+  </div>
+</div>
+
+<details id="legend" open>
+  <summary><h2 style="display:inline">How to read it</h2></summary>
+  <div class="row"><span class="sw" style="background:#f5f2e8"></span>Invest <small>&mdash; <span data-stat="ringInvest">0</span>: independent validation plus governance — empty in this program</small></div>
+  <div class="row"><span class="sw" style="background:#f2a93b"></span>Pilot <small>&mdash; <span data-stat="ringPilot">3</span>: release artifact + a bounded, real workload fit. Not a recommendation to ship.</small></div>
+  <div class="row"><span class="sw" style="background:#2fd4bf"></span>Explore <small>&mdash; <span data-stat="ringExplore">34</span>: real code, unproven claims</small></div>
+  <div class="row"><span class="sw" style="background:#7f8fb4"></span>Monitor <small>&mdash; <span data-stat="ringMonitor">7</span>: watch, don&rsquo;t land</small></div>
+  <div class="row"><span class="glow"></span><small>green glow = CI green at the pin &mdash; CI (continuous integration) builds passing on the assessed commit. The pin is the single commit the assessor fixed for the whole evaluation. <span data-stat="greenNames">frankenscipy and franken_threed</span>, the only <span data-stat="greenCount">2</span></small></div>
+  <div class="row"><span class="sw" style="background:#f2a93b"></span><small><b>The rider</b> = MIT + OpenAI/Anthropic rider, barring the AI labs from training, use, or benchmarking. <span data-stat="riderCount">38</span> of <span data-stat="total">44</span> carry it &mdash; the domed ones when you toggle the ceiling.</small></div>
+  <div class="row"><span class="cage"></span><small>white cage = plain MIT &mdash; the suite&rsquo;s only plain-MIT repo (<span data-stat="mitCount">1</span> of <span data-stat="noRiderCount">6</span> without the rider)</small></div>
+  <div class="row"><span class="cage red"></span><small>red cage = no license file &mdash; all rights reserved, the most restricted state (<span data-stat="noneCount">5</span>)</small></div>
+  <div class="note"><b>bus factor</b> = how many people can leave before the project stalls. It is 1 across the suite: one maintainer, checked by no one.</div>
+  <!-- trlRange fallback copy: must match the STATS.trlRange computed in app.src.js
+       (excludes the techNA support asset), not the raw max -->
+  <div class="note">Bigger node = higher TRL (<span data-stat="trlRange">2&ndash;8</span>); height above the plane climbs with TRL too. A thin vertical band marks a TRL range — plotted as a span, never a midpoint. <b>frankentui_website</b> is a support asset, so it sits flat on the plane: N/A as technology. The <span data-stat="riderCount">38</span> rider-bound repos show a dome with &ldquo;Show the rider ceiling&rdquo; — every dome the same size, by design.</div>
+  <div class="note">No license file is <b>not</b> freer than plain MIT. It means no operative grant at all — more restricted than the rider, which still grants rights to everyone outside the AI labs.</div>
+  <div class="note">Map exceptions, not the rule: <b>frankentui_website</b> is ~36k lines of TypeScript, the two beads repos are static dashboard exports, and <b>franken_agent_detection</b> is not a rewrite of an incumbent.</div>
+</details>
+
+<div id="domecap"><b>The rider ceiling.</b> Dome = MIT + OpenAI/Anthropic rider. The rider withholds rights only from the AI labs and their affiliates.</div>
+
+<div id="caveat">A judgment map, not a measurement, assessed by an independent research program (Sep 2026) from Jeffrey Emanuel&rsquo;s franken suite. Every verdict is an analyst&rsquo;s
+inference from a pinned-commit packet (Sep 2026), confidence: medium. Size is
+readiness, not quality &mdash; a big Monitor node is still a website.</div>
+
+<div id="hint">drag to orbit &nbsp;&middot;&nbsp; scroll to zoom &nbsp;&middot;&nbsp; click a node for the bottom line &nbsp;&middot;&nbsp; double-click opens its brief</div>
+<div id="tip"><div class="t"></div><div class="m"></div><div class="g"></div></div>
+
+<aside id="panel">
+  <button class="close" aria-label="close">&times;</button>
+  <h2 id="p-name"></h2>
+  <div id="chips"></div>
+  <a id="brieflink" href="#">Read the full brief &rarr;</a>
+  <h3>The bottom line</h3>
+  <p id="p-blurb"></p>
+  <h3>CI at the pin</h3>
+  <p class="fact" id="p-ci"></p>
+  <h3>License</h3>
+  <p class="fact" id="p-lic"></p>
+  <h3>Release</h3>
+  <p class="fact" id="p-rel"></p>
+  <h3>Why this ring</h3>
+  <p class="ringnote" id="p-ring"></p>
+</aside>
+
+<section id="tableview" hidden aria-label="Verdict matrix: all 44 repos">
+  <div class="tbar">
+    <button id="tableback">&larr; Back to map</button>
+    <h2>Verdict matrix</h2>
+    <span class="tcount"><span data-stat="total">44</span> repos, sorted as you like</span>
+    <span class="tsp"></span>
+    <button id="csvdl">Download CSV</button>
+    <button id="jsondl">Download JSON</button>
+  </div>
+  <p class="tnote">Every verdict as a row. Click a column header to sort; click again to reverse. Names link to the full brief.</p>
+  <div class="twrap">
+    <table id="vtab">
+      <thead><tr>
+        <th scope="col" data-col="name" aria-sort="ascending"><button>Name</button></th>
+        <th scope="col" data-col="ring" aria-sort="none"><button>Ring</button></th>
+        <th scope="col" data-col="trl" aria-sort="none"><button>TRL</button></th>
+        <th scope="col" data-col="ci" aria-sort="none"><button>CI state</button></th>
+        <th scope="col" data-col="license" aria-sort="none"><button>License</button></th>
+        <th scope="col" data-col="verdict" aria-sort="none"><button>One-line verdict</button></th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <details class="schema">
+    <summary>Data note: <code>window.FRANKEN_DATA</code> and its field schema</summary>
+    <div class="schemabody">
+      <p>This page and the map above both read from one global, <code>window.FRANKEN_DATA</code>
+      (loaded from <code>assets/data.js</code>). Aggregate counts on the map and table
+      are computed from these records at render time.</p>
+      <p><code>FRANKEN_DATA.repos</code> is an array of 44 records, one per repo:</p>
+      <dl>
+        <dt><code>name</code></dt><dd>Repo name. Full brief at <code>briefs/&lt;name&gt;.html</code>.</dd>
+        <dt><code>trl</code></dt><dd>TRL as a display string ("4–5"); support assets read "N/A".</dd>
+        <dt><code>trlLow</code> / <code>trlHigh</code></dt><dd>Numeric TRL bounds. Ranges are plotted and sorted as spans, never midpoints.</dd>
+        <dt><code>techNA</code></dt><dd><code>true</code> when TRL is N/A as technology (a support asset, not a technology).</dd>
+        <dt><code>nodus</code></dt><dd>NODUS ring: Invest, Pilot, Explore, or Monitor.</dd>
+        <dt><code>license</code></dt><dd>License verdict in plain words.</dd>
+        <dt><code>licenseKey</code></dt><dd><code>rider</code> (MIT + AI-lab rider), <code>mit</code> (plain MIT), <code>none</code> (no license file).</dd>
+        <dt><code>ci</code></dt><dd>CI (continuous integration) state at the assessed commit, in plain words.</dd>
+        <dt><code>ciKey</code></dt><dd>C1: CI green at the pin. C2: CI red at the pin. C3: CI exists, no pin verdict. C4: no test CI (deploy-only at most). C5: CI disabled or deleted. C6: tests only on maintainer-private machines.</dd>
+        <dt><code>release</code></dt><dd>Release-artifact status at the pin.</dd>
+        <dt><code>blurb</code></dt><dd>The one-paragraph verdict.</dd>
+      </dl>
+      <p><code>FRANKEN_DATA.licenseClasses</code> labels and explains the three license states.
+      <code>FRANKEN_DATA.ringDefinitions</code> glosses the four rings.
+      <code>FRANKEN_DATA.visualEncoding</code> pins rendering parameters such as the rider-dome radius.</p>
+    </div>
+  </details>
+</section>
+
+<noscript>
+<style>
+html,body{overflow-y:auto !important;}
+header,#controls,#legend,#caveat,#hint,#domecap,#panel,#tip,#labels,#scene{display:none !important;}
+</style>
+<div id="nojs">
+  <p class="fb-kicker">FrankenSuite research program</p>
+  <h2>All briefs</h2>
+  <p class="fb-sub">The 3D map needs JavaScript, which is off here. The verdicts don&rsquo;t &mdash; every brief is listed below, newest assessment pin: September 2026.</p>
+  <p class="fb-method"><a href="./method/index.html">How the verdicts were made &rarr;</a></p>
+  <ul class="nojs-list">
+    <li><a href="./briefs/asupersync.html">asupersync</a><span class="nojs-tag">Pilot &middot; TRL 6</span></li>
+    <li><a href="./briefs/beads-for-frankentui.html">beads-for-frankentui</a><span class="nojs-tag">Monitor &middot; TRL 8</span></li>
+    <li><a href="./briefs/beads_for_franken_engine.html">beads_for_franken_engine</a><span class="nojs-tag">Monitor &middot; TRL 7</span></li>
+    <li><a href="./briefs/franken_agent_detection.html">franken_agent_detection</a><span class="nojs-tag">Pilot &middot; TRL 6</span></li>
+    <li><a href="./briefs/franken_alignment.html">franken_alignment</a><span class="nojs-tag">Explore &middot; TRL 3</span></li>
+    <li><a href="./briefs/franken_code_browser.html">franken_code_browser</a><span class="nojs-tag">Explore &middot; TRL 2–3</span></li>
+    <li><a href="./briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a><span class="nojs-tag">Explore &middot; TRL 3</span></li>
+    <li><a href="./briefs/franken_engine.html">franken_engine</a><span class="nojs-tag">Explore &middot; TRL 4–5</span></li>
+    <li><a href="./briefs/franken_lean.html">franken_lean</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/franken_manim.html">franken_manim</a><span class="nojs-tag">Explore &middot; TRL 5</span></li>
+    <li><a href="./briefs/franken_markdown.html">franken_markdown</a><span class="nojs-tag">Explore &middot; TRL 7</span></li>
+    <li><a href="./briefs/franken_markdown_website.html">franken_markdown_website</a><span class="nojs-tag">Monitor &middot; TRL 8</span></li>
+    <li><a href="./briefs/franken_native_capsule.html">franken_native_capsule</a><span class="nojs-tag">Explore &middot; TRL 3–4</span></li>
+    <li><a href="./briefs/franken_networkx.html">franken_networkx</a><span class="nojs-tag">Explore &middot; TRL 6</span></li>
+    <li><a href="./briefs/franken_nlp.html">franken_nlp</a><span class="nojs-tag">Monitor &middot; TRL 2–3</span></li>
+    <li><a href="./briefs/franken_node.html">franken_node</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/franken_numpy.html">franken_numpy</a><span class="nojs-tag">Explore &middot; TRL 5</span></li>
+    <li><a href="./briefs/franken_ocr.html">franken_ocr</a><span class="nojs-tag">Pilot &middot; TRL 6</span></li>
+    <li><a href="./briefs/franken_overlap.html">franken_overlap</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/franken_remote.html">franken_remote</a><span class="nojs-tag">Explore &middot; TRL 3–4</span></li>
+    <li><a href="./briefs/franken_snowflake.html">franken_snowflake</a><span class="nojs-tag">Explore &middot; TRL 6</span></li>
+    <li><a href="./briefs/franken_surveillance_system.html">franken_surveillance_system</a><span class="nojs-tag">Explore &middot; TRL 3</span></li>
+    <li><a href="./briefs/franken_threed.html">franken_threed</a><span class="nojs-tag">Explore &middot; TRL 3–4</span></li>
+    <li><a href="./briefs/franken_tts.html">franken_tts</a><span class="nojs-tag">Explore &middot; TRL 7</span></li>
+    <li><a href="./briefs/franken_whisper.html">franken_whisper</a><span class="nojs-tag">Explore &middot; TRL 5–6</span></li>
+    <li><a href="./briefs/frankenfs.html">frankenfs</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankengit.html">frankengit</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankengraphdb.html">frankengraphdb</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankenjax.html">frankenjax</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankenlibc.html">frankenlibc</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankenmermaid.html">frankenmermaid</a><span class="nojs-tag">Explore &middot; TRL 6</span></li>
+    <li><a href="./briefs/frankenpandas.html">frankenpandas</a><span class="nojs-tag">Explore &middot; TRL 4–5</span></li>
+    <li><a href="./briefs/frankenredis.html">frankenredis</a><span class="nojs-tag">Explore &middot; TRL 4–5</span></li>
+    <li><a href="./briefs/frankenscipy.html">frankenscipy</a><span class="nojs-tag">Explore &middot; TRL 5</span></li>
+    <li><a href="./briefs/frankensearch.html">frankensearch</a><span class="nojs-tag">Explore &middot; TRL 5–6</span></li>
+    <li><a href="./briefs/frankensim.html">frankensim</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankensim_website.html">frankensim_website</a><span class="nojs-tag">Monitor &middot; TRL 8</span></li>
+    <li><a href="./briefs/frankensqlite.html">frankensqlite</a><span class="nojs-tag">Explore &middot; TRL 6</span></li>
+    <li><a href="./briefs/frankensqlite_website.html">frankensqlite_website</a><span class="nojs-tag">Monitor &middot; TRL 8</span></li>
+    <li><a href="./briefs/frankensympy.html">frankensympy</a><span class="nojs-tag">Explore &middot; TRL 3–4</span></li>
+    <li><a href="./briefs/frankenterm.html">frankenterm</a><span class="nojs-tag">Explore &middot; TRL 7</span></li>
+    <li><a href="./briefs/frankentorch.html">frankentorch</a><span class="nojs-tag">Explore &middot; TRL 4</span></li>
+    <li><a href="./briefs/frankentui.html">frankentui</a><span class="nojs-tag">Explore &middot; TRL 6</span></li>
+    <li><a href="./briefs/frankentui_website.html">frankentui_website</a><span class="nojs-tag">Monitor &middot; TRL N/A (support asset)</span></li>
+  </ul>
+</div>
+</noscript>
+
+<script src="./assets/data.js"></script>
+<script src="./assets/app.bundle.js"></script>
+
+</html>

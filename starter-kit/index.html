@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Starter kit — FrankenSuite</title>
+<meta name="description" content="The FrankenSuite starter kit: run the same claim-governance method on any repo — packet template, evidence tiers, grading checklists, and worked examples.">
+<meta property="og:title" content="Starter kit — FrankenSuite">
+<meta property="og:description" content="The FrankenSuite starter kit: run the same claim-governance method on any repo — packet template, evidence tiers, grading checklists, and worked examples.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#0f1319; --panel:#151b25; --panel2:#1a2230; --ink:#ece7da; --dim:#9aa3b2;
+    --blue:#6aa8ff; --green:#4cc38a; --amber:#ffb224; --red:#ff5d5d; --purple:#b98cff;
+    --gold:#f0a832;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55; padding:20px 22px 48px;
+  }
+  .wrap{max-width:1060px;margin:0 auto}
+  header{margin:0 0 16px}
+  h1{font-size:30px;margin:0 0 6px;letter-spacing:.5px}
+  .lede{font-size:15.5px;color:#d8d2c2;max-width:820px;margin:0}
+  .lede b{color:var(--gold)}
+  nav.back{margin:0 0 14px;font-size:13.5px;color:var(--dim)}
+  nav.back a{color:var(--gold);text-decoration:none;margin-right:16px}
+  nav.back a:hover{text-decoration:underline}
+  .card{background:var(--panel);border:1px solid #232c3c;border-radius:12px;
+    padding:16px 18px;margin:16px 0}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:1.6px;
+    color:var(--dim);margin:0 0 12px}
+  .card p{font-size:14px;color:#c9c3b4;margin:0 0 10px}
+  .card p:last-child{margin-bottom:0}
+  .card a{color:var(--gold)}
+  table.files{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.files th{text-align:left;font-size:11.5px;text-transform:uppercase;
+    letter-spacing:1px;color:var(--dim);padding:6px 10px;border-bottom:1px solid #2b3444}
+  table.files td{padding:8px 10px;border-bottom:1px solid #202837;vertical-align:top}
+  table.files tr:last-child td{border-bottom:none}
+  table.files tr:hover td{background:#17202c}
+  table.files .path{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.5px;color:var(--ink);white-space:nowrap}
+  table.files .path a{color:var(--blue);text-decoration:none}
+  table.files .path a:hover{text-decoration:underline}
+  table.files .what{color:#c9c3b4}
+  code.path, .card .path{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.5px;color:var(--blue)}
+  .group td{background:var(--panel2);color:var(--dim);font-size:12px;
+    text-transform:uppercase;letter-spacing:1.2px;padding:8px 10px}
+  pre.cmd{background:#0b0e13;border:1px solid #2b3444;border-radius:8px;
+    padding:12px 14px;font-size:13px;color:#d8d2c2;overflow-x:auto;margin:10px 0}
+  pre.cmd .c{color:#5b6575}
+  pre.cmd .k{color:var(--gold)}
+  ol.steps{margin:0;padding-left:20px;font-size:14px;color:#c9c3b4}
+  ol.steps li{margin:0 0 14px}
+  ol.steps li:last-child{margin-bottom:0}
+  ol.steps b{color:var(--ink)}
+  .note{border-left:3px solid var(--gold);padding:6px 0 6px 14px;margin:12px 0;
+    color:#d8d2c2;font-size:13.5px;max-width:900px}
+  .note .src{display:block;font-size:12.5px;color:var(--dim);margin-top:4px}
+  footer{margin:22px 0 0;color:var(--dim);font-size:12.5px}
+  footer a{color:var(--gold)}
+  @media (max-width:640px){
+    body{padding:14px 14px 40px}
+    table.files .path{white-space:normal}
+  }
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<nav class="back">
+  <a href="../index.html">Front door</a>
+  <a href="../method/index.html">Claim-governance method</a>
+</nav>
+
+<header id="main">
+  <h1>Starter kit</h1>
+  <p class="lede">The <b>runnable claim-governance kit</b> distilled from the FrankenSuite
+  research program: a 28-item two-phase checklist, machine-checkers, and a
+  pre-commit honesty gate, in plain Markdown and <b>POSIX shell with zero
+  dependencies</b>. Everything below is a direct download of a shipped kit file.</p>
+</header>
+
+<div class="note" style="border-color:#f2a93b">
+  <b>Kit snapshot, 2026-09-22.</b> This page ships the validated kit as of
+  2026-09-22: the 28-item, two-phase checklist (A1&ndash;A14 planning, B1&ndash;B14
+  execution). The checklist has since grown to 42 items across three phases; the
+  14 vendor-port rigor gates (Phase C) are still in final grading and will ship
+  here in the next version.
+</div>
+
+<div class="vocab" style="background:var(--panel);border:1px solid #232c3c;border-radius:10px;padding:10px 14px;font-size:13.5px;color:#c9c3b4;margin:0 0 12px;line-height:1.6"><b style="color:var(--ink)">One definition.</b> <b style="color:var(--ink)">CI</b> is continuous integration: the service that automatically runs a project's tests on each commit.</div>
+
+<div class="note">
+  The one rule, carried into every project the kit initializes:
+  "A step you can satisfy by believing you did it is not a step."
+  <span class="src">templates/agents.md, quoting frankentui AGENTS.md</span>
+</div>
+
+<section class="card">
+  <h2>The two-phase model</h2>
+  <p><b>Phase A — Planning: is the plan execution-ready?</b> Before agents are set
+  free, the plan must be complete, reviewed, and machine-checked. Items A1–A14 of
+  CHECKLIST.md. The planning packet (<span class="path">templates/planning-packet.md</span>)
+  is the contract; <span class="path">scripts/check-readiness.sh</span> is the machine that
+  checks it. Missing any field means NOT READY.</p>
+  <p><b>Phase B — Beads/execution: is execution staying honest?</b> Once work starts,
+  the beads graph is the executable form of the plan and the honesty machinery runs
+  continuously: claim discipline, the negative-evidence ledger, demotion rules, and a
+  pre-commit hook that proves its own teeth. Items B1–B14.</p>
+  <p>The phase boundary is the execution sign-off (A14, packet section 12). No agent
+  executes an unsigned packet. <span class="src">(starter-kit/README.md)</span></p>
+</section>
+
+<section class="card">
+  <h2>Quickstart</h2>
+  <ol class="steps">
+    <li><b>Install the kit</b> into a project directory:
+      <pre class="cmd"><span class="k">sh</span> scripts/init.sh /path/to/my-project</pre>
+      This creates the folder layout, evidence ledgers, the 28 seeded checklist
+      beads, the honesty pre-commit hook, and the CI backstop workflow. Set your
+      git identity first, or the first commit fails.
+      POSIX sh only; git is optional but strongly recommended.
+    </li>
+    <li><b>Machine-check the planning packet</b> once filled:
+      <pre class="cmd"><span class="k">./scripts/check-readiness.sh</span></pre>
+      Exit 0 means READY. A pristine template reports NOT READY by design:
+      guidance lines never count as content, so only real prose satisfies a section.
+    </li>
+    <li><b>Make the first commit.</b> The hook self-tests with a canary false claim
+      before it checks anything real:
+      <pre class="cmd"><span class="k">git add -A</span> && <span class="k">git commit -m</span> <span class="c">"chore: initialize with starter kit"</span></pre>
+      Local gates are advisory; <span class="path">templates/kit-gates.yml</span>
+      re-runs every gate in CI, where <span class="c">git commit --no-verify</span> cannot reach.
+    </li>
+  </ol>
+  <p>Full 8-step walkthrough lives in the kit's README (link below). The kit
+  deliberately does not create a README.md for your project: write it last, once at
+  least one claim is enforced with a real proof (checklist item B6).</p>
+</section>
+
+<section class="card">
+  <h2>File inventory</h2>
+  <p><b>Snapshot, 2026-09-22:</b> the files below are the validated kit as of
+  2026-09-22 (28 items, two phases). The 14 vendor-port rigor gates (Phase C) are
+  in final grading and ship with the next version.</p>
+  <p>Every shipped file, one line on what it does. Links are relative, so they
+  work from a plain static host or a local file copy.</p>
+  <table class="files">
+    <tr><th>File</th><th>What it does</th></tr>
+    <tr class="group"><td colspan="2">Documents</td></tr>
+    <tr>
+      <td class="path"><a href="README.md">README.md</a></td>
+      <td class="what">The kit's front door: two-phase model, 8-step quickstart, file map, design principles.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="CHECKLIST.md">CHECKLIST.md</a></td>
+      <td class="what">The 28-item two-phase checklist (A1–A14 planning, B1–B14 execution); every item carries id, what/why, observable done criteria, verification method, origin, and class.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="REFERENCES.md">REFERENCES.md</a></td>
+      <td class="what">Provenance map: every mechanism traced to its originating repo and exact file path; what was borrowed and what was changed.</td>
+    </tr>
+    <tr class="group"><td colspan="2">Scripts (POSIX shell, zero dependencies)</td></tr>
+    <tr>
+      <td class="path"><a href="scripts/init.sh">scripts/init.sh</a></td>
+      <td class="what">The single starting command: builds the project layout, ledgers, seeded beads, hook, and CI workflow. Safe to re-run; never overwrites existing files.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="scripts/check-readiness.sh">scripts/check-readiness.sh</a></td>
+      <td class="what">Machine-checks the planning packet for section presence, substance signals, and required vocabulary. Missing field means NOT READY; exit 0 is READY.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="scripts/check-claim-discipline.sh">scripts/check-claim-discipline.sh</a></td>
+      <td class="what">Cross-checks README claims against proof artifacts: every enforced row must match README prose exactly and resolve to a real proof file.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="scripts/checklist2beads.awk">scripts/checklist2beads.awk</a></td>
+      <td class="what">Converts CHECKLIST.md into the beads JSONL seed (init.sh uses it); each checklist item becomes one open bead with acceptance criteria.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="scripts/hooks/pre-commit">scripts/hooks/pre-commit</a></td>
+      <td class="what">The honesty gate git executes on every commit: self-tests with a canary false claim, runs the claim-discipline checker, and fails closed if the checker is missing. Bypassed only by --no-verify, which is why CI re-runs the gates.</td>
+    </tr>
+    <tr class="group"><td colspan="2">Templates (read-only reference copies; edit the installed working copies)</td></tr>
+    <tr>
+      <td class="path"><a href="templates/planning-packet.md">templates/planning-packet.md</a></td>
+      <td class="what">The 12-section planning packet contract with machine-checkable markers (<!-- CHECK: -->) that check-readiness.sh keys on.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/claims.tsv">templates/claims.tsv</a></td>
+      <td class="what">The claim registry schema: one row per claim, with readme_pattern, proof artifact, and enforce flag.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/agents.md">templates/agents.md</a></td>
+      <td class="what">Agent operating instructions carrying the 12 forbidden reward-hacking patterns and the three load-bearing rules.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/definition-of-done.md">templates/definition-of-done.md</a></td>
+      <td class="what">The Definition of Done: done and blocked are states with evidence (command output, updated docs), not status updates.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/kit-gates.yml">templates/kit-gates.yml</a></td>
+      <td class="what">CI workflow template that re-runs the readiness and claim-discipline gates on every push; the backstop --no-verify cannot reach. Includes commented toolchain steps to fill per language.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/negative-evidence-entry.md">templates/negative-evidence-entry.md</a></td>
+      <td class="what">Ledger row schema for falsified hypotheses and dead ends, with one filled real-suite example, so the next agent does not relitigate what was disproved.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/bead-schema.md">templates/bead-schema.md</a></td>
+      <td class="what">Bead field schema for the JSONL fallback: one JSON object per line, close_reason structural so prose-closed beads cannot hide.</td>
+    </tr>
+    <tr>
+      <td class="path"><a href="templates/demotion-rules.md">templates/demotion-rules.md</a></td>
+      <td class="what">Starter demotion rules moving claims down when evidence weakens, each marked mechanical or procedural.</td>
+    </tr>
+  </table>
+</section>
+
+<section class="card">
+  <h2>Design principles</h2>
+  <p><b>Executable beats prose.</b> The beads graph is the plan; documents are the rationale of record.</p>
+  <p><b>Mechanical where cheap, doctrine where judgment lives.</b> Four checklist items are enforced by scripts; the rest are conventions with named verifiers. The kit never pretends a script exists where the suite only had a habit.</p>
+  <p><b>Local gates are advisory; CI is the backstop.</b> <span class="path">git commit --no-verify</span> bypasses the pre-commit hook by git's design. The kit names the hatch instead of hiding it (CHECKLIST.md B5).</p>
+  <p><b>Nothing invented.</b> Every checklist item and template field traces to observed suite evidence; thin evidence is marked PROVISIONAL, not hidden.</p>
+  <p><b>Gates must have teeth.</b> The hook fails a canary false claim before it checks anything real, and fails closed if its checker is missing. A gate that cannot fail is decoration.</p>
+</section>
+
+<footer>
+  <p><a href="../index.html">Front door</a> · <a href="../method/index.html">Claim-governance method</a> · Derived from the FrankenSuite research program. Every statement on this page traces to the kit files it links.</p>
+</footer>
+
+</div>
+</body>
+</html>

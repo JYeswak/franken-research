@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrankenAgentDetection — Pilot</title>
+<meta name="description" content="A Librarian for the AI Coding-Agent Zoo This one breaks the FrankenSuite pattern: it is not a rewrite of an incumbent. It is not a rewrite of an incumbent —…">
+<meta property="og:title" content="FrankenAgentDetection — Pilot">
+<meta property="og:description" content="A Librarian for the AI Coding-Agent Zoo This one breaks the FrankenSuite pattern: it is not a rewrite of an incumbent. It is not a rewrite of an incumbent —…">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>/* FrankenSuite shareable-brief reader template — dark editorial, rust accent.
+   Zero dependencies. Works from file:// with no network. */
+
+:root {
+  --bg: #0c0c0e;
+  --bg-2: #121215;
+  --bg-3: #17171b;
+  --ink: #ece5d8;
+  --ink-dim: #b7b0a2;
+  --muted: #8d867a;
+  --line: #26262c;
+  --accent: #ff7a3d;
+  --accent-soft: rgba(255, 122, 61, 0.12);
+  --red: #ff5a5a;
+  --red-soft: rgba(255, 90, 90, 0.10);
+  --amber: #f5b942;
+  --amber-soft: rgba(245, 185, 66, 0.10);
+  --green: #57d98a;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+/* Skip link: off-screen until keyboard focus. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  background: var(--accent);
+  color: #14100b;
+  font-family: var(--sans);
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: 0 0 0.5rem 0;
+  text-decoration: none;
+}
+.skip-link:focus { left: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+/* Long URLs and code must wrap instead of widening the page past the viewport.
+   (Previously body{overflow-x:hidden} masked this; the layout now genuinely fits.) */
+a, code { overflow-wrap: anywhere; }
+.prose p, .acc__inner p, .ci-row, .gate__name, .sources-note,
+.finding p, .verdict-card p, .gauge__caption, .colophon p { overflow-wrap: anywhere; }
+::selection { background: var(--accent); color: var(--bg); }
+a { color: var(--accent); }
+code { font-family: var(--mono); font-size: 0.85em; background: var(--bg-3); padding: 0.1em 0.35em; border-radius: 4px; }
+
+/* progress bar */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9995; background: transparent; }
+.progress__bar { height: 100%; width: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+
+/* top nav */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 22px;
+  background: linear-gradient(var(--bg), transparent);
+  font-family: var(--sans); font-size: 13px; letter-spacing: 0.06em;
+}
+.topnav a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; }
+.topnav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+@media (max-width: 560px) {
+  /* top nav: stack both links fully visible — the method link stays reachable */
+  .topnav { padding: 12px 14px; font-size: 12px; gap: 4px 12px; flex-wrap: wrap; row-gap: 6px; }
+  .topnav a { white-space: normal; overflow: visible; text-overflow: clip; }
+  .gate-chain { flex-direction: column; }
+  .gate-chain__link { flex-direction: row; padding: 6px 0; gap: 8px; }
+  .gate-chain__arrow { transform: rotate(90deg); }
+}
+
+/* chapter rail */
+.rail { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 9000; display: flex; flex-direction: column; gap: 14px; }
+.rail a { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-direction: row-reverse; }
+.rail__dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--muted); transition: background 0.3s, border-color 0.3s, transform 0.3s; flex-shrink: 0; }
+.rail__label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); opacity: 0; transform: translateX(6px); transition: opacity 0.25s, transform 0.25s; white-space: nowrap; }
+.rail a:hover .rail__label { opacity: 1; transform: none; }
+.rail a.is-active .rail__dot { background: var(--accent); border-color: var(--accent); transform: scale(1.35); }
+.rail a.is-active .rail__label { opacity: 1; transform: none; color: var(--ink-dim); }
+@media (max-width: 900px) { .rail { display: none; } }
+
+/* hero */
+.hero { min-height: 92svh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10vh 24px 12vh; position: relative; }
+.hero__inner { max-width: 1000px; }
+.hero__kicker { margin-bottom: 2.5rem; }
+.hero__title { margin: 0 0 2rem; }
+.hero__name { display: block; font-size: clamp(52px, 10vw, 120px); line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); overflow-wrap: break-word; }
+.hero__sub { display: block; font-size: clamp(24px, 3.8vw, 46px); line-height: 1.2; letter-spacing: -0.01em; color: var(--ink-dim); margin-top: 1.2rem; font-style: italic; }
+.hero__dek { max-width: 640px; margin: 0 auto 2.5rem; font-size: 20px; color: var(--ink-dim); font-style: italic; }
+.hero__meta { font-family: var(--sans); font-size: 13px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+.meta__sep { margin: 0 0.6em; opacity: 0.5; }
+.hero__cue { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: var(--sans); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.hero__cue-line { width: 1px; height: 44px; background: linear-gradient(var(--accent), transparent); }
+
+/* layout */
+main { position: relative; }
+.brief { padding: 12vh 24px; max-width: 1200px; margin: 0 auto; }
+.prose { max-width: 68ch; margin: 0 auto; }
+.prose p { margin: 0 0 1.4em; }
+.kicker { font-family: var(--sans); font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.2rem; }
+.kicker--warn { color: var(--amber); }
+.section-title { font-size: clamp(30px, 4.4vw, 52px); line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 1.6rem; font-weight: 700; }
+.card__eyebrow { font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.8rem; }
+
+/* gentle entrance: content is visible by default; the hidden state is
+   added by JS only when IntersectionObserver is available, so the reveal
+   is progressive enhancement and blocks can never stick at opacity 0. */
+[data-reveal] { opacity: 1; transform: none; }
+html.reveal [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+html.reveal [data-reveal].is-in { opacity: 1; transform: none; }
+html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+/* evidence lists (bullets from the brief) */
+.evidence-list { list-style: none; margin: 2.4rem auto; padding: 0; max-width: 68ch; display: flex; flex-direction: column; gap: 14px; }
+.evidence-list li { background: var(--bg-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; padding: 18px 22px; font-size: 18px; color: var(--ink-dim); }
+.evidence-list li strong { color: var(--ink); }
+
+/* source chips — jump to the evidence panel */
+.src-chip { font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 3px 10px; cursor: pointer; vertical-align: middle; transition: border-color 0.2s, color 0.2s; text-decoration: none; display: inline-block; }
+.src-chip:hover { border-color: var(--accent); color: var(--accent); }
+.ci-card__sub { font-family: var(--sans); font-size: 13.5px; color: var(--muted); margin: 0.4rem 0 0; }
+
+/* CI status card — what the project's own CI said at the pin */
+.ci-card { max-width: 900px; margin: 3rem auto; background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 30px 30px 24px; }
+.ci-card__rows { list-style: none; margin: 1.2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.ci-row { display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--bg); font-size: 17px; color: var(--ink-dim); }
+.ci-row__dot { font-family: var(--mono); font-size: 13px; flex-shrink: 0; margin-top: 4px; }
+.ci-row--fail { border-color: rgba(255, 90, 90, 0.45); }
+.ci-row--fail .ci-row__dot { color: var(--red); }
+.ci-row--pass { border-color: rgba(87, 217, 138, 0.4); }
+.ci-row--pass .ci-row__dot { color: var(--green); }
+.ci-row--disabled { border-color: rgba(245, 185, 66, 0.4); }
+.ci-row--disabled .ci-row__dot { color: var(--amber); }
+.ci-row--info .ci-row__dot { color: var(--muted); }
+
+/* gate-chain diagram: failed gate -> skipped downstream gates */
+.gate-chain { display: flex; align-items: stretch; gap: 0; margin: 1.2rem 0 0.2rem; flex-wrap: wrap; }
+.gate { flex: 1 1 200px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--bg); }
+.gate__dot { font-family: var(--mono); font-size: 15px; flex-shrink: 0; }
+.gate__name { font-size: 16px; color: var(--ink); }
+.gate__state { margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+.gate--fail { border-color: rgba(255, 90, 90, 0.45); }
+.gate--fail .gate__dot { color: var(--red); }
+.gate--skip { border-color: rgba(245, 185, 66, 0.4); }
+.gate--skip .gate__dot { color: var(--amber); }
+.gate-chain__link { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
+.gate-chain__arrow { font-size: 22px; color: var(--accent); line-height: 1; }
+.gate-chain__word { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* uncomfortable findings */
+.findings { max-width: 900px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 18px; }
+.findings__head { max-width: 68ch; margin: 0 auto; }
+.finding { border-radius: 16px; padding: 30px 28px; border: 1px solid var(--line); background: var(--bg-2); font-size: 18px; color: var(--ink-dim); }
+.finding p { margin: 0 0 1.1em; }
+.finding p:last-child { margin-bottom: 0; }
+.finding strong { color: var(--ink); }
+.finding--red { border-color: rgba(255, 90, 90, 0.35); background: linear-gradient(165deg, rgba(255,90,90,0.07), var(--bg-2) 55%); }
+.finding--red .card__eyebrow { color: var(--red); }
+.finding--amber { border-color: rgba(245, 185, 66, 0.3); background: linear-gradient(165deg, rgba(245,185,66,0.06), var(--bg-2) 55%); }
+.finding--amber .card__eyebrow { color: var(--amber); }
+
+/* gauges (s4) */
+.gauge-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1100px; margin: 3rem auto; }
+@media (max-width: 760px) { .gauge-wrap { grid-template-columns: 1fr; } }
+.gauge { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 30px 28px; }
+.trl-ladder__track { position: relative; height: 14px; background: var(--bg-3); border-radius: 7px; margin: 1.6rem 0 0.7rem; }
+.trl-ladder__band { position: absolute; top: 0; bottom: 0; background: linear-gradient(90deg, var(--amber), var(--accent)); border-radius: 7px; }
+.trl-ladder__ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.gauge__caption { color: var(--ink-dim); font-size: 16.5px; margin: 1rem 0 0; }
+.gauge__caption strong { color: var(--ink); }
+.nodus-pills { display: flex; gap: 10px; margin: 1.6rem 0 0.4rem; flex-wrap: wrap; }
+.nodus-pill { font-family: var(--sans); font-size: 14px; letter-spacing: 0.06em; padding: 10px 20px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.nodus-pill--active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+/* verdict cards */
+.verdict-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1100px; margin: 3rem auto; }
+@media (max-width: 760px) { .verdict-cards { grid-template-columns: 1fr; } }
+.verdict-card { border-radius: 16px; padding: 30px 28px; border: 1px solid var(--line); background: var(--bg-2); }
+.verdict-card__q { font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.8rem; }
+.verdict-card__answer { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.8rem; line-height: 1.1; }
+.verdict-card p { color: var(--ink-dim); font-size: 17.5px; }
+.verdict-card p:last-child { margin-bottom: 0; }
+.verdict-list { list-style: none; counter-reset: v; max-width: 68ch; margin: 2.5rem auto 0; padding: 0; }
+.verdict-list li { counter-increment: v; position: relative; padding: 1.2rem 0 1.2rem 3.8rem; border-bottom: 1px solid var(--line); font-size: 18.5px; color: var(--ink-dim); }
+.verdict-list li::before { content: counter(v); position: absolute; left: 0; top: 1.1rem; width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); font-family: var(--mono); font-size: 15px; display: flex; align-items: center; justify-content: center; }
+.verdict-list li:first-child::before { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+.verdict-list li strong { color: var(--ink); }
+.pull-line { text-align: center; font-size: clamp(24px, 3.4vw, 38px); font-style: italic; margin: 3.5rem auto; max-width: 30ch; color: var(--ink); }
+
+/* big quote + closing (s5) */
+.big-quote { max-width: 900px; margin: 3.5rem auto; padding: 0 24px; }
+.big-quote p { font-size: clamp(24px, 3.4vw, 40px); line-height: 1.35; letter-spacing: -0.01em; margin: 0; }
+.big-quote em { color: var(--accent); font-style: italic; }
+.closing { max-width: 800px; margin: 4rem auto 2rem; text-align: center; padding: 3.5rem 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.closing__label { font-family: var(--sans); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.6rem; }
+.closing__line { font-size: clamp(22px, 3vw, 34px); line-height: 1.4; margin: 0.4em 0; letter-spacing: -0.01em; }
+.closing__line--accent { color: var(--accent); font-style: italic; }
+
+/* accordion (sources) */
+.accordion { max-width: 900px; margin: 3rem auto 0; border-top: 1px solid var(--line); }
+.acc { border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
+.acc__head { width: 100%; display: flex; align-items: baseline; gap: 16px; color: var(--ink); padding: 1.3rem 0.4rem; cursor: pointer; text-align: left; font-family: var(--serif); font-size: 19px; min-width: 0; list-style: none; }
+.acc__head::-webkit-details-marker { display: none; }
+.acc__head::marker { content: ""; }
+.acc__title { font-size: 20px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.acc__hint { font-family: var(--sans); font-size: 13px; color: var(--muted); flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.acc__icon { font-family: var(--mono); font-size: 22px; color: var(--accent); transition: transform 0.3s; flex-shrink: 0; }
+.acc[open] .acc__icon { transform: rotate(45deg); }
+.acc__head:hover .acc__title { color: var(--accent); }
+.acc__inner { overflow: hidden; }
+.acc__inner p { color: var(--ink-dim); font-size: 17.5px; max-width: 62ch; }
+.acc__inner p:last-child { margin-bottom: 1.8rem; }
+
+/* Verdict key: vocabulary definitions + evidence tiers + tier basis (P1-4, P1-6) */
+.verdict-key { max-width: 900px; margin: 2rem auto 0; background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 26px 26px 20px; }
+.key-list { margin: 0.8rem 0 0; padding: 0; }
+.key-row { display: flex; gap: 14px; margin: 0 0 10px; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-dim); }
+.key-row dt { flex: 0 0 96px; font-weight: 700; color: var(--ink); text-transform: uppercase; font-size: 12px; letter-spacing: 0.08em; padding-top: 2px; }
+.key-row dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.tier-list { margin: 0.8rem 0 0; padding-left: 1.4rem; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-dim); }
+.tier-list li { margin: 0 0 8px; }
+.tier-list li::marker { color: var(--accent); font-weight: 700; }
+.basis-lede { font-family: var(--sans); font-size: 14.5px; color: var(--ink-dim); margin: 1.2rem 0 0.6rem; }
+.basis-list { margin: 0; padding-left: 1.4rem; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-dim); }
+.basis-list li { margin: 0 0 8px; }
+.basis-list li::marker { color: var(--accent); font-weight: 700; }
+.basis-note { font-family: var(--sans); font-size: 14.5px; color: var(--muted); margin: 0.6rem 0 0; }
+@media (max-width: 640px) {
+  .key-row { flex-direction: column; gap: 2px; }
+  .key-row dt { flex: none; }
+}
+.sources-note { max-width: 900px; margin: 0 auto 1rem; color: var(--muted); font-size: 16.5px; font-family: var(--sans); }
+
+/* pager */
+.pager { display: flex; justify-content: space-between; gap: 18px; max-width: 1100px; margin: 0 auto; padding: 4rem 24px 1rem; font-family: var(--sans); font-size: 15px; }
+.pager a { color: var(--ink-dim); text-decoration: none; border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; max-width: 45%; }
+.pager a:hover { border-color: var(--accent); color: var(--accent); }
+.pager__next { margin-left: auto; text-align: right; }
+
+/* colophon */
+.colophon { border-top: 1px solid var(--line); padding: 4rem 24px 4rem; margin-top: 4vh; }
+.colophon p { color: var(--ink-dim); font-size: 17px; max-width: 68ch; margin: 0 auto 1.2em; }
+.colophon__small { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+
+/* vocab: six definitions block (gate C: key terms defined on first use) */
+.vocab{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14.5px;color:var(--ink-dim);margin:22px auto 8px;max-width:900px;line-height:1.65}
+.vocab b{color:var(--ink)}
+@media (max-width:700px){.vocab{margin:16px 16px 8px;font-size:13.5px}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
+
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; Back to the brief index</a>
+  <a href="../method/index.html">How claims here were governed</a>
+</nav>
+
+<nav class="rail" id="rail" aria-label="Brief sections">
+  <a href="#s1" data-target="s1"><span class="rail__dot"></span><span class="rail__label">What it is</span></a>
+  <a href="#s2" data-target="s2"><span class="rail__dot"></span><span class="rail__label">Why build it</span></a>
+  <a href="#s3" data-target="s3"><span class="rail__dot"></span><span class="rail__label">What was built</span></a>
+  <a href="#s4" data-target="s4"><span class="rail__dot"></span><span class="rail__label">Where it stands</span></a>
+  <a href="#s5" data-target="s5"><span class="rail__dot"></span><span class="rail__label">What it teaches</span></a>
+  <a href="#sources" data-target="sources"><span class="rail__dot"></span><span class="rail__label">Sources</span></a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero__inner">
+    <p class="kicker hero__kicker">FrankenSuite research program &middot; A shareable brief</p>
+    <h1 class="hero__title">
+      <span class="hero__name">Franken<wbr>Agent<wbr>Detection</span>
+      <span class="hero__sub">A Librarian for the AI Coding-Agent Zoo</span>
+    </h1>
+    <p class="hero__dek">A shareable brief from the FrankenSuite research program. Every claim below traces to the assessed repository; sources are linked at the end. Assessment pinned September 22, 2026.</p>
+    <div class="hero__meta"><span>Assessment pinned September 22, 2026 (the assessed commit)</span><span class="meta__sep">·</span><span>~1,240 words</span><span class="meta__sep">·</span><span>5 sections</span><span class="meta__sep">·</span><span>Every claim traceable to a source</span></div>
+  </div>
+  <div class="hero__cue" aria-hidden="true">
+    <span>Scroll to read</span>
+    <span class="hero__cue-line"></span>
+  </div>
+</header>
+
+<div class="vocab"><b>Six definitions.</b> <b>NODUS</b> is the program&rsquo;s four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet. <b>CI</b> is continuous integration: the project&rsquo;s automated test runs. The <b>pin</b> is the exact commit the assessment froze on; every claim is evaluated at the pin, not at HEAD. The <b>rider</b> is the license clause withholding all rights, including benchmarking and analysis, from OpenAI, Anthropic, their affiliates, and anyone acting for them. <b>Bus factor</b> is how many people can leave before the project stalls; it is 1 for every repo here.</div>
+
+<main id="main-content">
+<section class="brief" id="s1" data-chapter="1">
+<div class="prose"><p class="kicker">01 · What it is</p>
+<h2 class="section-title">What it answers, and why it matters</h2></div>
+<div class="prose" data-reveal><p>This one breaks the FrankenSuite pattern: it is not a rewrite of an incumbent. It is not a rewrite of an incumbent — the packet&#x27;s competitors audit found no direct occupant of the transcript-normalization lane.</p></div>
+<div class="prose" data-reveal><p>The problem is the zoo. Dozens of AI coding agents now compete for your terminal: Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode, and Meta&#x27;s Muse Code, described in the project&#x27;s own module docs as new as of August 2026. Each one keeps a diary of your sessions (prompts, tool calls, edits) in its own private format, scattered across your machine: JSONL rollouts under <code>~/.codex</code>, SQLite databases for Cursor, an AES-256-GCM-encrypted archive for ChatGPT Desktop. The vendors ship these formats without stable public documentation or versioning.</p></div>
+<div class="prose" data-reveal><p>Every tool that wants to do something useful across agents (search your past sessions for a fix you found last month, build a usage dashboard, orchestrate several agents at once) must answer &quot;which agents are installed, and where do they keep their sessions?&quot; Every tool answers it ad hoc: a <code>which codex</code> here, a check for <code>~/.codex</code> there. That works until it doesn&#x27;t. Formats drift, checks rot, and the same bugs repeat in every project.</p></div>
+<div class="prose" data-reveal><p>It matters because agent session history is turning into institutional memory. The maintainer&#x27;s own CASS tool, a unified search engine over 20-plus agents&#x27; local histories with over 1,100 GitHub stars, exists because developers want to query what they and their agents have done. But CASS needed someone to maintain the ugly mapping layer underneath. That layer is this library.</p></div>
+</section>
+
+<section class="brief" id="s2" data-chapter="2">
+<div class="prose"><p class="kicker">02 · Why build it</p>
+<h2 class="section-title">Why build it in Rust?</h2></div>
+<div class="prose" data-reveal><p>The maintainer&#x27;s stated case is modest, and the modesty is the point. His README frames four design goals: one stable, JSON-serializable report shape that downstream tools and snapshot tests can rely on; explicit behavior, where unknown agent names are errors rather than guesses and nothing is configured through environment variables; local-only operation, with filesystem probes and no network ever; and runtime neutrality, a synchronous API with no async runtime. The always-on dependency list is four crates, so the library is cheap to adopt and expensive only if you opt into the heavy features.</p></div>
+<div class="prose" data-reveal><p>Underneath the modesty sits the engineering case: Rust is the right material for a library whose whole pitch is &quot;cheap to depend on.&quot; No garbage collector, no runtime to initialize, no network stack: a tool links it and calls one function. The memory-safety story matters too, because the connectors parse untrusted-shaped inputs: half-documented vendor formats and encrypted stores.</p></div>
+<div class="prose" data-reveal><p>The counter-argument comes in three parts, and the maintainer doesn&#x27;t fully answer it. The connector zoo is a treadmill: new agents appear monthly, and every vendor dot-release can silently change a store format. Meta&#x27;s Muse Code had a connector by the September assessment, within weeks of its August 5 launch, which shows the treadmill is currently being run, not that it ends. The deeper bet is unproven: that the normalized transcript schema becomes the interchange format for agent sessions, when the only evidenced consumer is the maintainer&#x27;s own CASS. <a class="src-chip" href="#src-p7">source</a> And the kill test: if vendors ever ship stable, signed session-export APIs, or operating systems grow an agent registry, the whole filesystem-probe-and-reverse-engineer approach becomes legacy overnight.</p></div>
+</section>
+
+<section class="brief" id="s3" data-chapter="3">
+<div class="prose"><p class="kicker">03 · What was built</p>
+<h2 class="section-title">What the project actually built</h2></div>
+<div class="prose" data-reveal><p>One person built about 61,000 lines of Rust in a single crate, published on crates.io at version 0.3.0 in September 2026, with roughly 21,000 downloads to date. It knows 34 agent slugs and ships 32 scan connectors that normalize each agent&#x27;s transcripts into one stable schema: a <code>NormalizedConversation</code> carrying messages, tool invocations, token usage, and per-artifact provenance recording which store each artifact came from. Zero <code>unsafe</code> code, under a crate-wide forbid. Around 1,200 tests.</p></div>
+<div class="prose" data-reveal><p>More interesting than the scale is the evidence discipline. Four internal tables (the slug registry, the probe-root table, the alias map, the connector factory) must agree exactly. Add a connector and forget one table, and the build fails: a mechanical answer to drift. Checked-in transcript fixtures from real agents carry validators that fail on schema drift, an early-warning canary for upstream format changes. Landed parser refactors are kept as checked-in patch files with notes like &quot;verified in 33/61 sampled files,&quot; so the reasoning survives next to the code. Scans run under budgets: a 100 MB cap, per-connector root scoping, discover-before-parse semantics. A coherent discipline for touching users&#x27; data directories without surprises. And one connector decrypts ChatGPT Desktop&#x27;s encrypted conversation stores — a capability worth noting in a library whose README claims it does &quot;installation detection only.</p></div>
+<div class="ci-card" data-reveal><p class="card__eyebrow">Evidence &middot; CI status</p><h3>What the project&rsquo;s own CI said at the pin</h3><ul class="ci-card__rows"><li class="ci-row ci-row--fail"><span class="ci-row__dot" aria-hidden="true">✕</span><span>At the assessed commit, the main CI (continuous integration: automated checks that run on every change) job was red.</span></li></ul></div>
+<div class="findings__head" data-reveal><p class="kicker kicker--warn">The uncomfortable findings</p></div><div class="findings"><article class="finding finding--amber" data-reveal><p class="card__eyebrow">Uncomfortable finding</p><p>It documents only the detection API, about a tenth of the crate, and its &quot;Limitations&quot; line (&quot;Installation detection only; no session parsing or indexing&quot;) is flatly contradicted by the code it ships beside. The CHANGELOG carries an admirable &quot;do not invent releases&quot; block that itself has a blind spot: it denies a version that crates.io shows as real and published: 0.1.8, May 2026, with nearly 4,000 downloads (verified against the crates.io API for this brief).</p></article><article class="finding finding--amber" data-reveal><p class="card__eyebrow">Uncomfortable finding</p><p>It died at the <code>cargo fmt</code> formatting gate before a single one of the 1,200 tests executed. A smaller 7-test job was green at the pin (the commit the assessment was pinned to), which bounds the doubt without removing it. And those 21,000 downloads are distribution, not adoption: crates.io lists no reverse-dependents outside the maintainer&#x27;s own projects. <a class="src-chip" href="#src-p4">source</a></p></article></div>
+</section>
+
+<section class="brief" id="s4" data-chapter="4">
+<div class="prose"><p class="kicker">04 · Where it stands</p>
+<h2 class="section-title">Where it stands</h2></div>
+<div class="prose" data-reveal><p>In our program&#x27;s terms: TRL 6, NODUS ring Pilot. In plain English, this is one of two repos with registry-scale distribution and a shipped downstream integration: published, versioned, downloadable, and integrated into a shipped tool people actually use. That is the bar for Pilot, and it clears it.</p></div>
+<div class="gauge-wrap" data-reveal><div class="gauge"><p class="card__eyebrow">Technology readiness</p><div class="trl-ladder" role="img" aria-label="TRL 6 on a 1 to 9 scale"><div class="trl-ladder__track"><div class="trl-ladder__band" style="left:56.2%;width:12.5%"></div></div><div class="trl-ladder__ticks"><span>1</span><span>3</span><span>5</span><span>7</span><span>9</span></div></div><p class="gauge__caption"><strong>TRL 6</strong> on a 1-to-9 scale.</p></div><div class="gauge"><p class="card__eyebrow">NODUS ring</p><div class="nodus-pills"><span class="nodus-pill" title="Websites, retired artifacts, and plan-stage work.">Monitor</span><span class="nodus-pill" title="The default for substantive-but-unproven work.">Explore</span><span class="nodus-pill nodus-pill--active" title="A release artifact plus a bounded, real-workload fit.">Pilot</span><span class="nodus-pill" title="Independent validation plus governance. Empty in this program.">Invest</span></div><p class="gauge__caption">The program&rsquo;s adoption ring for this project.</p></div></div>
+<div class="verdict-key" data-reveal><p class="card__eyebrow">Verdict key</p><dl class="key-list"><div class="key-row"><dt>NODUS ring</dt><dd><strong>Pilot</strong>: A release artifact plus a bounded, real-workload fit.</dd></div><div class="key-row"><dt>TRL</dt><dd>Technology Readiness Level, a 1-to-9 scale of how proven a technology is. This brief rates the project at <strong>TRL 6</strong>.</dd></div><div class="key-row"><dt>CI</dt><dd>Continuous integration: the project’s automated checks, run on every change.</dd></div><div class="key-row"><dt>The pin</dt><dd>The exact commit the assessment was pinned to. “At the pin” means as of that commit.</dd></div></dl><p class="card__eyebrow">Evidence tiers</p><ol class="tier-list"><li><strong>Tier 1 · Verified</strong> — Confirmed by direct inspection of a fresh clone, an API response, or a live page read by the analyst.</li><li><strong>Tier 2 · CI-observed</strong> — Observed executing on live CI pages. Attests the suite runs, not that it is green, unless pass/fail is legible.</li><li><strong>Tier 3 · Maintainer claim</strong> — Asserted in README or docs by the maintainer; not independently executed or reproduced.</li><li><strong>Tier 4 · External</strong> — Independent sources: APIs, papers, press, third-party benchmarks. Absence of coverage is reported as a finding.</li><li><strong>Tier 5 · Inference</strong> — The analyst’s judgment. Always labeled; never presented as fact.</li></ol><p class="basis-lede">What this verdict rests on. Tier labels are the assessment packet’s own annotations.</p><ul class="basis-list"><li><strong>Tier 1 · Verified:</strong> 1,226 tests counted; release artifacts verified via the releases API.</li><li><strong>Tier 2 · CI-observed:</strong> Main CI job red at the pin: it dies at the <code>cargo fmt</code> gate before any of the 1,226 tests executes; a smaller 7-test job ran green.</li><li><strong>Tier 3 · Maintainer claim:</strong> The CASS integration and the download figure rest on docs and commit messages; no test or fixture was executed by the analyst.</li><li><strong>Tier 4 · External:</strong> No independent production use beyond the documented CASS integration.</li><li><strong>Tier 5 · Inference:</strong> The Pilot ring: published, versioned, downloadable, and integrated into a shipped tool.</li></ul></div>
+<div class="verdict-cards" data-reveal><article class="verdict-card"><p class="verdict-card__q">Should you use it?</p><p class="verdict-card__answer">The detection API is a reasonable dependency.</p><p>Four crates, synchronous, no network, no unsafe. The connector layer is the powerful part and the risky part: it works today, against today&#x27;s vendor formats, maintained by one person who explicitly refuses outside contributions.</p></article><article class="verdict-card"><p class="verdict-card__q">Should you learn from it?</p><p class="verdict-card__answer">Yes.</p><p>The evidence discipline is strong and exportable. The registry-invariant test pattern, the fixture canary, the scan budgets, and the CHANGELOG discipline are all process technology that ports anywhere agents write code, and none of them depends on the agent zoo. <a class="src-chip" href="#src-p3">source</a></p></article></div>
+<div class="prose" data-reveal><h3>What would change the verdict, in order</h3></div><ol class="verdict-list" data-reveal><li>the main CI suite observed green at a pinned commit, which is the necessary trust repair</li><li>the README rewritten to document the connectors feature, which is the precondition for any outside consumer to discover the real product</li><li>a second independent consumer, which would move it toward Invest.</li></ol>
+<div class="prose" data-reveal><p>One more structural fact helps: the license is the suite&#x27;s only plain MIT, with no AI-lab rider and no restricted parties. <a class="src-chip" href="#src-p2">source</a> That is precisely what lets a tool like CASS, which indexes sessions from those labs&#x27; agents, depend on it.</p></div>
+</section>
+
+<section class="brief" id="s5" data-chapter="5">
+<div class="prose"><p class="kicker">05 · What it teaches</p>
+<h2 class="section-title">What this teaches about building with agents</h2></div>
+<div class="prose" data-reveal><p>The transferable lesson is the registry-invariant test.</p></div>
+<div class="prose" data-reveal><p>Any system that maps a messy external world into clean internal categories ends up with several tables that must agree: slugs, paths, aliases, factories. They drift apart silently, and documentation does not fix drift. The README here is the proof. <a class="src-chip" href="#src-p1">source</a> What fixes it is making disagreement a build failure. Four tables, one test, zero tolerance. The crate fails its own build when a new connector forgets one table.</p></div>
+<div class="prose" data-reveal><p>For anyone building with agents, the application is direct. Your agent will add the feature and forget the registry update, the migration, the docs. Do not ask it to remember. Encode the agreement as a test that breaks the build, and let the machine do the remembering. Here, governance is a test that fails the build when the tables disagree.</p></div>
+</section>
+</main>
+
+<!-- ============ SOURCES ============ -->
+<section class="brief" id="sources" data-chapter="sources">
+  <div class="prose">
+    <p class="kicker">Evidence</p>
+    <h2 class="section-title">This page cites selected evidence. The full claim-by-claim audit is in the assessment packet.</h2>
+    <p>Open a panel to see what each source evidences. <a class="packet-link" href="../packets/franken_agent_detection-assessment.md">Full claim-by-claim audit.</a></p>
+  </div>
+  <p class="sources-note">Full claim-by-claim audit with evidence tiers lives in the program&#x27;s assessment packet.</p>
+  <div class="accordion" id="accordion">
+<details class="acc" id="src-p0">
+<summary class="acc__head"><span class="acc__title">The repository</span><span class="acc__hint">github.com/Dicklesworthstone/franken_agent_detection</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>the repository (<a href="https://github.com/Dicklesworthstone/franken_agent_detection">github.com/Dicklesworthstone/franken_agent_detection</a>)</p></div>
+</details>
+<details class="acc" id="src-p1">
+<summary class="acc__head"><span class="acc__title">README</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>its README</p></div>
+</details>
+<details class="acc" id="src-p2">
+<summary class="acc__head"><span class="acc__title">LICENSE</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>LICENSE</p></div>
+</details>
+<details class="acc" id="src-p3">
+<summary class="acc__head"><span class="acc__title">CHANGELOG</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>CHANGELOG, and connector registry at the assessed commit</p></div>
+</details>
+<details class="acc" id="src-p4">
+<summary class="acc__head"><span class="acc__title">the crates.io API record (v0.3.0 published ...</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>the crates.io API record (v0.3.0 published September 16, 2026</p></div>
+</details>
+<details class="acc" id="src-p5">
+<summary class="acc__head"><span class="acc__title">per-version download counts</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>per-version download counts</p></div>
+</details>
+<details class="acc" id="src-p6">
+<summary class="acc__head"><span class="acc__title">reverse-dependency list)</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>reverse-dependency list)</p></div>
+</details>
+<details class="acc" id="src-p7">
+<summary class="acc__head"><span class="acc__title">github.com/Dicklesworthstone/coding_agent_session_search</span><span class="acc__hint">github.com/Dicklesworthstone/coding_agent_session_search</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>the CASS session-search tool (<a href="https://github.com/dicklesworthstone/coding_agent_session_search">github.com/Dicklesworthstone/coding_agent_session_search</a>)</p></div>
+</details>
+<details class="acc" id="src-p8">
+<summary class="acc__head"><span class="acc__title">9to5mac.com</span><span class="acc__hint">9to5mac.com</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>Meta&#x27;s Muse Code launch, August 5, 2026 (<a href="https://9to5mac.com/2026/08/05/meta-launches-muse-code-ai-coding-agent-for-macos-and-linux/">9to5mac.com</a>).</p></div>
+</details>
+  </div>
+</section>
+
+<nav class="pager" aria-label="More briefs">
+<a href="asupersync.html">&larr; asupersync (Pilot)</a>
+<a class="pager__next" href="franken_ocr.html">franken_ocr (Pilot) &rarr;</a>
+</nav>
+
+<footer class="colophon">
+  <div class="prose">
+    <p><strong>FrankenAgentDetection: A Librarian for the AI Coding-Agent Zoo.</strong> A shareable brief from the FrankenSuite research program, rendered from the reader template. Assessment pinned September 22, 2026.</p>
+    <p class="colophon__small">Single-file page: styles and script inlined, no network calls, no tracking. Motion respects <code>prefers-reduced-motion</code>. Read the methodology behind these claims: <a href="../method/index.html">how claims here were governed</a>. <a href="../index.html">Back to the brief index</a>.</p>
+  </div>
+</footer>
+
+<script>/* FrankenSuite shareable-brief reader — vanilla JS, zero dependencies. */
+(function () {
+  'use strict';
+
+  document.documentElement.classList.add('js');
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) document.documentElement.classList.add('reduced-motion');
+
+  function smoothTo(el) {
+    if (reduced) { el.scrollIntoView(); return; }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ---------- progress bar ---------- */
+  var bar = document.getElementById('progressBar');
+  var ticking = false;
+  function updateBar() {
+    ticking = false;
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? h.scrollTop / max : 0;
+    bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+  }
+  document.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateBar); }
+  }, { passive: true });
+  updateBar();
+
+  /* ---------- gentle reveals ----------
+     Progressive enhancement only: the .reveal class (which hides
+     [data-reveal] blocks) is added only when IntersectionObserver is
+     available, so content stays visible if IO is missing, JS fails
+     partway, or reduced motion is on. The generous bottom rootMargin
+     pre-reveals blocks just before they enter the viewport, avoiding
+     dim-block flashes on fast scrolls. ---------- */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window && !reduced && revealEls.length) {
+    document.documentElement.classList.add('reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px 30% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- chapter rail ---------- */
+  var railLinks = Array.prototype.slice.call(document.querySelectorAll('.rail a'));
+  railLinks.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('data-target'));
+      if (t) smoothTo(t);
+    });
+  });
+  var targets = railLinks.map(function (a) { return document.getElementById(a.getAttribute('data-target')); })
+    .filter(function (t) { return !!t; });
+  if ('IntersectionObserver' in window && targets.length) {
+    var rio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          railLinks.forEach(function (a) {
+            a.classList.toggle('is-active', a.getAttribute('data-target') === e.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    targets.forEach(function (t) { rio.observe(t); });
+  }
+
+  /* ---------- top nav: smooth anchors only if same page (external links left alone) ---------- */
+  document.querySelectorAll('.topnav a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); smoothTo(t); }
+    });
+  });
+
+  /* ---------- source chips: plain links now (P1-1). Progressive
+     enhancement only: open the target native <details>, then let the
+     anchor jump to it. Without JS the link still works. ---------- */
+  document.querySelectorAll('a.src-chip[href^="#"]').forEach(function (chip) {
+    chip.addEventListener('click', function (e) {
+      var panel = document.querySelector(chip.getAttribute('href'));
+      if (!panel) return;
+      if (panel.tagName === 'DETAILS' && !panel.open) panel.open = true;
+      e.preventDefault();
+      smoothTo(panel);
+    });
+  });
+})();
+</script>
+</body>
+</html>

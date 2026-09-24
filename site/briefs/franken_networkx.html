@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrankenNetworkX — Explore</title>
+<meta name="description" content="Rewriting Python&#x27;s Favorite Graph Library in Rust NetworkX is the standard Python library for working with graphs: networks of nodes connected by edges.…">
+<meta property="og:title" content="FrankenNetworkX — Explore">
+<meta property="og:description" content="Rewriting Python&#x27;s Favorite Graph Library in Rust NetworkX is the standard Python library for working with graphs: networks of nodes connected by edges.…">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>/* FrankenSuite shareable-brief reader template — dark editorial, rust accent.
+   Zero dependencies. Works from file:// with no network. */
+
+:root {
+  --bg: #0c0c0e;
+  --bg-2: #121215;
+  --bg-3: #17171b;
+  --ink: #ece5d8;
+  --ink-dim: #b7b0a2;
+  --muted: #8d867a;
+  --line: #26262c;
+  --accent: #ff7a3d;
+  --accent-soft: rgba(255, 122, 61, 0.12);
+  --red: #ff5a5a;
+  --red-soft: rgba(255, 90, 90, 0.10);
+  --amber: #f5b942;
+  --amber-soft: rgba(245, 185, 66, 0.10);
+  --green: #57d98a;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+/* Skip link: off-screen until keyboard focus. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  background: var(--accent);
+  color: #14100b;
+  font-family: var(--sans);
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: 0 0 0.5rem 0;
+  text-decoration: none;
+}
+.skip-link:focus { left: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+/* Long URLs and code must wrap instead of widening the page past the viewport.
+   (Previously body{overflow-x:hidden} masked this; the layout now genuinely fits.) */
+a, code { overflow-wrap: anywhere; }
+.prose p, .acc__inner p, .ci-row, .gate__name, .sources-note,
+.finding p, .verdict-card p, .gauge__caption, .colophon p { overflow-wrap: anywhere; }
+::selection { background: var(--accent); color: var(--bg); }
+a { color: var(--accent); }
+code { font-family: var(--mono); font-size: 0.85em; background: var(--bg-3); padding: 0.1em 0.35em; border-radius: 4px; }
+
+/* progress bar */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9995; background: transparent; }
+.progress__bar { height: 100%; width: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+
+/* top nav */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 22px;
+  background: linear-gradient(var(--bg), transparent);
+  font-family: var(--sans); font-size: 13px; letter-spacing: 0.06em;
+}
+.topnav a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; }
+.topnav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+@media (max-width: 560px) {
+  /* top nav: stack both links fully visible — the method link stays reachable */
+  .topnav { padding: 12px 14px; font-size: 12px; gap: 4px 12px; flex-wrap: wrap; row-gap: 6px; }
+  .topnav a { white-space: normal; overflow: visible; text-overflow: clip; }
+  .gate-chain { flex-direction: column; }
+  .gate-chain__link { flex-direction: row; padding: 6px 0; gap: 8px; }
+  .gate-chain__arrow { transform: rotate(90deg); }
+}
+
+/* chapter rail */
+.rail { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 9000; display: flex; flex-direction: column; gap: 14px; }
+.rail a { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-direction: row-reverse; }
+.rail__dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--muted); transition: background 0.3s, border-color 0.3s, transform 0.3s; flex-shrink: 0; }
+.rail__label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); opacity: 0; transform: translateX(6px); transition: opacity 0.25s, transform 0.25s; white-space: nowrap; }
+.rail a:hover .rail__label { opacity: 1; transform: none; }
+.rail a.is-active .rail__dot { background: var(--accent); border-color: var(--accent); transform: scale(1.35); }
+.rail a.is-active .rail__label { opacity: 1; transform: none; color: var(--ink-dim); }
+@media (max-width: 900px) { .rail { display: none; } }
+
+/* hero */
+.hero { min-height: 92svh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10vh 24px 12vh; position: relative; }
+.hero__inner { max-width: 1000px; }
+.hero__kicker { margin-bottom: 2.5rem; }
+.hero__title { margin: 0 0 2rem; }
+.hero__name { display: block; font-size: clamp(52px, 10vw, 120px); line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); overflow-wrap: break-word; }
+.hero__sub { display: block; font-size: clamp(24px, 3.8vw, 46px); line-height: 1.2; letter-spacing: -0.01em; color: var(--ink-dim); margin-top: 1.2rem; font-style: italic; }
+.hero__dek { max-width: 640px; margin: 0 auto 2.5rem; font-size: 20px; color: var(--ink-dim); font-style: italic; }
+.hero__meta { font-family: var(--sans); font-size: 13px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+.meta__sep { margin: 0 0.6em; opacity: 0.5; }
+.hero__cue { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: var(--sans); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.hero__cue-line { width: 1px; height: 44px; background: linear-gradient(var(--accent), transparent); }
+
+/* layout */
+main { position: relative; }
+.brief { padding: 12vh 24px; max-width: 1200px; margin: 0 auto; }
+.prose { max-width: 68ch; margin: 0 auto; }
+.prose p { margin: 0 0 1.4em; }
+.kicker { font-family: var(--sans); font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.2rem; }
+.kicker--warn { color: var(--amber); }
+.section-title { font-size: clamp(30px, 4.4vw, 52px); line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 1.6rem; font-weight: 700; }
+.card__eyebrow { font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.8rem; }
+
+/* gentle entrance: content is visible by default; the hidden state is
+   added by JS only when IntersectionObserver is available, so the reveal
+   is progressive enhancement and blocks can never stick at opacity 0. */
+[data-reveal] { opacity: 1; transform: none; }
+html.reveal [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+html.reveal [data-reveal].is-in { opacity: 1; transform: none; }
+html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+/* evidence lists (bullets from the brief) */
+.evidence-list { list-style: none; margin: 2.4rem auto; padding: 0; max-width: 68ch; display: flex; flex-direction: column; gap: 14px; }
+.evidence-list li { background: var(--bg-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; padding: 18px 22px; font-size: 18px; color: var(--ink-dim); }
+.evidence-list li strong { color: var(--ink); }
+
+/* source chips — jump to the evidence panel */
+.src-chip { font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 3px 10px; cursor: pointer; vertical-align: middle; transition: border-color 0.2s, color 0.2s; text-decoration: none; display: inline-block; }
+.src-chip:hover { border-color: var(--accent); color: var(--accent); }
+.ci-card__sub { font-family: var(--sans); font-size: 13.5px; color: var(--muted); margin: 0.4rem 0 0; }
+
+/* CI status card — what the project's own CI said at the pin */
+.ci-card { max-width: 900px; margin: 3rem auto; background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 30px 30px 24px; }
+.ci-card__rows { list-style: none; margin: 1.2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.ci-row { display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--bg); font-size: 17px; color: var(--ink-dim); }
+.ci-row__dot { font-family: var(--mono); font-size: 13px; flex-shrink: 0; margin-top: 4px; }
+.ci-row--fail { border-color: rgba(255, 90, 90, 0.45); }
+.ci-row--fail .ci-row__dot { color: var(--red); }
+.ci-row--pass { border-color: rgba(87, 217, 138, 0.4); }
+.ci-row--pass .ci-row__dot { color: var(--green); }
+.ci-row--disabled { border-color: rgba(245, 185, 66, 0.4); }
+.ci-row--disabled .ci-row__dot { color: var(--amber); }
+.ci-row--info .ci-row__dot { color: var(--muted); }
+
+/* gate-chain diagram: failed gate -> skipped downstream gates */
+.gate-chain { display: flex; align-items: stretch; gap: 0; margin: 1.2rem 0 0.2rem; flex-wrap: wrap; }
+.gate { flex: 1 1 200px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--bg); }
+.gate__dot { font-family: var(--mono); font-size: 15px; flex-shrink: 0; }
+.gate__name { font-size: 16px; color: var(--ink); }
+.gate__state { margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+.gate--fail { border-color: rgba(255, 90, 90, 0.45); }
+.gate--fail .gate__dot { color: var(--red); }
+.gate--skip { border-color: rgba(245, 185, 66, 0.4); }
+.gate--skip .gate__dot { color: var(--amber); }
+.gate-chain__link { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
+.gate-chain__arrow { font-size: 22px; color: var(--accent); line-height: 1; }
+.gate-chain__word { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* uncomfortable findings */
+.findings { max-width: 900px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 18px; }
+.findings__head { max-width: 68ch; margin: 0 auto; }
+.finding { border-radius: 16px; padding: 30px 28px; border: 1px solid var(--line); background: var(--bg-2); font-size: 18px; color: var(--ink-dim); }
+.finding p { margin: 0 0 1.1em; }
+.finding p:last-child { margin-bottom: 0; }
+.finding strong { color: var(--ink); }
+.finding--red { border-color: rgba(255, 90, 90, 0.35); background: linear-gradient(165deg, rgba(255,90,90,0.07), var(--bg-2) 55%); }
+.finding--red .card__eyebrow { color: var(--red); }
+.finding--amber { border-color: rgba(245, 185, 66, 0.3); background: linear-gradient(165deg, rgba(245,185,66,0.06), var(--bg-2) 55%); }
+.finding--amber .card__eyebrow { color: var(--amber); }
+
+/* gauges (s4) */
+.gauge-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1100px; margin: 3rem auto; }
+@media (max-width: 760px) { .gauge-wrap { grid-template-columns: 1fr; } }
+.gauge { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 30px 28px; }
+.trl-ladder__track { position: relative; height: 14px; background: var(--bg-3); border-radius: 7px; margin: 1.6rem 0 0.7rem; }
+.trl-ladder__band { position: absolute; top: 0; bottom: 0; background: linear-gradient(90deg, var(--amber), var(--accent)); border-radius: 7px; }
+.trl-ladder__ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.gauge__caption { color: var(--ink-dim); font-size: 16.5px; margin: 1rem 0 0; }
+.gauge__caption strong { color: var(--ink); }
+.nodus-pills { display: flex; gap: 10px; margin: 1.6rem 0 0.4rem; flex-wrap: wrap; }
+.nodus-pill { font-family: var(--sans); font-size: 14px; letter-spacing: 0.06em; padding: 10px 20px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.nodus-pill--active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+/* verdict cards */
+.verdict-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1100px; margin: 3rem auto; }
+@media (max-width: 760px) { .verdict-cards { grid-template-columns: 1fr; } }
+.verdict-card { border-radius: 16px; padding: 30px 28px; border: 1px solid var(--line); background: var(--bg-2); }
+.verdict-card__q { font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.8rem; }
+.verdict-card__answer { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.8rem; line-height: 1.1; }
+.verdict-card p { color: var(--ink-dim); font-size: 17.5px; }
+.verdict-card p:last-child { margin-bottom: 0; }
+.verdict-list { list-style: none; counter-reset: v; max-width: 68ch; margin: 2.5rem auto 0; padding: 0; }
+.verdict-list li { counter-increment: v; position: relative; padding: 1.2rem 0 1.2rem 3.8rem; border-bottom: 1px solid var(--line); font-size: 18.5px; color: var(--ink-dim); }
+.verdict-list li::before { content: counter(v); position: absolute; left: 0; top: 1.1rem; width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); font-family: var(--mono); font-size: 15px; display: flex; align-items: center; justify-content: center; }
+.verdict-list li:first-child::before { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+.verdict-list li strong { color: var(--ink); }
+.pull-line { text-align: center; font-size: clamp(24px, 3.4vw, 38px); font-style: italic; margin: 3.5rem auto; max-width: 30ch; color: var(--ink); }
+
+/* big quote + closing (s5) */
+.big-quote { max-width: 900px; margin: 3.5rem auto; padding: 0 24px; }
+.big-quote p { font-size: clamp(24px, 3.4vw, 40px); line-height: 1.35; letter-spacing: -0.01em; margin: 0; }
+.big-quote em { color: var(--accent); font-style: italic; }
+.closing { max-width: 800px; margin: 4rem auto 2rem; text-align: center; padding: 3.5rem 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.closing__label { font-family: var(--sans); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.6rem; }
+.closing__line { font-size: clamp(22px, 3vw, 34px); line-height: 1.4; margin: 0.4em 0; letter-spacing: -0.01em; }
+.closing__line--accent { color: var(--accent); font-style: italic; }
+
+/* accordion (sources) */
+.accordion { max-width: 900px; margin: 3rem auto 0; border-top: 1px solid var(--line); }
+.acc { border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
+.acc__head { width: 100%; display: flex; align-items: baseline; gap: 16px; color: var(--ink); padding: 1.3rem 0.4rem; cursor: pointer; text-align: left; font-family: var(--serif); font-size: 19px; min-width: 0; list-style: none; }
+.acc__head::-webkit-details-marker { display: none; }
+.acc__head::marker { content: ""; }
+.acc__title { font-size: 20px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.acc__hint { font-family: var(--sans); font-size: 13px; color: var(--muted); flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.acc__icon { font-family: var(--mono); font-size: 22px; color: var(--accent); transition: transform 0.3s; flex-shrink: 0; }
+.acc[open] .acc__icon { transform: rotate(45deg); }
+.acc__head:hover .acc__title { color: var(--accent); }
+.acc__inner { overflow: hidden; }
+.acc__inner p { color: var(--ink-dim); font-size: 17.5px; max-width: 62ch; }
+.acc__inner p:last-child { margin-bottom: 1.8rem; }
+
+/* Verdict key: vocabulary definitions + evidence tiers + tier basis (P1-4, P1-6) */
+.verdict-key { max-width: 900px; margin: 2rem auto 0; background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 26px 26px 20px; }
+.key-list { margin: 0.8rem 0 0; padding: 0; }
+.key-row { display: flex; gap: 14px; margin: 0 0 10px; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-dim); }
+.key-row dt { flex: 0 0 96px; font-weight: 700; color: var(--ink); text-transform: uppercase; font-size: 12px; letter-spacing: 0.08em; padding-top: 2px; }
+.key-row dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.tier-list { margin: 0.8rem 0 0; padding-left: 1.4rem; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-dim); }
+.tier-list li { margin: 0 0 8px; }
+.tier-list li::marker { color: var(--accent); font-weight: 700; }
+.basis-lede { font-family: var(--sans); font-size: 14.5px; color: var(--ink-dim); margin: 1.2rem 0 0.6rem; }
+.basis-list { margin: 0; padding-left: 1.4rem; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-dim); }
+.basis-list li { margin: 0 0 8px; }
+.basis-list li::marker { color: var(--accent); font-weight: 700; }
+.basis-note { font-family: var(--sans); font-size: 14.5px; color: var(--muted); margin: 0.6rem 0 0; }
+@media (max-width: 640px) {
+  .key-row { flex-direction: column; gap: 2px; }
+  .key-row dt { flex: none; }
+}
+.sources-note { max-width: 900px; margin: 0 auto 1rem; color: var(--muted); font-size: 16.5px; font-family: var(--sans); }
+
+/* pager */
+.pager { display: flex; justify-content: space-between; gap: 18px; max-width: 1100px; margin: 0 auto; padding: 4rem 24px 1rem; font-family: var(--sans); font-size: 15px; }
+.pager a { color: var(--ink-dim); text-decoration: none; border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; max-width: 45%; }
+.pager a:hover { border-color: var(--accent); color: var(--accent); }
+.pager__next { margin-left: auto; text-align: right; }
+
+/* colophon */
+.colophon { border-top: 1px solid var(--line); padding: 4rem 24px 4rem; margin-top: 4vh; }
+.colophon p { color: var(--ink-dim); font-size: 17px; max-width: 68ch; margin: 0 auto 1.2em; }
+.colophon__small { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+
+/* vocab: six definitions block (gate C: key terms defined on first use) */
+.vocab{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14.5px;color:var(--ink-dim);margin:22px auto 8px;max-width:900px;line-height:1.65}
+.vocab b{color:var(--ink)}
+@media (max-width:700px){.vocab{margin:16px 16px 8px;font-size:13.5px}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
+
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; Back to the brief index</a>
+  <a href="../method/index.html">How claims here were governed</a>
+</nav>
+
+<nav class="rail" id="rail" aria-label="Brief sections">
+  <a href="#s1" data-target="s1"><span class="rail__dot"></span><span class="rail__label">What it is</span></a>
+  <a href="#s2" data-target="s2"><span class="rail__dot"></span><span class="rail__label">Why build it</span></a>
+  <a href="#s3" data-target="s3"><span class="rail__dot"></span><span class="rail__label">What was built</span></a>
+  <a href="#s4" data-target="s4"><span class="rail__dot"></span><span class="rail__label">Where it stands</span></a>
+  <a href="#s5" data-target="s5"><span class="rail__dot"></span><span class="rail__label">What it teaches</span></a>
+  <a href="#sources" data-target="sources"><span class="rail__dot"></span><span class="rail__label">Sources</span></a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero__inner">
+    <p class="kicker hero__kicker">FrankenSuite research program &middot; A shareable brief</p>
+    <h1 class="hero__title">
+      <span class="hero__name">Franken<wbr>Network<wbr>X</span>
+      <span class="hero__sub">Rewriting Python&#x27;s Favorite Graph Library in Rust</span>
+    </h1>
+    <p class="hero__dek">A shareable brief from the FrankenSuite research program. Every claim below traces to the assessed repository; sources are linked at the end. Assessment pinned September 22, 2026.</p>
+    <div class="hero__meta"><span>Assessment pinned September 22, 2026 (the assessed commit)</span><span class="meta__sep">·</span><span>~1,445 words</span><span class="meta__sep">·</span><span>5 sections</span><span class="meta__sep">·</span><span>Every claim traceable to a source</span></div>
+  </div>
+  <div class="hero__cue" aria-hidden="true">
+    <span>Scroll to read</span>
+    <span class="hero__cue-line"></span>
+  </div>
+</header>
+
+<div class="vocab"><b>Six definitions.</b> <b>NODUS</b> is the program&rsquo;s four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet. <b>CI</b> is continuous integration: the project&rsquo;s automated test runs. The <b>pin</b> is the exact commit the assessment froze on; every claim is evaluated at the pin, not at HEAD. The <b>rider</b> is the license clause withholding all rights, including benchmarking and analysis, from OpenAI, Anthropic, their affiliates, and anyone acting for them. <b>Bus factor</b> is how many people can leave before the project stalls; it is 1 for every repo here.</div>
+
+<main id="main-content">
+<section class="brief" id="s1" data-chapter="1">
+<div class="prose"><p class="kicker">01 · What it is</p>
+<h2 class="section-title">What NetworkX is, and why it matters</h2></div>
+<div class="prose" data-reveal><p>NetworkX is the standard Python library for working with graphs: networks of nodes connected by edges. That sounds abstract until you realize how much of the world is a graph: social networks, road and flight networks, supply chains, dependency trees, recommendation systems. NetworkX is how a generation of data scientists learned to ask &quot;what&#x27;s the shortest path between these two?&quot; and get an answer in four lines of Python.</p></div>
+<div class="prose" data-reveal><p>It matters for three reasons. First, ubiquity: it&#x27;s the library everyone reaches for first, and a huge body of existing code is written against its API. Second, pedagogical gravity: tutorials, textbooks, and Stack Overflow answers all speak NetworkX. Third, and this is the opening: it&#x27;s pure Python. Python is wonderful for expressing algorithms and poor at executing them: per-object bookkeeping, Python-level inner loops, and dictionary lookups per edge mean analytics over hundred-thousand-to-million-node graphs turn into multi-minute affairs. The maintainer&#x27;s README puts it plainly: NetworkX is &quot;rich, correct, comprehensive, and slow on anything that isn&#x27;t toy-sized.&quot;</p></div>
+<div class="prose" data-reveal><p>That speed gap is real and universally complained about. But every existing faster alternative asks you to pay in compatibility: a different API, different tie-breaking when two answers are equally good, lost attribute fidelity, dropped algorithm families. This project&#x27;s promise: the speed of a Rust rewrite, without making anyone rewrite their NetworkX code.</p></div>
+</section>
+
+<section class="brief" id="s2" data-chapter="2">
+<div class="prose"><p class="kicker">02 · Why build it</p>
+<h2 class="section-title">Why rewrite it in Rust?</h2></div>
+<div class="prose" data-reveal><p>The maintainer&#x27;s stated bet is that <strong>observable behavior is a hard contract</strong>. It&#x27;s not enough to compute the right answer; you have to compute it in the right order, with the right tie-break choices, the right exception classes, even the right error wording. Downstream code depends on all of it, and silent behavioral drift is the failure mode that kills library replacements. So the project ports the algorithms to Rust but measures <em>every public path</em> against a vendored copy of NetworkX 3.6.1, demanding identical observable behavior.</p></div>
+<div class="prose" data-reveal><p>The distribution strategy is the clever part. It ships two ways: a standalone Python package (<code>franken_networkx</code>, built with PyO3, installable from PyPI; 0.2.1 is live, verified) and a NetworkX backend-protocol plugin. NetworkX&#x27;s own backend-dispatch protocol lets you write <code>nx.shortest_path(G, 0, 7, backend=&quot;franken_networkx&quot;)</code> and have the call dispatch into Rust with zero changes at the call site. <a class="src-chip" href="#src-p0">source</a> 313 algorithms are registered. The user never rewrites; the call just goes faster.</p></div>
+<div class="prose" data-reveal><p>The engineering case: Rust gives memory safety without a garbage collector, deterministic data structures instead of hash-ordered dicts, and real parallelism: 744 sites where the binding layer releases Python&#x27;s global interpreter lock on heavy paths. The auditability mechanism is CGSE, a &quot;canonical graph semantics engine&quot; that pins tie-breaking to a 13-variant policy enum and attaches a Blake3 decision-path receipt to every algorithm execution, recording which tie-breaks were taken. Machine-checkable provenance on correctness choices. Nothing else in this lane does it.</p></div>
+<div class="prose" data-reveal><p>The counter-argument: NetworkX has an official answer: nx-parallel, which parallelizes selected algorithms within the NetworkX API with the project&#x27;s imprimatur and zero behavioral risk. It contests the exact same pitch (&quot;my NetworkX code, faster, no rewrite&quot;) without asking anyone to trust a third-party parity claim, and its coverage grows with every NetworkX release while FrankenNetworkX&#x27;s parity target stays pinned at 3.6.1. The counter-pitch is breadth (313 algorithms vs a selected set) and the determinism story nobody else tells. A defensible bet, not a proven one.</p></div>
+</section>
+
+<section class="brief" id="s3" data-chapter="3">
+<div class="prose"><p class="kicker">03 · What was built</p>
+<h2 class="section-title">What the project actually built</h2></div>
+<div class="prose" data-reveal><p>The scale: a 12-crate Cargo workspace, ~278,000 lines of Rust, the four NetworkX graph classes re-derived with deterministic insertion-ordered adjacency, 25+ algorithm families, a 1,092-file Python parity suite, 2,046 Rust tests, 34 fuzz targets, and a conformance harness comparing against a vendored NetworkX oracle in-tree. Unsafe census: exactly two <code>unsafe</code> blocks in the whole workspace, both CPython garbage-collector pointer management at the FFI boundary. The unsafe surface of a quarter-million-line project fits in one paragraph.</p></div>
+<div class="prose" data-reveal><p>More important is the <strong>evidence machinery</strong>: an unusually honest self-scrutiny culture:</p></div>
+<div class="prose"><ul class="evidence-list"><li><strong>Machine-checked surface coverage:</strong> an auto-generated matrix reporting 4,129 of 4,129 applicable API paths &quot;strictly present&quot; against fingerprinted NetworkX 3.6.1: 100.0%, verified by independent recount. (The project&#x27;s own caveat: &quot;present&quot; means import/signature parity, not behavioral conformance.)</li><li><strong>A 37,116-line ledger of its own losses,</strong> with an enforced verdict contract: self-speedups (a change that makes the code faster relative to its own past) &quot;must not use a <code>WIN</code> heading or support a competitive claim.&quot; Internal improvement is maintenance, not victory.</li><li><strong>A self-authored claim-coverage audit</strong> (July 2026) grading the project&#x27;s own performance ledger: of 591 performance claims, only 12 carried a ratio measured against NetworkX live in the same invocation. <strong>2.0% attested.</strong> It exists in the tree, reproducible with one script.</li><li><strong>A design doc that refutes its own headline.</strong> A campaign measured a &quot;77,795× zero-copy&quot; speedup; the doc then writes that &quot;it is not a cross-language zero-copy result. The bytes never crossed the PyO3 boundary. The magnitude does not transfer,&quot; and ships a cost model so sibling projects don&#x27;t inherit the false premise.</li></ul></div>
+<div class="prose" data-reveal><p>The Gauntlet head-to-head (July 2026) is the verified core of the performance story: vs unpatched NetworkX 3.6.1 with same-invocation null controls and binary-hash pinning: clustering 36.1×, triangles 14.3×, dijkstra 7.6×, pagerank 2.6×. Strong methodology. Also two months stale and maintainer-run.</p></div>
+<div class="findings__head" data-reveal><p class="kicker kicker--warn">The uncomfortable findings</p></div><div class="findings"><article class="finding finding--red" data-reveal><p class="card__eyebrow">Uncomfortable finding</p><p>The 2.0% audit means 98% of the performance story is self-measured, and the README&#x27;s &quot;5×–250×&quot; framing leans on the unattested base, which the project&#x27;s own contract says can&#x27;t support a competitive claim. The README drifts on every hand-typed number the auto-generated ledgers already know correctly — a governance liability in a project whose pitch is auditability. 181 functions openly delegate to NetworkX, and 24 more are wrapper-patched because the raw Rust kernel disagrees with the incumbent. The drop-in surface is substantially NetworkX running under the hood. The fine-grained mutation paths that define interactive NetworkX use are <em>slower</em> than the incumbent (node removal at 0.0037× on a 25k-node graph; the README says below ~100 nodes, marshaling cost exceeds algorithm cost). <a class="src-chip" href="#src-p1">source</a> SECURITY.md supports version &quot;1.x&quot; while the project ships 0.2.2. Read literally, no released version gets security updates. PyPI serves 0.2.1 while GitHub released 0.2.2, and no tag points at the assessed commit, so nothing ships the assessed tree. And the license is MIT plus a rider barring OpenAI, Anthropic, their affiliates, and anyone acting for them from even <em>benchmarking or analyzing</em> the code. The project whose moat is evidence forbids evidence-gathering by the best-equipped evaluators.</p></article></div>
+</section>
+
+<section class="brief" id="s4" data-chapter="4">
+<div class="prose"><p class="kicker">04 · Where it stands</p>
+<h2 class="section-title">Where it stands</h2></div>
+<div class="prose" data-reveal><p>In our program&#x27;s terms: TRL 6, NODUS ring Explore. In plain English: a working, shipped prototype: signed releases, PyPI wheels, differential conformance against a vendored oracle, a backend plugin executing live NetworkX workloads. It clears a higher bar than most of the suite. But: no independent validation, no known production users, mostly self-measured benchmarks, one maintainer, and a license rider that is an advancement blocker.</p></div>
+<div class="gauge-wrap" data-reveal><div class="gauge"><p class="card__eyebrow">Technology readiness</p><div class="trl-ladder" role="img" aria-label="TRL 6 on a 1 to 9 scale"><div class="trl-ladder__track"><div class="trl-ladder__band" style="left:56.2%;width:12.5%"></div></div><div class="trl-ladder__ticks"><span>1</span><span>3</span><span>5</span><span>7</span><span>9</span></div></div><p class="gauge__caption"><strong>TRL 6</strong> on a 1-to-9 scale.</p></div><div class="gauge"><p class="card__eyebrow">NODUS ring</p><div class="nodus-pills"><span class="nodus-pill" title="Websites, retired artifacts, and plan-stage work.">Monitor</span><span class="nodus-pill nodus-pill--active" title="The default for substantive-but-unproven work.">Explore</span><span class="nodus-pill" title="A release artifact plus a bounded, real-workload fit.">Pilot</span><span class="nodus-pill" title="Independent validation plus governance. Empty in this program.">Invest</span></div><p class="gauge__caption">The program&rsquo;s adoption ring for this project.</p></div></div>
+<div class="verdict-key" data-reveal><p class="card__eyebrow">Verdict key</p><dl class="key-list"><div class="key-row"><dt>NODUS ring</dt><dd><strong>Explore</strong>: The default for substantive-but-unproven work.</dd></div><div class="key-row"><dt>TRL</dt><dd>Technology Readiness Level, a 1-to-9 scale of how proven a technology is. This brief rates the project at <strong>TRL 6</strong>.</dd></div><div class="key-row"><dt>CI</dt><dd>Continuous integration: the project’s automated checks, run on every change.</dd></div><div class="key-row"><dt>The pin</dt><dd>The exact commit the assessment was pinned to. “At the pin” means as of that commit.</dd></div></dl><p class="card__eyebrow">Evidence tiers</p><ol class="tier-list"><li><strong>Tier 1 · Verified</strong> — Confirmed by direct inspection of a fresh clone, an API response, or a live page read by the analyst.</li><li><strong>Tier 2 · CI-observed</strong> — Observed executing on live CI pages. Attests the suite runs, not that it is green, unless pass/fail is legible.</li><li><strong>Tier 3 · Maintainer claim</strong> — Asserted in README or docs by the maintainer; not independently executed or reproduced.</li><li><strong>Tier 4 · External</strong> — Independent sources: APIs, papers, press, third-party benchmarks. Absence of coverage is reported as a finding.</li><li><strong>Tier 5 · Inference</strong> — The analyst’s judgment. Always labeled; never presented as fact.</li></ol><p class="basis-lede">What this verdict rests on. Tier labels are the assessment packet’s own annotations.</p><ul class="basis-list"><li><strong>Tier 1 · Verified:</strong> Counts from the clone; the vendored NetworkX oracle inventoried.</li><li><strong>Tier: unassessed in packet:</strong> CI greenness at the pin: the last CI run predates the pin by 13 days, so pin greenness is unestablished.</li><li><strong>Tier 3 · Maintainer claim:</strong> Nothing was compiled or executed; the KEEP audit is 2026-07-31.</li><li><strong>Tier 4 · External:</strong> No independent validation, no known production users; PyPI stats unobtainable.</li><li><strong>Tier 5 · Inference:</strong> The Explore ring at TRL 6.</li></ul></div>
+<div class="verdict-cards" data-reveal><article class="verdict-card"><p class="verdict-card__q">Should you use it?</p><p class="verdict-card__answer">Not yet.</p><p>Compute-heavy families (clustering, shortest paths on large graphs) show strong Gauntlet numbers; fine-grained interactive mutation is measurably slower; and either way you&#x27;d depend on one person whose license excludes the AI supply chain. <a class="src-chip" href="#src-p2">source</a></p></article><article class="verdict-card"><p class="verdict-card__q">Should you learn from it?</p><p class="verdict-card__answer">Emphatically yes.</p><p>The methodology is worth importing regardless of the software&#x27;s fate: claim-coverage audits, the raw-vs-public audit (which found 24 functions where only the Python wrapper restores parity), the negative-evidence taxonomy, tie-break pinning. The machine is the product; the library is the demo.</p></article></div>
+<div class="prose" data-reveal><h3>What would change the verdict, in order</h3></div><ol class="verdict-list" data-reveal><li>an independent benchmark reproducing any Gauntlet row</li><li>the incumbent-attested claim fraction rising meaningfully above 2%</li><li>a second maintainer with merge rights</li><li>PyPI serving the current release</li><li>the rider narrowed or removed.</li></ol>
+<div class="prose" data-reveal><p>Until then, nx-parallel wins on trust and rustworkx wins on maturity. FrankenNetworkX wins on auditability alone, which no buyer is currently paying for.</p></div>
+</section>
+
+<section class="brief" id="s5" data-chapter="5">
+<div class="prose"><p class="kicker">05 · What it teaches</p>
+<h2 class="section-title">What this teaches about building with agents</h2></div>
+<div class="prose" data-reveal><p>The transferable lesson is the claim-coverage audit — a portable self-audit practice worth stealing.</p></div>
+<div class="prose" data-reveal><p>Here&#x27;s the trap it catches: you have a ledger of 591 performance claims. They all have numbers, they&#x27;re all written down, they all feel rigorous. And 98% were never measured against the incumbent. The project was getting faster relative to its own past, dressed up as competitive evidence. Nobody would have noticed without the audit, because the <em>ledger existed and looked complete</em>. The audit&#x27;s rule is the export: <strong>classify every claim by its comparison class, and forbid self-comparisons from supporting competitive claims.</strong> A benchmark that can&#x27;t name its baseline is marketing; a ledger that distinguishes incumbent-class from self-speedup is evidence.</p></div>
+<div class="prose" data-reveal><p>The deeper point: the project with the strictest self-scrutiny rules is the one that failed its own audit most visibly. That&#x27;s not hypocrisy — it&#x27;s the machinery working. The 2.0% number only exists because the project built the audit. Every other project also has unattested claims; they just never counted them. The lesson for anyone building with agents: don&#x27;t grade your evidence by how many numbers you have. Grade it by what fraction were measured against the thing you&#x27;re actually claiming to beat.</p></div>
+</section>
+</main>
+
+<!-- ============ SOURCES ============ -->
+<section class="brief" id="sources" data-chapter="sources">
+  <div class="prose">
+    <p class="kicker">Evidence</p>
+    <h2 class="section-title">This page cites selected evidence. The full claim-by-claim audit is in the assessment packet.</h2>
+    <p>Open a panel to see what each source evidences. <a class="packet-link" href="../packets/franken_networkx-assessment.md">Full claim-by-claim audit.</a></p>
+  </div>
+  <p class="sources-note">Full claim-by-claim audit with evidence tiers lives in the program&#x27;s assessment packet.</p>
+  <div class="accordion" id="accordion">
+<details class="acc" id="src-p0">
+<summary class="acc__head"><span class="acc__title">The repository</span><span class="acc__hint">github.com/Dicklesworthstone/franken_networkx</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>the repository (<a href="https://github.com/Dicklesworthstone/franken_networkx">github.com/Dicklesworthstone/franken_networkx</a>) at the assessed commit <code>841a711</code></p></div>
+</details>
+<details class="acc" id="src-p1">
+<summary class="acc__head"><span class="acc__title">README</span><span class="acc__hint">README</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/README.md">README</a></p></div>
+</details>
+<details class="acc" id="src-p2">
+<summary class="acc__head"><span class="acc__title">LICENSE</span><span class="acc__hint">LICENSE</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/LICENSE">LICENSE</a></p></div>
+</details>
+<details class="acc" id="src-p3">
+<summary class="acc__head"><span class="acc__title">CHANGELOG</span><span class="acc__hint">CHANGELOG</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/CHANGELOG.md">CHANGELOG</a></p></div>
+</details>
+<details class="acc" id="src-p4">
+<summary class="acc__head"><span class="acc__title">coverage.md</span><span class="acc__hint">coverage.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/coverage.md">coverage.md</a></p></div>
+</details>
+<details class="acc" id="src-p5">
+<summary class="acc__head"><span class="acc__title">upstream_divergence_ledger.md</span><span class="acc__hint">upstream_divergence_ledger.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/upstream_divergence_ledger.md">upstream_divergence_ledger.md</a></p></div>
+</details>
+<details class="acc" id="src-p6">
+<summary class="acc__head"><span class="acc__title">delegation_ledger.md</span><span class="acc__hint">delegation_ledger.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/delegation_ledger.md">delegation_ledger.md</a></p></div>
+</details>
+<details class="acc" id="src-p7">
+<summary class="acc__head"><span class="acc__title">NEGATIVE_EVIDENCE.md</span><span class="acc__hint">NEGATIVE_EVIDENCE.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/NEGATIVE_EVIDENCE.md">NEGATIVE_EVIDENCE.md</a></p></div>
+</details>
+<details class="acc" id="src-p8">
+<summary class="acc__head"><span class="acc__title">CLAIM_COVERAGE_AUDIT.md</span><span class="acc__hint">CLAIM_COVERAGE_AUDIT.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/CLAIM_COVERAGE_AUDIT.md">CLAIM_COVERAGE_AUDIT.md</a></p></div>
+</details>
+<details class="acc" id="src-p9">
+<summary class="acc__head"><span class="acc__title">GAUNTLET_RELEASE_SCORECARD.md</span><span class="acc__hint">GAUNTLET_RELEASE_SCORECARD.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/GAUNTLET_RELEASE_SCORECARD.md">GAUNTLET_RELEASE_SCORECARD.md</a></p></div>
+</details>
+<details class="acc" id="src-p10">
+<summary class="acc__head"><span class="acc__title">ZERO_COPY_VIEW_PRIMITIVE.md</span><span class="acc__hint">ZERO_COPY_VIEW_PRIMITIVE.md</span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p><a href="https://github.com/Dicklesworthstone/franken_networkx/blob/841a711634c1c38c51c6f344598e1fc7ec273dd4/docs/ZERO_COPY_VIEW_PRIMITIVE.md">ZERO_COPY_VIEW_PRIMITIVE.md</a></p></div>
+</details>
+<details class="acc" id="src-p11">
+<summary class="acc__head"><span class="acc__title">franken-networkx</span><span class="acc__hint"></span><span class="acc__icon" aria-hidden="true">+</span></summary>
+<div class="acc__inner"><p>PyPI project page for <code>franken-networkx</code> (0.2.1, 6 wheels — verified September 2026).</p></div>
+</details>
+  </div>
+</section>
+
+<nav class="pager" aria-label="More briefs">
+<a href="franken_native_capsule.html">&larr; franken_native_capsule (Explore)</a>
+<a class="pager__next" href="franken_node.html">franken_node (Explore) &rarr;</a>
+</nav>
+
+<footer class="colophon">
+  <div class="prose">
+    <p><strong>FrankenNetworkX: Rewriting Python&#x27;s Favorite Graph Library in Rust.</strong> A shareable brief from the FrankenSuite research program, rendered from the reader template. Assessment pinned September 22, 2026.</p>
+    <p class="colophon__small">Single-file page: styles and script inlined, no network calls, no tracking. Motion respects <code>prefers-reduced-motion</code>. Read the methodology behind these claims: <a href="../method/index.html">how claims here were governed</a>. <a href="../index.html">Back to the brief index</a>.</p>
+  </div>
+</footer>
+
+<script>/* FrankenSuite shareable-brief reader — vanilla JS, zero dependencies. */
+(function () {
+  'use strict';
+
+  document.documentElement.classList.add('js');
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) document.documentElement.classList.add('reduced-motion');
+
+  function smoothTo(el) {
+    if (reduced) { el.scrollIntoView(); return; }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ---------- progress bar ---------- */
+  var bar = document.getElementById('progressBar');
+  var ticking = false;
+  function updateBar() {
+    ticking = false;
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? h.scrollTop / max : 0;
+    bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+  }
+  document.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateBar); }
+  }, { passive: true });
+  updateBar();
+
+  /* ---------- gentle reveals ----------
+     Progressive enhancement only: the .reveal class (which hides
+     [data-reveal] blocks) is added only when IntersectionObserver is
+     available, so content stays visible if IO is missing, JS fails
+     partway, or reduced motion is on. The generous bottom rootMargin
+     pre-reveals blocks just before they enter the viewport, avoiding
+     dim-block flashes on fast scrolls. ---------- */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window && !reduced && revealEls.length) {
+    document.documentElement.classList.add('reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px 30% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- chapter rail ---------- */
+  var railLinks = Array.prototype.slice.call(document.querySelectorAll('.rail a'));
+  railLinks.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('data-target'));
+      if (t) smoothTo(t);
+    });
+  });
+  var targets = railLinks.map(function (a) { return document.getElementById(a.getAttribute('data-target')); })
+    .filter(function (t) { return !!t; });
+  if ('IntersectionObserver' in window && targets.length) {
+    var rio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          railLinks.forEach(function (a) {
+            a.classList.toggle('is-active', a.getAttribute('data-target') === e.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    targets.forEach(function (t) { rio.observe(t); });
+  }
+
+  /* ---------- top nav: smooth anchors only if same page (external links left alone) ---------- */
+  document.querySelectorAll('.topnav a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); smoothTo(t); }
+    });
+  });
+
+  /* ---------- source chips: plain links now (P1-1). Progressive
+     enhancement only: open the target native <details>, then let the
+     anchor jump to it. Without JS the link still works. ---------- */
+  document.querySelectorAll('a.src-chip[href^="#"]').forEach(function (chip) {
+    chip.addEventListener('click', function (e) {
+      var panel = document.querySelector(chip.getAttribute('href'));
+      if (!panel) return;
+      if (panel.tagName === 'DETAILS' && !panel.open) panel.open = true;
+      e.preventDefault();
+      smoothTo(panel);
+    });
+  });
+})();
+</script>
+</body>
+</html>

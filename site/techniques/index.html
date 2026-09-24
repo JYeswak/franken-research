@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transferable techniques — FrankenSuite</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="description" content="Fourteen claim-governance and measurement techniques observed across the 44 assessed FrankenSuite repos, each with origin, candidate adopters, expected payoff, and a falsification experiment.">
+<meta property="og:title" content="Transferable techniques — FrankenSuite">
+<meta property="og:description" content="Fourteen claim-governance and measurement techniques observed across the 44 assessed FrankenSuite repos, each with origin, candidate adopters, expected payoff, and a falsification experiment.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>/* FrankenSuite practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.router{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;font-family:var(--sans);font-size:13.5px;color:var(--ink-dim);
+  margin:14px 0}
+.router a{color:var(--accent);font-weight:600}
+.vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
+  padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
+.vocab b{color:var(--ink)}
+.count-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.chip{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;
+  padding:5px 14px;font-size:13px;font-family:var(--sans);color:var(--ink-dim)}
+.chip b{color:var(--accent)}
+.tierkey{font-size:13px;color:var(--muted);font-family:var(--sans);margin:10px 0 0}
+.tierkey code{font-size:12px}
+.tech{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0}
+.tech h2{font-size:20px;margin:0 0 4px;color:var(--ink);line-height:1.35}
+.tech h2 .n{color:var(--accent);font-family:var(--sans);font-size:14px;
+  display:block;margin-bottom:2px;letter-spacing:.08em}
+.rows{margin:8px 0 0;padding:0}
+.row{margin:10px 0;font-size:15.5px;line-height:1.65}
+.row .lab{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2px}
+.row .lab.adopt{color:var(--blue)} .row .lab.pay{color:var(--green)} .row .lab.fals{color:var(--red)}
+.row p{margin:0}
+.evt{font-size:12.5px;color:var(--muted);font-family:var(--sans);margin-top:8px}
+.evt code{font-size:11.5px}
+.srcs{font-size:13px;color:var(--muted);font-family:var(--sans);margin-top:10px}
+.srcs a{color:var(--accent)}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; FrankenSuite front door</a>
+  <span class="peers">
+    <a href="../failure-modes/index.html">Failure modes</a>
+    <a href="../lessons/index.html">Lesson index</a>
+    <a href="../reproduce/index.html">Reproduce a verdict</a>
+    <a href="../method/index.html">Method</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Transferable techniques</h1>
+  <p class="sub">Fourteen mechanisms observed in the assessed repos that are worth stealing for your own agent-built projects. Each entry names the origin repo where the technique was verified, candidate adopters that would benefit, the expected payoff, and a concrete falsification experiment: what you would run to check whether the technique actually works when ported. None of these are recommendations to ship any repo. They are process machinery, portable across projects.</p>
+</header>
+
+<p class="router">Assessors: the protocol is <a href="../RULEBOOK.md">RULEBOOK.md</a> &nbsp;&middot;&nbsp; Builders: the runnable kit is <a href="../starter-kit/">starter-kit/</a> &nbsp;&middot;&nbsp; Researchers: the suite synthesis starts at <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a></p>
+
+<div class="vocab"><b>Five definitions.</b> <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet. <b>CI</b> is continuous integration: the project's automated test runs (GitHub Actions or equivalent). The <b>pin</b> is the exact commit the assessment froze on; every claim is evaluated at the pin, not at HEAD. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them.</div>
+
+<div class="count-chips">
+  <span class="chip"><b>14</b> techniques</span>
+  <span class="chip"><b>44</b> repos scanned</span>
+  <span class="chip">Each with a portability falsification experiment</span>
+</div>
+<p class="tierkey">Tier labels: <code>[Verified]</code> confirmed by direct inspection of a fresh clone or live page &middot; <code>[CI-observed]</code> observed executing on live CI &middot; <code>[Maintainer claim]</code> asserted by the maintainer, not independently executed &middot; <code>[Inference]</code> the analyst's judgment, labeled as such. Confidence: High / Medium / Low.</p>
+
+<main id="main">
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 1</span>Claim-to-proof registry with machine gates</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_engine.html">franken_engine</a> (the registry refuses wording whose <code>actual_wording_state</code> exceeds <code>allowed_state</code>, and emits the exact downgrade text) [Verified, High]; <a href="../briefs/frankengit.html">frankengit</a> (SHA-256-bound claims: any mismatch is an automatic demotion, not a reviewer-overridable transition) [Verified, High]; <a href="../briefs/franken_markdown.html">franken_markdown</a> (<code>claims.tsv</code> plus <code>check-claim-discipline.sh</code>) [Verified, High]; <a href="../briefs/franken_node.html">franken_node</a> (Ed25519-signed honesty manifest) [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p>Any project whose README outruns its CI: <a href="../briefs/franken_manim.html">franken_manim</a>, <a href="../briefs/franken_ocr.html">franken_ocr</a>, <a href="../briefs/frankenpandas.html">frankenpandas</a>, <a href="../briefs/frankenscipy.html">frankenscipy</a>, <a href="../briefs/franken_whisper.html">franken_whisper</a>, and all four website repos [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Marketing drift becomes a CI failure instead of a review-cycle argument. Claim downgrade is automatic and timestamped [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Point franken_engine's matrix (or a minimal reimplementation) at one sibling repo for 60 days: it either blocks a real claim promotion (demonstrated value) or proves too coupled to generalize (falsified portability) [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/frankengit-assessment.md">frankengit-assessment.md</a> &middot; <a href="../packets/franken_engine-assessment.md">franken_engine-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 2</span>Freshness decay on evidence</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_engine.html">franken_engine</a>: every claim carries <code>max_observed_freshness_days</code> plus a <code>repro.lock</code>; the gate auto-downgrades rows whose re-verification lags [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/franken_networkx.html">franken_networkx</a> (CI green 13 days pre-pin at last check), <a href="../briefs/franken_nlp.html">franken_nlp</a> (stale DSR evidence), <a href="../briefs/frankenredis.html">frankenredis</a> (fmt-gate failure versus green prose), and any "last verified" statement in the corpus [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"Verified" claims cannot silently age into stale ones. Staleness is typed and visible [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Add a freshness column to one sibling's claims registry with a 30-day ceiling: if it surfaces at least one claim the project believed was current but wasn't, the gate has teeth; if zero surface and a blind audit confirms the flagged claims were already fresh, the ceiling adds bookkeeping without catching drift, and the gate is falsified as overhead [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_engine-assessment.md">franken_engine-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 3</span>Negative-evidence ledger with required entry classes</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/frankengit.html">frankengit</a> (34-row registry, 13 required entry classes including <code>overclaim_correction</code> and <code>non_reproducible_result</code>) [Verified, High]; <a href="../briefs/franken_numpy.html">franken_numpy</a> (67,641-line ledger, the largest counted) [Verified, High]; <a href="../briefs/frankensqlite.html">frankensqlite</a> (<code>perf-negative-results.md</code> with retry conditions) [Verified, High]; <a href="../briefs/franken_tts.html">franken_tts</a> (NE-002/NE-003 killing the flagship optimizer twice) [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/franken_whisper.html">franken_whisper</a>, <a href="../briefs/franken_overlap.html">franken_overlap</a>, <a href="../briefs/frankenterm.html">frankenterm</a>, <a href="../briefs/frankensympy.html">frankensympy</a>: all do negative evidence informally [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Failed optimizations stop being re-run by future agents. Reviewers can see what was tried and killed [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Require one sibling project to log its next 10 rejected experiments with retry conditions: either a future session avoids re-running at least one of them (value), or the ledger is never consulted (falsified as ritual) [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/frankengit-assessment.md">frankengit-assessment.md</a> &middot; <a href="../packets/franken_numpy-assessment.md">franken_numpy-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 4</span>Anti-extrapolation rule</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_overlap.html">franken_overlap</a>: a baseline that exceeds the compute budget is recorded as <code>incomplete</code>, never extrapolated into a comparison [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/franken_ocr.html">franken_ocr</a>, <a href="../briefs/franken_tts.html">franken_tts</a>, <a href="../briefs/franken_whisper.html">franken_whisper</a>: anywhere an official incumbent cannot be run [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"N/A" rows stay honest. Benchmark tables carry no ratio computed against a non-run baseline [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Require one sibling to adopt the rule for 90 days: if the rule blocks at least one extrapolated ratio, it caught a live hole; if zero blocks occur and an independent audit finds at least one extrapolated ratio the rule missed, the rule is decorative, and is falsified [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_overlap-assessment.md">franken_overlap-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 5</span>Committed statistical baseline gate</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/asupersync.html">asupersync</a>: <code>methodology_baselines</code> signoff plus a 105-row <code>artifacts/baseline.json</code>; the gate demonstrably fired on 2026-09-07 against drifted artifacts [CI-observed, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/frankenredis.html">frankenredis</a>, <a href="../briefs/frankenpandas.html">frankenpandas</a>, <a href="../briefs/frankenscipy.html">frankenscipy</a> [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Benchmark regression as a signed, waiver-free gate: per-row environment tagging, layout-hyperparameter capture, and drift detection that demonstrably fires. Environment drift (new runner, new toolchain) cannot silently rebase "improvements" [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Replay one sibling's last benchmark comparison with environment tagging added: if any historical "win" reclassifies as environment drift, the gate caught a live confound; if zero reclassify, run a control: inject a known environment drift (runner swap, toolchain bump). If the gate does not fire on the injected drift, the drift detection is decorative, and is falsified as a control [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/asupersync-assessment.md">asupersync-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 6</span>Per-optimization PROOF.md bundles</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/frankenredis.html">frankenredis</a>: the program's optimization-evidence template. Every accepted optimization ships a bundle: SHA-pinned golden transcript plus paired/reversed runs plus a keep/reject score gate [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/frankenjax.html">frankenjax</a> (whose per-optimization entries with agent attribution and same-worker/same-binary criterion rows already exist; the transfer is the bundle <em>format</em>: a SHA-pinned golden transcript as a replayable artifact, the paired/reversed run design, and the keep/reject score gate packaged as one reviewable unit) [Verified, High]; plus frankenredis's own future work, <a href="../briefs/frankentorch.html">frankentorch</a>, <a href="../briefs/frankensqlite.html">frankensqlite</a> [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Optimizations become reviewable artifacts with kill criteria, not commit messages [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Require one sibling's next 5 accepted optimizations to ship bundles: either at least one optimization is rejected at the bundle stage (gate value), or all pass and a blind re-review agrees (no gate value: falsified as a control) [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/frankenredis-assessment.md">frankenredis-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 7</span>Measurement-integrity four-rule gate</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/frankentorch.html">frankentorch</a>: name the worker, name the harness, quote both estimators, replicate before quoting [Inference, High]. Partial overlap: <a href="../briefs/frankenpandas.html">frankenpandas</a> already enforces the cross-worker rule ("A/B comparisons across different workers are invalid") via its quantified build-variance rule [Verified, High]; the transfer adds the remaining three rules.</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p>Every benchmarking project in the corpus: <a href="../briefs/frankenredis.html">frankenredis</a>, <a href="../briefs/frankenpandas.html">frankenpandas</a>, <a href="../briefs/franken_whisper.html">franken_whisper</a>, <a href="../briefs/franken_ocr.html">franken_ocr</a>, <a href="../briefs/franken_tts.html">franken_tts</a>, <a href="../briefs/frankenscipy.html">frankenscipy</a> [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Numbers arrive with their full provenance or don't arrive at all. Cross-worker comparisons die on sight [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Apply the four rules retroactively to one sibling's published ratios: if at least one ratio loses a rule's provenance and re-grades to [NO ADMISSIBLE RATIO], the gate has teeth; if zero lose provenance and a spot re-measurement under the rules confirms the ratios, the project was already compliant: the gate adds nothing there, and is falsified [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/frankentorch-assessment.md">frankentorch-assessment.md</a> &middot; <a href="../packets/frankenpandas-assessment.md">frankenpandas-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 8</span>Result-class doctrine for performance verdicts</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_whisper.html">franken_whisper</a> (PERF_LEDGER) [Verified, High]; <a href="../briefs/franken_networkx.html">franken_networkx</a> (INCUMBENT-vs-SELF-SPEEDUP contract) [Verified, High]. Typed verdicts: SELF-SPEEDUP is maintenance, never a campaign win; a CAMPAIGN WIN requires the actual incumbent binary side-by-side in the same invocation, with A/A nulls in [0.98, 1.02].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/franken_ocr.html">franken_ocr</a>, <a href="../briefs/franken_tts.html">franken_tts</a>, <a href="../briefs/franken_nlp.html">franken_nlp</a>, <a href="../briefs/frankenredis.html">frankenredis</a> [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"Faster" claims carry their class. Self-speedups cannot be promoted into campaign wins [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Reclassify one sibling's headline ratios under the doctrine: if at least one claimed win demotes to SELF-SPEEDUP, the doctrine caught promotion drift; if zero demote, the doctrine is a re-labeling exercise for that project, and is falsified as a new control [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_whisper-assessment.md">franken_whisper-assessment.md</a> &middot; <a href="../packets/franken_networkx-assessment.md">franken_networkx-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 9</span>Structured skip honesty</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_snowflake.html">franken_snowflake</a> (credential-less runs emit <code>franken_snowflake.live_gate.v1</code> skip events) [Verified, High]; <a href="../briefs/frankenscipy.html">frankenscipy</a> (CI control job fails if the live SciPy oracle is absent) [Verified, High]; <a href="../briefs/franken_tts.html">franken_tts</a> (XFAIL is not SKIP; GREEN WITH SKIPS is a distinct state) [Verified, High]. Runs that cannot execute honestly emit a typed skip event instead of silently passing; the absence of the oracle is itself a gate failure.</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p>Every project with optional live dependencies: <a href="../briefs/franken_nlp.html">franken_nlp</a> (HuggingFace access), <a href="../briefs/franken_ocr.html">franken_ocr</a> (model weights), <a href="../briefs/frankensim.html">frankensim</a>'s DSR lanes [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"Green with skips" is a distinguishable state from "green". Skip events are distinguishable from passes in CI output and release notes [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Convert one sibling's silent skips to typed skip events for one release cycle: if any event reveals a lane that never ran in production, the honesty was load-bearing; if all lanes ran and the project's docs already distinguished skips from passes, the conversion adds ceremony without information, and is falsified [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_snowflake-assessment.md">franken_snowflake-assessment.md</a> &middot; <a href="../packets/frankenscipy-assessment.md">frankenscipy-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 10</span>Maturity vocabulary plus dated maturity registry</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a> (five-label vocabulary: source-present, reference-implemented, publicly-invokable, locally-qualified, production-admitted; "no lower label implies a higher one") [Verified, High]; <a href="../briefs/frankensim.html">frankensim</a> (15-entry L1–L5 registry: L1=3, L2=11, L3=1, L4=0, L5=0) [Maintainer claim, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/franken_remote.html">franken_remote</a>, <a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a>, <a href="../briefs/franken_native_capsule.html">franken_native_capsule</a>: capability-rich, validation-poor projects [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"It exists" stops meaning "it works". The maturity distribution itself is publishable [Inference, Medium].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Label one sibling's capabilities under the vocabulary: if any capability the README treats as mature lands below "publicly-invokable," the vocabulary caught drift; if none do, the vocabulary is a re-labeling of an already-calibrated README, and is falsified as a new control [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_drone_geometry_reconstruction-assessment.md">franken_drone_geometry_reconstruction-assessment.md</a> &middot; <a href="../packets/frankensim-assessment.md">frankensim-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 11</span>Evidence-color and no-laundering composition algebra</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/frankensim.html">frankensim</a> (<code>fs-evidence</code>: "evidence color" and "no-launder" rules found in no other packet) [Maintainer claim, High]. Measurement evidence carries typed colors; composition rules prevent weak evidence from being laundered into strong claims.</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/frankenpandas.html">frankenpandas</a> (359-lane aggregation), <a href="../briefs/franken_networkx.html">franken_networkx</a> (multi-ledger verdicts), <a href="../briefs/frankenterm.html">frankenterm</a> (attestation bundles) [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Aggregated verdicts cannot inherit the strongest color of their components. The weakest link is visible [Inference, Medium].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Re-color at least three of one sibling's aggregate verdicts under the algebra: if any aggregate's color weakens, the algebra caught laundering; if all stay unchanged, the algebra restates existing practice, and is falsified as a new control [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/frankensim-assessment.md">frankensim-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 12</span>Receipt-bound remote execution</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_alignment.html">franken_alignment</a> (dispatch plus receipts plus a self-disqualification rule: code landing after the last executed gate opens a self-disqualification ledger) [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/frankenjax.html">frankenjax</a>: the genuine RCH-dependent case (zero GitHub Actions workflows; all green claims execute on the maintainer's private RCH fleet, attested only by checked-in artifact JSON) [Verified, High]. <a href="../briefs/franken_node.html">franken_node</a>: with the distinction that node already has a hash-chained decision-receipt lineage, so the transfer is the self-disqualification rule for post-gate code and retention of failed attempts, not receipts per se [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"It ran on the private runner" becomes a checkable receipt instead of a prose claim. Post-gate code is explicitly disqualified, not silently trusted [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Require frankenjax to retain and publish its next 10 batch receipts with source-hash binding: if any receipt contradicts the prose claim it supports, the binding caught drift; if all agree, trust is receipted but untested; and if a receipt can be regenerated post-hoc with altered hashes without detection, the binding is decorative, and is falsified [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_alignment-assessment.md">franken_alignment-assessment.md</a> &middot; <a href="../packets/frankenjax-assessment.md">frankenjax-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 13</span>Full-funnel verdict aggregation with selection pressure stated</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/frankenpandas.html">frankenpandas</a>: 359 lanes aggregate into typed verdicts (FASTER / SLOWER / NULL_UNDECIDABLE / DROPPED_HIGH_CV / PARITY) as 201 / 20 / 74 / 62 / 2 [Verified, High]; one row retracts its own 1.20x win as build variance, in the same row [Verified, High].</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p><a href="../briefs/frankenredis.html">frankenredis</a>, <a href="../briefs/frankenscipy.html">frankenscipy</a>, <a href="../briefs/franken_whisper.html">franken_whisper</a> [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>"201 faster" cannot be quoted without "62 dropped for high CV". The funnel is the number [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Re-aggregate one sibling's benchmark history as a full funnel: if the decidable-subset statistic changes the headline, the funnel was load-bearing; if the headline is unchanged and the project already disclosed its dropped lanes, the funnel restates existing disclosure, and is falsified as a new control [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/frankenpandas-assessment.md">frankenpandas-assessment.md</a></div>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TECHNIQUE 14</span>Adversarial self-audit of the evidence machinery</h2>
+  <div class="rows">
+    <div class="row"><span class="lab">Origin</span><p><a href="../briefs/franken_alignment.html">franken_alignment</a> (planted-mutation testing: deliberately introduced defects must fail after controls pass) [Verified, High]; <a href="../briefs/frankensympy.html">frankensympy</a> (caught and remediated its own fails-open harness) [Verified, High]; <a href="../briefs/franken_code_browser.html">franken_code_browser</a> (six named defects: demo hardcoding, proof laundering, refusal farming, commit pumping, gate self-weakening, follow-up laundering) [Verified, High]. The evidence gate itself gets audited adversarially: planted defects, fails-open harness hunts, named failure modes of honesty culture.</p></div>
+    <div class="row"><span class="lab adopt">Candidate adopters</span><p>Every project with a claims gate: <a href="../briefs/franken_engine.html">franken_engine</a>, <a href="../briefs/frankengit.html">frankengit</a>, <a href="../briefs/franken_networkx.html">franken_networkx</a>, <a href="../briefs/frankensim.html">frankensim</a> [Inference, High].</p></div>
+    <div class="row"><span class="lab pay">Expected payoff</span><p>Gates get tested against adversaries, not just against the happy path. A gate that cannot catch a planted defect is known to be decorative [Inference, High].</p></div>
+    <div class="row"><span class="lab fals">Falsification experiment</span><p>Plant 3 defects in one sibling's gate (a laundered claim, a weakened gate, a pumped commit) and see if the gate catches them: caught 2 or more means the gate is adversarially sound; caught 1 means partial soundness, inconclusive, re-run with a fresh defect set before judging; caught 0 means the gate is theater, and is falsified [Inference, High].</p></div>
+  </div>
+  <div class="srcs">Packet: <a href="../packets/franken_alignment-assessment.md">franken_alignment-assessment.md</a> &middot; <a href="../packets/frankensympy-assessment.md">frankensympy-assessment.md</a> &middot; <a href="../packets/franken_code_browser-assessment.md">franken_code_browser-assessment.md</a></div>
+</div>
+
+</main>
+
+<footer>
+  <p>These fourteen concepts were consolidated across the 44 assessment packets. Several strong mechanisms were declined as transferable because they are product-specific, not portable: franken_threed's 256-topology Wasm oracle gate, franken_native_capsule's <code>/proc/self/maps</code> checks, frankenmermaid's canary state machine, frankenlibc's LD_PRELOAD ABI work, and frankengraphdb's fault injection. They are catalogued in the program's uniqueness catalog, not here.</p>
+  <p>Related pages: <a href="../failure-modes/index.html">Common failure modes</a> (the negative patterns) &middot; <a href="../lessons/index.html">Lesson index</a> (every brief's lesson, by topic) &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../index.html">Front door</a></p>
+</footer>
+</div>
+</body>
+</html>

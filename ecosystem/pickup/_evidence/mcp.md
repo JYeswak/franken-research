@@ -1,0 +1,38 @@
+# MCP servers/clients - evidence
+
+All repos below verified via `curl https://api.github.com/repos/<owner>/<repo>` on 2026-09-23 (stars and pushed_at as returned). Dropped: `jlowin/fastmcp` (no longer exists under that owner — returns 404; likely renamed/moved, unverifiable as cited).
+
+## Trend (one line per repo: owner/repo | stars | last push | why it evidences the trend)
+
+- modelcontextprotocol/servers | 90,565 | 2026-09-22 | canonical server collection: 7 reference servers (everything, fetch, filesystem, git, memory, sequentialthinking, time) under `src/` plus official-integrations/community indexes — the de facto "what an MCP server looks like" reference set.
+- modelcontextprotocol/python-sdk | 24,374 | 2026-09-23 | official Python SDK (server+client); pushes same-day, `pip install mcp` is the default server-building path.
+- modelcontextprotocol/typescript-sdk | 13,444 | 2026-09-23 | official TypeScript SDK (Node/Bun/Deno; split `@modelcontextprotocol/server|client` packages plus framework middleware for Express/Fastify/Hono).
+- modelcontextprotocol/modelcontextprotocol | 9,284 | 2026-09-23 | the spec + docs repo (spec at 2025-11-25 per docs); spec evolves as dated revisions (2025-11-25, 2026-07-28) — versioned-wire protocol, evidence of a living standard.
+- modelcontextprotocol/inspector | 10,933 | 2026-09-23 | official visual debugging/testing tool for any MCP server; multi-client layout (`clients/web|cli|tui|launcher`).
+- modelcontextprotocol/registry | 7,280 | 2026-09-22 | official server registration/discovery service — a registry existing at all evidences ecosystem scale.
+- modelcontextprotocol/conformance | 127 | 2026-09-21 | official protocol conformance suite (ships as `@modelcontextprotocol/conformance` npm pkg, has `action.yml` + `SDK_INTEGRATION.md` for SDK vendors). Low stars = tooling, not product; authority comes from being wired into both official SDKs' CI.
+- github/github-mcp-server | 33,149 | 2026-09-22 | first-party production MCP server from GitHub (Go), notable adopter + production-grade CI.
+- upstash/context7 | 62,361 | 2026-09-23 | community/high-profile server (docs-context service), most-starred server implementation found — evidence of broad community building.
+- langchain-ai/langchain-mcp-adapters | 3,658 | 2026-09-16 | LangChain's client-side adapters — evidence of client ecosystem (frameworks consuming MCP tools), not just servers.
+
+## Process practices worth copying (practice | repos exhibiting it | file pointers)
+
+1. **Official protocol conformance harness run in CI, separate from unit tests** | typescript-sdk, python-sdk | `.github/workflows/conformance.yml` in both repos; python-sdk pins harness version in workflow env (`CONFORMANCE_PKG: "@modelcontextprotocol/conformance@0.2.0-alpha.11"`) and runs `./.github/actions/conformance/run-server.sh --suite all --spec-version <rev> --expected-failures ./.github/actions/conformance/expected-failures.<rev>.yml`; ts-sdk runs client+server conformance incl. per-spec-revision (`...:2026`) and extensions legs. For a clean-room project: adopt the harness itself rather than hand-rolling protocol checks.
+2. **Expected-failures baseline files instead of skipping hard scenarios** | python-sdk | `.github/actions/conformance/expected-failures.yml`, `expected-failures.2025-11-25.yml`, `expected-failures.2026-07-28.yml` — failing conformance scenarios are named in YAML, and "tier-check" scores conformance per spec revision; adding an entry is an explicit, reviewable admission. Copy: named-baseline > silent skips.
+3. **Conformance matrix over spec revisions / wire formats** | python-sdk | conformance.yml runs three legs: 2025-11-25 wire, 2026-07-28 wire, default wire — because the spec revs differ (stateful handshake vs stateless per-request `_meta`). Copy: when the protocol versions its wire, test every shipped wire, not just latest.
+4. **Runtime/interpreter version matrix + separate e2e package** | typescript-sdk | `.github/workflows/main.yml`: `test` job matrix `node-version: [20, 22, 24]`, `fail-fast: false`; e2e suite lives in its own package (`@modelcontextprotocol/test-e2e`) excluded from the unit run (`pnpm -r --filter '!@modelcontextprotocol/test-e2e' test`) with its own `test-e2e` matrix job. Copy: isolate slow e2e so unit CI stays fast.
+5. **Monorepo CI with dynamic package discovery** | servers | `.github/workflows/typescript.yml`: `detect-packages` job finds every `src/*/package.json` and fans out a per-server test matrix (`matrix.package`). Copy: one workflow serves N servers, new servers get CI for free.
+6. **Reference "everything" server exercising all protocol primitives** | servers | `src/everything` (documented as "Reference / test server with prompts, resources, and tools"); python-sdk conformance boots `mcp-everything-server` (`uv sync ... --package mcp-everything-server`) as the server under test. Copy: build one kitchen-sink server as the protocol-exercise fixture.
+7. **Dogfooding fixtures: ship test servers with the testing tool** | inspector | repo root `test-servers/` dir; CI (`main.yml`) sizes every job's `timeout-minutes` from measured run history ("HUNG-JOB GUARD... roughly TWICE the slowest run observed") and defaults `permissions: contents: read` with per-job overrides documented inline. Copy: fixture servers + measured, justified timeouts + least-privilege token comments.
+8. **Tool-surface diff gate on PRs** | github/github-mcp-server | `.github/workflows/mcp-diff.yml` — builds the server from base and head and diffs the exposed MCP tool surface (name/schema changes become reviewable). Copy: schema-diff CI is the highest-value MCP-specific gate for a server project; companion code: `pkg/toolvalidation`.
+9. **Spec-versioned type sync check** | typescript-sdk | `.github/workflows/update-spec-types.yml` — workflow regenerating protocol types from the spec so client/server types can't drift from the wire spec. Copy for any SDK reimplementation: generate (or diff-check) types against the spec source of truth.
+10. **CI quality hygiene visible in these repos** | several | concurrency `cancel-in-progress: true` on PRs (both SDKs, servers); python-sdk `all-green` required-status gate via `re-actors/alls-green`; inspector's per-job timeout commentary. Copy the mechanics, not just the badges.
+
+## Notes / caveats (be honest about thin evidence)
+
+- **Conformance harness is alpha** (`0.2.0-alpha.11`) and its repo has only 127 stars; the practice (pin + baseline + tier-check) is what to copy, not a claim of maturity. I did not run the harness, so "how good its coverage is" is unverified.
+- **`servers` star count (90k) measures the whole org's flagship**, not per-server quality; it is a reference/educational collection ("not recommended for direct production use" per the docs page), so its CI (per-server matrix) is the durable process lesson, not its code quality.
+- **upstash/context7 and langchain-mcp-adapters verified for existence/activity only** — I did not inspect their CI/test layout, so they evidence (a) trend only, not (b) process.
+- **Python SDK's exact unit-test matrix (python versions × OS)** lives in `shared.yml` which I only read the caller of; I confirmed the tests dir layout (`tests/{client,server,shared,transports,interaction,...}`) but not the matrix dimensions — verify before citing specifics.
+- **`jlowin/fastmcp` 404s** at the remembered owner; FastMCP-as-evidence dropped rather than guessed at a new location.
+- SDK language coverage (Rust, Go, Java, Kotlin, PHP, Ruby, Swift SDKs exist per the ecosystem table) was not individually verified — only TypeScript and Python SDKs were API-checked.

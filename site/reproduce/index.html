@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reproduce a verdict — FrankenSuite</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="description" content="The procedure for re-deriving an assessment verdict: pin the commit, re-run the checks, work the claim inventory, apply evidence tiers. Worked exemplar: franken_threed, 61/61 tests re-executed.">
+<meta property="og:title" content="Reproduce a verdict — FrankenSuite">
+<meta property="og:description" content="The procedure for re-deriving an assessment verdict: pin the commit, re-run the checks, work the claim inventory, apply evidence tiers. Worked exemplar: franken_threed, 61/61 tests re-executed.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>/* FrankenSuite practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.router{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;font-family:var(--sans);font-size:13.5px;color:var(--ink-dim);
+  margin:14px 0}
+.router a{color:var(--accent);font-weight:600}
+.vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
+  padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
+.vocab b{color:var(--ink)}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0}
+.card h2{font-size:20px;margin:0 0 6px;color:var(--ink);line-height:1.35}
+.card h2 .n{color:var(--accent);font-family:var(--sans);font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.card p{font-size:15.5px;line-height:1.65;margin:8px 0}
+pre{background:#0b0e13;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-family:var(--mono);font-size:13px;line-height:1.6;
+  color:#cdd7ea;overflow-x:auto;white-space:pre}
+pre .c{color:var(--muted)}
+.tier{margin:8px 0;font-size:14.5px;line-height:1.6}
+.tier .tn{color:var(--gold);font-weight:700;margin-right:8px;font-family:var(--sans);font-size:13px}
+.check{margin:8px 0 0;padding:0;list-style:none}
+.check li{margin:10px 0;font-size:15.5px;line-height:1.65;padding:8px 10px 8px 34px;
+  background:var(--bg-3);border-radius:6px;position:relative}
+.check li::before{content:"\2610";position:absolute;left:10px;top:8px;
+  font-family:var(--sans);color:var(--accent);font-size:16px}
+.check li b{color:var(--ink)}
+.callout{border-left:3px solid var(--amber);padding:6px 0 6px 14px;margin:12px 0;
+  color:#d8d2c2;font-size:14.5px;line-height:1.6}
+.callout b{color:var(--amber);font-family:var(--sans);font-size:13px;
+  letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; FrankenSuite front door</a>
+  <span class="peers">
+    <a href="../techniques/index.html">Transferable techniques</a>
+    <a href="../failure-modes/index.html">Failure modes</a>
+    <a href="../lessons/index.html">Lesson index</a>
+    <a href="../method/index.html">Method</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Reproduce a verdict</h1>
+  <p class="sub">Every packet on this site is an auditable artifact, and this page makes the audit repeatable. Reproducing a verdict does not mean re-running the whole assessment. It means re-deriving the load-bearing evidence under the same protocol the packet used, and checking whether the verdict survives your run. The procedure has four steps; <a href="../briefs/franken_threed.html">franken_threed</a> is the worked exemplar because its assessor independently re-executed the test suite: 61 of 61 green.</p>
+</header>
+
+<p class="router">Assessors: the protocol is <a href="../RULEBOOK.md">RULEBOOK.md</a> &nbsp;&middot;&nbsp; Builders: the runnable kit is <a href="../starter-kit/">starter-kit/</a> &nbsp;&middot;&nbsp; Researchers: the suite synthesis starts at <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a></p>
+
+<div class="vocab"><b>Six definitions.</b> The <b>pin</b> is the exact commit hash the assessment froze on; every claim is evaluated at the pin, not at HEAD. A <b>claim</b> is a checkable assertion a project makes in public. The <b>claim inventory</b> is the packet's claim table: every substantive claim, its recorded status, and the evidence behind it. <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor). <b>TRL</b> is technology readiness level, scored 1 to 9. <b>CI</b> is continuous integration: the project's automated test runs. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them.</div>
+
+<main id="main">
+
+<div class="card">
+  <h2><span class="n">Step 1</span>Pin the commit</h2>
+  <p>Find the pin in the packet's header (the "Pinned commit" line in the packet's method section). Clone the repository and check out that exact commit. Never work at HEAD: the pin is the assessed artifact, and anything newer is a different assessment.</p>
+  <p>The franken_threed exemplar: pin <code>72dcaa1adbad6b3d552a071cc7db31a16ee4ba9d</code> (2026-09-22 11:10:21 −0400), which was HEAD at assessment time. The assessor shallow-cloned the repository (depth 380, reaching the 2026-09-09 initial commit) and set the working tree to the pin. The packet warns that the pin was HEAD when assessed and a newer commit may exist by read time: re-pin before citing.</p>
+<pre><span class="c"># franken_threed exemplar</span>
+git clone --depth 380 https://github.com/Dicklesworthstone/franken_threed.git
+cd franken_threed
+git checkout 72dcaa1adbad6b3d552a071cc7db31a16ee4ba9d</pre>
+</div>
+
+<div class="card">
+  <h2><span class="n">Step 2</span>Re-run the checks</h2>
+  <p>The project's own CI workflow is the reference: read <code>.github/workflows/</code> in the pinned tree and reproduce its gates locally. Prefer the gates the packet marks as the strongest evidence; those are the ones whose failure would move the verdict.</p>
+  <p>The franken_threed exemplar: the "Marching cubes integration" workflow. The assessor reproduced it locally in three parts: install the toolchain dependencies, check out the oracle (the pinned three.js r186 at <code>148ef33ecb6d2502ff796d4554abd1549c95d519</code>, recorded in <code>upstream/PIN.md</code>, with the oracle blob SHA-1 <code>29a405be…</code> verified before use), then run the three test suites with the oracle root set.</p>
+<pre><span class="c"># franken_threed exemplar: the full CI trio, re-executed by the assessor</span>
+cd tools
+npm ci --ignore-scripts
+<span class="c"># sparse checkout of three.js at the pinned r186 commit (oracle);</span>
+<span class="c"># verify the oracle blob SHA-1 (29a405be…) before use</span>
+F3D_THREE_ROOT=/path/to/three-r186 node --test marching_cubes_numeric
+<span class="c"># 23/23 pass</span>
+F3D_THREE_ROOT=/path/to/three-r186 node --test marching_cubes_adapter marching_cubes_bundle
+<span class="c"># 38/38 pass — 61/61 green in ~21 s on Node v24</span></pre>
+  <div class="callout"><b>Record the warts</b>The assessor hit one local-only hiccup: the bundle suite needs <code>build/three.module.js</code> alongside <code>three.core.js</code> in the sparse oracle checkout. That is a sparse-checkout artifact, not a repo defect, and it goes in your notes, not your verdict.</div>
+  <p>The same workflow was green on GitHub Actions at the pin (run created 2026-09-22T15:10Z, conclusion success). Your local re-run and the CI-observed run are two independent executions of the same suites: that is the reproduction.</p>
+</div>
+
+<div class="card">
+  <h2><span class="n">Step 3</span>Work the claim inventory</h2>
+  <p>Open the packet's claim table. For each load-bearing claim (the ones the verdict section leans on), compare the packet's recorded status against what your re-run shows. Claims that survive independent execution get upgraded in confidence; claims that don't get demoted with the counter-evidence you found.</p>
+  <p>The franken_threed exemplar: claims 4, 5, and 6 (the differential harness description, the harness claim, and the CI-green-at-pin claim) were upgraded to Verified-executed after the assessor's 61/61 re-run. Claim 21 records the honest boundary: the compiler's own unit suites run 76/79 at the pin, and the 3 failures were characterized as stale refusal-contract and error-text tests, not miscompilations, so the project's CI gate covers the marching-cubes exemplar, not the compiler's full contract. The packet's verdict section states what the re-run did and did not prove: the numeric-specialization slice verifies at High confidence; the outcome claims (speedups, the full application pipeline) are explicitly disavowed or unmeasured by the maintainer.</p>
+  <p>Full procedure reference: <a href="../packets/franken_threed-assessment.md">franken_threed-assessment.md</a>, method at line 5, strongest-evidence summary at line 20, claim inventory rows 4–6 at lines 93–95, the 76/79 characterization at line 110, and the measured reproduction cost at line 141.</p>
+</div>
+
+<div class="card">
+  <h2><span class="n">Step 4</span>Apply evidence tiers</h2>
+  <p>Every claim in your re-derivation carries a tier and a confidence grade. A claim without both is a draft note, not a finding. These are the program's own tiers, from the assessment protocol (<a href="../RULEBOOK.md">RULEBOOK.md</a>), also taught on the <a href="../method/index.html">method page</a>:</p>
+  <div class="tier"><span class="tn">1 · Verified</span><b></b>Confirmed by direct inspection of a fresh clone, an API response, or a live page read by the analyst. Your local 61/61 re-run lands here, graded Verified-executed.</div>
+  <div class="tier"><span class="tn">2 · CI-observed</span>Observed executing on live CI pages. Attests the suite <em>runs</em>, not that it is green, unless pass/fail is legible.</div>
+  <div class="tier"><span class="tn">3 · Maintainer claim</span>Asserted in README/docs by the maintainer; not independently executed or reproduced.</div>
+  <div class="tier"><span class="tn">4 · External</span>Independent sources: APIs, papers, press, third-party benchmarks. Absence of coverage is reported as a finding.</div>
+  <div class="tier"><span class="tn">5 · Inference</span>The analyst's judgment. Always labeled; never presented as fact.</div>
+  <p>Confidence grades: High (multiple converging sources or direct inspection), Medium (single solid source, plausible), Low (thin evidence, extrapolation).</p>
+</div>
+
+<div class="card">
+  <h2><span class="n">Checklist</span>The general procedure, for any of the 44 packets</h2>
+  <ul class="check">
+    <li><b>Locate the pin.</b> Each packet's header records the pinned commit hash and its timestamp. Clone at that commit. If the packet warns the pin was HEAD at assessment time, note the possibility of drift and do not silently substitute HEAD.</li>
+    <li><b>Read the packet's method section first.</b> It records exactly what the analyst executed (tools run, artifacts fetched, APIs queried) and the toolchain used. Match the environment where it matters (the exemplar ran on Node v24; runtimes change results).</li>
+    <li><b>Re-run the project's own checks, not your own.</b> The <code>.github/workflows/</code> files in the pinned tree are the reference implementation of the gates. Where a gate needs credentials you lack (private runners, live oracles), record a typed skip: which gate, why it could not run, and that its evidence tier stays at Maintainer claim or CI-observed, never upgraded.</li>
+    <li><b>Re-execute the strongest evidence first.</b> Every packet has a "strongest evidence" summary. That is the load-bearing row of the claim inventory; if it reproduces, the verdict's foundation holds, and if it doesn't, you have found the most important sentence in your report.</li>
+    <li><b>Work the full claim inventory, row by row.</b> For each claim, record: the packet's recorded status, your result, the tier your result earns, and any counter-evidence. Demotion needs counter-evidence, not vibes.</li>
+    <li><b>Honor the "Not done" list.</b> Every packet records what the analyst did not attempt (the exemplar: no Rust toolchain installed, nothing in <code>crates/</code> compiled, no browser ran, no benchmark reproduced). Your reproduction inherits those boundaries. Do not overclaim past them.</li>
+    <li><b>Record divergences explicitly.</b> Toolchain versions, sparse-checkout artifacts, oracle verification steps, any step you skipped and why. A reproduction whose environment differs from the packet's without disclosure is a new claim, not a confirmation.</li>
+    <li><b>Check the verdict-change conditions.</b> Each brief carries a "What would change the verdict, in order" section. Test the necessary condition first: if your re-run breaks it, the verdict moves; if it holds, the verdict stands and your work is corroboration.</li>
+  </ul>
+</div>
+
+</main>
+
+<footer>
+  <p>Worked exemplar: <a href="../briefs/franken_threed.html">franken_threed brief</a> and <a href="../packets/franken_threed-assessment.md">franken_threed-assessment.md</a> (method at line 5, claim inventory at line 94, reproduction cost at line 141). Protocol: <a href="../RULEBOOK.md">RULEBOOK.md</a>. Evidence tiers are also taught on the <a href="../method/index.html">method page</a>.</p>
+  <p>Related pages: <a href="../techniques/index.html">Transferable techniques</a> &middot; <a href="../failure-modes/index.html">Common failure modes</a> &middot; <a href="../lessons/index.html">Lesson index</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../index.html">Front door</a></p>
+</footer>
+</div>
+</body>
+</html>

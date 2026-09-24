@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Common failure modes — FrankenSuite</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="description" content="Eleven failure patterns that recurred across the 44 assessed FrankenSuite repos, with exact counts and named instances.">
+<meta property="og:title" content="Common failure modes — FrankenSuite">
+<meta property="og:description" content="Eleven failure patterns that recurred across the 44 assessed FrankenSuite repos, with exact counts and named instances.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>/* FrankenSuite practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.router{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;font-family:var(--sans);font-size:13.5px;color:var(--ink-dim);
+  margin:14px 0}
+.router a{color:var(--accent);font-weight:600}
+.vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
+  padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
+.vocab b{color:var(--ink)}
+.count-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.chip{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;
+  padding:5px 14px;font-size:13px;font-family:var(--sans);color:var(--ink-dim)}
+.chip b{color:var(--red)}
+.tierkey{font-size:13px;color:var(--muted);font-family:var(--sans);margin:10px 0 0}
+.tierkey code{font-size:12px}
+.fail{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0;border-left:3px solid var(--red)}
+.fail h2{font-size:20px;margin:0 0 4px;color:var(--ink);line-height:1.35}
+.fail h2 .n{color:var(--red);font-family:var(--sans);font-size:14px;
+  display:block;margin-bottom:2px;letter-spacing:.08em}
+.count{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0 0 8px}
+.count b{color:var(--red);font-size:15px}
+.fail p{font-size:15.5px;line-height:1.65;margin:8px 0}
+.instances{margin:8px 0 0;padding:0;list-style:none;font-size:14.5px}
+.instances li{margin:5px 0;padding:6px 10px;background:var(--bg-3);
+  border-radius:6px;line-height:1.55}
+.instances li .repo{font-family:var(--sans);font-weight:700;font-size:13px}
+details{margin:10px 0}
+summary{cursor:pointer;font-family:var(--sans);font-size:13.5px;color:var(--accent);
+  font-weight:600}
+summary:hover{text-decoration:underline}
+.note{font-size:13.5px;color:var(--muted);font-family:var(--sans)}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; FrankenSuite front door</a>
+  <span class="peers">
+    <a href="../techniques/index.html">Transferable techniques</a>
+    <a href="../lessons/index.html">Lesson index</a>
+    <a href="../reproduce/index.html">Reproduce a verdict</a>
+    <a href="../method/index.html">Method</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Common failure modes</h1>
+  <p class="sub">Eleven patterns that recurred across the 44 assessed repos, counted exactly where a count could be reconciled, with named instances. These are the #2 practitioner question in one scroll: what goes wrong when one person directs an agent swarm at a clean-room rewrite. Every instance links to its brief and, from there, to the full packet.</p>
+</header>
+
+<p class="router">Assessors: the protocol is <a href="../RULEBOOK.md">RULEBOOK.md</a> &nbsp;&middot;&nbsp; Builders: the runnable kit is <a href="../starter-kit/">starter-kit/</a> &nbsp;&middot;&nbsp; Researchers: the suite synthesis starts at <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a></p>
+
+<div class="vocab"><b>Six definitions.</b> <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet. <b>CI</b> is continuous integration: the project's automated test runs (GitHub Actions or equivalent). The <b>pin</b> is the exact commit the assessment froze on; every claim is evaluated at the pin, not at HEAD. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them. <b>Bus factor</b> is how many people can leave before the project stalls; it is 1 for every repo here.</div>
+
+<div class="count-chips">
+  <span class="chip"><b>11</b> patterns</span>
+  <span class="chip">Counts reconciled against the 44 packets</span>
+  <span class="chip">Named instance per repo where the pattern applies</span>
+</div>
+<p class="tierkey">Tier labels: <code>[Verified]</code> confirmed by direct inspection &middot; <code>[CI-observed]</code> observed executing on live CI &middot; <code>[Maintainer claim]</code> asserted by the maintainer, not independently executed &middot; <code>[External]</code> independent sources &middot; <code>[Inference]</code> the analyst's judgment. Confidence: High / Medium / Low.</p>
+
+<main id="main">
+
+<div class="fail">
+  <h2><span class="n">P1</span>Bus factor 1</h2>
+  <p class="count"><b><span data-stat="total">44</span>/<span data-stat="total">44</span></b> [Verified, High]</p>
+  <p>Every packet reports a single human maintainer with no second committer, no foundation, no succession plan. This is the one truly universal structural fact in the corpus. It is distinct from P3: bus factor is observed from commit authorship; P3 is a stated policy.</p>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P2</span>The OpenAI/Anthropic license rider</h2>
+  <p class="count"><b><span data-stat="riderCount">38</span>/<span data-stat="total">44</span></b> [Verified, High]</p>
+  <p>The non-OSI MIT+OpenAI/Anthropic rider withholds all rights, including benchmarking, testing, analyzing, and indexing, from OpenAI, Anthropic, their affiliates, and anyone acting for them. Breach typically means automatic termination plus a duty to destroy all copies (e.g. <a href="../briefs/frankensim.html">frankensim</a>, <a href="../briefs/frankenpandas.html">frankenpandas</a>). The rider was added after plain MIT (no license, then plain MIT on 2026-01-21, then the rider on 2026-02-21, then suite-wide enforcement) [Maintainer claim, High]. No direct maintainer rationale or legal-enforceability argument was found in the writing; anti-training intent is [Inference, Medium], not a maintainer statement.</p>
+  <p class="note">Exceptions: <a href="../briefs/franken_agent_detection.html">franken_agent_detection</a> is plain MIT with no rider (<span data-stat="mitCount">1</span>/<span data-stat="total">44</span>), and five repos have no LICENSE or no operative grant (<span data-stat="noneCount">5</span>/<span data-stat="total">44</span>): <a href="../briefs/beads-for-frankentui.html">beads-for-frankentui</a>, <a href="../briefs/beads_for_franken_engine.html">beads_for_franken_engine</a>, <a href="../briefs/franken_native_capsule.html">franken_native_capsule</a>, <a href="../briefs/frankensim_website.html">frankensim_website</a>, <a href="../briefs/frankensqlite_website.html">frankensqlite_website</a>.</p>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P3</span>Explicit refusal of outside contributions</h2>
+  <!-- STAT: synthesis/negative-patterns.md P3 (not in data.js) -->
+  <p class="count"><b>19/44</b> [Maintainer claim, High]</p>
+  <p>Not inferred from bus factor or contribution files. Canonical wording (<a href="../briefs/frankenpandas.html">frankenpandas</a> README): "I do not accept outside contributions for any of my projects&hellip; I'll have Claude or Codex review submissions via <code>gh</code>" [Verified, High]. Named: <a href="../briefs/asupersync.html">asupersync</a>, <a href="../briefs/franken_agent_detection.html">franken_agent_detection</a>, <a href="../briefs/franken_code_browser.html">franken_code_browser</a>, <a href="../briefs/franken_lean.html">franken_lean</a>, <a href="../briefs/franken_manim.html">franken_manim</a>, <a href="../briefs/franken_markdown_website.html">franken_markdown_website</a>, <a href="../briefs/franken_nlp.html">franken_nlp</a>, <a href="../briefs/franken_ocr.html">franken_ocr</a>, <a href="../briefs/franken_snowflake.html">franken_snowflake</a>, <a href="../briefs/franken_tts.html">franken_tts</a>, <a href="../briefs/frankenfs.html">frankenfs</a>, <a href="../briefs/frankenjax.html">frankenjax</a>, <a href="../briefs/frankenpandas.html">frankenpandas</a>, <a href="../briefs/frankensim.html">frankensim</a>, <a href="../briefs/frankensim_website.html">frankensim_website</a>, <a href="../briefs/frankensqlite.html">frankensqlite</a>, <a href="../briefs/frankensqlite_website.html">frankensqlite_website</a>, <a href="../briefs/frankenterm.html">frankenterm</a>, <a href="../briefs/frankentui_website.html">frankentui_website</a>.</p>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P4</span>Documentation, status, and evidence drift</h2>
+  <p class="count"><b><span data-stat="total">44</span>/<span data-stat="total">44</span></b> [Verified, High]</p>
+  <p>Framed broadly: README-vs-tree, badge-vs-CI, status-page-vs-pin, count staleness, release-note-vs-artifact. The program's own counter-machinery (franken_markdown's <code>claims.tsv</code> gate, franken_engine's claim matrix, frankengit's auto-demotion, franken_node's honesty manifest) has not stopped the pattern anywhere, including in the projects that built the machinery. One named instance per project:</p>
+  <details open><summary>Show all <span data-stat="total">44</span> named instances</summary>
+  <ul class="instances">
+    <li><span class="repo"><a href="../briefs/asupersync.html">asupersync</a></span> — own drift audit found two hits (ecosystem tagline disproven; baseline.json drift)</li>
+    <li><span class="repo"><a href="../briefs/beads-for-frankentui.html">beads-for-frankentui</a></span> — drift ledger: 3,696 vs 3,700 counts; stale CHANGELOG file table</li>
+    <li><span class="repo"><a href="../briefs/beads_for_franken_engine.html">beads_for_franken_engine</a></span> — "Live Dashboard" headline vs 197-day-stale data</li>
+    <li><span class="repo"><a href="../briefs/franken_agent_detection.html">franken_agent_detection</a></span> — README/mod.rs say "15 connectors"; tree has 34 slugs, 32 connectors</li>
+    <li><span class="repo"><a href="../briefs/franken_alignment.html">franken_alignment</a></span> — README present-tense/spec marketing vs pinned reality</li>
+    <li><span class="repo"><a href="../briefs/franken_code_browser.html">franken_code_browser</a></span> — IMPLEMENTATION_STATUS.md eight days stale at a ten-day-old tree</li>
+    <li><span class="repo"><a href="../briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a></span> — README/IMPLEMENTATION_STATUS say "28 members"; tree has 30</li>
+    <li><span class="repo"><a href="../briefs/franken_engine.html">franken_engine</a></span> — "Code Surface At A Glance" table stale on every count one month after verification</li>
+    <li><span class="repo"><a href="../briefs/franken_lean.html">franken_lean</a></span> — README "note on tense" confesses present-tense target sold as present state</li>
+    <li><span class="repo"><a href="../briefs/franken_manim.html">franken_manim</a></span> — README written in present tense as if the 1.0 design were realized; stale release summary</li>
+    <li><span class="repo"><a href="../briefs/franken_markdown.html">franken_markdown</a></span> — 146,322 src lines at HEAD vs ~138,500 at the v1 draft's HEAD days apart</li>
+    <li><span class="repo"><a href="../briefs/franken_markdown_website.html">franken_markdown_website</a></span> — Lab Notes strip "0.3.5" vs 0.4.2 wired vs 0.4.1 live</li>
+    <li><span class="repo"><a href="../briefs/franken_native_capsule.html">franken_native_capsule</a></span> — nonexistent <code>repository</code> URL; stale repository URL</li>
+    <li><span class="repo"><a href="../briefs/franken_networkx.html">franken_networkx</a></span> — README a drift source: tie-break 13→12, fuzz targets 33→34, delegation table, coverage matrix</li>
+    <li><span class="repo"><a href="../briefs/franken_nlp.html">franken_nlp</a></span> — README/status-surface drift; present-tense problem</li>
+    <li><span class="repo"><a href="../briefs/franken_node.html">franken_node</a></span> — benchmark fixtures reference franken_node "0.9.0" (no such release); v0.1.0 targets earlier commit</li>
+    <li><span class="repo"><a href="../briefs/franken_numpy.html">franken_numpy</a></span> — README badge "G1 green" while CI fails at the G1 clippy gate at the pin [CI-observed, High]</li>
+    <li><span class="repo"><a href="../briefs/franken_ocr.html">franken_ocr</a></span> — v0.8.0 badges vs v0.9.0 reality; "13–17 MB" binaries are 20.6–28.5 MB</li>
+    <li><span class="repo"><a href="../briefs/franken_overlap.html">franken_overlap</a></span> — README present-tense spec; unmeasured superlatives</li>
+    <li><span class="repo"><a href="../briefs/franken_remote.html">franken_remote</a></span> — README "Develop and verify" stale on structure</li>
+    <li><span class="repo"><a href="../briefs/franken_snowflake.html">franken_snowflake</a></span> — badge "read + write live-success" vs <code>in_progress</code> proof bead</li>
+    <li><span class="repo"><a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a></span> — README "does not yet acquire camera feeds" contradicted by shipped code</li>
+    <li><span class="repo"><a href="../briefs/franken_threed.html">franken_threed</a></span> — README claims "no implementation" on a 217k-line tree</li>
+    <li><span class="repo"><a href="../briefs/franken_tts.html">franken_tts</a></span> — README still lists killed speculative-drafting in payoff; badge 0.1.9 vs Cargo.toml 0.1.10</li>
+    <li><span class="repo"><a href="../briefs/franken_whisper.html">franken_whisper</a></span> — repo description "107K lines, 2000+ tests, zero unsafe" vs 365,978 lines and 33 unsafe blocks; CHANGELOG scope ends 2026-08-24</li>
+    <li><span class="repo"><a href="../briefs/frankenfs.html">frankenfs</a></span> — CHANGELOG scope window ends 2026-08-19, HEAD 2026-09-22; parity/manifest staleness</li>
+    <li><span class="repo"><a href="../briefs/frankengit.html">frankengit</a></span> — crate count 47→49 and LOC drift between packet drafts days apart; lockfile newer than profile doc</li>
+    <li><span class="repo"><a href="../briefs/frankengraphdb.html">frankengraphdb</a></span> — README-vs-code drift class</li>
+    <li><span class="repo"><a href="../briefs/frankenjax.html">frankenjax</a></span> — README contradicts tree: 118 vs 162 primitives, 15 vs 17 crates</li>
+    <li><span class="repo"><a href="../briefs/frankenlibc.html">frankenlibc</a></span> — drift instances documented in packet §4; badge/status vs pin</li>
+    <li><span class="repo"><a href="../briefs/frankenmermaid.html">frankenmermaid</a></span> — README internally inconsistent</li>
+    <li><span class="repo"><a href="../briefs/frankenpandas.html">frankenpandas</a></span> — four README spots stale; two DISCREPANCIES.md entries stale</li>
+    <li><span class="repo"><a href="../briefs/frankenredis.html">frankenredis</a></span> — README counts 13 crates vs 16 at pin; "every component forbids unsafe" false</li>
+    <li><span class="repo"><a href="../briefs/frankenscipy.html">frankenscipy</a></span> — README says 10,056 tests (10,174 counted); "not yet published" vs published</li>
+    <li><span class="repo"><a href="../briefs/frankensearch.html">frankensearch</a></span> — AGENTS.md still says "Tantivy BM25", stale since the 2026-09-01 Quill ruling</li>
+    <li><span class="repo"><a href="../briefs/frankensim.html">frankensim</a></span> — 880 tracked test files vs 1,082 on disk 11 hours after inventory regeneration</li>
+    <li><span class="repo"><a href="../briefs/frankensim_website.html">frankensim_website</a></span> — copy lags the code</li>
+    <li><span class="repo"><a href="../briefs/frankensqlite.html">frankensqlite</a></span> — project-structure tree lists <code>fsqlite-types</code> at "2,800+ LOC, 64 tests" vs actual</li>
+    <li><span class="repo"><a href="../briefs/frankensqlite_website.html">frankensqlite_website</a></span> — "26-crate workspace" vs 28 counted; staleness enforced by its own tests</li>
+    <li><span class="repo"><a href="../briefs/frankensympy.html">frankensympy</a></span> — README "green workspace tests" vs 786 consecutive red runs [CI-observed, High]</li>
+    <li><span class="repo"><a href="../briefs/frankenterm.html">frankenterm</a></span> — count stamps lag core LOC by ~50% (measured by the project's own stamper)</li>
+    <li><span class="repo"><a href="../briefs/frankentorch.html">frankentorch</a></span> — drift a structural liability at 6,305 commits</li>
+    <li><span class="repo"><a href="../briefs/frankentui.html">frankentui</a></span> — phantom v0.9.0: CHANGELOG claims release + crates.io 0.9.0; reality v0.8.0 / crates.io 0.7.0 [External, High]</li>
+    <li><span class="repo"><a href="../briefs/frankentui_website.html">frankentui_website</a></span> — "12 Workspace Crates" vs kernel's 20 at HEAD; "V0.1.1 Alive on Crates.io" is February truth</li>
+  </ul>
+  </details>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P5</span>CI that cannot certify the pin</h2>
+  <p class="count"><b><span data-stat="notGreen">42</span>/<span data-stat="total">44</span></b> [CI-observed, High]</p>
+  <p>Only <a href="../briefs/frankenscipy.html">frankenscipy</a> (G1–G9 green at pin) and <a href="../briefs/franken_threed.html">franken_threed</a> (green at pin plus analyst re-run) have public CI green at the assessed commit: <b><span data-stat="greenCount">2</span>/<span data-stat="total">44</span></b>. The other 42 split as follows. Narrow green lanes inside red projects (frankenfs's Artifact Gates, franken_snowflake's dependency-admissibility gate, frankenpandas's 15/19 green jobs) do not change the project verdicts.</p>
+  <ul class="instances">
+    <li><span class="repo">Red at pin — <span data-stat="ciC2">11</span>/<span data-stat="total">44</span></span> <a href="../briefs/franken_agent_detection.html">franken_agent_detection</a>, <a href="../briefs/franken_engine.html">franken_engine</a>, <a href="../briefs/franken_lean.html">franken_lean</a>, <a href="../briefs/franken_node.html">franken_node</a>, <a href="../briefs/franken_numpy.html">franken_numpy</a>, <a href="../briefs/frankenredis.html">frankenredis</a>, <a href="../briefs/frankenlibc.html">frankenlibc</a>, <a href="../briefs/frankensympy.html">frankensympy</a>, <a href="../briefs/frankentorch.html">frankentorch</a>, <a href="../briefs/frankenfs.html">frankenfs</a>, <a href="../briefs/frankenpandas.html">frankenpandas</a></li>
+    <li><span class="repo">CI exists but no pin verdict — <span data-stat="ciC3">6</span>/<span data-stat="total">44</span></span> <a href="../briefs/franken_networkx.html">franken_networkx</a>, <a href="../briefs/asupersync.html">asupersync</a>, <a href="../briefs/franken_manim.html">franken_manim</a>, <a href="../briefs/franken_remote.html">franken_remote</a>, <a href="../briefs/franken_snowflake.html">franken_snowflake</a>, <a href="../briefs/frankengit.html">frankengit</a></li>
+    <li><!-- STAT: site data-contract taxonomy (data.js): C4=10; frankenjax reclassified to C6, disclosed on method page --><span class="repo">No test CI or deploy-only — 10/44</span> per the CI-requirements matrix; see each packet for the named lane</li>
+    <li><span class="repo">CI disabled or deleted — <span data-stat="ciC5">8</span>/<span data-stat="total">44</span></span> <a href="../briefs/franken_nlp.html">franken_nlp</a>, <a href="../briefs/franken_overlap.html">franken_overlap</a>, <a href="../briefs/franken_markdown.html">franken_markdown</a>, <a href="../briefs/franken_ocr.html">franken_ocr</a>, <a href="../briefs/frankentui.html">frankentui</a>, <a href="../briefs/frankengraphdb.html">frankengraphdb</a>, <a href="../briefs/frankensearch.html">frankensearch</a>, <a href="../briefs/frankensqlite.html">frankensqlite</a></li>
+    <li><!-- STAT: site data-contract taxonomy (data.js): C6=7; frankenjax reclassified from C4, disclosed on method page --><span class="repo">Private DSR/RCH/self-hosted-only, unobservable — 7/44</span> <a href="../briefs/franken_alignment.html">franken_alignment</a>, <a href="../briefs/frankensim.html">frankensim</a>, <a href="../briefs/frankenterm.html">frankenterm</a>, <a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a>, <a href="../briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a>, <a href="../briefs/franken_tts.html">franken_tts</a>, <a href="../briefs/frankenjax.html">frankenjax</a></li>
+  </ul>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P6</span>Release artifact missing or not covering the pin</h2>
+  <!-- STAT: synthesis/negative-patterns.md P6 (not in data.js) -->
+  <p class="count"><b>29/44</b> [External, High]</p>
+  <ul class="instances">
+    <li><!-- STAT: synthesis/negative-patterns.md P6 (not in data.js) --><span class="repo">No release or tag — 23/44</span> <a href="../briefs/beads-for-frankentui.html">beads-for-frankentui</a>, <a href="../briefs/beads_for_franken_engine.html">beads_for_franken_engine</a>, <a href="../briefs/franken_alignment.html">franken_alignment</a>, <a href="../briefs/franken_code_browser.html">franken_code_browser</a>, <a href="../briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a>, <a href="../briefs/franken_lean.html">franken_lean</a>, <a href="../briefs/franken_nlp.html">franken_nlp</a>, <a href="../briefs/franken_native_capsule.html">franken_native_capsule</a>, <a href="../briefs/franken_overlap.html">franken_overlap</a>, <a href="../briefs/franken_remote.html">franken_remote</a>, <a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a>, <a href="../briefs/franken_threed.html">franken_threed</a>, <a href="../briefs/frankengit.html">frankengit</a>, <a href="../briefs/frankengraphdb.html">frankengraphdb</a>, <a href="../briefs/frankenjax.html">frankenjax</a>, <a href="../briefs/frankenlibc.html">frankenlibc</a>, <a href="../briefs/frankensympy.html">frankensympy</a>, <a href="../briefs/frankentorch.html">frankentorch</a>, <a href="../briefs/frankensim.html">frankensim</a>, <a href="../briefs/franken_markdown_website.html">franken_markdown_website</a>, <a href="../briefs/frankensim_website.html">frankensim_website</a>, <a href="../briefs/frankensqlite_website.html">frankensqlite_website</a>, <a href="../briefs/frankentui_website.html">frankentui_website</a></li>
+    <li><!-- STAT: synthesis/negative-patterns.md P6 (not in data.js) --><span class="repo">Release targets an earlier commit — 5/44</span> <a href="../briefs/frankenredis.html">frankenredis</a> (v0.1.0, 24 signed assets targeting an earlier commit), <a href="../briefs/franken_networkx.html">franken_networkx</a> (v0.2.2, 23 signed assets targeting an earlier commit; PyPI serves 0.2.1), <a href="../briefs/franken_engine.html">franken_engine</a> (v0.1.0, 6 assets targeting an earlier commit), <a href="../briefs/frankenpandas.html">frankenpandas</a> (v0.3.0 releases targeting an earlier tag), <a href="../briefs/franken_node.html">franken_node</a> (v0.1.0, 6 assets targeting an earlier commit)</li>
+    <li><!-- STAT: synthesis/negative-patterns.md P6 (not in data.js) --><span class="repo">Phantom release — 1/44</span> <a href="../briefs/frankentui.html">frankentui</a> (CHANGELOG's v0.9.0 has no tag, no GitHub Release, no crates.io package)</li>
+  </ul>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P7</span>Zero independent validation</h2>
+  <p class="count"><b><span data-stat="total">44</span>/<span data-stat="total">44</span></b> [External, High]</p>
+  <p>No packet found a third-party benchmark, code review, or production deployment of the assessed project, within the recall limits of the packet surveys. Partial external signals that are <em>not</em> validation: <a href="../briefs/asupersync.html">asupersync</a> has registry-scale distribution (318,241 crates.io downloads, 78 reverse-dependency crate versions, some suite-internal); <a href="../briefs/franken_agent_detection.html">franken_agent_detection</a> has 21,189 downloads and a downstream integration (CASS, same maintainer); several projects show trace downloads or stars (e.g. <a href="../briefs/franken_markdown.html">franken_markdown</a> 104 stars/151 downloads, <a href="../briefs/franken_ocr.html">franken_ocr</a> 2–81 per binary, <a href="../briefs/frankenscipy.html">frankenscipy</a> 11–45 per crate). Distribution is not validation, and a downstream integration by the same maintainer is not independent.</p>
+  <p class="note">The maintainer's own writing argues internal guardrails should not be trusted and demands external hard evidence (the 2024 alignment essays) [Maintainer claim, High], while the suite's negative evidence is almost entirely self-published. Credit the candor; do not treat it as independent validation [Inference, High].</p>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P8</span>Negative-evidence ledger culture (exact count declined)</h2>
+  <p class="count"><b>program-wide; n/44 declined as unreconciled</b> [Verified, High]</p>
+  <p>Publishing killed findings is the suite's signature honesty move. Largest counted: <a href="../briefs/franken_numpy.html">franken_numpy</a> (67,641 lines), <a href="../briefs/frankenpandas.html">frankenpandas</a> (44,086), <a href="../briefs/frankenscipy.html">frankenscipy</a> (44,078), <a href="../briefs/frankentorch.html">frankentorch</a> (42,708), <a href="../briefs/frankenlibc.html">frankenlibc</a> (41,205), <a href="../briefs/franken_networkx.html">franken_networkx</a> (37,116), <a href="../briefs/franken_whisper.html">franken_whisper</a> (26,846), <a href="../briefs/frankenredis.html">frankenredis</a> (26,485). Typed variants: <a href="../briefs/frankengit.html">frankengit</a> (34 rows, 13 required classes), <a href="../briefs/frankenmermaid.html">frankenmermaid</a> (726 rows, mandatory A/A nulls). Thin end: <a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a> (48 lines). Two briefs estimated 22 and 23 packets; only 9 assessments assert a counted ledger size, so no exact n/44 is published. The ledger is shared culture; the <em>schema discipline</em> (required entry classes, prose/TSV correspondence, fail-closed finalizers) is not.</p>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P9</span>Velocity structurally exceeding review depth</h2>
+  <p class="count"><b>named instances</b> [External, High]</p>
+  <p>Commit velocity outruns any human's capacity to review it, and in one quantified case outruns the project's own audit machinery. Named instances:</p>
+  <ul class="instances">
+    <li><span class="repo"><a href="../briefs/franken_engine.html">franken_engine</a></span> — 96 commits in one day; the bead journal (3,911 closed) is the only institutional memory</li>
+    <li><span class="repo"><a href="../briefs/franken_code_browser.html">franken_code_browser</a></span> — 206 commits across 2026-09-17→22, peaking at 101 in one day</li>
+    <li><span class="repo"><a href="../briefs/frankensim.html">frankensim</a></span> — 999 commits in its first five days; 6,545 contributions in ~11 weeks. The frankensim packet quantifies the consequence: 202 test files outpaced the honesty inventory in 11 hours; development velocity exceeds audit velocity [Inference, Medium]</li>
+    <li><span class="repo"><a href="../briefs/frankentorch.html">frankentorch</a></span> — 6,305 commits, 6,104 by the maintainer</li>
+    <li><span class="repo"><a href="../briefs/frankenpandas.html">frankenpandas</a></span> — 8,621 commits with agent co-authorship trailers</li>
+    <li><span class="repo"><a href="../briefs/frankenterm.html">frankenterm</a></span> — 21 releases; count stamps lag LOC by ~50%</li>
+  </ul>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P10</span>The agent co-authorship irony</h2>
+  <p class="count"><b>named instances; suite-wide prevalence declined</b> [External, High]</p>
+  <p>The rider bars OpenAI/Anthropic (and anyone acting for them) from the code, while the commit record shows Claude-family co-authorship at scale: <a href="../briefs/frankenredis.html">frankenredis</a> (162/449 recent commits, 158 Claude-family), <a href="../briefs/frankenpandas.html">frankenpandas</a> (398 <code>Co-Authored-By</code> hits, 394 Claude-family), <a href="../briefs/frankenjax.html">frankenjax</a> (52/100), <a href="../briefs/frankentorch.html">frankentorch</a> (~45%), <a href="../briefs/franken_threed.html">franken_threed</a> (agent-authored at scale with named personas), <a href="../briefs/franken_numpy.html">franken_numpy</a> ("single human maintainer plus an agent swarm"), <a href="../briefs/franken_tts.html">franken_tts</a> (release notes carry "Generated with Claude Code" markers). Exact suite-wide prevalence is declined (trailer conventions lapse; windows differ). The maintainer's writing frames agents as the implementation workforce under human orchestration [Maintainer claim, High]; the rider makes the two leading agent-builders Restricted Parties. Both facts are stated; the tension is not resolved here.</p>
+</div>
+
+<div class="fail">
+  <h2><span class="n">P11</span>Sibling-constellation coupling</h2>
+  <p class="count"><b>named instances</b> [Verified, High]</p>
+  <p><a href="../briefs/asupersync.html">asupersync</a> is the suite's runtime substrate: <a href="../briefs/frankensqlite.html">frankensqlite</a> runs storage I/O on asupersync 0.5.0; <a href="../briefs/frankensearch.html">frankensearch</a> builds its core on it; <a href="../briefs/frankensim.html">frankensim</a> locks it via <code>[patch.crates-io]</code> with <code>xtask check-constellation</code> verifying the sibling's git head; <a href="../briefs/frankengit.html">frankengit's</a> lockfile resolves asupersync 0.5.0 while its integration profile plans against 0.4.x; <a href="../briefs/franken_node.html">franken_node</a> adopts an asupersync transport; <a href="../briefs/frankensympy.html">frankensympy</a> cannot cold-build partly because path deps point at sibling checkouts (<code>../asupersync</code>, <code>../franken_numpy-pin</code>); <a href="../briefs/frankenfs.html">frankenfs's</a> ledger failure cascades from a FrankenSQLite bug. <a href="../briefs/frankenredis.html">frankenredis</a> is the deliberate counter-case: it evaluated and <em>rejected</em> asupersync. Single-node cut-set: one maintainer's context switch freezes the substrate under the whole constellation [Inference, Medium].</p>
+</div>
+
+</main>
+
+<footer>
+  <p>Counts were reconciled against the 44 assessment packets; where a count could not be reconciled, none is given (P8, and the exact prevalence in P10). Named instances are one per project for P4; representative instances for the rest.</p>
+  <p>Related pages: <a href="../techniques/index.html">Transferable techniques</a> (what to steal) &middot; <a href="../lessons/index.html">Lesson index</a> (every brief's lesson, by topic) &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../index.html">Front door</a></p>
+</footer>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/fill-stats.js"></script>
+</body>
+</html>

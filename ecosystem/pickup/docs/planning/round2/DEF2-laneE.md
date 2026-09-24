@@ -1,0 +1,52 @@
+# DEF2 Lane E — Evidence fidelity after round-2 integration
+
+Reviewer: Round 2 S4 Lane E (evidence fidelity). Scope: `PROJECT-PICKUP-PLAYBOOK.md`,
+`shared-gates.md`, and the five companions `pickup-inference-engines.md`,
+`pickup-agent-frameworks.md`, `pickup-sandbox-exec.md`, `pickup-eval-harnesses.md`,
+`pickup-guardrails.md`, checked against the `_evidence/<slug>.md` packs.
+Task: did round-2 integration (claim re-tiering, [Inference] labels, evidence-auditor
+cadence/sampling/failure-disposition, C-9 corpus scrub) corrupt anything?
+
+## Severity counts
+
+- P0: 0
+- P1: 0
+- P2: 2
+
+## Findings
+
+DEF2-E-1 [P2] pickup-agent-frameworks.md:Initial claims (lines 128–130) — the claim-registry tier legend is corrupted text. It reads: "Tiers follow the\nTiers (canonical, per PROJECT-PICKUP-PLAYBOOK.md): T0 [Verified] — …; WITHDRAWN rows carry --.\nT3 [Inference]), mapped via G14 to evidential burden." — a duplicated intro ("Tiers follow the" / "Tiers (canonical…") plus a dangling fragment ("T3 [Inference]), mapped via G14…") that is not a sentence. The other four companions carry the clean canonical legend; this looks like a botched splice from the round-2 re-tiering/[Inference]-label edit. It does not mis-cite evidence, but the legend is the normative tier text the claim table is read against, so it should not be garbled. Fix: replace lines 128–130 with the clean canonical legend matching the other companions: "Tiers (canonical, per PROJECT-PICKUP-PLAYBOOK.md): T0 [Verified] — direct inspection of a fresh clone, API, live page, or a measurement at a pinned oracle with invocation-time SHA-256 recorded; T1 [CI-observed] — executed and observed on CI / banked receipt; T2 [Maintainer claim]/[External] — asserted by repo docs or an independent source, not reproduced by us; T3 [Inference] — analyst judgment, always labeled as such. Confidence: High (T0 ADMISSIBLE) / Medium (T0 CONTESTED, T1, T2 ADMISSIBLE) / Low (T2 CONTESTED, T3); WITHDRAWN rows carry --."
+
+DEF2-E-2 [P2] PROJECT-PICKUP-PLAYBOOK.md:BEADS READY certificate (line 584) — attestation reads "evidence audit passed (cadence below);" but no cadence is stated below that line anywhere in the file. The cadence ("Runs at least once in S0, during each full S4 round, and as a final pass before S5") is stated in the "Evidence audit" subsection ABOVE. The parenthetical dangles — likely a leftover from the round-2 integration that added cadence/sampling/failure-disposition wording to the evidence-auditor role. Fix: change "(cadence below)" to "(cadence: see Evidence audit)" so the pointer resolves.
+
+## Checks that passed (no findings)
+
+**(a) 15 claim-pointer spot-checks (3 per companion), all verified against the evidence packs — repo exists, path matches, stars match:**
+
+- inference-engines: CLAIM-01 (`vllm-project/vllm/benchmarks/{benchmark_serving.py,benchmark_throughput.py,benchmark_latency.py,benchmark_utils.py,README.md}`, `sgl-project/sglang/python/sglang/bench_serving.py`, `InternLM/lmdeploy/benchmark/benchmark_serving.py`) — pack lists all. CLAIM-09 (`ollama/ollama/LLAMA_CPP_VERSION|MLX_VERSION|MLX_C_VERSION`; `huggingface/text-generation-inference/rust-toolchain.toml`, `crate-hashes.json`, `backends/`) — pack lists all. CLAIM-12 (`huggingface/text-generation-inference/backends/{v2,v3,trtllm,llamacpp,gaudi,neuron}/`) — pack trend row names the same set.
+- agent-frameworks: CLAIM-01/04 (`openai-agents-python` `src/agents/testing/__init__.py`: ScriptedModel, UnconsumedModelSteps, UnexpectedModelCall) — pack practice 1. CLAIM-06 (`huggingface/smolagents` `tests/test_models.py`: MagicMock `side_effect=[rate_limit_error, rate_limit_error, mock_success…]`) — pack practice 6. CLAIM-13 (`microsoft/autogen` `python/packages/autogen-test-utils/`) — pack practice 13.
+- sandbox-exec: CLAIM-2 (firecracker `tests/integration_tests/security/test_jail.py`, `test_seccomp.py`, `test_custom_seccomp.py`, `test_seccomp_validate.py`, `test_vulnerabilities.py`, `test_sec_audit.py`) — pack lists all six. CLAIM-6 (E2B per-surface workflow names, `cloudflare/sandbox-sdk` `merge-queue.yml` + `pr-privileged.yml`, `vercel/sandbox` `packages/vercel-sandbox-mock`) — pack lists all. CLAIM-9 (`daytonaio/daytona`, 71,725 stars, "core development has moved to a private codebase" June 2026, 3-file tombstone) — pack caveat verbatim.
+- eval-harnesses: CLAIM-EH-04 (lm-eval `.github/workflows/new_tasks.yml` + `tests/utils.py` changed-task parser) — pack practice 4. CLAIM-EH-11 (`harbor-framework/harbor` `tests/golden/terminus_2/`, `tests/unit/`, `tests/integration/`, `tests/runtime/`, `tests/conftest.py`) — pack practice 11. CLAIM-EH-12 (inspect_ai `.github/workflows/pr-gate.yml`, `suppressions.yml`; inspect_evals `AUTOMATED_CHECKS.md`, `BEST_PRACTICES.md`, `APPROVED_CONTRIBUTORS.md`) — pack practice 12.
+- guardrails: CLAIM-04 (`protectai/llm-guard` `tests/input_scanners/`, `tests/output_scanners/`, `tests/test_evaluate.py`) — pack practice 5. CLAIM-10 (NeMo `pr-tests.yml`/`full-tests.yml`/`_coverage.yml`/`latest-deps-tests.yml`/`test-docker.yml`/`lint.yml`/`codeql.yml`; guardrails-ai `ci.yml`/`premerge.yml`/`examples_check.yml`/`dependency-audit.yml`/`cli-compatibility.yml`/`server_ci.yml`) — pack practice 11. CLAIM-07 (`centerforaisafety/HarmBench` `data/behavior_datasets/`, `data/classifier_val_sets/`, `evaluate_completions.py`, `eval_utils.py`) — pack practice 8.
+
+**(b) Carried caveats — 2 per companion, all present and honest:**
+
+- inference-engines: Aphrodite Engine 404 dropped (names both `aphrodite-engine/aphrodite-engine` and `alpinelabs/aphrodite-engine`, matching the pack); TGI staleness (last push 2026-03-21, "six months stale").
+- agent-frameworks: MetaGPT 404 dropped (not cited); AutoGen staleness (2026-04-15, "do not cite as actively maintained"; AG2/Microsoft Agent Framework kept as unverified secondary claim in UNK-05).
+- sandbox-exec: no true sandbox-escape pentest in any repo tree (CLAIM-4 + caveats); `modal-labs/modal` API-Not-Found dropped.
+- eval-harnesses: tau-bench has no visible CI (API 404 on `.github`; CLAIM-EH-14 + caveats); terminal-bench 301 migration (`laude-institute/terminal-bench` → `harbor-framework/terminal-bench-1`, separate `harbor-framework/terminal-bench` at 760 stars; lineage claims rest on the 301 only).
+- guardrails: HarmBench stale since 2024-08-16 (canonical *spec*, not maintained codebase; CLAIM-12 CONTESTED with labeled inference); `rebuff-ai/rebuff` 404 + `whylabs/langkit` stalled-project drop.
+
+**(c) C-9 corpus scrub:** no closed-core-only claim remains presented as open evidence in any of the five companions. The nearest cases (Daytona stars-as-demand, HarmBench "canonical spec" via downstream adoption, AutoGen/AG2, langkit/rebuff/strongreject, tau-bench layout-only, vercel-sandbox-mock "emerging not proven") are all explicitly labeled as legacy/spec/stale/dropped/thin with the right tier and status. No legitimate open claim was deleted: every practice row in the five evidence packs is represented in the companion claim tables (13 claims for 12 practice bullets in inference-engines; 15 for 13 in agent-frameworks; 12 for the practice tables in sandbox-exec; 14 for 12 in eval-harnesses; 12 for 12 in guardrails).
+
+**(d) [Inference] labels:** all attached to genuinely undemonstrated practices. eval-harnesses GATE-EH-3 ("[Inference, labeled]: a green dummy-path run proves pipeline wiring, not grading correctness") — pack verifies mockllm's documented purpose only, never a full offline CI run (CLAIM-EH-13 says so explicitly). sandbox-exec via shared GATE-007 (escape suite as *designed requirement*, "no true sandbox-escape pentest was found in any surveyed repo's tree") — matches the pack caveat verbatim. guardrails CLAIM-12 and Evidence-tiers ("canonical spec" for HarmBench is downstream-adoption inference) — the pack only evidences promptfoo's live `harmbench.ts` vendoring, not canonical status. Thin-evidence inferences elsewhere are labeled in-row (sandbox-exec CLAIM-3/11/12 "thin: …inferred…"; eval-harnesses CLAIM-EH-13 "Inference — …only the components").
+
+**(e) Evidence-auditor consistency:** no companion promises re-verification beyond the playbook auditor spec. The auditor spec is internally consistent: Roles section (all P0-cited + oracle pointers + reproducible random/risk sample vs live GitHub API; failed pointer → DEF, demote dependents one tier toward T3, reopen stage, block BEADS READY) matches the "Evidence audit" subsection (adds seed recording + risk-weighting toward contested/oracle-adjacent rows; cadence S0 + each full S4 round + final pre-S5). Companions promise only project-side mechanisms (invocation-time SHA-256, `fetch-truth-pack.sh --verify`, banked receipts) — none promises auditor coverage the spec can't deliver. The only auditor-adjacent gap is DEF2-E-2's dangling "(cadence below)" pointer.
+
+**(f) Repo/path/star citation trace:** automated owner/repo extraction from all five companions shows zero repo citations absent from the corresponding evidence pack (remaining companion-only slash-pairs are prose shorthands like `tts/ocr`, `BigScience/BigCode`, `garak/PyRIT`, `Cloudflare/Vercel` — not invented repo pointers). All star counts in trend-citation sections match the packs exactly (spot-verified: 92,527 / 36,377 / 14,703 / 10,884 / 8,094 / 129,316 / 181,524 / 23,183; 42,179 / 146,931 / 61,123 / 58,949 / 42,319 / 29,462 / 29,656 / 38,230; 13,934 / 2,415 / 71,725 / 1,138 / 201 / 36,898 / 19,403 / 8,879; 2,850 / 14,062 / 19,495 / 5,538 / 5,897 / 13,039 / 1,445 / 2,593 / 680 / 3,386 / 3,245; 7,185 / 7,443 / 3,207 / 4,403 / 4,533 / 9,339 / 25,400 / 1,053). Retired-gate cross-references check out against `shared-gates.md` acceptance numbers: GATE-IE-01/02 → GATE-001 (acceptances 3–4 of 4); GATE-AF1 → GATE-005 (1–2 of 4); GATE-SB-1 → GATE-007 (1–5 of 5), GATE-SB-4 → GATE-007 (4); GATE-GR-01→GATE-011 (3), GR-02→(4), GR-03→(1–2), GR-04→(5) — all exist.
+
+## Notes / limitations
+
+- Reviewed files were not edited (per instruction). Fixes above are integrator action items.
+- (f) was checked by text-level repo-pointer extraction, not live API re-verification (round-1 already verified pins live; the auditor owns the live re-check).
+- C-9 in the integration notes refers to the secrets/PII scrub of corpus captures in `pickup-web-search-apis.md` (out of this lane's five-file scope); interpreted here as the closed-core-only-claim scrub, which is satisfied for the five reviewed companions.

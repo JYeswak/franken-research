@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson index — FrankenSuite</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="description" content="Every brief's 'What it teaches' section, indexed by topic: claim discipline, benchmarks, CI and gates, velocity, licensing, drift, negative evidence, and independent verification.">
+<meta property="og:title" content="Lesson index — FrankenSuite">
+<meta property="og:description" content="Every brief's 'What it teaches' section, indexed by topic: claim discipline, benchmarks, CI and gates, velocity, licensing, drift, negative evidence, and independent verification.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>/* FrankenSuite practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.router{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;font-family:var(--sans);font-size:13.5px;color:var(--ink-dim);
+  margin:14px 0}
+.router a{color:var(--accent);font-weight:600}
+.vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
+  padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
+.vocab b{color:var(--ink)}
+.toc{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:12px 16px;font-family:var(--sans);font-size:14px;margin:14px 0}
+.toc b{color:var(--gold);letter-spacing:.06em;font-size:12px;text-transform:uppercase;display:block;margin-bottom:6px}
+.toc a{display:inline-block;margin:2px 14px 2px 0}
+.topic{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0}
+.topic h2{font-size:21px;margin:0 0 2px;color:var(--ink);line-height:1.35}
+.topic h2 .k{color:var(--gold);font-family:var(--sans);font-size:12px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.topic .lede{color:var(--ink-dim);font-size:15px;margin:4px 0 10px}
+.entries{margin:0;padding:0;list-style:none}
+.entries li{margin:9px 0;font-size:15.5px;line-height:1.6;
+  padding:8px 10px;background:var(--bg-3);border-radius:6px}
+.entries li .r{font-family:var(--sans);font-weight:700;font-size:14px;display:block;margin-bottom:1px}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; FrankenSuite front door</a>
+  <span class="peers">
+    <a href="../techniques/index.html">Transferable techniques</a>
+    <a href="../failure-modes/index.html">Failure modes</a>
+    <a href="../reproduce/index.html">Reproduce a verdict</a>
+    <a href="../method/index.html">Method</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Lesson index</h1>
+  <p class="sub">Every one of the 44 briefs ends with a "What this teaches about building with agents" section. This page indexes them by topic, so a practitioner can find the lessons without opening 44 tabs. Each entry is one sentence, condensed from the brief; the link opens the full section.</p>
+</header>
+
+<p class="router">Assessors: the protocol is <a href="../RULEBOOK.md">RULEBOOK.md</a> &nbsp;&middot;&nbsp; Builders: the runnable kit is <a href="../starter-kit/">starter-kit/</a> &nbsp;&middot;&nbsp; Researchers: the suite synthesis starts at <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a></p>
+
+<div class="vocab"><b>Five definitions.</b> <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor) assigned per assessment packet. <b>TRL</b> is technology readiness level, scored 1 to 9 per packet. <b>CI</b> is continuous integration: the project's automated test runs (GitHub Actions or equivalent). The <b>pin</b> is the exact commit the assessment froze on; every claim is evaluated at the pin, not at HEAD. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them.</div>
+
+<div class="toc" aria-label="Topics">
+  <b>Jump to a topic</b>
+  <a href="#claim-discipline">Claim discipline</a>
+  <a href="#benchmarks">Benchmarks and measurement</a>
+  <a href="#ci-gates">CI, gates, and refusal</a>
+  <a href="#velocity">Agent velocity management</a>
+  <a href="#licensing">Licensing and release policy</a>
+  <a href="#drift">Drift, freshness, and provenance</a>
+  <a href="#negative-evidence">Negative evidence and kill ledgers</a>
+  <a href="#verification">Independent verification and its limits</a>
+</div>
+
+<main id="main">
+
+<div class="topic" id="claim-discipline">
+  <h2><span class="k">Topic 1</span>Claim discipline: bind claims to machines, not prose</h2>
+  <p class="lede">The suite's most repeated lesson: README sentences rot at agent velocity; only claims a machine re-checks survive. Twelve briefs land here.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/asupersync.html">asupersync</a></span>Don't publish benchmark numbers. Publish the gate that would catch the numbers being wrong; machine-checked claim discipline keeps the documentation honest where honest prose rots.</li>
+    <li><span class="r"><a href="../briefs/franken_markdown.html">franken_markdown</a></span>The claim-discipline gate aimed at the agent era: make the marketing machine-readable so every claim pattern maps to a capability key the binary reports and a proof script re-derives.</li>
+    <li><span class="r"><a href="../briefs/frankengit.html">frankengit</a></span>Make claims machine-checkable and let the machine demote them: artifact-bound claims with expiry semantics, where the README's claims block is generated by a checker that refuses to leave it stale.</li>
+    <li><span class="r"><a href="../briefs/frankengraphdb.html">frankengraphdb</a></span>The bridge table: register every claim in machine-checked form, bind each to a checker, and keep a public table of what actually runs versus what is specification.</li>
+    <li><span class="r"><a href="../briefs/franken_engine.html">franken_engine</a></span>Make the documentation a build artifact with a test suite: a JSON ledger binding each public claim to an owning issue, a verification command, an artifact path, and a freshness bound, with a gate that fails the build when a sentence outruns its evidence.</li>
+    <li><span class="r"><a href="../briefs/franken_threed.html">franken_threed</a></span>Machine-check your claims, not just your code: turn the honest-status table into a CI check that fails when a row disagrees with the tree.</li>
+    <li><span class="r"><a href="../briefs/franken_agent_detection.html">franken_agent_detection</a></span>The registry-invariant test: encode agreement between tables that must stay in sync as a test that breaks the build, and let the machine do the remembering your agent won't.</li>
+    <li><span class="r"><a href="../briefs/franken_nlp.html">franken_nlp</a></span>The evidence-state vocabulary: force every public sentence to carry its evidence state in the text ([OBSERVED@pin], [REPORTED], [TARGETED], [HYPOTHESIS]), and build the lie-catching machinery before the engine.</li>
+    <li><span class="r"><a href="../briefs/frankensqlite.html">frankensqlite</a></span>The claim inventory as a machine-readable artifact: write down what you are not allowed to say, and check the prose against the registry.</li>
+    <li><span class="r"><a href="../briefs/franken_overlap.html">franken_overlap</a></span>Build the referee before playing the game: write the rules for what counts as proof first, in code, with gates allowed to say "unsupported," before making a single claim.</li>
+    <li><span class="r"><a href="../briefs/franken_lean.html">franken_lean</a></span>Handcuff the spec to the enemy's source: every rule carries an anchor naming the exact upstream file and line plus an <code>expect=</code> token, and a CI test fails when the token on that line changes.</li>
+    <li><span class="r"><a href="../briefs/franken_markdown_website.html">franken_markdown_website</a></span>Make claims executable: a 67-line <code>verify:live</code> script lets any human or agent re-derive the deployment claims from scratch, beating "trust our landing page" every time.</li>
+  </ul>
+</div>
+
+<div class="topic" id="benchmarks">
+  <h2><span class="k">Topic 2</span>Benchmarks and measurement</h2>
+  <p class="lede">Eleven briefs on how to measure without fooling yourself: typed result classes, full funnels, named harnesses, and the incumbent run live in the same invocation.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/franken_whisper.html">franken_whisper</a></span>The campaign-win doctrine: decide what counts as a win before you measure; a self-speedup is maintenance, and a competitive win requires the actual incumbent binary in the same invocation with A/A nulls in [0.98, 1.02].</li>
+    <li><span class="r"><a href="../briefs/franken_networkx.html">franken_networkx</a></span>The claim-coverage audit: classify every claim by its comparison class and forbid self-comparisons from supporting competitive claims (the audit found only 2.0% of 591 claims measured against the incumbent).</li>
+    <li><span class="r"><a href="../briefs/franken_numpy.html">franken_numpy</a></span>The benchmark evidence contract: same-invocation incumbent ratio, named host, executing binary's hash, and a null measurement; print the audit (22 of 751) in the same document as the table.</li>
+    <li><span class="r"><a href="../briefs/frankenmermaid.html">frankenmermaid</a></span>A performance claim only counts as measured if it names the incumbent, pins the incumbent's exact build, and runs both arms in the same invocation; then publish the coverage audit (which admitted 96.4% of claims lack that marker).</li>
+    <li><span class="r"><a href="../briefs/frankenpandas.html">frankenpandas</a></span>Publish the funnel, not the headline: 201 lanes faster, 20 slower, 74 undecidable, 62 dropped on variance, 2 at parity; the 3.97× geomean is computed only over the decidable subset, and the number is stated to be about the measurable, not the typical.</li>
+    <li><span class="r"><a href="../briefs/frankenscipy.html">frankenscipy</a></span>The harness is a variable: <a href="../briefs/frankenlibc.html">frankenlibc</a> measured the same malloc/free primitive at 5.95× and 12.39× under two sanctioned harnesses with both A/A nulls passing, and frankenscipy adopted the finding fleet-wide — so never aggregate numbers across harnesses and name the harness on every ratio.</li>
+    <li><span class="r"><a href="../briefs/frankenfs.html">frankenfs</a></span>A measurement that does not name its host is valid on an unrecorded machine, never as comparable to a row measured elsewhere (the 13.6× worker swing survived every statistical gate).</li>
+    <li><span class="r"><a href="../briefs/frankenlibc.html">frankenlibc</a></span>A win requires the incumbent live in the same invocation; everything else is maintenance. Agents are superb at finding the benchmark-shaped hole in your methodology, so encode the rule in executable gates.</li>
+    <li><span class="r"><a href="../briefs/frankentorch.html">frankentorch</a></span>Measure what you claim to be measuring and name the confound in writing: the project discovered it had been measuring the allocator, not its compute (quantified at 40–73%), because the measurement gate forced same-worker discipline, named harnesses, and quoted estimators.</li>
+    <li><span class="r"><a href="../briefs/frankensearch.html">frankensearch</a></span>Require the comparison class before the number: an in-repo before/after number is labeled self-speedup (maintenance, not a win); only a named live incumbent run side by side counts as competitive evidence.</li>
+    <li><span class="r"><a href="../briefs/franken_tts.html">franken_tts</a></span>Publish your optimization's death certificate: when an experiment dies against its pre-registered bar, file the autopsy with probe commands, measured numbers, and a do-not-retry predicate next to the code.</li>
+  </ul>
+</div>
+
+<div class="topic" id="ci-gates">
+  <h2><span class="k">Topic 3</span>CI, gates, and refusal</h2>
+  <p class="lede">Six briefs on gates whose job is to say no: fail-closed finalizers, self-disqualification rules, typed skips, and principles enforced in the build.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/franken_ocr.html">franken_ocr</a></span>The fail-closed finalizer: write the release gate you cannot yet pass, and ship the refusal as part of the release; most release pipelines are built to say yes, this one is built to say no.</li>
+    <li><span class="r"><a href="../briefs/franken_alignment.html">franken_alignment</a></span>The unqualified source addition rule: any commit landing after the last executed gate opens the status ledger with a self-disqualification until the gate re-runs; previous evidence does not validate new code.</li>
+    <li><span class="r"><a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a></span>The qualification receipt: every commit records in machine-readable form exactly what was not verified; verification debt compounds silently unless it is booked.</li>
+    <li><span class="r"><a href="../briefs/franken_snowflake.html">franken_snowflake</a></span>Put principles in the build: a script runs <code>cargo tree</code> across every feature lane and fails the build if a forbidden crate appears; the typed-skip contract distinguishes "tested" from "untested for lack of credentials" in the output itself.</li>
+    <li><span class="r"><a href="../briefs/franken_native_capsule.html">franken_native_capsule</a></span>The frozen-hash gate: if the compiler's output changes by one byte, the capsule refuses its own output; convert silent degradation into loud refusal, and enumerate your non-capabilities in writing.</li>
+    <li><span class="r"><a href="../briefs/frankenterm.html">frankenterm</a></span>Make distrust portable: content-addressed, sigstore-signed attestation bundles carrying claims, artifacts, and work items, checkable offline by a third party with no help from the maintainer.</li>
+  </ul>
+</div>
+
+<div class="topic" id="velocity">
+  <h2><span class="k">Topic 4</span>Agent velocity management</h2>
+  <p class="lede">Six briefs on what breaks when agents produce output faster than anyone can review it, and the disciplines that hold up.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/franken_code_browser.html">franken_code_browser</a></span>Name your fabrication modes: give the predictable ways agents fake progress names and standing as first-class defects (demo hardcoding, proof laundering, refusal farming, commit pumping, gate self-weakening, follow-up laundering), because velocity without a vocabulary for fakery is un-audited output.</li>
+    <li><span class="r"><a href="../briefs/beads-for-frankentui.html">beads-for-frankentui</a></span>Instrument the thing that decays, not just the thing that looks untidy: agent energy flowed to code polish while the data rotted, and freshness is an instrumented property, not a hope.</li>
+    <li><span class="r"><a href="../briefs/beads_for_franken_engine.html">beads_for_franken_engine</a></span>Integrity-check the semantics, not just the bytes: the database is checksum-verified end to end yet disagrees with itself three ways on blocked issues, because the definitions live in an unpinned generator.</li>
+    <li><span class="r"><a href="../briefs/franken_remote.html">franken_remote</a></span>Separate the policy from the product: write down what you refuse to own before you code, and enforce the budget the plan implies, because a budget that dies before the product ships was never a budget.</li>
+    <li><span class="r"><a href="../briefs/franken_manim.html">franken_manim</a></span>Spike before interface: retire the load-bearing risks as ratified documents first (G0 probes), then build against those constraints; and keep a machine-readable census of your own incompleteness (93 named placeholders) that fails the build.</li>
+    <li><span class="r"><a href="../briefs/frankensim.html">frankensim</a></span>Guard against "process porn": machinery built about the work instead of the work; make every capability carry a written no-claim boundary specific enough to falsify.</li>
+  </ul>
+</div>
+
+<div class="topic" id="licensing">
+  <h2><span class="k">Topic 5</span>Licensing and release policy</h2>
+  <p class="lede">Four briefs on the policies around the code: what is refused, what a release may claim, and what the machinery misses.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/franken_remote.html">franken_remote</a></span>Write down, before you code, what you refuse to own (identity, relays, pairing databases), what your contracts promise, and what your verification will prove: receipts, not claims.</li>
+    <li><span class="r"><a href="../briefs/franken_ocr.html">franken_ocr</a></span>The strict release scorecard: keep the browser lane labeled a demo until it earns otherwise, and publish the losing rows alongside the release.</li>
+    <li><span class="r"><a href="../briefs/frankenterm.html">frankenterm</a></span>The <code>skipped_not_proven</code> gate turns "we cannot honestly claim this yet" into a machine-readable state, so the refusal travels with the claim instead of living in one engineer's conscience.</li>
+    <li><span class="r"><a href="../briefs/frankentui.html">frankentui</a></span>The ledger's blind spot: a machine-checked claims ledger tracked 152 claims while the phantom v0.9.0 sat in the CHANGELOG outside the machinery; point the audit machinery at the marketing first, because that is where it will fail first.</li>
+  </ul>
+</div>
+
+<div class="topic" id="drift">
+  <h2><span class="k">Topic 6</span>Drift, freshness, and provenance</h2>
+  <p class="lede">Six briefs on the suite's most universal failure: documentation drifting from the tree, and the machinery that catches it.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/beads-for-frankentui.html">beads-for-frankentui</a></span>Extend the checksum discipline from bytes to provenance: hash-pin the source revision in the snapshot manifest so staleness becomes a measured quantity with an alarm, and date everything.</li>
+    <li><span class="r"><a href="../briefs/beads_for_franken_engine.html">beads_for_franken_engine</a></span>Provenance of definitions, not just bytes: a misnamed column and an unpinned generator silently break the numbers that checksums cannot touch.</li>
+    <li><span class="r"><a href="../briefs/frankentui_website.html">frankentui_website</a></span>Hand-edited stats rot; derived stats hold: every hand-typed number is stale while every pipeline-generated dataset is fresh, so regenerate claims from sources of truth or date-stamp them.</li>
+    <li><span class="r"><a href="../briefs/frankensqlite_website.html">frankensqlite_website</a></span>Generate engine facts from the engine's machine-readable contracts at a recorded pin, the way API docs are generated from code; any document about the code that is not generated from the code will be wrong within months.</li>
+    <li><span class="r"><a href="../briefs/frankensim_website.html">frankensim_website</a></span>Provenance is a record, not a sentence: gate provenance claims ("cannot be faked") on a checkable anchor, a hash, a commit SHA, a build log, not on the sentence's confidence.</li>
+    <li><span class="r"><a href="../briefs/franken_threed.html">franken_threed</a></span>Prose candor decays at agent velocity: the maintainer's disavowals are exemplary and the status table still went stale in ten days; anything a human must remember to update will go stale, so gate it in CI.</li>
+  </ul>
+</div>
+
+<div class="topic" id="negative-evidence">
+  <h2><span class="k">Topic 7</span>Negative evidence and kill ledgers</h2>
+  <p class="lede">Five briefs on the suite's signature honesty move: filing what failed, and making the ledger load-bearing.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/franken_tts.html">franken_tts</a></span>When an experiment dies by its own pre-registered bar, file the autopsy next to the code; and make the self-audit machinery fire on the marketing copy too, because a kill filed in the docs but not in the pitch is a kill half-filed.</li>
+    <li><span class="r"><a href="../briefs/franken_numpy.html">franken_numpy</a></span>The 67,641-line negative-evidence ledger: teams building with agents generate failures at machine speed, and the question is whether the failures get filed or buried; the project that disavows 97% of its own claims in writing is more credible than the one that defends 100%.</li>
+    <li><span class="r"><a href="../briefs/frankenredis.html">frankenredis</a></span>Build the machine for distrusting yourself: a ledger of losses, proof bundles that must pass a gate, a census of every unsafe line, and, when the numbers still aren't clean, a written refusal in your own README to let them be quoted.</li>
+    <li><span class="r"><a href="../briefs/frankengit.html">frankengit</a></span>Typed entry classes with retry conditions (overclaim_correction, non_reproducible_result) turn rejection into a paused hypothesis, not a dead one; dormant verification lanes refuse with a typed exit code instead of pretending to pass.</li>
+    <li><span class="r"><a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a></span>The NOT-RUN trailer: the counterpart to passing CI that records the negative, in machine-readable form, on every commit.</li>
+  </ul>
+</div>
+
+<div class="topic" id="verification">
+  <h2><span class="k">Topic 8</span>Independent verification and its limits</h2>
+  <p class="lede">Five briefs on the hardest problem in the suite: self-governance is still governance by the governed.</p>
+  <ul class="entries">
+    <li><span class="r"><a href="../briefs/frankenjax.html">frankenjax</a></span>Build the rejection cases first and publish the matrix (twelve cases, six accepted and six correctly rejected); but a ledger that can only attest to itself is the author witnessing himself very carefully, and it becomes trustworthy the day a second witness runs it.</li>
+    <li><span class="r"><a href="../briefs/franken_node.html">franken_node</a></span>The close-condition oracle prints its own RED in the README, and the honesty manifest binds headline numbers to recomputable censuses; but every trust anchor terminates at the same single human, so use the machinery to govern yourself and don't mistake it for a second opinion.</li>
+    <li><span class="r"><a href="../briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a></span>Name your evidence tiers in public and bind every sentence to one; but make sure your gates have met the thing they gate, because a verifier that has never seen a real input is a second kind of marketing (adjudication-before-generation).</li>
+    <li><span class="r"><a href="../briefs/frankenredis.html">frankenredis</a></span>Internal guardrails always fail; only external monitoring with hard evidence works, so the project applies that philosophy to itself and tells you, in its own documents, where its CI is red and its benchmarks disavowed.</li>
+    <li><span class="r"><a href="../briefs/frankensympy.html">frankensympy</a></span>Red-team the verifier first: a crashed conformance child emitted valid-but-empty JSON and the wrapper reported success, so every test passed because nothing was actually checked; the harness that produces the green dashboard needs its own proof.</li>
+  </ul>
+</div>
+
+</main>
+
+<footer>
+  <p>All briefs are indexed above. A lesson can appear under more than one topic. The one-sentence entries are condensed from each brief's "What this teaches about building with agents" section; open the brief for the full argument and its sources.</p>
+  <p>Related pages: <a href="../techniques/index.html">Transferable techniques</a> (the fourteen mechanisms, with falsification experiments) &middot; <a href="../failure-modes/index.html">Common failure modes</a> (what goes wrong) &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../index.html">Front door</a></p>
+</footer>
+</div>
+</body>
+</html>

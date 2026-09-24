@@ -1,0 +1,22 @@
+slug	filename	companion_title	evidence_file	shared_gate_declaration_table	REQ_defs	GATE_defs	CLAIM_defs	UNK_defs	BLOCKS_PLAN_UNKs	total_id_occurrences
+agent-frameworks	pickup-agent-frameworks.md	Pickup companion: Agent frameworks	y	y	7	0	15	5	0	49
+agent-memory	pickup-agent-memory.md	Pickup companion: Agent memory systems	y	y	7	4	15	6	0	60
+browser-use	pickup-browser-use.md	Pickup companion: Browser-use stacks	y	y	8	4	14	7	0	76
+computer-use	pickup-computer-use.md	Pickup companion: Computer-use agents	y	y	7	4	14	7	0	63
+embedding-serving	pickup-embedding-serving.md	Pickup companion: Embedding-model serving	y	y	7	4	13	6	0	58
+eval-harnesses	pickup-eval-harnesses.md	Pickup companion: LLM eval harnesses	y	y	7	4	14	8	0	59
+fine-tuning	pickup-fine-tuning.md	Pickup companion: Fine-tuning infrastructure	y	y	7	4	14	7	0	65
+guardrails	pickup-guardrails.md	Pickup companion: Guardrails	y	y	8	4	12	7	0	60
+inference-engines	pickup-inference-engines.md	Pickup companion: LLM inference engines	y	y	7	4	14	6	0	48
+mcp	pickup-mcp.md	Pickup companion: MCP clients/servers	y	y	7	4	12	7	0	61
+multi-agent-protocols	pickup-multi-agent-protocols.md	Pickup companion: Multi-agent protocols	y	y	6	4	13	6	0	61
+observability	pickup-observability.md	Pickup companion: Agent observability/tracing	y	y	7	4	13	5	0	60
+quantization	pickup-quantization.md	Pickup companion: Quantization toolkits	y	y	7	0	12	5	0	35
+rag-frameworks	pickup-rag-frameworks.md	Pickup companion: RAG frameworks	y	y	7	4	14	5	0	69
+rl-envs	pickup-rl-envs.md	Pickup companion: RL environments / RLHF infrastructure	y	y	6	4	12	5	0	56
+sandbox-exec	pickup-sandbox-exec.md	Pickup companion: Sandboxed code execution	y	y	7	4	12	7	0	68
+structured-output	pickup-structured-output.md	Pickup companion: Structured-output / constrained decoding	y	y	7	4	15	5	0	54
+vector-dbs	pickup-vector-dbs.md	Pickup companion: Vector databases	y	y	7	4	14	6	0	57
+voice-agents	pickup-voice-agents.md	Pickup companion: Realtime voice-agent stacks	y	y	7	4	15	5	0	63
+web-search-apis	pickup-web-search-apis.md	Pickup companion: Web-search API layers	y	y	7	4	14	6	0	57
+workflow-orchestrators	pickup-workflow-orchestrators.md	Pickup companion: Durable workflow orchestrators	y	y	7	4	13	5	0	73

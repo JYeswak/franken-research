@@ -1,0 +1,8 @@
+PROJECT-PICKUP COMPLETION MARKER
+date=2026-09-23
+artifact=ecosystem/pickup/ (PROJECT-PICKUP-PLAYBOOK.md v1.3 + 21 pickup-*.md companions + shared-gates.md v1.2 + _evidence/ 21 packs + docs/planning/)
+verdict=BEADS READY (cert round=6, pin=8e6c35952c20db82, ROUND_LOG.md)
+rounds=6 (R1 92 / R2 81 / R3 41 / R4 15 / R5 4 / R6 0 findings; 233 DEF records: 231 FIXED, 1 WONTFIX P2, 1 DEFERRED P2)
+open_p0p1=0 blocks_plan=0 last_diff=POLISH
+scope=v11-only: package as ecosystem/pickup/ into franken-assessments-44-v11.zip. Do NOT mutate v10.
+gates_phase_c=excluded unless .gates-v1-complete exists at packaging time (recheck then).
