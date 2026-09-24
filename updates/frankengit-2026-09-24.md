@@ -8,7 +8,8 @@ default-branch HEAD when read at 18:31 UTC, 137 commits after the packet pin ·
 **Commits seen earlier, not assessed as pins:** `3358315` (the 2026-09-24 movement census, 109
 commits past the pin) and `408df52` (watch issue
 [#5](https://github.com/JYeswak/franken-research/issues/5)); both already had the 8-file workflow set
-read here · **Re-check date:** 2026-09-24, 18:30 to 19:40 UTC · **Rules:**
+read here · **Re-check date:** 2026-09-24, 18:30 to 18:54 UTC; corrected after independent review
+([`stack/reviews/frankengit-recheck.md`](../stack/reviews/frankengit-recheck.md)) · **Rules:**
 [RULEBOOK.md](../RULEBOOK.md) v1.1 and [updates/METHOD.md](METHOD.md). The packet is not edited;
 this file sits beside it.
 
@@ -38,8 +39,9 @@ rows) were not re-counted; no new web search for independent validation.
 ## What changed, in one paragraph
 
 Four hours after the pin, commit `53776f9b` deleted 71 of the 78 workflow files and rewrote the 7
-it kept so that each runs only when started by hand (`workflow_dispatch`) and does nothing but
-call `./scripts/verify.sh <lane>` [Git-observed + Code-verified, High]. An hour later a merge,
+it kept so that each runs only when started by hand (`workflow_dispatch`); their check steps each
+call `./scripts/verify.sh <lane>`, and their other steps install the pinned toolchain, record the
+revision and compiler, or archive the source [Git-observed + Code-verified, High]. An hour later a merge,
 `da52b223`, brought back one file from a 2026-09-04 branch, a one-shot job that applies a patch to
 `main`; that makes 8. Since the removal commit, GitHub has recorded no workflow run of any kind
 (latest run 2026-09-22 18:11:29 UTC) [CI-observed, High]. The removal did not move checking to a
@@ -61,7 +63,7 @@ fails on it. The CI cell moves from C3 to C5.
 | Bus factor | 1 | **1, unchanged** | [Git-observed, High]: the 137 commits from the pin to the re-check pin carry three author names, Jeffrey Emanuel (67), Jeff Emanuel (59) and Dicklesworthstone (11), all the maintainer. Sixteen commit bodies carry `Co-Authored-By` trailers; all name a model ("Claude", 5; "Claude Opus 5.5 (1M context)", 11), not a person. |
 | CI class | C3 (78 workflows; pin verdict not legible) | **C5 at the re-check pin** (CI de-automated and mostly deleted) | [Code-verified + CI-observed, High]. 7 of 8 files trigger only on `workflow_dispatch`; the eighth triggers on pushes to `tooling/gpt56pro-apply-format-20260904`, a branch that no longer exists on GitHub (branches API: 404) [External, High]. No file runs on a push or pull request to `main`. Zero runs for the re-check pin and zero runs of any workflow after 2026-09-22 18:11:29 UTC. This matches the pinned C5 precedents: frankengraphdb (`workflow_dispatch`-only by owner ruling, local proof script) and frankentui (Actions disabled, private DSR). C6 was considered: the verifier is local and its replay receipts go to `evidence/`, which `.gitignore` excludes, so they are not published [Verified absence, High]. C5 is chosen because the event is the de-automation, as in those precedents. The C3 reading of the pin stands, now with detail: the only 18 runs on `894585a` were zero-job failures from 9 unparseable files (below), so no test ran on the pinned commit. |
 | Release class | R1 (no release or tag) | **R1, unchanged** | [External + Git-observed, High]: releases API returns 0, tags API returns 0, `git tag` in the clone is empty. |
-| No-contribution policy | no | **no, unchanged** | [Verified absence, Medium]: no refusal sentence in the README at the re-check pin; the only "contribut" hits are two table rows pointing to `AGENTS.md` as the "Human and coding-agent contribution contract". |
+| No-contribution policy | no | **no, unchanged** | [Verified absence, Medium]: no refusal sentence in the README at the re-check pin; the only "contribut" hit is one table row (line 684) pointing to `AGENTS.md` as the "Human and coding-agent contribution contract". The pin has the same single row, at line 687. |
 | Independent validation | none | **none, not re-searched** | No new search was run. |
 | Analyst behavioral reproduction | no | **no, unchanged** | The analyst ran the maintainer's documentation and registry checker, which lints files; it does not exercise the product. |
 
@@ -92,14 +94,15 @@ At the re-check pin, 8 files (`.github/workflows` tree `092d6ab`, was `ec34737` 
 | `source-snapshot.yml` | `workflow_dispatch` | source archive plus `native-rebase-check` and `native-rebase-test` |
 | `source-symbols.yml` | `workflow_dispatch` | `./scripts/verify.sh source-symbols` |
 | `symbol-index.yml` | `workflow_dispatch` | three jobs: `symbol-index`, `symbol-index-native`, `symbol-index-maintenance` |
-| `gpt56pro-apply-format-20260904.yml` | `push` to `tooling/gpt56pro-apply-format-20260904` | checks out `main` only if it still equals `735ad7a`, applies a stored diff, runs a stored `validate.sh`, commits as the agent name CobaltKite, pushes to `main`. A one-shot patch applier, not a test. |
+| `gpt56pro-apply-format-20260904.yml` | `push` to `tooling/gpt56pro-apply-format-20260904` | checks out commit `735ad7a` (`ref: ${{ env.EXPECTED_MAIN }}`), applies a stored diff, runs a stored `validate.sh`, commits as the agent name CobaltKite, then fetches `origin/main` and pushes to `main` only if `origin/main` still equals `735ad7a`. A one-shot patch applier, not a test. |
 
 Seven of the eight still run tests or checks if started by hand; none starts on its own. The
 eighth cannot fire unless its branch is recreated, and if it did its `EXPECTED_MAIN` guard would
 fail against today's `main` [Code-verified + External, High on the trigger and branch;
 Inference, High that it is inert].
 
-The removal commit, quoted in full [Maintainer claim; Git-observed for author, date, and diff]:
+The removal commit, quoted in full (author and committer dates are equal) [Maintainer claim;
+Git-observed for author, date, and diff]:
 
 ```
 53776f9b0e10aee32325f77cd404fc6434b10935  Jeffrey Emanuel  2026-09-22T14:54:26-04:00
@@ -118,7 +121,7 @@ It deletes 71 files, modifies 7, and adds ten feature lanes to `scripts/verify.s
 It is 31 commits after the pin. The merge that re-added the eighth file:
 
 ```
-da52b223b37b599f20e024b7fb25f790a4a48f5e  Dicklesworthstone  2026-09-22T15:56:10-04:00
+da52b223b37b599f20e024b7fb25f790a4a48f5e  Dicklesworthstone  author 2026-09-22T15:55:54-04:00 (committed 15:56:10)
 Merge remote-tracking branch 'origin/tooling/gpt56pro-apply-format-20260904'
 ```
 
@@ -136,7 +139,8 @@ From the 7,204 runs GitHub reports for the repository (2026-08-20 01:50 to 2026-
 - **6,828 runs (94.8%) were zero-job failures** whose run name is the file path, which is how
   GitHub records a workflow file it cannot parse. They came from 10 files between 2026-09-04 and
   2026-09-22: the 9 unparseable files at the pin, and `native-tags-work.yml`, which failed that
-  way twice on 2026-09-14 and parses at the pin. Four sampled runs (`35226383715`,
+  way once, run `34844430134` at 2026-09-14 12:37 UTC (its next run, `34844650213` two minutes
+  later, executed and succeeded), and parses at the pin. Four sampled runs (`35226383715`,
   `35467601905`, `35145705722`, `34913374690`) each returned `jobs.total_count` 0. A push
   produced one such red run per broken file; the pinned commit got two sets of nine.
 - **376 runs executed jobs:** 155 success, 187 failure, 34 cancelled.
@@ -144,16 +148,20 @@ From the 7,204 runs GitHub reports for the repository (2026-08-20 01:50 to 2026-
   cancelled; of runs that executed jobs, 154 failure, 87 success, 2 cancelled, and only 11 of
   those 243 on `main`. Last run of each removed file: 36 failure, 35 success.
 - **On the pinned commit** `894585a`: 18 runs, all zero-job file failures (the 9 broken files,
-  twice). No job ran against the pin.
+  twice). No job ran against the pin. GitHub shows the commit red, but no check ran on it, so the
+  pin is C3 (no pin verdict) and not C2 (CI red at the pin).
 - **The last run that executed a job** was 2026-09-22 12:41 UTC on `c94ca13e`, 11 commits before
   the pin: `source-snapshot.yml` failure and `symbol-index.yml` success on the same commit. In the
-  week before the pin, the path-filtered `main` workflows ran 15 success and 3 failure
-  (`symbol-index`), 5 success (`source-symbols`), 4 success (`index-maintenance`), 4 failure
-  (`source-snapshot`), 1 success and 2 failure (`exact-patch`), 2 failure (`native-bundle`).
+  seven days before the pin (2026-09-15 14:52 to 2026-09-22 14:52 UTC), the path-filtered `main`
+  workflows ran 15 success and 3 failure (`symbol-index`), 5 success (`source-symbols`), 4 success
+  (`index-maintenance`), 4 failure (`source-snapshot`), 1 success and 2 failure (`exact-patch`),
+  1 failure (`native-bundle`, run `35454271459`).
 - **On the re-check pin:** 0 runs. **After the removal commit:** 0 runs.
-- GitHub still lists 12 registered workflows, all `active`, including four whose files exist only
-  on other branches (`gpt56pro-asb8-diagnostic.yml`, `gpt56pro-asb8-hosted.yml`,
-  `import-cancellation-apply.yml`, `fetch-integration-work.yml`) [External, High].
+- GitHub still lists 12 registered workflows, all `active`, including four whose files are on no
+  current branch (`gpt56pro-asb8-diagnostic.yml`, `gpt56pro-asb8-hosted.yml`,
+  `import-cancellation-apply.yml`, `fetch-integration-work.yml`); the branches API lists only
+  `main` and `master`, and those four last ran on `tooling/*` branches that no longer exist
+  [External, High].
 
 ## Where the checks went
 
@@ -182,7 +190,8 @@ invocation runs "on THIS machine" with the `rch` build offload bypassed
 runnable by anyone with the pinned nightly, and their results are not published.
 
 **The rule has a checker, and it was red at the pin.** `tools/registry-check`'s `check_workflows`
-(unchanged since 2026-08-20) fails any workflow that does not call `./scripts/verify.sh`, lacks
+(unchanged since 2026-08-20; its helper `is_hosted_trigger_line`, which holds the trigger list,
+since 2026-08-22, `82e7aeaa`) fails any workflow that does not call `./scripts/verify.sh`, lacks
 `workflow_dispatch`, uses an action not pinned to a full SHA, or names any of 13 automatic
 triggers (`push`, `pull_request`, `schedule`, and ten more) [Code-verified, High]. Compiled from
 the re-check pin's source (its `main.rs` SHA-256 `447fa1ec…d806f7`, the same digest the checker
@@ -220,7 +229,7 @@ Status uses the Rulebook §4.3 vocabulary.
 
 | # | Claim | Status | Evidence | Tier, Confidence |
 |---|---|---|---|---|
-| 1 | "Converted durable workflow lanes to dispatch-only delegating manifests via verify.sh" (`53776f9b`) | demonstrated | the 7 kept files each have only `workflow_dispatch` and each step calls `./scripts/verify.sh <lane>` | [Code-verified, High] |
+| 1 | "Converted durable workflow lanes to dispatch-only delegating manifests via verify.sh" (`53776f9b`) | demonstrated | the 7 kept files each have only `workflow_dispatch`, and their check steps each call `./scripts/verify.sh <lane>` (other steps install the pinned toolchain, record the revision and compiler, or archive the source); the maintainer's checker reports 0 workflow errors for these seven at `53776f9b`, `da52b223` and `dfa5bb8` | [Code-verified + Executed, High] |
 | 2 | "Retired one-shot session manifests from .github/workflows" (`53776f9b`) | partially demonstrated | 71 deleted at `53776f9b`; one one-shot manifest re-added by merge `da52b223` and present at the re-check pin | [Git-observed, High] |
 | 3 | "Verified ./scripts/verify.sh docs and ./scripts/verify.sh constitution both pass cleanly" (`53776f9b`) | partially demonstrated | the docs checker exits 0 on that tree when run by the analyst; the bootstrap-links step and the `constitution` lane were not run | [Executed, High for the checker; Maintainer claim for the rest] |
 | 4 | "FrankenGit MUST NOT rely on GitHub-hosted Actions. `.github/workflows` are dispatch-only portable adapters" (normative contract, this text since 2026-08-20) | disproven at the pin; partially demonstrated at the re-check pin | pin: 69 of 78 files had `push` triggers, 9 did not parse, checker 238 workflow errors; re-check: 7 of 8 comply, 1 does not | [Counted + Executed, High] |
@@ -236,34 +245,38 @@ weeks") is answered by a snapshot one day old at the re-check.
 
 ## Rigor harvest
 
-One proposed row. The lead decides whether it lands; `stack/rigor-practices.tsv` is not edited
-here. It was checked against the table's 135 rows: RP-003 (actions pinned to SHAs) and RP-005
-(least-privilege token) cover single rules the checker also enforces, and RP-084 already credits
-frankengit's exit-3 dormant lanes; none lints the workflow files as a whole against a declared
-policy.
+One new row, added to [`stack/rigor-practices.tsv`](../stack/rigor-practices.tsv) as RP-136
+after the independent review. It was checked against the table's 135 rows: RP-003 (actions pinned
+to SHAs) and RP-005 (least-privilege token) cover single rules the checker also enforces, RP-021
+(expensive jobs behind an explicit trigger) gates jobs rather than linting files, and RP-084
+already credits frankengit's exit-3 dormant lanes; none lints the workflow files as a whole
+against a declared policy.
 
-| Field | Proposed value |
+| Field | Value |
 |---|---|
 | id | RP-136 |
 | practice | Workflow files linted against a declared execution policy |
 | what_to_copy | State in the repository which events may start CI and that every workflow must call the repository's own verify entry point; enforce both, and full-SHA action pins, with a checker that fails on any workflow file that breaks them. |
 | areas | frankensuite |
 | evidenced_in | Dicklesworthstone/frankengit |
-| source | updates/frankengit-2026-09-24.md |
-| source_quote | workflow {display} must delegate to repository-owned ./scripts/verify.sh |
+| source | `updates/frankengit-2026-09-24.md:214` (the checker's message in the error block above) |
+| source_quote | must delegate to repository-owned ./scripts/verify.sh |
 | checklist | none |
 | our_status | candidate |
-| our_proof | Our workflows run on push, pull_request and schedule by design; the transferable part is a gate that lints `.github/workflows/*.yml` for SHA pins, least-privilege permissions and delegation to `bun run verify`, which no gate does today. |
+| our_proof | Our workflows run on push, pull_request and schedule by design; the transferable part is a gate that lints `.github/workflows/*.yml` for SHA pins, least-privilege permissions and delegation to a repository script, which no gate does today. |
 
-Caveat to carry with the row: at frankengit's pin the checker reported 238 violations across all 78
-files, and at the re-check 3 in one file. The practice as written is sound; the repository shows
-that a checker nobody runs per commit does not keep the tree compliant.
+Two caveats go with the row. At frankengit's pin the checker reported 238 violations across all
+78 files, and at the re-check 3 in one file: a checker nobody runs per commit does not keep the
+tree compliant. And its delegation test is a substring match (`text.contains("./scripts/verify.sh")`,
+`main.rs:1428`), so it proves the call is present, not that nothing else runs; `source-snapshot.yml`
+passes while also archiving and uploading the source, and the policy's "must not contain unique
+correctness or release logic" is not enforced by the checker.
 
-Two existing rows gain frankengit evidence, for the lead to consider: RP-099 (receipts carry
-provenance and generation binding), via `frankengit.verify-replay.v1` (head, dirty-diff hash,
-toolchain, exit code, output hashes; `scripts/verify.sh` lines 7 to 20), and RP-097
-(greppable honesty trailers), since the README snapshot counts commits whose messages say tests
-were not run.
+RP-099 (receipts carry provenance and generation binding) gains frankengit as evidence, via
+`frankengit.verify-replay.v1` (head, dirty-diff hash, toolchain, exit code, output hashes;
+`scripts/verify.sh` lines 7 to 20). RP-097 (greppable honesty trailers) does not: the README
+counts commits whose messages say tests were not run, but its matching rule is not published and
+this re-check did not see a fixed trailer form in those messages.
 
 ## What did not change
 
@@ -300,15 +313,17 @@ of any of the seven lanes.
 ## Limitations
 
 The analyst did not build the workspace, run any test or suite, run `scripts/verify.sh`, or
-dispatch any workflow. The docs checker was compiled with a nightly six days older than the
+dispatch any workflow. The docs checker was compiled with a nightly nine days older than the
 repository's pin and outside cargo; it has no dependencies and its reported source digest matches
 the file, but a toolchain difference could in principle change behaviour. The checker compiled from
 the re-check pin was run against older trees; its workflow function is unchanged since 2026-08-20
-(`git log -L`), and other checks it runs may differ from what those commits shipped, so the 239 and
+and its trigger helper since 2026-08-22 (`git log -L`), both before every tree checked, and other
+checks it runs may differ from what those commits shipped, so the 239 and
 5 error totals are this checker's view of those trees. YAML validity was judged by PyYAML, not by
 GitHub's parser; the zero-job runs on the same 9 files agree with it. Run classification treats a
-run named by its file path as a file-parse failure, confirmed on four sampled runs. Scratch
-artifacts were deleted after the check; their SHA-256: run history TSV
+run named by its file path as a file-parse failure, confirmed on four sampled runs. The run
+history, trigger parse, checker binary and checker outputs were deleted after the check; their
+SHA-256: run history TSV
 `ab163ec422c02de67113a035509b79983651f99b8b00176b57d46a5a2eab0b4b`, trigger parse
 `27096c3b150ec9c0c511e59ff4aedcfd78327ea87bd679a2ddb0c93b72e064a4`, checker binary
 `0dc0b49b92fa52c8b3ea25f1a2194b320da695a99af58a7d7480036ca47b4ef1`, checker output at the

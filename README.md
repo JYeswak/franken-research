@@ -30,7 +30,7 @@ The same evidence rules, applied outside the FrankenSuite to 21 kinds of agent i
 - **Licenses are checked, not assumed.** All 101 projects the verdicts recommend were license-checked; 13 carry non-permissive terms (AGPL-3.0, SSPL, Elastic License 2.0, open-core enterprise directories, field-of-use conditions), and each verdict names them where it recommends the project ([stack/licenses.tsv](stack/licenses.tsv)).
 - **Every verdict was reviewed by someone other than its author**, and signed only after the author fixed the findings. Authors and reviewers were separate AI agent sessions, each working from the files alone; a human maintainer coordinated the work and ruled on disputes. That is independence of context, not independent third-party review, which no verdict has had yet. The review records, including the rounds where reviewers refused to sign, are in [stack/reviews/](stack/reviews/).
 
-**Rigor practices worth copying.** [stack/rigor-practices.tsv](stack/rigor-practices.tsv) indexes 135 practices found across the 44 packets and the 192 ecosystem repositories, each quoted from its source, mapped onto the starter kit, and marked for this repository: 15 adopted, 21 partial, 22 candidate, 77 not applicable. We first claimed 36 adopted; an independent audit found most of those were partial, and the index now says so.
+**Rigor practices worth copying.** [stack/rigor-practices.tsv](stack/rigor-practices.tsv) indexes 136 practices found across the 44 packets and the 192 ecosystem repositories, each quoted from its source, mapped onto the starter kit, and marked for this repository: 15 adopted, 21 partial, 23 candidate, 77 not applicable. We first claimed 36 adopted; an independent audit found most of those were partial, and the index now says so.
 
 **Since the pin.** Verdicts describe each repository at its pin. [updates/](updates/) holds a dated census of what moved afterwards (32 of 44 repositories had new commits by 2026-09-24) and re-checks for material changes, such as `franken_code_browser` shipping a notarized developer-preview app the day after its pin. Pins and headline counts are never edited in place.
 
@@ -48,7 +48,7 @@ The same evidence rules, applied outside the FrankenSuite to 21 kinds of agent i
 | [Reproduce a verdict](https://fr.zeststream.ai/reproduce/) | The procedure for re-deriving a verdict at its pin, with a worked example. | Skeptics and independent reviewers. |
 | [Starter kit](https://fr.zeststream.ai/starter-kit/) | Templates, checklists, and scripts for running the same method on your own project. | Anyone starting an agent-built project. |
 | [Agent stack](https://fr.zeststream.ai/stack/) | Adopt, copy, or build verdicts for 21 parts of the agent stack, with licenses and cited evidence. | Anyone choosing agent infrastructure. |
-| [Rigor practices](https://fr.zeststream.ai/rigor/) | 135 practices worth copying, where each is evidenced, and whether this repository does it. | Teams hardening their own process. |
+| [Rigor practices](https://fr.zeststream.ai/rigor/) | 136 practices worth copying, where each is evidenced, and whether this repository does it. | Teams hardening their own process. |
 | [Beyond FrankenSuite](https://fr.zeststream.ai/beyond/) | What big-vendor agent-assisted Rust ports and outside validation teach. | Engineers porting or rewriting with agents. |
 | [Updates](https://fr.zeststream.ai/updates/) | What moved in the 44 repositories since their pins, and dated re-checks. | Anyone quoting a verdict today. |
 
