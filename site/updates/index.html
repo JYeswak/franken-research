@@ -6,9 +6,9 @@
 <title>What moved after the assessment · Franken Research</title>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://fr.zeststream.ai/updates/">
-<meta name="description" content="The 44 FrankenSuite assessments are frozen at one commit each, read on 2026-09-22. This page records what moved afterwards, without rewriting them: a census of all 44 on 2026-09-24 and a dated re-check of franken_code_browser's first release.">
+<meta name="description" content="The 44 FrankenSuite assessments are frozen at one commit each, read on 2026-09-22. This page records what moved afterwards, without rewriting them: a census of all 44 on 2026-09-24 and dated re-checks of franken_code_browser's first release and frankengit's deleted workflows.">
 <meta property="og:title" content="Since the pin · Franken Research">
-<meta property="og:description" content="A read-only census of all 44 assessed repos two days after their pins: 32 moved, 2 moved enough to change a matrix cell. franken_code_browser shipped a notarized developer preview; here is what that does and does not change.">
+<meta property="og:description" content="A read-only census of all 44 assessed repos two days after their pins: 32 moved, 2 moved enough to change a matrix cell. franken_code_browser shipped a notarized developer preview; frankengit deleted 71 of its 78 workflow files. Here is what that does and does not change.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fr.zeststream.ai/updates/">
 <meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
@@ -168,7 +168,7 @@ footer a{color:var(--accent)}
       <td data-label="Releases and tags since">none</td>
       <td data-label="Workflow files now">8 files; +1 / -71 vs the pin (78)</td>
       <td data-label="License now">MIT + rider</td>
-      <td data-label="Would a matrix cell change?"><b class="yes">Yes, possibly.</b> The CI cell needs a re-read: 71 of the 78 workflow files at the pin are gone and 1 was added. At the pin no verdict was legible (C3); no runs were recorded for HEAD when the census ran.</td>
+      <td data-label="Would a matrix cell change?"><b class="yes">Yes.</b> CI class: CI with no verdict for the pinned commit (C3) at the pin; CI switched off (C5) at the re-check commit. 71 files were deleted, the 7 kept run only when started by hand, and no workflow has run since 2026-09-22. Readiness, ring, release, license, and bus factor unchanged. <a href="https://github.com/JYeswak/franken-research/blob/main/updates/frankengit-2026-09-24.md">Read the dated re-check</a>.</td>
     </tr>
     <tr>
       <td class="repo"><a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a></td>
@@ -530,10 +530,29 @@ footer a{color:var(--accent)}
   <p>The pinned suite counts are not changed by this. Under a re-pin at <code>c7c5310</code>, the release tally would go from <!-- STAT: synthesis/00-overview.md line 20 (release posture, not data.js) -->23 repos with no release to 22 and from 15 with a release artifact to 16; nothing else would move. The full re-check, with every command and its output, is <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md">updates/franken_code_browser-2026-09-24.md</a>. The <a href="../briefs/franken_code_browser.html">brief</a> still describes the pin and now says so at the top.</p>
 </div>
 
+<div class="card" id="fgit">
+  <h2><span class="n">Dated re-check</span>frankengit deleted 71 of its 78 workflow files</h2>
+  <p>At the pin, <code>frankengit</code> had 78 workflow files and no pass or fail on record for the pinned commit. Four hours later, commit <code>53776f9b</code> deleted 71 of them and set the 7 it kept to run only when someone starts them by hand; each of those now just calls the repository's own <code>scripts/verify.sh</code>. An hour after that, a merge brought back one old single-use job that applies a patch to <code>main</code>, which makes 8. GitHub has recorded no workflow run of any kind since 2026-09-22 18:11 UTC.</p>
+  <p>The checks did not move somewhere new. Since 2026-08-20 the repository's own rules have said that workflow files are hand-started adapters and that the project "MUST NOT rely on GitHub-hosted Actions". At the pin all 78 files broke that rule. Nine could not even be parsed, and 6,828 of the repository's 7,204 Actions runs were instant failures from files like those; the 18 runs on the pinned commit were all of that kind, so no test ran against it. The repository has its own checker for the rule. We compiled it and ran it: 238 workflow errors at the pin, none at the removal commit, and 3 today, all in the file the merge brought back.</p>
+  <table class="grade cells">
+    <thead><tr><th scope="col">Cell</th><th scope="col">At the pin</th><th scope="col">At the re-check</th></tr></thead>
+    <tbody>
+    <tr><td class="dim">CI</td><td class="was" data-label="At the pin">C3, CI exists but no verdict for the pinned commit</td><td data-label="At the re-check"><b>C5, CI switched off.</b> No workflow runs by itself on <code>main</code>; the one that could fire listens on a branch that no longer exists. No runs for the re-check commit, <code>dfa5bb8</code>. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">TRL</td><td class="was" data-label="At the pin">4</td><td data-label="At the re-check"><b>4, unchanged.</b> The README's status section, now dated 2026-09-23, reports real <code>git</code> clients working against the node at one commit, and also says "Main is not currently verifiable". Nothing is integrated or tested outside the lab. <span class="tag">[Inference, Medium]</span></td></tr>
+    <tr><td class="dim">NODUS ring</td><td class="was" data-label="At the pin">Explore</td><td data-label="At the re-check"><b>Explore, unchanged.</b> Still no release and no independent validation. <span class="tag">[Inference, High]</span></td></tr>
+    <tr><td class="dim">Release</td><td class="was" data-label="At the pin">R1, no release or tag</td><td data-label="At the re-check"><b>R1, unchanged.</b> The releases and tags APIs both return none. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">License</td><td class="was" data-label="At the pin">MIT + rider</td><td data-label="At the re-check"><b>Unchanged.</b> The LICENSE file is byte-identical to the pin. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">Bus factor</td><td class="was" data-label="At the pin">1</td><td data-label="At the re-check"><b>1, unchanged.</b> All 137 commits since the pin are under the maintainer's names; the co-author lines in 16 of them name an AI model, not a person. <span class="tag">[Verified, High]</span></td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>Where the checks run now</b>On the maintainer's machine, through <code>scripts/verify.sh</code>. Each run writes a replay record (commit, toolchain, exit code, output hashes) into a directory that git ignores, so no pass or fail for any commit is published. The maintainer's own docs check fails at today's HEAD; one of its errors is the registry demoting its own claim <code>CLM-001</code> because the checker's source changed, which is the auto-demotion the packet described, seen working.</div>
+  <p>The pinned suite counts are not changed by this. Under a re-pin at <code>dfa5bb8</code>, the CI tally would go from <!-- STAT: synthesis/00-overview.md line 107 (CI classes, not data.js) -->6 repos with CI but no pin verdict to 5 and from 8 with CI disabled or deleted to 9; nothing else would move. The full re-check, with the run history, the checker output, and a proposed rigor row, is <a href="https://github.com/JYeswak/franken-research/blob/main/updates/frankengit-2026-09-24.md">updates/frankengit-2026-09-24.md</a>. The <a href="../briefs/frankengit.html">brief</a> still describes the pin and now says so at the top.</p>
+</div>
+
 </main>
 
 <footer>
-  <p>Sources: <a href="https://github.com/JYeswak/franken-research/blob/main/updates/movement-2026-09-24.tsv">updates/movement-2026-09-24.tsv</a> (census of all <span data-stat="total">44</span>, run 2026-09-24 02:53 to 02:57 UTC), <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md">the franken_code_browser re-check</a>, <a href="https://github.com/JYeswak/franken-research/blob/main/updates/METHOD.md">updates/METHOD.md</a> (how re-checks work), <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a> (the pinned matrix, unchanged), <a href="../RULEBOOK.md">RULEBOOK.md</a> (tiers).</p>
+  <p>Sources: <a href="https://github.com/JYeswak/franken-research/blob/main/updates/movement-2026-09-24.tsv">updates/movement-2026-09-24.tsv</a> (census of all <span data-stat="total">44</span>, run 2026-09-24 02:53 to 02:57 UTC), <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md">the franken_code_browser re-check</a>, <a href="https://github.com/JYeswak/franken-research/blob/main/updates/frankengit-2026-09-24.md">the frankengit re-check</a>, <a href="https://github.com/JYeswak/franken-research/blob/main/updates/METHOD.md">updates/METHOD.md</a> (how re-checks work), <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a> (the pinned matrix, unchanged), <a href="../RULEBOOK.md">RULEBOOK.md</a> (tiers).</p>
   <p>Related pages: <a href="../index.html">The map</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../self/index.html">Graded by our own method</a></p>
 </footer>
 </div>

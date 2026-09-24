@@ -9,6 +9,14 @@
   <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
   <icon>https://fr.zeststream.ai/favicon.svg</icon>
   <entry>
+    <id>tag:fr.zeststream.ai,2026:recheck/frankengit-2026-09-24</id>
+    <title>frankengit: re-check after 71 of 78 workflow files were removed (addendum, 2026-09-24)</title>
+    <updated>2026-09-24T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/markdown" href="https://github.com/JYeswak/franken-research/blob/main/updates/frankengit-2026-09-24.md"/>
+    <summary type="text">A dated re-check of frankengit filed beside its pinned packet, which is not edited. Every command and its output are in updates/frankengit-2026-09-24.md.</summary>
+  </entry>
+  <entry>
     <id>tag:fr.zeststream.ai,2026:recheck/franken_code_browser-2026-09-24</id>
     <title>franken_code_browser: re-check after v0.1.0 (addendum, 2026-09-24)</title>
     <updated>2026-09-24T00:00:00Z</updated>
