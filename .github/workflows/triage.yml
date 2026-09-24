@@ -1,0 +1,61 @@
+name: triage
+
+# Posts one acknowledgement on a reader issue: who reviews it, what can happen next, and where
+# the loop is written down (docs/PIPELINE.md). The text lives in .github/scripts/triage-ack.mjs.
+# Only issues labelled correction, new-evidence, candidate, site, or idea get one; never an issue
+# labelled watch or discovery (machine-filed by watch.yml and discover.yml), and never an
+# unlabelled blank issue. It posts at most once per issue: the comment carries a hidden marker,
+# and the job looks for it before posting.
+#
+# The issue title and body are never read or passed to a shell; only the issue number and the
+# label names are used.
+
+on:
+  issues:
+    types: [opened, labeled]
+
+# An issue form fires `opened` and `labeled` together. One run per issue at a time, never
+# cancelled, so the second run sees the first run's comment and posts nothing.
+concurrency:
+  group: triage-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  ack:
+    runs-on: ubuntu-latest
+    # Checkout, one node run, and at most two GitHub API calls. 3 minutes is a hung-job guard,
+    # not a measurement; re-derive from `gh run list --workflow triage.yml` once runs exist.
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Acknowledge once
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          body="$RUNNER_TEMP/ack.md"
+          node .github/scripts/triage-ack.mjs --event "$GITHUB_EVENT_PATH" > "$body"
+          if [ ! -s "$body" ]; then
+            echo "Issue #$ISSUE has no reader label (or is a watch issue); nothing to post."
+            exit 0
+          fi
+          posted="$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$ISSUE/comments" \
+            --jq '[.[] | select(.body | contains("<!-- triage-ack -->"))] | length' \
+            | awk '{ n += $1 } END { print n + 0 }')"
+          if [ "$posted" -gt 0 ]; then
+            echo "Issue #$ISSUE already acknowledged; nothing to post."
+            exit 0
+          fi
+          gh issue comment "$ISSUE" -R "$GITHUB_REPOSITORY" --body-file "$body"

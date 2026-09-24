@@ -1,0 +1,134 @@
+name: deploy
+
+# Publishes site/ to Cloudflare Pages (project franken-assessments, served at
+# https://fr.zeststream.ai) from main, and only after the whole gate chain passes on the
+# exact commit being deployed. The steps a maintainer would otherwise run by hand are in
+# docs/PIPELINE.md, along with the one-time token setup.
+#
+# Three ways in:
+#   - a push to main (a merged pull request or a direct commit);
+#   - a finished run of the `watch` or `discover` workflow. Their commits are pushed with
+#     GITHUB_TOKEN, and GitHub does not start workflows on such pushes, so without this the
+#     daily census and the weekly discovery file would never reach the site. Only a run that
+#     succeeded counts, and the job checks out main as it is now (the bot's new commit), not
+#     the head_sha the run started from;
+#   - workflow_dispatch, from main only.
+#
+# Without the CLOUDFLARE_API_TOKEN secret the gates still run, the deploy and smoke steps are
+# skipped, and the run ends green with a warning that says how to add it.
+
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [watch, discover]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time and none cancelled: each one that starts runs its gates and finishes,
+# so the site always ends at the newest main that passed.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: >-
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      || (github.event_name != 'workflow_run' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    # Sized from measurements. The verify job (install plus the gate chain) took 46 to 54 s on
+    # the runner (verify.yml runs 35944707134, 35946263690, 35946353035); `bun run verify` takes
+    # about 1.5 min locally. A `wrangler pages deploy` of site/ takes under a minute, and the
+    # smoke test waits at most 1 min. About twice the sum gives 8 minutes. Re-derive from
+    # `gh run list --workflow deploy.yml` once runs exist; do not guess.
+    timeout-minutes: 8
+    steps:
+      # Actions pinned to the same commits as verify.yml.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # workflow_run: the new tip of main, which holds the bot's commit. Otherwise the
+          # commit that triggered the run.
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.sha }}
+          # Full history: gate K3 resolves cited commits with `git cat-file`.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+
+      - name: Install (lockfile must be current)
+        run: bun install --frozen-lockfile
+
+      - name: Committed map bundle equals what its source builds
+        run: |
+          bun run build:map
+          git diff --exit-code site/assets/app.bundle.js
+
+      - name: Gate chain (nothing deploys unless every gate passes)
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          test -x "$CHROME_PATH" || { echo "Chrome not found at $CHROME_PATH"; exit 1; }
+          "$CHROME_PATH" --version
+          bun run verify
+
+      - name: Deploy token present?
+        id: token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          echo "::warning title=Site not deployed::The gates passed, but the repository secret CLOUDFLARE_API_TOKEN is not set, so site/ was not deployed. To add it: in the Cloudflare dashboard open Manage Account > Account API Tokens > Create Token > Custom token, give it the single permission Account / Cloudflare Pages / Edit on the zeststream account, then run 'gh secret set CLOUDFLARE_API_TOKEN -R ${GITHUB_REPOSITORY}' and paste the token at the prompt (never on the command line). Steps are in docs/PIPELINE.md."
+
+      - name: Deploy site/ to Cloudflare Pages
+        if: steps.token.outputs.ready == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '68f10e16c42371bd36bfb0738786325c' }}
+        run: |
+          sha="$(git rev-parse HEAD)"
+          # First line of the commit subject, trimmed to 100 characters for the Pages dashboard.
+          subject="$(git log -1 --format=%s HEAD | cut -c1-100)"
+          # wrangler pinned to the version used for the manual deploys (`wrangler --version`
+          # on 2026-09-24: 4.85.0).
+          npx --yes wrangler@4.85.0 pages deploy site \
+            --project-name franken-assessments \
+            --branch main \
+            --commit-hash "$sha" \
+            --commit-message "$subject"
+
+      - name: Smoke test the live site
+        if: steps.token.outputs.ready == 'true'
+        run: |
+          # The homepage must return 200 and carry the <title> committed in site/index.html;
+          # one brief must return 200. Pages serves /briefs/<name>.html at /briefs/<name>.
+          want="$(grep -o '<title>[^<]*</title>' site/index.html | head -1)"
+          set -- site/briefs/*.html
+          brief="$(basename "$1" .html)"
+          test -n "$want" && test -f "$1" || { echo "could not read the expected title or a brief name"; exit 1; }
+          for attempt in 1 2 3 4 5 6; do
+            home="$(curl -sS -o "$RUNNER_TEMP/home.html" -w '%{http_code}' "https://fr.zeststream.ai/?smoke=$GITHUB_RUN_ID" || true)"
+            code="$(curl -sS -o /dev/null -w '%{http_code}' "https://fr.zeststream.ai/briefs/$brief" || true)"
+            if [ "$home" = 200 ] && [ "$code" = 200 ] && grep -qF "$want" "$RUNNER_TEMP/home.html"; then
+              echo "OK: / 200 with $want; /briefs/$brief 200 (attempt $attempt)"
+              exit 0
+            fi
+            echo "attempt $attempt: / $home, /briefs/$brief $code, title match: $(grep -cF "$want" "$RUNNER_TEMP/home.html" 2>/dev/null || echo 0)"
+            sleep 10
+          done
+          echo "::error title=Smoke test failed::https://fr.zeststream.ai did not serve the deployed site (see the attempts above)"
+          exit 1
