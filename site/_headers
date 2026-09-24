@@ -1,0 +1,13 @@
+# Cloudflare Pages response headers (https://developers.cloudflare.com/pages/configuration/headers/).
+#
+# Asset URLs carry no content hash, and the site deploys automatically on every
+# push and after every watch run. With Pages' default max-age=14400 a returning
+# visitor could get a new page with a stale stylesheet or script for up to four
+# hours (seen on 2026-09-24: the new phone menu rendered with the old shell.css).
+# Revalidating every load costs one 304 per asset and keeps HTML, CSS, and JS
+# from the same deploy.
+/assets/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/feed.xml
+  Cache-Control: public, max-age=0, must-revalidate
