@@ -80,7 +80,7 @@ Two or three plain sentences a builder can act on. The first sentence names the 
 
 ## Independence
 
-The author of a verdict never reviews it. A reviewer checks every citation against its line, checks the verdict against the table above, and files findings. The author fixes them. Only then does the reviewer write `reviewed_by` and `review_date`. Gate K fails if either is missing or if `reviewed_by` equals `author`.
+The author of a verdict never reviews it. In v1.1 both roles were filled by separate AI agent sessions, each starting from the repository files rather than the author's reasoning, with a human maintainer coordinating and ruling on disputes; the site says so wherever it names a reviewer. This is independence of context, not the independent third-party validation the Rulebook asks for, which remains open. A reviewer checks every citation against its line, checks the verdict against the table above, and files findings. The author fixes them. Only then does the reviewer write `reviewed_by` and `review_date`. Gate K fails if either is missing or if `reviewed_by` equals `author`.
 
 ## Rigor practices index
 
