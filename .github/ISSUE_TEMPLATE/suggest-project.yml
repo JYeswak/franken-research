@@ -1,0 +1,38 @@
+name: Suggest a project
+description: A public Rust project, or an AI-built project in another language, that should be assessed.
+title: "[candidate] <owner/repo>"
+labels: ["candidate"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The 44 assessed repositories are Jeffrey Emanuel's FrankenSuite. Suggestions for other projects are welcome, especially ones built largely by AI coding agents, since the method and the [starter kit](https://github.com/JYeswak/franken-research/tree/main/starter-kit) were made for that kind of codebase. A suggestion is not a promise of an assessment; it goes on the candidate list and is answered here.
+  - type: input
+    id: url
+    attributes:
+      label: Repository URL
+      placeholder: https://github.com/owner/repo
+    validations:
+      required: true
+  - type: textarea
+    id: fit
+    attributes:
+      label: Why it fits
+      description: |
+        Whatever applies. Signs it was built by AI agents (an AGENTS.md or CLAUDE.md, `Co-Authored-By` trailers naming a model, agent-written commit messages). A Rust port or Rust tool. Commits in the last 90 days.
+    validations:
+      required: true
+  - type: textarea
+    id: check
+    attributes:
+      label: What you would want checked
+      description: Optional. A claim in its README, its benchmarks, its license, its CI, whether anyone uses it.
+    validations:
+      required: false
+  - type: checkboxes
+    id: public
+    attributes:
+      label: Public
+      options:
+        - label: The repository is public, and anyone can clone it without an account or agreement.
+          required: true

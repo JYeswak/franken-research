@@ -1,0 +1,38 @@
+name: Site bug
+description: A page on fr.zeststream.ai is broken, unreadable, or behaves wrongly. For a wrong claim or number, use the Correction form.
+title: "[site] <page>: <what happened>"
+labels: ["site"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is for how the site works: layout, links, the map, keyboard use, mobile rendering. If a sentence or number on a page is wrong, use the Correction form instead, since the fix goes to the evidence first and the page second.
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      placeholder: https://fr.zeststream.ai/briefs/frankenredis.html
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      description: With versions if you know them. Say if JavaScript or WebGL is off, or if reduced motion is on.
+      placeholder: iPhone 15, Safari 18; or Windows 11, Firefox 131
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Optional. Paste or drag an image here.
+    validations:
+      required: false

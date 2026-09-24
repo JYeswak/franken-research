@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the site
+    url: https://fr.zeststream.ai
+    about: The 44 briefs, the suite map, and the synthesis. Check whether your point is already answered there.
+  - name: How the assessments were made
+    url: https://fr.zeststream.ai/method/
+    about: The method, evidence tiers, and pinning rules a correction is judged against.
+  - name: Report a security problem privately
+    url: https://github.com/JYeswak/franken-research/security/advisories/new
+    about: For problems with the site or the watch workflow. See SECURITY.md. Do not open a public issue.

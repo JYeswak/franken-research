@@ -4,7 +4,7 @@ Corrections are the most useful contribution. This repository reports that every
 
 ## Propose a correction
 
-Open an issue at https://github.com/JYeswak/franken-research/issues with:
+Open a [correction issue](https://github.com/JYeswak/franken-research/issues/new?template=correction.yml). The form asks for:
 
 1. **Where.** The packet file and line, in the form `packets/<name>-assessment.md:LINE`. If the error is on the site, give the page and quote the sentence, and name the packet line it derives from if you can.
 2. **What is wrong.** Quote the claim as written and say what it should say.
@@ -15,9 +15,19 @@ Demotions of a claim need counter-evidence. A newer commit that fixes a reported
 
 ## How corrections are handled
 
-- Packets are the dated record of what was observed at a pin and are not silently rewritten.
-- Accepted corrections are recorded in [CHANGELOG.md](CHANGELOG.md) with the date, the issue link, and what changed. If a correction changes a number or a verdict, `site/assets/data.js`, the brief, the synthesis, and every page that shows the number change in the same commit.
+- Packets are the dated record of what was observed at a pin and are not silently rewritten. Changes after the pin go into a dated re-check under `updates/` (see [updates/METHOD.md](updates/METHOD.md)).
+- A separate agent session, not the one that wrote the packet, checks the evidence in a correction, and a human decides whether to accept it.
+- Accepted corrections are recorded in [CHANGELOG.md](CHANGELOG.md) with the date, the issue link, what changed, and credit to the reporter. If a correction changes a number or a verdict, `site/assets/data.js`, the brief, the synthesis, and every page that shows the number change in the same commit.
 - Declined corrections get a reply on the issue with the evidence relied on.
+
+## Other issue forms
+
+- [New evidence](https://github.com/JYeswak/franken-research/issues/new?template=new-evidence.yml): a release, CI result, license change, or new repository the daily watch missed, or an event that deserves a re-check.
+- [Suggest a project](https://github.com/JYeswak/franken-research/issues/new?template=suggest-project.yml): a public Rust project, or an AI-built project in another language, that should be assessed.
+- [Site bug](https://github.com/JYeswak/franken-research/issues/new?template=site-bug.yml): a page on the site is broken or unreadable.
+- [Idea](https://github.com/JYeswak/franken-research/issues/new?template=idea.yml): a thought or request about the site, the method, or the starter kit.
+
+Security problems with the site or the workflows go through a private report, not an issue; see [SECURITY.md](SECURITY.md). Everyone taking part agrees to the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Right of reply
 
@@ -30,7 +40,7 @@ bun install --frozen-lockfile
 bun run verify
 ```
 
-Every change to `site/` must leave all eleven gates passing. Never weaken, skip, or narrow a gate to get a green run; fix the page instead. If you think a gate is wrong, say so in the issue or pull request and leave the gate in place. What each gate checks is in [site/BUILD-GATES.md](site/BUILD-GATES.md).
+Every change to `site/` must leave all eleven gates passing. Never weaken, skip, or narrow a gate to get a green run; fix the page instead. If you think a gate is wrong, say so in the issue or pull request and leave the gate in place. What each gate checks is in [site/BUILD-GATES.md](site/BUILD-GATES.md). The pull request template asks for the `bun run verify` output.
 
 If you edit `site/assets/app.src.js`, rebuild the bundle and commit both files; CI fails when they disagree:
 

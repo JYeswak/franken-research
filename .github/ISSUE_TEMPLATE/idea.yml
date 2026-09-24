@@ -1,0 +1,23 @@
+name: Idea
+description: A thought or request about the site, the method, or the starter kit.
+title: "[idea] <short summary>"
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Anything that would make the site, the method, or the starter kit more useful to you. For a wrong claim, use the Correction form; for something broken on a page, use Site bug.
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      description: Optional. The page this is about.
+      placeholder: https://fr.zeststream.ai/method/
+    validations:
+      required: false

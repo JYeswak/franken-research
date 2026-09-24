@@ -1,0 +1,99 @@
+name: New evidence
+description: A release, CI result, license change, or new repository the daily watch missed, or an event that deserves a re-check.
+title: "[new-evidence] <repo>: <event>"
+labels: ["new-evidence"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A daily watch ([watch/README.md](https://github.com/JYeswak/franken-research/blob/main/watch/README.md)) checks all 44 repositories through the GitHub API and opens a `[watch]` issue for releases and tags, license changes, workflow files added or removed, archived, renamed, or deleted repositories, and new `franken*` or Rust repositories. It does not read CI results or anything outside GitHub. Use this form for what it missed, or for a watch issue you think was closed too early.
+
+        The packets stay frozen at their pins. If the event could move a matrix cell (TRL, NODUS ring, license, bus factor, CI class, or release class), an analyst writes a dated re-check in `updates/` pinned to the new commit, and a separate agent session reviews it before it lands. The rules are in [updates/METHOD.md](https://github.com/JYeswak/franken-research/blob/main/updates/METHOD.md).
+  - type: dropdown
+    id: repository
+    attributes:
+      label: Repository
+      options:
+        - a repository not among the 44
+        - asupersync
+        - beads-for-frankentui
+        - beads_for_franken_engine
+        - franken_agent_detection
+        - franken_alignment
+        - franken_code_browser
+        - franken_drone_geometry_reconstruction
+        - franken_engine
+        - franken_lean
+        - franken_manim
+        - franken_markdown
+        - franken_markdown_website
+        - franken_native_capsule
+        - franken_networkx
+        - franken_nlp
+        - franken_node
+        - franken_numpy
+        - franken_ocr
+        - franken_overlap
+        - franken_remote
+        - franken_snowflake
+        - franken_surveillance_system
+        - franken_threed
+        - franken_tts
+        - franken_whisper
+        - frankenfs
+        - frankengit
+        - frankengraphdb
+        - frankenjax
+        - frankenlibc
+        - frankenmermaid
+        - frankenpandas
+        - frankenredis
+        - frankenscipy
+        - frankensearch
+        - frankensim
+        - frankensim_website
+        - frankensqlite
+        - frankensqlite_website
+        - frankensympy
+        - frankenterm
+        - frankentorch
+        - frankentui
+        - frankentui_website
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of event
+      options:
+        - release or tag
+        - CI result
+        - license change
+        - workflow files added or removed
+        - archived, renamed, or deleted
+        - new repository
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: event
+    attributes:
+      label: What happened
+      description: The event and its date. For a repository not among the 44, give its URL.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence link
+      description: A primary source where you can. The release or tag API, a CI run page, the license file at a commit, the repository page. A blog post or announcement counts as a maintainer claim until a primary source confirms it.
+      placeholder: https://github.com/Dicklesworthstone/<repo>/releases/tag/v0.2.0
+    validations:
+      required: true
+  - type: textarea
+    id: cell
+    attributes:
+      label: Why it could move a cell
+      description: Which cell (TRL, NODUS ring, license, bus factor, CI class, release class), its value in the packet, and what you think it would be now. Commits alone never move a cell.
+    validations:
+      required: true

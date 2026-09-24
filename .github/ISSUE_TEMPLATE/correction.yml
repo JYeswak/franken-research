@@ -1,0 +1,108 @@
+name: Correction
+description: Something in a packet, brief, synthesis, or site page is wrong, and you have evidence.
+title: "[correction] <repo>: <what is wrong>"
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Corrections are the most useful thing you can send. Every packet is frozen at one commit (its pin), read on 2026-09-22, and every claim in it carries an evidence tier and a confidence grade from [RULEBOOK.md](https://github.com/JYeswak/franken-research/blob/main/RULEBOOK.md) §1. A correction needs evidence at least as strong as the claim it replaces.
+
+        What happens next: a separate agent session, not the one that wrote the packet, checks your evidence, and a human decides. Accepted corrections are recorded in [CHANGELOG.md](https://github.com/JYeswak/franken-research/blob/main/CHANGELOG.md) with the date, a link to this issue, and credit to you. Declined ones get a reply here with the evidence relied on. The full process is in [CONTRIBUTING.md](https://github.com/JYeswak/franken-research/blob/main/CONTRIBUTING.md).
+  - type: dropdown
+    id: repository
+    attributes:
+      label: Repository
+      description: Which assessed repository does this concern? Pick "suite-wide / synthesis" for counts and claims that span the suite.
+      options:
+        - suite-wide / synthesis
+        - asupersync
+        - beads-for-frankentui
+        - beads_for_franken_engine
+        - franken_agent_detection
+        - franken_alignment
+        - franken_code_browser
+        - franken_drone_geometry_reconstruction
+        - franken_engine
+        - franken_lean
+        - franken_manim
+        - franken_markdown
+        - franken_markdown_website
+        - franken_native_capsule
+        - franken_networkx
+        - franken_nlp
+        - franken_node
+        - franken_numpy
+        - franken_ocr
+        - franken_overlap
+        - franken_remote
+        - franken_snowflake
+        - franken_surveillance_system
+        - franken_threed
+        - franken_tts
+        - franken_whisper
+        - frankenfs
+        - frankengit
+        - frankengraphdb
+        - frankenjax
+        - frankenlibc
+        - frankenmermaid
+        - frankenpandas
+        - frankenredis
+        - frankenscipy
+        - frankensearch
+        - frankensim
+        - frankensim_website
+        - frankensqlite
+        - frankensqlite_website
+        - frankensympy
+        - frankenterm
+        - frankentorch
+        - frankentui
+        - frankentui_website
+    validations:
+      required: true
+  - type: textarea
+    id: page
+    attributes:
+      label: Which page or claim
+      description: A link to the page, or `packets/<name>-assessment.md:LINE`, and the sentence quoted exactly as written.
+      placeholder: |
+        packets/frankenredis-assessment.md:3
+        "No tag points at the pin"
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Say what the claim gets wrong. If it is a number, give the number you get.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: |
+        Links, commands you ran, and their output. Give each piece its tier from RULEBOOK §1: Verified (you inspected a clone at the pin, an API response, or a live page), CI-observed (a CI run page, with its URL), Maintainer claim (README or docs), External (an independent source), or Inference (your judgment). Add a confidence grade: High, Medium, or Low. Primary sources (the code, CI run pages, release and tag APIs, the license text) beat descriptions of them (READMEs, docs, blog posts).
+      placeholder: |
+        [Verified, High] git clone at the pin, then:
+        $ rg -c 'unsafe' crates/ | ...
+        <output>
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change
+      description: Optional. The wording, number, or verdict you think is right.
+    validations:
+      required: false
+  - type: checkboxes
+    id: pin
+    attributes:
+      label: The pin
+      description: Verdicts are frozen at the pinned commit named in each packet header. Changes after the pin are still useful, but they go through dated re-checks in `updates/`, not edits to the packet.
+      options:
+        - label: I checked the pinned commit, not only today's HEAD.
+          required: false
