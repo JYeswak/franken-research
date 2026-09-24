@@ -2,7 +2,9 @@
 
 Corrections to published findings are recorded here with the date, the issue, and what changed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Unreleased
+## v1.2.0 (2026-09-24)
+
+The project now runs itself: a daily watch of the 44 repositories, issue forms on every page, a feed, a weekly Rust discovery sweep, and automatic deploys after every change that passes the gates. The site was rebuilt from two independent audits and re-audited afterwards.
 
 ### Added
 
@@ -24,6 +26,7 @@ Corrections to published findings are recorded here with the date, the issue, an
 - **Every brief opens with its verdict**: a strip under the title with the ring (in the map's colour), TRL, CI class, license, the brief's own "Use it? / Learn from it?" answers, a "Why" link, and "Spot an error? Correct this brief". Generated from the map's data by `site/scripts/brief-strip.mjs` and checked by gate V. The "what would change the verdict" lists that ran together in 27 briefs now show one item per line (markup only; the words are unchanged). Share cards use the map's ring colours; `/starter-kit/` and `/self/` have their own cards.
 - **Starter kit**: a New repo / Existing repo chooser at the top. The existing-repo path was run as printed on a clone of a public crate, including a commit the hook accepts and one it refuses.
 - **Starter kit claim checker** now fails, naming the row, when an `enforce=yes` row's `readme_pattern` is not in the README, and fails when a claims file passed as an argument does not exist. franken_markdown only warned about such rows and left them unchecked, so the gate stayed green while an enforced claim went unverified, and a hook pointing at a wrong path passed silently. `enforce=no` rows are still skipped. Tested with four planted registries (match, unmatched, violated, missing) on bash 3.2, dash, zsh 5.9 and bash 5.3, plus the starter-kit steps run as printed. Recorded in `starter-kit/README.md` under "Changes since the 2026-09-22 import" (`48a8c53`).
+- **Security hardening from an independent review by a different model lineage** (GPT-6-Luna, 2026-09-24, before this release was tagged): the watch and discovery bots now act only on issues their own token opened, with the expected labels and machine markers, so a same-titled issue from anyone else is never commented on or edited (gates W and W2 cover it); repository and tag names are escaped before they reach issue tables; the Cloudflare token is readable only by deploy jobs on `main` (a `production` environment with a main-only branch policy); every page sends `X-Frame-Options`, a permissions policy, and host-only HSTS. The review also asked for a Pages-only deploy token; the maintainer chose to keep the existing account token, now confined to that environment.
 - **Asset caching**: every stylesheet and script URL now carries a content hash (`assets/shell.css?v=<hash>`), stamped by `bun run build:shell` and checked by gate S, so a deploy can never pair new HTML with a cached old stylesheet or script. An independent re-audit hit exactly that: the new phone menu rendered with a four-hour-old `shell.css`, because the domain raises asset `max-age` to four hours whatever the site sends. `site/_headers` also asks for revalidation, which the `pages.dev` deployment URLs honour.
 
 ### Corrected
