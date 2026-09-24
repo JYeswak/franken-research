@@ -117,6 +117,7 @@ bun run verify
 | W2 | The weekly discovery sweep scores, orders, and excludes candidates correctly on recorded search responses, and its output carries no names or email addresses. |
 | M | The Atom feed and the follow-the-suite OPML equal a fresh `bun run build:feed` and parse as well-formed XML. |
 | S | Every page carries the shared navigation, footer, and head regions exactly as `bun run build:shell` renders them, and the page list matches the sitemap. |
+| V | Every brief opens with a verdict strip (ring, TRL, CI class, license, and the brief's own bottom line) that matches the map's data, uses the map's ring colours, and lists "what would change the verdict" one item per line; `node site/scripts/brief-strip.mjs` regenerates it. |
 
 CI also runs `bun run build:map` and fails if the committed `site/assets/app.bundle.js` differs from what its source builds, and scans the tree and history for secrets with gitleaks. Every push to `main` that passes the gates deploys the site and smoke-tests the deployment ([deploy.yml](.github/workflows/deploy.yml)). [site/BUILD-GATES.md](site/BUILD-GATES.md) explains why each gate exists.
 
