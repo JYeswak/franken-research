@@ -100,6 +100,7 @@
   14 vendor-port rigor gates (Phase C) are still in final grading and will ship
   here in the next version.
 </div>
+<p class="secmap">Section map. This page ships the 28-item two-phase kit only. Phase C (the 14 vendor-port rigor gates) and the G1 through G14 checkers are not in this zip: no gates directory and none of the checker scripts ship under starter-kit/scripts, and the gated kit lands in the version after the completion marker. The gate reference table is cited by path at ecosystem/pickup/_s0/g1-g14-reference.md, not copied here.</p>
 
 <div class="vocab" style="background:var(--panel);border:1px solid #232c3c;border-radius:10px;padding:10px 14px;font-size:13.5px;color:#c9c3b4;margin:0 0 12px;line-height:1.6"><b style="color:var(--ink)">One definition.</b> <b style="color:var(--ink)">CI</b> is continuous integration: the service that automatically runs a project's tests on each commit.</div>
 
@@ -133,6 +134,7 @@
       beads, the honesty pre-commit hook, and the CI backstop workflow. Set your
       git identity first, or the first commit fails.
       POSIX sh only; git is optional but strongly recommended.
+      <div class="note">Do not run init.sh inside a repo that already has AGENTS.md or a live pre-commit hook: it installs a second hook. Adopt the checklist and templates by hand there.</div>
     </li>
     <li><b>Machine-check the planning packet</b> once filled:
       <pre class="cmd"><span class="k">./scripts/check-readiness.sh</span></pre>
