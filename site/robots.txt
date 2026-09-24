@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://fr.zeststream.ai/sitemap.xml

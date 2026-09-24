@@ -3,15 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reproduce a verdict — FrankenSuite</title>
+<title>Reproduce a verdict · Franken Research</title>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta name="description" content="The procedure for re-deriving an assessment verdict: pin the commit, re-run the checks, work the claim inventory, apply evidence tiers. Worked exemplar: franken_threed, 61/61 tests re-executed.">
-<meta property="og:title" content="Reproduce a verdict — FrankenSuite">
+<meta property="og:title" content="Reproduce a verdict · Franken Research">
 <meta property="og:description" content="The procedure for re-deriving an assessment verdict: pin the commit, re-run the checks, work the claim inventory, apply evidence tiers. Worked exemplar: franken_threed, 61/61 tests re-executed.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="../og-image.png">
+<link rel="canonical" href="https://fr.zeststream.ai/reproduce/">
+<meta property="og:site_name" content="Franken Research">
+<meta property="og:url" content="https://fr.zeststream.ai/reproduce/">
+<meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
+<meta name="twitter:image" content="https://fr.zeststream.ai/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<style>/* FrankenSuite practitioner page. Zero dependencies. Works from file:// with no network. */
+<style>/* Franken Research practitioner page. Zero dependencies. Works from file:// with no network. */
 :root{
   --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
   --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
@@ -75,13 +79,15 @@ footer a{color:var(--accent)}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
     font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
   .skip:focus{left:0}
+.secmap{font-family:var(--sans);font-size:13.5px;line-height:1.6;color:var(--muted);border-left:2px solid var(--line);padding:2px 0 2px 12px;margin:14px 0}
+.secmap a{color:var(--accent)}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
 <nav class="topnav" aria-label="Site">
-  <a href="../index.html">&larr; FrankenSuite front door</a>
+  <a href="../index.html">&larr; Franken Research front door</a>
   <span class="peers">
     <a href="../techniques/index.html">Transferable techniques</a>
     <a href="../failure-modes/index.html">Failure modes</a>
@@ -96,7 +102,7 @@ footer a{color:var(--accent)}
 </header>
 
 <p class="router">Assessors: the protocol is <a href="../RULEBOOK.md">RULEBOOK.md</a> &nbsp;&middot;&nbsp; Builders: the runnable kit is <a href="../starter-kit/">starter-kit/</a> &nbsp;&middot;&nbsp; Researchers: the suite synthesis starts at <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a></p>
-<p class="secmap">Section map. This page is the <a href="../RULEBOOK.md">RULEBOOK.md</a> §0 item 1 procedure: a second reader with no prior context can evaluate it. Terms are defined above the steps, commands are exact, and every packet reference names file and line (verified against the shipped packet: method at line 5, strongest evidence at line 20, claim rows 4 through 6 at lines 93 to 95, the 76/79 characterization at line 110, reproduction cost at line 141). The worked exemplar is franken_threed; the closing checklist generalizes to any packet.</p>
+<p class="secmap">Sources for this page: the reproduction procedure in <a href="../RULEBOOK.md">RULEBOOK.md</a> §0 item 1, written so a reader with no prior context can follow it, worked through on the <a href="../packets/franken_threed-assessment.md">franken_threed assessment packet</a>. Every packet reference below names its file and line; the closing checklist generalizes to any packet.</p>
 
 <div class="vocab"><b>Six definitions.</b> The <b>pin</b> is the exact commit hash the assessment froze on; every claim is evaluated at the pin, not at HEAD. A <b>claim</b> is a checkable assertion a project makes in public. The <b>claim inventory</b> is the packet's claim table: every substantive claim, its recorded status, and the evidence behind it. <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor). <b>TRL</b> is technology readiness level, scored 1 to 9. <b>CI</b> is continuous integration: the project's automated test runs. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them.</div>
 

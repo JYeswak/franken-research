@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found · Franken Research</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="This page does not exist on Franken Research. Start from the map of every assessed FrankenSuite project.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>/* Franken Research not-found page. Zero dependencies. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:19px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:48px 22px}
+main{max-width:640px;text-align:center}
+.kicker{font-family:var(--sans);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 1.6rem}
+h1{font-weight:400;font-size:clamp(40px,8vw,72px);line-height:1.02;letter-spacing:-.02em;margin:0 0 1.2rem}
+.dek{color:var(--ink-dim);font-style:italic;margin:0 auto 2.2rem;max-width:520px}
+.path{font-family:var(--mono);font-size:14px;color:var(--muted);overflow-wrap:anywhere;margin:-1.2rem 0 2.2rem}
+.path:empty{display:none}
+nav{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;font-family:var(--sans);font-size:14px;letter-spacing:.04em}
+nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--bg-2);border-radius:999px;padding:.7rem 1.2rem}
+nav a:hover{border-color:var(--accent);color:var(--accent)}
+nav a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+nav a.primary{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Franken Research &middot; 404</p>
+  <h1>Nothing lives at this address.</h1>
+  <p class="dek">The link may be old, or the page may have moved. Every brief and section is reachable from the front door.</p>
+  <p class="path" id="missing"></p>
+  <nav aria-label="Where to go instead">
+    <a class="primary" href="index.html" data-root>Open the map of every assessed project</a>
+    <a href="index.html#tableview" data-root>Browse the brief index</a>
+    <a href="method/index.html" data-root>How the verdicts were made</a>
+  </nav>
+</main>
+<script>
+/* Served by the host for a missing path at any depth, so relative links would
+   resolve against the wrong folder. Over http(s), pin them to the site root;
+   from file:// this page sits at the root and the relative links already work. */
+(function () {
+  if (!/^https?:$/.test(location.protocol)) return;
+  document.querySelectorAll('a[data-root]').forEach(function (a) {
+    a.setAttribute('href', '/' + a.getAttribute('href'));
+  });
+  var m = document.getElementById('missing');
+  if (m) m.textContent = location.pathname;
+})();
+</script>
+</body>
+</html>

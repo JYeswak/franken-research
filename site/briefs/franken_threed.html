@@ -3,15 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FrankenThreed — Explore</title>
-<meta name="description" content="Compiling Three.js Hot Loops Instead of Rewriting the Renderer Three.js is the dominant JavaScript library for 3D in the browser. Created by Ricardo Cabello…">
-<meta property="og:title" content="FrankenThreed — Explore">
-<meta property="og:description" content="Compiling Three.js Hot Loops Instead of Rewriting the Renderer Three.js is the dominant JavaScript library for 3D in the browser. Created by Ricardo Cabello…">
-<meta property="og:type" content="website">
-<meta property="og:image" content="../og-image.png">
+<title>FrankenThreed: Compiling Three.js Hot Loops Instead of Rewriting the Renderer &middot; Franken Research</title>
+<meta name="description" content="A Three.js application specializer: provably-closed numeric parts of the frame loop compile to Wasm kernels. Independent verdict: Explore, TRL 3–4.">
+<link rel="canonical" href="https://fr.zeststream.ai/briefs/franken_threed">
+<meta property="og:site_name" content="Franken Research">
+<meta property="og:title" content="FrankenThreed: Compiling Three.js Hot Loops Instead of Rewriting the Renderer">
+<meta property="og:description" content="A Three.js application specializer: provably-closed numeric parts of the frame loop compile to Wasm kernels. Independent verdict: Explore, TRL 3–4.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://fr.zeststream.ai/briefs/franken_threed">
+<meta property="og:image" content="https://fr.zeststream.ai/og/franken_threed.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FrankenThreed share card: verdict Explore, TRL 3–4, CI green at the pin — one of only two in the suite">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FrankenThreed: Compiling Three.js Hot Loops Instead of Rewriting the Renderer">
+<meta name="twitter:description" content="A Three.js application specializer: provably-closed numeric parts of the frame loop compile to Wasm kernels. Independent verdict: Explore, TRL 3–4.">
+<meta name="twitter:image" content="https://fr.zeststream.ai/og/franken_threed.png">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<style>/* FrankenSuite shareable-brief reader template — dark editorial, rust accent.
+<style>/* Franken Research brief reader template — dark editorial, rust accent.
    Zero dependencies. Works from file:// with no network. */
 
 :root {
@@ -107,7 +116,8 @@ code { font-family: var(--mono); font-size: 0.85em; background: var(--bg-3); pad
 .hero__inner { max-width: 1000px; }
 .hero__kicker { margin-bottom: 2.5rem; }
 .hero__title { margin: 0 0 2rem; }
-.hero__name { display: block; font-size: clamp(52px, 10vw, 120px); line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); overflow-wrap: break-word; }
+.hero__name { display: block; font-size: clamp(52px, 10vw, 120px); line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
+@media (max-width: 480px) { .hero__name { font-size: clamp(40px, 12vw, 52px); } }
 .hero__sub { display: block; font-size: clamp(24px, 3.8vw, 46px); line-height: 1.2; letter-spacing: -0.01em; color: var(--ink-dim); margin-top: 1.2rem; font-style: italic; }
 .hero__dek { max-width: 640px; margin: 0 auto 2.5rem; font-size: 20px; color: var(--ink-dim); font-style: italic; }
 .hero__meta { font-family: var(--sans); font-size: 13px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
@@ -269,6 +279,16 @@ html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !impo
 .vocab{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14.5px;color:var(--ink-dim);margin:22px auto 8px;max-width:900px;line-height:1.65}
 .vocab b{color:var(--ink)}
 @media (max-width:700px){.vocab{margin:16px 16px 8px;font-size:13.5px}}
+/* share control: hidden until JS can make it work; the reading path needs no JS */
+.share { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; margin: -1rem auto 2.2rem; max-width: 640px; font-family: var(--sans); }
+html:not(.js) .share { display: none; }
+.share__btn { display: inline-flex; align-items: center; gap: 0.55rem; font: 600 13px/1 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); background: var(--bg-3); border: 1px solid var(--line); border-radius: 999px; padding: 0.75rem 1.25rem; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+.share__btn[hidden] { display: none; }
+.share__btn:hover { border-color: var(--accent); color: var(--accent); }
+.share__btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.share__btn.is-done { border-color: var(--green); color: var(--green); }
+.share__btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.share__status { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
 </style>
 </head>
 <body>
@@ -293,12 +313,13 @@ html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !impo
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
   <div class="hero__inner">
-    <p class="kicker hero__kicker">FrankenSuite research program &middot; A shareable brief</p>
+    <p class="kicker hero__kicker">Franken Research &middot; independent brief</p>
     <h1 class="hero__title">
       <span class="hero__name">Franken<wbr>Threed</span>
       <span class="hero__sub">Compiling Three.js Hot Loops Instead of Rewriting the Renderer</span>
     </h1>
-    <p class="hero__dek">A shareable brief from the FrankenSuite research program. Every claim below traces to the assessed repository; sources are linked at the end. Assessment pinned September 22, 2026.</p>
+    <p class="hero__dek">An independent brief on one FrankenSuite project, from Franken Research. Every claim below traces to the assessed repository; sources are linked at the end. Assessment pinned September 22, 2026.</p>
+    <div class="share"><button type="button" class="share__btn" id="shareBtn" hidden data-url="https://fr.zeststream.ai/briefs/franken_threed" data-title="FrankenThreed: Compiling Three.js Hot Loops Instead of Rewriting the Renderer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/></svg><span class="share__label">Share this brief</span></button><span class="share__status" id="shareStatus" role="status" aria-live="polite"></span></div>
     <div class="hero__meta"><span>Assessment pinned September 22, 2026 (the assessed commit)</span><span class="meta__sep">·</span><span>~1,226 words</span><span class="meta__sep">·</span><span>5 sections</span><span class="meta__sep">·</span><span>Every claim traceable to a source</span></div>
   </div>
   <div class="hero__cue" aria-hidden="true">
@@ -331,7 +352,7 @@ html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !impo
 <div class="prose" data-reveal><p>The demonstrated slice is the MarchingCubes addon: the three.js demo that turns a volumetric field into a surface mesh, the familiar metaball blob. The pipeline: the ingest CLI&#x27;s specialization flag routes the addon&#x27;s triangulate body through the compiler into a Wasm kernel; a rollup plugin branches the numerical prefix of the addon&#x27;s update around the compiled kernel; runtime guards re-verify the closed-world assumption on every entry.</p></div>
 <div class="prose" data-reveal><p>The finding that matters is the differential harness. It runs the compiled kernel against a live instantiation of the actual pinned upstream r186 MarchingCubes class. All 256 cube topology cases times 8 flag combinations (2,048 kernel invocations per sweep), plus animated metaball sequences, 80 seeded random fields, and empty/NaN edge cases. Bit-comparable output is asserted throughout, with diagnostics requiring exactly 256 Wasm calls and zero fallback calls. The program&#x27;s assessor independently re-ran all three gated suites on 2026-09-22: 61 of 61 pass in about 21 seconds on Node v24, against a sparse three.js checkout whose oracle blob hash was verified before use.</p></div>
 <div class="prose" data-reveal><p>The second finding is what the project refuses to claim. The README states, verbatim, that zero speedup has been measured. The specialization doc: &quot;A compiled addon is not a measured acceleration.&quot; The 2×/3× headline gates are targets, not results. &quot;Will it hit 3×? Unknown. Nothing has been measured.</p></div>
-<div class="ci-card" data-reveal><p class="card__eyebrow">Evidence &middot; CI status</p><h3>What the project&rsquo;s own CI said at the pin</h3><ul class="ci-card__rows"><li class="ci-row ci-row--pass"><span class="ci-row__dot" aria-hidden="true">✓</span><span>It executes in CI (continuous integration: automated checks that run on every change), green at the pin (the commit the assessment was pinned to).</span></li><li class="ci-row ci-row--disabled"><span class="ci-row__dot" aria-hidden="true">!</span><span>No&quot; and lists two crates, while a compiler and CLI execute in CI and the workspace holds four; AGENTS.md still says the project has &quot;zero implementation&quot;.</span></li></ul></div>
+<div class="ci-card" data-reveal><p class="card__eyebrow">Evidence &middot; CI status</p><h3>What the project&rsquo;s own CI said at the pin</h3><ul class="ci-card__rows"><li class="ci-row ci-row--pass"><span class="ci-row__dot" aria-hidden="true">✓</span><span>It executes in CI (continuous integration: automated checks that run on every change), green at the pin (the commit the assessment was pinned to).</span></li><li class="ci-row ci-row--disabled"><span class="ci-row__dot" aria-hidden="true">!</span><span>&quot;No&quot; and lists two crates, while a compiler and CLI execute in CI and the workspace holds four; AGENTS.md still says the project has &quot;zero implementation&quot;.</span></li></ul></div>
 <div class="findings__head" data-reveal><p class="kicker kicker--warn">The uncomfortable findings</p></div><div class="findings"><article class="finding finding--red" data-reveal><p class="card__eyebrow">Uncomfortable finding</p><p>The public status surface is stale: the README&#x27;s status table still says &quot;Is there a compiler, renderer, or CLI? <a class="src-chip" href="#src-p1">source</a> All of this describes a project roughly ten days and 280 commits older than the pin. The staleness reaches inside the safety contract: the compiler&#x27;s own refusal tests still demand rejection of x[i]++, which the compiler has since legitimately learned to compile. The test suite disagrees with the compiler it guards. And CI gates only the marching-cubes exemplar, not the compiler&#x27;s full contract. Velocity is extreme (380 commits in 13 days), with Claude-Session links and named agent personas in commit bodies but zero Co-Authored-By trailers, so no outside reviewer can determine which artifacts agents produced or what the review gates were. And the license is MIT plus a rider barring OpenAI and Anthropic — the entities best equipped to evaluate a JS-to-Wasm compiler — from even analyzing the code. <a class="src-chip" href="#src-p2">source</a></p></article></div>
 </section>
 
@@ -394,12 +415,12 @@ html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !impo
 
 <footer class="colophon">
   <div class="prose">
-    <p><strong>FrankenThreed: Compiling Three.js Hot Loops Instead of Rewriting the Renderer.</strong> A shareable brief from the FrankenSuite research program, rendered from the reader template. Assessment pinned September 22, 2026.</p>
+    <p><strong>FrankenThreed: Compiling Three.js Hot Loops Instead of Rewriting the Renderer.</strong> An independent brief from Franken Research, rendered from the reader template. Assessment pinned September 22, 2026.</p>
     <p class="colophon__small">Single-file page: styles and script inlined, no network calls, no tracking. Motion respects <code>prefers-reduced-motion</code>. Read the methodology behind these claims: <a href="../method/index.html">how claims here were governed</a>. <a href="../index.html">Back to the brief index</a>.</p>
   </div>
 </footer>
 
-<script>/* FrankenSuite shareable-brief reader — vanilla JS, zero dependencies. */
+<script>/* Franken Research brief reader — vanilla JS, zero dependencies. */
 (function () {
   'use strict';
 
@@ -490,6 +511,64 @@ html.reduced-motion [data-reveal] { opacity: 1 !important; transform: none !impo
       smoothTo(panel);
     });
   });
+
+  /* ---------- share: the native share sheet when the browser has one,
+     otherwise copy the canonical URL. The button ships hidden and is only
+     revealed here, so a no-JS reader never sees a dead control. ---------- */
+  var shareBtn = document.getElementById('shareBtn');
+  if (shareBtn) {
+    var shareUrl = shareBtn.getAttribute('data-url') || location.href;
+    var shareLabel = shareBtn.querySelector('.share__label');
+    var shareStatus = document.getElementById('shareStatus');
+    var shareTimer = null;
+    var shareReset = function () {
+      shareLabel.textContent = 'Share this brief';
+      shareBtn.classList.remove('is-done');
+      shareStatus.textContent = '';
+    };
+    var shareSay = function (msg, copied, ms) {
+      clearTimeout(shareTimer);
+      shareLabel.textContent = copied ? 'Copied' : 'Share this brief';
+      shareBtn.classList.toggle('is-done', copied);
+      shareStatus.textContent = msg;
+      shareTimer = setTimeout(shareReset, ms);
+    };
+    var legacyCopy = function () {
+      var ta = document.createElement('textarea');
+      ta.value = shareUrl;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    };
+    var copyLink = function () {
+      var done = function () { shareSay('Link copied to clipboard.', true, 2500); };
+      var fallback = function () {
+        if (legacyCopy()) done();
+        else shareSay('Copy this link: ' + shareUrl, false, 12000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(done, fallback);
+      } else {
+        fallback();
+      }
+    };
+    shareBtn.addEventListener('click', function () {
+      if (navigator.share) {
+        navigator.share({ title: shareBtn.getAttribute('data-title') || document.title, url: shareUrl })
+          .catch(function (e) { if (!e || e.name !== 'AbortError') copyLink(); });
+      } else {
+        copyLink();
+      }
+    });
+    shareBtn.hidden = false;
+  }
 })();
 </script>
 </body>
