@@ -38,10 +38,13 @@ The census in rule 2 is now also taken every day by [`watch/watch.mjs`](../watch
 owner, and only the first one is automatic:
 
 1. **Watch.** The run writes `watch/state.json`, `watch/census/YYYY-MM-DD.tsv` (the rule 2 columns
-   for all 44), and `watch/changes/YYYY-MM-DD.json`, and commits them only if the whole gate chain
-   passes. It flags events that could move a cell (a release or tag, a license SPDX or text change,
-   a workflow file added or removed, archived, renamed, deleted, a pin no longer an ancestor of
-   HEAD, a new `franken*` or Rust repository). It does not judge them.
+   for all 44), `watch/changes/YYYY-MM-DD.json`, and `watch/latest.json` (the summary the site
+   reads), and commits them only if the whole gate chain passes. It flags events that could move a
+   cell (a release or tag, a license SPDX or text change, a workflow file removed or workflow files
+   appearing where there were none, archived, renamed, deleted, a pin no longer an ancestor of
+   HEAD, a new `franken*` or Rust repository) and does not judge them. Workflow files added to a
+   set that already had some are counted in the census but not flagged: on their own they cannot
+   move the CI cell.
 2. **Issue.** For each flagged event that is new since the previous run it opens one issue,
    `[watch] <repo>: <change>`, labelled `watch` plus the event type, with before and after, API
    evidence, and the pinned matrix values the event may affect. It never reopens a closed issue; a
@@ -50,6 +53,8 @@ owner, and only the first one is automatic:
    with a one-line reason. The 2026-09-24 movement census is a worked example: eight repositories
    had an event of these kinds (six workflow-file sets, one set of new tags, one first release), and
    two were judged able to move a cell (the release, and a workflow set cut from 78 files to 8).
+   Under the rule in step 1, only those two and the new tags would have been flagged; the other
+   five issues were workflow additions and were closed with that reason on the same day.
 4. **Dated re-check.** If it could, the analyst writes `<repo>-YYYY-MM-DD.md` here under rules 3 to
    6, pinned to the new commit. The packet and the published counts stay as they are.
 5. **Independent review.** A separate agent session, not the author, reviews the re-check before it
