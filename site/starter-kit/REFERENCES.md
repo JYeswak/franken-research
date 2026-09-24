@@ -75,7 +75,11 @@ mechanism table:
 - Claim checker: `enforce=yes` rows whose `readme_pattern` misses the README
   print a loud WARNING (previously a quiet SKIP); the summary distinguishes
   enforced / actually-checked / pattern-unmatched; the B6 zero-enforced
-  error message now prescribes a working fix.
+  error message now prescribes a working fix. Tightened on 2026-09-24:
+  such a row now FAILS and is named, and a claims file passed as an
+  argument that does not exist FAILS; a warning left the gate green while
+  an enforced claim went unverified (see README.md, "Changes since the
+  2026-09-22 import").
 - All shipped templates carry REFERENCE COPY headers and filled A12
   four-line blocks; the packet template documents each section's
   machine-checkable vocabulary and offers sanctioned solo-review language

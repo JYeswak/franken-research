@@ -56,10 +56,10 @@ else
 fi
 
 # 2. Claim discipline on the real registry.
-#    Checker output is captured: on failure the whole report prints; on
-#    success, WARNING lines still surface — an enforce=yes row whose
-#    readme_pattern misses the README prose is registered but UNVERIFIED,
-#    and that must be visible, not buried in a passing run.
+#    Checker output is captured: on failure the whole report prints (an
+#    enforce=yes row whose readme_pattern misses the README fails and is
+#    named); on success, WARNING lines still surface, such as a registry
+#    with no enforced rows while the project has no README yet.
 if [ -f "$ROOT/registries/claims.tsv" ]; then
   if out=$(sh "$CHECKER" "$ROOT/registries/claims.tsv" "$ROOT/README.md" 2>&1); then
     printf '%s\n' "$out" | grep '^WARNING' >&2 || true

@@ -7,11 +7,11 @@
 #   public claims exist (the registry is load-bearing, not ceremony).
 # Columns: label | readme_pattern | capability_key | expected_substr | proof_path | enforce | notes
 # readme_pattern must match the README prose EXACTLY — case-sensitive, same
-# line breaks. A pattern that misses the README produces a loud WARNING and
-# the row goes UNCHECKED (never silently enforced, never silently dropped).
-# A row is enforced only when enforce=yes AND (readme_pattern is empty OR the pattern appears in README.md).
-# "A row is enforced only when its readme_pattern is present in the README, so the registry never
-#  forces a claim the README does not actually make." (franken_markdown)
+# line breaks. An enforce=yes row whose pattern misses the README FAILS the
+# check and is named. The kit tightened this on 2026-09-24: franken_markdown
+# only warned and left the row unchecked, which kept the gate green while an
+# enforced claim went unverified. A claim the README no longer makes is not
+# forced: set that row to enforce=no, or delete it.
 # Set enforce=yes once the proof exists. Verify with scripts/check-claim-discipline.sh.
 # The pre-commit hook self-tests the checker with a canary false claim.
 label	readme_pattern	capability_key	expected_substr	proof_path	enforce	notes

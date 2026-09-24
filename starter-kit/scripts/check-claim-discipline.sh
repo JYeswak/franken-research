@@ -2,18 +2,23 @@
 # check-claim-discipline.sh [claims.tsv] [README.md]
 # Adapted from franken_markdown scripts/check-claim-discipline.sh.
 # For every row with enforce=yes:
-#   - if readme_pattern is set but NOT found in the README, the row is NOT
-#     silently skipped: it prints a loud WARNING. A pattern that misses the
-#     README means the claim is registered but UNVERIFIED — the usual cause
-#     is a pattern that doesn't match the README prose EXACTLY
-#     (case-sensitive, same line breaks). The registry never forces a claim
-#     the README does not actually make (franken_markdown).
-#   - otherwise proof_path must exist and be non-empty, and expected_substr
-#     (if set) must appear inside the proof artifact.
+#   - readme_pattern, if set, must appear in the README. A pattern that misses
+#     the README FAILS and names the row: the usual cause is a pattern that
+#     doesn't match the README prose EXACTLY (case-sensitive, same line breaks).
+#     franken_markdown only warned here and left the row unchecked; the kit
+#     fails instead (2026-09-24), because a warning left the gate green while
+#     an enforced claim went unverified. A claim the README no longer makes
+#     is not forced: set that row to enforce=no, or delete it.
+#   - proof_path must exist and be non-empty, and expected_substr (if set)
+#     must appear inside the proof artifact.
+# Rows with enforce=no are skipped and counted, as before.
 # Exit 0: every enforced row passes. Exit 1: any enforced row fails.
 # Also exit 1 when zero rows are enforced while README.md exists and is
 # non-empty: a public README with an unenforced registry is undecorated
 # discipline (CHECKLIST.md B6). With no README yet, that state is a warning.
+# Also exit 1 when a claims file passed as an argument does not exist: a
+# hook or CI step pointing at a wrong path must not pass silently. With no
+# argument and no registries/claims.tsv, there is nothing to check (exit 0).
 # Paths in claims.tsv are relative to the repository root; absolute paths are
 # honored as-is.
 set -u
@@ -23,6 +28,10 @@ README_F="${2:-README.md}"
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 
 if [ ! -f "$CLAIMS" ]; then
+  if [ $# -ge 1 ]; then
+    echo "FAIL: claims file $CLAIMS not found. Fix the path, or create it from templates/claims.tsv."
+    exit 1
+  fi
   echo "check-claim-discipline: $CLAIMS not found; nothing to check."
   exit 0
 fi
@@ -49,10 +58,11 @@ while IFS= read -r line || [ -n "$line" ]; do
   enforced=$((enforced + 1))
   if [ -n "$pattern" ]; then
     if [ ! -f "$README_F" ] || ! grep -qF -- "$pattern" "$README_F"; then
-      echo "WARNING  $label: enforce=yes but the pattern was NOT found in the README — row NOT checked."
-      echo "         pattern must match README prose EXACTLY (case-sensitive, same line breaks)."
-      echo "         This claim is registered but UNVERIFIED until the pattern matches."
+      echo "FAIL  $label: enforce=yes but readme_pattern was NOT found in $README_F: $pattern"
+      echo "      The pattern must match README prose EXACTLY (case-sensitive, same line breaks)."
+      echo "      If the README no longer makes this claim, set enforce=no or delete the row."
       unmatched=$((unmatched + 1))
+      fail=$((fail + 1))
       continue
     fi
   fi
