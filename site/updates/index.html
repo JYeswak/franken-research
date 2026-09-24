@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What moved after the assessment · Franken Research</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://fr.zeststream.ai/updates/">
+<meta name="description" content="The 44 FrankenSuite assessments are frozen at one commit each, read on 2026-09-22. This page records what moved afterwards, without rewriting them: a census of all 44 on 2026-09-24 and a dated re-check of franken_code_browser's first release.">
+<meta property="og:title" content="Since the pin · Franken Research">
+<meta property="og:description" content="A read-only census of all 44 assessed repos two days after their pins: 32 moved, 2 moved enough to change a matrix cell. franken_code_browser shipped a notarized developer preview; here is what that does and does not change.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fr.zeststream.ai/updates/">
+<meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fr.zeststream.ai/og-image.png">
+<style>/* Franken Research practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
+  padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
+.vocab b{color:var(--ink)}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0}
+.card h2{font-size:20px;margin:0 0 6px;color:var(--ink);line-height:1.35}
+.card h2 .n{color:var(--accent);font-family:var(--sans);font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.card p,.card li{font-size:15.5px;line-height:1.65}
+.card p{margin:8px 0}
+.card ul{margin:8px 0;padding-left:22px}
+pre{background:#0b0e13;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-family:var(--mono);font-size:13px;line-height:1.6;
+  color:#cdd7ea;overflow-x:auto;white-space:pre}
+.callout{border-left:3px solid var(--amber);padding:6px 0 6px 14px;margin:12px 0;
+  color:#d8d2c2;font-size:14.5px;line-height:1.6}
+.callout b{color:var(--amber);font-family:var(--sans);font-size:13px;
+  letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+.card ul.tally{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0 4px;padding:0;list-style:none}
+.tally li{background:var(--bg-3);border:1px solid var(--line);border-radius:8px;padding:8px 14px;
+  font-family:var(--sans);font-size:13px;color:var(--ink-dim);letter-spacing:.02em}
+.tally li b{display:block;font-size:24px;color:var(--ink);font-family:var(--serif);letter-spacing:0}
+.tag{font-family:var(--sans);font-size:12px;color:var(--gold);white-space:nowrap}
+/* comparison tables: a table on wide screens, stacked rows on phones */
+table.grade{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.55;margin:8px 0}
+table.grade th{font-family:var(--sans);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+table.grade td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.grade td.dim,table.grade td.repo{font-family:var(--sans);font-weight:700;color:var(--ink)}
+table.grade td.repo a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+table.grade td.repo a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+table.grade td.num{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+table.grade tr.moved td{background:rgba(245,185,66,.06)}
+table.grade .yes{color:var(--amber)}
+table.move td.repo{width:19%}
+table.move td:nth-child(6){width:34%}
+table.cells td.dim{width:15%}
+table.cells td.was{color:var(--ink-dim);width:18%}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:760px){
+  table.grade thead{display:none}
+  table.grade,table.grade tbody,table.grade tr,table.grade td{display:block;width:auto}
+  table.grade tr{border-bottom:1px solid var(--line);padding:8px 0}
+  table.grade td{border:0;padding:3px 0}
+  table.move td.repo,table.move td:nth-child(6),table.cells td.dim,table.cells td.was{width:auto}
+  table.grade td.repo,table.grade td.dim{font-size:15px}
+  table.grade td.num{white-space:normal}
+  table.grade td[data-label]::before{content:attr(data-label);display:block;font-family:var(--sans);
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; Franken Research map</a>
+  <span class="peers">
+    <a href="../stack/index.html">Agent stack</a>
+    <a href="../rigor/index.html">Rigor practices</a>
+    <a href="../beyond/index.html">Beyond FrankenSuite</a>
+    <a href="../method/index.html">Method</a>
+    <a href="../reproduce/index.html">Reproduce a verdict</a>
+    <a href="../lessons/index.html">Lesson index</a>
+    <a href="../starter-kit/index.html">Starter kit</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Since the pin</h1>
+  <p class="sub">Every one of the <span data-stat="total">44</span> assessments was pinned September 22, 2026 (the assessed commit), and says nothing about what happened next. The suite kept moving. This page records the movement without rewriting a single verdict: a read-only census of every repository two days later, and a dated re-check wherever a verdict cell could change.</p>
+</header>
+
+<div class="vocab"><b>Six definitions.</b> The <b>pin</b> is the exact commit an assessment froze on; every claim is evaluated at the pin, not at a later HEAD (the newest commit). <b>TRL</b> is technology readiness level, scored 1 to 9. <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor). <b>CI</b> is continuous integration: automated checks that run on every push. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them. <b>Bus factor</b> is how many people would have to leave before a project stalls.</div>
+
+<main id="main">
+
+<div class="card" id="why">
+  <h2><span class="n">Why pins</span>A verdict needs a fixed object</h2>
+  <p>Some of these repositories take dozens of commits a day. A finding about "the repo" with no commit attached is out of date before anyone reads it, and nobody can check it. So every packet names one commit and its date, and every claim in it is about that commit. When the code moves, the packet stays true about what it read; it just stops being the newest reading.</p>
+  <p>The response to movement is a new, dated file beside the old one, never an edit to the old one. A re-check pins its own commit, uses the same evidence tiers, and says for each matrix cell whether it would change and why. The published suite counts stay as they were on September 22; if a re-check would move one, it says so in its own text and leaves the count alone. The full rules are in <a href="https://github.com/JYeswak/franken-research/blob/main/updates/METHOD.md">updates/METHOD.md</a>.</p>
+</div>
+
+<div class="card" id="census">
+  <h2><span class="n">Census, 2026-09-24 UTC</span>What moved in two days</h2>
+  <p>For each repository we took the pin from its packet, then read the default branch today through the GitHub API: commits past the pin, releases and tags since, workflow files now against the pin, and the first line of the license now. Nothing was cloned for this table and nothing was run.</p>
+  <!-- STAT: updates/movement-2026-09-24.tsv (census counts, not data.js) -->
+  <ul class="tally">
+    <li><b>32</b>moved past the pin</li>
+    <li><b>12</b>did not move</li>
+    <li><b>2</b>could change a matrix cell</li>
+    <li><b>1</b>new GitHub Release</li>
+    <li><b>0</b>license changes</li>
+    <li><b>0</b>missing, renamed, or archived</li>
+  </ul>
+  <p>Commits alone never change a cell here: readiness and ring need someone to read the new code, which is what a re-check is for. The two flagged rows come first below; the rest are ordered by how far they moved. Repository names link to the brief written at the pin. "Workflow files" counts files in <code>.github/workflows</code>, which shows whether CI exists but not whether it passes. The raw census, with head commits, run snapshots, commit authors, and the exact commands, is <a href="https://github.com/JYeswak/franken-research/blob/main/updates/movement-2026-09-24.tsv">movement-2026-09-24.tsv</a>.</p>
+  <table class="grade move">
+    <thead><tr><th scope="col">Repository</th><th scope="col">Commits past the pin</th><th scope="col">Releases and tags since</th><th scope="col">Workflow files now</th><th scope="col">License now</th><th scope="col">Would a matrix cell change?</th></tr></thead>
+    <tbody>
+    <tr class="moved">
+      <td class="repo"><a href="../briefs/franken_code_browser.html">franken_code_browser</a></td>
+      <td class="num" data-label="Commits past the pin">33</td>
+      <td data-label="Releases and tags since"><code>v0.1.0</code> Release 2026-09-23</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?"><b class="yes">Yes.</b> Release class: no release at the pin, a signed, notarized release now (R1 to R3 at the release commit). Readiness re-assessed from TRL 2&ndash;3 to 4&ndash;5. CI, license, and bus factor unchanged. <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md">Read the dated re-check</a>.</td>
+    </tr>
+    <tr class="moved">
+      <td class="repo"><a href="../briefs/frankengit.html">frankengit</a></td>
+      <td class="num" data-label="Commits past the pin">109</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">8 files; +1 / -71 vs the pin (78)</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?"><b class="yes">Yes, possibly.</b> The CI cell needs a re-read: 71 of the 78 workflow files at the pin are gone and 1 was added. At the pin no verdict was legible (C3); no runs were recorded for HEAD when the census ran.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_surveillance_system.html">franken_surveillance_system</a></td>
+      <td class="num" data-label="Commits past the pin">611</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">2 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. The 611 include 373 commits dated before the pin: older history made reachable after it, not 611 new commits in a day and a half.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenterm.html">frankenterm</a></td>
+      <td class="num" data-label="Commits past the pin">141</td>
+      <td data-label="Releases and tags since"><code>v0.15.12</code> tag 2026-09-22<br><code>v0.15.11</code> tag 2026-09-22<br><code>v0.15.9</code> tag 2026-09-22</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. New tags only, no new Release object; release class already R3.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankengraphdb.html">frankengraphdb</a></td>
+      <td class="num" data-label="Commits past the pin">106</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">2 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankensearch.html">frankensearch</a></td>
+      <td class="num" data-label="Commits past the pin">104</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">8 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankensim.html">frankensim</a></td>
+      <td class="num" data-label="Commits past the pin">90</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">4 files; +1 / -0 vs the pin (3)</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. One workflow file added; C6 rests on the private DSR/RCH lanes, which did not change.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankensqlite.html">frankensqlite</a></td>
+      <td class="num" data-label="Commits past the pin">64</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">9 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_manim.html">franken_manim</a></td>
+      <td class="num" data-label="Commits past the pin">63</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">95 files; +8 / -0 vs the pin (87)</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Workflow set grew (87 to 95); C3 stands (no HEAD verdict yet).</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_lean.html">franken_lean</a></td>
+      <td class="num" data-label="Commits past the pin">50</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">97 files; +7 / -0 vs the pin (90)</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Workflow set grew (90 to 97) but runs at HEAD still fail, so C2 stands.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/asupersync.html">asupersync</a></td>
+      <td class="num" data-label="Commits past the pin">44</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">12 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_markdown.html">franken_markdown</a></td>
+      <td class="num" data-label="Commits past the pin">41</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenlibc.html">frankenlibc</a></td>
+      <td class="num" data-label="Commits past the pin">41</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">8 files; +6 / -0 vs the pin (2)</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Workflow set grew (2 to 8) but runs at HEAD still fail, so C2 stands.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenfs.html">frankenfs</a></td>
+      <td class="num" data-label="Commits past the pin">38</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">6 files; +2 / -0 vs the pin (4)</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Workflow set grew (4 to 6) but runs at HEAD still fail, so C2 stands.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_remote.html">franken_remote</a></td>
+      <td class="num" data-label="Commits past the pin">37</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">36 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankentui.html">frankentui</a></td>
+      <td class="num" data-label="Commits past the pin">31</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">4 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_engine.html">franken_engine</a></td>
+      <td class="num" data-label="Commits past the pin">30</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">23 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_alignment.html">franken_alignment</a></td>
+      <td class="num" data-label="Commits past the pin">24</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_node.html">franken_node</a></td>
+      <td class="num" data-label="Commits past the pin">24</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">51 file, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_threed.html">franken_threed</a></td>
+      <td class="num" data-label="Commits past the pin">18</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenpandas.html">frankenpandas</a></td>
+      <td class="num" data-label="Commits past the pin">15</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">7 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankensympy.html">frankensympy</a></td>
+      <td class="num" data-label="Commits past the pin">13</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">2 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenscipy.html">frankenscipy</a></td>
+      <td class="num" data-label="Commits past the pin">11</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">3 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_numpy.html">franken_numpy</a></td>
+      <td class="num" data-label="Commits past the pin">7</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">10 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_snowflake.html">franken_snowflake</a></td>
+      <td class="num" data-label="Commits past the pin">5</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenredis.html">frankenredis</a></td>
+      <td class="num" data-label="Commits past the pin">2</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">2 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_networkx.html">franken_networkx</a></td>
+      <td class="num" data-label="Commits past the pin">1</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">4 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_ocr.html">franken_ocr</a></td>
+      <td class="num" data-label="Commits past the pin">1</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenjax.html">frankenjax</a></td>
+      <td class="num" data-label="Commits past the pin">1</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankensqlite_website.html">frankensqlite_website</a></td>
+      <td class="num" data-label="Commits past the pin">1</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">no LICENSE file</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankentorch.html">frankentorch</a></td>
+      <td class="num" data-label="Commits past the pin">1</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">2 files, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankentui_website.html">frankentui_website</a></td>
+      <td class="num" data-label="Commits past the pin">1</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Commits only.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/beads-for-frankentui.html">beads-for-frankentui</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">no LICENSE file</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/beads_for_franken_engine.html">beads_for_franken_engine</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">no LICENSE file</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_agent_detection.html">franken_agent_detection</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">5 files, same set as at the pin</td>
+      <td data-label="License now">MIT, no rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_drone_geometry_reconstruction.html">franken_drone_geometry_reconstruction</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_markdown_website.html">franken_markdown_website</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_native_capsule.html">franken_native_capsule</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">no LICENSE file</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_nlp.html">franken_nlp</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">1 file, same set as at the pin</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_overlap.html">franken_overlap</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_tts.html">franken_tts</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/franken_whisper.html">franken_whisper</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankenmermaid.html">frankenmermaid</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">MIT + rider</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    <tr>
+      <td class="repo"><a href="../briefs/frankensim_website.html">frankensim_website</a></td>
+      <td class="num" data-label="Commits past the pin">0</td>
+      <td data-label="Releases and tags since">none</td>
+      <td data-label="Workflow files now">none</td>
+      <td data-label="License now">no LICENSE file</td>
+      <td data-label="Would a matrix cell change?">No. Nothing new since the pin.</td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>Reading the commit counts</b>A large count is not a large change. <code>franken_surveillance_system</code>'s 611 are mostly older commits that became reachable after the pin. Two repositories show commits under new author names, <code>BlackThrush</code> and <code>BoldGorge</code>, not linked to any GitHub account. They look like the maintainer's agent personas, which the packets saw elsewhere in the suite, but git metadata cannot prove who is behind a name, so bus factor is not re-scored on this evidence. <span class="tag">[Inference, Medium]</span></div>
+</div>
+
+<div class="card" id="fcb">
+  <h2><span class="n">Dated re-check</span>franken_code_browser shipped a notarized developer preview</h2>
+  <p>At the pin, <code>franken_code_browser</code> was ten days old, had no release, no CI, and a README that disavowed any application. The next day, 2026-09-23, its maintainer published <code>v0.1.0</code>, an Apple Silicon disk image containing a signed, Apple-notarized Mac app, alongside a checksum-verifying install script and a Homebrew cask. He reports submitting a sandboxed Mac App Store build for review the same evening. Shipping a notarized app eleven days after creating the repository is a real event, and it is the first revisit trigger the packet named. The app source was not written after the pin, though: it was imported in one commit from a private history, which the packet had noted was missing.</p>
+  <p>We re-checked it at the release commit, <code>c7c5310</code>, with the release artifact itself: download, hash, signature, Gatekeeper, and notarization ticket, all read-only. We did not launch the app.</p>
+  <table class="grade cells">
+    <thead><tr><th scope="col">Cell</th><th scope="col">At the pin</th><th scope="col">At the re-check</th></tr></thead>
+    <tbody>
+    <tr><td class="dim">TRL</td><td class="was" data-label="At the pin">2&ndash;3</td><td data-label="At the re-check"><b>4&ndash;5.</b> A signed, notarized build of the whole app exists and matches its published hash; that much we verified. The maintainer's records of launching it on real repositories would support 5 if an outside launch reproduced them. Clean-machine installs and zoom performance are still open by his own account. <span class="tag">[Inference, Medium]</span></td></tr>
+    <tr><td class="dim">NODUS ring</td><td class="was" data-label="At the pin">Explore</td><td data-label="At the re-check"><b>Explore, unchanged.</b> A Pilot ring needs a release artifact and a bounded, real workload fit. The release now exists; the workload fit has not been shown to anyone outside the project. <span class="tag">[Inference, Medium]</span></td></tr>
+    <tr><td class="dim">Release</td><td class="was" data-label="At the pin">R1, no release or tag</td><td data-label="At the re-check"><b>R3 at the release commit.</b> HEAD is five commits later (App Store edition source and docs), so a pin at HEAD would read as a release targeting an earlier commit. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">CI</td><td class="was" data-label="At the pin">C4, no test CI</td><td data-label="At the re-check"><b>C4, unchanged.</b> <code>.github</code> still holds only issue templates. Every signing and packaging check in the commit messages ran on the maintainer's own Mac. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">License</td><td class="was" data-label="At the pin">MIT + rider</td><td data-label="At the re-check"><b>Unchanged.</b> The LICENSE file is byte-identical to the pin. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">Bus factor</td><td class="was" data-label="At the pin">1</td><td data-label="At the re-check"><b>1, unchanged.</b> All 33 commits since the pin are by the maintainer, and the README still refuses outside contributions. <span class="tag">[Verified, High]</span></td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>One correction to the release notes</b>The notes say the disk image is "signed with Jeffrey Emanuel's Developer ID". The image itself carries no code signature (<code>codesign</code>: "code object is not signed at all"); the app inside is signed with that Developer ID, Gatekeeper accepts it as "Notarized Developer ID", and the notarization ticket is stapled to the image. The packaging script is written that way, so this reads as a wording slip, not a missing step. The App Store review status is the maintainer's claim; Apple's public lookup returned no listing when we checked.</div>
+  <p>The pinned suite counts are not changed by this. Under a re-pin at <code>c7c5310</code>, the release tally would go from <!-- STAT: synthesis/00-overview.md line 20 (release posture, not data.js) -->23 repos with no release to 22 and from 15 with a release artifact to 16; nothing else would move. The full re-check, with every command and its output, is <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md">updates/franken_code_browser-2026-09-24.md</a>. The <a href="../briefs/franken_code_browser.html">brief</a> still describes the pin and now says so at the top.</p>
+</div>
+
+</main>
+
+<footer>
+  <p>Sources: <a href="https://github.com/JYeswak/franken-research/blob/main/updates/movement-2026-09-24.tsv">updates/movement-2026-09-24.tsv</a> (census of all <span data-stat="total">44</span>, run 2026-09-24 02:53 to 02:57 UTC), <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md">the franken_code_browser re-check</a>, <a href="https://github.com/JYeswak/franken-research/blob/main/updates/METHOD.md">updates/METHOD.md</a> (how re-checks work), <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a> (the pinned matrix, unchanged), <a href="../RULEBOOK.md">RULEBOOK.md</a> (tiers).</p>
+  <p>Related pages: <a href="../index.html">The map</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../self/index.html">Graded by our own method</a></p>
+</footer>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/fill-stats.js"></script>
+</body>
+</html>
