@@ -6,8 +6,6 @@ verdict: Adopt and wrap
 confidence: Medium
 evidence_date: 2026-09-23
 author: VerdictsTools
-reviewed_by: ReviewTools
-review_date: 2026-09-23
 ---
 
 ## Bottom line
@@ -15,7 +13,7 @@ Inference, medium confidence: adopt an existing fine-tuning stack (TRL as the re
 
 ## Adopt, do not rebuild
 - **huggingface/trl**: the post-training library (SFT, DPO, GRPO and reward trainers) that other stacks test against; building a trainer would recreate it. [Verified] (ecosystem/pickup/_evidence/fine-tuning.md:9 "HF's canonical post-training library (SFTTrainer, DPOTrainer, GRPO, reward trainers)"; ecosystem/pickup/_evidence/fine-tuning.md:9 "TRL is the reference the others test against")
-- **unslothai/unsloth**: LoRA, QLoRA and GRPO kernels with CI at scale, including free-GPU notebook regression legs. License: Apache-2.0 for the core package, but AGPL-3.0 for the Unsloth Studio UI and for the MoE kernels under `unsloth/kernels/moe/`; shipping those parts inside a network service triggers AGPL source obligations. [Verified] (ecosystem/pickup/_evidence/fine-tuning.md:7 "LoRA/QLoRA/GRPO kernels); ~50 workflow files show CI at industrial scale"; stack/licenses.tsv:96 "unsloth/kernels/moe/LICENSE (MoE grouped-GEMM kernels inside the core package tree) is also AGPL-3.0")
+- **unslothai/unsloth**: LoRA, QLoRA and GRPO kernels with CI at scale, including free-GPU notebook regression legs. License: Apache-2.0 for the core package, but AGPL-3.0 for the Unsloth Studio UI and for the MoE kernels under `unsloth/kernels/moe/`; running a modified copy of those parts as a network service, or distributing them, triggers AGPL source obligations. [Verified] (ecosystem/pickup/_evidence/fine-tuning.md:7 "LoRA/QLoRA/GRPO kernels); ~50 workflow files show CI at industrial scale"; stack/licenses.tsv:96 "unsloth/kernels/moe/LICENSE (MoE grouped-GEMM kernels inside the core package tree) is also AGPL-3.0")
 - **hiyouga/LlamaFactory**: a CLI, GUI and YAML launcher tested on a three-OS, three-Python CPU matrix plus a self-hosted GPU runner. [Verified] (ecosystem/pickup/_evidence/fine-tuning.md:8 "CLI/GUI/data-driven YAML launcher"; ecosystem/pickup/_evidence/fine-tuning.md:23 "3 OS × 3 Python × transformers-compat matrix on CPU")
 - **axolotl-ai-cloud/axolotl**: a YAML-config launcher for SFT, DPO, LoRA and QLoRA with DeepSpeed and FSDP, CPU tests on every PR and GPU end-to-end tests behind a label. License: Apache-2.0 at the root, but `src/axolotl/integrations/` is under the Axolotl Community License, which bars offering fine-tuning to third parties as a service. [Verified] (ecosystem/pickup/_evidence/fine-tuning.md:11 "YAML-config SFT/DPO/LoRA/QLoRA launcher with DeepSpeed/FSDP"; ecosystem/pickup/_evidence/fine-tuning.md:21 "GPU e2e in Docker, gated behind run-gpu-tests PR label"; stack/licenses.tsv:7 "shall not use the Software for any activity that constitutes a commercial activity of offering for free or for sale any services")
 - **Lightning-AI/litgpt**: hackable pretrain, finetune and eval code whose CPU tests use synthetic micro-configs and download no checkpoint. [Verified] (ecosystem/pickup/_evidence/fine-tuning.md:10 "Hackable pretrain/finetune/eval (LoRA, adapters, full)"; ecosystem/pickup/_evidence/fine-tuning.md:40 "synthetic micro-configs, no checkpoint download at all")

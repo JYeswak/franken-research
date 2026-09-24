@@ -6,8 +6,6 @@ verdict: Watch
 confidence: Low
 evidence_date: 2026-09-23
 author: VerdictsTools
-reviewed_by: ReviewTools
-review_date: 2026-09-23
 ---
 
 ## Bottom line
@@ -16,7 +14,7 @@ Inference, low confidence: watch computer-use agents (software that operates a d
 ## Adopt, do not rebuild
 - **xlang-ai/OSWorld**: the desktop-agent benchmark of 369 tasks in real Ubuntu and Windows VMs, scoring VM state rather than chat; a private benchmark would cut you off from the numbers the field reports. [Verified] (ecosystem/pickup/_evidence/computer-use.md:12 "NeurIPS 2024 benchmark of 369 tasks in a real Ubuntu/Windows desktop VM"; ecosystem/pickup/_evidence/computer-use.md:12 "Anthropic's Computer Use, OpenAI CUA, academic papers all report on it"; ecosystem/pickup/_evidence/computer-use.md:22 "State-based evaluation (score VM state, not chat)")
 - **likaixin2000/ScreenSpot-Pro-GUI-Grounding**: the grounding-accuracy harness (does the predicted click point fall inside the ground-truth box); use it to measure grounding instead of inventing a metric. [Verified] (ecosystem/pickup/_evidence/computer-use.md:28 "Grounding accuracy eval script (ScreenSpot protocol)"; ecosystem/pickup/_evidence/computer-use.md:42 "is the verified grounding-accuracy benchmark harness")
-- **microsoft/OmniParser**: the grounding layer that turns a screenshot into located UI elements. License: CC-BY-4.0, a content license with an attribution requirement, unusual for code; read its terms before shipping it inside a product. [Verified] (ecosystem/pickup/_evidence/computer-use.md:9 "parse screenshot into structured UI elements"; fresh read 2026-09-23, `gh api repos/microsoft/OmniParser --jq .license.spdx_id`)
+- **microsoft/OmniParser**: the grounding layer that turns a screenshot into located UI elements. License: CC-BY-4.0, a content license with an attribution requirement, unusual for code (the README badge says MIT); the older Ultralytics-based icon-detector weights keep their AGPL license, so pick the current weights and read the terms before shipping it inside a product. [Verified] (ecosystem/pickup/_evidence/computer-use.md:9 "parse screenshot into structured UI elements"; stack/licenses.tsv:56 "Earlier Ultralytics-based icon detectors retain their original AGPL license"; fresh read 2026-09-23, `gh api repos/microsoft/OmniParser --jq .license.spdx_id`)
 - **trycua/cua**: cross-OS VM infrastructure for computer-use training, evaluation and data generation, with a benchmark library built and tested in CI; the VM fleet you would otherwise stand up yourself. License: MIT at the root, but `libs/python/som` is AGPL-3.0, so running a modified copy of that library in a network service triggers source release. [Verified] (ecosystem/pickup/_evidence/computer-use.md:8 "Cross-OS (macOS/Windows/Linux/Android) VM-based computer-use infra"; ecosystem/pickup/_evidence/computer-use.md:26 "Benchmark harness as a first-class library with CI"; stack/licenses.tsv:94 "libs/python/som/LICENSE is GNU AFFERO GENERAL PUBLIC LICENSE v3")
 
 ## Copy these practices

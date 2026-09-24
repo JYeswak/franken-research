@@ -6,8 +6,6 @@ verdict: Adopt and wrap
 confidence: Medium
 evidence_date: 2026-09-23
 author: VerdictsTools
-reviewed_by: ReviewTools
-review_date: 2026-09-23
 ---
 
 ## Bottom line
@@ -31,7 +29,7 @@ Inference, medium confidence: adopt an existing agent-browser library or tool se
 ## Build only if
 - No hard constraint that justifies a new browser stack is evidenced. The two gaps the pack names, a flake budget and deterministic replay of model responses, are harness work on top of an incumbent, not reasons to write a browser driver. [Inference] (ecosystem/pickup/_evidence/browser-use.md:32 "No repo I checked documents an explicit flake-rate budget or quarantined-flake labeling scheme"; ecosystem/pickup/_evidence/browser-use.md:33 "Nobody I verified ships recorded LLM responses (no VCR-cassette-style fixtures found)")
 - Treating page content as hostile input is a requirement the companion adds for this type; it is a policy layer between page text and tool calls, not a separate browser. [Inference] (ecosystem/pickup/pickup-browser-use.md:48 "Trust boundary: hostile page content. Page content is untrusted")
-- browserless's license is a real constraint for closed-source commercial products and closed-source CI: SSPL-1.0 or a paid commercial license. It justifies buying that license or running browsers directly under Playwright (Apache-2.0 in the same fresh read), not writing a browser farm or driver. The other adopted repositories read Apache-2.0 or MIT (fresh read 2026-09-23, `gh api repos/<owner>/<repo> --jq .license.spdx_id`; LICENSE file for BrowserGym, where the API said NOASSERTION). [Inference] (stack/METHOD.md:79 "Check the license of everything you tell a builder to adopt"; ecosystem/pickup/_evidence/browser-use.md:8 "Microsoft's official Playwright MCP server")
+- browserless's license is a real constraint for closed-source commercial products and closed-source CI: SSPL-1.0 or a paid commercial license. It justifies buying that license or running browsers directly under the Playwright library (Apache-2.0: fresh read 2026-09-23, `gh api repos/microsoft/playwright --jq .license.spdx_id`), not writing a browser farm or driver. The other adopted repositories, Playwright MCP included, read Apache-2.0 or MIT (fresh read 2026-09-23, `gh api repos/<owner>/<repo> --jq .license.spdx_id`; LICENSE file for BrowserGym, where the API said NOASSERTION). [Inference] (stack/METHOD.md:79 "Check the license of everything you tell a builder to adopt"; ecosystem/pickup/_evidence/browser-use.md:8 "Microsoft's official Playwright MCP server")
 
 ## Where FrankenSuite touches this
 - No FrankenSuite packet builds an agent browser stack. The nearest contact is test practice: franken_markdown_website ships a 30-check headless-Chromium end-to-end suite that nothing runs on push. Website, TRL 8, Monitor. [Verified] (packets/franken_markdown_website-assessment.md:126 "30-check e2e (bun run test, Chromium headless vs localhost:8899)"; packets/franken_markdown_website-assessment.md:126 "But it was not run in this assessment, and nothing runs it on push"; synthesis/00-overview.md:73 "franken_markdown_website | 8 | Monitor | Rider")

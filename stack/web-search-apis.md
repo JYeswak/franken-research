@@ -6,8 +6,6 @@ verdict: Adopt and wrap
 confidence: Medium
 evidence_date: 2026-09-23
 author: VerdictsTools
-reviewed_by: ReviewTools
-review_date: 2026-09-23
 ---
 
 ## Bottom line
@@ -29,7 +27,7 @@ Inference, medium confidence: adopt an existing web search and extraction layer,
 
 ## Build only if
 - You need control of the index and ranking: that machinery is closed in every vendor, so no incumbent offers it; but an internet-scale index is a different project type, not a web search API layer. [Verified] (ecosystem/pickup/_evidence/web-search-apis.md:36 "lives inside Tavily/Exa/SerpApi/Brave/Perplexity and is not open"; ecosystem/pickup/pickup-web-search-apis.md:25 "Building a web index or crawler at internet scale")
-- A key-free, self-hosted requirement alone does not justify building, because Firecrawl ships a self-host path. Firecrawl and SearXNG are both AGPL-3.0 (fresh read 2026-09-23, `gh api repos/<owner>/<repo> --jq .license.spdx_id`); a builder who cannot accept AGPL source obligations for a modified network service has a real license constraint that could justify building; a clean-room verdict would still have to quote the clause. The other adopted repositories read MIT or Apache-2.0 in the same read. [Inference] (ecosystem/pickup/_evidence/web-search-apis.md:7 "fully open-source monorepo with self-host path"; stack/METHOD.md:79 "Check the license of everything you tell a builder to adopt")
+- A key-free, self-hosted requirement alone does not justify building, because Firecrawl ships a self-host path. Firecrawl and SearXNG are both AGPL-3.0 (fresh read 2026-09-23, `gh api repos/<owner>/<repo> --jq .license.spdx_id`); a builder who cannot accept AGPL source obligations for a modified network service still has AGPL-free adoption paths to try first: the commercial APIs through their MIT SDKs, Jina Reader (Apache-2.0) for extraction, Firecrawl's own SDKs, which are MIT, and running Firecrawl unmodified as a separate service. Only if none of those fits does the AGPL constraint justify building, and a clean-room verdict would still have to quote the clause. The other adopted repositories read MIT or Apache-2.0 in the same read. [Inference] (ecosystem/pickup/_evidence/web-search-apis.md:7 "fully open-source monorepo with self-host path"; stack/licenses.tsv:27 "SDKs under apps/*-sdk (python, js, ruby, elixir) are MIT"; stack/METHOD.md:79 "Check the license of everything you tell a builder to adopt")
 
 ## Where FrankenSuite touches this
 - **frankensearch** is a local two-tier hybrid search library and CLI over your own corpus, not a web search API. Its latency is receipted against its own budget, on a 1,000-document synthetic corpus on one machine, while its relevance is unproven by its own findings document, the same gap this category shows. TRL 5–6, Explore; license: MIT with a rider barring OpenAI, Anthropic and anyone acting for them. [Verified] (packets/frankensearch-assessment.md:19 "A two-tier hybrid search system for Rust plus the fsfs standalone CLI"; packets/frankensearch-assessment.md:13 "0.4 ms initial delivery vs a <15 ms target"; packets/frankensearch-assessment.md:13 "the receipts come from a 1,000-document synthetic corpus on one Threadripper"; packets/frankensearch-assessment.md:21 "Relevance quality is unproven"; packets/frankensearch-assessment.md:3 "MIT + OpenAI/Anthropic rider (non-OSI, rider quoted verbatim in §4.8)"; synthesis/00-overview.md:96 "frankensearch | 5–6 | Explore | Rider")
