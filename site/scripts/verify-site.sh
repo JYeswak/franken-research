@@ -8,7 +8,9 @@
 set -u
 
 SITE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CANON="$HOME/workspace/franken-research"
+# Canonical packets + Rulebook live at the repo root (one level above site/).
+# Override with CANON=/path for a detached tree.
+CANON="${CANON:-$(cd "$SITE_DIR/.." && pwd)}"
 export SITE_DIR CANON
 
 PASS=0
@@ -28,7 +30,9 @@ echo "----------------------------------------"
 echo "== A  packet/rulebook byte integrity =="
 A_OK=1
 A_DETAIL=""
-for f in "$CANON"/*-assessment.md; do
+# Repo layout keeps canonical packets in packets/; a flat canon dir holds them at its top.
+CANON_PACKETS="$CANON"; [ -d "$CANON/packets" ] && CANON_PACKETS="$CANON/packets"
+for f in "$CANON_PACKETS"/*-assessment.md; do
   base="$(basename "$f")"
   if [ ! -f "$SITE_DIR/packets/$base" ]; then
     A_OK=0; A_DETAIL="${A_DETAIL}missing:$base "
@@ -38,7 +42,7 @@ for f in "$CANON"/*-assessment.md; do
 done
 for f in "$SITE_DIR"/packets/*.md; do
   base="$(basename "$f")"
-  if [ ! -f "$CANON/$base" ]; then
+  if [ ! -f "$CANON_PACKETS/$base" ]; then
     A_OK=0; A_DETAIL="${A_DETAIL}extra:$base "
   fi
 done
@@ -566,7 +570,16 @@ import os from 'os';
 import path from 'path';
 
 const SITE = process.env.SITE_DIR;
-const CHROME = '/opt/meta-chromium/chrome';
+// CHROME_PATH wins; otherwise the first installed Chromium-family browser.
+// No browser found is a FAIL, never a skip: an unrun render gate is not a pass.
+const CHROME = process.env.CHROME_PATH || [
+  '/opt/meta-chromium/chrome',
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  '/Applications/Chromium.app/Contents/MacOS/Chromium',
+  '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable',
+  '/usr/bin/chromium', '/usr/bin/chromium-browser',
+].find((p) => fs.existsSync(p));
+if (!CHROME) { console.log('RENDER_BAD'); console.log('  no Chromium found; set CHROME_PATH'); process.exit(1); }
 const PAGES = ['/index.html', '/method/index.html', '/briefs/asupersync.html', '/lessons/index.html'];
 const VIEWPORTS = [[1440, 900], [390, 844]];
 
@@ -576,7 +589,9 @@ const VIEWPORTS = [[1440, 900], [390, 844]];
 // CDP-initiated navigation to loopback.)
 const prof = fs.mkdtempSync(path.join(os.tmpdir(), 'chrome-prof-'));
 const chrome = spawn(CHROME, [
-  '--headless=new', '--no-sandbox', '--disable-gpu',
+  // Software WebGL (SwiftShader) so the gate renders the real 3D path; current
+  // Chrome refuses the software fallback unless it is enabled explicitly.
+  '--headless=new', '--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
   '--allow-file-access-from-files',
   '--remote-debugging-port=0', `--user-data-dir=${prof}`,
   '--no-first-run', '--disable-extensions', 'about:blank',
@@ -593,7 +608,10 @@ await new Promise((resolve, reject) => {
 });
 
 const tabs = JSON.parse(execSync(`curl -s http://127.0.0.1:${dbgPort}/json/list`).toString());
-const wsUrl = tabs[0].webSocketDebuggerUrl;
+// Desktop Chrome lists built-in extension background pages first; drive the tab.
+const tab = tabs.find((t) => t.type === 'page');
+if (!tab) { console.log('RENDER_BAD'); console.log('  no page target in ' + JSON.stringify(tabs.map((t) => t.type))); process.exit(1); }
+const wsUrl = tab.webSocketDebuggerUrl;
 const ws = new WebSocket(wsUrl);
 await new Promise((r, rej) => { ws.onopen = r; ws.onerror = rej; });
 
@@ -647,8 +665,10 @@ for (const page of PAGES) {
   }
 }
 ws.close();
-chrome.kill();
-fs.rmSync(prof, { recursive: true, force: true });
+// Wait for Chrome to exit before deleting its profile: deleting while it still
+// writes raced (ENOTEMPTY) and crashed the gate after a clean render.
+await new Promise((r) => { chrome.once('exit', r); chrome.kill(); setTimeout(r, 5000); });
+try { fs.rmSync(prof, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); } catch {}
 if (errors.length) { console.log('RENDER_BAD'); errors.slice(0, 12).forEach(e => console.log('  ' + e)); process.exit(1); }
 console.log(`RENDER_OK ${PAGES.length}x${VIEWPORTS.length} page-views, zero console errors, zero overflow`);
 MEOF
