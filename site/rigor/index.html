@@ -150,6 +150,24 @@ footer a{color:var(--accent)}
 <li><a href="../updates/index.html">Updates</a></li>
 <li><a href="../follow/index.html">Follow</a></li>
 </ul>
+<details class="shell-menu">
+<summary>Menu</summary>
+<ul class="shell-menu-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
+</details>
+<script>(function () {
+  var m = document.currentScript.parentNode.querySelector('.shell-menu');
+  if (!m) return;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); }
+  });
+  document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+})();</script>
 </nav>
 <!-- /shell:nav -->
 <header>

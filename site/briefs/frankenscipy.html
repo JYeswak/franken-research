@@ -351,7 +351,7 @@ html:not(.js) .share { display: none; }
 
 <!-- shell:nav -->
 <nav class="shell-nav" aria-label="Site">
-<a class="shell-brand" href="../index.html#repo=frankenscipy"><span aria-hidden="true">&larr;</span>Back to the map</a>
+<a class="shell-brand" href="../index.html#repo=frankenscipy"><span aria-hidden="true">&larr;</span><span class="shell-wide">Back to the map</span><span class="shell-narrow">Map</span></a>
 <ul class="shell-links">
 <li><a href="../method/index.html">Method</a></li>
 <li><a href="../starter-kit/index.html">Starter kit</a></li>
@@ -359,6 +359,24 @@ html:not(.js) .share { display: none; }
 <li><a href="../updates/index.html">Updates</a></li>
 <li><a href="../follow/index.html">Follow</a></li>
 </ul>
+<details class="shell-menu">
+<summary>Menu</summary>
+<ul class="shell-menu-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
+</details>
+<script>(function () {
+  var m = document.currentScript.parentNode.querySelector('.shell-menu');
+  if (!m) return;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); }
+  });
+  document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+})();</script>
 </nav>
 <!-- /shell:nav -->
 

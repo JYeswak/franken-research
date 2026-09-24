@@ -100,18 +100,36 @@ export function renderHead(rel) {
 <link rel="alternate" type="application/atom+xml" title="${BRAND}" href="${SITE_ORIGIN}/feed.xml">`;
 }
 
+// Wide screens show the primary links in a row. Narrow screens (shell.css, max-width 680px) hide that
+// row and show a Menu disclosure holding the same links; the brief back link shortens to "Map". Only one
+// of each pair is displayed at a time, so assistive tech meets each link once. The inline script closes
+// the menu on Escape (focus returns to Menu) and on a click outside it.
 export function renderNav(rel) {
   const up = upOf(rel);
   const slug = briefSlug(rel);
   const brand = slug
-    ? `<a class="shell-brand" href="${up}index.html#repo=${encodeURIComponent(slug)}"><span aria-hidden="true">&larr;</span>Back to the map</a>`
+    ? `<a class="shell-brand" href="${up}index.html#repo=${encodeURIComponent(slug)}"><span aria-hidden="true">&larr;</span><span class="shell-wide">Back to the map</span><span class="shell-narrow">Map</span></a>`
     : `<a class="shell-brand" href="${up}index.html">${BRAND}</a>`;
-  const links = PRIMARY.map((k) => `<li><a href="${hrefOf(byKey[k], up)}"${currentAttr(rel, byKey[k])}>${esc(byKey[k].label)}</a></li>`);
+  const links = PRIMARY.map((k) => `<li><a href="${hrefOf(byKey[k], up)}"${currentAttr(rel, byKey[k])}>${esc(byKey[k].label)}</a></li>`).join('\n');
   return `<nav class="shell-nav" aria-label="Site">
 ${brand}
 <ul class="shell-links">
-${links.join('\n')}
+${links}
 </ul>
+<details class="shell-menu">
+<summary>Menu</summary>
+<ul class="shell-menu-links">
+${links}
+</ul>
+</details>
+<script>(function () {
+  var m = document.currentScript.parentNode.querySelector('.shell-menu');
+  if (!m) return;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); }
+  });
+  document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+})();</script>
 </nav>`;
 }
 
