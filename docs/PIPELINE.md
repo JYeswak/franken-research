@@ -55,8 +55,8 @@ flowchart TD
    [CHANGELOG.md](../CHANGELOG.md) under Unreleased, in the same pull request, with the date, the
    issue link, what changed, and the reporter's handle.
 6. **Deploy.** [deploy.yml](../.github/workflows/deploy.yml) runs on every push to `main`, after
-   every successful watch or discovery run (their bot commits do not trigger push workflows), and
-   on demand. It runs the full gate chain on the exact commit and deploys `site/` to Cloudflare
+   every successful watch or discovery run on `main` (their bot commits do not trigger push
+   workflows; runs on other branches do not deploy), and on demand from `main`. It runs the full gate chain on the exact commit and deploys `site/` to Cloudflare
    Pages only if every gate passes; a failed gate leaves the site on the previous deploy. Then it
    smoke-tests what a GitHub runner can reach. The new deployment's own `*.pages.dev` URL must
    serve the homepage with the committed `<title>` and one brief. The Pages API must report that

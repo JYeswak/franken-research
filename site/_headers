@@ -1,6 +1,7 @@
 # Cloudflare Pages response headers (https://developers.cloudflare.com/pages/configuration/headers/).
 #
-# The site deploys automatically on every push and after every watch run. Revalidating
+# The site deploys automatically on every push to main and after every successful watch or
+# discovery run on main. Revalidating
 # /assets/* on every load keeps HTML, CSS, and JS from the same deploy on the deployment's
 # pages.dev URL. On fr.zeststream.ai the zone's browser cache TTL raises max-age to four
 # hours whatever this file says (seen on 2026-09-24: the new phone menu rendered with the
@@ -11,3 +12,16 @@
 
 /feed.xml
   Cache-Control: public, max-age=0, must-revalidate
+
+# Hardening for every path (independent review, 2026-09-24). No frames: nothing embeds
+# this site. The permissions policy denies device features the site never uses; the
+# clipboard stays allowed for the starter kit's copy button. HSTS covers this host only
+# (no includeSubDomains, no preload). A Content-Security-Policy is not set yet: the pages
+# use inline scripts and styles and WebGL, and a policy has to be measured against every
+# rendered page before it ships, not copied from a template.
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000

@@ -41,6 +41,12 @@ jobs:
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
       || (github.event_name != 'workflow_run' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
+    # The Cloudflare token lives only in the `production` environment, whose deployment branch
+    # policy admits `main` alone: a workflow on any other branch cannot read it
+    # (independent security review, 2026-09-24).
+    environment:
+      name: production
+      url: https://fr.zeststream.ai
     # Sized from measurements. First real run (36059980092, 2026-09-24): setup 10 s, gate chain
     # 88 s, `wrangler pages deploy` 16 s, job 3 min including a smoke step that retried for
     # 61 s. The smoke checks below retry for at most about 2 min in the worst case, so the job
