@@ -3,13 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FR (Franken Research) — 44 verdicts, one map</title>
-<meta name="description" content="44 agent-built projects assessed under one claim-governance method. Tour the 3D verdict map: NODUS rings, TRL heights, CI evidence, the license-rider ceiling.">
-<meta property="og:title" content="FR (Franken Research) — 44 verdicts, one map">
-<meta property="og:description" content="44 agent-built projects assessed under one claim-governance method. Tour the 3D verdict map: NODUS rings, TRL heights, CI evidence, the license-rider ceiling.">
+<!-- STAT: title/meta counts are the suite total from assets/data.js (FRANKEN_DATA.repos.length); head text cannot hold data-stat slots -->
+<title>Franken Research: 44 AI-built projects, every claim checked</title>
+<meta name="description" content="Jeffrey Emanuel's FrankenSuite is 44 repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.">
+<link rel="canonical" href="https://fr.zeststream.ai/">
+<meta property="og:site_name" content="Franken Research">
+<meta property="og:title" content="44 AI-built projects. Every claim checked.">
+<meta property="og:description" content="An independent, evidence-tiered assessment of Jeffrey Emanuel's FrankenSuite: what runs, what is only promised, and what nobody can verify yet. Tour the 3D verdict map.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="og-image.png">
+<meta property="og:url" content="https://fr.zeststream.ai/">
+<meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Franken Research: 44 AI-built projects, every claim checked, over a 3D map of verdict rings">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="44 AI-built projects. Every claim checked.">
+<meta name="twitter:description" content="An independent, evidence-tiered assessment of Jeffrey Emanuel's FrankenSuite: what runs, what is only promised, and what nobody can verify yet.">
+<meta name="twitter:image" content="https://fr.zeststream.ai/og-image.png">
 <link rel="icon" href="./favicon.svg">
 <style>
   :root{
@@ -33,22 +43,50 @@
   .corelabel{position:absolute; transform:translate(-50%,0); white-space:nowrap;
     font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; pointer-events:none;}
 
-  header{position:fixed; top:18px; left:22px; max-width:600px; pointer-events:none; z-index:5;}
-  header h1{font-size:22px; font-weight:650; letter-spacing:-.01em;}
-  header h1 .sys{color:var(--pilot);}
-  header p.sub{margin-top:6px; font-size:13px; line-height:1.5; color:var(--muted); max-width:600px;}
-  #stats{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; pointer-events:none;}
-  #pagenav{margin-top:10px; font-size:12px; pointer-events:auto; display:flex; flex-wrap:wrap; gap:4px 16px;}
+  /* ---------- intro card (header#main): left-hand card on desktop, top sheet on phones ---------- */
+  header{position:fixed; top:18px; left:22px; width:420px; z-index:7;
+    max-height:calc(100vh - 92px); overflow-y:auto; overscroll-behavior:contain;
+    background:rgba(8,11,19,.93); border:1px solid var(--line); border-radius:16px;
+    padding:16px 18px 14px; box-shadow:0 18px 60px rgba(0,0,0,.45);}
+  #introtoggle{position:absolute; top:12px; right:12px; font:inherit; font-size:11px; color:var(--muted);
+    background:transparent; border:1px solid var(--line); border-radius:99px; padding:5px 11px; cursor:pointer;}
+  #introtoggle:hover{color:var(--ink); border-color:var(--faint);}
+  .eyebrow{font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+    padding-right:96px; line-height:1.5;}
+  header h1{font-size:27px; line-height:1.12; font-weight:700; letter-spacing:-.015em; margin-top:8px;}
+  header h1 .brand{display:none; color:var(--pilot);}
+  p.lede{margin-top:9px; font-size:14px; line-height:1.5; color:#cfccc3;}
+  #stats{display:grid; gap:7px; margin-top:12px;}
+  .finding{background:rgba(255,255,255,.025); border:1px solid var(--line); border-radius:12px;
+    padding:8px 11px; font-size:12px; line-height:1.45; color:var(--muted);}
+  .finding .big{display:block; font-size:17px; line-height:1.25; font-weight:700; color:var(--ink);
+    letter-spacing:-.01em; margin-bottom:2px;}
+  .finding.grn .big{color:var(--green);}
+  .finding.gold .big{color:var(--pilot);}
+  .finding a, .busline a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
+  .busline{margin-top:10px; font-size:12px; line-height:1.5; color:var(--muted);}
+  #ctas{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+  .cta{font:inherit; font-size:12.5px; font-weight:650; line-height:1.2; border-radius:99px; padding:9px 13px;
+    cursor:pointer; text-decoration:none; border:1px solid var(--line); background:rgba(11,14,22,.85); color:var(--ink);}
+  .cta:hover{border-color:var(--faint);}
+  .cta.primary{background:var(--pilot); color:#06130a; border-color:var(--pilot);}
+  .cta.primary:hover{filter:brightness(1.1);}
+  .cta.secondary{border-color:rgba(242,169,59,.6); color:var(--pilot);}
+  #pagenav{margin-top:12px; padding-top:10px; border-top:1px solid var(--line); font-size:12px;
+    display:flex; flex-wrap:wrap; gap:5px 14px;}
   #pagenav a{color:var(--pilot); text-decoration:none; border-bottom:1px solid rgba(242,169,59,.45);}
   #pagenav a:hover{border-bottom-color:var(--pilot);}
+  /* collapsed intro: a compact bar, the map unobstructed */
+  body.intro-min header{width:auto; max-width:460px; padding:11px 16px 12px;}
+  body.intro-min .eyebrow, body.intro-min #introbody{display:none;}
+  body.intro-min header h1{font-size:15px; font-weight:650; margin-top:0; padding-right:112px; line-height:1.4;}
+  body.intro-min header h1 .brand{display:inline;}
+  body.intro-min #introtoggle{top:9px;}
+  body.intro-min #pagenav{margin-top:8px; padding-top:8px;}
   /* skip link: off-screen until focused */
   .skip{position:absolute; left:-9999px; top:0; z-index:99; background:var(--pilot); color:#06130a;
     font-weight:650; font-size:13px; padding:9px 16px; border-radius:0 0 10px 0; text-decoration:none;}
   .skip:focus{left:0;}
-  /* starter-kit CTA near the stats strip */
-  #kitcta{pointer-events:auto; display:inline-block; margin-top:10px; font-size:13px; font-weight:650;
-    color:#06130a; background:var(--pilot); border-radius:99px; padding:9px 18px; text-decoration:none;}
-  #kitcta:hover{filter:brightness(1.1);}
   /* filter match count + search-scope note */
   #filtercount{font-size:11px; color:var(--muted); text-align:right; min-height:14px; margin-top:2px;}
   #searchhint{font-size:10px; color:var(--faint); text-align:right; margin-top:2px;}
@@ -58,7 +96,20 @@
   .stat.neutral b{color:var(--ink);}
   .stat.grn b{color:var(--green);}
 
-  #controls{position:fixed; top:18px; right:22px; z-index:6; display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+  #controls{position:fixed; top:18px; right:22px; z-index:6; width:min(470px, calc(100vw - 490px));
+    display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
+  /* one-line ring key and the inline cage/dome note: the map explains itself */
+  #ringkey, #licnote{font-size:11px; line-height:1.5; color:var(--muted); text-align:right;
+    background:rgba(5,7,13,.72); border-radius:8px; padding:4px 8px;}
+  #ringkey b{font-weight:650; color:var(--ink);}
+  #ringkey .k-pilot{color:var(--pilot);} #ringkey .k-explore{color:var(--explore);}
+  #ringkey .k-monitor{color:var(--monitor);}
+  #licnote .w{color:#fff; font-weight:650;} #licnote .r{color:#ff6b5e; font-weight:650;}
+  #licnote .d{color:var(--pilot); font-weight:650;}
+  /* desktop: the sheet wrapper is invisible to layout; its children keep their fixed slots */
+  #sheet{display:contents;}
+  #sheethead, #mbar{display:none;}
+  .hint-touch{display:none;}
   #filters{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
   #filters button, #viewrow button{
     font:inherit; font-size:12px; color:var(--ink); background:rgba(11,14,22,.85);
@@ -93,12 +144,14 @@
   /* focus-visible for the new controls */
   #filters2 select:focus-visible, #viewrow button:focus-visible, #searchdrop .comb-opt:focus-visible,
   #vtab thead th button:focus-visible, .tbar button:focus-visible, .schema summary:focus-visible,
-  #pagenav a:focus-visible, #kitcta:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
+  #pagenav a:focus-visible, .cta:focus-visible, #introtoggle:focus-visible, .finding a:focus-visible,
+  .busline a:focus-visible, #mbar button:focus-visible, #sheetdone:focus-visible,
+  #copylink:focus-visible{outline:2px solid #f2a93b; outline-offset:2px;}
   /* verdict table view (P1-10): full-screen overlay, the map hidden behind body.tableon */
   body.tableon{overflow-y:auto; overflow-x:hidden;}
   body.tableon #scene, body.tableon #labels, body.tableon header, body.tableon #controls,
   body.tableon #legend, body.tableon #caveat, body.tableon #hint, body.tableon #tip,
-  body.tableon #panel, body.tableon #domecap{display:none !important;}
+  body.tableon #panel, body.tableon #domecap, body.tableon #mbar, body.tableon #sheethead{display:none !important;}
   body.tableon #tableview{display:block !important;}
   #tableview{position:relative; z-index:20; min-height:100vh; background:var(--bg);
     padding:28px 24px 80px; max-width:1440px; margin:0 auto;}
@@ -134,9 +187,10 @@
   .schema dd{margin:0;}
   .schema code{color:var(--ink); font-size:12px;}
 
-  #legend{position:fixed; left:22px; bottom:18px; z-index:5; background:rgba(11,14,22,.82);
-    border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:12px; max-width:380px;
-    max-height:calc(100vh - 470px); overflow-y:auto;}
+  #legend{position:fixed; left:22px; bottom:18px; z-index:5; background:rgba(11,14,22,.9);
+    border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:12px; max-width:400px;
+    max-height:calc(100vh - 36px); overflow-y:auto;}
+  #legend[open]{z-index:9;}
   #legend h2{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; font-weight:600;}
   #legend .row{display:flex; align-items:center; gap:8px; margin:3px 0; color:var(--ink);}
   #legend .sw{width:10px; height:10px; border-radius:50%; flex:none;}
@@ -166,7 +220,7 @@
   #tip .m{color:var(--muted); font-size:11px; margin-top:2px;}
   #tip .g{color:var(--green); font-size:11px; margin-top:2px; font-weight:600;}
 
-  #panel{position:fixed; top:200px; right:22px; bottom:18px; width:344px; max-width:92vw; z-index:8;
+  #panel{position:fixed; top:18px; right:22px; bottom:18px; width:344px; max-width:92vw; z-index:8;
     background:var(--panel); border:1px solid var(--line); border-radius:14px;
     box-shadow:0 18px 60px rgba(0,0,0,.5);
     transform:translateX(calc(100% + 40px)); transition:transform .32s ease; overflow-y:auto; padding:22px;}
@@ -181,9 +235,14 @@
   .chip.Monitor{background:rgba(127,143,180,.16); color:var(--monitor); border:1px solid rgba(127,143,180,.5);}
   .chip.trl{background:transparent; color:var(--ink); border:1px solid var(--line);}
   .chip.green{background:rgba(57,255,125,.12); color:var(--green); border:1px solid rgba(57,255,125,.5);}
-  #brieflink{display:inline-block; margin-top:12px; font-size:13px; font-weight:600;
+  .plinks{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px;}
+  #brieflink{display:inline-block; font-size:13px; font-weight:600;
     color:#06130a; background:var(--ink); border-radius:99px; padding:9px 18px; text-decoration:none;}
   #brieflink:hover{background:#fff;}
+  #copylink{font:inherit; font-size:13px; font-weight:600; color:var(--ink); background:transparent;
+    border:1px solid var(--line); border-radius:99px; padding:8px 16px; cursor:pointer;}
+  #copylink:hover{border-color:var(--faint);}
+  #copylink.copied{border-color:var(--green); color:var(--green);}
   #panel h3{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);
     margin:18px 0 6px; font-weight:600;}
   #panel p{font-size:13px; line-height:1.6; color:var(--ink);}
@@ -196,7 +255,7 @@
   body.fb{overflow-y:auto;}
   body.fb #scene, body.fb #labels, body.fb header, body.fb #controls,
   body.fb #legend, body.fb #caveat, body.fb #hint, body.fb #tip,
-  body.fb #panel, body.fb #domecap{display:none !important;}
+  body.fb #panel, body.fb #domecap, body.fb #mbar, body.fb #sheethead{display:none !important;}
   #fallback{position:relative; z-index:10; background:var(--bg); min-height:100vh;}
   .fb-inner, #nojs{max-width:1060px; margin:0 auto; padding:56px 22px 80px;}
   #nojs{position:relative; z-index:5; background:var(--bg); min-height:100vh;}
@@ -228,57 +287,67 @@
   #legend:not([open]) summary::after{content:" \25b8"; color:var(--pilot);}
 
   @media (prefers-reduced-motion: reduce){
-    #panel{transition:none;}
-    #controls{transition:none;}
+    #panel, #sheet, body.sheet-open #sheet{transition:none !important;}
     *{animation:none !important;}
   }
-  @media (max-width:760px){
-    /* header: full-width top sheet, everything visible, compact */
-    header{top:0; left:0; right:0; max-width:none; padding:10px 12px 14px;
-      background:linear-gradient(rgba(5,7,13,.94), rgba(5,7,13,.82) 75%, transparent);
-      max-height:36vh; overflow-y:auto;}
-    header h1{font-size:18px;}
-    header p.sub{display:block; font-size:12px; margin-top:4px;}
-    #stats{flex-wrap:wrap; gap:4px; margin-top:8px;}
-    .stat{font-size:10px; padding:4px 8px; white-space:normal;}
-    #pagenav{font-size:11px; margin-top:8px;}
-    /* controls: bottom toolbar, always tappable */
-    #controls{top:auto; left:12px; right:12px; bottom:150px; align-items:stretch;
-      background:rgba(11,14,22,.88); border:1px solid var(--line); border-radius:12px; padding:8px;}
-    #filters{flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; max-width:100%;}
-    #filters button{flex:none; font-size:11px; padding:6px 10px;}
-    #searchrow{flex:none;}
-    #search{width:100%; font-size:11px; padding:6px 10px;}
-    #searchdrop{top:auto; bottom:calc(100% + 6px); max-height:240px;}
-    .comb-opt{font-size:11px; padding:7px 10px;}
-    #searchmsg{flex-basis:100%; min-height:0; font-size:10px;}
-    #filters2{flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; max-width:100%; gap:8px;}
-    #filters2 label{flex:none; font-size:10px;}
-    #filters2 select{font-size:11px; padding:5px 8px; max-width:170px;}
-    #viewrow{justify-content:flex-start;}
-    #viewrow button{flex:none; font-size:11px; padding:6px 10px;}
+  /* phones and small tablets: intro on top, map band in the middle, controls in a bottom sheet */
+  @media (max-width:900px){
+    header{top:0; left:0; right:0; width:auto; max-width:none; max-height:40vh;
+      border-radius:0 0 16px 16px; border-width:0 0 1px; padding:12px 14px 14px;}
+    .eyebrow{font-size:9.5px; padding-right:92px;}
+    header h1{font-size:22px; margin-top:6px;}
+    p.lede{font-size:13.5px; line-height:1.5; margin-top:8px;}
+    #stats{gap:6px; margin-top:10px;}
+    .finding{font-size:12px; padding:8px 10px;}
+    .finding .big{font-size:16px;}
+    .busline{font-size:12px;}
+    .cta{font-size:12.5px; padding:8px 13px;}
+    #pagenav{font-size:11.5px; gap:6px 14px;}
+    body.intro-min header{max-width:none; padding:10px 14px;}
+    body.intro-min header h1{font-size:14px; padding-right:108px;}
+    body.intro-min #pagenav{display:none;}
+    /* the map is the band between the intro and the bottom bar (app.src.js keeps --maptop in sync) */
+    #scene, #labels{top:var(--maptop, 40vh); bottom:60px;}
+    body.panel-open #scene, body.panel-open #labels{bottom:calc(58vh + 16px);}  /* node stays above the panel */
+    #mbar{display:flex; position:fixed; left:0; right:0; bottom:0; height:60px; z-index:8; gap:8px;
+      align-items:center; padding:8px 12px; background:rgba(8,11,19,.97); border-top:1px solid var(--line);}
+    #mbar button{flex:1 1 0; min-width:0; font:inherit; font-size:13px; font-weight:600; color:var(--ink);
+      background:rgba(11,14,22,.9); border:1px solid var(--line); border-radius:99px; padding:10px 6px;
+      cursor:pointer; white-space:nowrap;}
+    #mbar #sheetbtn{background:var(--ink); color:#0b0e16; border-color:var(--ink);}
+    #sheet{display:block; position:fixed; left:0; right:0; bottom:0; z-index:11; max-height:82vh;
+      overflow-y:auto; overscroll-behavior:contain; background:#0b0e16; border-top:1px solid var(--line);
+      border-radius:16px 16px 0 0; padding:0 14px 18px; box-shadow:0 -18px 60px rgba(0,0,0,.6);
+      transform:translateY(105%); visibility:hidden; transition:transform .28s ease, visibility 0s linear .28s;}
+    body.sheet-open #sheet{transform:none; visibility:visible; transition:transform .28s ease;}
+    #sheethead{display:flex; align-items:center; justify-content:space-between; position:sticky; top:0;
+      z-index:2; background:#0b0e16; padding:12px 0 10px; border-bottom:1px solid var(--line); margin-bottom:10px;}
+    #sheethead h2{font-size:14px; font-weight:650;}
+    #sheetdone{font:inherit; font-size:13px; font-weight:650; color:#06130a; background:var(--pilot);
+      border:none; border-radius:99px; padding:8px 16px; cursor:pointer;}
+    #controls{position:static; width:auto; align-items:stretch; gap:8px;}
+    #ringkey, #licnote{text-align:left; background:none; padding:0;}
+    #filters, #filters2, #viewrow{justify-content:flex-start;}
+    #filters button, #viewrow button{font-size:12px; padding:7px 12px;}
+    #filters2 label{font-size:11px; flex-wrap:wrap;}
+    #filters2 select{max-width:100%;}
+    #searchrow{display:block;}
+    #search{width:100%;}
+    #filtercount, #searchmsg, #searchhint{text-align:left;}
+    #legend{position:static; max-width:none; max-height:none; margin-top:12px;}
+    #caveat{position:static; max-width:none; text-align:left; margin-top:12px;}
+    #hint{position:static; transform:none; margin-top:8px; text-align:left;}
+    .hint-desk{display:none;} .hint-touch{display:inline;}
+    #domecap{left:12px; right:12px; bottom:70px; transform:none; max-width:none; z-index:7; font-size:11px;}
+    /* detail panel: a bottom sheet over the bar */
+    #panel{top:auto; left:8px; right:8px; bottom:8px; width:auto; max-width:none; height:58vh; z-index:10;
+      transform:translateY(calc(100% + 40px));}
+    #panel.open{transform:translateY(0);}
     /* table view on small screens */
     #tableview{padding:16px 12px 60px;}
     .tbar h2{font-size:18px;}
     .schema dl{grid-template-columns:1fr;}
     .schema dt{margin-top:6px;}
-    /* explanatory UI: restyled, never hidden */
-    #legend{left:12px; right:12px; bottom:110px; max-width:none; max-height:30vh;
-      overflow-y:auto; padding:10px 12px; font-size:11px;}
-    #legend .note{font-size:10px;}
-    #caveat{left:12px; right:12px; bottom:44px; max-width:none; font-size:10px; text-align:left;}
-    #hint{left:12px; right:12px; bottom:12px; transform:none; font-size:10px; text-align:center;}
-    #domecap{left:12px; right:12px; bottom:110px; transform:none; max-width:none; z-index:7; font-size:11px;}
-    /* dome mode: the caption takes the legend's slot; the legend is one tap away */
-    body.dome-on #legend{display:none;}
-    /* detail panel: bottom sheet of fixed height, can never cover the top controls.
-       While open, the toolbar slides up above it (body.panel-open). */
-    #panel{top:auto; left:12px; right:12px; bottom:12px; width:auto; max-width:none;
-      height:52vh; z-index:8; transform:translateY(calc(100% + 40px));}
-    #panel.open{transform:translateY(0);}
-    #controls{transition:bottom .32s ease;}
-    body.dome-on #controls{bottom:240px;}
-    body.panel-open #controls{bottom:calc(52vh + 24px);}
   }
 </style>
 <script>
@@ -299,16 +368,26 @@ window.addEventListener('error', function(){
 <div id="labels"></div>
 
 <header id="main">
-  <h1>FR <span class="sys">Franken Research &middot; an independent assessment program</span></h1>
-  <p class="sub"><span id="framesentence"><span data-stat="total">44</span> agent-built software projects &mdash; written mostly by AI coding agents, from Jeffrey Emanuel&rsquo;s franken suite &mdash; assessed under one claim-governance method (Sep 2026). Placed by NODUS verdict (Monitor / Explore / Pilot / Invest &mdash; the program&rsquo;s four assessment rings). Headline finding: the methodology is the asset &mdash; <span data-stat="notGreen">42</span> of <span data-stat="total">44</span> can&rsquo;t show public CI (continuous integration) green at the assessed commit.</span> The <span data-stat="ringPilot">3</span> Pilot verdicts mark bounded, real workload fits; the <span data-stat="ringExplore">34</span> explorations form the belt. The goal: the method is the asset, so every verdict ships with the kit that produced it.</p>
-  <div id="stats">
-    <span class="stat neutral"><b><span data-stat="total">44</span></b> repos assessed, pinned Sep 2026 (the assessed commit)</span>
-    <span class="stat"><b><span data-stat="notGreen">42</span> of <span data-stat="total">44</span></b> can&rsquo;t show CI (continuous integration) green at the pin (the single assessed commit)</span>
-    <span class="stat grn"><b><span data-stat="greenCount">2</span></b> can &mdash; they glow green</span>
-    <span class="stat"><b><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></b> carry the AI-lab license rider</span>
-    <span class="stat neutral">bus factor <b>1</b> (one maintainer, no backup) &middot; independent validation: <b>zero</b></span>
+  <button id="introtoggle" type="button" aria-expanded="true" aria-controls="introbody">Hide intro</button>
+  <p class="eyebrow">Franken Research &middot; independent assessment &middot; Sep 2026</p>
+  <h1><span class="brand">FR &middot; </span><span data-stat="total">44</span> AI-built projects. Every claim checked.</h1>
+  <div id="introbody">
+    <p class="lede"><span id="framesentence">Jeffrey Emanuel&rsquo;s FrankenSuite is <span data-stat="total">44</span> ambitious repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.</span> The <span data-stat="ringPilot">3</span> worth a bounded trial on real work sit on the amber ring near the center.</p>
+    <div id="stats">
+      <div class="finding grn"><span class="big"><span data-stat="greenCount">2</span> of <span data-stat="total">44</span></span>
+        show CI (continuous integration) passing at the commit we pinned (the single assessed commit). The other <span data-stat="notGreen">42</span> are red, disabled, absent, run only on the maintainer&rsquo;s own machines, or show no result at the pin.</div>
+      <div class="finding gold"><span class="big">The honesty machinery is real.</span>
+        Negative-evidence ledgers, claim registries, fail-closed gates: unusually well built, and mostly not running where it counts. <a href="./techniques/index.html">What is worth stealing</a></div>
+      <div class="finding"><span class="big"><span data-stat="riderCount">38</span> of <span data-stat="total">44</span></span>
+        carry an AI-lab license rider: a clause that bars OpenAI and Anthropic from any use, even testing and benchmarking.</div>
+    </div>
+    <p class="busline">All <span data-stat="total">44</span> have a bus factor of 1 (one maintainer, no backup): the number of people who can leave before a project stalls. <a href="./self/index.html">Ours is 1 too: see how we graded ourselves</a></p>
+    <div id="ctas">
+      <button id="explorecta" class="cta primary" type="button">Explore the map</button>
+      <a class="cta secondary" href="starter-kit/index.html">Steal the method</a>
+      <button class="cta js-surprise" type="button">Surprise me</button>
+    </div>
   </div>
-  <a id="kitcta" href="starter-kit/index.html">Get the claim-governance kit</a>
   <nav id="pagenav" aria-label="Research pages">
     <a href="./method/index.html">Method</a>
     <a href="./techniques/index.html">Techniques</a>
@@ -316,18 +395,29 @@ window.addEventListener('error', function(){
     <a href="./lessons/index.html">Lessons</a>
     <a href="./reproduce/index.html">Reproduce a verdict</a>
     <a href="starter-kit/index.html">Starter kit</a>
+    <a href="./self/index.html">Graded by our own method</a>
+    <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a>
   </nav>
 </header>
 
+<div id="mbar">
+  <button id="sheetbtn" type="button" aria-expanded="false" aria-controls="sheet">Filters</button>
+  <button class="js-surprise" type="button">Surprise me</button>
+  <button class="js-table" type="button">Table</button>
+</div>
+
+<div id="sheet" aria-label="Map filters and key">
+<div id="sheethead"><h2>Filters and key</h2><button id="sheetdone" type="button">Done</button></div>
 <div id="controls">
   <div id="filters">
     <button data-f="all" class="active">All <span data-stat="total">44</span></button>
-    <button data-f="Invest" disabled title="Empty in this program — no repo reached Invest">Invest · <span data-stat="ringInvest">0</span></button>
+    <button data-f="Invest" disabled title="Empty in this program: no repo reached Invest">Invest · <span data-stat="ringInvest">0</span></button>
     <button data-f="Pilot">Pilot · <span data-stat="ringPilot">3</span></button>
     <button data-f="Explore">Explore · <span data-stat="ringExplore">34</span></button>
     <button data-f="Monitor">Monitor · <span data-stat="ringMonitor">7</span></button>
     <button data-f="green" class="grnbtn">CI green · <span data-stat="greenCount">2</span></button>
   </div>
+  <p id="ringkey">Rings are our verdict. <b class="k-pilot">Pilot</b>: try it on bounded real work. <b class="k-explore">Explore</b>: real code, unproven claims. <b class="k-monitor">Monitor</b>: watch, don&rsquo;t land. <b>Invest</b>: none reached it.</p>
   <div id="filters2">
     <label>License <select id="flic"></select></label>
     <label>CI state <select id="fci"></select></label>
@@ -339,46 +429,50 @@ window.addEventListener('error', function(){
     <div id="searchdrop" role="listbox" aria-label="Matching repos" hidden></div>
   </div>
   <div id="searchmsg"></div>
-  <div id="searchhint">Search covers all 44 repos, regardless of filters.</div>
+  <div id="searchhint">Search covers all <span data-stat="total">44</span> repos, regardless of filters.</div>
   <div id="viewrow">
+    <button class="js-surprise" type="button">Surprise me</button>
     <button id="resetview">Reset view</button>
     <button id="tabletoggle" aria-pressed="false">Verdict table</button>
     <button id="dometoggle" aria-pressed="false">Show the rider ceiling</button>
   </div>
+  <p id="licnote">Wireframe cages mark the <span data-stat="noRiderCount">6</span> repos without the rider: <span class="w">white</span> = plain MIT (<span data-stat="mitCount">1</span>), <span class="r">red</span> = no license file, all rights reserved (<span data-stat="noneCount">5</span>). <span class="d">Domes</span>, when shown, mark the rider.</p>
 </div>
 
 <details id="legend">
   <summary><h2 style="display:inline">How to read it</h2></summary>
-  <div class="row"><span class="sw" style="background:#f5f2e8"></span>Invest <small>&mdash; <span data-stat="ringInvest">0</span>: independent validation plus governance — empty in this program</small></div>
-  <div class="row"><span class="sw" style="background:#f2a93b"></span>Pilot <small>&mdash; <span data-stat="ringPilot">3</span>: release artifact + a bounded, real workload fit. Not a recommendation to ship.</small></div>
-  <div class="row"><span class="sw" style="background:#2fd4bf"></span>Explore <small>&mdash; <span data-stat="ringExplore">34</span>: real code, unproven claims</small></div>
-  <div class="row"><span class="sw" style="background:#7f8fb4"></span>Monitor <small>&mdash; <span data-stat="ringMonitor">7</span>: watch, don&rsquo;t land</small></div>
-  <div class="row"><span class="glow"></span><small>green glow = CI green at the pin &mdash; CI (continuous integration) builds passing on the assessed commit. The pin is the single commit the assessor fixed for the whole evaluation. <span data-stat="greenNames">frankenscipy and franken_threed</span>, the only <span data-stat="greenCount">2</span></small></div>
-  <div class="row"><span class="sw" style="background:#f2a93b"></span><small><b>The rider</b> = MIT + OpenAI/Anthropic rider, barring the AI labs from training, use, or benchmarking. <span data-stat="riderCount">38</span> of <span data-stat="total">44</span> carry it &mdash; the domed ones when you toggle the ceiling.</small></div>
-  <div class="row"><span class="cage"></span><small>white cage = plain MIT &mdash; the suite&rsquo;s only plain-MIT repo (<span data-stat="mitCount">1</span> of <span data-stat="noRiderCount">6</span> without the rider)</small></div>
-  <div class="row"><span class="cage red"></span><small>red cage = no license file &mdash; all rights reserved, the most restricted state (<span data-stat="noneCount">5</span>)</small></div>
+  <div class="row"><span class="sw" style="background:#f5f2e8"></span>Invest <small>(<span data-stat="ringInvest">0</span>): independent validation plus governance. Empty in this program.</small></div>
+  <div class="row"><span class="sw" style="background:#f2a93b"></span>Pilot <small>(<span data-stat="ringPilot">3</span>): release artifact + a bounded, real workload fit. Not a recommendation to ship.</small></div>
+  <div class="row"><span class="sw" style="background:#2fd4bf"></span>Explore <small>(<span data-stat="ringExplore">34</span>): real code, unproven claims</small></div>
+  <div class="row"><span class="sw" style="background:#7f8fb4"></span>Monitor <small>(<span data-stat="ringMonitor">7</span>): watch, don&rsquo;t land</small></div>
+  <div class="row"><span class="glow"></span><small>green glow = CI green at the pin: CI (continuous integration) builds passing on the assessed commit. The pin is the single commit the assessor fixed for the whole evaluation. <span data-stat="greenNames">frankenscipy and franken_threed</span>, the only <span data-stat="greenCount">2</span></small></div>
+  <div class="row"><span class="sw" style="background:#f2a93b"></span><small><b>The rider</b> = MIT + OpenAI/Anthropic rider, barring the AI labs from training, use, or benchmarking. <span data-stat="riderCount">38</span> of <span data-stat="total">44</span> carry it: the domed ones when you toggle the ceiling.</small></div>
+  <div class="row"><span class="cage"></span><small>white cage = plain MIT, the suite&rsquo;s only plain-MIT repo (<span data-stat="mitCount">1</span> of <span data-stat="noRiderCount">6</span> without the rider)</small></div>
+  <div class="row"><span class="cage red"></span><small>red cage = no license file: all rights reserved, the most restricted state (<span data-stat="noneCount">5</span>)</small></div>
   <div class="note"><b>bus factor</b> = how many people can leave before the project stalls. It is 1 across the suite: one maintainer, checked by no one.</div>
   <!-- trlRange fallback copy: must match the STATS.trlRange computed in app.src.js
        (excludes the techNA support asset), not the raw max -->
-  <div class="note">Bigger node = higher TRL (<span data-stat="trlRange">2&ndash;8</span>); height above the plane climbs with TRL too. A thin vertical band marks a TRL range — plotted as a span, never a midpoint. <b>frankentui_website</b> is a support asset, so it sits flat on the plane: N/A as technology. The <span data-stat="riderCount">38</span> rider-bound repos show a dome with &ldquo;Show the rider ceiling&rdquo; — every dome the same size, by design.</div>
-  <div class="note">No license file is <b>not</b> freer than plain MIT. It means no operative grant at all — more restricted than the rider, which still grants rights to everyone outside the AI labs.</div>
+  <div class="note">Bigger node = higher TRL (<span data-stat="trlRange">2&ndash;8</span>); height above the plane climbs with TRL too. A thin vertical band marks a TRL range, plotted as a span, never a midpoint. <b>frankentui_website</b> is a support asset, so it sits flat on the plane: N/A as technology. The <span data-stat="riderCount">38</span> rider-bound repos show a dome with &ldquo;Show the rider ceiling&rdquo;, every dome the same size, by design.</div>
+  <div class="note">No license file is <b>not</b> freer than plain MIT. It means no operative grant at all: more restricted than the rider, which still grants rights to everyone outside the AI labs.</div>
   <div class="note">Map exceptions, not the rule: <b>frankentui_website</b> is ~36k lines of TypeScript, the two beads repos are static dashboard exports, and <b>franken_agent_detection</b> is not a rewrite of an incumbent.</div>
 </details>
 
+<div id="caveat">A judgment map, not a measurement. Every verdict is an analyst&rsquo;s inference from a packet frozen at one commit (Sep 2026), confidence: medium. Size is readiness, not quality: a big Monitor node is still a website.</div>
+
+<div id="hint"><span class="hint-desk">drag to orbit &nbsp;&middot;&nbsp; scroll to zoom &nbsp;&middot;&nbsp; click a node for the bottom line &nbsp;&middot;&nbsp; double-click opens its brief</span><span class="hint-touch">drag to orbit &nbsp;&middot;&nbsp; pinch to zoom &nbsp;&middot;&nbsp; tap a node for the bottom line</span></div>
+</div>
+
 <div id="domecap"><b>The rider ceiling.</b> Dome = MIT + OpenAI/Anthropic rider. The rider withholds rights only from the AI labs and their affiliates.</div>
-
-<div id="caveat">A judgment map, not a measurement, assessed by an independent research program (Sep 2026) from Jeffrey Emanuel&rsquo;s franken suite. Every verdict is an analyst&rsquo;s
-inference from a pinned-commit packet (Sep 2026), confidence: medium. Size is
-readiness, not quality &mdash; a big Monitor node is still a website.</div>
-
-<div id="hint">drag to orbit &nbsp;&middot;&nbsp; scroll to zoom &nbsp;&middot;&nbsp; click a node for the bottom line &nbsp;&middot;&nbsp; double-click opens its brief</div>
 <div id="tip"><div class="t"></div><div class="m"></div><div class="g"></div></div>
 
 <aside id="panel">
   <button class="close" aria-label="close">&times;</button>
   <h2 id="p-name"></h2>
   <div id="chips"></div>
-  <a id="brieflink" href="#">Read the full brief &rarr;</a>
+  <div class="plinks">
+    <a id="brieflink" href="#">Read the full brief &rarr;</a>
+    <button id="copylink" type="button">Copy link</button>
+  </div>
   <h3>The bottom line</h3>
   <p id="p-blurb"></p>
   <h3>CI at the pin</h3>
@@ -426,7 +520,7 @@ readiness, not quality &mdash; a big Monitor node is still a website.</div>
         <dt><code>trl</code></dt><dd>TRL as a display string ("4–5"); support assets read "N/A".</dd>
         <dt><code>trlLow</code> / <code>trlHigh</code></dt><dd>Numeric TRL bounds. Ranges are plotted and sorted as spans, never midpoints.</dd>
         <dt><code>techNA</code></dt><dd><code>true</code> when TRL is N/A as technology (a support asset, not a technology).</dd>
-        <dt><code>nodus</code></dt><dd>NODUS ring: Invest, Pilot, Explore, or Monitor.</dd>
+        <dt><code>nodus</code></dt><dd>Verdict ring (NODUS, the method&rsquo;s four assessment rings): Invest, Pilot, Explore, or Monitor.</dd>
         <dt><code>license</code></dt><dd>License verdict in plain words.</dd>
         <dt><code>licenseKey</code></dt><dd><code>rider</code> (MIT + AI-lab rider), <code>mit</code> (plain MIT), <code>none</code> (no license file).</dd>
         <dt><code>ci</code></dt><dd>CI (continuous integration) state at the assessed commit, in plain words.</dd>
@@ -444,12 +538,12 @@ readiness, not quality &mdash; a big Monitor node is still a website.</div>
 <noscript>
 <style>
 html,body{overflow-y:auto !important;}
-header,#controls,#legend,#caveat,#hint,#domecap,#panel,#tip,#labels,#scene{display:none !important;}
+header,#controls,#legend,#caveat,#hint,#domecap,#panel,#tip,#labels,#scene,#mbar,#sheethead{display:none !important;}
 </style>
 <div id="nojs">
-  <p class="fb-kicker">FR &mdash; Franken Research program</p>
+  <p class="fb-kicker">Franken Research &middot; independent assessment</p>
   <h2>All briefs</h2>
-  <p class="fb-sub">The 3D map needs JavaScript, which is off here. The verdicts don&rsquo;t &mdash; every brief is listed below, newest assessment pin: September 2026.</p>
+  <p class="fb-sub">The 3D map needs JavaScript, which is off here. The verdicts don&rsquo;t: every brief is listed below, assessed at the pin (the single assessed commit) in September 2026.</p>
   <p class="fb-method"><a href="./method/index.html">How the verdicts were made &rarr;</a></p>
   <ul class="nojs-list">
     <li><a href="./briefs/asupersync.html">asupersync</a><span class="nojs-tag">Pilot &middot; TRL 6</span></li>

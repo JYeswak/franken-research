@@ -35,7 +35,7 @@ function showFallback(){
   root.id = 'fallback';
   root.innerHTML =
     '<div class="fb-inner">' +
-      '<p class="fb-kicker">FrankenSuite research program</p>' +
+      '<p class="fb-kicker">Franken Research &middot; independent assessment</p>' +
       '<h2>44 verdicts, <span class="sys">no 3D required</span></h2>' +
       '<p class="fb-sub">The interactive map needs WebGL, which this browser ' +
       'isn&rsquo;t offering. The verdicts don&rsquo;t &mdash; every brief is ' +
@@ -138,7 +138,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // the keyboard-application role with the key-map label (see keyboard access).
 renderer.domElement.setAttribute('role', 'img');
 renderer.domElement.setAttribute('aria-label',
-  '3D map of the 44 assessed repositories arranged by NODUS verdict ring, ' +
+  '3D map of the 44 assessed repositories arranged by verdict ring, ' +
   'node size and height by technology readiness, green glow where CI was green ' +
   'at the pin. Keyboard users: tab to the map for arrow-key navigation, or use ' +
   'the "Jump to repo" list in the controls.');
@@ -150,9 +150,11 @@ scene.fog = new THREE.FogExp2(0x05070d, 0.0045);
 
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000);
 const CAM_HOME = new THREE.Vector3(0, 27, 54);
-const CAM_HOME_MOBILE = new THREE.Vector3(0, 42, 112);  // pulled back: all 44 nodes on screen at 390px
+const CAM_HOME_MOBILE = new THREE.Vector3(0, 48, 50);  // frames all 44 nodes in the ~390x440 phone band
 const TGT_HOME = new THREE.Vector3(0, 2.5, 0);
-const isMobileView = () => window.innerWidth <= 760;
+// one breakpoint for layout and framing; must match the (max-width:900px) block in index.html
+const MOBILE_MQ = window.matchMedia('(max-width: 900px)');
+const isMobileView = () => MOBILE_MQ.matches;
 function applyFraming(){
   // framing per breakpoint; mobile keeps every node inside the viewport at load
   camera.fov = isMobileView() ? 60 : 50;
@@ -161,25 +163,35 @@ function applyFraming(){
 }
 applyFraming();
 
-/* Narrow-screen layout (Wave-3 P1). The 3D view becomes a real band with a
-   usable minimum height instead of a ~100px slit between the header sheet and
-   the toolbar; the filter chips wrap instead of clipping; the verdict-table
-   toggle moves to the top of the toolbar and reads as the primary action. */
-const narrowCss = document.createElement('style');
-narrowCss.textContent = [
-  '@media (max-width:760px){',
-  '  header{max-height:20vh;}',
-  '  #scene, #labels{top:22vh; bottom:360px; min-height:300px;}',
-  '  #controls{padding:6px; gap:6px;}',
-  '  #filtercount, #searchmsg{min-height:0;}',
-  '  #searchhint{display:none;}',
-  '  #filters{flex-wrap:wrap; overflow-x:visible;}',
-  '  #filters button{flex:0 1 auto;}',
-  '  #viewrow{order:-1;}',
-  '  #viewrow #tabletoggle{background:var(--pilot); border-color:var(--pilot); color:#06130a; font-weight:700;}',
-  '}',
-].join('\n');
-document.head.appendChild(narrowCss);
+/* Narrow-screen layout: index.html insets #scene to the band between the intro
+   sheet and the bottom bar via --maptop; this keeps --maptop equal to the intro's
+   real bottom edge as it collapses, expands, or reflows. */
+const headerEl = document.getElementById('main');
+function layoutMap(){
+  if (isMobileView()){
+    const b = Math.round(headerEl.getBoundingClientRect().bottom);
+    document.documentElement.style.setProperty('--maptop', b + 'px');
+  } else {
+    document.documentElement.style.removeProperty('--maptop');
+  }
+}
+layoutMap();
+
+/* intro card: expanded by default; collapses to a compact bar ("Explore the map"
+   or the toggle). The choice holds for the session so returning from a brief
+   doesn't re-open it. */
+const introToggle = document.getElementById('introtoggle');
+function setIntro(expanded, persist){
+  document.body.classList.toggle('intro-min', !expanded);
+  introToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  introToggle.textContent = expanded ? 'Hide intro' : 'About this map';
+  if (persist){ try { sessionStorage.setItem('fr-intro', expanded ? 'open' : 'min'); } catch (e) {} }
+  layoutMap();
+  sizeRenderer();
+}
+introToggle.addEventListener('click', () => {
+  setIntro(document.body.classList.contains('intro-min'), true);
+});
 
 /* Size the renderer to the scene container, not the window: on narrow screens
    CSS insets #scene to the band above, so the camera frames the node field
@@ -189,9 +201,23 @@ function sizeRenderer(){
   const h = container.clientHeight || window.innerHeight;
   renderer.setSize(w, h);
   camera.aspect = w / h;
-  camera.updateProjectionMatrix();
+  // desktop with the intro card open: slide the projection centre right so the
+  // node field sits in the free space beside the card instead of under it
+  const shift = (!isMobileView() && !document.body.classList.contains('intro-min'))
+    ? Math.round(Math.min(140, w * 0.1)) : 0;
+  if (shift) camera.setViewOffset(w, h, -shift, 0, w, h);
+  else camera.clearViewOffset();  // both paths update the projection matrix
 }
 sizeRenderer();
+{
+  let stored = null;
+  try { stored = sessionStorage.getItem('fr-intro'); } catch (e) {}
+  if (stored === 'min') setIntro(false, false);
+}
+// the intro reflows (fonts, wrapping, collapse): keep the phone map band glued to it
+if (typeof ResizeObserver === 'function'){
+  new ResizeObserver(() => { if (isMobileView()){ layoutMap(); sizeRenderer(); } }).observe(headerEl);
+}
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.copy(TGT_HOME);
@@ -203,13 +229,15 @@ controls.autoRotate = !REDUCED;  // reduced motion: no auto-orbit, ever
 controls.autoRotateSpeed = 0.45;
 let idleTimer = null;
 let userDrove = false;
+let camGoal = null;  // "Surprise me" / deep-link camera flight; any user drag cancels it
 controls.addEventListener('start', () => {
   userDrove = true;
+  camGoal = null;
   controls.autoRotate = false;
-  if (idleTimer) clearTimeout(idleTimer);
+  clearTimeout(idleTimer);
 });
 controls.addEventListener('end', () => {
-  if (idleTimer) clearTimeout(idleTimer);
+  clearTimeout(idleTimer);
   if (!REDUCED) idleTimer = setTimeout(() => { controls.autoRotate = true; }, 10000);
 });
 
@@ -387,7 +415,7 @@ function makeLabel(html, cls){
   labelLayer.appendChild(el);
   return el;
 }
-const coreLabel = makeLabel('the method is the asset \u2014 claim-governance runs across all 44', 'corelabel');
+const coreLabel = makeLabel('the core: one grading method, applied to all 44', 'corelabel');
 labelDefs.push({ el: coreLabel, kind:'core' });
 const nodeLabels = new Map();
 for (const mesh of nodeMeshes){
@@ -490,6 +518,14 @@ function select(mesh){
   document.getElementById('p-ring').textContent = RING_NOTE[repo.nodus];
   panel.classList.add('open');
   document.body.classList.add('panel-open');
+  setHash('#repo=' + encodeURIComponent(repo.name));
+  resetCopyButton();
+  if (isMobileView()){
+    // phone: the panel is a bottom sheet; give it the room the intro and filters were using
+    setSheet(false, false);
+    if (!document.body.classList.contains('intro-min')) setIntro(false, false);
+    sizeRenderer();  // the map band shrank to sit above the panel sheet
+  }
   selHalo.visible = true;
   selHalo.scale.setScalar(size * 1.7);
   focusTarget.copy(mesh.position);
@@ -509,13 +545,65 @@ function deselect(){
   }
   panel.classList.remove('open');
   document.body.classList.remove('panel-open');
+  if (isMobileView()) sizeRenderer();  // the map band grows back under the closed panel
+  setHash('');
   focusTarget.copy(TGT_HOME);
   if (REDUCED) controls.target.copy(TGT_HOME);  // no camera glide under reduced motion
 }
+
+/* ---------- shareable links ----------
+   #repo=<name> opens that repo's panel on load and follows the open panel, so a
+   map view can be shared. Copy link copies the brief's canonical public URL. */
+const SITE_ORIGIN = 'https://fr.zeststream.ai';
+const repoFromHash = () => {
+  const m = /^#repo=([^&]+)$/.exec(window.location.hash);
+  if (!m) return null;
+  let name = m[1];
+  try { name = decodeURIComponent(name); } catch (e) { return null; }
+  return nodeMeshes.find((x) => x.userData.repo.name === name) || null;
+};
+function setHash(want){
+  if (window.location.hash === want) return;
+  const url = window.location.pathname + window.location.search + want;
+  try { history.replaceState(history.state, '', url); } catch (e) { /* file:// quirks: the link just doesn't follow */ }
+}
+const copyBtn = document.getElementById('copylink');
+let copyTimer = null;
+function resetCopyButton(){
+  clearTimeout(copyTimer);
+  copyBtn.textContent = 'Copy link';
+  copyBtn.classList.remove('copied');
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* fall through */ }
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.cssText = 'position:fixed; top:0; left:0; opacity:0;';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  ta.remove();
+  copyBtn.focus();
+  return ok;
+}
+copyBtn.addEventListener('click', async () => {
+  if (!selected) return;
+  const url = SITE_ORIGIN + '/briefs/' + encodeURIComponent(selected.userData.repo.name);
+  const ok = await copyText(url);
+  clearTimeout(copyTimer);
+  copyBtn.textContent = ok ? 'Copied' : 'Copy failed';
+  copyBtn.classList.toggle('copied', ok);
+  live.textContent = ok ? 'Link copied: ' + url : 'Could not copy. The link is ' + url;
+  copyTimer = setTimeout(resetCopyButton, 2200);
+});
+
 document.querySelector('#panel .close').addEventListener('click', () => { deselect(); container.focus(); });
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape'){
     if (tableOpen){ closeTableView(); return; }  // table view closes first
+    if (document.body.classList.contains('sheet-open')){ setSheet(false, true); return; }  // then the filter sheet
     const wasOpen = panel.classList.contains('open');
     deselect();
     if (wasOpen) container.focus();  // return focus to the map on close
@@ -704,6 +792,7 @@ searchInput.addEventListener('blur', () => {
 const focusTarget = TGT_HOME.clone();
 function resetView(){
   kbFocus = null;
+  camGoal = null;
   deselect();
   applyFraming();
   focusTarget.copy(TGT_HOME);
@@ -796,22 +885,32 @@ document.querySelectorAll('#vtab thead th button').forEach((btn) => {
     renderTable();
   });
 });
+let tableOpener = null;  // the control that opened the table gets focus back on close
 function openTableView(){
+  const a = document.activeElement;
+  tableOpener = (a && a !== document.body && a.tagName === 'BUTTON') ? a : null;
+  setSheet(false, false);
   renderTable();
   tableOpen = true;
   tableView.hidden = false;
   document.body.classList.add('tableon');
   tableToggle.setAttribute('aria-pressed', 'true');
   tableBack.focus();  // focus moves into the table view on open
+  setHash('#tableview');  // shareable: index.html#tableview opens straight into the table
 }
 function closeTableView(){
   tableOpen = false;
   tableView.hidden = true;
   document.body.classList.remove('tableon');
   tableToggle.setAttribute('aria-pressed', 'false');
-  tableToggle.focus();  // focus returns to the toggle on close
+  setHash(selected ? '#repo=' + encodeURIComponent(selected.userData.repo.name) : '');
+  // focus returns to whichever control opened it; on phones the sheet is closed by then
+  let back = tableOpener || tableToggle;
+  if (isMobileView() && back.closest('#sheet')) back = document.getElementById('sheetbtn');
+  back.focus();
 }
 tableToggle.addEventListener('click', openTableView);
+document.querySelectorAll('.js-table').forEach((b) => b.addEventListener('click', openTableView));
 tableBack.addEventListener('click', closeTableView);
 
 function download(filename, mime, text){
@@ -965,8 +1064,73 @@ kbCss.textContent = [
 ].join('\n');
 document.head.appendChild(kbCss);
 
+/* ---------- phone filter sheet ----------
+   Under 900px the filters, search, view buttons and key live in a bottom sheet
+   (#sheet) opened from the bar's "Filters" button. On desktop #sheet is
+   display:contents and these calls only flip an unused class. */
+const sheetBtn = document.getElementById('sheetbtn');
+const sheetDone = document.getElementById('sheetdone');
+function setSheet(open, moveFocus){
+  const was = document.body.classList.contains('sheet-open');
+  document.body.classList.toggle('sheet-open', open);
+  sheetBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!moveFocus || was === open) return;
+  (open ? sheetDone : sheetBtn).focus();
+}
+sheetBtn.addEventListener('click', () => setSheet(!document.body.classList.contains('sheet-open'), true));
+sheetDone.addEventListener('click', () => setSheet(false, true));
+
+/* ---------- camera flight + "Surprise me" ---------- */
+function flyTo(mesh){
+  const p = mesh.position;
+  const dir = camera.position.clone().sub(controls.target);
+  dir.y = Math.abs(dir.y) + 0.001;  // always look down onto the node, never from below the plane
+  dir.setLength(isMobileView() ? 30 : 20);
+  const goal = p.clone().add(dir);
+  userDrove = true;  // a resize must not snap the camera back home mid-tour
+  controls.autoRotate = false;
+  clearTimeout(idleTimer);
+  focusTarget.copy(p);
+  if (REDUCED){
+    camera.position.copy(goal);  // reduced motion: jump, no glide
+    controls.target.copy(p);
+    camGoal = null;
+  } else {
+    camGoal = goal;
+  }
+}
+function surprise(){
+  const inView = nodeMeshes.filter((m) => inFilter(m) && m !== selected);
+  const pool = inView.length ? inView : nodeMeshes.filter((m) => m !== selected);
+  const mesh = pool[Math.floor(Math.random() * pool.length)];
+  flyTo(mesh);
+  openPanelFor(mesh);
+}
+document.querySelectorAll('.js-surprise').forEach((b) => b.addEventListener('click', surprise));
+
+document.getElementById('explorecta').addEventListener('click', () => {
+  setIntro(false, true);
+  container.focus({ preventScroll: true });
+});
+
+/* deep links (on load and on hash edits): index.html#repo=<name> opens that
+   repo's panel; index.html#tableview opens the verdict table */
+function openFromHash(){
+  if (window.location.hash === '#tableview'){ if (!tableOpen) openTableView(); return; }
+  const mesh = repoFromHash();
+  if (!mesh || mesh === selected) return;
+  flyTo(mesh);
+  kbFocus = mesh;
+  kbIndex = nodeMeshes.indexOf(mesh);
+  select(mesh);
+  jumpSelect.value = mesh.userData.repo.name;
+}
+window.addEventListener('hashchange', openFromHash);
+
 /* ---------- resize ---------- */
 window.addEventListener('resize', () => {
+  if (!isMobileView()) setSheet(false, false);  // the sheet only exists below the breakpoint
+  layoutMap();
   sizeRenderer();
   if (!userDrove) applyFraming();  // keep breakpoint framing until the user takes over
 });
@@ -1052,6 +1216,10 @@ function animate(){
 
   if (pointerDirty){ doHover(); pointerDirty = false; }
 
+  if (camGoal){
+    camera.position.lerp(camGoal, 0.06);
+    if (camera.position.distanceToSquared(camGoal) < 0.01) camGoal = null;
+  }
   controls.target.lerp(focusTarget, 0.07);
   controls.update();
   renderer.render(scene, camera);
@@ -1074,6 +1242,7 @@ window.__viz = { nodeMeshes, greenMeshes, camera, controls, renderer, select, de
                            items: () => dropItems.length, choose: chooseDrop,
                            active: () => dropActive },
                  csv: buildCSV, json: buildJSON,
+                 surprise, flyTo, openFromHash, selected: () => selected,
                  screenXY(i){
                    const m = nodeMeshes[i];
                    const r = container.getBoundingClientRect();
@@ -1082,6 +1251,7 @@ window.__viz = { nodeMeshes, greenMeshes, camera, controls, renderer, select, de
                             r.top + (-proj.y*0.5+0.5)*r.height, proj.z ];
                  } };
 
+openFromHash();  // shared link: land on the named repo's panel
 window.__FRONTDOOR_READY = true;
 
 } catch (err) {

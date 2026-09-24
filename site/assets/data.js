@@ -10,7 +10,7 @@
    checked-in JSON) matches the legend's C6 criterion, which names RCH explicitly.
    Reclassification is disclosed on the method page's CI panel. */
 window.FRANKEN_DATA = {
- "framing": "44 agent-built software projects — written mostly by AI coding agents, from Jeffrey Emanuel’s franken suite — assessed under one claim-governance method (Sep 2026). Placed by NODUS verdict (Monitor / Explore / Pilot / Invest — the program’s four assessment rings). Headline finding: the methodology is the asset — 42 of 44 can’t show public CI (continuous integration) green at the assessed commit.",
+ "framing": "Jeffrey Emanuel’s FrankenSuite is 44 ambitious repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.",
  "repos": [
   {
    "name": "asupersync",
