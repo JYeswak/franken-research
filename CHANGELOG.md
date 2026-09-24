@@ -2,9 +2,9 @@
 
 Corrections to published findings are recorded here with the date, the issue, and what changed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## v1.0.0 (unreleased)
+## v1.0.0 (2026-09-23)
 
-First public repository. The v1.0.0 tag is planned at publication; until it exists, this section describes `main`.
+First public repository, tagged `v1.0.0`.
 
 ### Derived from franken-assessments-44 v11
 
@@ -28,6 +28,8 @@ The corpus was imported as shipped (commit `114d5f0`) from the v11 package built
 - The front door explains itself to a first-time visitor: a plain-language hero, three finding cards, a one-line ring key, a note on the wireframe cages and domes, and three actions (explore the map, take the starter kit, jump to a random project). On phones the map takes the middle of the screen and the filters move into a bottom sheet. `#repo=<name>` links open a project's panel, and the panel copies a link to its brief. The map bundle is rebuilt from source with a pinned esbuild (`bun run build:map`), and CI checks it byte for byte (`feca53f`).
 - Briefs and section pages name Franken Research as the author, not the FrankenSuite program. Every brief has working share cards (absolute `og:image`, one 1200x630 card per project generated from `data.js` by `site/scripts/make-og.mjs`) and a Share button. The section pages' source notes were rewritten for readers. Added a 404 page, an absolute-URL sitemap, and robots.txt (`7a8563e`).
 - Fixed reader-visible defects that two independent audits of the briefs found: four dead or misdirected external links (two unbalanced Wikipedia URLs, a login-walled libraries.io page replaced with docs.rs, and a removed GitHub repository now cited without a link), a stray Markdown marker, a missing quotation mark, and a duplicated sentence (`7a8563e`).
+- Independent QA of the preview (desktop, then phone, keyboard, and reduced motion), by reviewers who did not build the site, found 0 critical, 3 high, 3 medium, and 3 low issues. All were fixed: the front door no longer implies all 42 builds without a passing pin are red (11 are); a phone filter now visibly applies after the sheet closes, and the sheet closes on Escape and traps focus as a dialog; the repo panel no longer covers the search box; Copy link and Share show a visible result on every path, including a selectable URL when the clipboard is blocked; phone buttons are 46px tall; the starter kit drops internal release names; brief back links say where they go (`f24056c`, `b1b3e84`).
+- The self-assessment page records the first CI run (green on every step at `4de9d53`), the v1.0.0 release, and the same honest CI split as the front door.
 
 ### Corrections
 

@@ -124,12 +124,12 @@ footer a{color:var(--accent)}
     <tr>
       <td class="dim">TRL</td>
       <td class="suite" data-label="Suite result">Range <span data-stat="trlRange">2&ndash;8</span> across the assessed software (one website scored as an artifact only).</td>
-      <td class="ours" data-label="Franken Research"><b>6 while this page was written.</b> The site is built, runs offline from a zip, and passes eleven automated gates, including a headless-browser render. The live FrankenSuite website repos scored higher because they were served and observed in production; this site earns that only once it is live at fr.zeststream.ai and someone other than us has used it. <span class="tag">[Inference, Medium]</span></td>
+      <td class="ours" data-label="Franken Research"><b>6 while this page was written.</b> The site is built, runs offline from a download, and passes eleven automated gates, including a headless-browser render. The live FrankenSuite website repos scored higher because they were served and observed in production; this site earns that only once it is live at fr.zeststream.ai and someone other than us has used it. <span class="tag">[Inference, Medium]</span></td>
     </tr>
     <tr>
       <td class="dim">NODUS ring</td>
       <td class="suite" data-label="Suite result">Pilot <span data-stat="ringPilot">3</span>, Explore <span data-stat="ringExplore">34</span>, Monitor <span data-stat="ringMonitor">7</span>, Invest <span data-stat="ringInvest">0</span>.</td>
-      <td class="ours" data-label="Franken Research"><b>Monitor.</b> The ring rules put websites and plan-stage work in Monitor, and this is a website plus a research corpus. Pilot would need a release artifact, which does not exist yet; Invest would need independent validation, which does not exist at all. The rubric was written to rate software someone might build on, and a research publication is read, checked, and corrected rather than adopted, so the ring mostly says: do not treat this as a dependency. When in doubt, ring down. <span class="tag">[Inference, Medium]</span></td>
+      <td class="ours" data-label="Franken Research"><b>Monitor.</b> The ring rules put websites and plan-stage work in Monitor, and this is a website plus a research corpus. The v1.0.0 release supplies Pilot's release artifact, but Pilot also needs a bounded, real workload fit, and a publication has none; Invest would need independent validation, which does not exist at all. The rubric was written to rate software someone might build on, and a research publication is read, checked, and corrected rather than adopted, so the ring mostly says: do not treat this as a dependency. When in doubt, ring down. <span class="tag">[Inference, Medium]</span></td>
     </tr>
     <tr>
       <td class="dim">License</td>
@@ -148,7 +148,7 @@ footer a{color:var(--accent)}
     </tr>
     <tr>
       <td class="dim">CI at the pin</td>
-      <td class="suite" data-label="Suite result">Public CI green at the pin for <span data-stat="greenCount">2</span>; the other <span data-stat="notGreen">42</span> are red, unverifiable, private, disabled, or absent.</td>
+      <td class="suite" data-label="Suite result">Public CI green at the pin for <span data-stat="greenCount">2</span>; the other <span data-stat="notGreen">42</span> cannot show it: <!-- STAT: synthesis/00-overview.md line 19 (not in data.js) -->11 are red at the pin, and the rest have no verdict for the pin, no test CI, CI disabled or deleted, or CI that runs only on private infrastructure.</td>
       <td class="ours" data-label="Franken Research"><b>See the badge; we do not assert its color.</b> The <code>verify</code> workflow runs the full gate chain on every push and pull request, checks that the committed map bundle equals what its source builds, and scans for leaked secrets.
         <span class="badge"><a href="https://github.com/JYeswak/franken-research/actions/workflows/verify.yml"><img id="cibadge" alt="verify workflow status on GitHub Actions" data-src="https://github.com/JYeswak/franken-research/actions/workflows/verify.yml/badge.svg" width="104" height="20"></a></span>
         <span id="cibadge-offline">Viewed offline, the live badge does not load; the run history is at <a href="https://github.com/JYeswak/franken-research/actions/workflows/verify.yml">github.com/JYeswak/franken-research/actions</a>.</span>
@@ -157,7 +157,7 @@ footer a{color:var(--accent)}
     <tr>
       <td class="dim">Release posture</td>
       <td class="suite" data-label="Suite result"><!-- STAT: synthesis/00-overview.md line 20 (not in data.js) -->No release or tag in 23 repos; a release targeting an earlier commit, or a phantom one, in 6; some release artifact in 15.</td>
-      <td class="ours" data-label="Franken Research"><b>No release yet.</b> A v1.0.0 tag is planned at publication. Until that tag exists this repository sits in the same bucket as the 23: no release or tag. <span class="tag">[Verified, High]</span></td>
+      <td class="ours" data-label="Franken Research"><b>v1.0.0.</b> Tagged at publication; the <a href="https://github.com/JYeswak/franken-research/releases/tag/v1.0.0">release page</a> names the commit and carries a source archive. Before the tag, this repository sat in the same bucket as the 23: no release or tag. <span class="tag">[Verified, High]</span></td>
     </tr>
     <tr>
       <td class="dim">Independent validation</td>
@@ -190,7 +190,7 @@ git diff --exit-code site/assets/app.bundle.js</pre>
 <div class="card" id="wrong">
   <h2><span class="n">Known gaps</span>What we got wrong, or cannot prove</h2>
   <ul class="gap">
-    <li><b>Our own mechanism ran ahead of execution.</b> The second headline finding says the suite's checks often exist without running where it matters. When this page was written, the <code>verify</code> workflow existed but had never run on GitHub, because the repository had not yet been pushed. Until the badge above shows real runs, that finding describes us too.</li>
+    <li><b>Our own mechanism ran ahead of execution, for a while.</b> The second headline finding says the suite's checks often exist without running where it matters. When this page was first written, the <code>verify</code> workflow existed but had never run on GitHub, because the repository had not yet been pushed. Its first run, on commit <code>4de9d53</code>, passed every step: the secret scan of the tree and its history, the check that the map bundle equals what its source builds, and all eleven gates (<a href="https://github.com/JYeswak/franken-research/actions/runs/35944707134">run 35944707134</a>). One green run is a start, not a track record. <span class="tag">[CI-observed, High]</span></li>
     <li><b>Two gate summary lines printed a blank count.</b> The statistics gate and the link gate reported "( data-stat slots checked)" and "( links)" on macOS, because the count was extracted with a GNU-only <code>grep</code> flag. Both gates were still checking; only the summary lied by omission. Fixed in this release, and an empty scan set now fails instead of passing.</li>
     <li><b>Readiness and ring are judgment calls.</b> Every TRL and NODUS placement in the corpus is labeled [Inference, Medium], ours included. Reasonable readers will place some repos a ring differently.</li>
     <li><b>Only one verdict rests on re-executed tests.</b> For the other repos the evidence is reading the code at the pin, CI pages, and release APIs. That is stated in each packet's method section, but it bounds how strong any single verdict can be.</li>
