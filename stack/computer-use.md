@@ -6,6 +6,8 @@ verdict: Watch
 confidence: Low
 evidence_date: 2026-09-23
 author: VerdictsTools
+reviewed_by: ReviewTools
+review_date: 2026-09-23
 ---
 
 ## Bottom line
