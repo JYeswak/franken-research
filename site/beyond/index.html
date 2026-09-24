@@ -46,6 +46,8 @@ header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
   padding:10px 14px;font-family:var(--sans);font-size:13.5px;color:var(--ink-dim);
   margin:14px 0}
 .router a{color:var(--accent);font-weight:600}
+.router a.cta{display:inline-block;padding:8px 14px;border:1px solid var(--accent);border-radius:8px;text-decoration:none;background:var(--accent-soft);margin:2px 6px 2px 0}
+.router a.cta:hover{background:rgba(255,122,61,.2)}
 .vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
   padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
 .vocab b{color:var(--ink)}
@@ -114,6 +116,8 @@ a.cite:hover{color:var(--accent);border-bottom-color:var(--accent)}
 </header>
 
 <p class="router">Choosing parts of an agent stack? Start at <a href="../stack/index.html">Agent stack verdicts</a> &nbsp;&middot;&nbsp; Want the practices as a checklist? See <a href="../rigor/index.html">Rigor practices</a> &nbsp;&middot;&nbsp; Full sources: <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md">vendor-port-learnings.md</a> and <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md">external-validation-2026-09.md</a></p>
+
+<p class="router" id="suggest"><a class="cta" href="https://github.com/JYeswak/franken-research/issues/new?template=suggest-project.yml">Suggest a project to assess</a> Every Monday a sweep also lists new public Rust projects that show signs of being built by coding agents. Each one is checked by hand against seven screening rules before any assessment starts, and a listing is not a finding: <a href="https://github.com/JYeswak/franken-research/blob/main/candidates/README.md">candidates/README.md</a>.</p>
 
 <div class="vocab"><b>Definitions used on this page.</b> A <b>port</b> is a rewrite of existing software into another programming language that keeps its behaviour. An <b>oracle</b> is the reference a result is checked against, such as the original implementation or a frozen test suite. <b>E2E</b> (end-to-end) tests drive the whole program the way a user would. <b>CI</b> is continuous integration: the project's automated test runs on every change. The <b>pin</b> is the exact commit an assessment froze on. <code>unsafe</code> marks Rust code the compiler does not check for memory safety. Tier labels follow the program's <a href="https://github.com/JYeswak/franken-research/blob/main/RULEBOOK.md">Rulebook</a>: nearly every claim below is <code>[External]</code>, meaning a vendor's own published account that this program read but did not reproduce.</div>
 
@@ -207,7 +211,7 @@ a.cite:hover{color:var(--accent);border-bottom-color:var(--accent)}
 
 <footer>
   <p>Sources: <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md">synthesis/vendor-port-learnings.md</a> (assessed 2026-09-22) and <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md">synthesis/external-validation-2026-09.md</a> (assessed 2026-09-22, note added 2026-09-23). Each small grey link above opens the exact source line on GitHub; hover it to see the text it was matched against. The vendor-port document also proposes fourteen starter-kit gates drawn from these stories <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L602" title="Methodology section: proposed starter-kit gates">vendor-port-learnings.md:602</a>; they are proposals, not part of the kit.</p>
-  <p>Related pages: <a href="../stack/index.html">Agent stack</a> &middot; <a href="../rigor/index.html">Rigor practices</a> &middot; <a href="../techniques/index.html">Transferable techniques</a> (the fourteen in-repo mechanisms) &middot; <a href="../failure-modes/index.html">Common failure modes</a> &middot; <a href="../index.html">Front door</a></p>
+  <p>Related pages: <a href="../stack/index.html">Agent stack</a> &middot; <a href="../rigor/index.html">Rigor practices</a> &middot; <a href="../techniques/index.html">Transferable techniques</a> (the fourteen in-repo mechanisms) &middot; <a href="../failure-modes/index.html">Common failure modes</a></p>
 </footer>
 
 </div>

@@ -118,9 +118,16 @@ footer a{color:var(--accent)}
   <p class="sub">Franken Research assessed <span data-stat="total">44</span> repositories from Jeffrey Emanuel's FrankenSuite and reported, among other things, how few of them could show a passing automated build, a release, a license without restrictions, or a second maintainer. A project that publishes those findings should pass the same checks, in public, or say where it does not. This page scores this repository on the same columns as the master matrix in <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a>, with the same evidence tiers.</p>
 </header>
 
+<main id="main">
+
+<section class="card" id="who" aria-labelledby="who-h">
+  <h2 id="who-h"><span class="n">Who made this</span>Joshua Nowak, with AI coding agents</h2>
+  <p>Made by Joshua Nowak (<a href="https://zeststream.ai">ZestStream</a>) with AI coding agents. Not affiliated with or funded by Jeffrey Emanuel; Joshua uses his public tools and is a paying subscriber to <a href="https://jeffreys-skills.md">jeffreys-skills.md</a>.</p>
+  <p>How independence is handled: the agent session that writes a packet or a re-check never reviews it. A separate session does, and a human decides what ships. That separation is internal. No one outside the project has reviewed the work yet, which is why the table below rates independent validation <b>None</b>. If you find an error, the <a href="https://github.com/JYeswak/franken-research/issues/new?template=correction.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fself%2F">correction form</a> opens a GitHub issue that asks for the claim and your evidence.</p>
+</section>
+
 <div class="vocab"><b>Six definitions.</b> <b>TRL</b> is technology readiness level, scored 1 to 9. <b>NODUS</b> is the program's four-ring verdict scale (Invest, Pilot, Explore, Monitor). <b>CI</b> is continuous integration: automated checks that run on every push. The <b>pin</b> is the exact commit an assessment froze on; every claim is evaluated at the pin, not at a later HEAD. The <b>rider</b> is the license clause withholding all rights, including benchmarking and testing, from OpenAI, Anthropic, their affiliates, and anyone acting for them; most of the assessed repos carry it. <b>Bus factor</b> is how many people would have to leave before a project stalls.</div>
 
-<main id="main">
 
 <div class="card">
   <h2><span class="n">The matrix row</span>Franken Research, scored like the other <span data-stat="total">44</span></h2>
@@ -211,7 +218,7 @@ git diff --exit-code site/assets/app.bundle.js</pre>
 
 <footer>
   <p>Sources: <a href="../synthesis/00-overview.md">synthesis/00-overview.md</a> (aggregate counts and master matrix), <a href="../RULEBOOK.md">RULEBOOK.md</a> (tiers and ring rules), <a href="../BUILD-GATES.md">BUILD-GATES.md</a> (what each gate checks). Repository: <a href="https://github.com/JYeswak/franken-research">github.com/JYeswak/franken-research</a>, MIT licensed.</p>
-  <p>Related pages: <a href="../index.html">The map</a> &middot; <a href="../method/index.html">How claims are governed</a> &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../failure-modes/index.html">Common failure modes</a> &middot; <a href="../lessons/index.html">Lesson index</a></p>
+  <p>Related pages: <a href="../method/index.html">How claims are governed</a> &middot; <a href="../reproduce/index.html">Reproduce a verdict</a> &middot; <a href="../failure-modes/index.html">Common failure modes</a> &middot; <a href="../lessons/index.html">Lesson index</a></p>
 </footer>
 </div>
 <script src="../assets/data.js"></script>

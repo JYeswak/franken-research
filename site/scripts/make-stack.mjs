@@ -481,8 +481,7 @@ ${blocks(v.sections[name], ctx)}
 ${exists(companion) ? `<section class="card start" id="start" aria-labelledby="h-start">
   <h2 id="h-start">Starting a build here?</h2>
   <p>Begin from the <a href="${esc(fileHref(companion))}">pickup companion for ${esc(title)}</a>: it carries the charter seed, the oracle candidates and how to verify them, and the first claims to register, so a new project starts from evidence instead of from scratch.</p>
-</section>` : ''}
-<p class="back"><a href="index.html">&larr; Back to all agent-stack verdicts</a></p>`;
+</section>` : ''}`;
   const bottom = firstSentences(v.sections['Bottom line'] || '').replace(CITE, '').replace(TIER, '')
     .replace(/\(\s*[;,\s]*\)/g, '').replace(/\*\*|`/g, '').replace(/\s+/g, ' ').trim();
   const desc = bottom || ((fm.verdict ? fm.verdict + ': ' : '') + title);
