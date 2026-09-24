@@ -6,6 +6,8 @@ verdict: Adopt and wrap
 confidence: Low
 evidence_date: 2026-09-23
 author: VerdictsOrchestration
+reviewed_by: control-plane-pane-2
+review_date: 2026-09-23
 ---
 
 ## Bottom line
