@@ -4,9 +4,11 @@ An independent, evidence-tiered assessment of 44 repositories from Jeffrey Emanu
 
 **Live site: https://fr.zeststream.ai**
 
-[![verify](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml) [![watch](https://github.com/JYeswak/franken-research/actions/workflows/watch.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/watch.yml)
+[![verify](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml) [![watch](https://github.com/JYeswak/franken-research/actions/workflows/watch.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/watch.yml) [![deploy](https://github.com/JYeswak/franken-research/actions/workflows/deploy.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/deploy.yml)
 
-![The Franken Research map: 44 FrankenSuite repositories placed by assessment ring](site/og-image.png)
+[![The Franken Research map: 44 FrankenSuite repositories placed by assessment ring](site/og-image.png)](https://fr.zeststream.ai)
+
+Made by Joshua Nowak ([ZestStream](https://zeststream.ai)) with AI coding agents. Not affiliated with or funded by Jeffrey Emanuel; Joshua uses his public tools and is a paying subscriber to jeffreys-skills.md.
 
 Each repository was cloned at a single commit (the "pin"), read against one written protocol ([RULEBOOK.md](RULEBOOK.md)), and written up as a packet in which every substantive claim carries an evidence tier (Verified, CI-observed, Maintainer claim, External, Inference) and a confidence grade. The packets were then synthesized into suite-wide counts, and the site turns both into a map, one brief per repository, and a handful of practitioner pages.
 
@@ -34,7 +36,20 @@ The same evidence rules, applied outside the FrankenSuite to 21 kinds of agent i
 
 **Since the pin.** Verdicts describe each repository at its pin. [updates/](updates/) holds a dated census of what moved afterwards (32 of 44 repositories had new commits by 2026-09-24) and re-checks for material changes, such as `franken_code_browser` shipping a notarized developer-preview app the day after its pin. Pins and headline counts are never edited in place.
 
-**Daily watch.** Every morning a scheduled job ([watch/](watch/README.md)) reads the GitHub API for all 44 assessed repositories and every public repository their maintainer owns, and commits a dated census to `watch/census/` only if the whole gate chain passes. A new release or tag, a license or LICENSE-text change, a workflow file added or removed, an archived, renamed, or deleted repository, a pin rewritten out of history, or a new `franken*` or Rust repository opens a GitHub issue. The watch does not judge: an analyst triages each issue, and anything that could move a cell gets a dated, independently reviewed re-check under [updates/METHOD.md](updates/METHOD.md). Commits alone never open an issue.
+**Daily watch.** Every morning a scheduled job ([watch/](watch/README.md)) reads the GitHub API for all 44 assessed repositories and every public repository their maintainer owns, and commits a dated census to `watch/census/` only if the whole gate chain passes. The site shows the result live ("Daily watch, 2 h ago: ...") and redeploys itself after each run. A new release or tag, a license or LICENSE-text change, a removed workflow file or a first one where there were none, an archived, renamed, or deleted repository, a pin rewritten out of history, or a new `franken*` or Rust repository opens a GitHub issue; commits and added workflow files alone never do. The watch does not judge: an analyst triages each issue, and anything that could move a cell gets a dated, independently reviewed re-check under [updates/METHOD.md](updates/METHOD.md). The first two, `franken_code_browser`'s first release and `frankengit` retiring 71 of its 78 GitHub workflows, are in [updates/](updates/).
+
+**Weekly discovery.** Every Monday a second job ([watch/discover.mjs](watch/discovery/README.md)) searches GitHub for active public Rust projects with agent-built signals (an `AGENTS.md` or `CLAUDE.md`, agent co-author trailers) and files one rollup issue of candidates. Nothing is assessed without triage against the [screening rule](candidates/README.md); accepted candidates get a packet under the same Rulebook, land as a dated cohort, and never change the pinned 44.
+
+## Check your own repo
+
+The method ships as a starter kit: templates, the 28-item checklist, scripts, and a commit hook.
+
+```bash
+git clone https://github.com/JYeswak/franken-research.git
+cd franken-research/starter-kit
+```
+
+Then follow [the starter kit page](https://fr.zeststream.ai/starter-kit/). Do not run `scripts/init.sh` inside a repository that already has an `AGENTS.md` or a live commit hook; the page explains what to copy by hand instead.
 
 ## Explore
 
@@ -51,10 +66,24 @@ The same evidence rules, applied outside the FrankenSuite to 21 kinds of agent i
 | [Rigor practices](https://fr.zeststream.ai/rigor/) | 136 practices worth copying, where each is evidenced, and whether this repository does it. | Teams hardening their own process. |
 | [Beyond FrankenSuite](https://fr.zeststream.ai/beyond/) | What big-vendor agent-assisted Rust ports and outside validation teach. | Engineers porting or rewriting with agents. |
 | [Updates](https://fr.zeststream.ai/updates/) | What moved in the 44 repositories since their pins, and dated re-checks. | Anyone quoting a verdict today. |
+| [Follow](https://fr.zeststream.ai/follow/) | The Atom feed of releases, re-checks, and daily censuses, and an OPML file for following all 44 repositories. | Anyone who wants to know when something changes. |
 
 ## Graded by our own method
 
 A repository that reports these findings should pass the same checks. [The self-assessment page](https://fr.zeststream.ai/self/) scores Franken Research on the master matrix columns: TRL, ring, license (MIT, no rider), bus factor (1: one maintainer, and help is welcome), contribution policy (open), CI at the pin (the badge above, not a claim), release posture (tagged releases; see [Releases](https://github.com/JYeswak/franken-research/releases)), and independent validation (none yet). It also lists what we got wrong or cannot prove.
+
+## Get involved
+
+Every page on the site has a "Suggest a fix or an idea" link that opens a GitHub issue form with the page already filled in. You can also open one directly:
+
+- [Correction](https://github.com/JYeswak/franken-research/issues/new?template=correction.yml): a claim you think is wrong, with your evidence and its tier.
+- [New evidence](https://github.com/JYeswak/franken-research/issues/new?template=new-evidence.yml): a release, CI result, or license change the daily watch missed.
+- [Suggest a project](https://github.com/JYeswak/franken-research/issues/new?template=suggest-project.yml): a public project that should be assessed.
+- [Idea](https://github.com/JYeswak/franken-research/issues/new?template=idea.yml) or [site problem](https://github.com/JYeswak/franken-research/issues/new?template=site-bug.yml).
+
+A bot replies with what happens next. An analyst triages it; a verdict change is written as a dated re-check and reviewed by a separate agent session before a human merges it; accepted contributions are credited in [CHANGELOG.md](CHANGELOG.md), and the site redeploys on merge. The whole loop is in [docs/PIPELINE.md](docs/PIPELINE.md).
+
+To follow along, subscribe to the [Atom feed](https://fr.zeststream.ai/feed.xml) (releases, re-checks, and the daily census), or import [the OPML file](https://fr.zeststream.ai/follow/franken-suite.opml) to follow the releases and tags of all 44 repositories in your reader. See [/follow/](https://fr.zeststream.ai/follow/).
 
 ## Reproduce
 
@@ -84,9 +113,12 @@ bun run verify
 | J | No page references removed scaffolding. |
 | K | The agent-stack layer holds up: every verdict has the required fields and an independent reviewer's signature (K1); every citation resolves and its quoted text is on the cited line (K2); every rigor-practice source quote and every adopted or partial proof resolves (K3); the generated pages equal a fresh run of the generator (K4); every adopted project has a license row, and non-permissive licenses are named where they are recommended (K5). |
 | L | No personal email address appears in any tracked file. |
-| W | The daily watch's change detection holds offline: recorded GitHub API responses go through the same code the scheduled run uses, and a new release, a LICENSE text change with the same SPDX id, a removed workflow, a rename, and an unreachable pin are flagged, while commits alone are not. |
+| W | The daily watch's change detection holds offline: recorded GitHub API responses go through the same code the scheduled run uses, and a new release, a LICENSE text change with the same SPDX id, a removed workflow, a rename, and an unreachable pin are flagged, while commits and added workflow files alone are not. |
+| W2 | The weekly discovery sweep scores, orders, and excludes candidates correctly on recorded search responses, and its output carries no names or email addresses. |
+| M | The Atom feed and the follow-the-suite OPML equal a fresh `bun run build:feed` and parse as well-formed XML. |
+| S | Every page carries the shared navigation, footer, and head regions exactly as `bun run build:shell` renders them, and the page list matches the sitemap. |
 
-CI also runs `bun run build:map` and fails if the committed `site/assets/app.bundle.js` differs from what its source builds, and scans the tree and history for secrets with gitleaks. [site/BUILD-GATES.md](site/BUILD-GATES.md) explains why each gate exists.
+CI also runs `bun run build:map` and fails if the committed `site/assets/app.bundle.js` differs from what its source builds, and scans the tree and history for secrets with gitleaks. Every push to `main` that passes the gates deploys the site and smoke-tests the deployment ([deploy.yml](.github/workflows/deploy.yml)). [site/BUILD-GATES.md](site/BUILD-GATES.md) explains why each gate exists.
 
 What the gates prove is that the site says what the packets say, consistently and reachably. They do not prove the packets are right; for that, follow [Reproduce a verdict](https://fr.zeststream.ai/reproduce/) against a real repository.
 
@@ -101,12 +133,15 @@ What the gates prove is that the site says what the packets say, consistently an
 | `ecosystem/` | Design notes on how the pieces fit, the A-Z playbook, and the project-pickup planning system. |
 | `stack/` | The agent-stack layer: the method, 21 verdicts, the license census, the rigor-practices index, and the review records. |
 | `updates/` | Dated movement census and re-checks since the pins. Pins are never edited in place. |
-| `watch/` | The daily watch: the script, the latest state, one census and one change file per day, and the fixtures gate W replays. |
+| `watch/` | The daily watch and weekly discovery sweep: the scripts, the latest state and summary, one census and one change file per day, weekly candidate lists, and the fixtures gates W and W2 replay. |
+| `candidates/` | The screening rule for projects outside the 44. |
+| `docs/` | The contribution pipeline, from issue to deploy. |
+| `.github/` | CI, deploy, watch, discovery, and triage workflows, and the issue forms. |
 | `site/` | The static site served at fr.zeststream.ai. Runs from `file://` with no build step; `site/packets/` and `site/RULEBOOK.md` are byte-identical copies checked by gate A, and `site/stack/` and `site/rigor/` are generated from `stack/` by `node site/scripts/make-stack.mjs` (gate K4 checks they match). |
 
 ## Corrections and right of reply
 
-If you maintain an assessed project, or you find an error, [open an issue](https://github.com/JYeswak/franken-research/issues). Cite the packet file and line, what it gets wrong, and your evidence with its tier. [CONTRIBUTING.md](CONTRIBUTING.md) has the details.
+If you maintain an assessed project, or you find an error, open a [correction](https://github.com/JYeswak/franken-research/issues/new?template=correction.yml). Cite the packet file and line, what it gets wrong, and your evidence with its tier. [CONTRIBUTING.md](CONTRIBUTING.md) has the details.
 
 How corrections are handled:
 

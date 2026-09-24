@@ -40,7 +40,7 @@ bun install --frozen-lockfile
 bun run verify
 ```
 
-Every change to `site/` must leave all eleven gates passing. Never weaken, skip, or narrow a gate to get a green run; fix the page instead. If you think a gate is wrong, say so in the issue or pull request and leave the gate in place. What each gate checks is in [site/BUILD-GATES.md](site/BUILD-GATES.md). The pull request template asks for the `bun run verify` output.
+Every change to `site/` must leave every gate passing (the README lists them; `bun run verify` prints one line per gate). Never weaken, skip, or narrow a gate to get a green run; fix the page instead. If you think a gate is wrong, say so in the issue or pull request and leave the gate in place. What each gate checks is in [site/BUILD-GATES.md](site/BUILD-GATES.md). The pull request template asks for the `bun run verify` output. Generated files have their own commands: `bun run build:map` (the map bundle), `bun run build:feed` (feed and OPML, gate M), `bun run build:shell` (shared navigation and footer, gate S), and `node site/scripts/make-stack.mjs` (stack and rigor pages, gate K4).
 
 If you edit `site/assets/app.src.js`, rebuild the bundle and commit both files; CI fails when they disagree:
 
