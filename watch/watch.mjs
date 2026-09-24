@@ -834,30 +834,56 @@ function writeOutputs(snap, diff) {
 }
 
 // ---------------------------------------------------------------- issues
-const VALUE_MARK = /<!-- watch-value: (.*?) -->/;
-const markValue = (body) => (body ?? '').match(VALUE_MARK)?.[1] ?? null;
-// 'create' when no issue has the exact title (open or closed); 'exists' when the issue or one of its
-// watch comments already records this value; 'comment' when the value changed ('check-comments' asks
-// the caller to load comments first). A closed issue is never reopened.
-export function dedupe(issue, ch) {
+// Anyone can open an issue with a predictable `[watch] ...` title or paste a marker into a body or
+// comment, so a title match counts only on an issue this token's identity authored, labelled
+// `watch`, whose body carries this change's key marker; value markers count only in that body and
+// in comments by the same identity. Marker lines stand alone and their values are URI-encoded (a
+// tag may legally contain `-->`), and external text is Markdown-escaped before it reaches a body.
+const KEY_MARK = /^<!-- watch-key: (\S+) -->$/gm;
+const VALUE_MARK = /^<!-- watch-value: (\S*) -->$/gm;
+const lastMark = (re, body) => [...(body ?? '').matchAll(re)].at(-1)?.[1] ?? null;
+const safeDecode = (s) => { try { return decodeURIComponent(s); } catch { return null; } };
+const markValue = (body) => { const m = lastMark(VALUE_MARK, body); return m == null ? null : safeDecode(m); };
+const valueMark = (v) => `<!-- watch-value: ${encodeURIComponent(v)} -->`;
+export const watchKey = (ch) => ch.key ?? [ch.repo, ch.kind, ch.ident].map(encodeURIComponent).join('|');
+export const markKey = (body) => lastMark(KEY_MARK, body);
+// GitHub issue text is Markdown: escape table pipes, emphasis, links, HTML, mentions, references,
+// and math in anything that came from an upstream repository (tag, release, file names).
+export const mdText = (s) => String(s ?? '').replace(/[\r\n]+/g, ' ').replace(/[\\`*_{}[\]<>()#+!|~&@$]/g, '\\$&');
+const byLogin = (x, bot) => typeof bot === 'string' && bot !== '' && x?.user?.login === bot;
+const labelNames = (i) => (i?.labels ?? []).map((l) => (typeof l === 'string' ? l : l?.name));
+export const trustedIssue = (issue, ch, bot) => byLogin(issue, bot) && labelNames(issue).includes('watch')
+  && markKey(issue.body) === watchKey(ch) && markValue(issue.body) != null;
+// The login the token acts as: the Actions token cannot read GET /user, and posts as github-actions[bot].
+export async function botLogin(api, env = process.env) {
+  if (env.GITHUB_ACTIONS === 'true') return 'github-actions[bot]';
+  const login = (await api.rest('GET', '/user')).body?.login;
+  if (typeof login !== 'string' || !login) throw apiError('GET /user returned no login; cannot tell our issues from anyone else\'s');
+  return login;
+}
+// 'create' when no trusted issue exists (open or closed); 'exists' when the trusted issue or one of
+// the identity's own comments already records this value; 'comment' when the value changed
+// ('check-comments' asks the caller to load comments first). A closed issue is never reopened.
+export function dedupe(issue, ch, bot) {
   if (!issue) return 'create';
   if (markValue(issue.body) === ch.value) return 'exists';
   if (issue.comments == null) return 'check-comments';
-  return issue.comments.some((c) => markValue(c.body) === ch.value) ? 'exists' : 'comment';
+  return issue.comments.some((c) => byLogin(c, bot) && markValue(c.body) === ch.value) ? 'exists' : 'comment';
 }
 
-function issueBody(ch, snap, matrix) {
+const valueTable = (ch) => ['| | Value |', '|---|---|', `| Before | ${mdText(ch.before)} |`, `| After | ${mdText(ch.after)} |`];
+export const commentBody = (ch) => ['The watch saw this again with a new value.', '', ...valueTable(ch), '', 'Evidence:',
+  ...ch.evidence.map((u) => `- ${u}`), '', valueMark(ch.value)].join('\n');
+
+export function issueBody(ch, snap, matrix) {
   const row = matrix[ch.repo];
   const repoLink = (p) => `https://github.com/${ISSUE_REPO}/blob/main/${p}`;
   const run = process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null;
   const rec = snap.assessed[ch.repo];
   return [
-    `**What changed:** ${ch.summary}`,
+    `**What changed:** ${mdText(ch.summary)}`,
     '',
-    '| | Value |',
-    '|---|---|',
-    `| Before | ${ch.before} |`,
-    `| After | ${ch.after} |`,
+    ...valueTable(ch),
     '',
     ch.origin === 'pin'
       ? `Found by the since-pin backfill at ${snap.checked_at}. It compares with the pin, not with the previous check, because this event predates the watch's first state.`
@@ -877,8 +903,8 @@ function issueBody(ch, snap, matrix) {
     `- [ ] Harvest any new practice into [stack/rigor-practices.tsv](${repoLink('stack/rigor-practices.tsv')}).`,
     '- [ ] Close with links to the re-check, the review, and any rigor row.',
     '',
-    `<!-- watch-key: ${ch.repo}|${ch.kind}|${ch.ident} -->`,
-    `<!-- watch-value: ${ch.value} -->`,
+    `<!-- watch-key: ${watchKey(ch)} -->`,
+    valueMark(ch.value),
   ].join('\n');
 }
 
@@ -896,8 +922,10 @@ export function recheckFiles(ch, root = ROOT) {
     .filter((f) => names.test(readFileSync(join(dir, f), 'utf8'))).map((f) => `updates/${f}`);
 }
 
-export async function syncIssues(api, snap, changes, root = ROOT) {
-  const result = { created: [], commented: [], exists: [], rechecks: [], rollup: null };
+export async function syncIssues(api, snap, changes, { bot, root = ROOT } = {}) {
+  if (typeof bot !== 'string' || !bot) throw usageError('syncIssues needs the bot login the token acts as');
+  const result = { created: [], commented: [], exists: [], rechecks: [], rollup: null, untrusted: [] };
+  const ours = (c) => byLogin(c, bot);
   if (!changes.length) return result;
   const base = `/repos/${ISSUE_REPO}`;
   const have = new Set();
@@ -910,35 +938,41 @@ export async function syncIssues(api, snap, changes, root = ROOT) {
   for (const name of [...needed].sort()) {
     if (!have.has(name)) await api.rest('POST', `${base}/labels`, { name, color: LABELS[name][0], description: LABELS[name][1] });
   }
-  const byTitle = new Map();
+  const all = [];
   for (let page = 1; ; page++) {
     const r = await api.rest('GET', `${base}/issues?state=all&per_page=100&page=${page}&sort=created&direction=asc`);
-    for (const i of r.body) if (!i.pull_request && !byTitle.has(i.title)) byTitle.set(i.title, i);
+    for (const i of r.body) if (!i.pull_request) all.push(i);
     if (r.body.length < 100) break;
   }
+  // The oldest trusted issue for this change; same-title issues that fail the check are only reported.
+  const find = (ch) => {
+    const same = all.filter((i) => i.title === ch.title);
+    const hit = same.find((i) => trustedIssue(i, ch, bot)) ?? null;
+    for (const i of same) if (i !== hit && !result.untrusted.some((u) => u.number === i.number) && !trustedIssue(i, ch, bot)) result.untrusted.push(ref(i));
+    return hit;
+  };
   const matrix = existsSync(OVERVIEW) ? parseMatrix(readFileSync(OVERVIEW, 'utf8')) : {};
   const loadComments = async (n) => (await api.rest('GET', `${base}/issues/${n}/comments?per_page=100`)).body;
   const post = async (n, body) => (await api.rest('POST', `${base}/issues/${n}/comments`, { body })).body;
-  const ref = (i) => ({ number: i.number, title: i.title, url: i.html_url });
+  function ref(i) { return { number: i.number, title: i.title, url: i.html_url }; }
   const repoLink = (p) => `https://github.com/${ISSUE_REPO}/blob/main/${p}`;
-  const commentBody = (ch) => `The watch saw this again with a new value.\n\n| | Value |\n|---|---|\n| Before | ${ch.before} |\n| After | ${ch.after} |\n\nEvidence:\n${ch.evidence.map((u) => `- ${u}`).join('\n')}\n\n<!-- watch-value: ${ch.value} -->`;
-  const recheckBody = (ch, files) => `A dated re-check that names ${ch.ident} already exists: ${files.map((p) => `[${p}](${repoLink(p)})`).join(', ')}. Triage against it. The watch does not close issues; the analyst does.\n\n${files.map((p) => `<!-- watch-recheck: ${p} -->`).join('\n')}`;
+  const recheckBody = (ch, files) => `A dated re-check that names ${mdText(ch.ident)} already exists: ${files.map((p) => `[${p}](${repoLink(p)})`).join(', ')}. Triage against it. The watch does not close issues; the analyst does.\n\n${files.map((p) => `<!-- watch-recheck: ${p} -->`).join('\n')}`;
   const overflow = [];
   let actions = 0;
   for (const ch of changes) {
-    let issue = byTitle.get(ch.title) ?? null;
+    let issue = find(ch);
     let comments = null;
-    let decision = dedupe(issue, ch);
+    let decision = dedupe(issue, ch, bot);
     if (decision === 'check-comments') {
       comments = await loadComments(issue.number);
-      decision = dedupe({ ...issue, comments }, ch);
+      decision = dedupe({ ...issue, comments }, ch, bot);
     }
     if (decision === 'exists') result.exists.push(ref(issue));
     else if (actions >= ISSUE_CAP) { overflow.push(ch); continue; }
     else if (decision === 'create') {
       actions++;
       issue = (await api.rest('POST', `${base}/issues`, { title: ch.title, body: issueBody(ch, snap, matrix), labels: ['watch', ch.label] })).body;
-      byTitle.set(ch.title, issue);
+      all.push(issue);
       comments = [];
       result.created.push(ref(issue));
     } else {
@@ -949,7 +983,7 @@ export async function syncIssues(api, snap, changes, root = ROOT) {
     const files = recheckFiles(ch, root);
     if (files.length) {
       comments ??= await loadComments(issue.number);
-      const missing = files.filter((p) => !comments.some((c) => (c.body ?? '').includes(`<!-- watch-recheck: ${p} -->`)));
+      const missing = files.filter((p) => !comments.some((c) => ours(c) && (c.body ?? '').includes(`<!-- watch-recheck: ${p} -->`)));
       if (missing.length) {
         await post(issue.number, recheckBody(ch, missing));
         result.rechecks.push({ ...ref(issue), files: missing });
@@ -958,12 +992,12 @@ export async function syncIssues(api, snap, changes, root = ROOT) {
   }
   if (overflow.length) {
     const day = snap.checked_at.slice(0, 10);
-    const roll = { title: `[watch] rollup ${day}`, value: digest(overflow.map((c) => `${c.title}|${c.value}`)) };
-    const list = overflow.map((c) => `- ${c.title}: ${c.summary} (${c.evidence[0]})`).join('\n');
-    const body = `The watch capped this run at ${ISSUE_CAP} issue actions. ${overflow.length} more material change(s) are listed here instead of opening one issue each; triage them from this list (records for ${day} in watch/changes/ and watch/census/).\n\n${list}\n\n<!-- watch-value: ${roll.value} -->`;
-    const issue = byTitle.get(roll.title) ?? null;
-    let decision = dedupe(issue, roll);
-    if (decision === 'check-comments') decision = dedupe({ ...issue, comments: await loadComments(issue.number) }, roll);
+    const roll = { title: `[watch] rollup ${day}`, key: `rollup|${day}`, value: digest(overflow.map((c) => `${c.title}|${c.value}`)) };
+    const list = overflow.map((c) => `- ${mdText(c.title)}: ${mdText(c.summary)} (${c.evidence[0]})`).join('\n');
+    const body = `The watch capped this run at ${ISSUE_CAP} issue actions. ${overflow.length} more material change(s) are listed here instead of opening one issue each; triage them from this list (records for ${day} in watch/changes/ and watch/census/).\n\n${list}\n\n<!-- watch-key: ${roll.key} -->\n${valueMark(roll.value)}`;
+    const issue = find(roll);
+    let decision = dedupe(issue, roll, bot);
+    if (decision === 'check-comments') decision = dedupe({ ...issue, comments: await loadComments(issue.number) }, roll, bot);
     if (decision === 'create') result.rollup = ref((await api.rest('POST', `${base}/issues`, { title: roll.title, body, labels: ['watch'] })).body);
     else if (decision === 'comment') { await post(issue.number, body); result.rollup = ref(issue); }
     else result.rollup = ref(issue);
@@ -1050,13 +1084,15 @@ function printReport(rep) {
     i.commented.forEach((x) => line('commented', x));
     i.exists.forEach((x) => line('exists   ', x));
     i.rechecks.forEach((x) => L.push(`  re-check #${x.number} -> ${x.files.join(', ')}`));
+    i.untrusted.forEach((x) => L.push(`  ignored  #${x.number} ${x.title} (same title, not a watch issue by this identity)`));
   }
   console.log(L.join('\n'));
 }
 
 // ---------------------------------------------------------------- selftest (offline)
-// In-memory stand-in for the GitHub issues and labels endpoints syncIssues calls.
-function memoryIssues() {
+// In-memory stand-in for the GitHub issues and labels endpoints syncIssues calls. Everything the
+// token posts is authored by `login`; tests add other authors' issues and comments directly.
+function memoryIssues(login = 'github-actions[bot]') {
   const issues = [];
   const labels = new Set();
   const comments = new Map();
@@ -1069,18 +1105,19 @@ function memoryIssues() {
       if (method === 'POST' && p === '/labels') { labels.add(payload.name); return { status: 201, body: payload }; }
       if (method === 'GET' && p === '/issues') return { status: 200, body: page === 1 ? issues.map((i) => ({ ...i })) : [] };
       if (method === 'POST' && p === '/issues') {
-        const i = { number: issues.length + 1, title: payload.title, body: payload.body, labels: payload.labels, state: 'open', html_url: `memory:issues/${issues.length + 1}` };
+        const i = { number: issues.length + 1, title: payload.title, body: payload.body, labels: payload.labels.map((name) => ({ name })), user: { login }, state: 'open', html_url: `memory:issues/${issues.length + 1}` };
         issues.push(i);
         comments.set(i.number, []);
         return { status: 201, body: { ...i } };
       }
       const m = p.match(/^\/issues\/(\d+)\/comments$/);
       if (m && method === 'GET') return { status: 200, body: [...comments.get(Number(m[1]))] };
-      if (m && method === 'POST') { comments.get(Number(m[1])).push({ body: payload.body }); return { status: 201, body: { body: payload.body } }; }
+      if (m && method === 'POST') { const c = { body: payload.body, user: { login } }; comments.get(Number(m[1])).push(c); return { status: 201, body: { ...c } }; }
       throw new Error(`memory issues: unexpected ${method} ${path}`);
     },
   };
-  return { api, issues, labels, comments };
+  const add = (issue, cs = []) => { const i = { number: issues.length + 1, state: 'open', html_url: `memory:issues/${issues.length + 1}`, ...issue }; issues.push(i); comments.set(i.number, cs); return i; };
+  return { api, issues, labels, comments, add, login };
 }
 
 async function selftest() {
@@ -1208,16 +1245,79 @@ async function selftest() {
     const titles = d.material.map((c) => c.title).sort();
     expect(titles.length === 6, `material: ${JSON.stringify(titles)}`);
   });
+  const BOT = 'github-actions[bot]';
   test('dedupe: an existing title with the same value is exists; a new value is comment; none is create', () => {
     const ch = mat('franken_code_browser', 'release')[0];
     const filed = { title: ch.title, body: issueBody(ch, s2, {}), comments: [] };
-    expect(dedupe(filed, ch) === 'exists', `got ${dedupe(filed, ch)}`);
-    expect(dedupe({ ...filed, comments: null }, ch) === 'exists', 'body marker ignored');
+    expect(dedupe(filed, ch, BOT) === 'exists', `got ${dedupe(filed, ch, BOT)}`);
+    expect(dedupe({ ...filed, comments: null }, ch, BOT) === 'exists', 'body marker ignored');
     const moved = { ...ch, value: 'f'.repeat(40) };
-    expect(dedupe({ ...filed, comments: null }, moved) === 'check-comments', 'did not ask for comments');
-    expect(dedupe(filed, moved) === 'comment', `got ${dedupe(filed, moved)}`);
-    expect(dedupe({ ...filed, comments: [{ body: `<!-- watch-value: ${moved.value} -->` }] }, moved) === 'exists', 'comment marker ignored');
-    expect(dedupe(null, ch) === 'create', 'no issue should create');
+    expect(dedupe({ ...filed, comments: null }, moved, BOT) === 'check-comments', 'did not ask for comments');
+    expect(dedupe(filed, moved, BOT) === 'comment', `got ${dedupe(filed, moved, BOT)}`);
+    const mark = `<!-- watch-value: ${moved.value} -->`;
+    expect(dedupe({ ...filed, comments: [{ body: mark, user: { login: BOT } }] }, moved, BOT) === 'exists', 'own comment marker ignored');
+    expect(dedupe({ ...filed, comments: [{ body: mark, user: { login: 'someone-else' } }] }, moved, BOT) === 'comment', 'another user\'s comment marker was trusted');
+    expect(dedupe(null, ch, BOT) === 'create', 'no issue should create');
+  });
+  const relCh = mat('franken_code_browser', 'release')[0];
+  const watchLabels = (ch) => [{ name: 'watch' }, { name: ch.label }];
+  test('a same-title issue by another user is ignored: the bot files its own and never comments on theirs', async () => {
+    const store = memoryIssues(BOT);
+    const copied = { title: relCh.title, labels: watchLabels(relCh), user: { login: 'someone-else' } };
+    // Same value (would suppress the report) and an older value (would receive the watch's comment).
+    const same = store.add({ ...copied, body: issueBody(relCh, s2, {}) });
+    const older = store.add({ ...copied, body: issueBody({ ...relCh, value: 'f'.repeat(40) }, s2, {}) });
+    const r = await syncIssues(store.api, s2, [relCh], { bot: BOT });
+    expect(r.created.length === 1 && r.exists.length === 0 && r.commented.length === 0, `first: ${JSON.stringify(r)}`);
+    const mine = store.issues.find((i) => i.number === r.created[0].number);
+    expect(mine.user.login === BOT && mine.title === relCh.title && trustedIssue(mine, relCh, BOT), 'own issue not filed or not trusted');
+    expect(store.comments.get(same.number).length === 0 && store.comments.get(older.number).length === 0, 'commented on another user\'s issue');
+    expect(r.untrusted.map((x) => x.number).join() === `${same.number},${older.number}`, `untrusted ${JSON.stringify(r.untrusted)}`);
+    const again = await syncIssues(store.api, s2, [relCh], { bot: BOT });
+    expect(again.exists.length === 1 && again.exists[0].number === mine.number && again.created.length === 0 && again.commented.length === 0, `second: ${JSON.stringify(again)}`);
+  });
+  test('a bot issue without the watch label or its key marker is not trusted; another user\'s comment marker does not count', async () => {
+    const body = issueBody(relCh, s2, {});
+    const planted = [
+      ['no watch label', { labels: [{ name: relCh.label }], body }],
+      ['no key marker', { labels: watchLabels(relCh), body: body.replace(/^<!-- watch-key: .* -->$/m, '') }],
+      ['another change\'s key', { labels: watchLabels(relCh), body: body.replace(watchKey(relCh), watchKey({ ...relCh, ident: 'v9.9.9' })) }],
+    ];
+    for (const [what, p] of planted) {
+      const store = memoryIssues(BOT);
+      const x = store.add({ title: relCh.title, user: { login: BOT }, ...p });
+      const r = await syncIssues(store.api, s2, [relCh], { bot: BOT });
+      expect(r.created.length === 1 && r.exists.length === 0 && r.commented.length === 0 && store.comments.get(x.number).length === 0, `${what}: ${JSON.stringify(r)}`);
+    }
+    const store = memoryIssues(BOT);
+    const filed = store.add({ title: relCh.title, user: { login: BOT }, labels: watchLabels(relCh), body: issueBody({ ...relCh, value: 'f'.repeat(40) }, s2, {}) },
+      [{ body: `<!-- watch-value: ${relCh.value} -->`, user: { login: 'someone-else' } }]);
+    const r = await syncIssues(store.api, s2, [relCh], { bot: BOT });
+    expect(r.commented.length === 1 && r.commented[0].number === filed.number && r.created.length === 0, `stranger marker suppressed the update: ${JSON.stringify(r)}`);
+  });
+  test('external tag names stay inside one table cell and cannot break the machine markers', async () => {
+    const cur = JSON.parse(JSON.stringify(s2));
+    const sha = 'a'.repeat(40);
+    for (const t of ['v1|cell', 'v2-->x']) cur.assessed.franken_alignment.tags[t] = { target: sha, date: '2026-09-25T00:00:00Z' };
+    const tags = diffSnapshots(s1, cur).material.filter((c) => c.repo === 'franken_alignment' && c.kind === 'tag');
+    const pipe = tags.find((c) => c.ident === 'v1|cell');
+    const arrow = tags.find((c) => c.ident === 'v2-->x');
+    expect(pipe && arrow && /v1\|cell/.test(pipe.after), `tag changes ${JSON.stringify(tags.map((c) => c.title))}`);
+    const rows = (text) => text.split('\n').filter((ln) => /^\| (Before|After) \|/.test(ln));
+    const cells = (ln) => ln.split(/(?<!\\)\|/).length - 2;
+    const body = issueBody(pipe, cur, {});
+    expect(rows(body).length === 2 && rows(body).every((ln) => cells(ln) === 2), `issue rows ${JSON.stringify(rows(body))}`);
+    const store = memoryIssues(BOT);
+    const filed = store.add({ title: pipe.title, user: { login: BOT }, labels: watchLabels(pipe), body: issueBody({ ...pipe, value: 'b'.repeat(40) }, cur, {}) });
+    const r = await syncIssues(store.api, cur, [pipe, arrow], { bot: BOT });
+    const posted = store.comments.get(filed.number).at(-1)?.body ?? '';
+    expect(r.commented.length === 1 && rows(posted).length === 2 && rows(posted).every((ln) => cells(ln) === 2), `comment rows ${JSON.stringify(rows(posted))}`);
+    const made = store.issues.find((i) => i.title === arrow.title);
+    expect(made && trustedIssue(made, arrow, BOT), `marker for v2-->x unreadable: ${made?.body.split('\n').slice(-2)}`);
+    const marks = made.body.split('\n').filter((ln) => ln.startsWith('<!-- '));
+    expect(marks.length === 2 && marks.every((ln) => ln.indexOf('-->') === ln.length - 3), `a tag name closes the HTML comment early: ${JSON.stringify(marks)}`);
+    const again = await syncIssues(store.api, cur, [pipe, arrow], { bot: BOT });
+    expect(again.exists.length === 2 && again.created.length === 0 && again.commented.length === 0, `second: ${JSON.stringify(again)}`);
   });
   test('backfill on day1 files each since-pin event once; a second backfill finds only existing issues', async () => {
     const titles = sincePinChanges(s1).map((c) => c.title);
@@ -1227,12 +1327,12 @@ async function selftest() {
     const daily = mat('franken_code_browser', 'release')[0].title;
     expect(daily === '[watch] franken_code_browser: release v0.1.1', 'daily and backfill title formats differ');
     const store = memoryIssues();
-    const first = await syncIssues(store.api, s1, sincePinChanges(s1));
+    const first = await syncIssues(store.api, s1, sincePinChanges(s1), { bot: BOT });
     expect(first.created.length === 1 && first.exists.length === 0 && !first.rollup, `first: ${JSON.stringify(first)}`);
     expect(store.labels.has('watch') && store.labels.has('release') && !store.labels.has('ci'), `labels ${[...store.labels]}`);
     const rc = first.rechecks;
     expect(rc.length === 1 && rc[0].title === want[0] && rc[0].files.join() === 'updates/franken_code_browser-2026-09-24.md', `re-check pointers ${JSON.stringify(rc)}`);
-    const second = await syncIssues(store.api, s1, sincePinChanges(s1));
+    const second = await syncIssues(store.api, s1, sincePinChanges(s1), { bot: BOT });
     expect(second.exists.length === 1 && second.created.length === 0 && second.commented.length === 0 && second.rechecks.length === 0 && !second.rollup, `second: ${JSON.stringify(second)}`);
     expect(store.issues.length === 1 && store.issues.every((i) => i.state === 'open') && store.comments.get(1).length === 1, 'duplicate issue or comment, or an issue was closed');
   });
@@ -1331,7 +1431,7 @@ async function main(argv) {
     const changes = [...diff.material, ...(opts.backfill ? sincePinChanges(snap) : [])]
       .filter((c) => !seen.has(c.title) && seen.add(c.title));
     rep.backfill = opts.backfill;
-    rep.issues = await syncIssues(api, snap, changes);
+    rep.issues = await syncIssues(api, snap, changes, { bot: await botLogin(api) });
   }
   rep.api = { ...api.stats, elapsed_s: Math.round((Date.now() - t0) / 100) / 10 };
   if (opts.json) console.log(JSON.stringify(rep, null, 2));
