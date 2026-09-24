@@ -41,11 +41,11 @@ jobs:
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
       || (github.event_name != 'workflow_run' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
-    # Sized from measurements. The verify job (install plus the gate chain) took 46 to 54 s on
-    # the runner (verify.yml runs 35944707134, 35946263690, 35946353035); `bun run verify` takes
-    # about 1.5 min locally. A `wrangler pages deploy` of site/ takes under a minute, and the
-    # smoke test waits at most 1 min. About twice the sum gives 8 minutes. Re-derive from
-    # `gh run list --workflow deploy.yml` once runs exist; do not guess.
+    # Sized from measurements. First real run (36059980092, 2026-09-24): setup 10 s, gate chain
+    # 88 s, `wrangler pages deploy` 16 s, job 3 min including a smoke step that retried for
+    # 61 s. The smoke checks below retry for at most about 2 min in the worst case, so the job
+    # tops out near 4 min; about twice that gives 8 minutes. Re-derive from
+    # `gh run list --workflow deploy.yml` as runs accumulate; do not guess.
     timeout-minutes: 8
     steps:
       # Actions pinned to the same commits as verify.yml.
@@ -95,11 +95,13 @@ jobs:
           echo "::warning title=Site not deployed::The gates passed, but the repository secret CLOUDFLARE_API_TOKEN is not set, so site/ was not deployed. To add it: in the Cloudflare dashboard open Manage Account > Account API Tokens > Create Token > Custom token, give it the single permission Account / Cloudflare Pages / Edit on the zeststream account, then run 'gh secret set CLOUDFLARE_API_TOKEN -R ${GITHUB_REPOSITORY}' and paste the token at the prompt (never on the command line). Steps are in docs/PIPELINE.md."
 
       - name: Deploy site/ to Cloudflare Pages
+        id: deploy
         if: steps.token.outputs.ready == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '68f10e16c42371bd36bfb0738786325c' }}
         run: |
+          set -o pipefail
           sha="$(git rev-parse HEAD)"
           # First line of the commit subject, trimmed to 100 characters for the Pages dashboard.
           subject="$(git log -1 --format=%s HEAD | cut -c1-100)"
@@ -109,26 +111,106 @@ jobs:
             --project-name franken-assessments \
             --branch main \
             --commit-hash "$sha" \
-            --commit-message "$subject"
+            --commit-message "$subject" | tee "$RUNNER_TEMP/wrangler.log"
+          # wrangler ends with "Deployment complete! Take a peek over at https://<id>.<project>.pages.dev".
+          # That URL serves this deployment and nothing else, so the smoke step checks it.
+          url="$(grep -oE 'https://[0-9a-f]{8}\.franken-assessments\.pages\.dev' "$RUNNER_TEMP/wrangler.log" | tail -1 || true)"
+          test -n "$url" || { echo "::error title=No deployment URL::wrangler printed no https://<id>.franken-assessments.pages.dev URL"; exit 1; }
+          echo "deployment URL: $url"
+          { echo "url=$url"; echo "sha=$sha"; } >> "$GITHUB_OUTPUT"
 
-      - name: Smoke test the live site
+      # The custom domain sits behind the zeststream.ai zone's bot protection, which answers 403
+      # to GitHub's datacenter IPs (run 36059980092: six 403s from the runner while the same URLs
+      # returned 200 elsewhere). So the checks that must pass are the ones a runner can reach:
+      #   1. this deployment's own pages.dev URL serves the homepage with the committed <title>
+      #      and one brief (pages.dev is not behind the zone);
+      #   2. the Pages API says this deployment is the project's canonical and latest production
+      #      deployment, for this commit, and fr.zeststream.ai is an active custom domain of the
+      #      project, so the domain serves this deployment;
+      #   3. fr.zeststream.ai itself, best effort: 200 with the title passes, 403 is a notice
+      #      naming bot protection, anything else (404, 5xx, a stale title) fails.
+      - name: Smoke test the deployment and the live domain
         if: steps.token.outputs.ready == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '68f10e16c42371bd36bfb0738786325c' }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+          DEPLOY_SHA: ${{ steps.deploy.outputs.sha }}
+          SITE_URL: https://fr.zeststream.ai
         run: |
-          # The homepage must return 200 and carry the <title> committed in site/index.html;
-          # one brief must return 200. Pages serves /briefs/<name>.html at /briefs/<name>.
+          # Pages serves /briefs/<name>.html at /briefs/<name>.
           want="$(grep -o '<title>[^<]*</title>' site/index.html | head -1)"
           set -- site/briefs/*.html
           brief="$(basename "$1" .html)"
-          test -n "$want" && test -f "$1" || { echo "could not read the expected title or a brief name"; exit 1; }
+          test -n "$want" && test -f "$1" || { echo "::error::could not read the expected title or a brief name"; exit 1; }
+          test -n "$DEPLOY_URL" && test -n "$DEPLOY_SHA" || { echo "::error::the deploy step left no deployment URL or commit"; exit 1; }
+          page="$RUNNER_TEMP/page.html"
+          headers="$RUNNER_TEMP/headers.txt"
+          # Prints "<home status> <brief status> <title found 0|1>" for a base URL. 000 means no
+          # HTTP answer. The files are removed first so a failed request cannot reuse an old page.
+          probe() {
+            local home brief_code found=0
+            rm -f "$page" "$headers"
+            home="$(curl -sS -o "$page" -D "$headers" -w '%{http_code}' "$1/?smoke=$GITHUB_RUN_ID" || true)"
+            brief_code="$(curl -sS -o /dev/null -w '%{http_code}' "$1/briefs/$brief" || true)"
+            [ -f "$page" ] && grep -qF "$want" "$page" && found=1
+            echo "${home:-000} ${brief_code:-000} $found"
+          }
+
+          # 1. The deployment's own URL.
+          ok=0
           for attempt in 1 2 3 4 5 6; do
-            home="$(curl -sS -o "$RUNNER_TEMP/home.html" -w '%{http_code}' "https://fr.zeststream.ai/?smoke=$GITHUB_RUN_ID" || true)"
-            code="$(curl -sS -o /dev/null -w '%{http_code}' "https://fr.zeststream.ai/briefs/$brief" || true)"
-            if [ "$home" = 200 ] && [ "$code" = 200 ] && grep -qF "$want" "$RUNNER_TEMP/home.html"; then
-              echo "OK: / 200 with $want; /briefs/$brief 200 (attempt $attempt)"
-              exit 0
-            fi
-            echo "attempt $attempt: / $home, /briefs/$brief $code, title match: $(grep -cF "$want" "$RUNNER_TEMP/home.html" 2>/dev/null || echo 0)"
+            read -r home code found <<< "$(probe "$DEPLOY_URL")"
+            echo "1. $DEPLOY_URL attempt $attempt: / $home, /briefs/$brief $code, title found $found"
+            if [ "$home" = 200 ] && [ "$code" = 200 ] && [ "$found" = 1 ]; then ok=1; break; fi
             sleep 10
           done
-          echo "::error title=Smoke test failed::https://fr.zeststream.ai did not serve the deployed site (see the attempts above)"
+          [ "$ok" = 1 ] || { echo "::error title=Smoke test failed::$DEPLOY_URL did not serve / and /briefs/$brief with $want"; exit 1; }
+
+          # 2. The Pages API. The token goes to curl on stdin, never on its command line.
+          api() {
+            printf 'header = "Authorization: Bearer %s"\n' "$CLOUDFLARE_API_TOKEN" |
+              curl -sS -K - "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/franken-assessments$1" || true
+          }
+          # Prints OK, or every mismatch joined by "; ".
+          check_api() {
+            jq -rn --argjson p "$1" --argjson d "$2" --arg url "$DEPLOY_URL" --arg sha "$DEPLOY_SHA" '
+              [ (if $p.success then empty else "project lookup failed: \($p.errors)" end),
+                ($p.result.canonical_deployment as $c | if $c.url == $url then empty else "canonical deployment is \($c.url), not \($url)" end),
+                ($p.result.latest_deployment as $l | if $l.url == $url then empty else "latest deployment is \($l.url), not \($url)" end),
+                ($p.result.canonical_deployment as $c | if $c.environment == "production" and $c.latest_stage.status == "success" then empty else "canonical deployment is \($c.environment) \($c.latest_stage.name)/\($c.latest_stage.status)" end),
+                ($p.result.canonical_deployment.deployment_trigger.metadata.commit_hash as $h | if $h == $sha then empty else "canonical deployment is commit \($h), not \($sha)" end),
+                (if $d.success then empty else "domain lookup failed: \($d.errors)" end),
+                (if $d.result.status == "active" then empty else "fr.zeststream.ai status is \($d.result.status), not active" end)
+              ] | if length == 0 then "OK" else join("; ") end' 2>/dev/null || echo "the API did not return JSON"
+          }
+          for attempt in 1 2 3; do
+            verdict="$(check_api "$(api '')" "$(api /domains/fr.zeststream.ai)")"
+            [ "$verdict" = OK ] && break
+            echo "2. Pages API attempt $attempt: $verdict"
+            sleep 5
+          done
+          if [ "$verdict" != OK ]; then
+            echo "::error title=Smoke test failed::Pages API: $verdict"
+            exit 1
+          fi
+          echo "2. Pages API: $DEPLOY_URL is the canonical and latest production deployment, commit $DEPLOY_SHA; fr.zeststream.ai is active"
+
+          # 3. The custom domain, best effort.
+          for attempt in 1 2 3 4 5 6; do
+            read -r home code found <<< "$(probe "$SITE_URL")"
+            echo "3. $SITE_URL attempt $attempt: / $home, /briefs/$brief $code, title found $found"
+            if [ "$home" = 200 ] && [ "$code" = 200 ] && [ "$found" = 1 ]; then
+              echo "OK: $DEPLOY_URL and $SITE_URL serve commit $DEPLOY_SHA"
+              exit 0
+            fi
+            if [ "$home" = 403 ] || [ "$code" = 403 ]; then
+              mitigated="$(grep -i "^cf-mitigated:" "$headers" | tr -d '\r' || true)"
+              echo "::notice title=Custom domain not reachable from the runner::$SITE_URL answered 403 to the GitHub runner, which is Cloudflare bot protection on the zeststream.ai zone blocking datacenter IPs (${mitigated:-no cf-mitigated header}). Checks 1 and 2 passed, so this deployment is live."
+              echo "OK: $DEPLOY_URL serves commit $DEPLOY_SHA and the API confirms it is live on $SITE_URL"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error title=Smoke test failed::$SITE_URL did not serve / and /briefs/$brief with $want (see the attempts above)"
           exit 1
