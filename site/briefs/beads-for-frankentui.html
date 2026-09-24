@@ -291,16 +291,28 @@ html:not(.js) .share { display: none; }
 .share__status { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
 .share__url { font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--bg-3); border: 1px solid var(--line); border-radius: 4px; padding: 0.15em 0.45em; -webkit-user-select: all; user-select: all; }
 </style>
+<!-- shell:head -->
+<link rel="stylesheet" href="../assets/shell.css">
+<link rel="alternate" type="application/atom+xml" title="Franken Research" href="https://fr.zeststream.ai/feed.xml">
+<!-- /shell:head -->
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
 <div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
 
-<nav class="topnav" aria-label="Site">
-  <a href="../index.html">&larr; Back to the map</a>
-  <a href="../method/index.html">How claims here were governed</a>
+<!-- shell:nav -->
+<nav class="shell-nav" aria-label="Site">
+<a class="shell-brand" href="../index.html#repo=beads-for-frankentui"><span aria-hidden="true">&larr;</span>Back to the map</a>
+<ul class="shell-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
 </nav>
+<!-- /shell:nav -->
 
 <nav class="rail" id="rail" aria-label="Brief sections">
   <a href="#s1" data-target="s1"><span class="rail__dot"></span><span class="rail__label">What it is</span></a>
@@ -600,5 +612,41 @@ html:not(.js) .share { display: none; }
   }
 })();
 </script>
+<!-- shell:footer -->
+<div class="shell-foot">
+<div class="shell-grid">
+<nav class="shell-dir" aria-label="All pages">
+<p class="shell-h">All pages</p>
+<ul>
+<li><a href="../index.html" aria-current="true">Map</a></li>
+<li><a href="../index.html#tableview">Verdict table</a></li>
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../techniques/index.html">Techniques</a></li>
+<li><a href="../failure-modes/index.html">Failure modes</a></li>
+<li><a href="../lessons/index.html">Lessons</a></li>
+<li><a href="../reproduce/index.html">Reproduce a verdict</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../rigor/index.html">Rigor practices</a></li>
+<li><a href="../beyond/index.html">Beyond FrankenSuite</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+<li><a href="../self/index.html">Graded by our own method</a></li>
+</ul>
+</nav>
+<div class="shell-side">
+<p class="shell-h">Help fix it</p>
+<ul class="shell-acts">
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=correction.yml&amp;repository=beads-for-frankentui&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fbriefs%2Fbeads-for-frankentui">Suggest a fix or an idea</a></li>
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=site-bug.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fbriefs%2Fbeads-for-frankentui">Report a site problem</a></li>
+</ul>
+<p class="shell-note">Each opens a GitHub issue form with this page&rsquo;s address filled in. You need a GitHub account.</p>
+<p class="shell-follow">Follow updates: <a href="../feed.xml">Atom feed</a> <span aria-hidden="true">&middot;</span> <a href="../follow/index.html">Follow</a></p>
+</div>
+</div>
+<p class="shell-who">Made by Joshua Nowak (ZestStream) with AI coding agents. Not affiliated with or funded by Jeffrey Emanuel; Joshua uses his public tools and is a paying subscriber to jeffreys-skills.md.</p>
+<p class="shell-src"><a href="https://github.com/JYeswak/franken-research">Source on GitHub</a> <span aria-hidden="true">&middot;</span> <a href="https://github.com/JYeswak/franken-research/blob/main/LICENSE">MIT licensed</a></p>
+</div>
+<!-- /shell:footer -->
 </body>
 </html>

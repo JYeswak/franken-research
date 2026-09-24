@@ -33,13 +33,7 @@ a,q,.small{overflow-wrap:break-word}
 code,a.cite{overflow-wrap:anywhere}
 a{color:var(--accent)}
 code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);padding:.1em .35em;border-radius:4px}
-.wrap{max-width:1080px;margin:0 auto}
-.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
-.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
-.topnav a:hover,.topnav a:focus-visible{color:var(--accent);border-bottom-color:var(--accent)}
-.topnav a[aria-current]{color:var(--ink)}
-.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+.wrap{max-width:1080px;margin:0 auto;--shell-pad:0px}
 header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
 header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
 header .meta{font-family:var(--sans);font-size:14px;color:var(--ink-dim);margin:10px 0 0;
@@ -138,21 +132,26 @@ footer a{color:var(--accent)}
 .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;font-weight:700;font-size:13px;
   padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
 .skip:focus{left:0}</style>
+<!-- shell:head -->
+<link rel="stylesheet" href="../assets/shell.css">
+<link rel="alternate" type="application/atom+xml" title="Franken Research" href="https://fr.zeststream.ai/feed.xml">
+<!-- /shell:head -->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
-<nav class="topnav" aria-label="Site">
-  <a href="../index.html">&larr; Franken Research map</a>
-  <span class="peers">
-    <a href="../stack/index.html">Agent stack</a>
-    <a href="../rigor/index.html">Rigor practices</a>
-    <a href="../beyond/index.html">Beyond FrankenSuite</a>
-    <a href="../updates/index.html">Updates</a>
-    <a href="../method/index.html">Method</a>
-    <a href="../starter-kit/index.html">Starter kit</a>
-  </span>
+<!-- shell:nav -->
+<nav class="shell-nav" aria-label="Site">
+<a class="shell-brand" href="../index.html">Franken Research</a>
+<ul class="shell-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html" aria-current="true">Agent stack</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
 </nav>
+<!-- /shell:nav -->
 <header>
   <p class="back"><a href="index.html">&larr; All agent-stack verdicts</a></p>
   <h1>RL environments and RLHF training</h1>
@@ -205,8 +204,44 @@ footer a{color:var(--accent)}
 <p class="back"><a href="index.html">&larr; Back to all agent-stack verdicts</a></p>
 </main>
 <footer>
-  <p>Generated from <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/stack/METHOD.md">stack/</a> by <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/site/scripts/make-stack.mjs">site/scripts/make-stack.mjs</a>; the build gates check every citation and fail if this page drifts from its sources. Franken Research is independent and MIT licensed. <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a>.</p>
+  <p>Generated from <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/stack/METHOD.md">stack/</a> by <a href="https://github.com/JYeswak/franken-research/blob/v1.1.0/site/scripts/make-stack.mjs">site/scripts/make-stack.mjs</a>; the build gates check every citation and fail if this page drifts from its sources.</p>
 </footer>
 </div>
+<!-- shell:footer -->
+<div class="shell-foot">
+<div class="shell-grid">
+<nav class="shell-dir" aria-label="All pages">
+<p class="shell-h">All pages</p>
+<ul>
+<li><a href="../index.html">Map</a></li>
+<li><a href="../index.html#tableview">Verdict table</a></li>
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../techniques/index.html">Techniques</a></li>
+<li><a href="../failure-modes/index.html">Failure modes</a></li>
+<li><a href="../lessons/index.html">Lessons</a></li>
+<li><a href="../reproduce/index.html">Reproduce a verdict</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html" aria-current="true">Agent stack</a></li>
+<li><a href="../rigor/index.html">Rigor practices</a></li>
+<li><a href="../beyond/index.html">Beyond FrankenSuite</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+<li><a href="../self/index.html">Graded by our own method</a></li>
+</ul>
+</nav>
+<div class="shell-side">
+<p class="shell-h">Help fix it</p>
+<ul class="shell-acts">
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=idea.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fstack%2Frl-envs">Suggest a fix or an idea</a></li>
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=site-bug.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fstack%2Frl-envs">Report a site problem</a></li>
+</ul>
+<p class="shell-note">Each opens a GitHub issue form with this page&rsquo;s address filled in. You need a GitHub account.</p>
+<p class="shell-follow">Follow updates: <a href="../feed.xml">Atom feed</a> <span aria-hidden="true">&middot;</span> <a href="../follow/index.html">Follow</a></p>
+</div>
+</div>
+<p class="shell-who">Made by Joshua Nowak (ZestStream) with AI coding agents. Not affiliated with or funded by Jeffrey Emanuel; Joshua uses his public tools and is a paying subscriber to jeffreys-skills.md.</p>
+<p class="shell-src"><a href="https://github.com/JYeswak/franken-research">Source on GitHub</a> <span aria-hidden="true">&middot;</span> <a href="https://github.com/JYeswak/franken-research/blob/main/LICENSE">MIT licensed</a></p>
+</div>
+<!-- /shell:footer -->
 </body>
 </html>

@@ -1,0 +1,114 @@
+/* Franken Research shared shell: the site nav and footer that site/scripts/shell.mjs writes into every page.
+   Shell elements only; every selector starts with a .shell-* class so page styles and this file stay apart.
+   Hooks a page may set on an ancestor: --shell-pad (side padding, default 16px), --shell-max (nav width,
+   default the full container), --shell-foot-max (footer content width, default 1112px). */
+
+.shell-nav,.shell-foot{
+  --sh-bg:#0e0e11; --sh-line:#2c2c34; --sh-ink:#ece5d8; --sh-dim:#bdb6a8; --sh-acc:#ff7a3d;
+  --sh-sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box; font-family:var(--sh-sans); color:var(--sh-ink); text-align:left;
+  text-transform:none; font-style:normal; -webkit-font-smoothing:antialiased;
+}
+.shell-nav *,.shell-foot *{box-sizing:border-box}
+
+/* In-page anchors land below the sticky nav. */
+html:has(.shell-nav){scroll-padding-top:72px}
+
+/* ---------- nav ---------- */
+.shell-nav{
+  position:sticky; top:0; z-index:9000;
+  display:flex; align-items:center; gap:6px 28px;
+  max-width:var(--shell-max,none); min-height:56px; margin:0 auto; padding:6px var(--shell-pad,16px);
+  font-size:15px; font-weight:500; line-height:1.3; letter-spacing:.01em;
+  /* opaque bar, full width even inside a narrow wrapper; border-image paints outside the box without scrolling */
+  border:0; background:none;
+  border-image:linear-gradient(var(--sh-bg) calc(100% - 1px),var(--sh-line) 0) fill 0//0 100vw;
+}
+.shell-nav a{text-decoration:none; border:0; background:none; box-shadow:none}
+.shell-nav .shell-brand{
+  flex:0 0 auto; display:inline-flex; align-items:center; min-height:40px;
+  color:var(--sh-ink); font-size:15.5px; font-weight:700; letter-spacing:.02em; white-space:nowrap;
+}
+.shell-nav .shell-links{
+  display:flex; align-items:center; gap:2px 22px; min-width:0;
+  margin:0 0 0 auto; padding:0; list-style:none;
+}
+.shell-nav .shell-brand span{margin-right:.4em}
+.shell-nav .shell-links li{margin:0; padding:0; list-style:none; flex:0 0 auto}
+.shell-nav .shell-links li::before{content:none}
+.shell-nav .shell-links a{
+  display:inline-flex; align-items:center; min-height:40px;
+  color:var(--sh-dim); white-space:nowrap; border-bottom:2px solid transparent;
+}
+.shell-nav a:hover{color:var(--sh-acc)}
+.shell-nav .shell-links a[aria-current]{color:var(--sh-ink); border-bottom-color:var(--sh-acc)}
+.shell-nav a:focus-visible,.shell-foot a:focus-visible{outline:2px solid var(--sh-acc); outline-offset:2px; border-radius:3px}
+
+/* Phones: brand, then the links in one row that scrolls sideways (the row fades at its right edge). */
+@media (max-width:680px){
+  html:has(.shell-nav){scroll-padding-top:64px}
+  .shell-nav{gap:14px; min-height:50px; padding-top:3px; padding-bottom:3px; font-size:15px}
+  .shell-nav .shell-links{
+    flex:1 1 auto; gap:0 18px; padding-right:28px;
+    overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none;
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);
+  }
+  .shell-nav .shell-links::-webkit-scrollbar{display:none}
+  .shell-nav .shell-links a:focus-visible{outline-offset:-2px}
+}
+
+/* ---------- footer ---------- */
+.shell-foot{
+  clear:both; position:relative;
+  max-width:var(--shell-foot-max,1112px); margin:64px auto 0; padding:36px var(--shell-pad,16px) 40px;
+  font-size:15px; font-weight:400; line-height:1.55; letter-spacing:normal; color:var(--sh-dim);
+  border:0; background:none;
+  border-image:linear-gradient(var(--sh-line) 0 1px,var(--sh-bg) 0) fill 0//0 100vw;
+}
+.shell-foot p{margin:0 0 10px; padding:0; max-width:none; font-size:inherit; line-height:inherit; color:inherit}
+.shell-foot ul{margin:0; padding:0; list-style:none}
+.shell-foot li{margin:0; padding:0; list-style:none; font-size:inherit; line-height:inherit; color:inherit}
+.shell-foot li::before{content:none}
+.shell-foot a{
+  color:var(--sh-ink); text-decoration:underline; text-decoration-color:rgba(236,229,216,.4);
+  text-underline-offset:3px; border:0; background:none; font-weight:inherit; overflow-wrap:anywhere;
+}
+.shell-foot a:hover{color:var(--sh-acc); text-decoration-color:currentColor}
+.shell-foot .shell-grid{
+  display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); gap:28px 56px;
+  padding-bottom:26px; border-bottom:1px solid var(--sh-line);
+}
+.shell-foot .shell-h{
+  margin:0 0 12px; font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--sh-dim);
+}
+.shell-foot .shell-dir ul{columns:3 11em; column-gap:32px}
+.shell-foot .shell-dir li{break-inside:avoid; padding:3px 0}
+.shell-foot .shell-dir a{text-decoration:none}
+.shell-foot .shell-dir a:hover{text-decoration:underline}
+.shell-foot .shell-dir a[aria-current]{color:var(--sh-acc); font-weight:600}
+.shell-foot .shell-acts{margin:0 0 8px}
+.shell-foot .shell-acts li{padding:3px 0}
+.shell-foot .shell-acts a{font-weight:600}
+.shell-foot .shell-note{font-size:14px}
+.shell-foot .shell-follow{margin-top:18px}
+.shell-foot .shell-who{margin:24px 0 8px; max-width:78ch; color:var(--sh-ink)}
+.shell-foot .shell-src{margin:0}
+
+@media (max-width:720px){
+  .shell-foot{margin-top:48px; padding-top:28px}
+  .shell-foot .shell-grid{grid-template-columns:minmax(0,1fr)}
+  .shell-foot .shell-dir ul{columns:2; column-gap:20px}
+}
+
+/* Touch: every shell link is at least 44px tall. */
+@media (pointer:coarse){
+  .shell-nav .shell-brand,.shell-nav .shell-links a{min-height:44px}
+  .shell-foot a{display:inline-flex; align-items:center; min-height:44px}
+  .shell-foot .shell-dir li,.shell-foot .shell-acts li{padding:0}
+}
+
+@media print{
+  .shell-nav{position:static}
+  .shell-foot .shell-side{display:none}
+}

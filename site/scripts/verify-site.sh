@@ -418,6 +418,13 @@ for p in pages:
                 errs.append('%s: broken %s %r' % (short, attr, raw)); continue
             checked += 1
             if frag and target.endswith('.html'):
+                # index.html#repo=<name> is a map route, not an element id: the map opens the repo of
+                # that name, and data.js names equal the brief names (gate D), so the brief must exist.
+                route = re.fullmatch(r'repo=([^&]+)', frag)
+                if route and target == os.path.join(site, 'index.html'):
+                    if not os.path.isfile(os.path.join(site, 'briefs', unquote(route.group(1)) + '.html')):
+                        errs.append('%s: map route %r names no brief' % (short, raw))
+                    continue
                 tt = open(target).read()
                 tt = re.sub(r'<(script|style)[^>]*>.*?</\1>', ' ', tt, flags=re.S | re.I)
                 if ('id="%s"' % frag) not in tt:
@@ -1231,6 +1238,20 @@ if [ $M_OK -eq 1 ] && [ "${M_N:-0}" -gt 0 ] && [ "${M_F:-0}" -gt 0 ]; then
   pass "M feed + OPML fresh and well-formed ($M_N entries, $M_F OPML feeds; $M_PARSERS)"
 else
   fail "M feed + OPML fresh and well-formed" "$M_DETAIL"
+fi
+
+# ============ Gate S: shared shell (head links, site nav, footer) ============
+# scripts/shell.mjs owns three marked regions on every page: shell:head everywhere, shell:nav and
+# shell:footer everywhere except the home page. --check re-renders each region and fails on a missing
+# or hand-edited one, on a page list that disagrees with sitemap.xml, or on a prefilled issue link that
+# names a field the issue forms lack. Fix drift with `bun run build:shell`. Details: ../BUILD-GATES.md.
+echo "== S  shared shell =="
+S_OUT="$(node "$SITE_DIR/scripts/shell.mjs" --check --site "$SITE_DIR" 2>&1)"; S_RC=$?
+S_N="$(printf '%s\n' "$S_OUT" | sed -n 's/^SHELL_OK pages=\([0-9][0-9]*\) regions=\([0-9][0-9]*\).*/\1 pages, \2 regions/p')"
+if [ $S_RC -eq 0 ] && [ -n "$S_N" ]; then
+  pass "S shared shell matches its render on every page ($S_N)"
+else
+  fail "S shared shell" "exit $S_RC: $(printf '%s\n' "$S_OUT" | grep -v '^SHELL_' | head -4 | tr '\n' ';')"
 fi
 
 # ============ summary ============

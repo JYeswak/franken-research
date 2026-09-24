@@ -130,7 +130,11 @@ one brief; `data.js` repo names match the brief set 1:1.
 **What:** every relative `href`/`src` on every scanned page resolves on disk
 (directories resolve to `index.html`); every `#fragment` has a matching `id`
 on the target page; no link escapes the site root. External URLs are not
-fetched (offline gate). Resolving zero links is a failure.
+fetched (offline gate). Resolving zero links is a failure. A fragment
+`repo=<name>` on `index.html` is a map route, not an element id: the map
+opens the repository of that name, and gate D makes the `data.js` names
+equal the brief names, so the route passes only when `briefs/<name>.html`
+exists.
 **Why:** "zero dead links, zero dead anchors, all 311 relative links resolve
 on disk (fully offline-capable)" — do not regress.
 **Accepted:** external URLs are not fetched; `href="#"` placeholders owned by
@@ -423,6 +427,36 @@ when something did, and a malformed one is silently dropped by readers.
 **Accepted:** the parser checks well-formedness, not the full Atom RFC; no
 feed validator service is called (offline gate).
 
+## Gate S — shared shell (head links, site nav, footer)
+
+**What:** `site/scripts/shell.mjs` owns three marked regions on every page in
+`site/` except `404.html` and the evidence copies (`packets/`, `synthesis/`):
+`<!-- shell:head -->` (the `assets/shell.css` link and the Atom feed link) on
+every page, and `<!-- shell:nav -->` and `<!-- shell:footer -->` on every
+page except the home page. The gate runs `shell.mjs --check`, which fails,
+naming the page and region, when a region is missing, repeated, present where
+it does not belong, or different from a fresh render. It also fails when the
+canonical page list in `shell.mjs` and the section URLs in `sitemap.xml`
+(those ending in `/`) disagree, when a page file is missing from
+`sitemap.xml` or a sitemap URL has no page file, when a field id the footer
+prefills (`repository`, `page`) is missing from its form in
+`.github/ISSUE_TEMPLATE/`, and when a brief is not an option of the
+correction form's repository dropdown. Zero pages found is a failure.
+**The fix for drift is `bun run build:shell`** (same as
+`node site/scripts/shell.mjs`), which rewrites every region and then runs the
+check. `make-stack.mjs` fills the same regions in the pages it generates, so
+gate K4 and gate S agree. The home page is a full-screen map with its own
+layout: it carries only the head region, and it imports `renderDirectory()`
+from `shell.mjs` for its page list.
+**Why:** the v1.2 audits found three nav systems, six labels for the home
+page, no directory in any footer, no way to suggest a fix from a page, and no
+statement of who made the project. One renderer and a gate keep one label per
+page everywhere.
+**Accepted:** the gate compares markup, not rendering; gate I and a
+screenshot pass cover what the shell looks like. `404.html` has no shell: the
+host serves it at any depth, so relative links would point at the wrong
+folder.
+
 ## Accepted limitations (all gates)
 
 - Raw packet/Rulebook `.md` files have no navigation by design.
@@ -548,3 +582,20 @@ before the allow list is read. In a clean clone, a planted wrong expectation
 (the first two expected ranks swapped in the fixture) made W2 fail with the
 ordering case named and `bun run verify` exit 1 (19 passed, 1 failed); the
 real fixture passed all 20 gates.
+
+Shell pass (v1.2): Gate S added with `site/scripts/shell.mjs`,
+`site/assets/shell.css`, and `bun run build:shell`. The first run replaced the
+site nav on 77 pages (hand-written pages and briefs by `shell.mjs`, generated
+stack pages by `make-stack.mjs`) and added the footer and head regions. Gate E
+learned the `index.html#repo=<name>` map route that the briefs' back link
+uses. The gate S block, copied verbatim out of `verify-site.sh`, was run
+against scratch copies of the tree (never the real tree): the unchanged copy
+passed with 78 pages and 232 regions. It failed, naming the page and region,
+on a one-word edit to the method page's footer, on the head region deleted
+from `lessons/index.html`, on the correction link of `briefs/frankenredis.html`
+pointed at another repository, and on a duplicated nav region in
+`updates/index.html`; it failed on `/follow/` removed from `sitemap.xml` (both
+directions reported) and on `frankenredis` removed from the correction form's
+dropdown. The gate E block failed on a brief whose back link named a
+repository with no brief. A second run of `bun run build:shell` rewrote
+nothing.

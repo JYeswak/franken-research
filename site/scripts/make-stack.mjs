@@ -10,10 +10,13 @@
 //          output dir). Output is deterministic: sorted inputs, no timestamps, so two
 //          runs are byte-identical and Gate K4 can compare a fresh run to the shipped
 //          pages. A verdict file that does not exist is not rendered: no placeholders.
+//          The site nav, footer and head links are the shared shell from shell.mjs,
+//          filled into each page's shell regions before it is written.
 // No dependencies beyond node's standard library.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { applyShell } from './shell.mjs';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT = path.resolve(SITE, '..');
@@ -203,13 +206,7 @@ a,q,.small{overflow-wrap:break-word}
 code,a.cite{overflow-wrap:anywhere}
 a{color:var(--accent)}
 code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);padding:.1em .35em;border-radius:4px}
-.wrap{max-width:1080px;margin:0 auto}
-.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
-.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
-.topnav a:hover,.topnav a:focus-visible{color:var(--accent);border-bottom-color:var(--accent)}
-.topnav a[aria-current]{color:var(--ink)}
-.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+.wrap{max-width:1080px;margin:0 auto;--shell-pad:0px}
 header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
 header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
 header .meta{font-family:var(--sans);font-size:14px;color:var(--ink-dim);margin:10px 0 0;
@@ -309,21 +306,6 @@ footer a{color:var(--accent)}
   padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
 .skip:focus{left:0}`;
 
-function nav(current) {
-  const link = (href, label, key) => '<a href="' + href + '"' + (key === current ? ' aria-current="page"' : '') + '>' + label + '</a>';
-  return `<nav class="topnav" aria-label="Site">
-  <a href="../index.html">&larr; Franken Research map</a>
-  <span class="peers">
-    ${link('../stack/index.html', 'Agent stack', 'stack')}
-    ${link('../rigor/index.html', 'Rigor practices', 'rigor')}
-    ${link('../beyond/index.html', 'Beyond FrankenSuite', 'beyond')}
-    ${link('../updates/index.html', 'Updates', 'updates')}
-    ${link('../method/index.html', 'Method', 'method')}
-    ${link('../starter-kit/index.html', 'Starter kit', 'kit')}
-  </span>
-</nav>`;
-}
-
 function page({ title, desc, canonical, current, header, main, script }) {
   const body = header + '\n' + main;
   const lead = current === 'verdict'
@@ -348,20 +330,25 @@ function page({ title, desc, canonical, current, header, main, script }) {
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${BASE}/og-image.png">
 <style>${CSS}</style>
+<!-- shell:head -->
+<!-- /shell:head -->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
-${nav(current)}
+<!-- shell:nav -->
+<!-- /shell:nav -->
 ${header}
 ${vocab(body, lead)}
 <main id="main">
 ${main}
 </main>
 <footer>
-  <p>Generated from <a href="${GH}stack/METHOD.md">stack/</a> by <a href="${GH}site/scripts/make-stack.mjs">site/scripts/make-stack.mjs</a>; the build gates check every citation and fail if this page drifts from its sources. Franken Research is independent and MIT licensed. <a href="https://github.com/JYeswak/franken-research">Source on GitHub</a>.</p>
+  <p>Generated from <a href="${GH}stack/METHOD.md">stack/</a> by <a href="${GH}site/scripts/make-stack.mjs">site/scripts/make-stack.mjs</a>; the build gates check every citation and fail if this page drifts from its sources.</p>
 </footer>
 </div>
+<!-- shell:footer -->
+<!-- /shell:footer -->
 ${script ? '<script>\n' + script + '\n</script>\n' : ''}</body>
 </html>
 `;
@@ -432,7 +419,7 @@ const written = [];
 function write(rel, html) {
   const p = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(p), { recursive: true });
-  fs.writeFileSync(p, html);
+  fs.writeFileSync(p, applyShell(rel, html));
   written.push(rel);
 }
 
