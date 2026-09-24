@@ -1,0 +1,89 @@
+name: watch
+
+# Daily watch of Dicklesworthstone's public repositories (watch/README.md).
+# Reads the GitHub API only, writes watch/state.json plus the day's census and
+# changes, opens or comments on issues for material changes that are new since
+# the previous state, then runs the full gate chain and commits watch/ only if
+# every gate passes. A push made with GITHUB_TOKEN does not trigger verify.yml,
+# so the gate chain here is the only gate the census commit gets. The daily
+# state.json commit also keeps the repository active, so GitHub does not
+# disable this schedule after 60 days without activity.
+
+on:
+  schedule:
+    # 11:23 UTC is about 05:23 Mountain time.
+    - cron: "23 11 * * *"
+  workflow_dispatch:
+
+# One watch at a time, never cancelled: a run that opened issues must also
+# get to commit the state that records them.
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    # Sized from measurements, not guessed. Two local runs of
+    # `node watch/watch.mjs --apply` on 2026-09-24 took 15.9 s and 16.9 s
+    # (11 GraphQL + 32 REST calls). The verify job's own guard is 4 minutes
+    # (verify.yml, from runs of 46 to 54 s). About twice the watch plus that
+    # guard gives 5 minutes. Re-derive from `gh run list --workflow watch.yml`
+    # once runs exist; do not guess.
+    timeout-minutes: 5
+    steps:
+      # Actions pinned to the same commits as verify.yml.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # Full history, not depth 1: gate K3 resolves the commits cited in
+          # stack/rigor-practices.tsv with `git cat-file`, and fails on a
+          # shallow clone.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+
+      - name: Install (lockfile must be current)
+        run: bun install --frozen-lockfile
+
+      - name: Watch (census, changes, issues)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          node watch/watch.mjs --apply --issues
+          # Stage the new files so gate L (tracked files only) scans them.
+          git add watch/
+
+      - name: Gate chain (A..L, W)
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          test -x "$CHROME_PATH" || { echo "Chrome not found at $CHROME_PATH"; exit 1; }
+          "$CHROME_PATH" --version
+          bun run verify
+
+      - name: Commit watch/ only
+        run: |
+          git add watch/
+          if git diff --cached --quiet -- watch/; then
+            echo "watch/ unchanged; nothing to commit"
+            exit 0
+          fi
+          day="$(node -p "require('./watch/state.json').checked_at.slice(0, 10)")"
+          n="$(node -p "require('./watch/changes/${day}.json').material.length")"
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "watch: ${day} census (${n} material) [live]" -- watch/
+          # A plain push: if main moved during the run, this fails rather than
+          # landing a combination the gate chain did not check. The next run
+          # starts from the new main.
+          git push origin "HEAD:${GITHUB_REF_NAME}"

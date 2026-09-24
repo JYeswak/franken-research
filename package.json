@@ -6,7 +6,8 @@
   "description": "Franken Research: an independent, evidence-tiered assessment of 44 FrankenSuite repos. Static site in site/.",
   "scripts": {
     "build:map": "esbuild site/assets/app.src.js --bundle --format=iife --minify --target=es2020 --alias:three=./site/assets/vendor/three.module.js --outfile=site/assets/app.bundle.js --log-level=warning",
-    "verify": "bash site/scripts/verify-site.sh"
+    "verify": "bash site/scripts/verify-site.sh",
+    "watch": "node watch/watch.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.2"

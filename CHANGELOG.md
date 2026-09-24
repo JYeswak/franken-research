@@ -2,6 +2,13 @@
 
 Corrections to published findings are recorded here with the date, the issue, and what changed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Unreleased
+
+### Added
+
+- **Daily watch** (`watch/`, `.github/workflows/watch.yml`): a scheduled job at 11:23 UTC reads the GitHub API for the 44 assessed repositories (pins parsed from `packets/`) and every public repository their maintainer owns. It writes `watch/state.json`, a dated census (`watch/census/`), and the changes new since the previous run (`watch/changes/`), and commits them only when the full gate chain passes. Material events (a release or tag, a license SPDX or LICENSE-text change, a workflow file added or removed, archived, renamed, deleted, a pin no longer an ancestor of HEAD, a new `franken*` or Rust repository) open one deduplicated GitHub issue each, capped at 20 per run, with the pinned matrix cells they may affect and the re-check checklist. Commit volume is informational only. The watch never edits pins, packets, or counts; the loop from issue to dated, independently reviewed re-check is in `updates/METHOD.md`. The first local run on 2026-09-24 is the baseline: 44 repositories checked, 215 public repositories discovered, 11 material events since the pins in 8 repositories, none since a previous state because there was none. Issue creation has not run yet.
+- **Gate W**: `node watch/watch.mjs --selftest` replays recorded GitHub API responses (`watch/fixtures/`) through the watch's own collect, diff, and dedupe code, offline, and fails if any of its 13 cases fails or none run. Shown to trip on a planted wrong expectation in a scratch copy.
+
 ## v1.1.0 (2026-09-23)
 
 Extends the assessment from the 44 FrankenSuite repositories to the wider agent stack, and turns every assessed project into a source of practices this repository also applies to itself.

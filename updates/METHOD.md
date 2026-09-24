@@ -31,6 +31,33 @@ changing them. Rules, in [RULEBOOK.md](../RULEBOOK.md) terms:
 7. **Scratch stays out of the tree.** Downloads used for verification are deleted after the check;
    hashes and command output are quoted instead.
 
+## The daily loop
+
+The census in rule 2 is now also taken every day by [`watch/watch.mjs`](../watch/README.md), run by
+[`.github/workflows/watch.yml`](../.github/workflows/watch.yml) at 11:23 UTC. Each step has an
+owner, and only the first one is automatic:
+
+1. **Watch.** The run writes `watch/state.json`, `watch/census/YYYY-MM-DD.tsv` (the rule 2 columns
+   for all 44), and `watch/changes/YYYY-MM-DD.json`, and commits them only if the whole gate chain
+   passes. It flags events that could move a cell (a release or tag, a license SPDX or text change,
+   a workflow file added or removed, archived, renamed, deleted, a pin no longer an ancestor of
+   HEAD, a new `franken*` or Rust repository). It does not judge them.
+2. **Issue.** For each flagged event that is new since the previous run it opens one issue,
+   `[watch] <repo>: <change>`, labelled `watch` plus the event type, with before and after, API
+   evidence, and the pinned matrix values the event may affect. It never reopens a closed issue; a
+   changed value becomes a comment. At most 20 per run, the rest in one rollup issue.
+3. **Triage.** An analyst decides whether the event could move a cell. If not, the issue is closed
+   with a one-line reason. The 2026-09-24 movement census is a worked example: eight repositories
+   had an event of these kinds (six workflow-file sets, one set of new tags, one first release), and
+   two were judged able to move a cell (the release, and a workflow set cut from 78 files to 8).
+4. **Dated re-check.** If it could, the analyst writes `<repo>-YYYY-MM-DD.md` here under rules 3 to
+   6, pinned to the new commit. The packet and the published counts stay as they are.
+5. **Independent review.** A separate agent session, not the author, reviews the re-check before it
+   lands, as the stack verdicts are reviewed.
+6. **Rigor harvest.** Any practice the re-check finds that is not yet in
+   [`stack/rigor-practices.tsv`](../stack/rigor-practices.tsv) is added there with its quote.
+7. **Close.** The issue is closed with links to the re-check, the review, and any rigor row.
+
 Files here:
 
 - [`movement-2026-09-24.tsv`](movement-2026-09-24.tsv): census of all 44, 2026-09-24 UTC.

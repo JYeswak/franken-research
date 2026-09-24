@@ -1159,6 +1159,22 @@ else
   printf '%s\n' "$L_BAD" | head -40 | sed 's/^/      /'
 fi
 
+# ============ Gate W: daily-watch selftest (offline) ============
+# watch/watch.mjs --selftest feeds the recorded API responses in watch/fixtures/ through the same
+# collect, diff, and dedupe code the daily watch runs against GitHub. No network, no token. Fails
+# on a nonzero exit, any failed case, or zero cases run. Details: ../BUILD-GATES.md.
+echo "== W  watch selftest =="
+W_OUT="$(node "$REPO_ROOT/watch/watch.mjs" --selftest 2>&1)"
+W_RC=$?
+W_N="$(count_of "$W_OUT" CASES)"
+W_F="$(count_of "$W_OUT" FAILED)"
+if [ $W_RC -eq 0 ] && [ "${W_N:-0}" -gt 0 ] && [ "${W_F:-x}" = "0" ]; then
+  pass "W watch selftest ($W_N cases on recorded fixtures)"
+else
+  fail "W watch selftest" "exit $W_RC, cases ${W_N:-0}, failed ${W_F:-unknown}"
+  printf '%s\n' "$W_OUT" | grep -v '^PASS' | head -40 | sed 's/^/      /'
+fi
+
 # ============ summary ============
 echo "----------------------------------------"
 echo "gates passed: $PASS   failed: $FAIL"

@@ -4,7 +4,7 @@ An independent, evidence-tiered assessment of 44 repositories from Jeffrey Emanu
 
 **Live site: https://fr.zeststream.ai**
 
-[![verify](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml)
+[![verify](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/verify.yml) [![watch](https://github.com/JYeswak/franken-research/actions/workflows/watch.yml/badge.svg)](https://github.com/JYeswak/franken-research/actions/workflows/watch.yml)
 
 ![The Franken Research map: 44 FrankenSuite repositories placed by assessment ring](site/og-image.png)
 
@@ -33,6 +33,8 @@ The same evidence rules, applied outside the FrankenSuite to 21 kinds of agent i
 **Rigor practices worth copying.** [stack/rigor-practices.tsv](stack/rigor-practices.tsv) indexes 135 practices found across the 44 packets and the 192 ecosystem repositories, each quoted from its source, mapped onto the starter kit, and marked for this repository: 15 adopted, 21 partial, 22 candidate, 77 not applicable. We first claimed 36 adopted; an independent audit found most of those were partial, and the index now says so.
 
 **Since the pin.** Verdicts describe each repository at its pin. [updates/](updates/) holds a dated census of what moved afterwards (32 of 44 repositories had new commits by 2026-09-24) and re-checks for material changes, such as `franken_code_browser` shipping a notarized developer-preview app the day after its pin. Pins and headline counts are never edited in place.
+
+**Daily watch.** Every morning a scheduled job ([watch/](watch/README.md)) reads the GitHub API for all 44 assessed repositories and every public repository their maintainer owns, and commits a dated census to `watch/census/` only if the whole gate chain passes. A new release or tag, a license or LICENSE-text change, a workflow file added or removed, an archived, renamed, or deleted repository, a pin rewritten out of history, or a new `franken*` or Rust repository opens a GitHub issue. The watch does not judge: an analyst triages each issue, and anything that could move a cell gets a dated, independently reviewed re-check under [updates/METHOD.md](updates/METHOD.md). Commits alone never open an issue.
 
 ## Explore
 
@@ -82,6 +84,7 @@ bun run verify
 | J | No page references removed scaffolding. |
 | K | The agent-stack layer holds up: every verdict has the required fields and an independent reviewer's signature (K1); every citation resolves and its quoted text is on the cited line (K2); every rigor-practice source quote and every adopted or partial proof resolves (K3); the generated pages equal a fresh run of the generator (K4); every adopted project has a license row, and non-permissive licenses are named where they are recommended (K5). |
 | L | No personal email address appears in any tracked file. |
+| W | The daily watch's change detection holds offline: recorded GitHub API responses go through the same code the scheduled run uses, and a new release, a LICENSE text change with the same SPDX id, a removed workflow, a rename, and an unreachable pin are flagged, while commits alone are not. |
 
 CI also runs `bun run build:map` and fails if the committed `site/assets/app.bundle.js` differs from what its source builds, and scans the tree and history for secrets with gitleaks. [site/BUILD-GATES.md](site/BUILD-GATES.md) explains why each gate exists.
 
@@ -98,6 +101,7 @@ What the gates prove is that the site says what the packets say, consistently an
 | `ecosystem/` | Design notes on how the pieces fit, the A-Z playbook, and the project-pickup planning system. |
 | `stack/` | The agent-stack layer: the method, 21 verdicts, the license census, the rigor-practices index, and the review records. |
 | `updates/` | Dated movement census and re-checks since the pins. Pins are never edited in place. |
+| `watch/` | The daily watch: the script, the latest state, one census and one change file per day, and the fixtures gate W replays. |
 | `site/` | The static site served at fr.zeststream.ai. Runs from `file://` with no build step; `site/packets/` and `site/RULEBOOK.md` are byte-identical copies checked by gate A, and `site/stack/` and `site/rigor/` are generated from `stack/` by `node site/scripts/make-stack.mjs` (gate K4 checks they match). |
 
 ## Corrections and right of reply

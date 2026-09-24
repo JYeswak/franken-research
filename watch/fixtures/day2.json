@@ -1,0 +1,2953 @@
+{
+ "_note": "Synthetic next day derived from day1.json: franken_code_browser gains release v0.1.1; franken_markdown LICENSE blob changes with the same SPDX; franken_agent_detection loses workflow validate-codex-prompt-patch.yml; franken_alignment gains commits only; frankenlibc is renamed frankenlibc_ng (same id; redirects covers a lookup by the old name); franken_node pin is gone (compare 404); acip is renamed acip_tools; franken_newthing (Rust) and dotfiles_extra (Shell) appear. Synthetic shas are sha1(\"watch-fixture-day2:<label>\").",
+ "assessed": [
+  {
+   "repo": "franken_agent_detection",
+   "pin": "026f60b28784ca77c5b8e47e3dba9b22d154b4d9",
+   "packet": "packets/franken_agent_detection-assessment.md"
+  },
+  {
+   "repo": "franken_alignment",
+   "pin": "d05cb8c8dcbf1e5057b9ba208ad3921e8107a487",
+   "packet": "packets/franken_alignment-assessment.md"
+  },
+  {
+   "repo": "franken_code_browser",
+   "pin": "cc8330d18b8da7b4ebd3571458fd51ef5d9d0a3e",
+   "packet": "packets/franken_code_browser-assessment.md"
+  },
+  {
+   "repo": "franken_markdown",
+   "pin": "88a6a99ed1ebc48c7910c28213005d8b35963079",
+   "packet": "packets/franken_markdown-assessment.md"
+  },
+  {
+   "repo": "franken_node",
+   "pin": "08447a0aa5ed016d5ff9abb5aa0d44e9f5061dc4",
+   "packet": "packets/franken_node-assessment.md"
+  },
+  {
+   "repo": "frankenlibc",
+   "pin": "36e5be9448c8c26eed16f421672775aae048f936",
+   "packet": "packets/frankenlibc-assessment.md"
+  }
+ ],
+ "discovery": [
+  {
+   "databaseId": 1139226453,
+   "name": "aadc",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-22T17:19:58Z",
+   "createdAt": "2026-01-21T17:27:40Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  },
+  {
+   "databaseId": 969725165,
+   "name": "acip_tools",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-21T14:07:06Z",
+   "createdAt": "2025-04-20T19:48:17Z",
+   "primaryLanguage": {
+    "name": "Shell"
+   }
+  },
+  {
+   "databaseId": 658932304,
+   "name": "advice_for_learning_to_code_and_making_an_app",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2023-06-26T19:57:01Z",
+   "createdAt": "2023-06-26T19:50:21Z",
+   "primaryLanguage": {
+    "name": "HTML"
+   }
+  },
+  {
+   "databaseId": 900000002,
+   "name": "dotfiles_extra",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-25T09:00:00Z",
+   "createdAt": "2026-09-25T07:30:00Z",
+   "primaryLanguage": {
+    "name": "Shell"
+   }
+  },
+  {
+   "databaseId": 1158875990,
+   "name": "franken_agent_detection",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-22T04:29:35Z",
+   "createdAt": "2026-02-16T03:01:45Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  },
+  {
+   "databaseId": 1359645474,
+   "name": "franken_alignment",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-24T03:38:02Z",
+   "createdAt": "2026-09-07T01:47:25Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  },
+  {
+   "databaseId": 1367629743,
+   "name": "franken_code_browser",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-24T03:08:17Z",
+   "createdAt": "2026-09-12T19:29:20Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  },
+  {
+   "databaseId": 1281851258,
+   "name": "franken_markdown",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-24T03:37:43Z",
+   "createdAt": "2026-06-27T02:12:28Z",
+   "primaryLanguage": {
+    "name": "HTML"
+   }
+  },
+  {
+   "databaseId": 900000001,
+   "name": "franken_newthing",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-25T09:00:00Z",
+   "createdAt": "2026-09-25T07:00:00Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  },
+  {
+   "databaseId": 1161313216,
+   "name": "franken_node",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-24T13:28:50Z",
+   "createdAt": "2026-02-19T00:56:35Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  },
+  {
+   "databaseId": 1153199323,
+   "name": "frankenlibc_ng",
+   "isArchived": false,
+   "isFork": false,
+   "pushedAt": "2026-09-24T13:36:14Z",
+   "createdAt": "2026-02-09T02:49:58Z",
+   "primaryLanguage": {
+    "name": "Rust"
+   }
+  }
+ ],
+ "repos": {
+  "franken_agent_detection": {
+   "graphql": {
+    "databaseId": 1158875990,
+    "name": "franken_agent_detection",
+    "isArchived": false,
+    "defaultBranchRef": {
+     "name": "main",
+     "target": {
+      "oid": "baede3364e098e16219572961833623b6ec1ea7d",
+      "committedDate": "2026-09-25T09:00:00Z"
+     }
+    },
+    "licenseInfo": {
+     "spdxId": "MIT"
+    },
+    "root": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "01e7d0f6fd8d762adc136a52a8be4aa5385dd46e",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "f5c9bb20ee6bcc1e798add6978bfce417afe58e8",
+       "type": "tree"
+      },
+      {
+       "name": ".github",
+       "oid": "eedde25798de02d2e82509f978de1836af7a154f",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "9977d70dd386a254a495025382d71a4717a2ac31",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "a1517d43b87cc7f6a9952f2686c953f6ea15fa3b",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "63e8db1f4e11acb664bcb1a4be46d31d787d231a",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "93a77901eec5aef9db283d65a6ea65f98a7dd7f9",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "c34cb8bf1db1501a01e9232470cca4caabaed7af",
+       "type": "blob"
+      },
+      {
+       "name": "docs",
+       "oid": "786e8aad3a2c276151c9c59fc7ed22b0aae8931d",
+       "type": "tree"
+      },
+      {
+       "name": "fad_illustration.webp",
+       "oid": "47887f31e7676ad056acce28015c1d242bee5b99",
+       "type": "blob"
+      },
+      {
+       "name": "fixtures",
+       "oid": "7bfb2120392ed3e06655bd4b97e51998e995392e",
+       "type": "tree"
+      },
+      {
+       "name": "gh_og_share_image.png",
+       "oid": "fcfaaa41ebadf4426953299ab649d64ca04c7ffb",
+       "type": "blob"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "45da545f8b47809154191d5c34e50da349c0ae9d",
+       "type": "blob"
+      },
+      {
+       "name": "src",
+       "oid": "503a1b6066685412be35fa8c11f35f8a71cfc612",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "8b518b42c5d6706fbada370d9ae8b472d72dd67e",
+       "type": "tree"
+      }
+     ]
+    },
+    "wf": {
+     "entries": [
+      {
+       "name": "ci.yml",
+       "type": "blob"
+      },
+      {
+       "name": "codex-exclusions.yml",
+       "type": "blob"
+      },
+      {
+       "name": "codex-read-integrity.yml",
+       "type": "blob"
+      },
+      {
+       "name": "release.yml",
+       "type": "blob"
+      }
+     ]
+    },
+    "releases": {
+     "totalCount": 12,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "Y3Vyc29yOnYyOpK0MjAyNi0wNS0xM1QwODoxMjozNlrOE0ncNA=="
+     },
+     "nodes": [
+      {
+       "tagName": "v0.3.0",
+       "createdAt": "2026-09-16T00:18:17Z",
+       "publishedAt": "2026-09-16T00:19:04Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "31bedd53f8f7164f36c6929bd53059e40400520e"
+       }
+      },
+      {
+       "tagName": "v0.2.4",
+       "createdAt": "2026-09-10T09:43:53Z",
+       "publishedAt": "2026-09-10T09:44:17Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "4c90f0625878a1db943ffb9720d570fbe814251d"
+       }
+      },
+      {
+       "tagName": "v0.2.3",
+       "createdAt": "2026-09-07T20:35:18Z",
+       "publishedAt": "2026-09-07T20:35:21Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "0feebc55fed8db4d596f330742fe11ca4cb70764"
+       }
+      },
+      {
+       "tagName": "v0.2.2",
+       "createdAt": "2026-08-24T14:03:05Z",
+       "publishedAt": "2026-08-24T14:03:18Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "f19e7e0018e4650842f45e85a17062e3a3705829"
+       }
+      },
+      {
+       "tagName": "v0.2.1",
+       "createdAt": "2026-08-23T23:47:29Z",
+       "publishedAt": "2026-08-23T23:47:51Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "82424dc8571ef47215cac342696a36faabd07bca"
+       }
+      },
+      {
+       "tagName": "v0.2.0",
+       "createdAt": "2026-08-23T21:23:40Z",
+       "publishedAt": "2026-08-23T21:31:31Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "256db9498261bf0c657551de37ae588c3ecab205"
+       }
+      },
+      {
+       "tagName": "v0.1.10",
+       "createdAt": "2026-08-14T15:15:46Z",
+       "publishedAt": "2026-08-16T02:34:28Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "f68fc8bb0efe8027a99531b90c555a77bc6fabd7"
+       }
+      },
+      {
+       "tagName": "v0.1.9",
+       "createdAt": "2026-06-30T04:37:29Z",
+       "publishedAt": "2026-07-02T04:01:05Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "a2a190cbfe04c7266102484443701c4834a162c6"
+       }
+      },
+      {
+       "tagName": "v0.1.7",
+       "createdAt": "2026-05-14T04:02:16Z",
+       "publishedAt": "2026-05-17T02:19:34Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "5115da8e515ee8a76cf676e78bc2d351e14abc82"
+       }
+      },
+      {
+       "tagName": "v0.1.6",
+       "createdAt": "2026-05-13T13:17:26Z",
+       "publishedAt": "2026-05-16T09:09:07Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "3ad1970ba476ff586e1fba2d4dce37100727eec7"
+       }
+      },
+      {
+       "tagName": "v0.1.5",
+       "createdAt": "2026-05-13T08:50:20Z",
+       "publishedAt": "2026-05-16T06:35:27Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "eff82d4ba59557c29fdfa81ad92050878122d921"
+       }
+      },
+      {
+       "tagName": "v0.1.4",
+       "createdAt": "2026-05-13T08:12:36Z",
+       "publishedAt": "2026-05-16T06:15:29Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "fd120176906a4b34bbdcb49c3aed318afe6c2189"
+       }
+      }
+     ]
+    },
+    "refs": {
+     "totalCount": 15,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "MTU"
+     },
+     "nodes": [
+      {
+       "name": "v0.3.0",
+       "target": {
+        "__typename": "Tag",
+        "oid": "3914b87484cea48fc34debe113e1fcb4138579d4",
+        "tagger": {
+         "date": "2026-09-15T20:18:17-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "31bedd53f8f7164f36c6929bd53059e40400520e",
+         "committedDate": "2026-09-16T00:16:01Z"
+        }
+       }
+      },
+      {
+       "name": "v0.2.4",
+       "target": {
+        "__typename": "Tag",
+        "oid": "ea0ab080a077e8e5854bbecf2bf9644badff81bf",
+        "tagger": {
+         "date": "2026-09-10T05:43:53-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "4c90f0625878a1db943ffb9720d570fbe814251d",
+         "committedDate": "2026-09-10T09:43:18Z"
+        }
+       }
+      },
+      {
+       "name": "v0.2.3",
+       "target": {
+        "__typename": "Tag",
+        "oid": "38662916851d9c5438fae5bfbe622fb958b7aca8",
+        "tagger": {
+         "date": "2026-09-07T16:35:18-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "0feebc55fed8db4d596f330742fe11ca4cb70764",
+         "committedDate": "2026-09-07T20:29:52Z"
+        }
+       }
+      },
+      {
+       "name": "v0.2.2",
+       "target": {
+        "__typename": "Tag",
+        "oid": "806990b15696b5fd65ff40f1d05b68fc95e43d7d",
+        "tagger": {
+         "date": "2026-08-24T10:03:05-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "f19e7e0018e4650842f45e85a17062e3a3705829",
+         "committedDate": "2026-08-24T14:03:03Z"
+        }
+       }
+      },
+      {
+       "name": "v0.2.1",
+       "target": {
+        "__typename": "Tag",
+        "oid": "45d3cacd6d5fadf8c86379baef8b7ac88626285f",
+        "tagger": {
+         "date": "2026-08-23T19:47:29-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "82424dc8571ef47215cac342696a36faabd07bca",
+         "committedDate": "2026-08-23T23:47:29Z"
+        }
+       }
+      },
+      {
+       "name": "v0.2.0",
+       "target": {
+        "__typename": "Tag",
+        "oid": "4e0f2fa1e2b8ef04b4c4a6a55f08d920a965152f",
+        "tagger": {
+         "date": "2026-08-23T17:23:40-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "256db9498261bf0c657551de37ae588c3ecab205",
+         "committedDate": "2026-08-23T20:50:08Z"
+        }
+       }
+      },
+      {
+       "name": "v0.1.10",
+       "target": {
+        "__typename": "Commit",
+        "oid": "f68fc8bb0efe8027a99531b90c555a77bc6fabd7",
+        "committedDate": "2026-08-14T15:15:46Z"
+       }
+      },
+      {
+       "name": "v0.1.9",
+       "target": {
+        "__typename": "Tag",
+        "oid": "32f3987dbac85d4a1fc204d5ec91b901c84d98b9",
+        "tagger": {
+         "date": "2026-06-30T00:37:29-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "a2a190cbfe04c7266102484443701c4834a162c6",
+         "committedDate": "2026-06-30T04:35:55Z"
+        }
+       }
+      },
+      {
+       "name": "v0.1.7",
+       "target": {
+        "__typename": "Tag",
+        "oid": "f171b270050ab245fdd0e6e2c0bc7c7c659a4444",
+        "tagger": {
+         "date": "2026-05-14T00:02:16-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "5115da8e515ee8a76cf676e78bc2d351e14abc82",
+         "committedDate": "2026-05-14T04:02:12Z"
+        }
+       }
+      },
+      {
+       "name": "v0.1.6",
+       "target": {
+        "__typename": "Tag",
+        "oid": "c3322e2fd39b1519484a8a083c04639a7f21212f",
+        "tagger": {
+         "date": "2026-05-13T09:17:26-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "3ad1970ba476ff586e1fba2d4dce37100727eec7",
+         "committedDate": "2026-05-13T13:17:04Z"
+        }
+       }
+      },
+      {
+       "name": "v0.1.5",
+       "target": {
+        "__typename": "Commit",
+        "oid": "eff82d4ba59557c29fdfa81ad92050878122d921",
+        "committedDate": "2026-05-13T08:50:20Z"
+       }
+      },
+      {
+       "name": "v0.1.4",
+       "target": {
+        "__typename": "Commit",
+        "oid": "fd120176906a4b34bbdcb49c3aed318afe6c2189",
+        "committedDate": "2026-05-13T08:12:36Z"
+       }
+      },
+      {
+       "name": "v0.1.3",
+       "target": {
+        "__typename": "Tag",
+        "oid": "6ae0c4f4ea8879867ef67ef03ae29006dfb31820",
+        "tagger": {
+         "date": "2026-03-22T00:20:31-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "4cea89da825d10d0f42debf1a7303bee15d9c12c",
+         "committedDate": "2026-03-22T04:20:03Z"
+        }
+       }
+      },
+      {
+       "name": "v0.1.2",
+       "target": {
+        "__typename": "Commit",
+        "oid": "6b1f04446d99ca6ab3d047dc1a5949093791cce7",
+        "committedDate": "2026-03-02T06:34:07Z"
+       }
+      },
+      {
+       "name": "v0.1.1",
+       "target": {
+        "__typename": "Commit",
+        "oid": "98f296ca097085729642f7c234435bc5908b68d9",
+        "committedDate": "2026-02-23T01:45:15Z"
+       }
+      }
+     ]
+    },
+    "pin": {
+     "oid": "026f60b28784ca77c5b8e47e3dba9b22d154b4d9",
+     "committedDate": "2026-09-22T04:29:33Z"
+    },
+    "pinRoot": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "01e7d0f6fd8d762adc136a52a8be4aa5385dd46e",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "f5c9bb20ee6bcc1e798add6978bfce417afe58e8",
+       "type": "tree"
+      },
+      {
+       "name": ".github",
+       "oid": "eedde25798de02d2e82509f978de1836af7a154f",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "9977d70dd386a254a495025382d71a4717a2ac31",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "a1517d43b87cc7f6a9952f2686c953f6ea15fa3b",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "63e8db1f4e11acb664bcb1a4be46d31d787d231a",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "93a77901eec5aef9db283d65a6ea65f98a7dd7f9",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "c34cb8bf1db1501a01e9232470cca4caabaed7af",
+       "type": "blob"
+      },
+      {
+       "name": "docs",
+       "oid": "786e8aad3a2c276151c9c59fc7ed22b0aae8931d",
+       "type": "tree"
+      },
+      {
+       "name": "fad_illustration.webp",
+       "oid": "47887f31e7676ad056acce28015c1d242bee5b99",
+       "type": "blob"
+      },
+      {
+       "name": "fixtures",
+       "oid": "7bfb2120392ed3e06655bd4b97e51998e995392e",
+       "type": "tree"
+      },
+      {
+       "name": "gh_og_share_image.png",
+       "oid": "fcfaaa41ebadf4426953299ab649d64ca04c7ffb",
+       "type": "blob"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "45da545f8b47809154191d5c34e50da349c0ae9d",
+       "type": "blob"
+      },
+      {
+       "name": "src",
+       "oid": "503a1b6066685412be35fa8c11f35f8a71cfc612",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "8b518b42c5d6706fbada370d9ae8b472d72dd67e",
+       "type": "tree"
+      }
+     ]
+    },
+    "pinWf": {
+     "entries": [
+      {
+       "name": "ci.yml",
+       "type": "blob"
+      },
+      {
+       "name": "codex-exclusions.yml",
+       "type": "blob"
+      },
+      {
+       "name": "codex-read-integrity.yml",
+       "type": "blob"
+      },
+      {
+       "name": "release.yml",
+       "type": "blob"
+      },
+      {
+       "name": "validate-codex-prompt-patch.yml",
+       "type": "blob"
+      }
+     ]
+    }
+   },
+   "compare": {
+    "http_status": 200,
+    "body": {
+     "status": "ahead",
+     "ahead_by": 1,
+     "behind_by": 0
+    }
+   }
+  },
+  "franken_alignment": {
+   "graphql": {
+    "databaseId": 1359645474,
+    "name": "franken_alignment",
+    "isArchived": false,
+    "defaultBranchRef": {
+     "name": "main",
+     "target": {
+      "oid": "542b1460e94e8daf4f39ec97f88b575d59f45450",
+      "committedDate": "2026-09-25T09:00:00Z"
+     }
+    },
+    "licenseInfo": {
+     "spdxId": "NOASSERTION"
+    },
+    "root": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "82012762922806d15853371e59674c14f6892465",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "4e0dc1aa08c6ec9f5c62ebf7c2a005bdcbb273b6",
+       "type": "tree"
+      },
+      {
+       "name": ".gitattributes",
+       "oid": "2bb39bee174058b23e88739e24e71e0bd17618e5",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "7efba20446f813968a32b776a0b650479d1a8fad",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "50dac939b14454b9ea53e4aba37416377e157c3c",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "75bc46deb8de7a83400b595fbf7d6f2cd2623635",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "e2c387de96bd69d462032340d9de60c45743fefd",
+       "type": "blob"
+      },
+      {
+       "name": "COMPREHENSIVE_PLAN_FOR_THE_DESIGN_OF_FRANKENALIGNMENT.md",
+       "oid": "6940957272cda15d5ddd9d63f0ed61552c855d54",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "23b9f4f31db65b129725023c76b3b030570d20bc",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "ce690d89678cc62dd340c8ceeda84dd1379cfec8",
+       "type": "blob"
+      },
+      {
+       "name": "IMPLEMENTATION_STATUS.md",
+       "oid": "e8a0198aff64aeea6929aa08acdd7bc6661f50d8",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "44a5c30df7f62c9ab8f05d6d3fb1a82e8050145c",
+       "type": "blob"
+      },
+      {
+       "name": "SECURITY.md",
+       "oid": "7c57e65cad5c1c7f428e34f14cd1fab358276b5e",
+       "type": "blob"
+      },
+      {
+       "name": "artifacts",
+       "oid": "53be119958e99a05e434cfa2bdc0cfcd5c7e4546",
+       "type": "tree"
+      },
+      {
+       "name": "crates",
+       "oid": "4ad89be7eb2714ab3a0825a6c2858d285c0d9cf4",
+       "type": "tree"
+      },
+      {
+       "name": "docs",
+       "oid": "957e5e5c14411326fab35e6cb4366521bb78e431",
+       "type": "tree"
+      },
+      {
+       "name": "examples",
+       "oid": "68f0e5e7226450947f9e45a3bbc2424b8e769266",
+       "type": "tree"
+      },
+      {
+       "name": "franken_alignment_illustration.webp",
+       "oid": "c5d79360a49ebbe56cece245db6f22141a461bac",
+       "type": "blob"
+      },
+      {
+       "name": "gh_og_share_image.png",
+       "oid": "39b28923514bfa9bcb98969bb5f4397e8a9aa417",
+       "type": "blob"
+      },
+      {
+       "name": "registry",
+       "oid": "0f8ef1e3a2553874ad512a9f8cf43b758caac073",
+       "type": "tree"
+      },
+      {
+       "name": "release",
+       "oid": "fcdd5f906cf384268abd2299b20786fd485ef5fb",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "fe34dcc08ed3ee13fb1b5a38dbea99c72ad8b0e7",
+       "type": "blob"
+      },
+      {
+       "name": "schemas",
+       "oid": "fc381a4bdb6b1c5ebc330f08c6ae80d21b40dbf6",
+       "type": "tree"
+      },
+      {
+       "name": "scripts",
+       "oid": "4116fdfd2493588c1a2f05fbfddfdb11ab1ac19f",
+       "type": "tree"
+      },
+      {
+       "name": "xtask",
+       "oid": "c058a304741b5756a03ba2515a8b97cecb0c1bdc",
+       "type": "tree"
+      }
+     ]
+    },
+    "wf": null,
+    "releases": {
+     "totalCount": 0,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": []
+    },
+    "refs": {
+     "totalCount": 0,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": []
+    },
+    "pin": {
+     "oid": "d05cb8c8dcbf1e5057b9ba208ad3921e8107a487",
+     "committedDate": "2026-09-22T15:13:39Z"
+    },
+    "pinRoot": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "82012762922806d15853371e59674c14f6892465",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "4e0dc1aa08c6ec9f5c62ebf7c2a005bdcbb273b6",
+       "type": "tree"
+      },
+      {
+       "name": ".gitattributes",
+       "oid": "2bb39bee174058b23e88739e24e71e0bd17618e5",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "7efba20446f813968a32b776a0b650479d1a8fad",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "50dac939b14454b9ea53e4aba37416377e157c3c",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "75bc46deb8de7a83400b595fbf7d6f2cd2623635",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "e2c387de96bd69d462032340d9de60c45743fefd",
+       "type": "blob"
+      },
+      {
+       "name": "COMPREHENSIVE_PLAN_FOR_THE_DESIGN_OF_FRANKENALIGNMENT.md",
+       "oid": "6940957272cda15d5ddd9d63f0ed61552c855d54",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "23b9f4f31db65b129725023c76b3b030570d20bc",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "ce690d89678cc62dd340c8ceeda84dd1379cfec8",
+       "type": "blob"
+      },
+      {
+       "name": "IMPLEMENTATION_STATUS.md",
+       "oid": "e8a0198aff64aeea6929aa08acdd7bc6661f50d8",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "44a5c30df7f62c9ab8f05d6d3fb1a82e8050145c",
+       "type": "blob"
+      },
+      {
+       "name": "SECURITY.md",
+       "oid": "7c57e65cad5c1c7f428e34f14cd1fab358276b5e",
+       "type": "blob"
+      },
+      {
+       "name": "artifacts",
+       "oid": "574da0ed519dd77be85eb9148cdafa9da4e4f622",
+       "type": "tree"
+      },
+      {
+       "name": "crates",
+       "oid": "64d5f18a4f3393ebeeb4af3ac880285f7c8e96ea",
+       "type": "tree"
+      },
+      {
+       "name": "docs",
+       "oid": "43d922a03ff884f9edd9df657d2af2a7cf071f81",
+       "type": "tree"
+      },
+      {
+       "name": "examples",
+       "oid": "68f0e5e7226450947f9e45a3bbc2424b8e769266",
+       "type": "tree"
+      },
+      {
+       "name": "franken_alignment_illustration.webp",
+       "oid": "c5d79360a49ebbe56cece245db6f22141a461bac",
+       "type": "blob"
+      },
+      {
+       "name": "gh_og_share_image.png",
+       "oid": "39b28923514bfa9bcb98969bb5f4397e8a9aa417",
+       "type": "blob"
+      },
+      {
+       "name": "registry",
+       "oid": "0f8ef1e3a2553874ad512a9f8cf43b758caac073",
+       "type": "tree"
+      },
+      {
+       "name": "release",
+       "oid": "fcdd5f906cf384268abd2299b20786fd485ef5fb",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "fe34dcc08ed3ee13fb1b5a38dbea99c72ad8b0e7",
+       "type": "blob"
+      },
+      {
+       "name": "schemas",
+       "oid": "fc381a4bdb6b1c5ebc330f08c6ae80d21b40dbf6",
+       "type": "tree"
+      },
+      {
+       "name": "scripts",
+       "oid": "4116fdfd2493588c1a2f05fbfddfdb11ab1ac19f",
+       "type": "tree"
+      },
+      {
+       "name": "xtask",
+       "oid": "c058a304741b5756a03ba2515a8b97cecb0c1bdc",
+       "type": "tree"
+      }
+     ]
+    },
+    "pinWf": null
+   },
+   "compare": {
+    "http_status": 200,
+    "body": {
+     "status": "ahead",
+     "ahead_by": 31,
+     "behind_by": 0
+    }
+   }
+  },
+  "franken_code_browser": {
+   "graphql": {
+    "databaseId": 1367629743,
+    "name": "franken_code_browser",
+    "isArchived": false,
+    "defaultBranchRef": {
+     "name": "main",
+     "target": {
+      "oid": "95570f6f42771a01e06f0dbd38b9cf0f308685ad",
+      "committedDate": "2026-09-25T09:00:00Z"
+     }
+    },
+    "licenseInfo": {
+     "spdxId": "NOASSERTION"
+    },
+    "root": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "e5af0bfee1f596de02af4bcbcbee2d2517f8b986",
+       "type": "tree"
+      },
+      {
+       "name": ".editorconfig",
+       "oid": "094dd5c50dc70158c49560b7a453fab60aa12a2a",
+       "type": "blob"
+      },
+      {
+       "name": ".gitattributes",
+       "oid": "6d85323470c424cdd69c9f276fc0b7fd70d6c727",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "430fc2a4a9281d84d9a78476209be2fe5f52c1fa",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "6b0234faaf0b8ccd60427edac531f83f3ede755d",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "0d2bf3a1e8b1c63b5dc381f70a03b8b97c312386",
+       "type": "blob"
+      },
+      {
+       "name": "APP_STORE_LISTING.md",
+       "oid": "000af94d765c64b2377d1af429b9aa40c2dda846",
+       "type": "blob"
+      },
+      {
+       "name": "ARCHITECTURE.md",
+       "oid": "c3ea3e3e3df117f3f1d1accbe16e78491dceffc2",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "b59bf42b9ccba3681d9fe15bafcb05e0aca5f592",
+       "type": "blob"
+      },
+      {
+       "name": "COMPREHENSIVE_PLAN_FOR_FRANKEN_CODE_BROWSER.md",
+       "oid": "62c62da235c8f2d09fa882b30a4ed77d7d951894",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "814bb742cb515b1f9829001a064c47937febde26",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "8b29b7a9550e07836800c77d7cd7552ea3837d34",
+       "type": "blob"
+      },
+      {
+       "name": "DEPENDENCY_CONSTITUTION.md",
+       "oid": "7c6b833ae160d2486ff51ac6a8f49dab5f49fd69",
+       "type": "blob"
+      },
+      {
+       "name": "DISTRIBUTION.md",
+       "oid": "b941ae67fb5bde309836237507a7fa0d7d5d8370",
+       "type": "blob"
+      },
+      {
+       "name": "IMPLEMENTATION_STATUS.md",
+       "oid": "5422bbfb8a1e19ad0c007423838be552b5e4936a",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "LOCAL_QUALIFICATION_AND_RELEASE.md",
+       "oid": "ff9d6b006d3f6364accb11b85274bd270dd5ff62",
+       "type": "blob"
+      },
+      {
+       "name": "PRIVACY.md",
+       "oid": "8bab3a8c9f8c806406ba4274a3d5eb6f89e7fe85",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "be72dbef09bf2f8e8a6fb4786e57f3b97e68ef3c",
+       "type": "blob"
+      },
+      {
+       "name": "ROADMAP.md",
+       "oid": "83f4875bc3bc8094114bc4b62c9bbae1e9eaec0d",
+       "type": "blob"
+      },
+      {
+       "name": "SECURITY.md",
+       "oid": "df78158af8739e93dc7bc67272107ce20b9adbd2",
+       "type": "blob"
+      },
+      {
+       "name": "assets",
+       "oid": "89eda5c01ade4aa4c5604e379a4e159cee0b1360",
+       "type": "tree"
+      },
+      {
+       "name": "crates",
+       "oid": "dd4c1f791f8ab22cbf05c192525dea2d3a8109d2",
+       "type": "tree"
+      },
+      {
+       "name": "diag",
+       "oid": "ffcd940dda2ed29444d9787fd6c6d8cffaf02113",
+       "type": "tree"
+      },
+      {
+       "name": "examples",
+       "oid": "c176c70283d6d943df0f85a2152b34c2a4109f8b",
+       "type": "tree"
+      },
+      {
+       "name": "ledger-receipts",
+       "oid": "ab41440c10c4f1c3250aae6e1711ce9acd5caa7b",
+       "type": "tree"
+      },
+      {
+       "name": "native",
+       "oid": "c822b631c00f509d07831c28ace6ce1aa02dff45",
+       "type": "tree"
+      },
+      {
+       "name": "probes",
+       "oid": "b891f70fc5d780c9a0e3a9d120fa8311900b7d85",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "65a0b84879fa757ef91cf931bf3fb7ab2301401e",
+       "type": "blob"
+      },
+      {
+       "name": "rustfmt.toml",
+       "oid": "ebae49730075d1d70db9bd6323b67144422dd0d6",
+       "type": "blob"
+      },
+      {
+       "name": "scripts",
+       "oid": "f76863d0516209c380bccb8ab15408011a392387",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "5874c3a6c3acfd06986e5155193b15b7129c5662",
+       "type": "tree"
+      }
+     ]
+    },
+    "wf": null,
+    "releases": {
+     "totalCount": 2,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "Y3Vyc29yOnYyOpK0MjAyNi0wOS0yM1QyMjowMjozMVrOF4y8sw=="
+     },
+     "nodes": [
+      {
+       "tagName": "v0.1.1",
+       "createdAt": "2026-09-25T08:55:00Z",
+       "publishedAt": "2026-09-25T08:58:00Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "95570f6f42771a01e06f0dbd38b9cf0f308685ad"
+       }
+      },
+      {
+       "tagName": "v0.1.0",
+       "createdAt": "2026-09-23T22:02:31Z",
+       "publishedAt": "2026-09-23T22:05:12Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "c7c531061e250d81afc58da7cb35ec0b4e7129cb"
+       }
+      }
+     ]
+    },
+    "refs": {
+     "totalCount": 2,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "MQ"
+     },
+     "nodes": [
+      {
+       "name": "v0.1.1",
+       "target": {
+        "__typename": "Commit",
+        "oid": "95570f6f42771a01e06f0dbd38b9cf0f308685ad",
+        "committedDate": "2026-09-25T08:55:00Z"
+       }
+      },
+      {
+       "name": "v0.1.0",
+       "target": {
+        "__typename": "Commit",
+        "oid": "c7c531061e250d81afc58da7cb35ec0b4e7129cb",
+        "committedDate": "2026-09-23T22:02:31Z"
+       }
+      }
+     ]
+    },
+    "pin": {
+     "oid": "cc8330d18b8da7b4ebd3571458fd51ef5d9d0a3e",
+     "committedDate": "2026-09-22T14:39:48Z"
+    },
+    "pinRoot": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "5a0161d3554d79e80e0e11e6561af6ef4aa8bece",
+       "type": "tree"
+      },
+      {
+       "name": ".editorconfig",
+       "oid": "094dd5c50dc70158c49560b7a453fab60aa12a2a",
+       "type": "blob"
+      },
+      {
+       "name": ".gitattributes",
+       "oid": "6d85323470c424cdd69c9f276fc0b7fd70d6c727",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "430fc2a4a9281d84d9a78476209be2fe5f52c1fa",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "6b0234faaf0b8ccd60427edac531f83f3ede755d",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "4156614c5ef71221ca847161d7399877c0f888a4",
+       "type": "blob"
+      },
+      {
+       "name": "ARCHITECTURE.md",
+       "oid": "e288b76cfdcbf707754d6bae2bbafdd3e0318685",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "610d84056bc8cce0682b8b826391732042495731",
+       "type": "blob"
+      },
+      {
+       "name": "COMPREHENSIVE_PLAN_FOR_FRANKEN_CODE_BROWSER.md",
+       "oid": "24ec83af7e5b39da60b35e25c7d948bd3048dbf4",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "e8c360c20a5de58f31ddef0d29755eaa7904a84b",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "de659cf69f0aa1880d84ed9d492c37f9ed663a7a",
+       "type": "blob"
+      },
+      {
+       "name": "DEPENDENCY_CONSTITUTION.md",
+       "oid": "115166248d5936b810c956967778a653e515823c",
+       "type": "blob"
+      },
+      {
+       "name": "IMPLEMENTATION_STATUS.md",
+       "oid": "3f149f76ad4bb5f2ab6189a1e91af4f0ba039f3b",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "LOCAL_QUALIFICATION_AND_RELEASE.md",
+       "oid": "ff9d6b006d3f6364accb11b85274bd270dd5ff62",
+       "type": "blob"
+      },
+      {
+       "name": "PRIVACY.md",
+       "oid": "a087ab9ae133cd50503862c6564c79ab589842a5",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "6c67dab9bc7af2af28ae287c57a770baa062bcf3",
+       "type": "blob"
+      },
+      {
+       "name": "ROADMAP.md",
+       "oid": "83f4875bc3bc8094114bc4b62c9bbae1e9eaec0d",
+       "type": "blob"
+      },
+      {
+       "name": "SECURITY.md",
+       "oid": "715ae54b1891b870b2def3c4920e58f6272f53e5",
+       "type": "blob"
+      },
+      {
+       "name": "crates",
+       "oid": "5e05d07882297746537d212d5e84053097f79145",
+       "type": "tree"
+      },
+      {
+       "name": "diag",
+       "oid": "ffcd940dda2ed29444d9787fd6c6d8cffaf02113",
+       "type": "tree"
+      },
+      {
+       "name": "examples",
+       "oid": "c176c70283d6d943df0f85a2152b34c2a4109f8b",
+       "type": "tree"
+      },
+      {
+       "name": "ledger-receipts",
+       "oid": "ab41440c10c4f1c3250aae6e1711ce9acd5caa7b",
+       "type": "tree"
+      },
+      {
+       "name": "probes",
+       "oid": "b891f70fc5d780c9a0e3a9d120fa8311900b7d85",
+       "type": "tree"
+      },
+      {
+       "name": "rustfmt.toml",
+       "oid": "ebae49730075d1d70db9bd6323b67144422dd0d6",
+       "type": "blob"
+      },
+      {
+       "name": "scripts",
+       "oid": "17d6fbcecbdfd03f90591c87cce8888e45547e34",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "5874c3a6c3acfd06986e5155193b15b7129c5662",
+       "type": "tree"
+      }
+     ]
+    },
+    "pinWf": null
+   },
+   "compare": {
+    "http_status": 200,
+    "body": {
+     "status": "ahead",
+     "ahead_by": 38,
+     "behind_by": 0
+    }
+   }
+  },
+  "franken_markdown": {
+   "graphql": {
+    "databaseId": 1281851258,
+    "name": "franken_markdown",
+    "isArchived": false,
+    "defaultBranchRef": {
+     "name": "main",
+     "target": {
+      "oid": "5ea89514f8a96aadfa119770cf6e7a29bf730d5d",
+      "committedDate": "2026-09-25T09:00:00Z"
+     }
+    },
+    "licenseInfo": {
+     "spdxId": "NOASSERTION"
+    },
+    "root": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "600a1ed3ead67304925b224fa16f7260e6297933",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "f5c9bb20ee6bcc1e798add6978bfce417afe58e8",
+       "type": "tree"
+      },
+      {
+       "name": ".gitattributes",
+       "oid": "162f7b093f407846436a80e7379c77ee488294f1",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "f58cbc3866150ecdf61a1e5c9e7f9fd41652730d",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "df1a2e7f7ef4a382c9513f8651ad3a2989c45d50",
+       "type": "blob"
+      },
+      {
+       "name": ".skill-loop-progress.md",
+       "oid": "c6727ec59b63541287358f3249befe91eaa95465",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "8e9425dd6b4e55cedab97cc1632f704daa2bbbe7",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "6935b564a6ab612a577f437b9705d31ce70c61cb",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "f4c3d8eb865eea77c3f225ed551f8b703d503dfa",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "0ecb3a9a4e602a6ac425b916c657bb0bd2ce403d",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "d705894d09d6072d01b73240e7cea09a2b09cbc4",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "33d98aaa18dc98c9059ac2aa63c58ce4321deec9",
+       "type": "blob"
+      },
+      {
+       "name": "completions",
+       "oid": "2b1a403aa0ef9fb67770454afb139cdb282a4ef0",
+       "type": "tree"
+      },
+      {
+       "name": "data",
+       "oid": "6c33b9bb0916c5fe5ee5380f3236cf39b09642b7",
+       "type": "tree"
+      },
+      {
+       "name": "docs",
+       "oid": "e2446bbda786c36a3f7d396c5b69bd23aaa57f00",
+       "type": "tree"
+      },
+      {
+       "name": "examples",
+       "oid": "e763c51170e0f16f83396d97e4c4e8510088e097",
+       "type": "tree"
+      },
+      {
+       "name": "fmd-font",
+       "oid": "513a87c2b00e58b5e0ba1b2def6b0386271e816a",
+       "type": "tree"
+      },
+      {
+       "name": "fmd-math",
+       "oid": "252265b72bae5251b3a196ceea14cf351fd84256",
+       "type": "tree"
+      },
+      {
+       "name": "franken_markdown_illustration.webp",
+       "oid": "b08c452e702ca3ca9b85686947a058bf5caa4fd3",
+       "type": "blob"
+      },
+      {
+       "name": "fuzz",
+       "oid": "5a49a0e12c7c35527a9c00864cbea8cd40bf37a9",
+       "type": "tree"
+      },
+      {
+       "name": "gh_og_share_image.jpg",
+       "oid": "20cccb6c19c913f2250ca87d26d25c15392aeebc",
+       "type": "blob"
+      },
+      {
+       "name": "install.ps1",
+       "oid": "9f072b66538c19f0585f8e839f07fef7011f8cfb",
+       "type": "blob"
+      },
+      {
+       "name": "install.sh",
+       "oid": "87be73958d9b1501fc2b2597adac1580791a8309",
+       "type": "blob"
+      },
+      {
+       "name": "ios",
+       "oid": "5fe5255ffc39d334195f63f2b30d3d4da3956bee",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "8f3b56a587ce92a056af56f0e4eb7ffaa0c5fa0e",
+       "type": "blob"
+      },
+      {
+       "name": "scripts",
+       "oid": "e2dba5041440b94ee95a804fdc109d16df5e5bee",
+       "type": "tree"
+      },
+      {
+       "name": "src",
+       "oid": "5cda88aaba12ef61c0c0f68a5667ab4e0352529c",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "cef101b89021eafe585cd7a5d7a847baedc4e061",
+       "type": "tree"
+      },
+      {
+       "name": "wasm",
+       "oid": "35ca3598c472ee51ddb87ed69d094fd91c7db94b",
+       "type": "tree"
+      }
+     ]
+    },
+    "wf": {
+     "entries": [
+      {
+       "name": "release-wasm.yml",
+       "type": "blob"
+      }
+     ]
+    },
+    "releases": {
+     "totalCount": 12,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "Y3Vyc29yOnYyOpK0MjAyNi0wNi0zMFQwMTo0NjozN1rOFKho_A=="
+     },
+     "nodes": [
+      {
+       "tagName": "v0.4.5",
+       "createdAt": "2026-09-15T22:07:17Z",
+       "publishedAt": "2026-09-15T22:21:21Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "beffa523d42e153026c3d1d11578f54df2b5a1d8"
+       }
+      },
+      {
+       "tagName": "v0.4.4",
+       "createdAt": "2026-09-15T21:08:04Z",
+       "publishedAt": "2026-09-15T21:17:05Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "d4dc7cbdbe6f155b92c91bc796bcb0bec1aa4352"
+       }
+      },
+      {
+       "tagName": "v0.4.3",
+       "createdAt": "2026-08-31T20:35:38Z",
+       "publishedAt": "2026-08-31T21:01:20Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "67d0c7c2926efbeecaf395c6be95a1095cea09ec"
+       }
+      },
+      {
+       "tagName": "v0.4.2",
+       "createdAt": "2026-08-28T23:21:12Z",
+       "publishedAt": "2026-08-28T23:23:12Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "5637bad86e3c0deacab6411a734715015b143a12"
+       }
+      },
+      {
+       "tagName": "v0.4.1",
+       "createdAt": "2026-08-28T21:53:31Z",
+       "publishedAt": "2026-08-28T22:02:08Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "e26de3d9e547a5e5aebc6659888bc2f40ac25e60"
+       }
+      },
+      {
+       "tagName": "v0.4.0",
+       "createdAt": "2026-08-25T01:05:22Z",
+       "publishedAt": "2026-08-25T01:18:46Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "b2422ecaf0ce864c1ed5fb319551753fbd5f3ac9"
+       }
+      },
+      {
+       "tagName": "v0.3.4",
+       "createdAt": "2026-07-10T19:52:30Z",
+       "publishedAt": "2026-07-11T00:04:07Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "562f4bd91dcf9b87abe36caf4db8a70784018dee"
+       }
+      },
+      {
+       "tagName": "v0.3.3",
+       "createdAt": "2026-07-09T17:05:46Z",
+       "publishedAt": "2026-07-09T17:41:40Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "c4c9865c8650581fc068ee98bfb94575a4ed35ef"
+       }
+      },
+      {
+       "tagName": "v0.3.2",
+       "createdAt": "2026-07-08T07:27:44Z",
+       "publishedAt": "2026-07-08T07:33:01Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "e079b881af70cf028e3dfe93f065be11df6d5340"
+       }
+      },
+      {
+       "tagName": "v0.3.1",
+       "createdAt": "2026-07-07T22:16:41Z",
+       "publishedAt": "2026-07-07T22:24:11Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "2dd42dcfdfae595fea636b058f9eba8493c8b153"
+       }
+      },
+      {
+       "tagName": "v0.2.0",
+       "createdAt": "2026-07-03T14:56:05Z",
+       "publishedAt": "2026-07-03T15:16:09Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "2d51cc842a85ee50a9a413ae4db3d17c9dee9aa0"
+       }
+      },
+      {
+       "tagName": "v0.1.0",
+       "createdAt": "2026-06-30T01:46:37Z",
+       "publishedAt": "2026-06-30T02:03:07Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "128ac1fb274db7a49f0e7f1a39db62046fb7c446"
+       }
+      }
+     ]
+    },
+    "refs": {
+     "totalCount": 13,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "MTM"
+     },
+     "nodes": [
+      {
+       "name": "v0.4.5",
+       "target": {
+        "__typename": "Tag",
+        "oid": "28ded8ecfe7c61d70fe5bde6744c8b8fe34d357d",
+        "tagger": {
+         "date": "2026-09-15T18:07:17-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "beffa523d42e153026c3d1d11578f54df2b5a1d8",
+         "committedDate": "2026-09-15T22:02:19Z"
+        }
+       }
+      },
+      {
+       "name": "v0.4.4",
+       "target": {
+        "__typename": "Tag",
+        "oid": "3ab18d801c61395a1e27977d19f5dfba6f1ac072",
+        "tagger": {
+         "date": "2026-09-15T17:08:04-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "d4dc7cbdbe6f155b92c91bc796bcb0bec1aa4352",
+         "committedDate": "2026-09-15T21:05:38Z"
+        }
+       }
+      },
+      {
+       "name": "v0.4.3",
+       "target": {
+        "__typename": "Tag",
+        "oid": "eaaef28bdd05cde90fc2836f9b822906512599ae",
+        "tagger": {
+         "date": "2026-08-31T16:35:38-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "67d0c7c2926efbeecaf395c6be95a1095cea09ec",
+         "committedDate": "2026-08-31T20:35:21Z"
+        }
+       }
+      },
+      {
+       "name": "v0.4.2",
+       "target": {
+        "__typename": "Tag",
+        "oid": "e1f5dc601611e00b8daeed229c7518413f37660d",
+        "tagger": {
+         "date": "2026-08-28T19:21:12-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "5637bad86e3c0deacab6411a734715015b143a12",
+         "committedDate": "2026-08-28T23:05:42Z"
+        }
+       }
+      },
+      {
+       "name": "v0.4.1",
+       "target": {
+        "__typename": "Tag",
+        "oid": "e66e02073c0a9d41f58235336d51e5f5f5b9e3cf",
+        "tagger": {
+         "date": "2026-08-28T17:53:31-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "e26de3d9e547a5e5aebc6659888bc2f40ac25e60",
+         "committedDate": "2026-08-28T21:52:57Z"
+        }
+       }
+      },
+      {
+       "name": "v0.4.0",
+       "target": {
+        "__typename": "Tag",
+        "oid": "e1ae0cdda43b4cf24f6312d24ff405004d94223e",
+        "tagger": {
+         "date": "2026-08-24T21:05:22-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "b2422ecaf0ce864c1ed5fb319551753fbd5f3ac9",
+         "committedDate": "2026-08-25T00:32:16Z"
+        }
+       }
+      },
+      {
+       "name": "v0.3.4",
+       "target": {
+        "__typename": "Tag",
+        "oid": "1ca275ff5dcd14320adef2fc8845c31d66f79003",
+        "tagger": {
+         "date": "2026-07-10T15:52:30-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "562f4bd91dcf9b87abe36caf4db8a70784018dee",
+         "committedDate": "2026-07-10T19:52:11Z"
+        }
+       }
+      },
+      {
+       "name": "v0.3.3",
+       "target": {
+        "__typename": "Tag",
+        "oid": "e2c5d72c4d5651c83a95f6ff4536aaf27dc35cb9",
+        "tagger": {
+         "date": "2026-07-09T13:05:46-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "c4c9865c8650581fc068ee98bfb94575a4ed35ef",
+         "committedDate": "2026-07-09T17:05:09Z"
+        }
+       }
+      },
+      {
+       "name": "v0.3.2",
+       "target": {
+        "__typename": "Tag",
+        "oid": "f4787a689adb4ce116c5268aae97403d01d529bc",
+        "tagger": {
+         "date": "2026-07-08T03:27:44-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "e079b881af70cf028e3dfe93f065be11df6d5340",
+         "committedDate": "2026-07-08T07:27:43Z"
+        }
+       }
+      },
+      {
+       "name": "v0.3.1",
+       "target": {
+        "__typename": "Tag",
+        "oid": "d30e74d3a1d732a8d1ca54e6c1ad44528d5c21a4",
+        "tagger": {
+         "date": "2026-07-07T18:16:41-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "2dd42dcfdfae595fea636b058f9eba8493c8b153",
+         "committedDate": "2026-07-07T22:11:37Z"
+        }
+       }
+      },
+      {
+       "name": "v0.3.0",
+       "target": {
+        "__typename": "Tag",
+        "oid": "ba54fc5fbd683f0f76159c30846808b8ab6a4437",
+        "tagger": {
+         "date": "2026-07-07T17:37:33-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "1c6b387d2c2d7912c007cda191841f842ae92579",
+         "committedDate": "2026-07-07T21:37:12Z"
+        }
+       }
+      },
+      {
+       "name": "v0.2.0",
+       "target": {
+        "__typename": "Tag",
+        "oid": "4573de95a0384d1901ba395546fa30fe178cbe0d",
+        "tagger": {
+         "date": "2026-07-03T10:56:05-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "2d51cc842a85ee50a9a413ae4db3d17c9dee9aa0",
+         "committedDate": "2026-07-03T14:54:09Z"
+        }
+       }
+      },
+      {
+       "name": "v0.1.0",
+       "target": {
+        "__typename": "Tag",
+        "oid": "be9064ee7652409c9dd2803dd97512765efb7409",
+        "tagger": {
+         "date": "2026-06-29T21:46:37-04:00"
+        },
+        "target": {
+         "__typename": "Commit",
+         "oid": "128ac1fb274db7a49f0e7f1a39db62046fb7c446",
+         "committedDate": "2026-06-30T01:40:06Z"
+        }
+       }
+      }
+     ]
+    },
+    "pin": {
+     "oid": "88a6a99ed1ebc48c7910c28213005d8b35963079",
+     "committedDate": "2026-09-22T14:37:59Z"
+    },
+    "pinRoot": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "600a1ed3ead67304925b224fa16f7260e6297933",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "f5c9bb20ee6bcc1e798add6978bfce417afe58e8",
+       "type": "tree"
+      },
+      {
+       "name": ".gitattributes",
+       "oid": "162f7b093f407846436a80e7379c77ee488294f1",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "f58cbc3866150ecdf61a1e5c9e7f9fd41652730d",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "df1a2e7f7ef4a382c9513f8651ad3a2989c45d50",
+       "type": "blob"
+      },
+      {
+       "name": ".skill-loop-progress.md",
+       "oid": "c6727ec59b63541287358f3249befe91eaa95465",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "7141330a39da521a0fd464f3b8eeb3cad1cf06bc",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "6935b564a6ab612a577f437b9705d31ce70c61cb",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "f4c3d8eb865eea77c3f225ed551f8b703d503dfa",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "0ecb3a9a4e602a6ac425b916c657bb0bd2ce403d",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "01e691971cd6f43121dc827bcdc05a700ee6ec2a",
+       "type": "blob"
+      },
+      {
+       "name": "completions",
+       "oid": "2b1a403aa0ef9fb67770454afb139cdb282a4ef0",
+       "type": "tree"
+      },
+      {
+       "name": "data",
+       "oid": "6c33b9bb0916c5fe5ee5380f3236cf39b09642b7",
+       "type": "tree"
+      },
+      {
+       "name": "docs",
+       "oid": "876331ea6bc087810472a198440a5851f36336c9",
+       "type": "tree"
+      },
+      {
+       "name": "examples",
+       "oid": "e763c51170e0f16f83396d97e4c4e8510088e097",
+       "type": "tree"
+      },
+      {
+       "name": "fmd-font",
+       "oid": "513a87c2b00e58b5e0ba1b2def6b0386271e816a",
+       "type": "tree"
+      },
+      {
+       "name": "fmd-math",
+       "oid": "252265b72bae5251b3a196ceea14cf351fd84256",
+       "type": "tree"
+      },
+      {
+       "name": "franken_markdown_illustration.webp",
+       "oid": "b08c452e702ca3ca9b85686947a058bf5caa4fd3",
+       "type": "blob"
+      },
+      {
+       "name": "fuzz",
+       "oid": "5a49a0e12c7c35527a9c00864cbea8cd40bf37a9",
+       "type": "tree"
+      },
+      {
+       "name": "gh_og_share_image.jpg",
+       "oid": "20cccb6c19c913f2250ca87d26d25c15392aeebc",
+       "type": "blob"
+      },
+      {
+       "name": "install.ps1",
+       "oid": "9f072b66538c19f0585f8e839f07fef7011f8cfb",
+       "type": "blob"
+      },
+      {
+       "name": "install.sh",
+       "oid": "87be73958d9b1501fc2b2597adac1580791a8309",
+       "type": "blob"
+      },
+      {
+       "name": "ios",
+       "oid": "5fe5255ffc39d334195f63f2b30d3d4da3956bee",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "8f3b56a587ce92a056af56f0e4eb7ffaa0c5fa0e",
+       "type": "blob"
+      },
+      {
+       "name": "scripts",
+       "oid": "13247745f8c741e0dce0f13adc1956468b6e3711",
+       "type": "tree"
+      },
+      {
+       "name": "src",
+       "oid": "31ff2f2fdb9efcf26deddc75b69bf63b79592a16",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "e6951e7ccb0aa8b26591cb02916bb2d3b005d9a4",
+       "type": "tree"
+      },
+      {
+       "name": "wasm",
+       "oid": "21a4aa7ae7a813575112353488c5a79e822f1b71",
+       "type": "tree"
+      }
+     ]
+    },
+    "pinWf": {
+     "entries": [
+      {
+       "name": "release-wasm.yml",
+       "type": "blob"
+      }
+     ]
+    }
+   },
+   "compare": {
+    "http_status": 200,
+    "body": {
+     "status": "ahead",
+     "ahead_by": 43,
+     "behind_by": 0
+    }
+   }
+  },
+  "franken_node": {
+   "graphql": {
+    "databaseId": 1161313216,
+    "name": "franken_node",
+    "isArchived": false,
+    "defaultBranchRef": {
+     "name": "main",
+     "target": {
+      "oid": "b42c03dc39e94b9d6156c6db2ae534b8949cf373",
+      "committedDate": "2026-09-25T09:00:00Z"
+     }
+    },
+    "licenseInfo": {
+     "spdxId": "NOASSERTION"
+    },
+    "root": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "cfc3aab1b2bc4ee645f0f500036a215f5be6c4c7",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo-mutants.toml",
+       "oid": "dc389e20b295415ef9548a350faf9b93fb6b0585",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "db1bb75e7ac0feac4204ebc47cca48441a04d45e",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "9c0ac0a3c8a773d773b44b1426af9c606ee4cc65",
+       "type": "blob"
+      },
+      {
+       "name": ".rchignore",
+       "oid": "97706aed2e69b49aa799da6d2845af6ed590e492",
+       "type": "blob"
+      },
+      {
+       "name": ".ubsignore",
+       "oid": "3c63bb6f5b8919d2f98e940374d720daf35de2a9",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "296285c664f2ab52c693f224579a0ae5a671c451",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "6b28c02f3b969c361cb9d4bad9e63c7e95126ec6",
+       "type": "blob"
+      },
+      {
+       "name": "CONTRIBUTING.md",
+       "oid": "b99fa17394efa9f61acfa7384b5744ae0ff335a7",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.lock",
+       "oid": "09b62fa7c4a0ca11af70de585099ba717dd98140",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "0f0285fcdee013ead55390ff3bf3b311b87110ae",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "2d8b9fd8d8b64c341590938921df723231b72b06",
+       "type": "blob"
+      },
+      {
+       "name": "artifacts",
+       "oid": "6b945a8fe80f7f1c73a4aed929f51c66444ec7fa",
+       "type": "tree"
+      },
+      {
+       "name": "benchmarks",
+       "oid": "a997d296d927817e20bea91bdd9db49d4883dd4a",
+       "type": "tree"
+      },
+      {
+       "name": "capabilities",
+       "oid": "8b407db4b088ab941adf5efc5eb2eaee1f614bac",
+       "type": "tree"
+      },
+      {
+       "name": "config",
+       "oid": "171aa8ce0b5f3f3d015c7f62a13e815a7cc26853",
+       "type": "tree"
+      },
+      {
+       "name": "corpus",
+       "oid": "57b3ca06f9bdbde3d7c148765fd4e6084ef9fdf1",
+       "type": "tree"
+      },
+      {
+       "name": "crates",
+       "oid": "0908c54bdd0a40e4dd022241ac0e8a4e6abce65f",
+       "type": "tree"
+      },
+      {
+       "name": "deny.toml",
+       "oid": "dddcddddcf29fd7501386cb5ce741a4df6d2127f",
+       "type": "blob"
+      },
+      {
+       "name": "docs",
+       "oid": "8ded71bb68c1857ab5445366a9be61ce8eaad7a5",
+       "type": "tree"
+      },
+      {
+       "name": "fixtures",
+       "oid": "c2fa59a9c9c791609180043199ecb582f9ccd694",
+       "type": "tree"
+      },
+      {
+       "name": "fuzz",
+       "oid": "0e90e4cb9516a8b09109963e251f064d9fa7981f",
+       "type": "tree"
+      },
+      {
+       "name": "golden_outputs",
+       "oid": "8549cb50683dcaaecb72281a6b2378289531e78a",
+       "type": "tree"
+      },
+      {
+       "name": "install.ps1",
+       "oid": "03a503e7262218117caa2f85eef8400e36eeb4bb",
+       "type": "blob"
+      },
+      {
+       "name": "install.sh",
+       "oid": "da8b4ec2982d02c8fe55da0de2a1b5a99c4d6b8c",
+       "type": "blob"
+      },
+      {
+       "name": "packaging",
+       "oid": "8a838b5d8396bd23ca3b582f57fb89b5bbdb5cf5",
+       "type": "tree"
+      },
+      {
+       "name": "perf",
+       "oid": "23a6fbd76f52ddc2c04aae6f77de6b959652ff76",
+       "type": "tree"
+      },
+      {
+       "name": "schemas",
+       "oid": "2c49406b569da541c102f9348cd9d5bbf9986548",
+       "type": "tree"
+      },
+      {
+       "name": "scripts",
+       "oid": "2b453d2cb364fbb8949e5b73ed9e81e874eb3579",
+       "type": "tree"
+      },
+      {
+       "name": "sdk",
+       "oid": "3e526e35174b57fcd1127e903702e341147ce26f",
+       "type": "tree"
+      },
+      {
+       "name": "spec",
+       "oid": "ba0fb9e33de2788121474ec25d1430076213ede2",
+       "type": "tree"
+      },
+      {
+       "name": "src",
+       "oid": "7791fed05e51565fbb7259b0c4a4661f67fd071f",
+       "type": "tree"
+      },
+      {
+       "name": "tests",
+       "oid": "611360753c0db331eeed014c4b2573a935df300c",
+       "type": "tree"
+      },
+      {
+       "name": "tools",
+       "oid": "75ea704b4aff6995792105e534870399a962cfc7",
+       "type": "tree"
+      },
+      {
+       "name": "vectors",
+       "oid": "9cf1650b5017d4f890036b515c7c3df86dff68db",
+       "type": "tree"
+      }
+     ]
+    },
+    "wf": {
+     "entries": [
+      {
+       "name": "adjacent-substrate-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "aggregate-validators-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "asupersync-integration-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "atc-claim-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "benchmark-correctness-artifacts-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "benchmark-specs-package-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "bpet-claim-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "canonical-vector-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "change-summary-contract-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "claims-manifest-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "cli-goldens-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "closer-discipline-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "compat-corpus-pass-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "compatibility-threat-evidence-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "compromise-reduction-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "connector-conformance.yml",
+       "type": "blob"
+      },
+      {
+       "name": "corpus-process-supervision.yml",
+       "type": "blob"
+      },
+      {
+       "name": "corpus-success-admission.yml",
+       "type": "blob"
+      },
+      {
+       "name": "coverage-report.yml",
+       "type": "blob"
+      },
+      {
+       "name": "deregistered-test-census-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "dgis-claim-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "dist.yml",
+       "type": "blob"
+      },
+      {
+       "name": "esm-module-rewrite.yml",
+       "type": "blob"
+      },
+      {
+       "name": "execution-normalization-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "independent-replication-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "inline-lib-tests-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "lockstep-runner-release-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "migration-velocity-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "module-graph.yml",
+       "type": "blob"
+      },
+      {
+       "name": "mutants-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-egress.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-migration-validation.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-product-oracle.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-rewrite-transaction.yml",
+       "type": "blob"
+      },
+      {
+       "name": "no-contract-no-merge-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "no-self-compare-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "perf-bead-tests.yml",
+       "type": "blob"
+      },
+      {
+       "name": "placeholder-remediation-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "proof-carrying-execution-ledger-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "readme-cli-drift-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "readme-quick-example-smoke.yml",
+       "type": "blob"
+      },
+      {
+       "name": "release-perf-profile-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "replay-coverage-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "rollback-command-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "runtime-watchdog.yml",
+       "type": "blob"
+      },
+      {
+       "name": "security-golden-artifacts.yml",
+       "type": "blob"
+      },
+      {
+       "name": "tnr-ci-verification-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "typescript-grammar.yml",
+       "type": "blob"
+      },
+      {
+       "name": "vef-claim-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "verification-target-compile-gate.yml",
+       "type": "blob"
+      },
+      {
+       "name": "verified-rewrite.yml",
+       "type": "blob"
+      }
+     ]
+    },
+    "releases": {
+     "totalCount": 1,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "Y3Vyc29yOnYyOpK0MjAyNi0wNS0zMFQwNjo0ODowM1rOE769kA=="
+     },
+     "nodes": [
+      {
+       "tagName": "v0.1.0",
+       "createdAt": "2026-05-30T06:48:03Z",
+       "publishedAt": "2026-05-29T03:52:00Z",
+       "isDraft": false,
+       "isPrerelease": false,
+       "tagCommit": {
+        "oid": "08e1edf11f262693202d6466ba2392de9f3f3e4b"
+       }
+      }
+     ]
+    },
+    "refs": {
+     "totalCount": 1,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "MQ"
+     },
+     "nodes": [
+      {
+       "name": "v0.1.0",
+       "target": {
+        "__typename": "Commit",
+        "oid": "08e1edf11f262693202d6466ba2392de9f3f3e4b",
+        "committedDate": "2026-05-30T06:48:03Z"
+       }
+      }
+     ]
+    },
+    "pin": null,
+    "pinRoot": null,
+    "pinWf": null
+   },
+   "compare": {
+    "http_status": 404,
+    "body": null
+   }
+  },
+  "frankenlibc_ng": {
+   "graphql": {
+    "databaseId": 1153199323,
+    "name": "frankenlibc_ng",
+    "isArchived": false,
+    "defaultBranchRef": {
+     "name": "main",
+     "target": {
+      "oid": "7f311ebc6da7bbfe3683495f6dd5426a4c74356e",
+      "committedDate": "2026-09-24T13:36:06Z"
+     }
+    },
+    "licenseInfo": {
+     "spdxId": "NOASSERTION"
+    },
+    "root": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "572cd82026bbbcf7d0c42ff32356496f233a2040",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "3ce60464dc45433fcfa64400084114c04100e2d0",
+       "type": "tree"
+      },
+      {
+       "name": ".claude",
+       "oid": "1d8882726264941e4621eed67b88bc4ede525487",
+       "type": "tree"
+      },
+      {
+       "name": ".dcg",
+       "oid": "bed161910c80a9f0f4cc5aa485cfce71652a68b8",
+       "type": "tree"
+      },
+      {
+       "name": ".dockerignore",
+       "oid": "62f54595a215d9665f69f0ba5b3dd443414959d2",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "4c22a896b7684f6b9cddc936dc9612e4709bd5d7",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "4148634f7a9fabc8a47bc7eace4729dbe48568f2",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "c49f1ebd9f4c536a828a60643de71fd9ccf9ff68",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "1e24e9410bd3d42c694de1982afcf7c1e5d36368",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "5587fcc6a72074e141597c749cdfe7ef230684b6",
+       "type": "blob"
+      },
+      {
+       "name": "DEPLOYMENT.md",
+       "oid": "723d21b812e348dee7a3312aecb1744645e20684",
+       "type": "blob"
+      },
+      {
+       "name": "FEATURE_PARITY.md",
+       "oid": "0caa7418771473fbc4ff5f5a35d07bbb0e5e8675",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "PLAN_TO_PORT_GLIBC_TO_RUST.md",
+       "oid": "604e7776b6ec37dee48f47df0cf748b155b52219",
+       "type": "blob"
+      },
+      {
+       "name": "PROPOSED_ARCHITECTURE.md",
+       "oid": "b673dbf43214d86789c7d9611a87ca8b9b031b5f",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "9f29170a369c48a87b60002f25bc90dd9eea183f",
+       "type": "blob"
+      },
+      {
+       "name": "SECURITY.md",
+       "oid": "536d62e41e70ab19c5c83aa0d6dbbd9411832a7c",
+       "type": "blob"
+      },
+      {
+       "name": "artifacts",
+       "oid": "08754eb8c067f4a86fb2e74cdc12542bc2bfc6ff",
+       "type": "tree"
+      },
+      {
+       "name": "configs",
+       "oid": "9a9cbd95d73f46b3c297644e7ced366db683371a",
+       "type": "tree"
+      },
+      {
+       "name": "crates",
+       "oid": "621084153cfbe1f87ba5a752c9817db5c12110ee",
+       "type": "tree"
+      },
+      {
+       "name": "data",
+       "oid": "a75ff5b217461ecba510648ef3f975c15c4f630d",
+       "type": "tree"
+      },
+      {
+       "name": "docker",
+       "oid": "4038cb030218a7a630742a1a86a807e226935624",
+       "type": "tree"
+      },
+      {
+       "name": "docs",
+       "oid": "62fd2ed8af52d0f52bcfd4880ebf295e35e0b20e",
+       "type": "tree"
+      },
+      {
+       "name": "packaging",
+       "oid": "afbe0ddc39e58e58a70b4e5e0c96793f9400074e",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "45da545f8b47809154191d5c34e50da349c0ae9d",
+       "type": "blob"
+      },
+      {
+       "name": "scripts",
+       "oid": "9e47ab994fd11cd9b977e98c4c6f7267905d1fe6",
+       "type": "tree"
+      },
+      {
+       "name": "support_matrix.json",
+       "oid": "e786c116995d8ccc9fc6d880fcec18ab7cd7b618",
+       "type": "blob"
+      },
+      {
+       "name": "tests",
+       "oid": "b618f5d533d58efb867c8554f1df332e4c3129e7",
+       "type": "tree"
+      },
+      {
+       "name": "tools",
+       "oid": "e758ce929cca140d82187f9d3ed3d26e9db8078a",
+       "type": "tree"
+      }
+     ]
+    },
+    "wf": {
+     "entries": [
+      {
+       "name": "addrinfo.yml",
+       "type": "blob"
+      },
+      {
+       "name": "ci.yml",
+       "type": "blob"
+      },
+      {
+       "name": "hostent-portable-check.yml",
+       "type": "blob"
+      },
+      {
+       "name": "legacy-host-dns.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-hostent.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-loader.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-resolver.yml",
+       "type": "blob"
+      },
+      {
+       "name": "nss-hosts.yml",
+       "type": "blob"
+      },
+      {
+       "name": "stdio-file-layout.yml",
+       "type": "blob"
+      }
+     ]
+    },
+    "releases": {
+     "totalCount": 0,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": []
+    },
+    "refs": {
+     "totalCount": 0,
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": []
+    },
+    "pin": {
+     "oid": "36e5be9448c8c26eed16f421672775aae048f936",
+     "committedDate": "2026-09-22T15:54:07Z"
+    },
+    "pinRoot": {
+     "entries": [
+      {
+       "name": ".beads",
+       "oid": "df9f2f47d7c7556bf836a3dff418a685ea823969",
+       "type": "tree"
+      },
+      {
+       "name": ".cargo",
+       "oid": "3ce60464dc45433fcfa64400084114c04100e2d0",
+       "type": "tree"
+      },
+      {
+       "name": ".claude",
+       "oid": "1d8882726264941e4621eed67b88bc4ede525487",
+       "type": "tree"
+      },
+      {
+       "name": ".dcg",
+       "oid": "bed161910c80a9f0f4cc5aa485cfce71652a68b8",
+       "type": "tree"
+      },
+      {
+       "name": ".dockerignore",
+       "oid": "62f54595a215d9665f69f0ba5b3dd443414959d2",
+       "type": "blob"
+      },
+      {
+       "name": ".github",
+       "oid": "8623c69ea2bca39957afd92f1a6668b3c00a7ad3",
+       "type": "tree"
+      },
+      {
+       "name": ".gitignore",
+       "oid": "4148634f7a9fabc8a47bc7eace4729dbe48568f2",
+       "type": "blob"
+      },
+      {
+       "name": "AGENTS.md",
+       "oid": "c49f1ebd9f4c536a828a60643de71fd9ccf9ff68",
+       "type": "blob"
+      },
+      {
+       "name": "CHANGELOG.md",
+       "oid": "1e24e9410bd3d42c694de1982afcf7c1e5d36368",
+       "type": "blob"
+      },
+      {
+       "name": "Cargo.toml",
+       "oid": "5587fcc6a72074e141597c749cdfe7ef230684b6",
+       "type": "blob"
+      },
+      {
+       "name": "DEPLOYMENT.md",
+       "oid": "723d21b812e348dee7a3312aecb1744645e20684",
+       "type": "blob"
+      },
+      {
+       "name": "FEATURE_PARITY.md",
+       "oid": "0caa7418771473fbc4ff5f5a35d07bbb0e5e8675",
+       "type": "blob"
+      },
+      {
+       "name": "LICENSE",
+       "oid": "3d414da6ff83defe084707be6030866e8a7fb794",
+       "type": "blob"
+      },
+      {
+       "name": "PLAN_TO_PORT_GLIBC_TO_RUST.md",
+       "oid": "604e7776b6ec37dee48f47df0cf748b155b52219",
+       "type": "blob"
+      },
+      {
+       "name": "PROPOSED_ARCHITECTURE.md",
+       "oid": "b673dbf43214d86789c7d9611a87ca8b9b031b5f",
+       "type": "blob"
+      },
+      {
+       "name": "README.md",
+       "oid": "b9eb617dd15e86c2a6c9eba1c4c570800fddb453",
+       "type": "blob"
+      },
+      {
+       "name": "SECURITY.md",
+       "oid": "536d62e41e70ab19c5c83aa0d6dbbd9411832a7c",
+       "type": "blob"
+      },
+      {
+       "name": "artifacts",
+       "oid": "08754eb8c067f4a86fb2e74cdc12542bc2bfc6ff",
+       "type": "tree"
+      },
+      {
+       "name": "configs",
+       "oid": "9a9cbd95d73f46b3c297644e7ced366db683371a",
+       "type": "tree"
+      },
+      {
+       "name": "crates",
+       "oid": "cdf8357feaa9fba0edcd45f69883057b9a88ec23",
+       "type": "tree"
+      },
+      {
+       "name": "data",
+       "oid": "a75ff5b217461ecba510648ef3f975c15c4f630d",
+       "type": "tree"
+      },
+      {
+       "name": "docker",
+       "oid": "4038cb030218a7a630742a1a86a807e226935624",
+       "type": "tree"
+      },
+      {
+       "name": "docs",
+       "oid": "62fd2ed8af52d0f52bcfd4880ebf295e35e0b20e",
+       "type": "tree"
+      },
+      {
+       "name": "packaging",
+       "oid": "afbe0ddc39e58e58a70b4e5e0c96793f9400074e",
+       "type": "tree"
+      },
+      {
+       "name": "rust-toolchain.toml",
+       "oid": "45da545f8b47809154191d5c34e50da349c0ae9d",
+       "type": "blob"
+      },
+      {
+       "name": "scripts",
+       "oid": "c4e769722a1024ed1e1987fb742bfe6cabbeadbe",
+       "type": "tree"
+      },
+      {
+       "name": "support_matrix.json",
+       "oid": "7282773b1b075068f035af2f9f5a96001e52f24a",
+       "type": "blob"
+      },
+      {
+       "name": "tests",
+       "oid": "9d3b5b3f05471706d41f5b83dcb81b196e7422a5",
+       "type": "tree"
+      },
+      {
+       "name": "tools",
+       "oid": "e758ce929cca140d82187f9d3ed3d26e9db8078a",
+       "type": "tree"
+      }
+     ]
+    },
+    "pinWf": {
+     "entries": [
+      {
+       "name": "ci.yml",
+       "type": "blob"
+      },
+      {
+       "name": "native-resolver.yml",
+       "type": "blob"
+      }
+     ]
+    }
+   },
+   "compare": {
+    "http_status": 200,
+    "body": {
+     "status": "ahead",
+     "ahead_by": 93,
+     "behind_by": 0
+    }
+   }
+  }
+ },
+ "redirects": {
+  "frankenlibc": {
+   "id": 1153199323,
+   "name": "frankenlibc_ng",
+   "owner": "Dicklesworthstone"
+  }
+ },
+ "ids": {}
+}

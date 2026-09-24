@@ -317,6 +317,36 @@ to be mechanical.
 **Accepted:** only tracked files are scanned, so a leak in an untracked
 working-copy file is caught when it is added, not before.
 
+## Gate W — daily-watch selftest
+
+**What:** runs `node watch/watch.mjs --selftest`, which loads the recorded
+GitHub API responses in `watch/fixtures/` (`day1.json`, recorded 2026-09-24
+for six assessed repositories and part of the public listing; `day2.json`, a
+synthetic next day whose `_note` lists each edit) and passes them through the
+same collect, diff, and dedupe functions the scheduled watch runs against the
+live API. No network and no token. The 13 cases assert: the packets parse to
+exactly 44 repositories with 40-hex pins; a first run is a baseline with
+nothing material; a new release is material and its tag is not reported
+twice; a LICENSE blob change with the same SPDX id is material; a workflow
+removal is material; a commits-only change is not; a rename is followed by
+the recorded GitHub id and reported as a rename, not a deletion plus a new
+repository (for an assessed and for an unassessed repository), and is also
+followed by the REST redirect when no id is recorded yet; a compare 404 is
+`pin_unreachable`; a new `franken*` or Rust repository is a candidate and
+anything else informational; nothing else is material; dedupe returns
+`exists` for a filed title with the same value, `comment` for a changed
+value, and `create` for a new title; and the state and census are byte-equal
+when the API returns nodes in another order. **Fails** on a nonzero exit, any
+failed case, or a `CASES` count of zero or missing.
+**Why:** the watch opens public issues and commits a census every day with
+nobody reading its code first. Its classification logic (material or not,
+rename or delete, new or already filed) is what a silent regression would
+break, and the live API never replays the same change twice, so the check
+has to run on recorded inputs.
+**Accepted:** the fixtures cover the shapes the watch reads, not every shape
+the API can return; the transport itself (HTTP, pagination, rate limits) is
+exercised only by live runs.
+
 ## Accepted limitations (all gates)
 
 - Raw packet/Rulebook `.md` files have no navigation by design.
@@ -394,3 +424,18 @@ Gate I's launch retry was shown both ways on scratch copies: with
 `CHROME_PATH=/usr/bin/false` it failed with "chrome launch failed twice", and
 with a wrapper that exits on its first call and starts Chrome on its second it
 passed.
+
+Daily-watch pass: Gate W added with `watch/`. Each classification the gate
+asserts was shown to be load-bearing by mutating a scratch copy of
+`watch.mjs` (never the real tree): comparing licenses by SPDX id only failed
+the LICENSE case, ignoring workflow removals failed the workflow case,
+treating a compare 404 as reachable failed the pin case, counting commits as
+material failed the commits-only case, resolving names without the recorded
+id failed the rename case, and ignoring the issue-body value marker failed
+the dedupe case. A planted wrong expectation (a new release expected under
+tag `v0.1.2`) made gate W fail with its case named, and `bun run verify` exit 1
+(17 passed, 1 failed). A stub selftest that printed `CASES 0` and exited 0
+also failed W.
+The scheduled workflow checks out full history rather than depth 1 because a
+depth-1 clone fails K3: the rigor index cites commits that `git cat-file`
+cannot resolve without history (16 rows failed on a scratch depth-1 clone).
