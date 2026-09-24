@@ -1,22 +1,49 @@
-# FrankenSuite shareable site — build gates
+# Franken Research site — build gates
 
-Permanent pre-ship gates for `site/`. Run before every ship:
+Permanent pre-ship gates for `site/`. Run before every ship, from the repo root:
 
 ```bash
-./scripts/verify-site.sh
+bun run verify                      # same as: bash site/scripts/verify-site.sh
 ```
 
 The script prints `PASS`/`FAIL` per gate and exits nonzero if any gate fails.
-It is self-contained: the only external dependencies are `bash`, `python3`,
-`node`, and headless Chromium at `/opt/meta-chromium/chrome`. No network
-access is used or needed — the whole site is designed to run from the ZIP.
+CI (`.github/workflows/verify.yml`) runs the same command on every push and
+pull request. The only external dependencies are `bash`, `python3`, `node`,
+and a Chromium-family browser for gate I (see "Browser discovery" below). No
+network access is used or needed: the whole site is designed to run from the
+ZIP.
+
+**Pages scanned.** The structural gates (B, C, E, F, G1, H) scan one shared
+list, `SITE_PAGES` at the top of the script: the front door, the six section
+pages (`method/`, `failure-modes/`, `lessons/`, `techniques/`, `reproduce/`,
+`starter-kit/`), and the self-assessment page `self/index.html`, plus every
+`briefs/*.html`. A listed page that does not exist fails every gate that opens
+it.
+
+**Canon path.** Gate A compares `site/` against the canonical copies in the
+same repository: `packets/*-assessment.md` and `RULEBOOK.md` at the repo root
+(one level above `site/`). Set `CANON=/path` to check a detached tree; if that
+directory has no `packets/` subdirectory, packets are read from its top level.
+
+**Browser discovery.** Gate I uses `CHROME_PATH` if set, otherwise the first
+of these that exists: `/opt/meta-chromium/chrome`,
+`/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`,
+`/Applications/Chromium.app/Contents/MacOS/Chromium`, `/usr/bin/google-chrome`,
+`/usr/bin/google-chrome-stable`, `/usr/bin/chromium`,
+`/usr/bin/chromium-browser`. CI sets `CHROME_PATH=/usr/bin/google-chrome`,
+where the ubuntu-latest runner image installs Google Chrome. No browser found
+is a FAIL, never a skip: an unrun render gate is not a pass.
+
+**Empty scan sets fail.** A gate that checked nothing has not passed. Gate B
+fails if it finds zero `[data-stat]` slots and gate E fails if it resolves zero
+relative links; both summary lines report the real count.
 
 ## Gate A — packet/Rulebook byte integrity
 
-**What:** every `*-assessment.md` in `~/workspace/franken-research/` must exist
-under `site/packets/` byte-identical (`cmp`), no extra packets may exist in
-`site/packets/`, and `site/RULEBOOK.md` must be byte-identical to the canonical
-`~/workspace/franken-research/RULEBOOK.md`.
+**What:** every `*-assessment.md` in the canonical `packets/` directory (repo
+root, see "Canon path") must exist under `site/packets/` byte-identical
+(`cmp`), no extra packets may exist in `site/packets/`, and `site/RULEBOOK.md`
+must be byte-identical to the canonical root `RULEBOOK.md`.
 **Why:** the briefs' "every claim traceable to a source" promise and the
 method page's file-and-line citations are only as good as the shipped packets.
 A drifted or missing packet silently breaks the citation chain.
@@ -43,14 +70,15 @@ machine-checked so the failure mode cannot return.
 
 1. every `[data-stat]` slot's no-JS fallback text equals the computed value
    (stale-fallback detector — if the data changes, the static text must too);
+   zero slots found across the scanned pages is a failure;
 2. `#framesentence`'s fallback equals `FRANKEN_DATA.framing` after slot
    substitution;
 3. no bare hardcoded suite stat remains in visible copy: `N of 44`, `N/44`,
    ring word/numeral counts ("three pilots"), and "all 44 briefs" nav labels.
 
-Pages that don't load the 3D bundle (`method/`, `failure-modes/`) include the
-shared filler `assets/fill-stats.js` (same semantics as the `STATS` block in
-`assets/app.src.js`) after `assets/data.js`.
+Pages that don't load the 3D bundle (`method/`, `failure-modes/`, `self/`)
+include the shared filler `assets/fill-stats.js` (same semantics as the
+`STATS` block in `assets/app.src.js`) after `assets/data.js`.
 **Why:** hardcoded UI numbers rot. The P1-1 falsehood ("the suite's only repo
 without the rider (1)" when `data.js` says 6) is exactly what happens when
 prose and data diverge.
@@ -89,10 +117,10 @@ one brief; `data.js` repo names match the brief set 1:1.
 
 ## Gate E — internal link graph
 
-**What:** every relative `href`/`src` on every page resolves on disk
+**What:** every relative `href`/`src` on every scanned page resolves on disk
 (directories resolve to `index.html`); every `#fragment` has a matching `id`
 on the target page; no link escapes the site root. External URLs are not
-fetched (offline gate).
+fetched (offline gate). Resolving zero links is a failure.
 **Why:** "zero dead links, zero dead anchors, all 311 relative links resolve
 on disk (fully offline-capable)" — do not regress.
 **Accepted:** external URLs are not fetched; `href="#"` placeholders owned by
@@ -102,7 +130,7 @@ JS are tolerated.
 
 **What:** every `../starter-kit/…` link on the method page resolves to a
 shipped file, and every local asset (`assets/…`, `favicon.svg`) referenced by
-any page exists.
+any scanned page exists.
 **Why:** P0-1 (stations cited files that weren't shipped), P0-2 (the runnable
 kit must actually ship). The animation may reenact, but everything it points
 at must be inspectable.
@@ -136,21 +164,24 @@ valid copy.
 
 ## Gate I — headless render
 
-**What:** dependency-free Node CDP script drives `/opt/meta-chromium/chrome`
+**What:** dependency-free Node CDP script drives the discovered browser
 (`--headless=new`, unique temp profile) loading `index.html`,
-`method/index.html`, `briefs/asupersync.html`, and `lessons/index.html` via
-`file://` — the site is designed to run straight from the ZIP, so the gate
-tests exactly that — at 1440×900 and 390×844. Collects
+`method/index.html`, `briefs/asupersync.html`, `lessons/index.html`, and
+`self/index.html` via `file://` — the site is designed to run straight from
+the ZIP, so the gate tests exactly that — at 1440×900 and 390×844. Collects
 `Runtime.consoleAPICalled`, `Runtime.exceptionThrown`, and `Log.entryAdded`;
 fails on any console error, any exception, any page rendering blank (<200
 chars of text), or any horizontal overflow (`scrollWidth > clientWidth`).
 Only known-harmless headless software-WebGL deprecation noise is filtered,
 and the filter pattern is documented in the script.
 **Why:** "0 console errors, 0 blank pages, 0 overflows" (do-not-regress render
-QA). Structural gates cover all pages; the render gate samples the four
+QA). Structural gates cover all pages; the render gate samples five
 representative page types (3D front door, animated method page, brief,
-index-style lesson page).
+index-style lesson page, and the self-assessment page with its matrix table).
 **Accepted:** semantic truth beyond these checks still needs human review.
+The self-assessment page's live CI badge is a network image, so it loads only
+when the page is served over http(s); from `file://` the page shows a text
+link instead and makes no network request.
 
 ## Gate J — no deleted-path references
 
@@ -178,3 +209,17 @@ glossary strip; `lessons/`, `techniques/`, `failure-modes/` gained pin/bus-facto
 definitions; the front door gained inline pin/bus-factor glosses;
 `starter-kit/` gained a CI definition); hardcoded "all 44 briefs" labels
 reworded; synthesis-sourced counts annotated with provenance.
+
+2026-09-23, commit `07b681b`: the gates moved in-repo. Gate A reads the
+canonical packets and Rulebook from the repo root instead of an external
+workspace path (`CANON` still overrides), and gate I discovers the browser via
+`CHROME_PATH` or a fixed list of install locations, failing when none exists,
+so neither A nor I can be silently unrun.
+
+Public-repo pass (v1.0.0): the page list became one shared `SITE_PAGES`
+variable and gained `self/index.html` (the self-assessment page), which also
+joined the gate I render set; gate F's asset check widened from the front
+door, method page, and briefs to every scanned page. The B and E summary lines
+had printed blank counts on macOS (`grep -P` is GNU-only); counts are now
+extracted portably, and an empty scan set fails both gates. Each new fail path
+was shown to trip on a planted known-bad copy of the tree before landing.

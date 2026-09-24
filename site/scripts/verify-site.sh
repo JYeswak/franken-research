@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# verify-site.sh — pre-ship gates for the FrankenSuite shareable site.
+# verify-site.sh — pre-ship gates for the Franken Research site.
 #
 # Run from anywhere:  ./scripts/verify-site.sh   (from site/)
 #                     bash site/scripts/verify-site.sh
@@ -11,7 +11,11 @@ SITE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # Canonical packets + Rulebook live at the repo root (one level above site/).
 # Override with CANON=/path for a detached tree.
 CANON="${CANON:-$(cd "$SITE_DIR/.." && pwd)}"
-export SITE_DIR CANON
+# Hand-written pages every structural gate scans (briefs are globbed on top).
+# A listed page that does not exist fails the gates that open it.
+SITE_PAGES="index.html method/index.html failure-modes/index.html lessons/index.html
+techniques/index.html reproduce/index.html starter-kit/index.html self/index.html"
+export SITE_DIR CANON SITE_PAGES
 
 PASS=0
 FAIL=0
@@ -23,7 +27,10 @@ fail() {
   if [ -n "${2:-}" ]; then echo "      $2"; fi
 }
 
-echo "FrankenSuite site gates — $SITE_DIR"
+# Extract "<LABEL> <N>" from a gate's output (portable; BSD grep has no -P).
+count_of() { printf '%s\n' "$1" | sed -n "s/^$2 \([0-9][0-9]*\).*/\1/p" | head -1; }
+
+echo "Franken Research site gates — $SITE_DIR"
 echo "----------------------------------------"
 
 # ============ Gate A: packet + Rulebook byte integrity, method citations ============
@@ -50,7 +57,7 @@ if ! cmp -s "$CANON/RULEBOOK.md" "$SITE_DIR/RULEBOOK.md"; then
   A_OK=0; A_DETAIL="${A_DETAIL}RULEBOOK-differs "
 fi
 if [ $A_OK -eq 1 ]; then
-  pass "A packet/rulebook byte-identical ($(ls "$SITE_DIR"/packets/*.md | wc -l) packets + RULEBOOK)"
+  pass "A packet/rulebook byte-identical ($(ls "$SITE_DIR"/packets/*.md | wc -l | tr -d ' ') packets + RULEBOOK)"
 else
   fail "A packet/rulebook byte-identical" "$A_DETAIL"
 fi
@@ -167,9 +174,7 @@ def clean(s):
     s = re.sub(r'<[^>]+>', '', s)
     return re.sub(r'\s+', ' ', h.unescape(s)).strip()
 
-pages = (['index.html', 'method/index.html', 'failure-modes/index.html',
-          'lessons/index.html', 'techniques/index.html', 'reproduce/index.html',
-          'starter-kit/index.html'] + sorted(glob.glob(site + '/briefs/*.html')))
+pages = os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.html'))
 
 slot_n = 0
 for p in pages:
@@ -226,7 +231,8 @@ for p in pages:
         for m in re.finditer(pat, txt, re.I):
             errs.append('%s: hardcoded stat (%s): %r' % (
                 rel.replace(site + '/', ''), label, txt[max(0, m.start()-30):m.end()+30].strip()))
-
+if slot_n == 0:
+    errs.insert(0, 'empty scan set: zero data-stat slots found (a gate that checks nothing is not a pass)')
 print('SLOTS %d' % slot_n)
 print('STATS_OK' if not errs else 'STATS_BAD')
 for e in errs[:12]:
@@ -235,8 +241,9 @@ if len(errs) > 12:
     print('  ... and %d more' % (len(errs) - 12))
 PYEOF
 )"
-if echo "$B_OUT" | grep -q '^STATS_OK'; then
-  pass "B stats computed at render time ($(echo "$B_OUT" | grep -oP '^SLOTS \K[0-9]+') data-stat slots checked)"
+B_SLOTS="$(count_of "$B_OUT" SLOTS)"
+if echo "$B_OUT" | grep -q '^STATS_OK' && [ "${B_SLOTS:-0}" -gt 0 ]; then
+  pass "B stats computed at render time ($B_SLOTS data-stat slots checked)"
 else
   fail "B stats computed at render time" "$(echo "$B_OUT" | tail -n +3 | head -4 | tr '\n' ';')"
 fi
@@ -276,9 +283,7 @@ GLOSS = {
     'bus factor': re.compile(r'bus factor.{0,60}\(one maintainer'),
 }
 
-pages = (['index.html', 'method/index.html', 'failure-modes/index.html',
-          'lessons/index.html', 'techniques/index.html', 'reproduce/index.html',
-          'starter-kit/index.html'] + sorted(glob.glob(site + '/briefs/*.html')))
+pages = os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.html'))
 
 for p in pages:
     rel = p if p.startswith(site) else site + '/' + p
@@ -362,7 +367,7 @@ for e in errs[:10]:
 PYEOF
 )"
 if echo "$D_OUT" | grep -q '^PAIR_OK'; then
-  pass "D brief/packet 1:1 pairing ($(ls "$SITE_DIR"/briefs/*.html | wc -l) briefs)"
+  pass "D brief/packet 1:1 pairing ($(ls "$SITE_DIR"/briefs/*.html | wc -l | tr -d ' ') briefs)"
 else
   fail "D brief/packet 1:1 pairing" "$(echo "$D_OUT" | tail -n +2 | head -4 | tr '\n' ';')"
 fi
@@ -374,9 +379,7 @@ import re, os, glob
 from urllib.parse import unquote
 site = os.environ['SITE_DIR']
 errs = []
-pages = (['index.html', 'method/index.html', 'failure-modes/index.html',
-          'lessons/index.html', 'techniques/index.html', 'reproduce/index.html',
-          'starter-kit/index.html'] + sorted(glob.glob(site + '/briefs/*.html')))
+pages = os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.html'))
 SKIP_PREFIX = ('http://', 'https://', '//', 'mailto:', 'tel:', 'data:', 'javascript:')
 checked = 0
 for p in pages:
@@ -410,6 +413,8 @@ for p in pages:
                 tt = re.sub(r'<(script|style)[^>]*>.*?</\1>', ' ', tt, flags=re.S | re.I)
                 if ('id="%s"' % frag) not in tt:
                     errs.append('%s: fragment %r missing in %s' % (short, raw, target.replace(site + '/', '')))
+if checked == 0:
+    errs.insert(0, 'empty scan set: zero relative links resolved (a gate that checks nothing is not a pass)')
 print('LINKS %d ok' % checked)
 print('LINKS_OK' if not errs else 'LINKS_BAD')
 for e in errs[:12]:
@@ -418,8 +423,9 @@ if len(errs) > 12:
     print('  ... and %d more' % (len(errs) - 12))
 PYEOF
 )"
-if echo "$E_OUT" | grep -q '^LINKS_OK'; then
-  pass "E internal links resolve ($(echo "$E_OUT" | grep -oP '^LINKS \K[0-9]+') links)"
+E_LINKS="$(count_of "$E_OUT" LINKS)"
+if echo "$E_OUT" | grep -q '^LINKS_OK' && [ "${E_LINKS:-0}" -gt 0 ]; then
+  pass "E internal links resolve ($E_LINKS links)"
 else
   fail "E internal links resolve" "$(echo "$E_OUT" | tail -n +3 | head -4 | tr '\n' ';')"
 fi
@@ -439,7 +445,7 @@ for h in sorted(hrefs):
         errs.append('station link missing: %s' % h)
 # every local asset referenced by any page must exist (css/js/img/svg/fonts)
 import glob
-for p in (['index.html', 'method/index.html'] + sorted(glob.glob(site + '/briefs/*.html'))):
+for p in (os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.html'))):
     rel = p if p.startswith(site) else site + '/' + p
     tt = open(rel).read()
     for m in re.finditer(r'(?:src|href)="((?:\.\./|\./)?assets/[^"]+|favicon\.svg|\.\./favicon\.svg)"', tt):
@@ -464,9 +470,7 @@ import re, os, glob
 site = os.environ['SITE_DIR']
 errs = []
 # G1: every page has a skip link or the front door's equivalent landmark nav
-for p in (['index.html', 'method/index.html', 'failure-modes/index.html',
-           'lessons/index.html', 'techniques/index.html', 'reproduce/index.html',
-           'starter-kit/index.html'] + sorted(glob.glob(site + '/briefs/*.html'))):
+for p in (os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.html'))):
     rel = p if p.startswith(site) else site + '/' + p
     short = rel.replace(site + '/', '')
     t = open(rel).read()
@@ -513,9 +517,7 @@ H_OUT="$(python3 - <<'PYEOF'
 import re, html as h, glob, os
 site = os.environ['SITE_DIR']
 fails, notes = [], []
-pages = (['index.html', 'method/index.html', 'failure-modes/index.html',
-          'lessons/index.html', 'techniques/index.html', 'reproduce/index.html',
-          'starter-kit/index.html'] + sorted(glob.glob(site + '/briefs/*.html')))
+pages = os.environ['SITE_PAGES'].split() + sorted(glob.glob(site + '/briefs/*.html'))
 for p in pages:
     short = p.replace(site + '/', '')
     t = open(p if p.startswith(site) else site + '/' + p).read()
@@ -580,7 +582,7 @@ const CHROME = process.env.CHROME_PATH || [
   '/usr/bin/chromium', '/usr/bin/chromium-browser',
 ].find((p) => fs.existsSync(p));
 if (!CHROME) { console.log('RENDER_BAD'); console.log('  no Chromium found; set CHROME_PATH'); process.exit(1); }
-const PAGES = ['/index.html', '/method/index.html', '/briefs/asupersync.html', '/lessons/index.html'];
+const PAGES = ['/index.html', '/method/index.html', '/briefs/asupersync.html', '/lessons/index.html', '/self/index.html'];
 const VIEWPORTS = [[1440, 900], [390, 844]];
 
 // file:// loading: the site is designed to run straight from the ZIP with no

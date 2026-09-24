@@ -1,0 +1,62 @@
+name: verify
+
+# Runs the same gate chain a reader runs locally (README "Reproduce"):
+#   bun install --frozen-lockfile && bun run verify
+# plus a bundle-freshness check and a secret scan. A red run here is the
+# public record; do not weaken a gate to turn it green.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for the gitleaks history scan
+
+      - name: Secret scan (gitleaks, pinned binary)
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          tarball="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/$tarball" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/$tarball"
+          echo "$GITLEAKS_SHA256  $RUNNER_TEMP/$tarball" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$tarball" -C "$RUNNER_TEMP" gitleaks
+          # Runs before install so node_modules is never scanned. Scans the
+          # working tree and full history; known false positives are
+          # allowlisted by exact fingerprint in .gitleaksignore.
+          "$RUNNER_TEMP/gitleaks" dir . --no-banner --redact
+          "$RUNNER_TEMP/gitleaks" git . --no-banner --redact
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install (lockfile must be current)
+        run: bun install --frozen-lockfile
+
+      - name: Committed map bundle equals what its source builds
+        run: |
+          bun run build:map
+          git diff --exit-code site/assets/app.bundle.js
+
+      - name: Gate chain (A..J)
+        env:
+          # ubuntu-latest ships Google Chrome here (runner image sets CHROME_BIN
+          # to the same path). Fail loudly if the image ever moves it.
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          test -x "$CHROME_PATH" || { echo "Chrome not found at $CHROME_PATH"; exit 1; }
+          "$CHROME_PATH" --version
+          bun run verify

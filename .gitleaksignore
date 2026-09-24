@@ -1,0 +1,18 @@
+# Known false positives, allowlisted by exact fingerprint (never by rule).
+#
+# packets/franken_code_browser-assessment.md lines 3 and 25 (and its
+# byte-identical copy under site/packets/) quote the assessed pin, the 40-hex
+# commit SHA cc8330d18b8da7b4ebd3571458fd51ef5d9d0a3e. That string matches the
+# sourcegraph-access-token rule's shape; it is a public git commit id, not a
+# credential. The packets are evidence and are not edited.
+#
+# Directory-scan fingerprints (gitleaks dir):
+packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
+packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
+site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
+site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
+# History-scan fingerprints (gitleaks git), introduced by commit 114d5f0:
+114d5f0e9804511f646169be2b7efe0f40742f80:packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
+114d5f0e9804511f646169be2b7efe0f40742f80:packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
+114d5f0e9804511f646169be2b7efe0f40742f80:site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:3
+114d5f0e9804511f646169be2b7efe0f40742f80:site/packets/franken_code_browser-assessment.md:sourcegraph-access-token:25
