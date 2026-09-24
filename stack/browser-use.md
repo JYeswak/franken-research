@@ -1,0 +1,48 @@
+---
+type: browser-use
+title: Browser-use stacks
+group: Tools and environment
+verdict: Adopt and wrap
+confidence: Medium
+evidence_date: 2026-09-23
+author: VerdictsTools
+---
+
+## Bottom line
+Inference, medium confidence: adopt an existing agent-browser library or tool server (Playwright MCP, browser-use, Stagehand) and a maintained browser farm, and wrap them with your own flake and determinism controls. The incumbents already separate real-browser tests from unit tests and ship evaluation harnesses, but the evidence found no flake-rate budget and no recorded model responses for replay in any of them. Keep unit tests off the live web, pin the benchmark datasets you score against, and treat page content as untrusted input before letting an agent act on it.
+
+## Adopt, do not rebuild
+- **microsoft/playwright-mcp**: Microsoft's MCP server that gives agents a browser through an accessibility-tree-first observation model, tested against a local deterministic test server; building your own browser tool server would duplicate it. [Verified] (ecosystem/pickup/_evidence/browser-use.md:8 "Microsoft's official Playwright MCP server"; ecosystem/pickup/_evidence/browser-use.md:8 "accessibility-tree-first observation model"; ecosystem/pickup/_evidence/browser-use.md:20 "Ship a local deterministic test server instead of hitting the live web in unit tests")
+- **browser-use/browser-use**: agent library for using the browser, with declarative agent tasks scored by an LLM judge and a per-PR evaluation trigger. [Verified] (ecosystem/pickup/_evidence/browser-use.md:7 "ships its own cloud eval platform triggered per-PR"; ecosystem/pickup/_evidence/browser-use.md:21 "Define agent tasks as declarative YAML with judge criteria + LLM-as-judge; community-contributable")
+- **browserbase/stagehand**: SDK for extract, act and observe on any site, with an in-repo evaluation package over dataset-backed benchmark suites. [Verified] (ecosystem/pickup/_evidence/browser-use.md:9 "ships a first-class in-repo eval harness (packages/evals) with dataset-backed benchmark suites")
+- **browserless/browserless**: headless-browser farm with Docker matrices across Chrome, Firefox and WebKit and a memory-leak regression workflow for long-lived sessions; the infrastructure layer you would otherwise have to build. [Verified] (ecosystem/pickup/_evidence/browser-use.md:11 "Headless-browser-as-a-service (Docker/Chrome/Firefox/WebKit matrices)"; ecosystem/pickup/_evidence/browser-use.md:28 "leak-check.yml (memory-leak regression for long-lived headless sessions)")
+- **ServiceNow/BrowserGym, web-arena-x/webarena, OSU-NLP-Group/Mind2Web**: the benchmark environments and datasets agents are scored on; writing a private benchmark would cut you off from the numbers everyone else reports. [Verified] (ecosystem/pickup/_evidence/browser-use.md:25 "Gym-style experiment loop + typed benchmark configs"; ecosystem/pickup/_evidence/browser-use.md:14 "realistic web environments + evaluation harness"; ecosystem/pickup/_evidence/browser-use.md:15 "The original LLM web-agent benchmark dataset/codebase")
+
+## Copy these practices
+- **Unit and real-browser suites in separate configs**: Stagehand keeps specs that launch real Chrome out of the cacheable unit suite by giving them their own config. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/browser-use.md:19 "Separate unit vs. real-browser integration suites; never let them mix in one config")
+- **A local deterministic test server for core specs**: Playwright MCP runs its core specs against an in-repo test server on a three-OS matrix, with no external-network dependency. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/browser-use.md:20 "no external-network dependency for core specs")
+- **Agent tasks as data, one process per task**: tasks declare name, task, judge context and step budget; each runs in its own process so browser sessions cannot interfere. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/browser-use.md:21 "Each task gets its own Python process, preventing browser session interference")
+- **Vendored benchmark datasets with a provenance file**: Skyvern ships WebVoyager and Odysseys task files in-repo with an attribution file. Starter kit: A2. [Verified] (ecosystem/pickup/_evidence/browser-use.md:24 "Bundle third-party benchmark datasets in-repo and keep provenance")
+- **Session recording as a tested feature**: browser-use drives a CDP screencast to produce video of a run and tests it against a real headless browser, so flaky agent runs can be replayed as evidence. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/browser-use.md:26 "Session recording/replay as a first-class tested feature")
+- **Expensive evaluations only when relevant paths change**: Stagehand filters CI jobs by changed paths and supports skip labels, with evaluation jobs split from the unit lane. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/browser-use.md:27 "Change-aware CI: only run expensive browser/eval jobs when relevant paths changed; label-based skip")
+
+## Build only if
+- No hard constraint that justifies a new browser stack is evidenced. The two gaps the pack names, a flake budget and deterministic replay of model responses, are harness work on top of an incumbent, not reasons to write a browser driver. [Inference] (ecosystem/pickup/_evidence/browser-use.md:32 "No repo I checked documents an explicit flake-rate budget or quarantined-flake labeling scheme"; ecosystem/pickup/_evidence/browser-use.md:33 "Nobody I verified ships recorded LLM responses (no VCR-cassette-style fixtures found)")
+- Treating page content as hostile input is a requirement the companion adds for this type; it is a policy layer between page text and tool calls, not a separate browser. [Inference] (ecosystem/pickup/pickup-browser-use.md:48 "Trust boundary: hostile page content. Page content is untrusted")
+
+## Where FrankenSuite touches this
+- No FrankenSuite packet builds an agent browser stack. The nearest contact is test practice: franken_markdown_website ships a 30-check headless-Chromium end-to-end suite that nothing runs on push. Website, TRL 8, Monitor. [Verified] (packets/franken_markdown_website-assessment.md:126 "30-check e2e (bun run test, Chromium headless vs localhost:8899)"; packets/franken_markdown_website-assessment.md:126 "But it was not run in this assessment, and nothing runs it on push"; synthesis/00-overview.md:73 "franken_markdown_website | 8 | Monitor | Rider")
+- frankentui_website has the same shape: Playwright end-to-end and performance suites with no CI enforcing them, the ungated-suite gap the lane-separation practice above addresses. Website, TRL 9, Monitor. [Verified] (packets/frankentui_website-assessment.md:158 "The Playwright E2E + perf suites exist (20 files) but nothing enforces them on push"; synthesis/00-overview.md:105 "frankentui_website | 9 | Monitor | Rider")
+- franken_engine is a JS/TS execution substrate for adversarial extension workloads, not a web browser or a browser-automation layer. TRL 4–5, Explore. [Verified] (packets/franken_engine-assessment.md:19 "A from-scratch Rust execution substrate for adversarial JS/TS extension workloads"; synthesis/00-overview.md:69 "franken_engine | 4–5 | Explore | Rider")
+
+## What we cannot say
+- How flaky these stacks are: flakiness evidence was thin, and the only mechanisms seen were per-test retries and evaluation lanes kept off the unit path (ecosystem/pickup/_evidence/browser-use.md:32 "Flakiness practices were thin in what I could verify").
+- Whether any agent-task result can be rerun deterministically: determinism comes from replaying the benchmark, not the model (ecosystem/pickup/_evidence/browser-use.md:33 "Determinism for LLM-driven tests is mostly"; ecosystem/pickup/_evidence/browser-use.md:33 "Nobody I verified ships recorded LLM responses (no VCR-cassette-style fixtures found)"); how to keep an LLM judge comparable across model retirements is open (ecosystem/pickup/pickup-browser-use.md:398 "How to pin an LLM-as-judge across model deprecations").
+- Skyvern's evaluation scripts post to its commercial task store, so only its datasets and attribution are self-contained (ecosystem/pickup/_evidence/browser-use.md:37 "Skyvern's evaluation scripts reference their commercial task store").
+- The benchmark repositories move slowly (ecosystem/pickup/_evidence/browser-use.md:36 "webarena and Mind2Web last pushed Nov 2025"). Steel was verified active but its tests were not found (ecosystem/pickup/_evidence/browser-use.md:34 "Steel evidence is shallow.").
+- Who uses these stacks in production: adopter claims were not verified (ecosystem/pickup/_evidence/browser-use.md:35 "Adopter claims avoided."). Star counts measure popularity. Licenses were not in the pack, and a workflow file that exists does not show its runs are green.
+
+## Revisit when
+- An incumbent publishes a flake-rate budget or recorded-response fixtures for deterministic agent-task reruns.
+- A maintained successor to WebArena or Mind2Web becomes the dataset the active projects vendor.
+- A FrankenSuite website wires its browser suites into CI, which would make it a working example of the lane separation described here.

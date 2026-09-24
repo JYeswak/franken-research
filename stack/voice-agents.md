@@ -1,0 +1,46 @@
+---
+type: voice-agents
+title: Realtime voice agents
+group: Training and voice
+verdict: Adopt and wrap
+confidence: Medium
+evidence_date: 2026-09-23
+author: VerdictsTools
+---
+
+## Bottom line
+Inference, medium confidence: adopt an existing realtime voice-agent framework (Pipecat or LiveKit Agents, on a maintained media transport) and wrap it with a latency regression gate of your own. The frameworks already handle speech-to-text, language model and text-to-speech stages, turn-taking and interruptions, and test them with fake providers and a virtual clock; but in both, latency is measured by tests and never gated, and interruption thresholds have no published ground truth. Keep the fake-provider test surface, measure time-to-first-audio on your own harness with A/A baselines, and block releases on regressions.
+
+## Adopt, do not rebuild
+- **pipecat-ai/pipecat**: an open-source voice-agent pipeline framework maintained by Daily and the community, with latency metric classes and their own unit tests. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:7 "maintained by Daily and the community; pushed same-day as verification"; ecosystem/pickup/_evidence/voice-agents.md:19 "Latency metric classes with their own unit tests")
+- **livekit/agents**: LiveKit's realtime voice-agent framework with a plugin tree of about forty speech and model providers and fake doubles for every pipeline stage. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:8 "LiveKit's framework for building realtime voice AI agents"; ecosystem/pickup/_evidence/voice-agents.md:8 "plugin tree covers ~40 STT/LLM/TTS providers"; ecosystem/pickup/_evidence/voice-agents.md:18 "Fake/mock service doubles for every pipeline stage")
+- **livekit/livekit**: the realtime media transport (SFU, a server that forwards audio and video streams) the agent frameworks ride on; the companion keeps transport internals out of scope for this type. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:12 "Underlying realtime media transport (SFU) the agent frameworks ride on"; ecosystem/pickup/pickup-voice-agents.md:27 "the media transport/SFU internals (use a pinned incumbent as the transport,")
+- **TEN-framework/ten-framework and openai/openai-agents-js**: alternatives, the first with a multi-OS CI matrix, the second a first-party vendor framework for voice agents in JavaScript runtimes. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:9 "heavy multi-OS CI matrix (linux/mac/win × arm64/x64)"; ecosystem/pickup/_evidence/voice-agents.md:10 "signal that a first-party vendor ships voice-agent orchestration")
+
+## Copy these practices
+- **A fake for every stage**: livekit/agents has fake speech-to-text, model, text-to-speech, VAD, turn-detector and session doubles, so full agent sessions run in tests without API keys or network. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:18 "Tests run deterministic agent sessions without API keys or network.")
+- **Latency metrics as tested classes**: Pipecat detects time-to-first-audio from speech onset in PCM buffers and unit-tests that metric, alongside time-to-first-byte. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:19 "TTFA (time-to-first-audio) detected via RMS speech-onset detector on PCM buffers")
+- **Turn-taking on a virtual clock**: a fake clock keeps turn-taking and latency assertions from flaking on real-time scheduling. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:22 "fake clock so turn-taking/latency assertions don't flake on real-time scheduling")
+- **A dedicated interruption test surface**: false-interruption resume, protected speech, hold windows and overlapping speech each get tests. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:21 "Dedicated interruption / turn-taking test surface")
+- **Live-provider tests behind secrets, off the unit path**: a separate workflow runs against real realtime APIs, triggered only by relevant path changes and skipped on forks. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:23 "path-triggered only by realtime-code changes, skipped on forks")
+- **Network faults injected in tests**: livekit/agents drives a toxiproxy container to degrade connections during tests. Starter kit: A10. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:29 "Fault injection / network degradation in tests")
+- **Simulate the caller**: ServiceNow/eva evaluates voice agents with bot-to-bot calls, a simulated user and perturbations such as noise and degraded connections. Starter kit: none. [Verified] (ecosystem/pickup/_evidence/voice-agents.md:26 "copy the pattern of simulating the caller, not just unit-testing the pipeline")
+
+## Build only if
+- No hard constraint that justifies a new orchestration framework is evidenced; the companion keeps models and transport out of scope. A requirement for on-device or offline speech is a stage choice, plugged into an incumbent's provider interface, not a framework rewrite. [Inference] (ecosystem/pickup/pickup-voice-agents.md:26 "The models themselves (no clean-room STT/TTS/LLM retraining)"; ecosystem/pickup/_evidence/voice-agents.md:8 "plugin tree covers ~40 STT/LLM/TTS providers")
+
+## Where FrankenSuite touches this
+- **franken_tts** is a shipped pure-Rust CPU-only runtime for one text-to-speech model, with a streaming conversation layer. It is a stage an orchestration framework would call, not a framework; its faster-than-real-time figure is a maintainer claim that drops below real time under load. TRL 7, Explore; the license rider bars AI labs. [Verified] (packets/franken_tts-assessment.md:9 "a genuine, shipped, pure-Rust CPU-only runtime for one model"; packets/franken_tts-assessment.md:9 "a streaming conversation layer"; packets/franken_tts-assessment.md:72 "heavily-loaded runs measured 0.66–1.05×, i.e. sub-real-time under load"; synthesis/00-overview.md:85 "franken_tts | 7 | Explore | Rider")
+- **franken_whisper** is an agent-first Rust speech-to-text stack with a streaming listen mode whose end-to-end latency certification is still open. Its first listen latency campaign published the numbers but refused a cross-arm comparison because the A/A controls fell outside their band, which is the kind of latency gate the voice frameworks above lack. TRL 5–6, Explore. [Verified] (packets/franken_whisper-assessment.md:9 "an agent-first Rust speech-to-text orchestration stack"; packets/franken_whisper-assessment.md:80 "end-to-end latency certification still open"; packets/franken_whisper-assessment.md:127 "the numbers (TTFT, commit lag, WER per fixture) are published, the comparison is refused"; synthesis/00-overview.md:86 "franken_whisper | 5–6 | Explore | Rider")
+
+## What we cannot say
+- How fast any of these frameworks is: latency is tested, not gated, and no time-to-first-audio benchmark dashboard was found (ecosystem/pickup/_evidence/voice-agents.md:36 "Latency measurement is thinner than the category deserves"; ecosystem/pickup/_evidence/voice-agents.md:36 "Latency is tested, not gated.").
+- What good interruption behavior is: thresholds have no incumbent-published ground truth (ecosystem/pickup/pickup-voice-agents.md:428 "(false-interruption rate, resume latency bounds) have no incumbent-published").
+- ServiceNow/eva is a research-grade methodology reference, and its dataset revision was not hash-verified (ecosystem/pickup/_evidence/voice-agents.md:37 "ServiceNow/eva is research-grade"; ecosystem/pickup/pickup-voice-agents.md:417 "ServiceNow/eva's HuggingFace dataset revision has not been").
+- Whether a pinned incumbent can be run side by side for comparative claims, given license, API cost and keys (ecosystem/pickup/pickup-voice-agents.md:421 "Whether the pinned incumbent (livekit/agents or pipecat) can").
+- The live-provider workflow was read from its file, not observed running; licenses and provider pricing were not in the pack; stars measure popularity. vocode was dropped because its repository 404s (ecosystem/pickup/_evidence/voice-agents.md:35 "vocode-ai/vocode 404s and was dropped").
+
+## Revisit when
+- Pipecat or LiveKit Agents adds a latency regression gate or publishes a time-to-first-audio benchmark.
+- ServiceNow/eva's scenarios are hash-pinned and adopted by a framework's CI.
+- franken_whisper certifies end-to-end listen latency, or franken_tts or franken_whisper appears as a provider plugin in an incumbent framework.
