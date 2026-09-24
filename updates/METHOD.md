@@ -36,3 +36,5 @@ Files here:
 - [`movement-2026-09-24.tsv`](movement-2026-09-24.tsv): census of all 44, 2026-09-24 UTC.
 - [`franken_code_browser-2026-09-24.md`](franken_code_browser-2026-09-24.md): re-check after the
   first release, v0.1.0.
+
+Commit author email addresses are never recorded: this corpus redacts them (see CHANGELOG, commit bbc1bda). Record author names or handles only.
