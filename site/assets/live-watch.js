@@ -92,9 +92,11 @@
   }
 
   // data-compact (the map's intro card) keeps the line short enough for one line at card width;
-  // the full UTC time moves to the title attribute.
+  // the full UTC time moves to the title attribute. data-moved-href (the map's intro card) points
+  // the "moved since the pin" count at the page that explains it, instead of the raw census file.
   function render(el, latest, open) {
     var compact = el.hasAttribute('data-compact');
+    var movedHref = el.getAttribute('data-moved-href');
     var t = Date.parse(latest.checked_at);
     var day = new Date(t).toISOString().slice(0, 10);
     var frag = document.createDocumentFragment();
@@ -102,7 +104,8 @@
       ? 'Daily watch, ' + relTime(t, true) + ': '
       : 'Watched daily. Last check ' + relTime(t, false) + ' (' + day + ' UTC): '));
     var moved = (compact ? latest.moved : plural(latest.moved, 'repo', 'repos')) + ' moved since the pin';
-    frag.appendChild(latest.census ? link(BLOB + latest.census, moved) : document.createTextNode(moved));
+    var movedTo = movedHref || (latest.census ? BLOB + latest.census : null);
+    frag.appendChild(movedTo ? link(movedTo, moved) : document.createTextNode(moved));
     if (open) {
       var n = open.more ? open.n + '+' : String(open.n);
       var one = open.n === 1 && !open.more;

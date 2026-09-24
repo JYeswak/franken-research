@@ -213,6 +213,25 @@ introToggle.addEventListener('click', () => {
 
 /* Size the renderer to the scene container, not the window: on phones the map is
    a band in the page, so the camera frames the node field into that band. */
+let labelMinX = 0;  // desktop, intro open: labels keep clear of the card (updateLabels)
+const fitCam = new THREE.PerspectiveCamera();
+const fitP = new THREE.Vector3();
+/* Width in px of the whole node field seen from the home camera at zoom 1. The field is a
+   disc around the core, so its screen width does not change as the orbit turns. */
+function fieldWidthPx(w, h){
+  fitCam.fov = 50; fitCam.aspect = w / h; fitCam.zoom = 1;
+  fitCam.position.copy(CAM_HOME); fitCam.lookAt(TGT_HOME);
+  fitCam.updateMatrixWorld(); fitCam.updateProjectionMatrix();
+  let lo = 0, hi = 0;
+  for (let i = 0; i < 64; i++){
+    const a = (i / 64) * Math.PI * 2;
+    for (const y of [TGT_HOME.y, TGT_HOME.y + 5.2]){  // the plane and the highest node (TRL 9)
+      fitP.set(TGT_HOME.x + Math.cos(a) * FIELD_HALF_WIDTH, y, TGT_HOME.z + Math.sin(a) * FIELD_HALF_WIDTH).project(fitCam);
+      lo = Math.min(lo, fitP.x); hi = Math.max(hi, fitP.x);
+    }
+  }
+  return (hi - lo) / 2 * w;
+}
 function sizeRenderer(){
   const w = container.clientWidth || window.innerWidth;
   const h = container.clientHeight || window.innerHeight;
@@ -220,8 +239,10 @@ function sizeRenderer(){
   camera.aspect = w / h;
   // desktop: slide the projection centre so the focus sits in free space.
   // Panel open: midway between the docked panel and the right rail (the selected
-  // node lands there). Intro card open: toward the free space right of the card.
-  let shift = 0;
+  // node lands there). Intro card open: the whole field fits between the card and
+  // the right edge, zooming the lens out as far as that needs (never in).
+  let shift = 0, zoom = 1;
+  labelMinX = 0;
   if (!isMobileView()){
     if (document.body.classList.contains('panel-open')){
       const pEl = document.getElementById('panel');  // layout box: ignores the slide-in transform
@@ -229,9 +250,15 @@ function sizeRenderer(){
       const right = document.getElementById('controls').getBoundingClientRect().left;
       if (right > left) shift = Math.round((left + right) / 2 - w / 2);
     } else if (!document.body.classList.contains('intro-min')){
-      shift = Math.round(Math.min(headerEl.getBoundingClientRect().right / 2, w * 0.12));
+      const freeL = headerEl.getBoundingClientRect().right + 12, freeR = w - 12;
+      if (freeR - freeL > 200){
+        shift = Math.round((freeL + freeR) / 2 - w / 2);
+        zoom = Math.max(0.4, Math.min(1, (freeR - freeL) / fieldWidthPx(w, h)));
+        labelMinX = freeL - 16;
+      }
     }
   }
+  camera.zoom = zoom;
   if (shift) camera.setViewOffset(w, h, -shift, 0, w, h);
   else camera.clearViewOffset();  // both paths update the projection matrix
 }
@@ -1348,12 +1375,12 @@ function updateLabels(){
     else if (d.el.style.display !== 'none') d.el.style.display = 'none';  // filtered out / off screen: never a stale label
   }
   // position + measure (sizes are cached; label text never changes); a label near the
-  // band's side edge slides inward so its name is never cut off
+  // band's side edge, or under the open intro card, slides inward so its name stays readable
   for (const c of cands){
     c.d.el.style.display = 'block';
     if (c.d.w === undefined){ c.d.w = c.d.el.offsetWidth; c.d.h = c.d.el.offsetHeight; }
     const half = c.d.w / 2 + 4;
-    if (w > 2 * half) c.x = Math.min(Math.max(c.x, half), w - half);
+    if (w - labelMinX > 2 * half) c.x = Math.min(Math.max(c.x, labelMinX + half), w - half);
     c.d.el.style.left = c.x + 'px';
     c.d.el.style.top = c.y + 'px';
   }

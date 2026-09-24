@@ -26,7 +26,7 @@
     --bg:#05070d; --ink:#e9e7df; --muted:#9b98a5; --faint:#8a8997;
     --pilot:#f2a93b; --explore:#2fd4bf; --monitor:#7f8fb4; --green:#39ff7d;
     --panel:#0b0e16; --line:#232838;
-    --cardw:clamp(460px, 44vw, 600px);  /* the intro card on the desktop layout */
+    --cardw:clamp(460px, 46vw, 600px);  /* the intro card on the desktop layout */
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   /* desktop layout: a full-screen map with a card and a rail over it; the document does not scroll.
@@ -67,7 +67,7 @@
   p.lede{margin-top:12px; font-size:15px; line-height:1.5; color:#d3d0c7;}
   #ctas{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
   .cta{display:inline-block; text-align:center; min-height:44px;
-    font:inherit; font-size:14px; font-weight:650; line-height:20px; border-radius:12px; padding:11px 15px;
+    font:inherit; font-size:14px; font-weight:650; line-height:20px; border-radius:12px; padding:11px 13px;
     cursor:pointer; text-decoration:none; white-space:nowrap;
     border:1px solid #3a4054; background:rgba(11,14,22,.85); color:var(--ink);}
   .cta:hover{border-color:var(--faint);}
@@ -125,8 +125,10 @@
   #searchmsg{font-size:12px; color:var(--muted); text-align:right;}
   #searchmsg:empty{display:none;}
   /* ring key + map hint: the only always-on text on the rail */
-  #ringkey, #hint{font-size:12px; line-height:1.5; color:var(--muted); text-align:right;
+  #ringkey, #mapkey, #hint{font-size:12px; line-height:1.5; color:var(--muted); text-align:right;
     background:rgba(5,7,13,.78); border-radius:8px; padding:4px 8px; margin-left:auto; max-width:500px;}
+  #mapkey b{font-weight:650; color:var(--ink);}
+  #mapkey .w{color:#fff; font-weight:650;} #mapkey .r{color:#ff6b5e; font-weight:650;} #mapkey .c{color:var(--pilot); font-weight:650;}
   #hint{color:var(--faint); pointer-events:none;}
   .nw{white-space:nowrap;}
   #ringkey b{font-weight:650; color:var(--ink);}
@@ -155,21 +157,22 @@
   #filtercount{font-size:12px; color:var(--muted); min-height:16px;}
   #searchhint{font-size:12px; color:var(--faint);}
   /* disambiguating search dropdown (P1-8): every match listed, pick on Enter/click */
-  #searchdrop{position:absolute; top:calc(100% + 6px); right:0; width:max(100%, 340px); z-index:30;
+  #searchdrop{position:absolute; top:calc(100% + 6px); right:0; width:max(100%, 400px); z-index:30;
     background:#0b0e16; border:1px solid var(--line); border-radius:12px; overflow:hidden;
     max-height:320px; overflow-y:auto; box-shadow:0 18px 60px rgba(0,0,0,.5);}
-  .comb-opt{display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+  /* one option: the name on one line, the ring and CI state wrapping under it */
+  .comb-opt{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; width:100%; text-align:left;
     font:inherit; font-size:13px; color:var(--ink); background:none; border:none;
     border-bottom:1px solid #161b28; padding:9px 12px; cursor:pointer;}
   .comb-opt:last-child{border-bottom:none;}
   .comb-opt:hover, .comb-opt.active{background:rgba(242,169,59,.14);}
-  .comb-opt .oname{font-weight:600; word-break:break-all;}
-  .comb-opt .ometa{margin-left:auto; font-size:12px; color:var(--muted); white-space:nowrap; flex:none;}
+  .comb-opt .oname{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;}
+  .comb-opt .ometa{font-size:12px; color:var(--muted);}
   /* deep filters (P1-9): license, CI state, TRL, built from the data contract */
   #filters2{display:flex; gap:8px 12px; flex-wrap:wrap;}
   #filters2 label{font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
   #filters2 select{font:inherit; font-size:13px; color:var(--ink); background:#0b0e16;
-    border:1px solid var(--line); border-radius:99px; padding:6px 10px; max-width:220px;}
+    border:1px solid var(--line); border-radius:99px; padding:6px 10px; min-width:0; max-width:min(220px, 100%);}
   #viewrow{display:flex; gap:6px; flex-wrap:wrap;}
   /* bottom-right caveat on the desktop layout */
   #caveat{position:fixed; right:22px; bottom:18px; z-index:5; max-width:360px;
@@ -411,9 +414,9 @@
     #filtersbtn, #toprow .js-surprise{display:none;}
     #searchrow{max-width:none;}
     #filters2 label{width:100%;}
-    #filters2 select{flex:1 1 200px; max-width:none;}
+    #filters2 select{flex:1 1 200px; min-width:0; max-width:100%;}
     #searchdrop{width:100%;}
-    #searchmsg, #ringkey, #hint{text-align:left; margin-left:0; max-width:none; background:none; padding:0;}
+    #searchmsg, #ringkey, #mapkey, #hint{text-align:left; margin-left:0; max-width:none; background:none; padding:0;}
     #fpanel{display:flex; background:none; border:0; border-radius:0; padding:0; max-height:none; overflow:visible; box-shadow:none;}
     #caveat{position:static; max-width:none; text-align:left; margin-top:14px; background:none; padding:0;}
     #domecap{left:12px; right:12px; bottom:74px; max-width:none; z-index:7; text-align:left;}
@@ -461,10 +464,10 @@ window.addEventListener('error', function(e){
     <div id="ctas">
       <button id="explorecta" class="cta primary" type="button">Explore the map</button>
       <a id="tablecta" class="cta" href="#tableview">See all <span data-stat="total">44</span> verdicts</a>
-      <a class="cta" href="starter-kit/index.html">Check your own repo</a>
+      <a class="cta" href="starter-kit/index.html">Use the method on your repo</a>
     </div>
     <p class="trust"><a href="./self/index.html">Made by Joshua Nowak (ZestStream), independent of the maintainer.</a></p>
-    <p class="busline" id="live-watch" data-compact>Watched daily by a GitHub Action: <a href="https://github.com/JYeswak/franken-research/tree/main/watch/census">census</a>, <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">open issues</a>.</p>
+    <p class="busline" id="live-watch" data-compact data-moved-href="./updates/index.html">Watched daily by a GitHub Action: <a href="./updates/index.html">what changed</a>, <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">open issues</a>.</p>
     <div id="stats">
       <p class="finding grn"><span class="big"><span data-stat="greenCount">2</span> of <span data-stat="total">44</span></span>
         show CI (continuous integration) passing at the commit we pinned (the single assessed commit). Of the other <span data-stat="notGreen">42</span>, <span data-stat="ciC2">11</span> fail there and the rest have CI disabled, missing, private, or silent.</p>
@@ -521,6 +524,7 @@ window.addEventListener('error', function(e){
   </div>
   <div id="searchmsg"></div>
   <p id="ringkey">Rings are our verdict. <b class="k-pilot">Pilot</b>: try it on bounded real work. <b class="k-explore">Explore</b>: real code, unproven claims. <b class="k-monitor">Monitor</b>: watch, don&rsquo;t land. <b>Invest</b>: none reached it.</p>
+  <p id="mapkey"><b class="c">Center</b>: the one grading method, applied to all <span data-stat="total">44</span>. <b>Cages</b>: repos without the AI-lab rider, <span class="w">white</span> = plain MIT, <span class="r">red</span> = no license file (all rights reserved).</p>
   <p id="hint"><span class="hint-desk">drag to orbit &nbsp;&middot;&nbsp; scroll to zoom &nbsp;&middot;&nbsp; click a name or node for the bottom line &nbsp;&middot;&nbsp; <span class="nw">double&#8209;click opens its brief</span></span><span class="hint-touch">drag sideways to orbit &nbsp;&middot;&nbsp; pinch to zoom &nbsp;&middot;&nbsp; tap a name or node for the bottom line</span></p>
   <div id="fpanel">
     <div id="filters">
