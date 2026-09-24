@@ -457,6 +457,41 @@ screenshot pass cover what the shell looks like. `404.html` has no shell: the
 host serves it at any depth, so relative links would point at the wrong
 folder.
 
+## Gate V — verdict strip on every brief
+
+**What:** `site/scripts/brief-strip.mjs` owns two marked regions on every
+`briefs/*.html`: `<!-- brief:style -->` in `<head>` (the strip's CSS, the
+page's ring colour, the ring widget's colours, 44px touch targets on coarse
+pointers) and `<!-- brief:strip -->` in the hero, directly under the title.
+The strip shows the ring, TRL, CI class and license class from
+`assets/data.js`, the brief's own bottom line ("Use it? ... Learn from it?
+...", cut to its first clause from the two verdict cards) with a Why link to
+the section that holds those cards, and one sentence saying what FrankenSuite
+is, with links to the repo on the map and to the verdict table. Ring colours,
+the CI-green colour and the CI class words are read from `assets/app.src.js`,
+so a colour means the same ring on the map, on a brief, and on its share card
+(`make-og.mjs` imports the same palette). The gate runs
+`brief-strip.mjs --check`, which fails, naming the brief, when a region is
+missing, repeated, or different from a fresh render; when the strip's ring or
+TRL, the ring widget's active pill, or the TRL gauge caption disagrees with
+`data.js`; when the ring widget's pills are not in the order its colours are
+keyed to; when a "What would change the verdict" list has fewer than two items
+or carries an "Until then" sentence as an item; and when a `data.js` row has
+no brief. Zero briefs found is a failure.
+**The fix for drift is `node site/scripts/brief-strip.mjs`**, which rewrites
+both regions and then runs the check. On a brief with no regions yet it puts
+the style after the template's `</style>` and the strip in place of
+`p.hero__dek`.
+**Why:** the v1.2 audits found every brief first stated its verdict about
+5,700px down, never said what FrankenSuite is to a visitor from a shared
+link, highlighted the Explore ring in the orange the map uses for Pilot, and
+rendered the "what would change the verdict" list of 27 briefs as one comma
+list with the "Until then" sentence as a second item.
+**Accepted:** the gate compares markup, not rendering; gate I and a screenshot
+pass cover what the strip looks like. The share cards are not gated: a
+Chromium PNG is not byte-stable across versions, so `make-og.mjs` is rerun by
+hand when the data or the palette changes.
+
 ## Accepted limitations (all gates)
 
 - Raw packet/Rulebook `.md` files have no navigation by design.
@@ -599,3 +634,26 @@ directions reported) and on `frankenredis` removed from the correction form's
 dropdown. The gate E block failed on a brief whose back link named a
 repository with no brief. A second run of `bun run build:shell` rewrote
 nothing.
+
+Verdict-strip pass (v1.2): Gate V added with `site/scripts/brief-strip.mjs`.
+The first run placed the style region in all 44 briefs and replaced each
+`p.hero__dek` with the strip; a second run rewrote nothing. The 27 collapsed
+"What would change the verdict" lists were re-marked by a one-time script that
+refused to write unless each list kept its words (punctuation aside) and inline
+tags: one item per condition, the closing sentence as a paragraph after the
+list, and `franken_markdown_website`'s lead-in as a paragraph before it.
+`make-og.mjs` now colours each card with the map's ring palette, adds the
+brief's bottom line, and renders three page cards (`og-image.png`,
+`og/starter-kit.png`, `og/self.png`). The gate V block, copied verbatim out of
+`verify-site.sh`, was run against scratch copies of the tree (never the real
+tree) on 2026-09-24: the unchanged copy passed with 44 briefs. It failed,
+naming the brief, on frankenredis's ring set to Pilot in `data.js` (both
+regions differ; the strip and the ring widget disagree with `data.js`), on a
+hand-edited `data-ring` in frankensqlite's strip, on frankensqlite's TRL set to
+7 in `data.js` (the strip and the TRL gauge), on the strip region deleted from
+frankenfs, on frankenscipy's list collapsed back to one item, on frankenredis's
+"Until then" sentence moved back into its list, on the Explore colour changed
+in `app.src.js` (every brief's style region differs, since each carries all
+four pill colours), on frankensqlite's ring widget marking Pilot, on its TRL
+gauge saying 7, and on an empty briefs directory. In a clean clone of `eadcf57`
+with this pass applied, all 22 gates passed, V among them with 44 briefs.

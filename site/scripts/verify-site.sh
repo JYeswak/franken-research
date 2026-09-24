@@ -1254,6 +1254,23 @@ else
   fail "S shared shell" "exit $S_RC: $(printf '%s\n' "$S_OUT" | grep -v '^SHELL_' | head -4 | tr '\n' ';')"
 fi
 
+# ============ Gate V: verdict strip on every brief ============
+# scripts/brief-strip.mjs owns two marked regions on every brief: brief:style in <head> and brief:strip
+# under the title (ring, TRL, CI class, license, the brief's own bottom line, a Why link, and one sentence
+# of FrankenSuite context). --check re-renders both from assets/data.js and the map's palette and CI words
+# in assets/app.src.js, and fails on a missing or hand-edited region, on a strip or a ring widget or TRL
+# gauge whose ring or TRL disagrees with data.js, and on a "What would change the verdict" list collapsed
+# into one item or carrying its "Until then" sentence as an item. Fix drift with
+# `node site/scripts/brief-strip.mjs`. Details: ../BUILD-GATES.md.
+echo "== V  verdict strip =="
+V_OUT="$(node "$SITE_DIR/scripts/brief-strip.mjs" --check --site "$SITE_DIR" 2>&1)"; V_RC=$?
+V_N="$(printf '%s\n' "$V_OUT" | sed -n 's/^STRIP_OK briefs=\([0-9][0-9]*\).*/\1/p')"
+if [ $V_RC -eq 0 ] && [ "${V_N:-0}" -gt 0 ]; then
+  pass "V verdict strip matches its render and data.js on every brief ($V_N briefs)"
+else
+  fail "V verdict strip" "exit $V_RC: $(printf '%s\n' "$V_OUT" | grep -v '^STRIP_' | head -4 | tr '\n' ';')"
+fi
+
 # ============ summary ============
 echo "----------------------------------------"
 echo "gates passed: $PASS   failed: $FAIL"
