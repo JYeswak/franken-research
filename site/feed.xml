@@ -26,11 +26,11 @@
   </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:census/2026-09-24</id>
-    <title>Daily census: 32 of 44 moved since the pin</title>
+    <title>Daily census: 33 of 44 moved since the pin</title>
     <updated>2026-09-24T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
     <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-09-24.tsv"/>
-    <summary type="text">32 of the 44 assessed repositories have commits after their pinned commit (2263 commits in all). 8 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-09-24.tsv.</summary>
+    <summary type="text">33 of the 44 assessed repositories have commits after their pinned commit (3007 commits in all). 4 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-09-24.tsv.</summary>
   </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:release/v1.1.0</id>

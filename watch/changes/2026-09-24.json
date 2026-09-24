@@ -1,7 +1,105 @@
 {
   "baseline": false,
   "date": "2026-09-24",
-  "informational": [],
-  "material": [],
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "100 files at e9d38ef",
+      "before": "98 files at 9d6d77b",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/e9d38efdab154399754730b71f04a0c38e46ea67/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/9d6d77bccb3219391c060f39566b45284d39a400...e9d38efdab154399754730b71f04a0c38e46ea67",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "5f8b525f9e33",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +native-term-graph-integrity.yml, +native-term-store.yml.",
+      "title": "[watch] franken_lean: workflows +2 -0 (100 now)",
+      "value": "5f8b525f9e33"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "98 files at acaf83b",
+      "before": "95 files at b2322be",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/acaf83b39ca913e6158c936bfb80ecb50be105ee/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/b2322be459387395a172e16a2bbc2cf6c14e38fa...acaf83b39ca913e6158c936bfb80ecb50be105ee",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "b4a4b04c1c8c",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +native-frame-pipeline.yml, +native-render.yml, +publish-native-geometry-lifecycles.yml.",
+      "title": "[watch] franken_manim: workflows +3 -0 (98 now)",
+      "value": "b4a4b04c1c8c"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "12 files at de87fb0",
+      "before": "9 files at 1e84b66",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/de87fb0abb305baa7acc48cd4ac6f0efd7b16e28/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/1e84b6663692f94889388d9e90425f9465b47f00...de87fb0abb305baa7acc48cd4ac6f0efd7b16e28",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "97c8f9643c55",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +locale-objects.yml, +native-loader-inspection.yml, +shared-sync.yml.",
+      "title": "[watch] frankenlibc: workflows +3 -0 (12 now)",
+      "value": "97c8f9643c55"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "5 files at 8aac537",
+      "before": "4 files at 5ae67c1",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/8aac537b21b1962e0c5a0b79785f140773621bae/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/5ae67c185850584139be6e1c283f9a7ebd47cbcf...8aac537b21b1962e0c5a0b79785f140773621bae",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "929fa469850b",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +thermal-bounds.yml.",
+      "title": "[watch] frankensim: workflows +1 -0 (5 now)",
+      "value": "929fa469850b"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag frankensearch-quill-v0.3.2 -> 73a656e (2026-09-24T20:13:45Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/frankensearch-quill-v0.3.2",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/frankensearch-quill-v0.3.2"
+      ],
+      "ident": "frankensearch-quill-v0.3.2",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag frankensearch-quill-v0.3.2 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag frankensearch-quill-v0.3.2",
+      "value": "73a656e6c6b503913b686a1dbefceec54dffb41b"
+    }
+  ],
   "since": null
 }

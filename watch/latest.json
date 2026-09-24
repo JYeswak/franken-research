@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "checked_at": "2026-09-24T21:25:36Z",
+  "previous_checked_at": "2026-09-24T13:50:21Z",
+  "assessed": 44,
+  "found": 44,
+  "moved_since_pin": 33,
+  "commits_since_pin_total": 3007,
+  "material_since_pin_count": 7,
+  "material_new_today_count": 1,
+  "public_repos": 215,
+  "new_public_repos_today": [],
+  "census_path": "watch/census/2026-09-24.tsv",
+  "changes_path": "watch/changes/2026-09-24.json"
+}
