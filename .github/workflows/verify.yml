@@ -8,6 +8,18 @@ name: verify
 on:
   push:
   pull_request:
+  # Weekly run so the gates keep executing when nobody pushes. The corpus
+  # finding this answers: honesty machinery that exists but does not run
+  # (stack/rigor-practices.tsv, "Scheduled runs"). Mondays 06:17 UTC.
+  schedule:
+    - cron: "17 6 * * 1"
+
+# A newer push to the same pull request cancels its superseded PR run.
+# Push and scheduled runs each get a unique group (the run id), so they
+# are never cancelled or queued behind another: each one is public record.
+concurrency:
+  group: verify-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -15,9 +27,18 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Hung-job guard sized from measured history, not guessed. The three
+    # runs on record (35944707134, 35946263690, 35946353035, 2026-09-24)
+    # took 49 s, 46 s and 54 s job start to finish. The inspector rule
+    # (about twice the slowest run) gives 2 min; 4 min leaves room for the
+    # v1.1 stack and rigor pages the gate chain now renders. Re-derive it
+    # from `gh run list` history when that grows; do not guess.
+    timeout-minutes: 4
     steps:
-      - uses: actions/checkout@v4
+      # Actions are pinned to the commit their major tag resolved to on
+      # 2026-09-24 (gh api repos/<owner>/<repo>/commits/<tag>), so a moved
+      # tag cannot change what runs here.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0 # full history for the gitleaks history scan
 
@@ -37,11 +58,14 @@ jobs:
           "$RUNNER_TEMP/gitleaks" dir . --no-banner --redact
           "$RUNNER_TEMP/gitleaks" git . --no-banner --redact
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          # The version the last unpinned green run downloaded (run 35946353035).
+          bun-version: 1.4.2
 
       - name: Install (lockfile must be current)
         run: bun install --frozen-lockfile
