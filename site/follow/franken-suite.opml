@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<opml version="2.0">
+  <head>
+    <title>FrankenSuite: follow all 44 repos</title>
+    <ownerName>Franken Research</ownerName>
+    <ownerId>https://fr.zeststream.ai/follow/</ownerId>
+  </head>
+  <body>
+    <outline type="rss" text="Franken Research" title="Franken Research" xmlUrl="https://fr.zeststream.ai/feed.xml" htmlUrl="https://fr.zeststream.ai/"/>
+    <outline text="Releases (44 repos)" title="Releases (44 repos)">
+      <outline type="rss" text="asupersync releases" title="asupersync releases" xmlUrl="https://github.com/Dicklesworthstone/asupersync/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/asupersync"/>
+      <outline type="rss" text="beads-for-frankentui releases" title="beads-for-frankentui releases" xmlUrl="https://github.com/Dicklesworthstone/beads-for-frankentui/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/beads-for-frankentui"/>
+      <outline type="rss" text="beads_for_franken_engine releases" title="beads_for_franken_engine releases" xmlUrl="https://github.com/Dicklesworthstone/beads_for_franken_engine/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/beads_for_franken_engine"/>
+      <outline type="rss" text="franken_agent_detection releases" title="franken_agent_detection releases" xmlUrl="https://github.com/Dicklesworthstone/franken_agent_detection/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_agent_detection"/>
+      <outline type="rss" text="franken_alignment releases" title="franken_alignment releases" xmlUrl="https://github.com/Dicklesworthstone/franken_alignment/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_alignment"/>
+      <outline type="rss" text="franken_code_browser releases" title="franken_code_browser releases" xmlUrl="https://github.com/Dicklesworthstone/franken_code_browser/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_code_browser"/>
+      <outline type="rss" text="franken_drone_geometry_reconstruction releases" title="franken_drone_geometry_reconstruction releases" xmlUrl="https://github.com/Dicklesworthstone/franken_drone_geometry_reconstruction/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_drone_geometry_reconstruction"/>
+      <outline type="rss" text="franken_engine releases" title="franken_engine releases" xmlUrl="https://github.com/Dicklesworthstone/franken_engine/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_engine"/>
+      <outline type="rss" text="franken_lean releases" title="franken_lean releases" xmlUrl="https://github.com/Dicklesworthstone/franken_lean/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_lean"/>
+      <outline type="rss" text="franken_manim releases" title="franken_manim releases" xmlUrl="https://github.com/Dicklesworthstone/franken_manim/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_manim"/>
+      <outline type="rss" text="franken_markdown releases" title="franken_markdown releases" xmlUrl="https://github.com/Dicklesworthstone/franken_markdown/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_markdown"/>
+      <outline type="rss" text="franken_markdown_website releases" title="franken_markdown_website releases" xmlUrl="https://github.com/Dicklesworthstone/franken_markdown_website/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_markdown_website"/>
+      <outline type="rss" text="franken_native_capsule releases" title="franken_native_capsule releases" xmlUrl="https://github.com/Dicklesworthstone/franken_native_capsule/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_native_capsule"/>
+      <outline type="rss" text="franken_networkx releases" title="franken_networkx releases" xmlUrl="https://github.com/Dicklesworthstone/franken_networkx/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_networkx"/>
+      <outline type="rss" text="franken_nlp releases" title="franken_nlp releases" xmlUrl="https://github.com/Dicklesworthstone/franken_nlp/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_nlp"/>
+      <outline type="rss" text="franken_node releases" title="franken_node releases" xmlUrl="https://github.com/Dicklesworthstone/franken_node/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_node"/>
+      <outline type="rss" text="franken_numpy releases" title="franken_numpy releases" xmlUrl="https://github.com/Dicklesworthstone/franken_numpy/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_numpy"/>
+      <outline type="rss" text="franken_ocr releases" title="franken_ocr releases" xmlUrl="https://github.com/Dicklesworthstone/franken_ocr/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_ocr"/>
+      <outline type="rss" text="franken_overlap releases" title="franken_overlap releases" xmlUrl="https://github.com/Dicklesworthstone/franken_overlap/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_overlap"/>
+      <outline type="rss" text="franken_remote releases" title="franken_remote releases" xmlUrl="https://github.com/Dicklesworthstone/franken_remote/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_remote"/>
+      <outline type="rss" text="franken_snowflake releases" title="franken_snowflake releases" xmlUrl="https://github.com/Dicklesworthstone/franken_snowflake/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_snowflake"/>
+      <outline type="rss" text="franken_surveillance_system releases" title="franken_surveillance_system releases" xmlUrl="https://github.com/Dicklesworthstone/franken_surveillance_system/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_surveillance_system"/>
+      <outline type="rss" text="franken_threed releases" title="franken_threed releases" xmlUrl="https://github.com/Dicklesworthstone/franken_threed/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_threed"/>
+      <outline type="rss" text="franken_tts releases" title="franken_tts releases" xmlUrl="https://github.com/Dicklesworthstone/franken_tts/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_tts"/>
+      <outline type="rss" text="franken_whisper releases" title="franken_whisper releases" xmlUrl="https://github.com/Dicklesworthstone/franken_whisper/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_whisper"/>
+      <outline type="rss" text="frankenfs releases" title="frankenfs releases" xmlUrl="https://github.com/Dicklesworthstone/frankenfs/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenfs"/>
+      <outline type="rss" text="frankengit releases" title="frankengit releases" xmlUrl="https://github.com/Dicklesworthstone/frankengit/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankengit"/>
+      <outline type="rss" text="frankengraphdb releases" title="frankengraphdb releases" xmlUrl="https://github.com/Dicklesworthstone/frankengraphdb/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankengraphdb"/>
+      <outline type="rss" text="frankenjax releases" title="frankenjax releases" xmlUrl="https://github.com/Dicklesworthstone/frankenjax/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenjax"/>
+      <outline type="rss" text="frankenlibc releases" title="frankenlibc releases" xmlUrl="https://github.com/Dicklesworthstone/frankenlibc/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenlibc"/>
+      <outline type="rss" text="frankenmermaid releases" title="frankenmermaid releases" xmlUrl="https://github.com/Dicklesworthstone/frankenmermaid/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenmermaid"/>
+      <outline type="rss" text="frankenpandas releases" title="frankenpandas releases" xmlUrl="https://github.com/Dicklesworthstone/frankenpandas/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenpandas"/>
+      <outline type="rss" text="frankenredis releases" title="frankenredis releases" xmlUrl="https://github.com/Dicklesworthstone/frankenredis/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenredis"/>
+      <outline type="rss" text="frankenscipy releases" title="frankenscipy releases" xmlUrl="https://github.com/Dicklesworthstone/frankenscipy/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenscipy"/>
+      <outline type="rss" text="frankensearch releases" title="frankensearch releases" xmlUrl="https://github.com/Dicklesworthstone/frankensearch/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensearch"/>
+      <outline type="rss" text="frankensim releases" title="frankensim releases" xmlUrl="https://github.com/Dicklesworthstone/frankensim/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensim"/>
+      <outline type="rss" text="frankensim_website releases" title="frankensim_website releases" xmlUrl="https://github.com/Dicklesworthstone/frankensim_website/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensim_website"/>
+      <outline type="rss" text="frankensqlite releases" title="frankensqlite releases" xmlUrl="https://github.com/Dicklesworthstone/frankensqlite/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensqlite"/>
+      <outline type="rss" text="frankensqlite_website releases" title="frankensqlite_website releases" xmlUrl="https://github.com/Dicklesworthstone/frankensqlite_website/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensqlite_website"/>
+      <outline type="rss" text="frankensympy releases" title="frankensympy releases" xmlUrl="https://github.com/Dicklesworthstone/frankensympy/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensympy"/>
+      <outline type="rss" text="frankenterm releases" title="frankenterm releases" xmlUrl="https://github.com/Dicklesworthstone/frankenterm/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenterm"/>
+      <outline type="rss" text="frankentorch releases" title="frankentorch releases" xmlUrl="https://github.com/Dicklesworthstone/frankentorch/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankentorch"/>
+      <outline type="rss" text="frankentui releases" title="frankentui releases" xmlUrl="https://github.com/Dicklesworthstone/frankentui/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankentui"/>
+      <outline type="rss" text="frankentui_website releases" title="frankentui_website releases" xmlUrl="https://github.com/Dicklesworthstone/frankentui_website/releases.atom" htmlUrl="https://github.com/Dicklesworthstone/frankentui_website"/>
+    </outline>
+    <outline text="Tags (44 repos)" title="Tags (44 repos)">
+      <outline type="rss" text="asupersync tags" title="asupersync tags" xmlUrl="https://github.com/Dicklesworthstone/asupersync/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/asupersync"/>
+      <outline type="rss" text="beads-for-frankentui tags" title="beads-for-frankentui tags" xmlUrl="https://github.com/Dicklesworthstone/beads-for-frankentui/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/beads-for-frankentui"/>
+      <outline type="rss" text="beads_for_franken_engine tags" title="beads_for_franken_engine tags" xmlUrl="https://github.com/Dicklesworthstone/beads_for_franken_engine/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/beads_for_franken_engine"/>
+      <outline type="rss" text="franken_agent_detection tags" title="franken_agent_detection tags" xmlUrl="https://github.com/Dicklesworthstone/franken_agent_detection/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_agent_detection"/>
+      <outline type="rss" text="franken_alignment tags" title="franken_alignment tags" xmlUrl="https://github.com/Dicklesworthstone/franken_alignment/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_alignment"/>
+      <outline type="rss" text="franken_code_browser tags" title="franken_code_browser tags" xmlUrl="https://github.com/Dicklesworthstone/franken_code_browser/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_code_browser"/>
+      <outline type="rss" text="franken_drone_geometry_reconstruction tags" title="franken_drone_geometry_reconstruction tags" xmlUrl="https://github.com/Dicklesworthstone/franken_drone_geometry_reconstruction/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_drone_geometry_reconstruction"/>
+      <outline type="rss" text="franken_engine tags" title="franken_engine tags" xmlUrl="https://github.com/Dicklesworthstone/franken_engine/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_engine"/>
+      <outline type="rss" text="franken_lean tags" title="franken_lean tags" xmlUrl="https://github.com/Dicklesworthstone/franken_lean/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_lean"/>
+      <outline type="rss" text="franken_manim tags" title="franken_manim tags" xmlUrl="https://github.com/Dicklesworthstone/franken_manim/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_manim"/>
+      <outline type="rss" text="franken_markdown tags" title="franken_markdown tags" xmlUrl="https://github.com/Dicklesworthstone/franken_markdown/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_markdown"/>
+      <outline type="rss" text="franken_markdown_website tags" title="franken_markdown_website tags" xmlUrl="https://github.com/Dicklesworthstone/franken_markdown_website/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_markdown_website"/>
+      <outline type="rss" text="franken_native_capsule tags" title="franken_native_capsule tags" xmlUrl="https://github.com/Dicklesworthstone/franken_native_capsule/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_native_capsule"/>
+      <outline type="rss" text="franken_networkx tags" title="franken_networkx tags" xmlUrl="https://github.com/Dicklesworthstone/franken_networkx/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_networkx"/>
+      <outline type="rss" text="franken_nlp tags" title="franken_nlp tags" xmlUrl="https://github.com/Dicklesworthstone/franken_nlp/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_nlp"/>
+      <outline type="rss" text="franken_node tags" title="franken_node tags" xmlUrl="https://github.com/Dicklesworthstone/franken_node/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_node"/>
+      <outline type="rss" text="franken_numpy tags" title="franken_numpy tags" xmlUrl="https://github.com/Dicklesworthstone/franken_numpy/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_numpy"/>
+      <outline type="rss" text="franken_ocr tags" title="franken_ocr tags" xmlUrl="https://github.com/Dicklesworthstone/franken_ocr/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_ocr"/>
+      <outline type="rss" text="franken_overlap tags" title="franken_overlap tags" xmlUrl="https://github.com/Dicklesworthstone/franken_overlap/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_overlap"/>
+      <outline type="rss" text="franken_remote tags" title="franken_remote tags" xmlUrl="https://github.com/Dicklesworthstone/franken_remote/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_remote"/>
+      <outline type="rss" text="franken_snowflake tags" title="franken_snowflake tags" xmlUrl="https://github.com/Dicklesworthstone/franken_snowflake/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_snowflake"/>
+      <outline type="rss" text="franken_surveillance_system tags" title="franken_surveillance_system tags" xmlUrl="https://github.com/Dicklesworthstone/franken_surveillance_system/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_surveillance_system"/>
+      <outline type="rss" text="franken_threed tags" title="franken_threed tags" xmlUrl="https://github.com/Dicklesworthstone/franken_threed/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_threed"/>
+      <outline type="rss" text="franken_tts tags" title="franken_tts tags" xmlUrl="https://github.com/Dicklesworthstone/franken_tts/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_tts"/>
+      <outline type="rss" text="franken_whisper tags" title="franken_whisper tags" xmlUrl="https://github.com/Dicklesworthstone/franken_whisper/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/franken_whisper"/>
+      <outline type="rss" text="frankenfs tags" title="frankenfs tags" xmlUrl="https://github.com/Dicklesworthstone/frankenfs/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenfs"/>
+      <outline type="rss" text="frankengit tags" title="frankengit tags" xmlUrl="https://github.com/Dicklesworthstone/frankengit/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankengit"/>
+      <outline type="rss" text="frankengraphdb tags" title="frankengraphdb tags" xmlUrl="https://github.com/Dicklesworthstone/frankengraphdb/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankengraphdb"/>
+      <outline type="rss" text="frankenjax tags" title="frankenjax tags" xmlUrl="https://github.com/Dicklesworthstone/frankenjax/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenjax"/>
+      <outline type="rss" text="frankenlibc tags" title="frankenlibc tags" xmlUrl="https://github.com/Dicklesworthstone/frankenlibc/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenlibc"/>
+      <outline type="rss" text="frankenmermaid tags" title="frankenmermaid tags" xmlUrl="https://github.com/Dicklesworthstone/frankenmermaid/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenmermaid"/>
+      <outline type="rss" text="frankenpandas tags" title="frankenpandas tags" xmlUrl="https://github.com/Dicklesworthstone/frankenpandas/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenpandas"/>
+      <outline type="rss" text="frankenredis tags" title="frankenredis tags" xmlUrl="https://github.com/Dicklesworthstone/frankenredis/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenredis"/>
+      <outline type="rss" text="frankenscipy tags" title="frankenscipy tags" xmlUrl="https://github.com/Dicklesworthstone/frankenscipy/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenscipy"/>
+      <outline type="rss" text="frankensearch tags" title="frankensearch tags" xmlUrl="https://github.com/Dicklesworthstone/frankensearch/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensearch"/>
+      <outline type="rss" text="frankensim tags" title="frankensim tags" xmlUrl="https://github.com/Dicklesworthstone/frankensim/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensim"/>
+      <outline type="rss" text="frankensim_website tags" title="frankensim_website tags" xmlUrl="https://github.com/Dicklesworthstone/frankensim_website/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensim_website"/>
+      <outline type="rss" text="frankensqlite tags" title="frankensqlite tags" xmlUrl="https://github.com/Dicklesworthstone/frankensqlite/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensqlite"/>
+      <outline type="rss" text="frankensqlite_website tags" title="frankensqlite_website tags" xmlUrl="https://github.com/Dicklesworthstone/frankensqlite_website/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensqlite_website"/>
+      <outline type="rss" text="frankensympy tags" title="frankensympy tags" xmlUrl="https://github.com/Dicklesworthstone/frankensympy/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankensympy"/>
+      <outline type="rss" text="frankenterm tags" title="frankenterm tags" xmlUrl="https://github.com/Dicklesworthstone/frankenterm/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankenterm"/>
+      <outline type="rss" text="frankentorch tags" title="frankentorch tags" xmlUrl="https://github.com/Dicklesworthstone/frankentorch/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankentorch"/>
+      <outline type="rss" text="frankentui tags" title="frankentui tags" xmlUrl="https://github.com/Dicklesworthstone/frankentui/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankentui"/>
+      <outline type="rss" text="frankentui_website tags" title="frankentui_website tags" xmlUrl="https://github.com/Dicklesworthstone/frankentui_website/tags.atom" htmlUrl="https://github.com/Dicklesworthstone/frankentui_website"/>
+    </outline>
+  </body>
+</opml>

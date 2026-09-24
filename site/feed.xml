@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Franken Research</title>
+  <subtitle>Releases of this assessment, dated re-checks, and the daily census of the 44 FrankenSuite repositories since their pinned commits.</subtitle>
+  <id>tag:fr.zeststream.ai,2026:feed</id>
+  <link rel="self" type="application/atom+xml" href="https://fr.zeststream.ai/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/"/>
+  <updated>2026-09-24T00:00:00Z</updated>
+  <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
+  <icon>https://fr.zeststream.ai/favicon.svg</icon>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:recheck/franken_code_browser-2026-09-24</id>
+    <title>franken_code_browser: re-check after v0.1.0 (addendum, 2026-09-24)</title>
+    <updated>2026-09-24T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/markdown" href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md"/>
+    <summary type="text">A dated re-check of franken_code_browser filed beside its pinned packet, which is not edited. Every command and its output are in updates/franken_code_browser-2026-09-24.md.</summary>
+  </entry>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:census/2026-09-24</id>
+    <title>Daily census: 32 of 44 moved since the pin</title>
+    <updated>2026-09-24T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-09-24.tsv"/>
+    <summary type="text">32 of the 44 assessed repositories have commits after their pinned commit (2263 commits in all). 8 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-09-24.tsv.</summary>
+  </entry>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:release/v1.1.0</id>
+    <title>Franken Research v1.1.0 released</title>
+    <updated>2026-09-23T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/JYeswak/franken-research/releases/tag/v1.1.0"/>
+    <link rel="related" type="text/html" href="https://github.com/JYeswak/franken-research/blob/main/CHANGELOG.md"/>
+    <summary type="text">Extends the assessment from the 44 FrankenSuite repositories to the wider agent stack, and turns every assessed project into a source of practices this repository also applies to itself.</summary>
+  </entry>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:release/v1.0.0</id>
+    <title>Franken Research v1.0.0 released</title>
+    <updated>2026-09-23T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/JYeswak/franken-research/releases/tag/v1.0.0"/>
+    <link rel="related" type="text/html" href="https://github.com/JYeswak/franken-research/blob/main/CHANGELOG.md"/>
+    <summary type="text">First public repository, tagged v1.0.0.</summary>
+  </entry>
+</feed>

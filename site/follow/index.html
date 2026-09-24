@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Follow the suite · Franken Research</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://fr.zeststream.ai/follow/">
+<link rel="alternate" type="application/atom+xml" title="Franken Research" href="https://fr.zeststream.ai/feed.xml">
+<meta name="description" content="Three ways to hear when the FrankenSuite or this assessment changes: the Franken Research Atom feed, an OPML file that follows the release and tag feeds of all 44 assessed repos, or GitHub notifications.">
+<meta property="og:title" content="Follow the suite · Franken Research">
+<meta property="og:description" content="Subscribe to the Franken Research feed, import one OPML file to follow all 44 FrankenSuite repos directly, or watch the GitHub repository.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fr.zeststream.ai/follow/">
+<meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fr.zeststream.ai/og-image.png">
+<style>/* Franken Research practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0}
+.card h2{font-size:20px;margin:0 0 6px;color:var(--ink);line-height:1.35}
+.card h2 .n{color:var(--accent);font-family:var(--sans);font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.card p,.card li{font-size:15.5px;line-height:1.65}
+.card p{margin:8px 0}
+.card ul{margin:8px 0;padding-left:22px}
+pre{background:#0b0e13;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-family:var(--mono);font-size:13px;line-height:1.6;
+  color:#cdd7ea;overflow-x:auto;white-space:pre}
+.callout{border-left:3px solid var(--amber);padding:6px 0 6px 14px;margin:12px 0;
+  color:#d8d2c2;font-size:14.5px;line-height:1.6}
+.callout b{color:var(--amber);font-family:var(--sans);font-size:13px;
+  letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; Franken Research map</a>
+  <span class="peers">
+    <a href="../updates/index.html">What moved</a>
+    <a href="../method/index.html">Method</a>
+    <a href="../reproduce/index.html">Reproduce a verdict</a>
+    <a href="../starter-kit/index.html">Starter kit</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Follow the suite</h1>
+  <p class="sub">Each of the <span data-stat="total">44</span> assessments was pinned September 22, 2026 (the assessed commit): it describes that one commit, and the repositories keep moving. There are three ways to hear about it: our feed, which says what we checked; the repositories' own feeds, which say what shipped; or GitHub notifications on this project.</p>
+</header>
+
+<main id="main">
+
+<div class="card" id="feed">
+  <h2><span class="n">1 &middot; Our feed</span>Subscribe to Franken Research</h2>
+  <p>Paste this address into any feed reader:</p>
+  <pre>https://fr.zeststream.ai/feed.xml</pre>
+  <p>It is an Atom feed (<a href="../feed.xml">open it here</a>) with three kinds of entry:</p>
+  <ul>
+    <li><b>Releases of this assessment</b>, with the first paragraph of the changelog entry and a link to the GitHub release.</li>
+    <li><b>Dated re-checks.</b> When a repository ships something that could change a verdict cell, someone reads the new code and files a dated re-check beside the pinned packet. The packet itself is never edited.</li>
+    <li><b>The daily census</b>, at most one entry a day: how many of the <span data-stat="total">44</span> repositories have commits after their pin, and how many flagged a release, tag, license, or workflow change that triggers a re-check. The numbers are counted from the census file each entry links.</li>
+  </ul>
+  <p>It keeps the newest 50 entries. It does not list individual commits, and it does not repeat upstream release notes. For those, follow the repositories directly.</p>
+</div>
+
+<div class="card" id="opml">
+  <h2><span class="n">2 &middot; The repositories themselves</span>Follow Jeffrey Emanuel's <span data-stat="total">44</span> repos directly</h2>
+  <p>Download <a href="franken-suite.opml" download>franken-suite.opml</a> and import it into your feed reader. Most readers have an "Import OPML" or "Import subscriptions" option. You get three things:</p>
+  <ul>
+    <li>A <b>Releases</b> folder with each repository's GitHub releases feed (<code>releases.atom</code>).</li>
+    <li>A <b>Tags</b> folder with each repository's tags feed (<code>tags.atom</code>). Some of these repositories tag versions without publishing a GitHub release, so the releases feed alone misses them. Expect some entries to show up in both folders.</li>
+    <li>Our own feed, from option 1.</li>
+  </ul>
+  <p>These feeds come straight from GitHub, not from us. They carry every release and tag as the maintainer publishes it, before anyone here has read it, so a release in them is not a finding. The repository list is read from the assessment packets each time the file is built.</p>
+</div>
+
+<div class="card" id="github">
+  <h2><span class="n">3 &middot; GitHub</span>Watch the repository</h2>
+  <p>On <a href="https://github.com/JYeswak/franken-research">github.com/JYeswak/franken-research</a>, open the <b>Watch</b> menu, choose <b>Custom</b>, and tick what you want:</p>
+  <ul>
+    <li><b>Releases</b> only: an email or notification for each new release of this assessment, and nothing else.</li>
+    <li><b>Issues</b>: every new issue. A daily watch reads the GitHub API for all <span data-stat="total">44</span> repositories and opens one issue per change that could move a verdict cell, labelled <code>watch</code>. GitHub cannot notify on a single label, so filter those in your inbox or open <a href="https://github.com/JYeswak/franken-research/issues?q=label%3Awatch">the list of watch issues</a>.</li>
+  </ul>
+  <div class="callout"><b>Want to report something?</b>If you spot a release we missed or a finding that looks wrong, open an issue on the repository. Corrections are recorded in the changelog with a date.</div>
+</div>
+
+</main>
+
+<footer>
+  <p>Sources: the feed and the OPML file are generated by <a href="https://github.com/JYeswak/franken-research/blob/main/site/scripts/make-feed.mjs">site/scripts/make-feed.mjs</a> from the changelog, <code>updates/</code>, <code>watch/census/</code>, and <code>packets/</code>. A build gate regenerates both and fails if the published copies differ.</p>
+  <p>Related pages: <a href="../index.html">The map</a> &middot; <a href="../updates/index.html">Since the pin</a> &middot; <a href="../method/index.html">How claims are governed</a></p>
+</footer>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/fill-stats.js"></script>
+</body>
+</html>
