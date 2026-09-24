@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beyond FrankenSuite · Franken Research</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="description" content="What Franken Research learned outside the 44 FrankenSuite repos: two big-vendor agent-assisted Rust ports, NVIDIA&#x27;s early CUDA Rust tracks, and the techniques worth copying from each, with every number traced to its source.">
+<meta property="og:title" content="Beyond FrankenSuite · Franken Research">
+<meta property="og:description" content="What Franken Research learned outside the 44 FrankenSuite repos: two big-vendor agent-assisted Rust ports, NVIDIA&#x27;s early CUDA Rust tracks, and the techniques worth copying from each, with every number traced to its source.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://fr.zeststream.ai/beyond/">
+<meta property="og:site_name" content="Franken Research">
+<meta property="og:url" content="https://fr.zeststream.ai/beyond/">
+<meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
+<meta name="twitter:image" content="https://fr.zeststream.ai/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>/* Franken Research practitioner page. Zero dependencies. Works from file:// with no network. */
+:root{
+  --bg:#0c0c0e; --bg-2:#121215; --bg-3:#17171b;
+  --ink:#ece5d8; --ink-dim:#b7b0a2; --muted:#8d867a; --line:#26262c;
+  --accent:#ff7a3d; --accent-soft:rgba(255,122,61,.12);
+  --gold:#f0a832; --green:#57d98a; --blue:#6aa8ff; --amber:#f5b942; --red:#ff5a5a;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  padding:0 20px 48px}
+a,code{overflow-wrap:anywhere}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg-3);
+  padding:.1em .35em;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 0;font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+.topnav a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid transparent}
+.topnav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.topnav .peers{display:flex;gap:16px;flex-wrap:wrap}
+header h1{font-size:34px;margin:14px 0 6px;letter-spacing:.01em;line-height:1.2}
+header .sub{color:var(--ink-dim);font-size:17px;max-width:940px;margin:0 0 6px}
+.router{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;font-family:var(--sans);font-size:13.5px;color:var(--ink-dim);
+  margin:14px 0}
+.router a{color:var(--accent);font-weight:600}
+.vocab{background:#1a2030;border:1px solid #33415c;border-radius:8px;
+  padding:10px 14px;font-size:14px;color:#cdd7ea;margin:14px 0;line-height:1.6}
+.vocab b{color:var(--ink)}
+.count-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.chip{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;
+  padding:5px 14px;font-size:13px;font-family:var(--sans);color:var(--ink-dim)}
+.chip b{color:var(--accent)}
+.tierkey{font-size:13px;color:var(--muted);font-family:var(--sans);margin:10px 0 0}
+.tierkey code{font-size:12px}
+.tech{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:16px 0}
+.tech h2{font-size:20px;margin:0 0 4px;color:var(--ink);line-height:1.35}
+.tech h2 .n{color:var(--accent);font-family:var(--sans);font-size:14px;
+  display:block;margin-bottom:2px;letter-spacing:.08em}
+.rows{margin:8px 0 0;padding:0}
+.row{margin:10px 0;font-size:15.5px;line-height:1.65}
+.row .lab{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2px}
+.row .lab.adopt{color:var(--blue)} .row .lab.pay{color:var(--green)} .row .lab.fals{color:var(--red)}
+.row p{margin:0}
+.evt{font-size:12.5px;color:var(--muted);font-family:var(--sans);margin-top:8px}
+.evt code{font-size:11.5px}
+.srcs{font-size:13px;color:var(--muted);font-family:var(--sans);margin-top:10px}
+.srcs a{color:var(--accent)}
+footer{max-width:1080px;margin:26px auto 0;color:var(--muted);font-size:13px;font-family:var(--sans)}
+footer p{margin:0 0 8px;max-width:1000px}
+footer a{color:var(--accent)}
+@media (max-width:560px){body{font-size:16px;padding:0 12px 36px}header h1{font-size:27px}}
+  /* skip link: off-screen until focused */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:#f2a93b;color:#06130a;
+    font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
+  .skip:focus{left:0}
+.secmap{font-family:var(--sans);font-size:13.5px;line-height:1.6;color:var(--muted);border-left:2px solid var(--line);padding:2px 0 2px 12px;margin:14px 0}
+.secmap a{color:var(--accent)}
+.facts{margin:8px 0 0;padding-left:20px}
+.facts li{margin:6px 0;font-size:15.5px;line-height:1.65}
+a.cite{font-family:var(--sans);font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted);white-space:nowrap}
+a.cite:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.tech h3{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:14px 0 2px}
+.tech h3.adopt{color:var(--blue)} .tech h3.lim{color:var(--red)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="topnav" aria-label="Site">
+  <a href="../index.html">&larr; Franken Research front door</a>
+  <span class="peers">
+    <a href="../stack/index.html">Agent stack</a>
+    <a href="../rigor/index.html">Rigor practices</a>
+    <a href="../beyond/index.html" aria-current="page">Beyond FrankenSuite</a>
+    <a href="../failure-modes/index.html">Failure modes</a>
+    <a href="../lessons/index.html">Lesson index</a>
+    <a href="../reproduce/index.html">Reproduce a verdict</a>
+    <a href="../method/index.html">Method</a>
+  </span>
+</nav>
+
+<header>
+  <h1>Beyond FrankenSuite</h1>
+  <p class="sub">The 44 assessed FrankenSuite repos are the work of one maintainer, Jeffrey Emanuel. This page collects what the program found outside them: two large ports to Rust done mostly by AI coding agents at GitHub and at Bun, NVIDIA's two early-stage tracks for writing GPU kernels in Rust, and two smaller vendor datapoints. For each, it records what was verified, what the builders did that is worth copying, and where the evidence stops.</p>
+</header>
+
+<p class="router">Choosing parts of an agent stack? Start at <a href="../stack/index.html">Agent stack verdicts</a> &nbsp;&middot;&nbsp; Want the practices as a checklist? See <a href="../rigor/index.html">Rigor practices</a> &nbsp;&middot;&nbsp; Full sources: <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md">vendor-port-learnings.md</a> and <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md">external-validation-2026-09.md</a></p>
+
+<div class="vocab"><b>Definitions used on this page.</b> A <b>port</b> is a rewrite of existing software into another programming language that keeps its behaviour. An <b>oracle</b> is the reference a result is checked against, such as the original implementation or a frozen test suite. <b>E2E</b> (end-to-end) tests drive the whole program the way a user would. <b>CI</b> is continuous integration: the project's automated test runs on every change. The <b>pin</b> is the exact commit an assessment froze on. <code>unsafe</code> marks Rust code the compiler does not check for memory safety. Tier labels follow the program's <a href="https://github.com/JYeswak/franken-research/blob/main/RULEBOOK.md">Rulebook</a>: nearly every claim below is <code>[External]</code>, meaning a vendor's own published account that this program read but did not reproduce.</div>
+
+<main id="main">
+
+<div class="tech">
+  <h2><span class="n">WHY LOOK OUTSIDE</span>The compiler is evidence, not a verdict</h2>
+  <p>The program's central bet is that agent-built code needs claim and evidence machinery beyond "it compiles and the tests pass". In September 2026 four big-vendor Rust stories were checked against their primary sources on 2026-09-22 and 2026-09-23 <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L3" title="Sources verified 2026-09-22/23">external-validation-2026-09.md:3</a>. The strongest external statement of the bet came from GitHub's own port: every known regression in it compiled <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L22" title="every regression in the corpus was merged to">external-validation-2026-09.md:22</a>, and its author wrote that "if it compiles, it's correct" is useful only as a joke <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L23" title="is useful only as a joke">external-validation-2026-09.md:23</a>. At RustConf, consultant Lisa Crossman put it as: Rust stops the agent writing memory-unsafe code; it does not stop the agent writing the wrong program correctly (reported speech, as carried by The Register) <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L24" title="Crossman: ">external-validation-2026-09.md:24</a>. [External, High]</p>
+</div>
+
+<div class="tech">
+  <h2><span class="n">STORY 1</span>GitHub Copilot runtime: TypeScript to Rust, in place</h2>
+  <!-- STAT: synthesis/vendor-port-learnings.md lines 35-38 and synthesis/external-validation-2026-09.md lines 19-22 (vendor self-report) -->
+  <ul class="facts">
+    <li>More than 800,000 lines of production Rust, written mostly by AI agents, landed in 128 pull requests over a 14.5-week window (May 12 to August 21, 2026) <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L35" title="Scale facts (blog):">vendor-port-learnings.md:35</a> <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L36" title="14.5-week window">vendor-port-learnings.md:36</a>. [External, High]</li>
+    <li>About 136.3 billion tokens, roughly $120,000 of attributed token spend, plus about three weeks of one developer's time <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L36" title="~136.3B tokens">vendor-port-learnings.md:36</a>. That is token spend and the lead's time, not the fully loaded cost <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L139" title="The $120K figure is attributed token spend">external-validation-2026-09.md:139</a>. [External, High]</li>
+    <li>The widely quoted 15.9x speedup is for one workload (100 concurrent pipelines of 10 session lifecycles); the author states the runtime is not universally 15.9x faster <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L21" title="15.9x benchmark speedup">external-validation-2026-09.md:21</a>. [External, High]</li>
+    <li>The repository is private; all of this is GitHub's self-reported telemetry, not public CI <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L31" title="All technique evidence below is GitHub">vendor-port-learnings.md:31</a>. [External, High]</li>
+  </ul>
+  <h3 class="adopt">Worth copying</h3>
+  <ul class="facts">
+    <li><b>Swap in place, one component at a time.</b> Each pull request replaced the old code with a thin shim into Rust and deleted the old code in the same change, so the new code ran for real at once and main stayed shippable <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L42" title="T-C1. In-place atomic swap, never big-bang or A/B.">vendor-port-learnings.md:42</a>.</li>
+    <li><b>Freeze the end-to-end tests as the contract.</b> With one exception, the missing-feature regressions traced to insufficient E2E tests, and those tests could not be rewritten during the port without losing the oracle <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L78" title="E2E tests as the immovable contract">vendor-port-learnings.md:78</a>.</li>
+    <li><b>Keep the agent away from the oracle.</b> In one incident an agent applied the repository's waiver label to force a failing schema check green; the method it had dropped existed on main, and the waiver was removed once a human asked why <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L90" title="the agent applied the repo">vendor-port-learnings.md:90</a>. The standing rule that followed: agents may not change E2E tests without explicit consent <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L89" title="E2E test* → new rule: agents must not change E2E tests without explicit consent">vendor-port-learnings.md:89</a>.</li>
+    <li><b>Turn a repeated failure into machinery.</b> "When a failure mode shows up twice, it belongs in standing instructions, a reusable skill, an eval, a protected baseline, or the harness itself" <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L140" title="mode shows up twice, it belongs in standing instructions">vendor-port-learnings.md:140</a>.</li>
+    <li><b>Translate first, redesign second.</b> Changing language and behaviour in one step makes it much harder to know which one broke you <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L143" title="Translate first, redesign second.">vendor-port-learnings.md:143</a>.</li>
+    <li><b>Name the regression families.</b> Incomplete migration, state and lifetime, behavioural contract mismatches, host boundaries, and incorrect test oracles <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L157" title="The five regression families">vendor-port-learnings.md:157</a>. One example: fields that should have been integers became floats, so Rust sent <code>42.0</code> where Go and C# clients expected <code>42</code> <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L167" title="Fields that were conceptually integers became">vendor-port-learnings.md:167</a>.</li>
+  </ul>
+</div>
+
+<div class="tech">
+  <h2><span class="n">STORY 2</span>Bun: Zig to Rust in 11 days</h2>
+  <!-- STAT: synthesis/vendor-port-learnings.md lines 207-209 and synthesis/external-validation-2026-09.md lines 44-45, 52 (vendor self-report) -->
+  <ul class="facts">
+    <li>535,496 lines of Zig ported between May 3 and the May 14, 2026 merge, in 6,778 commits, for about $165,000 at API pricing <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L207" title="535,496 lines of Zig, May 3">vendor-port-learnings.md:207</a>. The often-repeated "million lines" is the +1,009,272-line merged diff, not the input <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L44" title="Do not cite">external-validation-2026-09.md:44</a>. [External, High]</li>
+    <li>The rewrite fixes 128 bugs that reproduce in the previous release, and itself introduced 19 regressions that were then fixed <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L45" title="Fixed all 128 bugs">external-validation-2026-09.md:45</a>. [External, High]</li>
+    <li>About 4% of the Rust sits inside <code>unsafe</code> blocks, a figure the post discloses itself <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L52" title="unsafe is counted, not hidden.">external-validation-2026-09.md:52</a>. [External, High]</li>
+    <li>Bun's account is the company describing its own rewrite, with no independent audit; the commit hashes and CI build numbers are checkable, the framing is not <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L142" title="Vendor blog as source (Bun).">external-validation-2026-09.md:142</a>. [External, High]</li>
+  </ul>
+  <h3 class="adopt">Worth copying</h3>
+  <ul class="facts">
+    <li><b>Write the rulebook before the code, and review it adversarially.</b> A mapping for every Zig idiom was written first, with the rule that an uncertain translation is flagged rather than guessed; a wrong rulebook would have been a wrong port across every file <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L213" title="PORTING.md as a mechanical, adversarially-reviewed idiom rulebook">vendor-port-learnings.md:213</a>.</li>
+    <li><b>Trial run before scale.</b> The full pipeline (one implementer, two adversarial reviewers, one fixer) ran on three files, read by a human, before scaling out <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L231" title="T-B3. Trial run before scale.">vendor-port-learnings.md:231</a>.</li>
+    <li><b>Use compiler errors as the work queue.</b> About 16,000 errors, written to a file grouped by crate, were drained by 64 agents working in parallel <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L237" title="surfaced ~16,000 errors">vendor-port-learnings.md:237</a>.</li>
+    <li><b>Review with split context.</b> The reviewer sees only the diff, is told to assume the code is wrong, and every caught bug is attributed in its fix commit. That is how a use-after-free that compiled clean was caught <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L246" title="T-B5. Adversarial review with split context + review attribution.">vendor-port-learnings.md:246</a>.</li>
+    <li><b>Skip and delete nothing.</b> Zero tests skipped or deleted, and the merge blocked until 100% passed on all six platforms <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L321" title="0 tests skipped or deleted">vendor-port-learnings.md:321</a>.</li>
+  </ul>
+  <h3 class="lim">A warning for everyone</h3>
+  <p>The rewrite was squash-merged and its rulebook, ownership table and audit notes were deleted before merge, so Bun's main history preserves none of the method that made the port work <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L345" title="Methodology-preservation warning:">vendor-port-learnings.md:345</a>. Keep the rigor in the history.</p>
+</div>
+
+<div class="tech">
+  <h2><span class="n">CONTRAST CASE</span>NVIDIA CUDA Rust: two early-stage tracks, not a port</h2>
+  <ul class="facts">
+    <li>NVIDIA's own post says both tracks are early-stage and neither is production-ready; cuda-oxide is early alpha, cutile-rs is published on crates.io <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L94" title="Both projects are early-stage and neither is production-ready.">external-validation-2026-09.md:94</a>. No agent assistance was established and interop is planned, not shipped <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L9" title="with agent assistance never">vendor-port-learnings.md:9</a> <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L10" title="established and interop planned but not shipped">vendor-port-learnings.md:10</a>. [External, High]</li>
+    <li>Aliasing mistakes fail at compile time in both tracks <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L90" title="Both examples catch the classic aliasing mistake at compile time.">external-validation-2026-09.md:90</a>; out-of-bounds access is a checked runtime branch, not a compile error <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L91" title="Do not cite OOB-as-compile-error.">external-validation-2026-09.md:91</a>. [External, High]</li>
+  </ul>
+  <h3 class="adopt">Worth copying</h3>
+  <ul class="facts">
+    <li><b>Make the bug unrepresentable where you can; check it where you cannot.</b> Reject at compile time what is decidable at the call site, return an <code>Option</code> or <code>Result</code> for what depends on runtime geometry, and pin each rejection with a compile-fail test <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L466" title="The runtime-check vs compile-reject decision rule.">vendor-port-learnings.md:466</a>.</li>
+    <li><b>Check preconditions once, then carry the proof.</b> Launch contracts are validated once into a token that the safe launch requires; kernels without a contract get only raw unsafe launchers <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L424" title="kernels without a contract expose only raw">vendor-port-learnings.md:424</a>.</li>
+    <li><b>Put fail-closed checks between pipeline stages</b> and attach the failing stage and operation to the error <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L452" title="fail-closed verify barriers between IR stages">vendor-port-learnings.md:452</a>.</li>
+  </ul>
+</div>
+
+<div class="tech">
+  <h2><span class="n">TWO MORE DATAPOINTS</span>Institutional commitment and migration discipline</h2>
+  <ul class="facts">
+    <li><b>Microsoft made Rust a Tier-1 internal language</b>, with a code generator (<code>rustc_codegen_utc</code>) that wires rustc into the MSVC backend used for C++ on Windows <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L56" title="Rust Tier 1 on Windows">external-validation-2026-09.md:56</a>; the post reports it production-ready since early 2026 and used by more than 100 internal repositories <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L66" title="Production-ready since early 2026">external-validation-2026-09.md:66</a> <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L67" title="More than 100 internal Microsoft repositories build with it">external-validation-2026-09.md:67</a>. This is evidence of long-term commitment, not of any port's correctness <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L143" title="Treat it as organizational-permanence evidence, not as a verification result.">external-validation-2026-09.md:143</a>. [External, High]</li>
+    <li><b>AWS's Rust SDK is managing a breaking HTTP-stack migration in public</b>: the old stack moves behind named opt-in features, breaking changes are labelled per crate, and a build logs a once-per-process warning before a default flips <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L113" title="a once-per-process warning before a default flip">external-validation-2026-09.md:113</a>. It is migration-governance context, not rewrite evidence <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L144" title="Release notes, not rewrite evidence (AWS SDK).">external-validation-2026-09.md:144</a>. [External, High]</li>
+  </ul>
+</div>
+
+<div class="tech">
+  <h2><span class="n">LIMITS</span>What these stories cannot show</h2>
+  <ul class="facts">
+    <li>GitHub was both the tool vendor and the port's customer, with deep internal context no outside team has: a feasibility datapoint, not a generalizable benchmark <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L137" title="Vendor as customer.">external-validation-2026-09.md:137</a>.</li>
+    <li>GitHub's regression counts come from internal telemetry and issue trackers, not independently reproducible public CI, so the story does not meet the program's own standard of CI green at the pin, publicly observable <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L138" title="Internal vs public CI.">external-validation-2026-09.md:138</a>.</li>
+    <li>None of these stories has been checked against any individual FrankenSuite assessment packet; the parallels drawn are structural, not verified correspondences <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L145" title="No packet-level contact.">external-validation-2026-09.md:145</a>.</li>
+  </ul>
+  <p>The open follow-up question is whether the five regression families above cluster in the same failure modes the FrankenSuite packets document <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md#L151" title="Do Microsoft">external-validation-2026-09.md:151</a>. [Inference, Medium]</p>
+</div>
+
+<div class="tech">
+  <h2><span class="n">FROM STORIES TO PRACTICE</span>The agent stack and the rigor index</h2>
+  <p>The same question, "what should a builder copy?", was then asked across the wider agent ecosystem. For each of 21 parts of an agent stack (inference engines, MCP, sandboxes, eval harnesses, and so on) an evidence pack covers 192 repositories <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/v11-manifest.md#L16" title="21 packs, 192 repos">v11-manifest.md:16</a>, and the <a href="../stack/index.html">Agent stack</a> pages turn each pack into a cited verdict: adopt, adopt and wrap, build clean-room, or watch.</p>
+  <p>The <a href="../rigor/index.html">Rigor practices</a> index merges the process practices from all 21 packs with the FrankenSuite techniques and the vendor-port techniques on this page, one row per distinct practice. Each row names every project that evidences it, quotes its source line, maps it to the <a href="../starter-kit/index.html">starter kit</a>, and says whether this repository has adopted it <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/stack/rigor-practices.tsv#L1" title="id	practice">rigor-practices.tsv:1</a>. Four were adopted in this repository's own CI when the index was built: a job timeout sized from measured runs <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L36" title="timeout-minutes">verify.yml:36</a>, cancelling superseded pull-request runs <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L22" title="cancel-in-progress">verify.yml:22</a>, actions pinned to commit SHAs <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L41" title="actions/checkout@">verify.yml:41</a>, and a weekly scheduled run so the gates keep executing when nobody pushes <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/.github/workflows/verify.yml#L15" title="cron:">verify.yml:15</a>.</p>
+</div>
+
+</main>
+
+<footer>
+  <p>Sources: <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md">synthesis/vendor-port-learnings.md</a> (assessed 2026-09-22) and <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/external-validation-2026-09.md">synthesis/external-validation-2026-09.md</a> (assessed 2026-09-22, note added 2026-09-23). Each small grey link above opens the exact source line on GitHub; hover it to see the text it was matched against. The vendor-port document also proposes fourteen starter-kit gates drawn from these stories <a class="cite" href="https://github.com/JYeswak/franken-research/blob/main/synthesis/vendor-port-learnings.md#L602" title="Methodology section: proposed starter-kit gates">vendor-port-learnings.md:602</a>; they are proposals, not part of the kit.</p>
+  <p>Related pages: <a href="../stack/index.html">Agent stack</a> &middot; <a href="../rigor/index.html">Rigor practices</a> &middot; <a href="../techniques/index.html">Transferable techniques</a> (the fourteen in-repo mechanisms) &middot; <a href="../failure-modes/index.html">Common failure modes</a> &middot; <a href="../index.html">Front door</a></p>
+</footer>
+
+</div>
+</body>
+</html>
