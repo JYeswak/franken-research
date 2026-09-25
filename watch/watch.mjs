@@ -260,7 +260,7 @@ const DISCOVERY_Q = `query($login: String!, $after: String) {
   rateLimit { cost remaining }
   user(login: $login) { repositories(first: 100, after: $after, privacy: PUBLIC, ownerAffiliations: OWNER, orderBy: {field: NAME, direction: ASC}) {
     totalCount pageInfo { hasNextPage endCursor }
-    nodes { databaseId name isArchived isFork pushedAt createdAt primaryLanguage { name } } } } }`;
+    nodes { databaseId name description isArchived isFork pushedAt createdAt primaryLanguage { name } } } } }`;
 
 function repoAlias(alias, name, pin) {
   const s = JSON.stringify;
@@ -368,7 +368,7 @@ export function normalizeDiscovery(nodes) {
   const byId = new Map();
   for (const n of nodes) {
     byId.set(n.databaseId, {
-      id: n.databaseId, name: n.name, archived: !!n.isArchived, fork: !!n.isFork,
+      id: n.databaseId, name: n.name, description: n.description ?? null, archived: !!n.isArchived, fork: !!n.isFork,
       language: n.primaryLanguage?.name ?? null, created_at: iso(n.createdAt), pushed_at: iso(n.pushedAt),
     });
   }
@@ -521,7 +521,22 @@ function change(repo, kind, ident, title, f) {
   };
 }
 const byKey = (a, b) => cmp(a.repo, b.repo) || cmp(a.kind, b.kind) || cmp(a.ident, b.ident);
-export const isCandidate = (d) => !d.fork && (/^franken/i.test(d.name) || d.language === 'Rust');
+// Which new public repositories of the owner get flagged as assessment candidates (material, one
+// issue each). Forks and archived repositories never do. Otherwise any one clause is enough, and each
+// match is returned as a reason so the issue says why. This decides only what is flagged; screening
+// is candidates/README.md. `port of` and `in rust` need word boundaries ("support of", "trust").
+const PORT_WORDS = /\b(port of|rewrite of|law-proved|byte-for-byte|clean-room|in rust)\b/i;
+export function candidateReasons(d) {
+  if (d.fork || d.archived) return [];
+  const why = [];
+  if (/^franken/i.test(d.name)) why.push('the name starts with franken');
+  if (/_bend$/i.test(d.name)) why.push('the name ends with _bend');
+  if (d.language === 'Rust') why.push('its primary language is Rust');
+  const port = PORT_WORDS.exec(d.description ?? '');
+  if (port) why.push(`its description says "${port[1]}"`);
+  return why;
+}
+export const isCandidate = (d) => candidateReasons(d).length > 0;
 
 // Titles and evidence shared by the daily diff and the since-pin backfill, so one event always gets
 // one issue title (issues are deduplicated by exact title).
@@ -716,9 +731,10 @@ export function diffSnapshots(prev, cur) {
     const o = prevById.get(d.id);
     const evidence = [apiUrl(`/repositories/${d.id}`), ghUrl(d.name)];
     if (!o) {
-      const cand = isCandidate(d);
+      const why = candidateReasons(d);
+      const cand = why.length > 0;
       (cand ? material : informational).push(change(d.name, 'new_repo', String(d.id), 'new public repo', {
-        summary: `New public repository ${OWNER}/${d.name} (${d.language ?? 'no primary language'}${d.fork ? ', fork' : ''}, created ${d.created_at?.slice(0, 10)}). ${cand ? 'Assessment candidate: the name starts with franken or its primary language is Rust.' : 'Informational: not a franken name and not a Rust repository.'}`,
+        summary: `New public repository ${OWNER}/${d.name} (${d.language ?? 'no primary language'}${d.fork ? ', fork' : ''}${d.archived ? ', archived' : ''}, created ${d.created_at?.slice(0, 10)}${d.description ? `; description: "${d.description}"` : ''}). ${cand ? `Assessment candidate: ${why.join('; ')}.` : `Informational: ${d.fork ? 'a fork' : d.archived ? 'archived' : 'no candidate clause matched (franken name, _bend name, Rust, or port-like description)'}.`}`,
         before: 'not listed', after: `public, id ${d.id}`, value: String(d.id), evidence, material: cand,
       }));
       continue;
@@ -1015,7 +1031,7 @@ function buildReport(snap, diff, prev, opts, api, elapsedMs) {
     .map((r) => ({ repo: r.repo, added: r.workflows_added_since_pin.length, now: r.workflows.length }));
   const assessedIds = new Set(found.map((r) => r.id));
   const newSincePin = snap.discovery.filter((d) => !assessedIds.has(d.id) && d.created_at >= `${ASSESSMENT_DATE}T00:00:00Z`)
-    .map((d) => ({ name: d.name, language: d.language, created_at: d.created_at, candidate: isCandidate(d) }));
+    .map((d) => ({ name: d.name, language: d.language, created_at: d.created_at, candidate: isCandidate(d), reasons: candidateReasons(d) }));
   return {
     owner: OWNER,
     checked_at: snap.checked_at,
@@ -1064,7 +1080,7 @@ function printReport(rep) {
   L.push(`workflow files added since pin (informational: additions to an existing set): ${wa.length} repo(s)${wa.length ? `: ${wa.map((x) => `${x.repo} +${x.added} (${x.now} now)`).join(', ')}` : ''}`);
   const ns = rep.discovered.created_since_assessment;
   L.push(`public repos created since ${ASSESSMENT_DATE}, not assessed: ${ns.length}`);
-  for (const d of ns) L.push(`  ${d.name} (${d.language ?? 'no language'}, created ${d.created_at.slice(0, 10)}): ${d.candidate ? 'assessment candidate' : 'informational'}`);
+  for (const d of ns) L.push(`  ${d.name} (${d.language ?? 'no language'}, created ${d.created_at.slice(0, 10)}): ${d.candidate ? `assessment candidate (${d.reasons.join('; ')})` : 'informational'}`);
   const sp = rep.since_previous;
   if (sp.baseline) L.push('material since previous state: baseline (first run; nothing to compare)');
   else {
@@ -1240,6 +1256,35 @@ async function selftest() {
     expect(mat('franken_newthing', 'new_repo').length === 1, 'franken repo not material');
     const inf = d.informational.filter((c) => c.kind === 'new_repo').map((c) => c.repo);
     expect(inf.length === 1 && inf[0] === 'dotfiles_extra', `informational new repos: ${inf}`);
+  });
+  test('new-repo candidates: _bend ports and port-like descriptions are flagged with the clause named; forks, archived, and plain repos are not', () => {
+    const repo = (id, name, language, description, extra = {}) => ({ id, name, description, archived: false, fork: false, language,
+      created_at: '2026-09-25T00:00:00Z', pushed_at: '2026-09-25T00:00:00Z', ...extra });
+    const added = [
+      repo(990001, 'beads_bend', 'Shell', 'A law-proved port of br'),
+      repo(990002, 'toon_bend', 'Python', 'Byte-for-byte port of the toon CLI'),
+      repo(990003, 'notes', 'Python', 'my notes'),
+      repo(990004, 'franken_x', 'Rust', 'A clean-room rewrite of x', { fork: true }),
+      repo(990005, 'franken_y', 'Rust', null, { archived: true }),
+      repo(990006, 'helpers', 'Go', 'Some support of transport of data'),
+      repo(990007, 'mytool', 'Go', 'A clean-room rewrite of grep'),
+      repo(990008, 'lonely_bend', 'Shell', null),
+    ];
+    const cur = { ...JSON.parse(JSON.stringify(s1)), checked_at: '2026-09-25T12:00:00Z', previous_checked_at: s1.checked_at };
+    cur.discovery = [...cur.discovery, ...added].sort((a, b) => cmp(a.name, b.name));
+    const x = diffSnapshots(s1, cur);
+    const flagged = x.material.filter((c) => c.kind === 'new_repo').map((c) => c.repo).sort();
+    expect(flagged.join() === 'beads_bend,lonely_bend,mytool,toon_bend', `flagged ${flagged}`);
+    const quiet = x.informational.filter((c) => c.kind === 'new_repo').map((c) => c.repo).sort();
+    expect(quiet.join() === 'franken_x,franken_y,helpers,notes', `informational ${quiet}`);
+    const why = (name) => candidateReasons(added.find((d) => d.name === name)).join('; ');
+    expect(why('beads_bend') === 'the name ends with _bend; its description says "law-proved"', `beads_bend: ${why('beads_bend')}`);
+    expect(why('toon_bend') === 'the name ends with _bend; its description says "Byte-for-byte"', `toon_bend: ${why('toon_bend')}`);
+    expect(why('lonely_bend') === 'the name ends with _bend' && why('mytool') === 'its description says "clean-room"', `single clauses: ${why('lonely_bend')} | ${why('mytool')}`);
+    const ch = x.material.find((c) => c.repo === 'beads_bend');
+    expect(ch.summary.includes('Assessment candidate: the name ends with _bend; its description says "law-proved".'), `summary ${ch.summary}`);
+    expect(issueBody(ch, cur, {}).includes(mdText('Assessment candidate: the name ends with _bend')), 'issue body does not name the clause');
+    expect(x.informational.find((c) => c.repo === 'franken_x').summary.includes('Informational: a fork.'), 'fork reason missing');
   });
   test('nothing else is material', () => {
     const titles = d.material.map((c) => c.title).sort();

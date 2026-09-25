@@ -20,7 +20,7 @@ A repository passes screening when every predicate below is true. Each is checka
    - an explicit statement in the README that coding agents built it ("built with Claude Code", "written by AI agents").
 5. **Not a fork.** GitHub reports `fork: false`.
 6. **Not already covered.** It is not one of the pinned 44, not in a cohort under `cohorts/`, not named by an earlier `candidate` issue, and not listed in an earlier week's `watch/discovery/<week>.json`.
-7. **Not Dicklesworthstone's.** The owner is not `Dicklesworthstone`. The [daily watch](../watch/README.md) already covers every public repository that account owns, and flags new Rust or `franken*` ones there.
+7. **Not Dicklesworthstone's.** The owner is not `Dicklesworthstone`. The [daily watch](../watch/README.md) already covers every public repository that account owns. It flags a new one as a candidate when it is not a fork or archived and its name starts with `franken` or ends with `_bend`, its primary language is Rust, or its description reads like a port (`port of`, `rewrite of`, `law-proved`, `byte-for-byte`, `clean-room`, `in rust`). That flag only opens a watch issue for triage; it is not a screening result, and it does not change the rule on this page.
 
 The sweep also narrows its search to repositories created within the last 180 days with at least 25 stars, and checks only the 40 most-starred that survive predicates 5 to 7. Those are limits on what the sweep looks at, not part of the rule: a suggestion outside them can still pass.
 
