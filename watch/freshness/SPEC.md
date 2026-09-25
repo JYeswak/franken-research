@@ -117,7 +117,7 @@ The repository's scheduled jobs are the GitHub Actions workflows: `watch.yml` (d
 **FR-O.2** (MUST) A check fails in each of these cases:
 - A row's generator command does not appear in the named workflow file.
 - A row's gate is not in `site/scripts/verify-site.sh`.
-- A script under `watch/freshness/`, or `site/scripts/make-live.mjs`, writes committed files but has no row. A script that calls a file-write API must declare its committed outputs in a `// writes:` header, and a write call with no header also fails. Goldens are exempt: only a person rewrites them, with `UPDATE_GOLDENS=1`, and reviews the diff before committing. A scheduled job never rewrites a golden.
+- A script under `watch/freshness/`, or `site/scripts/make-live.mjs`, writes committed files but has no row. A script that calls a file-write API must declare its committed outputs in a `// writes:` header, and a write call with no header also fails. Goldens and recorded fixtures are exempt: only a person rewrites them, goldens with `UPDATE_GOLDENS=1` and fixtures with a recorder named in `fixtures/PROVENANCE.md`, and the diff is reviewed before commit. A scheduled job never rewrites either.
 
 So a new generated artifact that no scheduled job refreshes cannot land.
 
