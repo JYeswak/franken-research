@@ -923,7 +923,7 @@ const goldenCases = [
         ['outputs/core-card-frankengit-rechecked.html', card('frankengit')],
         ['outputs/core-card-franken_node-pending.html', card('franken_node')],
         ['outputs/core-card-asupersync-unknown.html', card('asupersync')],
-        ['outputs/core-card-franken_engine-ci-earlier-commit.html', card('franken_engine')],
+        ['outputs/core-card-franken_lean-ci-earlier-commit.html', card('franken_lean')],
       ]);
     },
   },
