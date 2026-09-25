@@ -16,25 +16,25 @@ const P = (s = '') => lines.push(s);
 
 P(`# REQ-O2 budget verdicts: ${path.basename(OUT)}`);
 P();
-P('Primary keystroke metric = `key2layout`: `keydown.timeStamp` to results rendered with style and layout forced (paint recording, raster and compositing excluded; see trace-summary-browser-*.json for their cost). `key2paint` = to the first task after the next animation frame (headless frame scheduling included; see frame-cadence.json). Percentiles are nearest-rank over all measured keystrokes of 20 runs (1 warm-up run discarded).');
+P('Primary keystroke metric = `key2paint` (REQ-O2 "keystroke to results painted"; review 7d): `keydown.timeStamp` to the first task after the animation frame that carries the results (headless frame scheduling included; see frame-cadence.json). `key2layout` = to results rendered with style and layout forced; it excludes the frame and is shown as a component view only. Percentiles are nearest-rank over all measured keystrokes of every run (1 warm-up run discarded).');
 P();
 for (const prof of ['desktop', 'phone']) {
   const b = BUD[prof];
   P(`## ${prof} (keystroke budget p95 <= ${b.key} ms, p99 <= 2x p95; usable <= ${b.usable} ms after DOMContentLoaded; no long task > 50 ms while typing)`);
   P();
-  P('| Cand | samples | key2layout p50 / p95 / p99 / p99.9 / max (ms) | p95 budget | p99 <= 2x p95 | key2paint p95 | usable after DCL p95 (ms) | usable budget | long tasks > 50 ms typing (max) | full index ready p95 (ms) | index heap (MB) | envelope (p95 drift) |');
+  P('| Cand | samples | key2paint p50 / p95 / p99 / p99.9 / max (ms) | p95 budget | p99 <= 2x p95 | key2layout p95 | usable after DCL p95 (ms) | usable budget | long tasks > 50 ms typing (max) | full index ready p95 (ms) | index heap (MB) | envelope (p95 drift) |');
   P('|---|---:|---|---|---|---:|---:|---|---|---:|---:|---|');
   for (const c of ['A', 'B', 'C', 'I1', 'I0']) {
     const r = J(`baseline-browser-${prof}-${c}.json`);
     if (!r) continue;
-    const k = r.metrics.key2layout;
+    const k = r.metrics.key2paint;
     const heap = (r.memory.index_main_heap_bytes + (r.memory.worker_heap_used_bytes_median || 0)) / 1048576;
     const u = r.load.usable_after_dcl_ms.p95;
-    P(`| ${c} | ${r.samples} | ${f2(k.p50)} / ${f2(k.p95)} / ${f2(k.p99)} / ${f2(k.p999)} / ${f2(k.max)} | ${v(k.p95 <= b.key)} | ${v(k.p99 <= 2 * k.p95)} (${(k.p99 / k.p95).toFixed(2)}x) | ${f2(r.metrics.key2paint.p95)} | ${f2(u)} | ${v(u <= b.usable)} | ${v(r.longtasks_typing.over_50ms === 0)} ${r.longtasks_typing.over_50ms} (${f2(r.longtasks_typing.max_ms)}) | ${f2(r.load.full_ready_after_dcl_ms.p95)} | ${heap.toFixed(2)}${c === 'B' ? ' (main+worker)' : ''} | ${r.envelope_key2layout.verdict} ${r.envelope_key2layout.max_drift_pct}% |`);
+    P(`| ${c} | ${r.samples} | ${f2(k.p50)} / ${f2(k.p95)} / ${f2(k.p99)} / ${f2(k.p999)} / ${f2(k.max)} | ${v(k.p95 <= b.key)} | ${v(k.p99 <= 2 * k.p95)} (${(k.p99 / k.p95).toFixed(2)}x) | ${f2(r.metrics.key2layout.p95)} | ${f2(u)} | ${v(u <= b.usable)} | ${v(r.longtasks_typing.over_50ms === 0)} ${r.longtasks_typing.over_50ms} (${f2(r.longtasks_typing.max_ms)}) | ${f2(r.load.full_ready_after_dcl_ms.p95)} | ${heap.toFixed(2)}${c === 'B' ? ' (main+worker)' : ''} | ${r.envelope_key2paint.verdict} ${r.envelope_key2paint.max_drift_pct}% |`);
     if (c === 'B' && r.metrics.key2layout_worker_scaled_estimate) {
       const s = r.metrics.key2layout_worker_scaled_estimate;
       const ue = r.load.usable_after_dcl_worker_scaled_estimate_ms;
-      P(`| B, worker scaled x4 [INFERENCE] | ${r.samples} | ${f2(s.p50)} / ${f2(s.p95)} / ${f2(s.p99)} / ${f2(s.p999)} / ${f2(s.max)} | ${v(s.p95 <= b.key)} | ${v(s.p99 <= 2 * s.p95)} (${(s.p99 / s.p95).toFixed(2)}x) | | ${ue ? f2(ue.p95) : ''} | ${ue ? v(ue.p95 <= b.usable) : ''} | | | | CDP cannot throttle workers |`);
+      P(`| B, worker scaled x4, key2layout [INFERENCE] | ${r.samples} | ${f2(s.p50)} / ${f2(s.p95)} / ${f2(s.p99)} / ${f2(s.p999)} / ${f2(s.max)} | ${v(s.p95 <= b.key)} | ${v(s.p99 <= 2 * s.p95)} (${(s.p99 / s.p95).toFixed(2)}x) | | ${ue ? f2(ue.p95) : ''} | ${ue ? v(ue.p95 <= b.usable) : ''} | | | | CDP cannot throttle workers |`);
     }
   }
   P();
@@ -42,7 +42,7 @@ for (const prof of ['desktop', 'phone']) {
   if (cont) {
     P(`Steady state (post-hoc, quiet passes only; criterion in contention.json: pass inputDelay p95 <= ${cont.factor}x the lowest pass). Pooled all-run numbers above stay the primary verdict.`);
     P();
-    P('| Cand | quiet passes | key2layout p50 / p95 / p99 / max (ms) | p95 budget | p99 <= 2x p95 | work p95 (search+render+layout) | long tasks > 50 ms in quiet passes (max ms) |');
+    P('| Cand | quiet passes | key2paint p50 / p95 / p99 / max (ms) | p95 budget | p99 <= 2x p95 | work p95 (search+render+layout) | long tasks > 50 ms in quiet passes (max ms) |');
     P('|---|---:|---|---|---|---:|---|');
     for (const c of ['A', 'B', 'C', 'I1', 'I0']) {
       const e = cont.results[prof][c];
@@ -53,8 +53,8 @@ for (const prof of ['desktop', 'phone']) {
         lt += f.longtasks_typing; ltMax = Math.max(ltMax, f.longtask_max_ms);
       }
       const row = (label, k) => P(`| ${label} | ${e.quiet_count}/${e.runs} | ${f2(k.p50)} / ${f2(k.p95)} / ${f2(k.p99)} / ${f2(k.max)} | ${v(k.p95 <= b.key)} | ${v(k.p99 <= 2 * k.p95)} (${(k.p99 / k.p95).toFixed(2)}x) | ${f2(e.work_quiet.p95)} | ${v(lt === 0)} ${lt} (${f2(ltMax)}) |`);
-      row(c, e.key2layout_quiet);
-      if (e.key2layout_quiet_worker_scaled_estimate) row('B, worker scaled x4 [INFERENCE]', e.key2layout_quiet_worker_scaled_estimate);
+      if (e.key2paint_quiet) row(c, e.key2paint_quiet); // absent in contention.json written before round 2
+      if (e.key2layout_quiet_worker_scaled_estimate) row('B, worker scaled x4, key2layout [INFERENCE]', e.key2layout_quiet_worker_scaled_estimate);
     }
     P();
   }

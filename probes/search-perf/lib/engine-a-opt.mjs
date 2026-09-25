@@ -112,3 +112,24 @@ export function search(idx, q, k = TOP_K) {
   }
   return materialize(idx, topRows(top));
 }
+
+// L8: the result lists of every one-character query ([a-z0-9], 36 of them) for one index, filled by
+// `fillOneChar` from `search` itself (the page runs it one query per idle callback after the full index
+// is hydrated) and served by `searchCached`. Every search starts with one character, so this is a cache
+// over an input class, not over the probe's query list. A cached answer is the array `search` returned
+// for the same index and string, so the rows are identical by construction; `bench-node.mjs
+// golden-diff` checks the cached path as well.
+export const ONE_CHAR = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const CACHE = new WeakMap();
+export function fillOneChar(idx, ch, k = TOP_K) {
+  let c = CACHE.get(idx);
+  if (!c) CACHE.set(idx, (c = new Map()));
+  if (!c.has(ch)) c.set(ch, search(idx, ch, k));
+}
+export function searchCached(idx, q, k = TOP_K) {
+  if (q.length === 1 && k === TOP_K) {
+    const hit = CACHE.get(idx)?.get(q);
+    if (hit) return hit;
+  }
+  return search(idx, q, k);
+}

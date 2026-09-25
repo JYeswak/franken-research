@@ -1,0 +1,451 @@
+{
+ "profile": "phone",
+ "metric": "key2paint",
+ "budget_p95_ms": 16,
+ "rule": "keep a lever iff pooled key2paint p95 < incumbent AND per-run p95 lower in a majority of paired runs",
+ "rungs": {
+  "AL3": {
+   "key2paint": {
+    "n": 11650,
+    "mean": 8.9021,
+    "sd": 8.5191,
+    "cv": 0.957,
+    "mad": 2.3,
+    "p50": 7,
+    "p95": 17,
+    "p99": 58.5,
+    "p999": 85.5,
+    "max": 93,
+    "p999_conservative": false
+   },
+   "key2layout_p95": 7.9,
+   "key2paint_p95": 17,
+   "components_p95": {
+    "inputDelay": 4.8,
+    "search": 2.1,
+    "render": 0.6,
+    "layout": 3.6,
+    "toFrame": 9.8
+   },
+   "per_run_p95": [
+    12.9,
+    15,
+    18.1,
+    13.3,
+    11.4,
+    17.1,
+    15.7,
+    18.2,
+    15.9,
+    21.3
+   ],
+   "longtasks_typing": {
+    "count": 2,
+    "over_50ms": 2,
+    "max_ms": 65,
+    "entries": [
+     {
+      "run": 3,
+      "start": 6512.3,
+      "dur": 65,
+      "q_index": 233,
+      "pos_after_reset": 0,
+      "phase_ms": {
+       "inputDelay": 6.9,
+       "search": 63.5,
+       "render": 0.2,
+       "layout": 0.7,
+       "toFrame": 9.4
+      }
+     },
+     {
+      "run": 8,
+      "start": 6353.5,
+      "dur": 60,
+      "q_index": 256,
+      "pos_after_reset": 2,
+      "phase_ms": {
+       "inputDelay": 7.3,
+       "search": 0.1,
+       "render": 0.1,
+       "layout": 35,
+       "toFrame": 30.1
+      }
+     }
+    ]
+   },
+   "req_o2": {
+    "p95_within_budget": false,
+    "p99_within_2x_p95": false,
+    "no_long_task_over_50ms": false
+   },
+   "key2paint_by_position_after_reset": {
+    "pos0": {
+     "n": 580,
+     "p50": 9.8,
+     "p95": 21.1,
+     "p99": 39.6,
+     "over_50ms": 4
+    },
+    "pos1": {
+     "n": 570,
+     "p50": 11.6,
+     "p95": 83.5,
+     "p99": 86.7,
+     "over_50ms": 132
+    },
+    "pos2+": {
+     "n": 10500,
+     "p50": 6.8,
+     "p95": 15.3,
+     "p99": 20.6,
+     "over_50ms": 6
+    }
+   },
+   "usable_after_dcl_p95": 420.4,
+   "full_ready_after_dcl_p95": 1185.5
+  },
+  "AL7": {
+   "key2paint": {
+    "n": 11650,
+    "mean": 9.1677,
+    "sd": 8.6877,
+    "cv": 0.9476,
+    "mad": 2.5,
+    "p50": 7.4,
+    "p95": 16.6,
+    "p99": 58.8,
+    "p999": 86.7,
+    "max": 95.9,
+    "p999_conservative": false
+   },
+   "key2layout_p95": 7.9,
+   "key2paint_p95": 16.6,
+   "components_p95": {
+    "inputDelay": 4.7,
+    "search": 2.2,
+    "render": 0.6,
+    "layout": 3.6,
+    "toFrame": 9.5
+   },
+   "per_run_p95": [
+    15.8,
+    15.9,
+    14.7,
+    14,
+    17.1,
+    18.8,
+    17.6,
+    17.1,
+    15.7,
+    17.9
+   ],
+   "longtasks_typing": {
+    "count": 1,
+    "over_50ms": 1,
+    "max_ms": 57,
+    "entries": [
+     {
+      "run": 5,
+      "start": 9222,
+      "dur": 57,
+      "q_index": 645,
+      "pos_after_reset": 19,
+      "phase_ms": {
+       "inputDelay": 17.4,
+       "search": 0.1,
+       "render": 56.8,
+       "layout": 0.1,
+       "toFrame": 17.1
+      }
+     }
+    ]
+   },
+   "req_o2": {
+    "p95_within_budget": false,
+    "p99_within_2x_p95": false,
+    "no_long_task_over_50ms": false
+   },
+   "key2paint_by_position_after_reset": {
+    "pos0": {
+     "n": 580,
+     "p50": 10.7,
+     "p95": 20,
+     "p99": 27.4,
+     "over_50ms": 4
+    },
+    "pos1": {
+     "n": 570,
+     "p50": 11.8,
+     "p95": 83.2,
+     "p99": 88.1,
+     "over_50ms": 142
+    },
+    "pos2+": {
+     "n": 10500,
+     "p50": 7.1,
+     "p95": 15.1,
+     "p99": 20.7,
+     "over_50ms": 11
+    }
+   },
+   "usable_after_dcl_p95": 432.2,
+   "full_ready_after_dcl_p95": 1200.7
+  }
+ },
+ "verdicts": [
+  {
+   "rung": "AL7",
+   "vs": "AL3",
+   "p95": [
+    17,
+    16.6
+   ],
+   "delta_ms": -0.4,
+   "paired_run_wins": "4/10",
+   "verdict": "REJECT"
+  }
+ ],
+ "best": "AL3",
+ "sentinel_I0": {
+  "key2paint": {
+   "n": 11650,
+   "mean": 6.8197,
+   "sd": 8.9105,
+   "cv": 1.3066,
+   "mad": 2,
+   "p50": 5.1,
+   "p95": 13.5,
+   "p99": 58.4,
+   "p999": 90.7,
+   "max": 163,
+   "p999_conservative": false
+  },
+  "key2layout_p95": 5.4,
+  "key2paint_p95": 13.5,
+  "components_p95": {
+   "inputDelay": 4.8,
+   "search": 0.1,
+   "render": 0.1,
+   "layout": 0.8,
+   "toFrame": 8.8
+  },
+  "per_run_p95": [
+   9.3,
+   8.4,
+   12.4,
+   25.2,
+   13.1,
+   13.2,
+   12.7,
+   11.9,
+   8.4,
+   20.5
+  ],
+  "longtasks_typing": {
+   "count": 12,
+   "over_50ms": 11,
+   "max_ms": 157,
+   "entries": [
+    {
+     "run": 4,
+     "start": 5827.9,
+     "dur": 51,
+     "q_index": 231,
+     "pos_after_reset": 23,
+     "phase_ms": {
+      "inputDelay": 7.3,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0,
+      "toFrame": 51.4
+     }
+    },
+    {
+     "run": 4,
+     "start": 6339.2,
+     "dur": 73,
+     "q_index": 237,
+     "pos_after_reset": 4,
+     "phase_ms": {
+      "inputDelay": 2.8,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 74.3
+     }
+    },
+    {
+     "run": 4,
+     "start": 6445.4,
+     "dur": 157,
+     "q_index": 238,
+     "pos_after_reset": 5,
+     "phase_ms": {
+      "inputDelay": 4.7,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 158.2
+     }
+    },
+    {
+     "run": 4,
+     "start": 6718.6,
+     "dur": 59,
+     "q_index": 240,
+     "pos_after_reset": 7,
+     "phase_ms": {
+      "inputDelay": 21.6,
+      "search": 0.9,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 85.8
+     }
+    },
+    {
+     "run": 4,
+     "start": 6817.9,
+     "dur": 94,
+     "q_index": 241,
+     "pos_after_reset": 8,
+     "phase_ms": {
+      "inputDelay": 12.1,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 94.8
+     }
+    },
+    {
+     "run": 10,
+     "start": 5000.5,
+     "dur": 84,
+     "q_index": 178,
+     "pos_after_reset": 1,
+     "phase_ms": {
+      "inputDelay": 86.4,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0.3,
+      "toFrame": 27.3
+     }
+    },
+    {
+     "run": 10,
+     "start": 5257.6,
+     "dur": 126,
+     "q_index": 180,
+     "pos_after_reset": 3,
+     "phase_ms": {
+      "inputDelay": 3.3,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 128.2
+     }
+    },
+    {
+     "run": 10,
+     "start": 5386.1,
+     "dur": 87,
+     "q_index": 180,
+     "pos_after_reset": 3,
+     "phase_ms": {
+      "inputDelay": 3.3,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 128.2
+     }
+    },
+    {
+     "run": 10,
+     "start": 5629.3,
+     "dur": 52,
+     "q_index": 187,
+     "pos_after_reset": 10,
+     "phase_ms": {
+      "inputDelay": 59.9,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 33.8
+     }
+    },
+    {
+     "run": 10,
+     "start": 6167.5,
+     "dur": 66,
+     "q_index": 193,
+     "pos_after_reset": 16,
+     "phase_ms": {
+      "inputDelay": 68,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 16.6
+     }
+    },
+    {
+     "run": 10,
+     "start": 12273.6,
+     "dur": 57,
+     "q_index": 556,
+     "pos_after_reset": 18,
+     "phase_ms": {
+      "inputDelay": 2.9,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 57.4
+     }
+    },
+    {
+     "run": 10,
+     "start": 12475.6,
+     "dur": 50,
+     "q_index": 568,
+     "pos_after_reset": 0,
+     "phase_ms": {
+      "inputDelay": 10.4,
+      "search": 0,
+      "render": 0.2,
+      "layout": 0.2,
+      "toFrame": 57.5
+     }
+    }
+   ]
+  },
+  "req_o2": {
+   "p95_within_budget": true,
+   "p99_within_2x_p95": false,
+   "no_long_task_over_50ms": false
+  },
+  "key2paint_by_position_after_reset": {
+   "pos0": {
+    "n": 580,
+    "p50": 7.1,
+    "p95": 19.4,
+    "p99": 81.8,
+    "over_50ms": 8
+   },
+   "pos1": {
+    "n": 570,
+    "p50": 7.6,
+    "p95": 83,
+    "p99": 90,
+    "over_50ms": 115
+   },
+   "pos2+": {
+    "n": 10500,
+    "p50": 4.9,
+    "p95": 11.5,
+    "p99": 20.7,
+    "over_50ms": 24
+   }
+  },
+  "usable_after_dcl_p95": 260.2,
+  "full_ready_after_dcl_p95": 260.3
+ }
+}

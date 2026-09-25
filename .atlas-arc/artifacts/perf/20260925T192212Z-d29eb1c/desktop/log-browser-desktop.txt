@@ -1,0 +1,14 @@
+[desktop] run 0/10 done at 18 s
+[desktop] run 1/10 done at 34 s
+[desktop] run 2/10 done at 49 s
+[desktop] run 3/10 done at 64 s
+[desktop] run 4/10 done at 77 s
+[desktop] run 5/10 done at 93 s
+[desktop] run 6/10 done at 109 s
+[desktop] run 7/10 done at 127 s
+[desktop] run 8/10 done at 170 s
+[desktop] run 9/10 done at 194 s
+[desktop] run 10/10 done at 209 s
+desktop A {"k2p":[2.7,6.9,32.1],"k2l95":4.1,"env":"ESCALATE 627.6","usable_p95":100.7,"full_p95":153.3,"heapMB":4.96,"lt":{"count":9,"over_50ms":9,"max_ms":176},"wt":[]}
+desktop AL3 {"k2p":[1.6,5,21.6],"k2l95":2.3,"env":"ESCALATE 618.4","usable_p95":112.3,"full_p95":239.4,"heapMB":4.96,"lt":{"count":4,"over_50ms":4,"max_ms":149},"wt":[]}
+desktop I0 {"k2p":[1,3.7,11.3],"k2l95":1.6,"env":"ESCALATE 220","usable_p95":96.3,"full_p95":96.4,"heapMB":0.03,"lt":{"count":1,"over_50ms":1,"max_ms":73},"wt":[]}

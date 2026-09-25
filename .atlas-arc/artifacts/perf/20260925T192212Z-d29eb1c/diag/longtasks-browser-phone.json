@@ -1,0 +1,51 @@
+{
+ "note": "diagnostic passes, separate from the timing runs",
+ "chrome_flags": [
+  "--disable-frame-rate-limit",
+  "--disable-gpu-vsync"
+ ],
+ "results": {
+  "A": [
+   {
+    "pass": 1,
+    "loadavg_1m_start": 20.8,
+    "loadavg_1m_end": 19.5,
+    "longtasks": []
+   },
+   {
+    "pass": 2,
+    "loadavg_1m_start": 19.5,
+    "loadavg_1m_end": 16,
+    "longtasks": []
+   }
+  ],
+  "AL3": [
+   {
+    "pass": 1,
+    "loadavg_1m_start": 16,
+    "loadavg_1m_end": 14.9,
+    "longtasks": []
+   },
+   {
+    "pass": 2,
+    "loadavg_1m_start": 14.9,
+    "loadavg_1m_end": 13.5,
+    "longtasks": []
+   }
+  ],
+  "I0": [
+   {
+    "pass": 1,
+    "loadavg_1m_start": 13.5,
+    "loadavg_1m_end": 13.5,
+    "longtasks": []
+   },
+   {
+    "pass": 2,
+    "loadavg_1m_start": 13.5,
+    "loadavg_1m_end": 14.1,
+    "longtasks": []
+   }
+  ]
+ }
+}

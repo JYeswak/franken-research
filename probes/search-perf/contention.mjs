@@ -38,6 +38,9 @@ for (const prof of ['desktop', 'phone']) {
       work_quiet: summarize(work(quietRows)), // search + render + layout, no queueing
       inputDelay_quiet: summarize(quietRows.map((r) => r[0])),
       key2layout_all: b.metrics.key2layout,
+      // Appended in round 2 (review 7d: key2paint is the REQ-O2 metric); earlier fields unchanged.
+      key2paint_quiet: summarize(quietRows.map((r) => r[0] + r[1] + r[2] + r[3] + r[4])),
+      key2paint_all: b.metrics.key2paint,
       // per-keystroke components in quiet passes (ms): where a keystroke's time goes once host noise is excluded
       components_quiet: Object.fromEntries(['inputDelay', 'search', 'render', 'layout', 'toFrame', 'workerSearch'].map((n, i) => {
         const vals = quietRows.map((r) => r[i]).filter((x) => x != null);

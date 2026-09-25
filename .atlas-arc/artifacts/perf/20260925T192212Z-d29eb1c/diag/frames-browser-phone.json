@@ -1,0 +1,1013 @@
+{
+ "note": "diagnostic trace pass (tracing perturbs timing); busy = union of renderer main-thread trace events inside [keydown, paint proxy], idle = the rest",
+ "chrome_flags": [
+  "--disable-frame-rate-limit",
+  "--disable-gpu-vsync"
+ ],
+ "results": {
+  "AL3": {
+   "all": {
+    "n": 1165,
+    "k2p": {
+     "n": 1165,
+     "mean": 11.3453,
+     "sd": 7.799,
+     "cv": 0.6874,
+     "mad": 3.3,
+     "p50": 10,
+     "p95": 20.1,
+     "p99": 41.2,
+     "p999": 88.7,
+     "max": 92,
+     "p999_conservative": false
+    },
+    "busy": {
+     "n": 1165,
+     "mean": 9.3502,
+     "sd": 4.9009,
+     "cv": 0.5242,
+     "mad": 3.145,
+     "p50": 8.578,
+     "p95": 18.148,
+     "p99": 23.287,
+     "p999": 39.601,
+     "max": 47.948,
+     "p999_conservative": false
+    },
+    "idle": {
+     "n": 1165,
+     "mean": 1.9951,
+     "sd": 6.1757,
+     "cv": 3.0955,
+     "mad": 0.919,
+     "p50": 1.401,
+     "p95": 3.396,
+     "p99": 12.306,
+     "p999": 79.952,
+     "max": 80.258,
+     "p999_conservative": false
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 8.71,
+     "FunctionCall": 2.24,
+     "Paint": 1.65,
+     "Commit": 1.39,
+     "Layout": 1.38,
+     "PrePaint": 0.61,
+     "Layerize": 0.36,
+     "FireAnimationFrame": 0.27,
+     "MajorGC": 0.06,
+     "V8.GC_MARK_COMPACTOR": 0.06,
+     "UpdateLayoutTree": 0.05,
+     "MinorGC": 0.01,
+     "V8.GC_SCAVENGER": 0.01,
+     "V8.GCIncrementalMarking": 0,
+     "HitTest": 0
+    }
+   },
+   "tail": {
+    "n": 17,
+    "k2p": {
+     "n": 17,
+     "mean": 58.7941,
+     "sd": 21.943,
+     "cv": 0.3732,
+     "mad": 16.7,
+     "p50": 52.4,
+     "p95": 92,
+     "p99": 92,
+     "p999": 92,
+     "max": 92,
+     "p999_conservative": true
+    },
+    "busy": {
+     "n": 17,
+     "mean": 18.8787,
+     "sd": 14.6696,
+     "cv": 0.777,
+     "mad": 6.857,
+     "p50": 13.045,
+     "p95": 47.948,
+     "p99": 47.948,
+     "p999": 47.948,
+     "max": 47.948,
+     "p999_conservative": true
+    },
+    "idle": {
+     "n": 17,
+     "mean": 39.9154,
+     "sd": 33.1577,
+     "cv": 0.8307,
+     "mad": 37.227,
+     "p50": 40.319,
+     "p95": 80.258,
+     "p99": 80.258,
+     "p999": 80.258,
+     "max": 80.258,
+     "p999_conservative": true
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 13.61,
+     "Commit": 3.05,
+     "FunctionCall": 2.95,
+     "MajorGC": 2.76,
+     "V8.GC_MARK_COMPACTOR": 2.73,
+     "Paint": 2.68,
+     "Layout": 1.84,
+     "PrePaint": 0.6,
+     "FireAnimationFrame": 0.37,
+     "Layerize": 0.14,
+     "UpdateLayoutTree": 0.11,
+     "HitTest": 0
+    }
+   },
+   "tail_threshold_ms": 32,
+   "tail_by_position_after_reset": {
+    "0": 1,
+    "1": 11,
+    "2": 2,
+    "3": 1,
+    "12": 1,
+    "13": 1
+   },
+   "tail_off_main_thread_mean_ms": {
+    "ThreadPoolBackgroundWorker:ThreadPool_RunTask": 52.38,
+    "ThreadPoolForegroundWorker:ThreadPool_RunTask": 4.57,
+    "Compositor:RunTask": 1.57,
+    "Compositor:ThreadControllerImpl::RunTask": 1.52,
+    "Compositor:Graphics.Pipeline": 0.86,
+    "Compositor:ProxyImpl::ScheduledActionDraw": 0.77,
+    "Compositor:MainFrame.Draw": 0.77,
+    "CrBrowserMain:RunTask": 0.76,
+    "CrGpuMain:RunTask": 0.75,
+    "CrGpuMain:ThreadControllerImpl::RunTask": 0.74,
+    "CrGpuMain:Scheduler::RunTask": 0.72,
+    "CrBrowserMain:ThreadControllerImpl::RunTask": 0.7,
+    "Compositor:GpuChannelHost::VerifyFlush": 0.66,
+    "CrGpuMain:GpuChannel::ExecuteDeferredRequest": 0.59,
+    "CrGpuMain:GPUTask": 0.56,
+    "ThreadPoolForegroundWorker:SimpleWatcher::OnHandleReady": 0.52,
+    "CrGpuMain:RendererRasterWorker": 0.5,
+    "CrGpuMain:CommandBuffer::Flush": 0.5,
+    "CrGpuMain:CommandBufferStub::OnAsyncFlush": 0.5,
+    "CrGpuMain:CommandBufferService:PutChanged": 0.49,
+    "ThreadPoolForegroundWorker:TaskGraphRunner::RunTask": 0.38,
+    "ThreadPoolForegroundWorker:V8.GC_MC_BACKGROUND_SWEEPING": 0.3,
+    "ThreadPoolForegroundWorker:RasterizerTaskImpl::RunOnWorkerThread": 0.29,
+    "CrGpuMain:RasterDecoderImpl::DoEndRasterCHROMIUM": 0.28,
+    "ThreadPoolForegroundWorker:RasterTask": 0.27
+   },
+   "tail_keystrokes": [
+    {
+     "q": "r",
+     "pos": 0,
+     "k2p": 32.2,
+     "busy": 30.15,
+     "idle": 2.05,
+     "phases": {
+      "inputDelay": 7.3,
+      "search": 10.9,
+      "render": 0.2,
+      "layout": 0.8,
+      "toFrame": 13
+     },
+     "byName": {
+      "UpdateLayoutTree": 1.79,
+      "EventDispatch": 56.13,
+      "FunctionCall": 15.62,
+      "Layout": 0.86,
+      "PrePaint": 2.32,
+      "Paint": 3.81
+     }
+    },
+    {
+     "q": "pr",
+     "pos": 1,
+     "k2p": 88.7,
+     "busy": 8.44,
+     "idle": 80.26,
+     "phases": {
+      "inputDelay": 2.8,
+      "search": 0.1,
+      "render": 0,
+      "layout": 2.8,
+      "toFrame": 83
+     },
+     "byName": {
+      "EventDispatch": 9.54,
+      "FunctionCall": 3.1,
+      "Layout": 2.86,
+      "Commit": 3.55
+     }
+    },
+    {
+     "q": "fuziz",
+     "pos": 1,
+     "k2p": 35.7,
+     "busy": 6.19,
+     "idle": 29.51,
+     "phases": {
+      "inputDelay": 3.1,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 32.6
+     },
+     "byName": {
+      "EventDispatch": 4.03,
+      "PrePaint": 0.72,
+      "Commit": 1.31
+     }
+    },
+    {
+     "q": "cross platform releea",
+     "pos": 1,
+     "k2p": 62.9,
+     "busy": 13.04,
+     "idle": 49.86,
+     "phases": {
+      "inputDelay": 3.1,
+      "search": 0,
+      "render": 0.8,
+      "layout": 0,
+      "toFrame": 59
+     },
+     "byName": {
+      "EventDispatch": 8.61,
+      "FunctionCall": 0.97,
+      "Layout": 2.75,
+      "Commit": 5.63
+     }
+    },
+    {
+     "q": "wa",
+     "pos": 1,
+     "k2p": 92,
+     "busy": 14.45,
+     "idle": 77.55,
+     "phases": {
+      "inputDelay": 1.4,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0.2,
+      "toFrame": 90.3
+     },
+     "byName": {
+      "EventDispatch": 1.48,
+      "Paint": 8.39,
+      "Commit": 6.25
+     }
+    },
+    {
+     "q": "co",
+     "pos": 1,
+     "k2p": 81.9,
+     "busy": 7.69,
+     "idle": 74.21,
+     "phases": {
+      "inputDelay": 1.2,
+      "search": 0.1,
+      "render": 0.1,
+      "layout": 2.3,
+      "toFrame": 78.2
+     },
+     "byName": {
+      "EventDispatch": 8.12,
+      "FunctionCall": 2.59,
+      "Layout": 2.38,
+      "Paint": 3.95,
+      "Layerize": 0.83
+     }
+    },
+    {
+     "q": "go",
+     "pos": 1,
+     "k2p": 52.4,
+     "busy": 12.08,
+     "idle": 40.32,
+     "phases": {
+      "inputDelay": 3.5,
+      "search": 0.2,
+      "render": 0.1,
+      "layout": 2.6,
+      "toFrame": 46
+     },
+     "byName": {
+      "EventDispatch": 15.66,
+      "FunctionCall": 3.61,
+      "Layout": 5.68,
+      "FireAnimationFrame": 0.72,
+      "Paint": 1.98,
+      "Commit": 2.19
+     }
+    },
+    {
+     "q": "golden file snapshot tesst",
+     "pos": 1,
+     "k2p": 48.3,
+     "busy": 7.98,
+     "idle": 40.32,
+     "phases": {
+      "inputDelay": 4.9,
+      "search": 0.1,
+      "render": 1.1,
+      "layout": 0,
+      "toFrame": 42.2
+     },
+     "byName": {
+      "EventDispatch": 7.81,
+      "FunctionCall": 1.39,
+      "Layout": 0.82,
+      "Commit": 2.98
+     }
+    },
+    {
+     "q": "ag",
+     "pos": 1,
+     "k2p": 85.5,
+     "busy": 6.33,
+     "idle": 79.17,
+     "phases": {
+      "inputDelay": 2,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0.2,
+      "toFrame": 83.2
+     },
+     "byName": {
+      "EventDispatch": 1.22,
+      "FunctionCall": 1.09,
+      "FireAnimationFrame": 0.79,
+      "PrePaint": 1.47,
+      "Paint": 0.54
+     }
+    },
+    {
+     "q": "agelt",
+     "pos": 1,
+     "k2p": 86,
+     "busy": 6.05,
+     "idle": 79.95,
+     "phases": {
+      "inputDelay": 1,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0,
+      "toFrame": 84.9
+     },
+     "byName": {
+      "EventDispatch": 0.67,
+      "Commit": 3.97
+     }
+    },
+    {
+     "q": "ter",
+     "pos": 2,
+     "k2p": 40.1,
+     "busy": 39.6,
+     "idle": 0.5,
+     "phases": {
+      "inputDelay": 11.6,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0.2,
+      "toFrame": 28.2
+     },
+     "byName": {
+      "MajorGC": 11.19,
+      "V8.GC_MARK_COMPACTOR": 11.08,
+      "EventDispatch": 1.6,
+      "FunctionCall": 3.42,
+      "FireAnimationFrame": 3.06
+     }
+    },
+    {
+     "q": "reproducibfe",
+     "pos": 1,
+     "k2p": 78.8,
+     "busy": 1.45,
+     "idle": 77.35,
+     "phases": {
+      "inputDelay": 0.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 78.2
+     },
+     "byName": {
+      "EventDispatch": 1.07
+     }
+    },
+    {
+     "q": "flaky test qu",
+     "pos": 12,
+     "k2p": 38.2,
+     "busy": 37.97,
+     "idle": 0.23,
+     "phases": {
+      "inputDelay": 20.2,
+      "search": 0.3,
+      "render": 0.1,
+      "layout": 0.5,
+      "toFrame": 17.1
+     },
+     "byName": {
+      "MajorGC": 16.35,
+      "V8.GC_MARK_COMPACTOR": 16.19,
+      "EventDispatch": 16.11,
+      "FunctionCall": 1.03,
+      "Layout": 0.67,
+      "Paint": 0.66,
+      "Commit": 4.72
+     }
+    },
+    {
+     "q": "flaky test qua",
+     "pos": 13,
+     "k2p": 32.3,
+     "busy": 25.05,
+     "idle": 7.25,
+     "phases": {
+      "inputDelay": 10.4,
+      "search": 1.1,
+      "render": 0.2,
+      "layout": 2.7,
+      "toFrame": 17.9
+     },
+     "byName": {
+      "EventDispatch": 32.14,
+      "FunctionCall": 4.23,
+      "Layout": 1.2,
+      "Paint": 4.92,
+      "Commit": 3.37
+     }
+    },
+    {
+     "q": "crat",
+     "pos": 3,
+     "k2p": 48.2,
+     "busy": 47.95,
+     "idle": 0.25,
+     "phases": {
+      "inputDelay": 24,
+      "search": 0.1,
+      "render": 1.4,
+      "layout": 2.7,
+      "toFrame": 20
+     },
+     "byName": {
+      "MajorGC": 19.3,
+      "V8.GC_MARK_COMPACTOR": 19.16,
+      "EventDispatch": 22.02,
+      "FunctionCall": 4.42,
+      "Layout": 2.77,
+      "Paint": 8.2,
+      "Commit": 5.72
+     }
+    },
+    {
+     "q": "re",
+     "pos": 1,
+     "k2p": 55.1,
+     "busy": 17.69,
+     "idle": 37.41,
+     "phases": {
+      "inputDelay": 5.1,
+      "search": 0.3,
+      "render": 1.9,
+      "layout": 0.5,
+      "toFrame": 47.3
+     },
+     "byName": {
+      "EventDispatch": 13.18,
+      "FunctionCall": 2.79,
+      "Layout": 0.57,
+      "Paint": 0.57,
+      "Commit": 8.49
+     }
+    },
+    {
+     "q": "rec",
+     "pos": 2,
+     "k2p": 41.2,
+     "busy": 38.82,
+     "idle": 2.38,
+     "phases": {
+      "inputDelay": 7.9,
+      "search": 0.1,
+      "render": 0,
+      "layout": 4.8,
+      "toFrame": 28.4
+     },
+     "byName": {
+      "EventDispatch": 31.88,
+      "FunctionCall": 5.02,
+      "Layout": 9.65,
+      "PrePaint": 3.14,
+      "Paint": 10.68,
+      "Commit": 2.55
+     }
+    }
+   ]
+  },
+  "I0": {
+   "all": {
+    "n": 1165,
+    "k2p": {
+     "n": 1165,
+     "mean": 7.8241,
+     "sd": 7.4107,
+     "cv": 0.9472,
+     "mad": 2.1,
+     "p50": 6.5,
+     "p95": 14.4,
+     "p99": 37.3,
+     "p999": 83.1,
+     "max": 89.8,
+     "p999_conservative": false
+    },
+    "busy": {
+     "n": 1165,
+     "mean": 5.7435,
+     "sd": 3.8982,
+     "cv": 0.6787,
+     "mad": 1.947,
+     "p50": 5.161,
+     "p95": 11.075,
+     "p99": 19.17,
+     "p999": 36.926,
+     "max": 61.886,
+     "p999_conservative": false
+    },
+    "idle": {
+     "n": 1165,
+     "mean": 2.0807,
+     "sd": 6.1235,
+     "cv": 2.9431,
+     "mad": 0.996,
+     "p50": 1.336,
+     "p95": 3.888,
+     "p99": 31.042,
+     "p999": 75.876,
+     "max": 79.783,
+     "p999_conservative": false
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 3.81,
+     "Commit": 1.14,
+     "FunctionCall": 0.73,
+     "Paint": 0.57,
+     "Layout": 0.33,
+     "Layerize": 0.24,
+     "PrePaint": 0.24,
+     "FireAnimationFrame": 0.2,
+     "UpdateLayoutTree": 0.13,
+     "MajorGC": 0.04,
+     "V8.GC_MARK_COMPACTOR": 0.03,
+     "ParseHTML": 0.01,
+     "V8.GCIncrementalMarking": 0,
+     "HitTest": 0
+    }
+   },
+   "tail": {
+    "n": 18,
+    "k2p": {
+     "n": 18,
+     "mean": 55.9833,
+     "sd": 20.6505,
+     "cv": 0.3689,
+     "mad": 15.5,
+     "p50": 49.6,
+     "p95": 89.8,
+     "p99": 89.8,
+     "p999": 89.8,
+     "max": 89.8,
+     "p999_conservative": true
+    },
+    "busy": {
+     "n": 18,
+     "mean": 15.0875,
+     "sd": 15.666,
+     "cv": 1.0383,
+     "mad": 3.516,
+     "p50": 9.105,
+     "p95": 61.886,
+     "p99": 61.886,
+     "p999": 61.886,
+     "max": 61.886,
+     "p999_conservative": true
+    },
+    "idle": {
+     "n": 18,
+     "mean": 40.8958,
+     "sd": 27.4723,
+     "cv": 0.6718,
+     "mad": 26.668,
+     "p50": 40.09,
+     "p95": 79.783,
+     "p99": 79.783,
+     "p999": 79.783,
+     "max": 79.783,
+     "p999_conservative": true
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 13.8,
+     "FunctionCall": 4.1,
+     "Layout": 1.86,
+     "MajorGC": 1.83,
+     "V8.GC_MARK_COMPACTOR": 1.8,
+     "Commit": 1.65,
+     "FireAnimationFrame": 0.56,
+     "UpdateLayoutTree": 0.43,
+     "Layerize": 0.35,
+     "PrePaint": 0.33,
+     "Paint": 0.16,
+     "V8.GCIncrementalMarking": 0.14,
+     "ParseHTML": 0.07,
+     "HitTest": 0
+    }
+   },
+   "tail_threshold_ms": 32,
+   "tail_by_position_after_reset": {
+    "0": 2,
+    "1": 14,
+    "4": 1,
+    "23": 1
+   },
+   "tail_off_main_thread_mean_ms": {
+    "ThreadPoolForegroundWorker:ThreadPool_RunTask": 1.07,
+    "Compositor:RunTask": 0.81,
+    "Compositor:ThreadControllerImpl::RunTask": 0.76,
+    "CrBrowserMain:RunTask": 0.56,
+    "CrBrowserMain:ThreadControllerImpl::RunTask": 0.5,
+    "ThreadPoolForegroundWorker:TaskGraphRunner::RunTask": 0.5,
+    "CrGpuMain:RunTask": 0.41,
+    "CrGpuMain:ThreadControllerImpl::RunTask": 0.4,
+    "CrGpuMain:Scheduler::RunTask": 0.38,
+    "Compositor:Graphics.Pipeline": 0.32,
+    "Compositor:ProxyImpl::ScheduledActionDraw": 0.26,
+    "Compositor:MainFrame.Draw": 0.26,
+    "CrGpuMain:GpuChannel::ExecuteDeferredRequest": 0.25,
+    "ThreadPoolForegroundWorker:GpuImageDecodeTaskImpl::RunOnWorkerThread": 0.25,
+    "ThreadPoolForegroundWorker:RasterizerTaskImpl::RunOnWorkerThread": 0.24,
+    "ThreadPoolForegroundWorker:RasterTask": 0.23,
+    "ThreadPoolForegroundWorker:GpuRasterBuffer::Playback": 0.22,
+    "ThreadPoolBackgroundWorker:ThreadPool_RunTask": 0.22,
+    "ThreadPoolForegroundWorker:ImageDecodeTask": 0.21,
+    "ThreadPoolForegroundWorker:GpuImageDecodeCache::DecodeImage": 0.21,
+    "ThreadPoolForegroundWorker:RasterImplementation::RasterCHROMIUM": 0.21,
+    "Compositor:ProxyImpl::ReadyToCommit": 0.2,
+    "CrGpuMain:GPUTask": 0.2,
+    "Compositor:GpuChannelHost::VerifyFlush": 0.19,
+    "VizCompositorThread:RunTask": 0.19
+   },
+   "tail_keystrokes": [
+    {
+     "q": "r",
+     "pos": 0,
+     "k2p": 67.5,
+     "busy": 61.89,
+     "idle": 5.61,
+     "phases": {
+      "inputDelay": 16.7,
+      "search": 0.1,
+      "render": 11.7,
+      "layout": 24.3,
+      "toFrame": 14.7
+     },
+     "byName": {
+      "UpdateLayoutTree": 0.59,
+      "EventDispatch": 128.11,
+      "FunctionCall": 43.32,
+      "Layout": 25.87,
+      "ParseHTML": 1,
+      "PrePaint": 4.61,
+      "Commit": 4.48
+     }
+    },
+    {
+     "q": "stop agents claiming testts",
+     "pos": 1,
+     "k2p": 83.1,
+     "busy": 9.38,
+     "idle": 73.72,
+     "phases": {
+      "inputDelay": 1,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 81.9
+     },
+     "byName": {
+      "EventDispatch": 1.18,
+      "FireAnimationFrame": 2.88,
+      "Layerize": 1.17
+     }
+    },
+    {
+     "q": "c",
+     "pos": 0,
+     "k2p": 89.8,
+     "busy": 10.02,
+     "idle": 79.78,
+     "phases": {
+      "inputDelay": 3.1,
+      "search": 0,
+      "render": 0.2,
+      "layout": 0.1,
+      "toFrame": 86.4
+     },
+     "byName": {
+      "EventDispatch": 1.5,
+      "Commit": 5.01
+     }
+    },
+    {
+     "q": "to",
+     "pos": 1,
+     "k2p": 36.9,
+     "busy": 34.69,
+     "idle": 2.21,
+     "phases": {
+      "inputDelay": 15.1,
+      "search": 0,
+      "render": 2.6,
+      "layout": 0.2,
+      "toFrame": 19
+     },
+     "byName": {
+      "MajorGC": 11.62,
+      "V8.GC_MARK_COMPACTOR": 11.45,
+      "EventDispatch": 14.95,
+      "FunctionCall": 3,
+      "Commit": 3.45
+     }
+    },
+    {
+     "q": "bm",
+     "pos": 1,
+     "k2p": 82,
+     "busy": 10.32,
+     "idle": 71.68,
+     "phases": {
+      "inputDelay": 4.4,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0.2,
+      "toFrame": 77.3
+     },
+     "byName": {
+      "EventDispatch": 4.11,
+      "Layerize": 1.86
+     }
+    },
+    {
+     "q": "bm25 ljx",
+     "pos": 1,
+     "k2p": 48.5,
+     "busy": 7.59,
+     "idle": 40.91,
+     "phases": {
+      "inputDelay": 0.7,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 47.8
+     },
+     "byName": {
+      "EventDispatch": 7.42,
+      "Commit": 2.41
+     }
+    },
+    {
+     "q": "li",
+     "pos": 1,
+     "k2p": 49.6,
+     "busy": 9.11,
+     "idle": 40.49,
+     "phases": {
+      "inputDelay": 3.1,
+      "search": 0.1,
+      "render": 0.2,
+      "layout": 2.8,
+      "toFrame": 43.4
+     },
+     "byName": {
+      "EventDispatch": 12.93,
+      "FunctionCall": 3.24,
+      "Layout": 4.06,
+      "Commit": 2.92
+     }
+    },
+    {
+     "q": "bus fca",
+     "pos": 1,
+     "k2p": 58.2,
+     "busy": 14.14,
+     "idle": 44.06,
+     "phases": {
+      "inputDelay": 4.6,
+      "search": 0,
+      "render": 0.2,
+      "layout": 0.1,
+      "toFrame": 53.3
+     },
+     "byName": {
+      "EventDispatch": 5.67,
+      "FunctionCall": 6.21,
+      "FireAnimationFrame": 5.81,
+      "Commit": 4.86
+     }
+    },
+    {
+     "q": "be",
+     "pos": 1,
+     "k2p": 82.5,
+     "busy": 6.62,
+     "idle": 75.88,
+     "phases": {
+      "inputDelay": 1.1,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 81.3
+     },
+     "byName": {
+      "EventDispatch": 4.36,
+      "Layerize": 2.21
+     }
+    },
+    {
+     "q": "te",
+     "pos": 1,
+     "k2p": 34.1,
+     "busy": 8.07,
+     "idle": 26.03,
+     "phases": {
+      "inputDelay": 5.4,
+      "search": 0,
+      "render": 0.4,
+      "layout": 2.4,
+      "toFrame": 25.9
+     },
+     "byName": {
+      "EventDispatch": 14.26,
+      "FunctionCall": 3.28,
+      "UpdateLayoutTree": 2.06,
+      "Commit": 1.01
+     }
+    },
+    {
+     "q": "struc",
+     "pos": 4,
+     "k2p": 37.3,
+     "busy": 36.93,
+     "idle": 0.37,
+     "phases": {
+      "inputDelay": 13.5,
+      "search": 2.7,
+      "render": 0.2,
+      "layout": 0.2,
+      "toFrame": 20.7
+     },
+     "byName": {
+      "MajorGC": 11.45,
+      "V8.GC_MARK_COMPACTOR": 11.3,
+      "EventDispatch": 14.08,
+      "FunctionCall": 3.21
+     }
+    },
+    {
+     "q": "structured output grammma",
+     "pos": 1,
+     "k2p": 36,
+     "busy": 3.15,
+     "idle": 32.85,
+     "phases": {
+      "inputDelay": 2.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 33.4
+     },
+     "byName": {
+      "EventDispatch": 2.32
+     }
+    },
+    {
+     "q": "kahan summation floating",
+     "pos": 23,
+     "k2p": 33.5,
+     "busy": 30.47,
+     "idle": 3.03,
+     "phases": {
+      "inputDelay": 13.2,
+      "search": 0,
+      "render": 0,
+      "layout": 1.6,
+      "toFrame": 18.7
+     },
+     "byName": {
+      "MajorGC": 9.81,
+      "V8.GC_MARK_COMPACTOR": 9.68,
+      "EventDispatch": 11.22,
+      "FunctionCall": 1.7,
+      "UpdateLayoutTree": 1.55,
+      "Commit": 1.02
+     }
+    },
+    {
+     "q": "kahan summation floit",
+     "pos": 1,
+     "k2p": 34.1,
+     "busy": 5.59,
+     "idle": 28.51,
+     "phases": {
+      "inputDelay": 2.4,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 31.7
+     },
+     "byName": {
+      "EventDispatch": 4.95,
+      "Commit": 2.34
+     }
+    },
+    {
+     "q": "json schema valiga",
+     "pos": 1,
+     "k2p": 35.4,
+     "busy": 4.36,
+     "idle": 31.04,
+     "phases": {
+      "inputDelay": 1.4,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 34
+     },
+     "byName": {
+      "EventDispatch": 0.62,
+      "FunctionCall": 3.13
+     }
+    },
+    {
+     "q": "ht",
+     "pos": 1,
+     "k2p": 71.7,
+     "busy": 4.94,
+     "idle": 66.76,
+     "phases": {
+      "inputDelay": 1.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 70.1
+     },
+     "byName": {
+      "EventDispatch": 0.62
+     }
+    },
+    {
+     "q": "crate on cratte",
+     "pos": 1,
+     "k2p": 77.7,
+     "busy": 4.62,
+     "idle": 73.08,
+     "phases": {
+      "inputDelay": 2.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 75.1
+     },
+     "byName": {
+      "EventDispatch": 4.43
+     }
+    },
+    {
+     "q": "su",
+     "pos": 1,
+     "k2p": 49.8,
+     "busy": 9.71,
+     "idle": 40.09,
+     "phases": {
+      "inputDelay": 4.4,
+      "search": 0.1,
+      "render": 0.2,
+      "layout": 4,
+      "toFrame": 41.1
+     },
+     "byName": {
+      "V8.GCIncrementalMarking": 2.59,
+      "EventDispatch": 15.59,
+      "FunctionCall": 4.39,
+      "Layout": 1.53,
+      "UpdateLayoutTree": 2.58
+     }
+    }
+   ]
+  }
+ }
+}

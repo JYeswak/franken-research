@@ -1,0 +1,4961 @@
+{
+ "note": "diagnostic trace pass (tracing perturbs timing); busy = union of renderer main-thread trace events inside [keydown, paint proxy], idle = the rest",
+ "chrome_flags": [
+  "--disable-frame-rate-limit",
+  "--disable-gpu-vsync"
+ ],
+ "results": {
+  "I0": {
+   "all": {
+    "n": 1165,
+    "k2p": {
+     "n": 1165,
+     "mean": 9.1706,
+     "sd": 9.6532,
+     "cv": 1.0526,
+     "mad": 1.9,
+     "p50": 7.4,
+     "p95": 15.6,
+     "p99": 76.9,
+     "p999": 90.5,
+     "max": 116.1,
+     "p999_conservative": false
+    },
+    "busy": {
+     "n": 1165,
+     "mean": 6.5698,
+     "sd": 4.7378,
+     "cv": 0.7211,
+     "mad": 1.738,
+     "p50": 5.981,
+     "p95": 11.639,
+     "p99": 20.131,
+     "p999": 70.761,
+     "max": 89.202,
+     "p999_conservative": false
+    },
+    "idle": {
+     "n": 1165,
+     "mean": 2.6007,
+     "sd": 7.9923,
+     "cv": 3.0731,
+     "mad": 0.942,
+     "p50": 1.404,
+     "p95": 5.217,
+     "p99": 57.438,
+     "p999": 77.115,
+     "max": 80.64,
+     "p999_conservative": false
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 4.32,
+     "Commit": 1.62,
+     "FunctionCall": 0.79,
+     "Paint": 0.59,
+     "Layout": 0.35,
+     "PrePaint": 0.26,
+     "FireAnimationFrame": 0.23,
+     "Layerize": 0.23,
+     "UpdateLayoutTree": 0.12,
+     "MajorGC": 0.04,
+     "V8.GC_MARK_COMPACTOR": 0.03,
+     "ParseHTML": 0.01,
+     "V8.GCIncrementalMarking": 0,
+     "HitTest": 0
+    }
+   },
+   "tail": {
+    "n": 24,
+    "k2p": {
+     "n": 24,
+     "mean": 68.3958,
+     "sd": 20.0886,
+     "cv": 0.2937,
+     "mad": 13.7,
+     "p50": 70.6,
+     "p95": 90.5,
+     "p99": 116.1,
+     "p999": 116.1,
+     "max": 116.1,
+     "p999_conservative": true
+    },
+    "busy": {
+     "n": 24,
+     "mean": 18.056,
+     "sd": 23.1565,
+     "cv": 1.2825,
+     "mad": 2.193,
+     "p50": 7.831,
+     "p95": 70.761,
+     "p99": 89.202,
+     "p999": 89.202,
+     "max": 89.202,
+     "p999_conservative": true
+    },
+    "idle": {
+     "n": 24,
+     "mean": 50.3398,
+     "sd": 25.9799,
+     "cv": 0.5161,
+     "mad": 25.457,
+     "p50": 45.959,
+     "p95": 77.115,
+     "p99": 80.64,
+     "p999": 80.64,
+     "max": 80.64,
+     "p999_conservative": true
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 18.21,
+     "Commit": 2.55,
+     "Paint": 2.25,
+     "FunctionCall": 2.25,
+     "FireAnimationFrame": 0.63,
+     "MajorGC": 0.55,
+     "V8.GC_MARK_COMPACTOR": 0.54,
+     "Layout": 0.48,
+     "UpdateLayoutTree": 0.22,
+     "ParseHTML": 0.13,
+     "PrePaint": 0.12,
+     "Layerize": 0.08,
+     "V8.GCIncrementalMarking": 0.01,
+     "HitTest": 0
+    }
+   },
+   "tail_threshold_ms": 32,
+   "tail_by_position_after_reset": {
+    "0": 2,
+    "1": 18,
+    "12": 1,
+    "19": 1,
+    "26": 1,
+    "27": 1
+   },
+   "tail_off_main_thread_mean_ms": {
+    "ThreadPoolBackgroundWorker:ThreadPool_RunTask": 9.93,
+    "VizCompositorThread:RunTask": 6.74,
+    "VizCompositorThread:ThreadControllerImpl::RunTask": 4.25,
+    "ThreadPoolForegroundWorker:ThreadPool_RunTask": 4.03,
+    "VizCompositorThread:Graphics.Pipeline": 2.55,
+    "CrBrowserMain:RunTask": 1.54,
+    "Compositor:RunTask": 1.52,
+    "Compositor:ThreadControllerImpl::RunTask": 1.46,
+    "CrBrowserMain:ThreadControllerImpl::RunTask": 1.45,
+    "ThreadPoolForegroundWorker:SimpleWatcher::OnHandleReady": 1.06,
+    "Compositor:Graphics.Pipeline": 0.96,
+    "Compositor:ProxyImpl::ScheduledActionDraw": 0.89,
+    "Compositor:MainFrame.Draw": 0.89,
+    "VizCompositorThread:Receive mojo message": 0.81,
+    "Compositor:GpuChannelHost::VerifyFlush": 0.8,
+    "CrGpuMain:RunTask": 0.63,
+    "CrGpuMain:ThreadControllerImpl::RunTask": 0.61,
+    "CrGpuMain:Scheduler::RunTask": 0.57,
+    "VizCompositorThread:DelayBasedTimeSource::SetActive": 0.55,
+    "VizCompositorThread:SimpleWatcher::OnHandleReady": 0.42,
+    "ThreadPoolSingleThreadForegroundBlocking:ThreadPool_RunTask": 0.4,
+    "VizCompositorThread:DisplayScheduler::OnBeginFrameDeadline": 0.38,
+    "VizCompositorThread:DisplayScheduler::BeginFrame": 0.38,
+    "VizCompositorThread:DisplayScheduler::DrawAndSwap": 0.37,
+    "VizCompositorThread:Display::DrawAndSwap": 0.37
+   },
+   "tail_keystrokes": [
+    {
+     "q": "r",
+     "pos": 0,
+     "k2p": 116.1,
+     "busy": 70.76,
+     "idle": 45.34,
+     "phases": {
+      "inputDelay": 53.1,
+      "search": 0.1,
+      "render": 27.3,
+      "layout": 24,
+      "toFrame": 11.6
+     },
+     "byName": {
+      "EventDispatch": 195.12,
+      "FunctionCall": 17.89
+     }
+    },
+    {
+     "q": "rust cli with",
+     "pos": 12,
+     "k2p": 40.4,
+     "busy": 29.92,
+     "idle": 10.48,
+     "phases": {
+      "inputDelay": 11,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 29.3
+     },
+     "byName": {
+      "EventDispatch": 1.32,
+      "Paint": 12.33,
+      "Commit": 6.33
+     }
+    },
+    {
+     "q": "st",
+     "pos": 1,
+     "k2p": 84.8,
+     "busy": 7.68,
+     "idle": 77.12,
+     "phases": {
+      "inputDelay": 4.8,
+      "search": 0.1,
+      "render": 0.1,
+      "layout": 0.3,
+      "toFrame": 79.5
+     },
+     "byName": {
+      "EventDispatch": 5.78,
+      "FunctionCall": 0.57,
+      "Commit": 3.76
+     }
+    },
+    {
+     "q": "stop agents claiming tests ",
+     "pos": 26,
+     "k2p": 90.5,
+     "busy": 89.2,
+     "idle": 1.3,
+     "phases": {
+      "inputDelay": 5.5,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0,
+      "toFrame": 84.9
+     },
+     "byName": {
+      "EventDispatch": 8.78,
+      "FunctionCall": 11.79,
+      "FireAnimationFrame": 11.59,
+      "Paint": 25.54,
+      "Commit": 15.21
+     }
+    },
+    {
+     "q": "c",
+     "pos": 0,
+     "k2p": 81.5,
+     "busy": 10.02,
+     "idle": 71.48,
+     "phases": {
+      "inputDelay": 1.8,
+      "search": 0,
+      "render": 3,
+      "layout": 0.3,
+      "toFrame": 76.4
+     },
+     "byName": {
+      "EventDispatch": 11.26,
+      "FunctionCall": 3.51,
+      "ParseHTML": 2.76
+     }
+    },
+    {
+     "q": "co",
+     "pos": 1,
+     "k2p": 81.9,
+     "busy": 8.36,
+     "idle": 73.54,
+     "phases": {
+      "inputDelay": 1.1,
+      "search": 0.1,
+      "render": 2.1,
+      "layout": 0.9,
+      "toFrame": 77.7
+     },
+     "byName": {
+      "EventDispatch": 10.28,
+      "FunctionCall": 3.78,
+      "FireAnimationFrame": 0.65,
+      "Commit": 2.66
+     }
+    },
+    {
+     "q": "go",
+     "pos": 1,
+     "k2p": 76.9,
+     "busy": 7.14,
+     "idle": 69.76,
+     "phases": {
+      "inputDelay": 2.3,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 74.6
+     },
+     "byName": {
+      "EventDispatch": 3.37,
+      "Commit": 0.94
+     }
+    },
+    {
+     "q": "golden file snapshot tesst",
+     "pos": 1,
+     "k2p": 70.6,
+     "busy": 13.16,
+     "idle": 57.44,
+     "phases": {
+      "inputDelay": 3.9,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 66.6
+     },
+     "byName": {
+      "EventDispatch": 3.97,
+      "Paint": 3.12,
+      "Commit": 7.27
+     }
+    },
+    {
+     "q": "license rider openai anthrop",
+     "pos": 27,
+     "k2p": 61.9,
+     "busy": 60.42,
+     "idle": 1.48,
+     "phases": {
+      "inputDelay": 5.2,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 56.7
+     },
+     "byName": {
+      "EventDispatch": 108.02,
+      "Paint": 3.43
+     }
+    },
+    {
+     "q": "bu",
+     "pos": 1,
+     "k2p": 45.4,
+     "busy": 7.14,
+     "idle": 38.26,
+     "phases": {
+      "inputDelay": 3.2,
+      "search": 0,
+      "render": 0,
+      "layout": 0.2,
+      "toFrame": 42
+     },
+     "byName": {
+      "EventDispatch": 6.84,
+      "Layout": 2.89,
+      "PrePaint": 1.13,
+      "Commit": 1.72
+     }
+    },
+    {
+     "q": "te",
+     "pos": 1,
+     "k2p": 79.9,
+     "busy": 8.48,
+     "idle": 71.42,
+     "phases": {
+      "inputDelay": 2.8,
+      "search": 0,
+      "render": 3.1,
+      "layout": 0.3,
+      "toFrame": 73.7
+     },
+     "byName": {
+      "EventDispatch": 11.19,
+      "FunctionCall": 3.53,
+      "Commit": 3.32
+     }
+    },
+    {
+     "q": "structured output grammma",
+     "pos": 1,
+     "k2p": 50.2,
+     "busy": 8.27,
+     "idle": 41.93,
+     "phases": {
+      "inputDelay": 3.9,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 46.2
+     },
+     "byName": {
+      "EventDispatch": 4.75,
+      "Commit": 2.16
+     }
+    },
+    {
+     "q": "ch",
+     "pos": 1,
+     "k2p": 48.8,
+     "busy": 4.93,
+     "idle": 43.87,
+     "phases": {
+      "inputDelay": 1.1,
+      "search": 0,
+      "render": 0.2,
+      "layout": 2,
+      "toFrame": 45.5
+     },
+     "byName": {
+      "EventDispatch": 7.39,
+      "FunctionCall": 2.32,
+      "UpdateLayoutTree": 1.93
+     }
+    },
+    {
+     "q": "reproducibfe",
+     "pos": 1,
+     "k2p": 68,
+     "busy": 6.53,
+     "idle": 61.47,
+     "phases": {
+      "inputDelay": 2.1,
+      "search": 0,
+      "render": 0,
+      "layout": 1.9,
+      "toFrame": 64
+     },
+     "byName": {
+      "EventDispatch": 6.58,
+      "FunctionCall": 2.04,
+      "UpdateLayoutTree": 1.83
+     }
+    },
+    {
+     "q": "sq",
+     "pos": 1,
+     "k2p": 83,
+     "busy": 10.4,
+     "idle": 72.6,
+     "phases": {
+      "inputDelay": 4.9,
+      "search": 0,
+      "render": 0.2,
+      "layout": 1.6,
+      "toFrame": 76.3
+     },
+     "byName": {
+      "EventDispatch": 12.09,
+      "FunctionCall": 1.87,
+      "Layout": 2.42,
+      "Commit": 2.77
+     }
+    },
+    {
+     "q": "js",
+     "pos": 1,
+     "k2p": 51.8,
+     "busy": 6.54,
+     "idle": 45.26,
+     "phases": {
+      "inputDelay": 0.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 51.2
+     },
+     "byName": {
+      "EventDispatch": 0.91,
+      "Paint": 4.53
+     }
+    },
+    {
+     "q": "json schema valiga",
+     "pos": 1,
+     "k2p": 84.2,
+     "busy": 3.56,
+     "idle": 80.64,
+     "phases": {
+      "inputDelay": 1.1,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 83
+     },
+     "byName": {
+      "EventDispatch": 0.9,
+      "Paint": 1.99
+     }
+    },
+    {
+     "q": "ht",
+     "pos": 1,
+     "k2p": 39.6,
+     "busy": 6.05,
+     "idle": 33.55,
+     "phases": {
+      "inputDelay": 4.5,
+      "search": 0.4,
+      "render": 0,
+      "layout": 0.2,
+      "toFrame": 34.5
+     },
+     "byName": {
+      "EventDispatch": 10.38,
+      "FunctionCall": 0.67,
+      "Layout": 3.06
+     }
+    },
+    {
+     "q": "cr",
+     "pos": 1,
+     "k2p": 84.3,
+     "busy": 7.83,
+     "idle": 76.47,
+     "phases": {
+      "inputDelay": 2.5,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0.1,
+      "toFrame": 81.6
+     },
+     "byName": {
+      "EventDispatch": 3.17,
+      "Commit": 4.01
+     }
+    },
+    {
+     "q": "crate on cratte",
+     "pos": 1,
+     "k2p": 78.6,
+     "busy": 4.81,
+     "idle": 73.79,
+     "phases": {
+      "inputDelay": 1.2,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 77.3
+     },
+     "byName": {
+      "EventDispatch": 1.02,
+      "Commit": 2.16
+     }
+    },
+    {
+     "q": "qu",
+     "pos": 1,
+     "k2p": 50.9,
+     "busy": 4.94,
+     "idle": 45.96,
+     "phases": {
+      "inputDelay": 2.1,
+      "search": 0,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 48.7
+     },
+     "byName": {
+      "EventDispatch": 1.44
+     }
+    },
+    {
+     "q": "mi",
+     "pos": 1,
+     "k2p": 51.7,
+     "busy": 11.58,
+     "idle": 40.12,
+     "phases": {
+      "inputDelay": 2.3,
+      "search": 0,
+      "render": 2,
+      "layout": 0.9,
+      "toFrame": 46.5
+     },
+     "byName": {
+      "EventDispatch": 9.61,
+      "FunctionCall": 2.96,
+      "Commit": 2.04
+     }
+    },
+    {
+     "q": "miri undefined behav",
+     "pos": 19,
+     "k2p": 38.2,
+     "busy": 37.84,
+     "idle": 0.36,
+     "phases": {
+      "inputDelay": 19.3,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 18.9
+     },
+     "byName": {
+      "MajorGC": 13.14,
+      "V8.GC_MARK_COMPACTOR": 13,
+      "EventDispatch": 8.53,
+      "FireAnimationFrame": 0.6,
+      "Commit": 2.02
+     }
+    },
+    {
+     "q": "miri undefined beah",
+     "pos": 1,
+     "k2p": 82.3,
+     "busy": 7.76,
+     "idle": 74.54,
+     "phases": {
+      "inputDelay": 3.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 78.7
+     },
+     "byName": {
+      "EventDispatch": 4.33,
+      "Commit": 2.55
+     }
+    }
+   ],
+   "tail_timelines": [
+    {
+     "q": "r",
+     "pos": 0,
+     "k2p": 116.1,
+     "events": [
+      {
+       "t": 0.28,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 0.54,
+       "dur": 0.49,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 0.54,
+       "dur": 0.49,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 0.54,
+       "dur": 0.48,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 0.65,
+       "dur": 0.2,
+       "thread": "PerfettoTrace",
+       "name": "RunTask"
+      },
+      {
+       "t": 0.65,
+       "dur": 0.2,
+       "thread": "PerfettoTrace",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 1.04,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.04,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 1.09,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 1.16,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.16,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 1.42,
+       "dur": 0.1,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.43,
+       "dur": 0.09,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/protocol/tracing_handler.cc:operator()"
+      },
+      {
+       "t": 2,
+       "dur": 0.1,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 2.02,
+       "dur": 0.08,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 2.19,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 2.19,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 2.29,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 2.29,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 2.33,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 3.1,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.1,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 3.11,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 3.81,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.81,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 3.81,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 4.05,
+       "dur": 0.14,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.05,
+       "dur": 0.14,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 4.09,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 4.21,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.21,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 4.24,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 4.49,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.49,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 5.41,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.47,
+       "dur": 0.34,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.47,
+       "dur": 0.33,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 5.48,
+       "dur": 0.32,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 5.72,
+       "dur": 0.06,
+       "thread": "PerfettoTrace",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.88,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.88,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 5.98,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.98,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 7.23,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 7.23,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 7.31,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 7.31,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 8.62,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.62,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 8.69,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.7,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 8.9,
+       "dur": 0.94,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.9,
+       "dur": 0.93,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 8.97,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.97,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 8.99,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 9.34,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 9.34,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 9.56,
+       "dur": 0.07,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 9.79,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 9.79,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 9.79,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 9.84,
+       "dur": 0.57,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 9.84,
+       "dur": 0.56,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 10.08,
+       "dur": 0.12,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 10.09,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 10.11,
+       "dur": 0.55,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.11,
+       "dur": 0.55,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 10.11,
+       "dur": 0.55,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 10.29,
+       "dur": 0.05,
+       "thread": "Chrome_ChildIOThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.29,
+       "dur": 0.05,
+       "thread": "Chrome_ChildIOThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:SendMessage"
+      },
+      {
+       "t": 10.3,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 10.41,
+       "dur": 4.1,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.42,
+       "dur": 4.09,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/core/dom/events/event_target.cc:EnqueueEvent"
+      },
+      {
+       "t": 10.42,
+       "dur": 4.08,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 10.68,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.68,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 10.8,
+       "dur": 0.3,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.8,
+       "dur": 0.3,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 10.84,
+       "dur": 0.22,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.84,
+       "dur": 0.21,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 11.05,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 11.06,
+       "dur": 0.22,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.06,
+       "dur": 0.21,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 11.37,
+       "dur": 0.33,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.37,
+       "dur": 0.33,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_main.cc:BeginMainFrame"
+      },
+      {
+       "t": 11.91,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.91,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 11.91,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 12.04,
+       "dur": 0.08,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 12.05,
+       "dur": 0.08,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 12.65,
+       "dur": 0.15,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "ThreadPool_RunTask",
+       "from": "cc/raster/categorized_worker_pool.cc:Start"
+      },
+      {
+       "t": 12.68,
+       "dur": 0.08,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "TaskGraphRunner::RunTask"
+      },
+      {
+       "t": 12.94,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 12.94,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 12.94,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 13.55,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 13.55,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 13.64,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 13.64,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 14.21,
+       "dur": 0.1,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 14.21,
+       "dur": 0.1,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/base/unique_notifier.cc:Schedule"
+      },
+      {
+       "t": 14.32,
+       "dur": 6.3,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 14.32,
+       "dur": 6.29,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 14.32,
+       "dur": 6.28,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 17.2,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 17.2,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 17.29,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 17.29,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 17.81,
+       "dur": 1.11,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 18.45,
+       "dur": 0.38,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 18.46,
+       "dur": 0.36,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 18.46,
+       "dur": 0.35,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 18.82,
+       "dur": 0.53,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 18.83,
+       "dur": 0.52,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:RunNextTask"
+      },
+      {
+       "t": 18.83,
+       "dur": 0.52,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 19.37,
+       "dur": 0.17,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 19.37,
+       "dur": 0.17,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:RunNextTask"
+      },
+      {
+       "t": 19.37,
+       "dur": 0.17,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 19.54,
+       "dur": 0.98,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 19.54,
+       "dur": 0.98,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:RunNextTask"
+      },
+      {
+       "t": 19.54,
+       "dur": 0.97,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 19.78,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.56,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.56,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 22.68,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.68,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 22.69,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 22.75,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.76,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 22.87,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.96,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.96,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/service/display/display_scheduler.cc:ScheduleBeginFrameDeadline"
+      },
+      {
+       "t": 22.96,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 23.19,
+       "dur": 1.2,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 24.39,
+       "dur": 0.36,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 24.39,
+       "dur": 0.36,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 24.4,
+       "dur": 0.35,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 24.41,
+       "dur": 0.33,
+       "thread": "CrGpuMain",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 24.77,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 24.77,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/service/display_embedder/skia_output_surface_dependency.h:PostTaskToClientThread"
+      },
+      {
+       "t": 27.5,
+       "dur": 0.28,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.5,
+       "dur": 0.27,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 27.78,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 27.79,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 30.68,
+       "dur": 2.38,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 30.88,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 30.88,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 33.1,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 33.1,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 33.22,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 33.22,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 33.58,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 34.04,
+       "dur": 0.27,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 34.04,
+       "dur": 0.26,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 34.22,
+       "dur": 0.08,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 36.04,
+       "dur": 0.08,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 36.04,
+       "dur": 0.07,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 36.18,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 36.18,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 36.27,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 36.27,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 39.13,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 39.14,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 39.22,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 39.22,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 44.88,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 44.88,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 44.96,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 44.96,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 45.22,
+       "dur": 0.58,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 45.23,
+       "dur": 0.57,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 47.16,
+       "dur": 35.31,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 47.53,
+       "dur": 0.07,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 47.53,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 47.61,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 47.61,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 48.66,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 51.67,
+       "dur": 98.48,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 51.68,
+       "dur": 98.42,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 51.93,
+       "dur": 0.26,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 52.2,
+       "dur": 97.86,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 52.3,
+       "dur": 97.76,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 53.1,
+       "dur": 96.91,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 55.05,
+       "dur": 0.2,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 55.05,
+       "dur": 0.19,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 55.27,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 55.27,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 82.55,
+       "dur": 0.24,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 82.55,
+       "dur": 0.24,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 82.63,
+       "dur": 0.15,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 82.83,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 82.83,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 82.86,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 82.97,
+       "dur": 11.93,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 82.98,
+       "dur": 11.92,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/bindings/lib/connector.cc:PostDispatchNextMessageFromPipe"
+      },
+      {
+       "t": 83.14,
+       "dur": 11.75,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 94.92,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 94.92,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/bindings/lib/connector.cc:PostDispatchNextMessageFromPipe"
+      },
+      {
+       "t": 95.51,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 95.51,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 95.54,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 95.61,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 95.61,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/bindings/lib/connector.cc:PostDispatchNextMessageFromPipe"
+      },
+      {
+       "t": 95.91,
+       "dur": 0.48,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 95.91,
+       "dur": 0.47,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 95.92,
+       "dur": 0.45,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 96.43,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 96.43,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 97.1,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 97.1,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 97.17,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 97.17,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 99.11,
+       "dur": 0.97,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 99.11,
+       "dur": 0.97,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 100.1,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 100.1,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 100.19,
+       "dur": 5.41,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 100.19,
+       "dur": 5.41,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 100.2,
+       "dur": 5.38,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 105.65,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 105.65,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 105.75,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 105.75,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 105.76,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 106.28,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 106.29,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 106.35,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 106.35,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 107.62,
+       "dur": 0.15,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 107.63,
+       "dur": 0.15,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 108.02,
+       "dur": 0.14,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 108.02,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 108.05,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 108.06,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 109.23,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 109.23,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 109.3,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 109.3,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 110.7,
+       "dur": 0.2,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "ThreadPool_RunTask",
+       "from": "v8/src/baseline/baseline-batch-compiler.cc:v8::internal::baseline::ConcurrentBaselineCompiler::ConcurrentBaselineCompiler(Isolate *)"
+      },
+      {
+       "t": 114,
+       "dur": 0.46,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 114,
+       "dur": 0.46,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 114.07,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 114.48,
+       "dur": 0.63,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 114.49,
+       "dur": 0.63,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 114.49,
+       "dur": 0.51,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 115.02,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 115.4,
+       "dur": 1.11,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 115.4,
+       "dur": 1.11,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/bindings/lib/connector.cc:PostDispatchNextMessageFromPipe"
+      },
+      {
+       "t": 116,
+       "dur": 0.51,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      }
+     ]
+    },
+    {
+     "q": "rust cli with",
+     "pos": 12,
+     "k2p": 40.4,
+     "events": [
+      {
+       "t": 0.04,
+       "dur": 0.12,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 0.04,
+       "dur": 0.12,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 0.5,
+       "dur": 0.87,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 0.5,
+       "dur": 0.87,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 1.41,
+       "dur": 2,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.41,
+       "dur": 2,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 2.9,
+       "dur": 0.5,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 3.43,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.44,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 3.46,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 3.66,
+       "dur": 1.38,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.66,
+       "dur": 1.38,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 3.66,
+       "dur": 1.38,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 6.83,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 6.83,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 6.84,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 9.69,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 9.69,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 9.8,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 9.81,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 9.82,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 10.44,
+       "dur": 0.75,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.45,
+       "dur": 0.72,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 10.52,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 10.55,
+       "dur": 0.06,
+       "thread": "Chrome_ChildIOThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 10.55,
+       "dur": 0.05,
+       "thread": "Chrome_ChildIOThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:SendMessage"
+      },
+      {
+       "t": 10.58,
+       "dur": 0.57,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 10.6,
+       "dur": 0.55,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 11,
+       "dur": 0.12,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 11.14,
+       "dur": 0.12,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.14,
+       "dur": 0.09,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 11.21,
+       "dur": 19.04,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.21,
+       "dur": 18.95,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 11.23,
+       "dur": 0.08,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.23,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 11.24,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "FireAnimationFrame"
+      },
+      {
+       "t": 11.36,
+       "dur": 0.12,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.36,
+       "dur": 0.12,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 11.4,
+       "dur": 12.27,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 11.41,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 11.49,
+       "dur": 0.06,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.49,
+       "dur": 0.06,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 11.51,
+       "dur": 0.09,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 11.51,
+       "dur": 0.09,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 13.38,
+       "dur": 0.1,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 13.38,
+       "dur": 0.1,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 23.83,
+       "dur": 6.33,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 24.27,
+       "dur": 1.62,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 24.27,
+       "dur": 1.62,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 25.5,
+       "dur": 0.21,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 25.5,
+       "dur": 0.2,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_main.cc:BeginMainFrame"
+      },
+      {
+       "t": 25.72,
+       "dur": 0.07,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "ThreadPool_RunTask",
+       "from": "cc/raster/categorized_worker_pool.cc:Start"
+      },
+      {
+       "t": 25.83,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 25.83,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/base/unique_notifier.cc:Schedule"
+      },
+      {
+       "t": 25.88,
+       "dur": 0.72,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 25.88,
+       "dur": 0.72,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 25.89,
+       "dur": 0.7,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 26.27,
+       "dur": 0.55,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 26.27,
+       "dur": 0.54,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 26.27,
+       "dur": 0.54,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 26.98,
+       "dur": 0.19,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 26.98,
+       "dur": 0.19,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 27.05,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 27.19,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.19,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 27.22,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 27.28,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.28,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 27.41,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.51,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.51,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/service/display/display_scheduler.cc:ScheduleBeginFrameDeadline"
+      },
+      {
+       "t": 27.52,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 27.61,
+       "dur": 0.31,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.61,
+       "dur": 0.31,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 27.62,
+       "dur": 0.3,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 27.63,
+       "dur": 0.28,
+       "thread": "CrGpuMain",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 28.18,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 28.18,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 30.25,
+       "dur": 9.81,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 30.25,
+       "dur": 9.79,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 32.58,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 32.58,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 32.69,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 32.69,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 32.7,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 36.4,
+       "dur": 0.61,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 36.4,
+       "dur": 0.6,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 36.4,
+       "dur": 0.6,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 37.24,
+       "dur": 0.15,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 37.24,
+       "dur": 0.15,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 37.24,
+       "dur": 0.15,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 38.28,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 38.28,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 38.34,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 38.4,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 38.4,
+       "dur": 0.08,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 38.42,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 39.92,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 39.93,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 40.01,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.01,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 40.09,
+       "dur": 0.13,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.09,
+       "dur": 0.13,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:DidPresentCompositorFrameOnImplThread"
+      },
+      {
+       "t": 40.23,
+       "dur": 0.12,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.23,
+       "dur": 0.12,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/autofill/content/renderer/form_submission_tracker.cc:FormControlDidChange"
+      },
+      {
+       "t": 40.37,
+       "dur": 0.11,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.37,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      }
+     ]
+    },
+    {
+     "q": "st",
+     "pos": 1,
+     "k2p": 84.8,
+     "events": [
+      {
+       "t": -0.03,
+       "dur": 0.11,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": -0.03,
+       "dur": 0.1,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 2.54,
+       "dur": 2.78,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 2.54,
+       "dur": 2.76,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 2.6,
+       "dur": 0.07,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 2.68,
+       "dur": 2.61,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 2.7,
+       "dur": 2.58,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 4.8,
+       "dur": 0.46,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 4.83,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.83,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 5.32,
+       "dur": 0.09,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.32,
+       "dur": 0.08,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/autofill/content/renderer/form_submission_tracker.cc:FormControlDidChange"
+      },
+      {
+       "t": 5.45,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.45,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 8.07,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.07,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 8.34,
+       "dur": 0.19,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.34,
+       "dur": 0.17,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 8.36,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.36,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 8.39,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 8.47,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.63,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.69,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.69,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 8.92,
+       "dur": 0.11,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 8.92,
+       "dur": 0.11,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 20.2,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.4,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 22.4,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 22.4,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 26.86,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.18,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 27.18,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 27.19,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 29.06,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 29.06,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 29.06,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 29.13,
+       "dur": 0.21,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 29.13,
+       "dur": 0.21,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 29.23,
+       "dur": 0.11,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 39.77,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 39.78,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 39.78,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 40.08,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 51.5,
+       "dur": 0.34,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 51.5,
+       "dur": 0.34,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 51.51,
+       "dur": 0.34,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 54.27,
+       "dur": 0.07,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 54.27,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 54.43,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 54.43,
+       "dur": 0.06,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 54.43,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 58.89,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 58.89,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/core/scheduler/scripted_idle_task_controller.cc:PostSchedulerIdleTask"
+      },
+      {
+       "t": 76.5,
+       "dur": 0.21,
+       "thread": "PerfettoTrace",
+       "name": "RunTask"
+      },
+      {
+       "t": 76.51,
+       "dur": 0.2,
+       "thread": "PerfettoTrace",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "base/tracing/perfetto_task_runner.cc:PostDelayedTask"
+      },
+      {
+       "t": 77.63,
+       "dur": 0.05,
+       "thread": "PerfettoTrace",
+       "name": "RunTask"
+      },
+      {
+       "t": 77.63,
+       "dur": 0.05,
+       "thread": "PerfettoTrace",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 77.64,
+       "dur": 0.06,
+       "thread": "PerfettoTrace",
+       "name": "RunTask"
+      },
+      {
+       "t": 77.64,
+       "dur": 0.05,
+       "thread": "PerfettoTrace",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 79.87,
+       "dur": 0.18,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 79.93,
+       "dur": 0.12,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 80.06,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 80.06,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 80.32,
+       "dur": 4.4,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 80.36,
+       "dur": 4.34,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 80.44,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "FireAnimationFrame"
+      },
+      {
+       "t": 80.59,
+       "dur": 0.09,
+       "thread": "Chrome_ChildIOThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 80.62,
+       "dur": 0.06,
+       "thread": "Chrome_ChildIOThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/bindings/lib/interface_endpoint_client.cc:SendMessage"
+      },
+      {
+       "t": 80.69,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 80.72,
+       "dur": 0.07,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 80.94,
+       "dur": 3.76,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 81.43,
+       "dur": 0.26,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 81.44,
+       "dur": 0.25,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_main.cc:BeginMainFrame"
+      },
+      {
+       "t": 81.75,
+       "dur": 0.17,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 81.81,
+       "dur": 0.12,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 81.81,
+       "dur": 0.1,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 82.09,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 82.36,
+       "dur": 0.14,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "ThreadPool_RunTask",
+       "from": "cc/raster/categorized_worker_pool.cc:Start"
+      },
+      {
+       "t": 82.39,
+       "dur": 0.07,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "TaskGraphRunner::RunTask"
+      },
+      {
+       "t": 82.54,
+       "dur": 0.24,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 82.54,
+       "dur": 0.23,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/base/unique_notifier.cc:Schedule"
+      },
+      {
+       "t": 82.78,
+       "dur": 2.44,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 82.78,
+       "dur": 2.44,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 82.79,
+       "dur": 2.42,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 83.84,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 83.84,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 84.08,
+       "dur": 0.46,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 84.08,
+       "dur": 0.45,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 84.08,
+       "dur": 0.45,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 84.54,
+       "dur": 0.36,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 84.54,
+       "dur": 0.35,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:RunNextTask"
+      },
+      {
+       "t": 84.54,
+       "dur": 0.35,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 84.72,
+       "dur": 0.13,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 84.72,
+       "dur": 0.12,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      }
+     ]
+    }
+   ]
+  },
+  "AL3": {
+   "all": {
+    "n": 1165,
+    "k2p": {
+     "n": 1165,
+     "mean": 11.1315,
+     "sd": 8.3056,
+     "cv": 0.7461,
+     "mad": 3.2,
+     "p50": 10,
+     "p95": 18.2,
+     "p99": 64,
+     "p999": 83.1,
+     "max": 88.7,
+     "p999_conservative": false
+    },
+    "busy": {
+     "n": 1165,
+     "mean": 8.8968,
+     "sd": 4.6258,
+     "cv": 0.5199,
+     "mad": 2.897,
+     "p50": 8.363,
+     "p95": 16.062,
+     "p99": 20.171,
+     "p999": 62.112,
+     "max": 62.852,
+     "p999_conservative": false
+    },
+    "idle": {
+     "n": 1165,
+     "mean": 2.2347,
+     "sd": 6.9935,
+     "cv": 3.1295,
+     "mad": 0.947,
+     "p50": 1.414,
+     "p95": 4.006,
+     "p99": 44.21,
+     "p999": 79.048,
+     "max": 79.853,
+     "p999_conservative": false
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 8.67,
+     "FunctionCall": 2.25,
+     "Commit": 1.5,
+     "Layout": 1.49,
+     "Paint": 1.48,
+     "PrePaint": 0.58,
+     "Layerize": 0.34,
+     "FireAnimationFrame": 0.2,
+     "UpdateLayoutTree": 0.06,
+     "MajorGC": 0.02,
+     "V8.GC_MARK_COMPACTOR": 0.02,
+     "MinorGC": 0.01,
+     "V8.GCIncrementalMarking": 0.01,
+     "V8.GC_SCAVENGER": 0.01,
+     "HitTest": 0
+    }
+   },
+   "tail": {
+    "n": 17,
+    "k2p": {
+     "n": 17,
+     "mean": 68.6647,
+     "sd": 14.3695,
+     "cv": 0.2093,
+     "mad": 13.3,
+     "p50": 68.8,
+     "p95": 88.7,
+     "p99": 88.7,
+     "p999": 88.7,
+     "max": 88.7,
+     "p999_conservative": true
+    },
+    "busy": {
+     "n": 17,
+     "mean": 15.9571,
+     "sd": 18.4824,
+     "cv": 1.1583,
+     "mad": 3.87,
+     "p50": 8.821,
+     "p95": 62.852,
+     "p99": 62.852,
+     "p999": 62.852,
+     "max": 62.852,
+     "p999_conservative": true
+    },
+    "idle": {
+     "n": 17,
+     "mean": 52.7076,
+     "sd": 25.8927,
+     "cv": 0.4913,
+     "mad": 15.561,
+     "p50": 63.487,
+     "p95": 79.853,
+     "p99": 79.853,
+     "p999": 79.853,
+     "max": 79.853,
+     "p999_conservative": true
+    },
+    "mean_ms_by_event": {
+     "EventDispatch": 16.72,
+     "FunctionCall": 3.63,
+     "Layout": 2.37,
+     "Paint": 1.58,
+     "Commit": 1.5,
+     "MajorGC": 0.97,
+     "V8.GC_MARK_COMPACTOR": 0.87,
+     "FireAnimationFrame": 0.4,
+     "Layerize": 0.32,
+     "PrePaint": 0.29,
+     "UpdateLayoutTree": 0.01,
+     "HitTest": 0
+    }
+   },
+   "tail_threshold_ms": 32,
+   "tail_by_position_after_reset": {
+    "0": 1,
+    "1": 14,
+    "2": 1,
+    "30": 1
+   },
+   "tail_off_main_thread_mean_ms": {
+    "Compositor:RunTask": 0.77,
+    "Compositor:ThreadControllerImpl::RunTask": 0.73,
+    "ThreadPoolForegroundWorker:ThreadPool_RunTask": 0.67,
+    "CrGpuMain:RunTask": 0.62,
+    "CrGpuMain:ThreadControllerImpl::RunTask": 0.61,
+    "CrGpuMain:Scheduler::RunTask": 0.6,
+    "CrBrowserMain:RunTask": 0.59,
+    "CrBrowserMain:ThreadControllerImpl::RunTask": 0.53,
+    "CrGpuMain:GpuChannel::ExecuteDeferredRequest": 0.41,
+    "CrGpuMain:GPUTask": 0.4,
+    "Compositor:Graphics.Pipeline": 0.4,
+    "CrGpuMain:RendererRasterWorker": 0.38,
+    "CrGpuMain:CommandBuffer::Flush": 0.38,
+    "CrGpuMain:CommandBufferStub::OnAsyncFlush": 0.38,
+    "CrGpuMain:CommandBufferService:PutChanged": 0.38,
+    "CrGpuMain:RasterDecoderImpl::DoEndRasterCHROMIUM": 0.25,
+    "Compositor:ProxyImpl::ScheduledActionDraw": 0.24,
+    "Compositor:MainFrame.Draw": 0.24,
+    "CrGpuMain:RasterDecoderImpl::DoEndRasterCHROMIUM::Flush": 0.24,
+    "VizCompositorThread:RunTask": 0.22,
+    "VizCompositorThread:ThreadControllerImpl::RunTask": 0.21,
+    "Compositor:SimpleWatcher::OnHandleReady": 0.19,
+    "CrBrowserMain:Receive mojo message": 0.19,
+    "CrGpuMain:Graphics.Pipeline": 0.18,
+    "CrGpuMain:SkiaOutputSurfaceImplOnGpu::SwapBuffers": 0.18
+   },
+   "tail_keystrokes": [
+    {
+     "q": "fu",
+     "pos": 1,
+     "k2p": 42.4,
+     "busy": 9.63,
+     "idle": 32.77,
+     "phases": {
+      "inputDelay": 1.6,
+      "search": 0.1,
+      "render": 0,
+      "layout": 2,
+      "toFrame": 38.7
+     },
+     "byName": {
+      "EventDispatch": 7.1,
+      "FunctionCall": 2.28,
+      "Layout": 2.14,
+      "Paint": 7.21
+     }
+    },
+    {
+     "q": "fuziz",
+     "pos": 1,
+     "k2p": 79.5,
+     "busy": 8.7,
+     "idle": 70.8,
+     "phases": {
+      "inputDelay": 2.9,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 76.6
+     },
+     "byName": {
+      "EventDispatch": 1.98,
+      "FunctionCall": 1.87,
+      "FireAnimationFrame": 1.8
+     }
+    },
+    {
+     "q": "be",
+     "pos": 1,
+     "k2p": 54.7,
+     "busy": 10.49,
+     "idle": 44.21,
+     "phases": {
+      "inputDelay": 1.5,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0.1,
+      "toFrame": 53
+     },
+     "byName": {
+      "EventDispatch": 8.39,
+      "FunctionCall": 2.54,
+      "Paint": 6.06,
+      "Commit": 1.8
+     }
+    },
+    {
+     "q": "cross platform release pipeline",
+     "pos": 30,
+     "k2p": 64,
+     "busy": 62.85,
+     "idle": 1.15,
+     "phases": {
+      "inputDelay": 35.8,
+      "search": 0.1,
+      "render": 0.1,
+      "layout": 18,
+      "toFrame": 10
+     },
+     "byName": {
+      "EventDispatch": 124.35,
+      "FunctionCall": 18.34,
+      "Layout": 16.12,
+      "Commit": 7.03
+     }
+    },
+    {
+     "q": "to",
+     "pos": 1,
+     "k2p": 75.4,
+     "busy": 8.82,
+     "idle": 66.58,
+     "phases": {
+      "inputDelay": 1.2,
+      "search": 0.1,
+      "render": 2.6,
+      "layout": 0.6,
+      "toFrame": 70.9
+     },
+     "byName": {
+      "EventDispatch": 11.15,
+      "FunctionCall": 3.49,
+      "Layout": 0.61
+     }
+    },
+    {
+     "q": "go",
+     "pos": 1,
+     "k2p": 88.7,
+     "busy": 18.76,
+     "idle": 69.94,
+     "phases": {
+      "inputDelay": 3.1,
+      "search": 0.1,
+      "render": 0.1,
+      "layout": 4,
+      "toFrame": 81.4
+     },
+     "byName": {
+      "EventDispatch": 19.14,
+      "FunctionCall": 4.5,
+      "Layout": 4.08,
+      "Paint": 4.12,
+      "Layerize": 4.33,
+      "Commit": 3.4
+     }
+    },
+    {
+     "q": "li",
+     "pos": 1,
+     "k2p": 55.1,
+     "busy": 8.34,
+     "idle": 46.76,
+     "phases": {
+      "inputDelay": 6.2,
+      "search": 0.1,
+      "render": 0.1,
+      "layout": 2.4,
+      "toFrame": 46.3
+     },
+     "byName": {
+      "EventDispatch": 17.78,
+      "FunctionCall": 5.58,
+      "Layout": 2.5
+     }
+    },
+    {
+     "q": "agelt",
+     "pos": 1,
+     "k2p": 79.3,
+     "busy": 4.95,
+     "idle": 74.35,
+     "phases": {
+      "inputDelay": 2.8,
+      "search": 0.1,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 76.4
+     },
+     "byName": {
+      "EventDispatch": 6.25,
+      "FunctionCall": 1.84
+     }
+    },
+    {
+     "q": "ter",
+     "pos": 2,
+     "k2p": 65.9,
+     "busy": 62.11,
+     "idle": 3.79,
+     "phases": {
+      "inputDelay": 21.2,
+      "search": 2.7,
+      "render": 0.2,
+      "layout": 1.8,
+      "toFrame": 40
+     },
+     "byName": {
+      "MajorGC": 16.56,
+      "V8.GC_MARK_COMPACTOR": 14.82,
+      "EventDispatch": 17.39,
+      "FunctionCall": 7.34,
+      "Layout": 1.91,
+      "FireAnimationFrame": 2.65,
+      "Paint": 3.99
+     }
+    },
+    {
+     "q": "kahan summation floit",
+     "pos": 1,
+     "k2p": 68.4,
+     "busy": 4.91,
+     "idle": 63.49,
+     "phases": {
+      "inputDelay": 2.1,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 66.3
+     },
+     "byName": {
+      "EventDispatch": 2.38,
+      "FunctionCall": 0.88,
+      "FireAnimationFrame": 0.85,
+      "Paint": 2.19
+     }
+    },
+    {
+     "q": "json schema valig",
+     "pos": 0,
+     "k2p": 45.1,
+     "busy": 27.22,
+     "idle": 17.88,
+     "phases": {
+      "inputDelay": 33.1,
+      "search": 0.1,
+      "render": 0,
+      "layout": 6.1,
+      "toFrame": 5.8
+     },
+     "byName": {
+      "EventDispatch": 41.37,
+      "FunctionCall": 6.34,
+      "Layout": 6,
+      "Commit": 3.25
+     }
+    },
+    {
+     "q": "json schema valiga",
+     "pos": 1,
+     "k2p": 52.4,
+     "busy": 14.23,
+     "idle": 38.17,
+     "phases": {
+      "inputDelay": 25.4,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 27
+     },
+     "byName": {
+      "EventDispatch": 4.24,
+      "Commit": 0.53
+     }
+    },
+    {
+     "q": "cr",
+     "pos": 1,
+     "k2p": 82.1,
+     "busy": 9.89,
+     "idle": 72.21,
+     "phases": {
+      "inputDelay": 1.4,
+      "search": 0.1,
+      "render": 0.1,
+      "layout": 0.1,
+      "toFrame": 80.4
+     },
+     "byName": {
+      "EventDispatch": 1.5,
+      "PrePaint": 2.57,
+      "Commit": 3.21
+     }
+    },
+    {
+     "q": "crate on cratte",
+     "pos": 1,
+     "k2p": 82.8,
+     "busy": 3.75,
+     "idle": 79.05,
+     "phases": {
+      "inputDelay": 3.2,
+      "search": 0,
+      "render": 0.1,
+      "layout": 0,
+      "toFrame": 79.5
+     },
+     "byName": {
+      "EventDispatch": 1.25,
+      "Commit": 2.27
+     }
+    },
+    {
+     "q": "qu",
+     "pos": 1,
+     "k2p": 83.1,
+     "busy": 3.25,
+     "idle": 79.85,
+     "phases": {
+      "inputDelay": 1.8,
+      "search": 0.1,
+      "render": 0,
+      "layout": 1.6,
+      "toFrame": 79.6
+     },
+     "byName": {
+      "EventDispatch": 5.53,
+      "FunctionCall": 1.77,
+      "Layout": 1.63
+     }
+    },
+    {
+     "q": "quantization int8 kene",
+     "pos": 1,
+     "k2p": 79.6,
+     "busy": 5.18,
+     "idle": 74.42,
+     "phases": {
+      "inputDelay": 2.6,
+      "search": 0,
+      "render": 0,
+      "layout": 0,
+      "toFrame": 77
+     },
+     "byName": {
+      "EventDispatch": 1.7,
+      "Layout": 0.58,
+      "Commit": 1.46
+     }
+    },
+    {
+     "q": "mi",
+     "pos": 1,
+     "k2p": 68.8,
+     "busy": 8.18,
+     "idle": 60.62,
+     "phases": {
+      "inputDelay": 0.6,
+      "search": 0.1,
+      "render": 0,
+      "layout": 3.8,
+      "toFrame": 64.3
+     },
+     "byName": {
+      "EventDispatch": 12.8,
+      "FunctionCall": 4.01,
+      "Layout": 3.83,
+      "PrePaint": 0.6
+     }
+    }
+   ],
+   "tail_timelines": [
+    {
+     "q": "fu",
+     "pos": 1,
+     "k2p": 42.4,
+     "events": [
+      {
+       "t": 1.29,
+       "dur": 2.53,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.29,
+       "dur": 2.51,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 1.34,
+       "dur": 2.45,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 1.35,
+       "dur": 2.44,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 1.6,
+       "dur": 2.17,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 1.63,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.63,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 3.83,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.83,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/autofill/content/renderer/form_submission_tracker.cc:FormControlDidChange"
+      },
+      {
+       "t": 3.89,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.89,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 3.95,
+       "dur": 0.05,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.96,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.96,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 4.88,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 21.14,
+       "dur": 0.21,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 35.44,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 35.49,
+       "dur": 0.07,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 35.49,
+       "dur": 0.06,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 35.62,
+       "dur": 4.45,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 35.62,
+       "dur": 4.41,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 35.63,
+       "dur": 0.06,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 35.64,
+       "dur": 0.05,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 35.67,
+       "dur": 0.07,
+       "thread": "CrRendererMain",
+       "name": "FireAnimationFrame"
+      },
+      {
+       "t": 35.91,
+       "dur": 3.61,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 35.92,
+       "dur": 3.6,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 39.69,
+       "dur": 0.33,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 39.87,
+       "dur": 0.22,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 39.87,
+       "dur": 0.22,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_main.cc:BeginMainFrame"
+      },
+      {
+       "t": 40.1,
+       "dur": 2.34,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.1,
+       "dur": 2.33,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 40.1,
+       "dur": 0.27,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "ThreadPool_RunTask",
+       "from": "cc/raster/categorized_worker_pool.cc:Start"
+      },
+      {
+       "t": 40.15,
+       "dur": 0.13,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "TaskGraphRunner::RunTask"
+      },
+      {
+       "t": 40.41,
+       "dur": 0.41,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.41,
+       "dur": 0.41,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/base/unique_notifier.cc:Schedule"
+      },
+      {
+       "t": 40.82,
+       "dur": 0.41,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.82,
+       "dur": 0.41,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 40.82,
+       "dur": 0.39,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 40.97,
+       "dur": 0.17,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 41.02,
+       "dur": 1.1,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 41.02,
+       "dur": 1.1,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 41.02,
+       "dur": 1.09,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 41.23,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 41.26,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 41.29,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 41.37,
+       "dur": 0.16,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 41.37,
+       "dur": 0.16,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 41.38,
+       "dur": 0.13,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 42.12,
+       "dur": 0.48,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 42.12,
+       "dur": 0.48,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:RunNextTask"
+      },
+      {
+       "t": 42.12,
+       "dur": 0.47,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 42.13,
+       "dur": 0.46,
+       "thread": "CrGpuMain",
+       "name": "Graphics.Pipeline"
+      }
+     ]
+    },
+    {
+     "q": "fuziz",
+     "pos": 1,
+     "k2p": 79.5,
+     "events": [
+      {
+       "t": -0.08,
+       "dur": 0.17,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": -0.08,
+       "dur": 0.17,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 1.97,
+       "dur": 1.06,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 1.97,
+       "dur": 1.04,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 2.07,
+       "dur": 0.93,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 2.08,
+       "dur": 0.91,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 2.18,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 2.18,
+       "dur": 0.05,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 2.9,
+       "dur": 0.08,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 3.04,
+       "dur": 2.64,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.04,
+       "dur": 2.63,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:DidPresentCompositorFrameOnImplThread"
+      },
+      {
+       "t": 3.11,
+       "dur": 0.06,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.12,
+       "dur": 0.06,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 3.55,
+       "dur": 0.08,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 3.55,
+       "dur": 0.08,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 5.69,
+       "dur": 0.08,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.69,
+       "dur": 0.08,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 5.78,
+       "dur": 0.83,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.78,
+       "dur": 0.83,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/autofill/content/renderer/form_submission_tracker.cc:FormControlDidChange"
+      },
+      {
+       "t": 5.93,
+       "dur": 0.06,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 5.93,
+       "dur": 0.05,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 6.69,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 6.69,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 56.57,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 56.57,
+       "dur": 0.05,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/core/scheduler/scripted_idle_task_controller.cc:PostSchedulerIdleTask"
+      },
+      {
+       "t": 75.5,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 75.61,
+       "dur": 3.85,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 75.61,
+       "dur": 3.84,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 75.66,
+       "dur": 1.8,
+       "thread": "CrRendererMain",
+       "name": "FireAnimationFrame"
+      },
+      {
+       "t": 77.61,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 79.29,
+       "dur": 0.15,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 79.33,
+       "dur": 0.19,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 79.33,
+       "dur": 0.19,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_main.cc:BeginMainFrame"
+      },
+      {
+       "t": 79.47,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 79.47,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      }
+     ]
+    },
+    {
+     "q": "be",
+     "pos": 1,
+     "k2p": 54.7,
+     "events": [
+      {
+       "t": -0.63,
+       "dur": 1.33,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": -0.63,
+       "dur": 1.33,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:DidPresentCompositorFrameOnImplThread"
+      },
+      {
+       "t": -0.06,
+       "dur": 0.1,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": -0.06,
+       "dur": 0.1,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:OnWebSocketMessage"
+      },
+      {
+       "t": 0.71,
+       "dur": 3.33,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 0.71,
+       "dur": 3.31,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/platform/widget/input/main_thread_event_queue.cc:PostTaskToMainThread"
+      },
+      {
+       "t": 0.74,
+       "dur": 0.42,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 1.25,
+       "dur": 2.76,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 1.27,
+       "dur": 2.74,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 1.5,
+       "dur": 2.47,
+       "thread": "CrRendererMain",
+       "name": "EventDispatch"
+      },
+      {
+       "t": 4.05,
+       "dur": 0.07,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.05,
+       "dur": 0.06,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "third_party/blink/renderer/core/frame/web_frame_widget_impl.cc:ReportSwapAndPresentationFailureOnTaskRunner"
+      },
+      {
+       "t": 4.06,
+       "dur": 0.14,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.06,
+       "dur": 0.12,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 4.13,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.13,
+       "dur": 0.1,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/autofill/content/renderer/form_submission_tracker.cc:FormControlDidChange"
+      },
+      {
+       "t": 4.22,
+       "dur": 0.05,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.22,
+       "dur": 0.05,
+       "thread": "Chrome_DevToolsHandlerThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "content/browser/devtools/devtools_http_handler.cc:DispatchProtocolMessage"
+      },
+      {
+       "t": 4.29,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 4.29,
+       "dur": 0.06,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 40.8,
+       "dur": 0.25,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 40.81,
+       "dur": 0.22,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/page_load_metrics/renderer/page_timing_metrics_sender.cc:EnsureSendTimer"
+      },
+      {
+       "t": 41.83,
+       "dur": 0.08,
+       "thread": "CrBrowserMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 41.83,
+       "dur": 0.07,
+       "thread": "CrBrowserMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "ipc/ipc_mojo_bootstrap.cc:Accept"
+      },
+      {
+       "t": 47.77,
+       "dur": 0.1,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 47.78,
+       "dur": 0.1,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 47.91,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 47.91,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 48.19,
+       "dur": 0.09,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 48.2,
+       "dur": 0.08,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 48.2,
+       "dur": 0.07,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 48.72,
+       "dur": 5.96,
+       "thread": "CrRendererMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 48.72,
+       "dur": 5.92,
+       "thread": "CrRendererMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame"
+      },
+      {
+       "t": 48.81,
+       "dur": 0.49,
+       "thread": "CrRendererMain",
+       "name": "FireAnimationFrame"
+      },
+      {
+       "t": 49.62,
+       "dur": 3.04,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 49.64,
+       "dur": 3.02,
+       "thread": "CrRendererMain",
+       "name": "Paint"
+      },
+      {
+       "t": 52.84,
+       "dur": 1.8,
+       "thread": "CrRendererMain",
+       "name": "Commit"
+      },
+      {
+       "t": 53.02,
+       "dur": 0.25,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 53.03,
+       "dur": 0.24,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/trees/proxy_main.cc:BeginMainFrame"
+      },
+      {
+       "t": 53.26,
+       "dur": 0.25,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "ThreadPool_RunTask",
+       "from": "cc/raster/categorized_worker_pool.cc:Start"
+      },
+      {
+       "t": 53.27,
+       "dur": 0.11,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "TaskGraphRunner::RunTask"
+      },
+      {
+       "t": 53.41,
+       "dur": 0.08,
+       "thread": "ThreadPoolForegroundWorker",
+       "name": "TaskGraphRunner::RunTask"
+      },
+      {
+       "t": 53.55,
+       "dur": 0.18,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 53.55,
+       "dur": 0.18,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/base/unique_notifier.cc:Schedule"
+      },
+      {
+       "t": 53.73,
+       "dur": 0.33,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 53.73,
+       "dur": 0.33,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "cc/scheduler/scheduler.cc:ScheduleBeginImplFrameDeadline"
+      },
+      {
+       "t": 53.73,
+       "dur": 0.31,
+       "thread": "Compositor",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 53.94,
+       "dur": 0.95,
+       "thread": "CrGpuMain",
+       "name": "RunTask"
+      },
+      {
+       "t": 53.94,
+       "dur": 0.95,
+       "thread": "CrGpuMain",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "gpu/command_buffer/service/scheduler.cc:TryScheduleSequence"
+      },
+      {
+       "t": 53.94,
+       "dur": 0.95,
+       "thread": "CrGpuMain",
+       "name": "Scheduler::RunTask"
+      },
+      {
+       "t": 54.07,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "RunTask"
+      },
+      {
+       "t": 54.07,
+       "dur": 0.05,
+       "thread": "Compositor",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 54.1,
+       "dur": 0.1,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 54.11,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "mojo/public/cpp/system/simple_watcher.cc:Notify"
+      },
+      {
+       "t": 54.15,
+       "dur": 0.05,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      },
+      {
+       "t": 54.22,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "RunTask"
+      },
+      {
+       "t": 54.22,
+       "dur": 0.12,
+       "thread": "VizCompositorThread",
+       "name": "ThreadControllerImpl::RunTask",
+       "from": "components/viz/common/frame_sinks/delay_based_time_source.cc:PostNextTickTask"
+      },
+      {
+       "t": 54.23,
+       "dur": 0.09,
+       "thread": "VizCompositorThread",
+       "name": "Graphics.Pipeline"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

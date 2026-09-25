@@ -23,10 +23,18 @@ const S = (window.__state = { cand, marks: {}, coreReady: false, fullReady: fals
 //       profile, run 20260925T175730Z-4b31427 ladder-phone: p95 8.6 vs 8.0 ms, 3/10 paired runs)
 //   L4  JIT warm-up: a few searches right after the full index is hydrated (REJECTED, run
 //       20260925T175730Z-4b31427 ladder-phone-L4: p95 8.5 vs 8.0 ms, 5/10 paired runs)
-// Kept: AL3 = L1 + L2 + L3a.
-const LADDER = { AL1: ['L1'], AL2: ['L1', 'L2'], AL3: ['L1', 'L2', 'L3a'], AL4: ['L1', 'L2', 'L3a', 'L3b'], AL5: ['L1', 'L2', 'L3a', 'L4'] };
+// Kept on key2layout: AL3 = L1 + L2 + L3a. Round 2 (review 7d) ranks rungs on key2paint, the REQ-O2
+// metric; L7-L9 are each a sibling of AL3, timed against it in the same invocation:
+//   L6  (dropped before timing: `contain: layout paint` on #results clipped the "10." list number and
+//       moved the list 5 px, so it changes what is drawn; content-visibility on rows clips all numbers)
+//   L7  #results gets its own compositing layer (will-change: transform)
+//   L8  one-character result cache (engine-a-opt.mjs fillOneChar/searchCached), filled in idle periods
+//       after the full index is hydrated
+//   L9  render in the animation frame: the input handler only searches; the rows are written in a rAF
+//       callback queued before the paint probe's, so style and layout run once, inside the frame
+const LADDER = { AL1: ['L1'], AL2: ['L1', 'L2'], AL3: ['L1', 'L2', 'L3a'], AL4: ['L1', 'L2', 'L3a', 'L3b'], AL5: ['L1', 'L2', 'L3a', 'L4'], AL7: ['L1', 'L2', 'L3a', 'L7'], AL8: ['L1', 'L2', 'L3a', 'L8'], AL9: ['L1', 'L2', 'L3a', 'L9'] };
 const levers = new Set(LADDER[cand] || []);
-if (levers.has('L3b')) document.documentElement.classList.add('l3b');
+for (const l of ['L3b', 'L7']) if (levers.has(l)) document.documentElement.classList.add(l.toLowerCase());
 const mark = (k) => { S.marks[k] = performance.now(); };
 const report = (o) => { if (window.__probeReport) window.__probeReport(JSON.stringify(o)); };
 window.addEventListener('error', (e) => S.errors.push(String(e.message)));
@@ -106,7 +114,7 @@ const HYD = { A: A.hydrate, C: C.hydrate, I0: I.hydrate, I1: I.hydrate };
 const SEARCH = { A: (x, q) => A.search(x, q), C: (x, q) => C.search(x, q), I0: (x, q) => I.search(x, q), I1: (x, q) => I.search(x, q, 10) };
 for (const c of Object.keys(LADDER)) {
   FILES[c] = FILES.A; HYD[c] = A.hydrate;
-  SEARCH[c] = LADDER[c].includes('L2') ? (x, q) => AO.search(x, q) : LADDER[c].includes('L1') ? (x, q) => AO.searchL1(x, q) : SEARCH.A;
+  SEARCH[c] = LADDER[c].includes('L8') ? (x, q) => AO.searchCached(x, q) : LADDER[c].includes('L2') ? (x, q) => AO.search(x, q) : LADDER[c].includes('L1') ? (x, q) => AO.searchL1(x, q) : SEARCH.A;
 }
 // L4 warm-up strings: generic, and none of them is a query or a prefix of a query in queries.json.
 const WARMUP = ['o', 'in', 'test', 'data s', 'x y', 'graph'];
@@ -151,10 +159,19 @@ async function boot() {
     }
   } else mark('full_hydrated');
   if (levers.has('L4')) for (const q of WARMUP) searchFn(idx, q);
+  if (levers.has('L8')) {
+    const full = idx;
+    let i = 0;
+    // As many one-character searches per idle period as its deadline allows (each is a few ms).
+    const step = (dl) => { do AO.fillOneChar(full, AO.ONE_CHAR[i++]); while (i < AO.ONE_CHAR.length && dl.timeRemaining() > 5); if (i < AO.ONE_CHAR.length) requestIdleCallback(step); else S.oneCharFilled = performance.now(); };
+    requestIdleCallback(step);
+  }
   S.fullReady = true;
   // Lazy quotes shard (DEC-009): stored only, never indexed, never in core.
   window.__setPhase('quotes');
-  if (cand === 'A' || cand === 'B' || cand === 'C') {
+  // Every A-family page loads it (A, B, C and every ladder rung), so the heap and GC state while typing
+  // match. Round 1 (run 20260925T175730Z-4b31427) skipped it for the rungs AL1-AL5.
+  if (cand === 'A' || cand === 'B' || cand === 'C' || LADDER[cand]) {
     const qt = await fetchText('/data/quotes.json', 'quotes');
     const t0 = performance.now();
     window.__quotes = JSON.parse(qt);
@@ -182,6 +199,14 @@ input.addEventListener('input', async () => {
     rows = r.rows; workerSearch = r.t;
   } else rows = searchFn(idx, q);
   const t1 = performance.now();
+  if (levers.has('L9')) {
+    // t2/t3 are taken inside the frame; the paint probe's rAF is queued after this one, so the
+    // metric still ends at the first task after the frame that carries the rows.
+    const o = { q, tKey, t0, t1, workerSearch, n: rows.length };
+    requestAnimationFrame(() => { render(rows); o.t2 = performance.now(); void layoutRoot.offsetHeight; o.t3 = performance.now(); });
+    afterPaint(o);
+    return;
+  }
   render(rows);
   const t2 = performance.now();
   void layoutRoot.offsetHeight;

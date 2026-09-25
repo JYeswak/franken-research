@@ -13,6 +13,8 @@ ol{padding-left:1.4em} li{margin:4px 0}
    outside list numbers, so they are drawn inside the row. */
 .l3b #results{contain:strict;height:22em;margin:0;padding-left:0;list-style-position:inside}
 .l3b #results li{height:1.4em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;contain:size layout}
+/* L7 (round 2, app.mjs): the results list on its own compositing layer. It does not change what is drawn. */
+.l7 #results{will-change:transform}
 </style>
 <script>
 // Long-task observer registered before anything else runs (Long Tasks API, REQ-O2 "no task > 50 ms").

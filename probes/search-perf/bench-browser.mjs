@@ -3,6 +3,8 @@
 //   node bench-browser.mjs cpuprof OUT QUERIES PROFILE   Profiler domain: load phase and one typing pass per candidate
 //   node bench-browser.mjs trace   OUT QUERIES PROFILE   devtools.timeline trace of one typing pass: paint/commit cost
 //   node bench-browser.mjs longtasks OUT QUERIES PROFILE  diagnostic: charge each typing long task to a keystroke phase
+//   node bench-browser.mjs frames  OUT QUERIES PROFILE   diagnostic: trace one typing pass; per keystroke, where the
+//                                                         time from keydown to the paint proxy goes (main-thread work vs wait)
 // PROFILE: desktop (no throttle) | phone (4x CPU throttle, DevTools "Fast 4G", 390x844@3x, mobile).
 // Env: SCRATCH (data), RUNS (default 20), CANDS (default A,B,C,I1,I0).
 import fs from 'node:fs';
@@ -26,8 +28,10 @@ const PROFILES = {
 };
 const prof = PROFILES[PROFILE];
 if (!prof) throw new Error('profile must be desktop|phone');
-// Unthrottled frame production: headless frame cadence on this host is erratic (see fingerprint notes),
-// so the primary metric stops at forced layout and the rAF metric is secondary.
+// Unthrottled frame production (no vsync wait). The primary metric is key2paint, keystroke to the first
+// task after the frame that carries the results, because REQ-O2's budget is "keystroke to results
+// painted" (review 7d). key2layout (to forced style and layout) is kept as a component view; it excludes
+// the frame and cannot carry a REQ-O2 verdict.
 const CHROME_FLAGS = ['--disable-frame-rate-limit', '--disable-gpu-vsync'];
 
 const write = (name, obj) => { fs.mkdirSync(path.dirname(path.join(OUT, name)), { recursive: true }); fs.writeFileSync(path.join(OUT, name), artifactJSON(obj)); };
@@ -128,8 +132,8 @@ async function typeAll(page) {
 }
 
 const METRICS = {
-  key2layout: (r) => r.t3 - r.tKey, // primary: keystroke -> results rendered and laid out
-  key2paint: (r) => r.tPaint - r.tKey, // secondary: -> first task after the next animation frame
+  key2layout: (r) => r.t3 - r.tKey, // component view: keystroke -> results rendered and laid out
+  key2paint: (r) => r.tPaint - r.tKey, // primary (REQ-O2): -> first task after the frame carrying the results
   inputDelay: (r) => r.t0 - r.tKey,
   search: (r) => r.t1 - r.t0, // B: postMessage round trip incl. worker search
   render: (r) => r.t2 - r.t1,
@@ -164,8 +168,17 @@ async function timing() {
       const k2l = samples.map(METRICS.key2layout);
       const sK = summarize(k2l), sP = summarize(samples.map(METRICS.key2paint));
       a.perRunP95.push(sK.p95); a.perRunKey2PaintP95.push(sP.p95);
-      a.samples.push(samples); a.loads.push(lm); a.heaps.push(hp); a.longtasks.push(longtasks);
-      write(`runs/browser-${PROFILE}-${cand}-r${String(run).padStart(2, '0')}.json`, { candidate: cand, profile: PROFILE, run, metric: 'key2layout', ...sK, p95_ms: sK.p95, key2paint: sP, longtasks_typing: longtasks.length, longtask_max_ms: Math.max(0, ...longtasks.map((l) => l.dur)) });
+      // Each long task is charged to the keystroke whose [keydown, paint proxy] window overlaps it.
+      const posOf = [];
+      for (const s of qset.typed) for (let i = s.from - 1, k = 0; i < s.text.length; i++, k++) posOf.push(k);
+      const r2 = (v) => +v.toFixed(2);
+      const lts = longtasks.map((lt) => {
+        const i = samples.findIndex((x) => x.tKey - 1 <= lt.start + lt.dur && x.tPaint + 1 >= lt.start);
+        const s = samples[i];
+        return { run, start: r2(lt.start), dur: r2(lt.dur), q_index: i, pos_after_reset: i >= 0 ? posOf[i] : null, phase_ms: s ? { inputDelay: r2(s.t0 - s.tKey), search: r2(s.t1 - s.t0), render: r2(s.t2 - s.t1), layout: r2(s.t3 - s.t2), toFrame: r2(s.tPaint - s.t3) } : null };
+      });
+      a.samples.push(samples); a.loads.push(lm); a.heaps.push(hp); a.longtasks.push(lts);
+      write(`runs/browser-${PROFILE}-${cand}-r${String(run).padStart(2, '0')}.json`, { candidate: cand, profile: PROFILE, run, metric: 'key2paint', ...sP, p95_ms: sP.p95, key2layout: sK, longtasks_typing: longtasks.length, longtask_max_ms: Math.max(0, ...longtasks.map((l) => l.dur)) });
     }
     console.error(`[${PROFILE}] run ${run}/${RUNS} done at ${((Date.now() - t0) / 1000).toFixed(0)} s`);
   }
@@ -199,12 +212,12 @@ async function timing() {
     if (cand === 'B' && prof.cpu > 1) load.usable_after_dcl_worker_scaled_estimate_ms = summarize(a.loads.map((l) => l.marks.usable - l.dcl + (prof.cpu - 1) * (l.core_worker.hydrated - l.core_worker.body)));
     const memory = { main_heap_used_bytes_median: med(a.heaps.map((h) => h.main_used)), control_page_heap_bytes_median: med(baselineHeap), index_main_heap_bytes: med(a.heaps.map((h) => h.main_used)) - med(baselineHeap), worker_heap_used_bytes_median: med(a.heaps.map((h) => h.worker_used)) };
     const lt = a.longtasks.flat();
-    results[cand] = { candidate: cand, profile: PROFILE, queries: qset.queries.length, runs: RUNS, warmup_runs: 1, samples: flat.length, primary_metric: 'key2layout', metrics, envelope_key2layout: envelope(a.perRunP95), envelope_key2paint: envelope(a.perRunKey2PaintP95), load, memory, longtasks_typing: { count: lt.length, over_50ms: lt.filter((t) => t.dur > 50).length, max_ms: Math.max(0, ...lt.map((t) => t.dur)) }, worker_cpu_throttle: a.workerThrottle };
+    results[cand] = { candidate: cand, profile: PROFILE, queries: qset.queries.length, runs: RUNS, warmup_runs: 1, samples: flat.length, primary_metric: 'key2paint', metrics, envelope_key2layout: envelope(a.perRunP95), envelope_key2paint: envelope(a.perRunKey2PaintP95), load, memory, longtasks_typing: { count: lt.length, over_50ms: lt.filter((t) => t.dur > 50).length, max_ms: Math.max(0, ...lt.map((t) => t.dur)), entries: lt }, worker_cpu_throttle: a.workerThrottle };
     const raw = a.samples.map((run) => run.map((r) => [+(r.t0 - r.tKey).toFixed(3), +(r.t1 - r.t0).toFixed(3), +(r.t2 - r.t1).toFixed(3), +(r.t3 - r.t2).toFixed(3), +(r.tPaint - r.t3).toFixed(3), r.workerSearch == null ? null : +r.workerSearch.toFixed(3)]));
     write(`baseline-browser-${PROFILE}-${cand}.json`, { ...results[cand], per_run_p95_key2layout: a.perRunP95, per_run_p95_key2paint: a.perRunKey2PaintP95, raw_columns: ['inputDelay', 'search', 'render', 'layout', 'toFrame', 'workerSearch'], raw_ms_by_run: raw });
   }
   write(`bench-browser-${PROFILE}-summary.json`, { chrome_flags: CHROME_FLAGS, profile: prof, run_order: order, wall_s: (Date.now() - t0) / 1000, results });
-  for (const [c, r] of Object.entries(results)) console.log(PROFILE, c, JSON.stringify({ k2l: [r.metrics.key2layout.p50, r.metrics.key2layout.p95, r.metrics.key2layout.p99], k2p95: r.metrics.key2paint.p95, env: r.envelope_key2layout.verdict + ' ' + r.envelope_key2layout.max_drift_pct, usable_p95: r.load.usable_after_dcl_ms.p95, full_p95: r.load.full_ready_after_dcl_ms.p95, heapMB: +(r.memory.index_main_heap_bytes / 1048576).toFixed(2), lt: r.longtasks_typing, wt: r.worker_cpu_throttle }));
+  for (const [c, r] of Object.entries(results)) console.log(PROFILE, c, JSON.stringify({ k2p: [r.metrics.key2paint.p50, r.metrics.key2paint.p95, r.metrics.key2paint.p99], k2l95: r.metrics.key2layout.p95, env: r.envelope_key2paint.verdict + ' ' + r.envelope_key2paint.max_drift_pct, usable_p95: r.load.usable_after_dcl_ms.p95, full_p95: r.load.full_ready_after_dcl_ms.p95, heapMB: +(r.memory.index_main_heap_bytes / 1048576).toFixed(2), lt: { count: r.longtasks_typing.count, over_50ms: r.longtasks_typing.over_50ms, max_ms: r.longtasks_typing.max_ms }, wt: r.worker_cpu_throttle }));
 }
 
 async function cpuprof() {
@@ -292,8 +305,91 @@ async function longtasks() {
   await browser.close(); server.close();
 }
 
+// Frame attribution (diagnostic; tracing perturbs timing, so no budget verdict comes from it). One typing
+// pass per candidate under a trace. Each keystroke is aligned by its own `input` EventDispatch (= t0, the
+// handler start), so no global clock offset is assumed. For the window [keydown, paint proxy] the renderer
+// main thread is split into busy (union of its trace events) and idle, and busy time is charged to named
+// events. Keystrokes whose key2paint exceeds TAIL_MS (default 32 = 2 x the phone budget) are listed.
+async function frames() {
+  const { server, port } = await serve(DATA); PORT = port;
+  const browser = await launch(CHROME_FLAGS);
+  const TAIL = Number(process.env.TAIL_MS || 32);
+  const NAMES = ['EventDispatch', 'FunctionCall', 'FireAnimationFrame', 'UpdateLayoutTree', 'Layout', 'PrePaint', 'Paint', 'Layerize', 'Commit', 'HitTest', 'MinorGC', 'MajorGC', 'V8.GC_SCAVENGER', 'V8.GC_MARK_COMPACTOR', 'V8.GCIncrementalMarking', 'TimerFire', 'ParseHTML', 'ScheduleStyleRecalculation'];
+  const out = {};
+  for (const cand of CANDS) {
+    const pg = await openPage(browser, cand);
+    const events = [];
+    pg.p.on('Tracing.dataCollected', (p) => { for (const e of p.value) events.push(e); });
+    await pg.p.send('Tracing.start', { traceConfig: { includedCategories: ['toplevel', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'blink', 'cc', 'v8', 'disabled-by-default-v8.gc', 'gpu', 'viz'] }, transferMode: 'ReportEvents' });
+    const { samples } = await typeAll(pg);
+    const done = pg.p.once('Tracing.tracingComplete', () => true, 300000);
+    await pg.p.send('Tracing.end');
+    await done;
+    pg.p.close(); await browser.closeTarget(pg.p.targetId);
+    const inputs = events.filter((e) => e.name === 'EventDispatch' && e.ph === 'X' && e.args?.data?.type === 'input').sort((a, b) => a.ts - b.ts);
+    if (inputs.length !== samples.length) throw new Error(`${cand}: ${inputs.length} input dispatches vs ${samples.length} samples`);
+    const { pid, tid } = inputs[0];
+    const mt = events.filter((e) => e.pid === pid && e.tid === tid && e.ph === 'X' && e.dur > 0).sort((a, b) => a.ts - b.ts);
+    // keystroke position after each script reset of the box (0 = first typed key)
+    const posOf = [];
+    for (const s of qset.typed) for (let i = s.from - 1, k = 0; i < s.text.length; i++, k++) posOf.push(k);
+    const rows = samples.map((s, i) => {
+      const at = (t) => inputs[i].ts + (t - s.t0) * 1000; // performance.now() ms -> trace us, anchored at this keystroke's t0
+      const w0 = at(s.tKey), w1 = at(s.tPaint);
+      let busy = 0, cur0 = -1, cur1 = -1;
+      const byName = {};
+      for (const e of mt) {
+        if (e.ts > w1) break;
+        const a = Math.max(e.ts, w0), b = Math.min(e.ts + e.dur, w1);
+        if (b <= a) continue;
+        if (NAMES.includes(e.name)) byName[e.name] = (byName[e.name] || 0) + (b - a) / 1000;
+        if (a > cur1) { if (cur1 > cur0) busy += cur1 - cur0; cur0 = a; cur1 = b; } else if (b > cur1) cur1 = b;
+      }
+      if (cur1 > cur0) busy += cur1 - cur0;
+      const k2p = s.tPaint - s.tKey;
+      return { q: s.q, pos: posOf[i], k2p, w0, w1, busy: busy / 1000, idle: k2p - busy / 1000, phases: { inputDelay: s.t0 - s.tKey, search: s.t1 - s.t0, render: s.t2 - s.t1, layout: s.t3 - s.t2, toFrame: s.tPaint - s.t3 }, byName };
+    });
+    const r2 = (v) => +v.toFixed(2);
+    const agg = (rs) => {
+      const names = {};
+      for (const r of rs) for (const [n, v] of Object.entries(r.byName)) names[n] = (names[n] || 0) + v;
+      return { n: rs.length, k2p: summarize(rs.map((r) => r.k2p)), busy: summarize(rs.map((r) => r.busy)), idle: summarize(rs.map((r) => r.idle)), mean_ms_by_event: Object.fromEntries(Object.entries(names).sort((a, b) => b[1] - a[1]).map(([n, v]) => [n, r2(v / rs.length)])) };
+    };
+    const tail = rows.filter((r) => r.k2p > TAIL);
+    // Off-main-thread work during tail windows: every thread's trace events, charged as thread:event.
+    const tname = {};
+    for (const e of events) if (e.ph === 'M' && e.name === 'thread_name') tname[e.pid + ':' + e.tid] = e.args.name;
+    const other = events.filter((e) => e.ph === 'X' && e.dur > 0 && !(e.pid === pid && e.tid === tid));
+    const offMain = {};
+    for (const r of tail) for (const e of other) {
+      const a = Math.max(e.ts, r.w0), b = Math.min(e.ts + e.dur, r.w1);
+      if (b > a) { const k = (tname[e.pid + ':' + e.tid] || 'tid' + e.tid) + ':' + e.name; offMain[k] = (offMain[k] || 0) + (b - a) / 1000; }
+    }
+    const posHist = {};
+    for (const r of tail) posHist[r.pos] = (posHist[r.pos] || 0) + 1;
+    // Timeline of the first three tail windows: every top-level task on any thread of the page's renderer
+    // and the GPU process, with its posting location, so the task that ends an idle gap is named.
+    const tl = tail.slice(0, 3).map((r) => ({ q: r.q, pos: r.pos, k2p: r2(r.k2p), events: events
+      .filter((e) => e.ph === 'X' && e.ts < r.w1 && e.ts + (e.dur || 0) > r.w0 && (e.name.includes('RunTask') || ['EventDispatch', 'FireAnimationFrame', 'BeginFrame', 'BeginMainThreadFrame', 'Commit', 'Paint', 'TimerFire', 'Graphics.Pipeline'].includes(e.name)))
+      .sort((a, b) => a.ts - b.ts)
+      .map((e) => ({ t: r2((e.ts - r.w0) / 1000), dur: r2((e.dur || 0) / 1000), thread: tname[e.pid + ':' + e.tid] || 'tid' + e.tid, name: e.name, from: e.args?.src_func || e.args?.src_file ? `${e.args.src_file || ''}:${e.args.src_func || ''}` : undefined }))
+      .filter((e) => e.dur >= 0.05) }));
+    out[cand] = {
+      all: agg(rows), tail: agg(tail), tail_threshold_ms: TAIL,
+      tail_by_position_after_reset: posHist,
+      tail_off_main_thread_mean_ms: Object.fromEntries(Object.entries(offMain).sort((a, b) => b[1] - a[1]).slice(0, 25).map(([n, v]) => [n, r2(v / Math.max(1, tail.length))])),
+      tail_keystrokes: tail.map((r) => ({ q: r.q, pos: r.pos, k2p: r2(r.k2p), busy: r2(r.busy), idle: r2(r.idle), phases: Object.fromEntries(Object.entries(r.phases).map(([k, v]) => [k, r2(v)])), byName: Object.fromEntries(Object.entries(r.byName).filter(([, v]) => v >= 0.5).map(([k, v]) => [k, r2(v)])) })),
+      tail_timelines: tl,
+    };
+    console.error(`[frames ${PROFILE}] ${cand}: k2p p95 ${out[cand].all.k2p.p95}, tail ${tail.length} (> ${TAIL} ms), tail idle p50 ${out[cand].tail.idle.p50} ms, busy p50 ${out[cand].tail.busy.p50} ms`);
+  }
+  write(`frames-browser-${PROFILE}.json`, { note: 'diagnostic trace pass (tracing perturbs timing); busy = union of renderer main-thread trace events inside [keydown, paint proxy], idle = the rest', chrome_flags: CHROME_FLAGS, results: out });
+  await browser.close(); server.close();
+}
+
 if (mode === 'timing') await timing();
 else if (mode === 'cpuprof') await cpuprof();
 else if (mode === 'trace') await trace();
 else if (mode === 'longtasks') await longtasks();
+else if (mode === 'frames') await frames();
 else throw new Error('unknown mode ' + mode);

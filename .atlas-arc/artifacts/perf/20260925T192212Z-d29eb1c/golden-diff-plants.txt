@@ -1,0 +1,10 @@
+golden-diff (bench-node.mjs golden-diff) on a planted fault in the new L8 path (one-character result
+cache), in a scratch copy of the probe; the committed code was not modified.
+
+plant: the cache is keyed by the character only, not by (index, character), so answers filled on the
+core shard are served for the full shard
+  verdict FAIL, exit 1, 123 changed query results (A+L1+L2+L8 only; A+L1 and A+L1+L2 unchanged)
+  a-full probe_queries 39/1165, a-full relevance_golden_prefixes 84/4206; a-core 0 (filled first)
+
+clean code: verdict PASS, 0 changed, all 18 checks (golden-diff.json in this directory, golden set
+ebac079 pinned with GOLDEN)

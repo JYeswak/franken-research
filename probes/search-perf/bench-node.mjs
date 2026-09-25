@@ -244,7 +244,7 @@ function goldenDiff() {
   const prefixes = [];
   for (const g of golden) for (let i = 1; i <= g.query.length; i++) prefixes.push(g.query.slice(0, i));
   const sets = { probe_queries: queries, relevance_golden_queries: golden.map((g) => g.query), relevance_golden_prefixes: prefixes };
-  const variants = { 'A+L1': AO.searchL1, 'A+L1+L2': AO.search };
+  const variants = { 'A+L1': AO.searchL1, 'A+L1+L2': AO.search, 'A+L1+L2+L8': (idx, q) => { for (const ch of AO.ONE_CHAR) AO.fillOneChar(idx, ch); return AO.searchCached(idx, q); } };
   const same = (a, b) => a.length === b.length && a.every((r, i) => r.id === b[i].id && Object.is(r.score, b[i].score) && r.title === b[i].title && r.kind === b[i].kind && r.badge === b[i].badge);
   const out = { note: 'engine-a-opt.mjs vs engine-a.mjs, top-10 rows (id, score bit-identical, title, kind, badge)', golden_file_sha256: crypto.createHash('sha256').update(goldenText).digest('hex'), golden_queries: golden.length, results: [] };
   let bad = 0;
