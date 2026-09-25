@@ -70,7 +70,7 @@ const CELLS = {
   All: 'Every cell: evidence at the pin may no longer be re-derivable',
   Set: 'The assessed set of 44: candidate for a new packet (no existing cell)',
 };
-const LABELS = {
+export const LABELS = {
   watch: ['c5def5', 'Opened by the daily watch (watch/watch.mjs)'],
   release: ['0e8a16', 'Watch: release or tag after the pin'],
   license: ['d93f0b', 'Watch: license SPDX or LICENSE text changed'],
@@ -80,6 +80,7 @@ const LABELS = {
   deleted: ['b60205', 'Watch: repository deleted or made private'],
   'pin-rewritten': ['b60205', 'Watch: pinned commit no longer an ancestor of HEAD'],
   'new-repo': ['5319e7', 'Watch: new public repository, assessment candidate'],
+  dashboard: ['5319e7', 'Watch: the single living freshness dashboard issue (watch/freshness/dashboard.mjs)'],
 };
 
 // ---------------------------------------------------------------- small helpers
@@ -149,7 +150,7 @@ export function parsePackets(dir) {
   return out.sort((a, b) => cmp(a.repo, b.repo));
 }
 
-function parseMatrix(text) {
+export function parseMatrix(text) {
   const lines = text.split('\n');
   const head = lines.findIndex((l) => /^\| Project \| TRL \| NODUS \|/.test(l));
   if (head < 0) return {};
@@ -242,7 +243,7 @@ export function makeApi(token) {
 
 const RELEASES = (after) => `releases(first: 100${after ? `, after: ${after}` : ''}, orderBy: {field: CREATED_AT, direction: DESC}) {
     totalCount pageInfo { hasNextPage endCursor }
-    nodes { tagName createdAt publishedAt isDraft isPrerelease tagCommit { oid } } }`;
+    nodes { tagName createdAt publishedAt isDraft isPrerelease tagCommit { oid } releaseAssets { totalCount } } }`;
 const TAGS = (after) => `refs(refPrefix: "refs/tags/", first: 100${after ? `, after: ${after}` : ''}, orderBy: {field: TAG_COMMIT_DATE, direction: DESC}) {
     totalCount pageInfo { hasNextPage endCursor }
     nodes { name target { __typename oid ... on Commit { committedDate }
@@ -402,7 +403,7 @@ export function normalizeAssessed(entry, node, rawCompare, prevRec) {
   const releases = {};
   for (const r of node.releases?.nodes ?? []) {
     if (r.isDraft) continue;
-    releases[r.tagName] = { target: r.tagCommit?.oid ?? null, published_at: iso(r.publishedAt), created_at: iso(r.createdAt), prerelease: !!r.isPrerelease };
+    releases[r.tagName] = { target: r.tagCommit?.oid ?? null, published_at: iso(r.publishedAt), created_at: iso(r.createdAt), prerelease: !!r.isPrerelease, assets: r.releaseAssets?.totalCount ?? null };
   }
   const tags = {};
   for (const t of node.refs?.nodes ?? []) {
@@ -1108,7 +1109,7 @@ function printReport(rep) {
 // ---------------------------------------------------------------- selftest (offline)
 // In-memory stand-in for the GitHub issues and labels endpoints syncIssues calls. Everything the
 // token posts is authored by `login`; tests add other authors' issues and comments directly.
-function memoryIssues(login = 'github-actions[bot]') {
+export function memoryIssues(login = 'github-actions[bot]') {
   const issues = [];
   const labels = new Set();
   const comments = new Map();
@@ -1129,6 +1130,13 @@ function memoryIssues(login = 'github-actions[bot]') {
       const m = p.match(/^\/issues\/(\d+)\/comments$/);
       if (m && method === 'GET') return { status: 200, body: [...comments.get(Number(m[1]))] };
       if (m && method === 'POST') { const c = { body: payload.body, user: { login } }; comments.get(Number(m[1])).push(c); return { status: 201, body: { ...c } }; }
+      const one = p.match(/^\/issues\/(\d+)$/);
+      if (one && method === 'PATCH') {
+        const i = issues.find((x) => x.number === Number(one[1]));
+        if (!i) throw new Error(`memory issues: no issue ${one[1]}`);
+        for (const k of ['title', 'body', 'state']) if (payload[k] !== undefined) i[k] = payload[k];
+        return { status: 200, body: { ...i } };
+      }
       throw new Error(`memory issues: unexpected ${method} ${path}`);
     },
   };
