@@ -19,7 +19,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as watch from '../watch.mjs';
-import { UNKNOWN_WORDS } from './card.mjs';
+import { UNKNOWN_WORDS, hrefOf } from './card.mjs';
 
 const { mdText } = watch;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -36,11 +36,11 @@ const DAY_MS = 86400000;
 
 // ---------- Markdown pieces ----------
 const blob = (path) => `${PROJECT}/blob/main/${String(path).split('/').map(encodeURIComponent).join('/')}`;
-const SAFE_URL = /^https:\/\/[A-Za-z0-9.-]+(?::\d+)?(?:\/[^\s"'<>`\\]*)?$/;
-/** [text](url) for an absolute https URL (parentheses percent-encoded so the link cannot close early), else escaped text. */
-export const mdLink = (url, text) => (SAFE_URL.test(String(url ?? ''))
-  ? `[${text}](${String(url).replace(/\(/g, '%28').replace(/\)/g, '%29')})`
-  : mdText(url));
+/** [text](href) when hrefOf (card.mjs) gives an href (parentheses percent-encoded so the link cannot close early), else escaped URL text. */
+export const mdLink = (url, text) => {
+  const href = hrefOf(url);
+  return href ? `[${text}](${href.replace(/\(/g, '%28').replace(/\)/g, '%29')})` : mdText(url);
+};
 const day = (iso) => (/^\d{4}-\d{2}-\d{2}/.test(String(iso ?? '')) ? String(iso).slice(0, 10) : 'unknown');
 const utc = (iso) => {
   const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(String(iso ?? ''));

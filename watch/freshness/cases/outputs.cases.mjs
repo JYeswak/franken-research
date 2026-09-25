@@ -7,12 +7,12 @@
 // briefs, updates/, SPEC.md and site/feed.xml. Temporary files go to a fresh directory under os.tmpdir() and are
 // removed. Case ids start with OUT-; run them with `node watch/freshness/harness/run.mjs --only OUT`.
 
-import { readFileSync, writeFileSync, copyFileSync, mkdirSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, copyFileSync, mkdirSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { memoryIssues } from '../../watch.mjs';
-import { renderCard, applyCard, checkBriefs, regionOf, OPEN, CLOSE } from '../card.mjs';
+import { renderCard, applyCard, checkBriefs, regionOf, hrefOf, OPEN, CLOSE } from '../card.mjs';
 import { writeBriefs } from '../../../site/scripts/make-live.mjs';
 import { renderDashboard, syncDashboard, readSnapshots, TITLE, MARKER, LIMIT } from '../dashboard.mjs';
 import { readLedger, digestEntries, isoWeek } from '../digest.mjs';
@@ -95,9 +95,9 @@ const cardCases = [
           const want = [d.reference, d.at_pin, ...(rec.baseline.source === 'packet' ? [] : [d.at_baseline])];
           checks.push([JSON.stringify(cells.slice(0, want.length)) === JSON.stringify(want) && cells[want.length]?.startsWith(d.now), `${rec.repo} ${dim}: row ${JSON.stringify(cells)}, want ${JSON.stringify([...want, d.now])}`]);
           const rowLinks = new Set([...(row?.[2] ?? '').matchAll(/href="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&')));
-          for (const u of d.evidence) checks.push([rowLinks.has(u), `${rec.repo} ${dim}: evidence ${u} not linked in its row`]);
+          for (const u of d.evidence) checks.push([rowLinks.has(hrefOf(u)), `${rec.repo} ${dim}: evidence ${u} not linked in its row`]);
         }
-        for (const c of [...rec.crossings, ...rec.pending]) for (const u of c.evidence) checks.push([hrefs.has(u), `${rec.repo}: crossing evidence ${u} not linked`]);
+        for (const c of [...rec.crossings, ...rec.pending]) for (const u of c.evidence) checks.push([hrefs.has(hrefOf(u)), `${rec.repo}: crossing evidence ${u} not linked`]);
         checks.push([text.includes(`State: ${STATE_WORDS[rec.state]}`), `${rec.repo}: state ${rec.state} not stated in words`]);
       }
       return verdict(checks);
@@ -124,9 +124,9 @@ const cardCases = [
         }
         const isHead = x.now_commit === rec.head.sha;
         if (!isHead) notHead++;
-        checks.push([now.includes(`/commit/${x.now_commit}"><code>${x.now_commit.slice(0, 7)}</code></a> (${isHead ? 'HEAD' : 'not HEAD'})`), `${rec.repo}: Now cell ${JSON.stringify(textOf(now))} does not name ${x.now_commit.slice(0, 7)} as ${isHead ? 'HEAD' : 'not HEAD'}`]);
+        checks.push([now.includes(`/commit/${x.now_commit}/"><code>${x.now_commit.slice(0, 7)}</code></a> (${isHead ? 'HEAD' : 'not HEAD'})`), `${rec.repo}: Now cell ${JSON.stringify(textOf(now))} does not name ${x.now_commit.slice(0, 7)} as ${isHead ? 'HEAD' : 'not HEAD'}`]);
         checks.push([note === !isHead, `${rec.repo}: the earlier-commit note is ${note ? 'present' : 'missing'}`]);
-        if (!isHead) checks.push([html.includes(`/commit/${rec.head.sha}"`) && textOf(html).includes(`an earlier commit than HEAD ${rec.head.sha.slice(0, 7)}`), `${rec.repo}: the note does not name HEAD`]);
+        if (!isHead) checks.push([html.includes(`/commit/${rec.head.sha}/"`) && textOf(html).includes(`an earlier commit than HEAD ${rec.head.sha.slice(0, 7)}`), `${rec.repo}: the note does not name HEAD`]);
       }
       checks.push([notHead >= 1, 'fixture has no CI class read at an earlier commit than HEAD']);
       checks.push([unknownNull >= 1, 'fixture has no unknown CI class with now_commit null']);
@@ -234,6 +234,46 @@ const cardCases = [
         [html.includes('v0.15.12|&lt;script&gt;alert(1)&lt;/script&gt;`rm`@here'), 'tag text altered beyond HTML escaping'],
         [!/href="(javascript|http):/.test(bad), 'a javascript: or http: URL became a link'],
         [!/<img/.test(bad) && ![...bad.matchAll(/<[^>]*>/g)].some((t) => /\son[a-z]+=/.test(t[0])), 'an element or event attribute was injected'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-L3-no-bare-sha', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'no card, brief region or dashboard body carries a full SHA followed by a quote, whitespace, `;`, a backtick or a line end (the gitleaks sourcegraph-access-token shape), even on a page naming Sourcegraph; SHA-ending links still resolve to the same place',
+    run(ctx) {
+      const BARE = /\b[0-9a-fA-F]{40}(?=[`'"\s;]|$)/gm;
+      const sha = '0123456789abcdef'.repeat(3).slice(0, 40);
+      const other = 'fedcba9876543210'.repeat(3).slice(0, 40);
+      const lives = [fixture(ctx, 'live-states.json'), fixture(ctx, 'live-quiet.json'),
+        JSON.parse(readFileSync(join(ctx.root, 'watch/freshness/goldens/core/live.json'), 'utf8'))];
+      const outputs = [];
+      for (const live of lives) {
+        for (const rec of bySet(live)) outputs.push([`${rec.repo} card`, renderCard(rec, live)]);
+        outputs.push([`dashboard at ${live.checked_at}`, renderDashboard(live, { snapshots: NO_SNAPSHOTS })]);
+      }
+      // A planted record on a page that names Sourcegraph, whose evidence ends in full SHAs in a path, in a
+      // query, and before a `;`.
+      const live = fixture(ctx, 'live-states.json');
+      const rec = clone(live.repos.find((r) => r.repo === 'frankengit'));
+      Object.assign(rec.pin, { sha: other }); Object.assign(rec.head, { sha }); rec.dims.ci.now_commit = sha;
+      rec.dims.ci.evidence = [`https://api.github.com/repos/Dicklesworthstone/frankengit/actions/runs?head_sha=${sha}`,
+        `https://github.com/Dicklesworthstone/frankengit/tree/${sha}`, `https://api.github.com/repos/Dicklesworthstone/frankengit/commits/${sha};x`];
+      const planted = `<p>Sourcegraph indexes this repository.</p>\n${renderCard(rec, live)}\n<p>Compare Sourcegraph.</p>`;
+      outputs.push(['planted Sourcegraph card', planted]);
+      for (const rel of readdirSync(join(ctx.root, 'site/briefs')).filter((f) => f.endsWith('.html'))) {
+        const html = readFileSync(join(ctx.root, 'site/briefs', rel), 'utf8');
+        const r = regionOf(rel, html);
+        if (r) outputs.push([`site/briefs/${rel} region`, r.text]);
+      }
+      const hrefs = [...planted.matchAll(/href="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
+      return verdict([
+        ...outputs.map(([what, text]) => { const m = text.match(BARE); return [!m, `${what}: bare SHA ${m?.[0].slice(0, 7)}...`]; }),
+        [outputs.length > 60, `only ${outputs.length} outputs scanned`],
+        [hrefs.includes(`https://github.com/Dicklesworthstone/frankengit/commit/${sha}/`), 'the HEAD commit is not linked with a trailing slash'],
+        [hrefs.includes(`https://github.com/Dicklesworthstone/frankengit/compare/${other}...${sha}/`), 'the compare link is not written with a trailing slash'],
+        [hrefs.includes(`https://api.github.com/repos/Dicklesworthstone/frankengit/actions/runs?head_sha=${sha}&`), 'the runs query is not closed with &'],
+        [hrefs.includes(`https://github.com/Dicklesworthstone/frankengit/tree/${sha}/`), 'the tree link is not written with a trailing slash'],
+        [!hrefs.some((h) => h.includes(`${sha};`)), 'a link with a SHA before ; was written'],
       ]);
     },
   },

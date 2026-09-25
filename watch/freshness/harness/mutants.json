@@ -408,8 +408,8 @@
  {
   "id": "M-OUT-L3-link-any-url",
   "file": "watch/freshness/card.mjs",
-  "find": "export const link = (url, text, label) => (SAFE_URL.test(String(url ?? ''))",
-  "replace": "export const link = (url, text, label) => (true",
+  "find": "  if (!SAFE_URL.test(u)) return null;",
+  "replace": "  if (false) return null;",
   "clauses": [
    "FR-L.3"
   ],
@@ -794,6 +794,20 @@
   ],
   "must_fail": [
    "OUT-L3-state-matches-table"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-bare-sha-href",
+  "file": "watch/freshness/card.mjs",
+  "find": "  if (/[0-9a-fA-F]{40}$/.test(u) && !u.includes('#'))",
+  "replace": "  return u;\n  if (/[0-9a-fA-F]{40}$/.test(u) && !u.includes('#'))",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-no-bare-sha",
+   "OUT-L3-ci-commit",
+   "OUT-H3-cards"
   ]
  }
 ]

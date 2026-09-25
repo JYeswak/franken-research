@@ -31,10 +31,25 @@ export class LiveError extends Error {}
 // ---------- escaping and small formatters ----------
 export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const SAFE_URL = /^https:\/\/[A-Za-z0-9.-]+(?::\d+)?(?:\/[^\s"'<>`\\]*)?$/;
-/** A link when `url` is an absolute https URL, else the escaped text without a link. */
-export const link = (url, text, label) => (SAFE_URL.test(String(url ?? ''))
-  ? `<a href="${esc(url)}"${label ? ` aria-label="${esc(label)}"` : ''}>${text}</a>`
-  : text);
+// A full commit SHA followed by a quote, whitespace, `;`, a backtick or the end of a line is what gitleaks'
+// sourcegraph-access-token rule matches on any page that also names Sourcegraph, so no output may carry one.
+export const BARE_SHA = /\b[0-9a-fA-F]{40}(?=[`'"\s;]|$)/m;
+/**
+ * The href for `url`, or null when it is not an absolute https URL or cannot be written without a bare SHA.
+ * A URL ending in a full SHA gets a trailing '/' (GitHub serves commit/, compare/ and tree/<sha>/ alike) or,
+ * after a query, a trailing '&' (actions/runs?head_sha=<sha>& returns the same runs); both checked with curl.
+ */
+export function hrefOf(url) {
+  let u = String(url ?? '');
+  if (!SAFE_URL.test(u)) return null;
+  if (/[0-9a-fA-F]{40}$/.test(u) && !u.includes('#')) u += u.includes('?') ? '&' : '/';
+  return BARE_SHA.test(u) ? null : u;
+}
+/** A link when `url` has an href (hrefOf), else the text without a link. */
+export function link(url, text, label) {
+  const href = hrefOf(url);
+  return href ? `<a href="${esc(href)}"${label ? ` aria-label="${esc(label)}"` : ''}>${text}</a>` : text;
+}
 const REPO_NAME = /^[A-Za-z0-9._-]+$/;
 const SHA = /^[0-9a-f]{7,40}$/;
 const day = (iso) => (/^\d{4}-\d{2}-\d{2}/.test(String(iso ?? '')) ? String(iso).slice(0, 10) : 'unknown');
