@@ -4,7 +4,7 @@
 - Drop B (A in a worker). The message round trip made typing slower, and loading the worker failed the phone budget.
 - Drop C (MiniSearch). It is 6.7x slower than A per query (Node p95), 7.7x (p50) to 20x (p95) slower to hydrate, and uses twice the heap.
 
-- Run on 2026-09-24/25, on an Apple M3 Ultra with macOS 26.5, Node 22.23.3 and Chrome 154, at git `ebac079` (`fingerprint.json`).
+- Run on 2026-09-24/25, on a 32-core arm64 desktop (phone results use CDP 4x CPU throttle and Fast 4G), Node 22.23.3 and Chrome 154, at git `ebac079` (`fingerprint.json`).
 - The corpus has 3,855 entries built from real sources, and the query set has 1,165 keystroke queries. Candidates, metrics and the apples-to-apples matrix are in `DEFINE.md`.
 - Reproduce with `probes/search-perf/run.sh [RUN_ID]`. This run took 7,758 s end to end: the desktop E2E phase 1,020 s and the phone E2E phase 5,362 s.
 

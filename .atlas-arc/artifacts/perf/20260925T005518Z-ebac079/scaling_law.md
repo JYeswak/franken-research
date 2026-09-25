@@ -1,6 +1,6 @@
 # Scaling law: 20260925T005518Z-ebac079
 
-Source: `scaling-node.json`, produced by `bench-node.mjs scale`. Engine-only, Node 22.23.3, Apple M3 Ultra, measured 2026-09-24/25. Each point is 5 runs x 1,165 queries after 2 warm-up passes, in ms per query.
+Source: `scaling-node.json`, produced by `bench-node.mjs scale`. Engine-only, Node 22.23.3, a 32-core arm64 desktop, measured 2026-09-24/25. Each point is 5 runs x 1,165 queries after 2 warm-up passes, in ms per query.
 
 ## Corpus-size axis
 Below 1x the corpus is every k-th document. Above 1x it is replicated with suffixed ids. Replication grows postings and candidates per query, but the vocabulary stays the same.

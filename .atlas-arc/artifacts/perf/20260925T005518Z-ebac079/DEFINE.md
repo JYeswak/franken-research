@@ -43,7 +43,7 @@ Apples-to-apples matrix:
 - Core shard <= 150 KB brotli. Full index <= 1.5 MB brotli, loaded lazily.
 - No main-thread task over 50 ms while typing.
 - Profiles:
-  - Desktop: Apple M3 Ultra, no throttle, 1440x900@2x.
+  - Desktop: a 32-core arm64 desktop, no throttle, 1440x900@2x.
   - Phone: 4x CPU throttle, DevTools "Fast 4G" (165 ms RTT, 9 Mbps down, 1.5 Mbps up, each x0.9), 390x844@3x, mobile.
 
 ## Golden output

@@ -3,30 +3,12 @@
  "captured_at_utc": "2026-09-25T00:56:36.263Z",
  "git_sha": "ebac07949104d18066c8fa0b4a542a1245f27d24",
  "git_dirty_paths": 4,
- "hardware": {
-  "cpu_model": "Apple M3 Ultra",
-  "cpu_physical": 32,
-  "cpu_logical": 32,
-  "perf_cores": 24,
-  "efficiency_cores": 8,
-  "ram_bytes": 549755813888,
-  "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)"
- },
- "storage": {
-  "mount_line": "/dev/disk3s5 1942700360 1708512560 180687728    91%    /System/Volumes/Data",
-  "filesystem": "/dev/disk3s5 on /System/Volumes/Data (apfs, local, journaled, nobrowse, protect, root data)"
- },
- "os": {
-  "product": "macOS",
-  "version": "26.5.2",
-  "build": "25F84",
-  "kernel": "25.5.0"
- },
+ "host_class": "a 32-core arm64 desktop; phone results use CDP 4x CPU throttle and Fast 4G",
+ "os_family": "darwin",
  "toolchain": {
   "node": "v22.23.3",
   "v8": "12.4.254.21-node.57",
-  "chrome": "Google Chrome 154.0.8037.57",
-  "python": "Python 3.9.6"
+  "chrome": "Chrome 154.0.8037.57"
  },
  "build_profile": {
   "name": "JS JIT (no build step)",
@@ -35,25 +17,18 @@
   "brotli": "zlib q11",
   "minisearch": "7.2.0 vendored"
  },
- "power_thermal": {
-  "power_source": "Now drawing from 'AC Power'",
-  "low_power_mode": "0",
-  "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
- },
  "load_at_capture": {
   "loadavg_1_5_15": [
    7.24,
    14,
    26.32
-  ],
-  "uptime": "18:56  up 4 days,  4:26, 8 users, load averages: 7.24 14.00 26.32"
+  ]
  },
  "workload_isolation": {
-  "taskset": null,
-  "cgroup": null,
   "bare": true,
-  "note": "shared workstation: other agent sessions were running during the probe (see load average); no CPU pinning on macOS"
+  "note": "shared workstation: other agent sessions were running during the probe (see load average); no CPU pinning"
  },
- "tuning_applied": "none (macOS; nothing needed, nothing changed)",
- "cache_state": "warm file cache; HTTP cache disabled in Chrome (Network.setCacheDisabled) so each page load pays the fetch"
+ "tuning_applied": "none",
+ "cache_state": "warm file cache; HTTP cache disabled in Chrome (Network.setCacheDisabled) so each page load pays the fetch",
+ "note": "host details removed for publication (2026-09-25); this file lists the host class only"
 }
