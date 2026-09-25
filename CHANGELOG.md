@@ -2,6 +2,27 @@
 
 Corrections to published findings are recorded here with the date, the issue, and what changed. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Unreleased
+
+The daily watch now flags a verdict only when a computed class moves, instead of opening one issue per event. On its first day, 2026-09-24, it opened twelve issues (#1 to #12), and only #5 led to a correction. The new behaviour is specified in [`watch/freshness/SPEC.md`](watch/freshness/SPEC.md) and tested against it by gate W3.
+
+### Added
+
+- **Freshness contract** (`watch/freshness/SPEC.md`): clauses with stable ids for the classifier (FR-C), class triggers (FR-T), `watch/live.json` and the live card (FR-L), the dashboard issue (FR-D), the weekly digest and the crossing ledger (FR-G), scheduled jobs (FR-O), and the harness (FR-H).
+- **Class triggers and live data**: `node watch/watch.mjs --apply` computes the CI, release and license classes of each assessed repository at its pin and now, writes `watch/live.json`, and appends opened and resolved crossings to the append-only `watch/crossings.jsonl`. A crossing is resolved only by a dated re-check under `updates/`.
+- **Live card on every brief** (`site/scripts/make-live.mjs`), rendered at build time from the committed `watch/live.json`, with no JavaScript.
+- **One dashboard issue** (`--dashboard`), `[watch] Freshness dashboard`, edited in place under the watch's trust rules, and a **weekly watch digest** entry in `site/feed.xml`.
+- **Freshness harness** (`watch/freshness/harness/run.mjs`, `bun run freshness`): reads the clause list from `SPEC.md`, runs every case in `watch/freshness/cases/`, allows an XFAIL only against a `DISCREPANCIES.md` entry with a resolution and a review date, and writes `watch/freshness/REPORT.md` (coverage per clause, fidelity against the master matrix, labelled-event precision and recall, replay noise, mutation score; a metric no case reports reads "not measured"). Runbook: [`watch/freshness/README.md`](watch/freshness/README.md).
+- **Mutation runner** (`watch/freshness/harness/mutate.mjs`): plants each mutant in `harness/mutants.json` in a temporary copy and requires every named case to fail; an unmutated baseline must pass first, a mutant whose text is missing or ambiguous or that crashes the harness is an error, not a kill.
+- **Schedule** (`ops/schedule.tsv`, `ops/schedule.mjs`): one row per generated artifact this work adds, with its generator, workflow, cadence and gate. The check fails when a generator is not run by its workflow, a gate does not exist, or a script under `watch/freshness/` writes files without a `// writes:` header naming them.
+- **Gate W3**: the harness with `--check-report`, the mutation runner, the schedule check, and `make-live.mjs --check`. Gate count: 23.
+- **Deploy smoke step** warns (never fails) when `watch/live.json` is more than 36 hours old (`ops/stale-run.mjs`).
+
+### Changed
+
+- **The scheduled watch** (`.github/workflows/watch.yml`) runs `node watch/watch.mjs --apply --dashboard`, then `make-live.mjs`, `make-feed.mjs` and `run.mjs --report`, and commits `watch/`, `site/feed.xml` and `site/briefs/`. `ops/briefs-guard.mjs` refuses the commit if a brief changed outside its live card.
+- **`--issues` and `--backfill-since-pin` are retired** for assessed repositories (usage error, exit 2). Issues #1 to #12 stay as filed.
+
 ## v1.2.0 (2026-09-24)
 
 The project now runs itself: a daily watch of the 44 repositories, issue forms on every page, a feed, a weekly Rust discovery sweep, and automatic deploys after every change that passes the gates. The site was rebuilt from two independent audits and re-audited afterwards.

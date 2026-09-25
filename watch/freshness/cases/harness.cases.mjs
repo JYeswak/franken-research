@@ -7,7 +7,7 @@
 // ctx.root, so a mutation copy tests itself.
 // writes: temporary files only
 
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
@@ -25,6 +25,12 @@ import { outsideRegionChange } from '../../../ops/briefs-guard.mjs';
 function withTmp(fn) {
   const dir = mkdtempSync(join(tmpdir(), 'fr-har-'));
   try { return fn(dir); } finally { rmSync(dir, { recursive: true, force: true }); }
+}
+
+// The same for an async fn: the directory is removed after the promise settles.
+async function withTmpAsync(fn) {
+  const dir = mkdtempSync(join(tmpdir(), 'fr-har-'));
+  try { return await fn(dir); } finally { rmSync(dir, { recursive: true, force: true }); }
 }
 
 function put(dir, rel, text) {
@@ -272,26 +278,27 @@ const h6 = [
   {
     id: 'HAR-H6-runner', clauses: ['FR-H.6'], level: 'MUST',
     title: 'the mutation runner kills a real mutant, reports a survivor, and refuses absent, ambiguous and crashing mutants',
-    run(ctx) {
+    async run(ctx) {
       const c = checks();
-      withTmp((dir) => {
+      await withTmpAsync(async (dir) => {
         makeTree(dir, ctx.root);
-        const all = runMutants({ root: dir, mutants: SYN_MUTANTS, copy: ['watch'], required: {} });
+        const all = await runMutants({ root: dir, mutants: SYN_MUTANTS, copy: ['watch'], required: {}, workers: 2 });
         const s = Object.fromEntries(all.results.map((r) => [r.id, r.status]));
         c.expect(all.baseline.length === 0, `baseline: ${all.baseline.join('; ')}`);
         c.expect(s['M-kill'] === 'KILLED', `M-kill is ${s['M-kill']}`);
         c.expect(s['M-equivalent'] === 'SURVIVED', `the equivalent mutant is ${s['M-equivalent']}`);
         c.expect(s['M-absent'] === 'ERROR' && s['M-twice'] === 'ERROR', `absent/ambiguous find: ${s['M-absent']}/${s['M-twice']}`);
         c.expect(s['M-crash'] === 'ERROR', `a mutant that breaks the import is ${s['M-crash']}, not ERROR`);
-        c.expect(!all.ok && all.killed === 1 && all.total === 5, `ok ${all.ok}, killed ${all.killed}/${all.total}`);
+        c.expect(!all.ok && all.killed === 1 && all.total === 5 && all.workers === 2, `ok ${all.ok}, killed ${all.killed}/${all.total}, workers ${all.workers}`);
+        c.expect(all.results.map((r) => r.id).join() === SYN_MUTANTS.map((m) => m.id).join(), 'results are not in mutants.json order');
         c.expect(readFileSync(join(dir, 'watch/freshness/lib.mjs'), 'utf8') === LIB, 'the source tree was modified');
-        const one = runMutants({ root: dir, mutants: [SYN_MUTANTS[0]], copy: ['watch'], required: {} });
+        const one = await runMutants({ root: dir, mutants: [SYN_MUTANTS[0]], copy: ['watch'], required: {} });
         c.expect(one.ok && one.killed === 1, `a set of one killed mutant is not ok (${one.killed}/${one.total})`);
-        const gap = runMutants({ root: dir, mutants: [SYN_MUTANTS[0]], copy: ['watch'], required: { 'FR-X.1': 2 } });
+        const gap = await runMutants({ root: dir, mutants: [SYN_MUTANTS[0]], copy: ['watch'], required: { 'FR-X.1': 2 } });
         c.expect(!gap.ok && gap.gaps[0] === 'FR-X.1 needs 2, has 1', `a clause gap is not reported: ${gap.gaps.join('; ')}`);
-        c.expect(!runMutants({ root: dir, mutants: [], copy: ['watch'], required: {} }).ok, 'an empty mutant set is ok');
+        c.expect(!(await runMutants({ root: dir, mutants: [], copy: ['watch'], required: {} })).ok, 'an empty mutant set is ok');
         put(dir, 'watch/freshness/lib.mjs', LIB.replace('a > b', 'a < b'));
-        const base = runMutants({ root: dir, mutants: [SYN_MUTANTS[0]], copy: ['watch'], required: {} });
+        const base = await runMutants({ root: dir, mutants: [SYN_MUTANTS[0]], copy: ['watch'], required: {} });
         c.expect(!base.ok && base.results.length === 0 && /S-max is FAIL before any mutation/.test(base.baseline.join()), 'a failing baseline still judged mutants');
       });
       return c.result();
@@ -317,10 +324,10 @@ const h6 = [
   {
     id: 'HAR-H6-mutants', clauses: ['FR-H.6'], level: 'MUST',
     title: 'every mutant in harness/mutants.json is killed by its named cases, and the set covers the clauses FR-H.6 names',
-    run(ctx) {
+    async run(ctx) {
       if (process.env.FRESH_MUTATION_CHILD) return { pass: false, detail: 'refused: this case runs the mutation runner and cannot run inside a mutant copy' };
       const mutants = loadMutants(join(ctx.root, 'watch/freshness/harness/mutants.json'));
-      const res = runMutants({ root: ctx.root, mutants });
+      const res = await runMutants({ root: ctx.root, mutants });
       const bad = [...res.baseline, ...res.gaps, ...res.results.filter((r) => r.status !== 'KILLED').map((r) => `${r.status} ${r.id}: ${r.detail}`)];
       return {
         pass: res.ok,
@@ -447,6 +454,25 @@ export function watchWorkflowProblems(text) {
   return out;
 }
 
+// The goldens listed in the confidence matrix of watch/freshness/README.md, and the golden files on disk.
+export function goldenMatrixDrift(readme, files) {
+  const listed = new Set([...readme.matchAll(/^\| `goldens\/([^`]+)` \|/gm)].map((m) => m[1]));
+  const onDisk = new Set(files);
+  return [
+    ...[...onDisk].filter((f) => !listed.has(f)).map((f) => `goldens/${f} is not in the README golden confidence matrix`),
+    ...[...listed].filter((f) => !onDisk.has(f)).map((f) => `the README matrix lists goldens/${f}, which does not exist`),
+  ].sort();
+}
+
+function goldenFiles(dir, rel = '') {
+  if (!existsSync(join(dir, rel))) return [];
+  return readdirSync(join(dir, rel), { withFileTypes: true }).flatMap((e) => {
+    const p = rel ? `${rel}/${e.name}` : e.name;
+    if (e.isDirectory()) return goldenFiles(dir, p);
+    return e.name.endsWith('.actual') || e.name === '.gitignore' ? [] : [p];
+  });
+}
+
 const rest = [
   {
     id: 'HAR-D4-workflow', clauses: ['FR-D.4'], level: 'MUST',
@@ -474,6 +500,21 @@ const rest = [
       c.expect(/staged file has 0/.test(outsideRegionChange(before, '<h1>x</h1>\n<p>body</p>\n') ?? ''), 'a removed region is accepted');
       c.expect(/staged file has 2/.test(outsideRegionChange(before, `${before}<!-- live:card --><!-- /live:card -->\n`) ?? ''), 'a second region is accepted');
       c.expect(/HEAD has 0/.test(outsideRegionChange('<p>no card</p>\n', before) ?? ''), 'a first insertion by the bot is accepted');
+      return c.result();
+    },
+  },
+  {
+    id: 'HAR-H3-golden-matrix', clauses: ['FR-H.3'], level: 'MUST',
+    title: 'every golden file is in the README confidence matrix, and every matrix row names a golden that exists',
+    run(ctx) {
+      const c = checks();
+      const readme = readFileSync(join(ctx.root, 'watch/freshness/README.md'), 'utf8');
+      const real = goldenMatrixDrift(readme, goldenFiles(join(ctx.root, 'watch/freshness/goldens')));
+      c.expect(real.length === 0, real.join('; '));
+      const row = '| `goldens/a/x.md` | fixture | Y | N | 2 | exact |\n';
+      c.expect(goldenMatrixDrift(row, ['a/x.md']).length === 0, 'a matching matrix is refused');
+      c.expect(/goldens\/a\/y\.md is not in/.test(goldenMatrixDrift(row, ['a/x.md', 'a/y.md']).join()), 'an unlisted golden is accepted');
+      c.expect(/lists goldens\/a\/x\.md, which does not exist/.test(goldenMatrixDrift(row, []).join()), 'a listed golden that is gone is accepted');
       return c.result();
     },
   },

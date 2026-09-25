@@ -1222,26 +1222,29 @@ fi
 
 # ============ Gate W3: freshness conformance harness (offline) ============
 # watch/freshness/harness/run.mjs --check-report runs every case in watch/freshness/cases/ against the
-# clauses of watch/freshness/SPEC.md and compares watch/freshness/REPORT.md with a fresh render;
-# harness/mutate.mjs runs every mutant in harness/mutants.json; ops/schedule.mjs checks ops/schedule.tsv
-# against the workflows, this script, and the scripts that write files; make-live.mjs --check re-renders
-# the live:card region of every brief. No network, no token. Fails on a nonzero exit of any of the four,
-# any failed case, an uncovered MUST clause, zero cases, a stale REPORT.md, zero mutants or one that
-# survives, and a missing make-live.mjs. Details: ../BUILD-GATES.md.
+# clauses of watch/freshness/SPEC.md and compares watch/freshness/REPORT.md with a fresh render. One of
+# those cases, HAR-H6-mutants, runs the mutation runner (harness/mutate.mjs) on every mutant in
+# harness/mutants.json; W3 reads its verdict and counts from the harness output rather than running the
+# mutants a second time. ops/schedule.mjs checks ops/schedule.tsv against the workflows, this script,
+# and the scripts that write files; make-live.mjs --check re-renders the live:card region of every
+# brief. No network, no token. Fails on a nonzero exit of any of the three, any failed case, an
+# uncovered MUST clause, zero cases, a stale REPORT.md, a missing HAR-H6-mutants result, zero mutants
+# or one that survives, and a missing make-live.mjs. Details: ../BUILD-GATES.md.
 echo "== W3 freshness harness =="
 W3_OK=1; W3_DETAIL=""
 W3_OUT="$(node "$REPO_ROOT/watch/freshness/harness/run.mjs" --check-report 2>&1)"; W3_RC=$?
 W3_N="$(count_of "$W3_OUT" CASES)"
 W3_F="$(count_of "$W3_OUT" FAILED)"
 W3_U="$(count_of "$W3_OUT" UNCOVERED_MUST)"
+W3_S="$(printf '%s\n' "$W3_OUT" | sed -n 's/^SECONDS \([0-9.]*\)$/\1/p')"
 if [ $W3_RC -ne 0 ] || [ "${W3_N:-0}" -eq 0 ] || [ "${W3_F:-x}" != "0" ] || [ "${W3_U:-x}" != "0" ] || ! printf '%s\n' "$W3_OUT" | grep -q '^REPORT_OK'; then
   W3_OK=0; W3_DETAIL="harness exit $W3_RC, cases ${W3_N:-0}, failed ${W3_F:-unknown}, uncovered MUST ${W3_U:-unknown}; "
 fi
-W3M_OUT="$(node "$REPO_ROOT/watch/freshness/harness/mutate.mjs" 2>&1)"; W3M_RC=$?
-W3_MT="$(count_of "$W3M_OUT" MUTANTS)"
-W3_MK="$(count_of "$W3M_OUT" KILLED)"
-if [ $W3M_RC -ne 0 ] || [ "${W3_MT:-0}" -eq 0 ] || [ "${W3_MK:-x}" != "${W3_MT:-y}" ]; then
-  W3_OK=0; W3_DETAIL="${W3_DETAIL}mutation exit $W3M_RC, killed ${W3_MK:-0} of ${W3_MT:-0}; "
+W3M_LINE="$(printf '%s\n' "$W3_OUT" | grep '^{"id":"HAR-H6-mutants",' | head -1)"
+W3_MK="$(printf '%s\n' "$W3M_LINE" | sed -n 's/.*"mutation\.killed":\([0-9][0-9]*\).*/\1/p')"
+W3_MT="$(printf '%s\n' "$W3M_LINE" | sed -n 's/.*"mutation\.total":\([0-9][0-9]*\).*/\1/p')"
+if ! printf '%s\n' "$W3M_LINE" | grep -q '"verdict":"PASS"' || [ "${W3_MT:-0}" -eq 0 ] || [ "${W3_MK:-x}" != "${W3_MT:-y}" ]; then
+  W3_OK=0; W3_DETAIL="${W3_DETAIL}mutation (case HAR-H6-mutants): killed ${W3_MK:-none} of ${W3_MT:-none}; "
 fi
 W3S_OUT="$(node "$REPO_ROOT/ops/schedule.mjs" 2>&1)"; W3S_RC=$?
 W3_SR="$(printf '%s\n' "$W3S_OUT" | sed -n 's/^SCHEDULE_OK rows=\([0-9][0-9]*\).*/\1/p')"
@@ -1259,11 +1262,11 @@ else
   W3_OK=0; W3_DETAIL="${W3_DETAIL}site/scripts/make-live.mjs is missing; "
 fi
 if [ $W3_OK -eq 1 ]; then
-  pass "W3 freshness harness ($W3_N cases, REPORT.md fresh, $W3_MK of $W3_MT mutants killed, $W3_SR schedule rows, $W3_LB brief cards)"
+  pass "W3 freshness harness ($W3_N cases in ${W3_S:-?} s, REPORT.md fresh, $W3_MK of $W3_MT mutants killed, $W3_SR schedule rows, $W3_LB brief cards)"
 else
   fail "W3 freshness harness" "$W3_DETAIL"
-  printf '%s\n' "$W3_OUT" "$W3M_OUT" "$W3S_OUT" "$W3L_OUT" |
-    grep -E '"verdict":"FAIL"|^REPORT_STALE|^HARNESS ERROR|^NO CASES|^(SURVIVED|ERROR|BASELINE|GAP) |^MUTATE ERROR|^SCHEDULE_BAD|^LIVE_BAD|^  ' |
+  printf '%s\n' "$W3_OUT" "$W3S_OUT" "$W3L_OUT" |
+    grep -E '"verdict":"FAIL"|^REPORT_STALE|^HARNESS ERROR|^NO CASES|^SCHEDULE_BAD|^LIVE_BAD|^  ' |
     head -40 | sed 's/^/      /'
 fi
 

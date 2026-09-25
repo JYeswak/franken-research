@@ -335,8 +335,8 @@ working-copy file is caught when it is added, not before.
 GitHub API responses in `watch/fixtures/` (`day1.json`, recorded 2026-09-24
 for six assessed repositories and part of the public listing; `day2.json`, a
 synthetic next day whose `_note` lists each edit) and passes them through the
-same collect, diff, and dedupe functions the scheduled watch runs against the
-live API. No network and no token. The 14 cases assert: the packets parse to
+same collect and diff functions the scheduled watch runs against the
+live API. No network and no token. The cases assert: the packets parse to
 exactly 44 repositories with 40-hex pins; a first run is a baseline with
 nothing material; a new release is material and its tag is not reported
 twice; a LICENSE blob change with the same SPDX id is material; a workflow
@@ -345,15 +345,11 @@ the recorded GitHub id and reported as a rename, not a deletion plus a new
 repository (for an assessed and for an unassessed repository), and is also
 followed by the REST redirect when no id is recorded yet; a compare 404 is
 `pin_unreachable`; a new `franken*` or Rust repository is a candidate and
-anything else informational; nothing else is material; dedupe returns
-`exists` for a filed title with the same value, `comment` for a changed
-value, and `create` for a new title; the since-pin backfill on `day1.json`
-files exactly the expected titles (in the same title format as the daily
-diff) through the real issue-sync code against an in-memory issue store,
-adds one pointer comment to the issue whose release a dated re-check in
-`updates/` already names, and a second backfill finds only existing issues
-(no new issue, comment, or pointer); and the state and census are byte-equal
-when the API returns nodes in another order. **Fails** on a nonzero exit, any
+anything else informational; nothing else is material; and the state and census are byte-equal
+when the API returns nodes in another order. The cases that exercised the
+per-event issue sync (dedupe, issue trust, the since-pin backfill) were removed
+on 2026-09-25 with that path (freshness contract FR-D.4); 18 cases run since.
+**Fails** on a nonzero exit, any
 failed case, or a `CASES` count of zero or missing.
 **Why:** the watch opens public issues and commits a census every day with
 nobody reading its code first. Its classification logic (material or not,
@@ -404,25 +400,28 @@ pagination past one page run only live.
 
 ## Gate W3 — freshness conformance harness
 
-**What:** four offline commands, all of which must pass.
+**What:** three offline commands, all of which must pass.
 `node watch/freshness/harness/run.mjs --check-report` runs every case in
 `watch/freshness/cases/*.cases.mjs` against the clauses it parses from
 `watch/freshness/SPEC.md` (the freshness contract: class triggers, the live
 card, the dashboard issue, the weekly digest, scheduled jobs, and the harness
-itself), then compares `watch/freshness/REPORT.md` with a fresh render.
-`node watch/freshness/harness/mutate.mjs` plants every mutant in
-`watch/freshness/harness/mutants.json` in a temporary copy of the repository
-and checks that each one makes its named cases fail. `node ops/schedule.mjs`
-checks `ops/schedule.tsv`: each generated artifact's command runs in its
-workflow, its gate exists in this script, and every script under
-`watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
+itself), then compares `watch/freshness/REPORT.md` with a fresh render. One
+of those cases, HAR-H6-mutants, runs the mutation runner
+(`watch/freshness/harness/mutate.mjs`): it plants every mutant in
+`watch/freshness/harness/mutants.json` in temporary copies of the repository
+and checks that each one makes its named cases fail; the gate reads that
+case's verdict and counts instead of running the mutants twice.
+`node ops/schedule.mjs` checks `ops/schedule.tsv`: each generated artifact's
+command runs in its workflow, its gate exists in this script, and every script
+under `watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
 declares them. `node site/scripts/make-live.mjs --check` re-renders the
 live:card region on every brief from `watch/live.json`. No network and no
-token. **Fails** on a nonzero exit of any of the four, any failed case, an
+token. **Fails** on a nonzero exit of any of the three, any failed case, an
 uncovered MUST clause, a `CASES` count of zero or missing, a stale
-`REPORT.md`, zero mutants or one that survives, a schedule problem, and a
-missing `make-live.mjs`. The runbook, including how to add a clause, a
-discrepancy, a golden or a mutant, is `watch/freshness/README.md`.
+`REPORT.md`, a missing HAR-H6-mutants result, zero mutants or one that
+survives, a schedule problem, and a missing `make-live.mjs`. The runbook,
+including how to add a clause, a discrepancy, a golden or a mutant, is
+`watch/freshness/README.md`.
 **Why:** the freshness work replaces per-event issues with computed classes,
 a card on every brief, and one dashboard issue, all written by a scheduled
 job nobody reads first. The contract says what must hold; this gate proves
@@ -432,8 +431,9 @@ by a scheduled job.
 **Accepted:** `watch/live.json` and `watch/crossings.jsonl` come from API
 facts that are not committed, so W3 checks their committed shape and ledger
 order and proves the byte-equal render on a recorded fixture, not by re-running
-the watch. The mutants run twice per `bun run verify`: once inside the harness
-case HAR-H6-mutants, which feeds `REPORT.md`, and once on their own.
+the watch. W3 is one of the slower gates: on 2026-09-25, on an Apple M3 Ultra with
+8 mutation workers, it took 40.1 s wall (268 cases in 38.5 s, 65 of 65 mutants
+killed); a 4-core CI runner has not been measured.
 
 ## Gate M — feed and OPML fresh and well-formed
 

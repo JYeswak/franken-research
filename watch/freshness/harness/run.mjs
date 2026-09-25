@@ -70,10 +70,11 @@ export function parseDiscrepancies(text) {
   return out;
 }
 
-const firstDiff = (a, b) => {
+// The first line where two texts differ, naming each side (a golden and its actual by default).
+const firstDiff = (a, b, left = 'golden', right = 'actual') => {
   const x = a.split('\n'), y = b.split('\n');
   for (let i = 0; i < Math.max(x.length, y.length); i++) {
-    if (x[i] !== y[i]) return `line ${i + 1}: golden ${JSON.stringify(x[i] ?? '<eof>').slice(0, 160)} vs actual ${JSON.stringify(y[i] ?? '<eof>').slice(0, 160)}`;
+    if (x[i] !== y[i]) return `line ${i + 1}: ${left} ${JSON.stringify(x[i] ?? '<eof>').slice(0, 160)} vs ${right} ${JSON.stringify(y[i] ?? '<eof>').slice(0, 160)}`;
   }
   return 'identical';
 };
@@ -370,7 +371,7 @@ async function main(argv) {
       const committed = readFileSync(REPORT, 'utf8');
       if (committed === fresh) console.log(`REPORT_OK bytes=${Buffer.byteLength(fresh)}`);
       else {
-        console.log(`REPORT_STALE watch/freshness/REPORT.md differs from a fresh render at ${firstDiff(committed, fresh)}; run with --report and commit it`);
+        console.log(`REPORT_STALE watch/freshness/REPORT.md differs from a fresh render at ${firstDiff(committed, fresh, 'committed', 'fresh')}; run with --report and commit it`);
         code = 1;
       }
     }
