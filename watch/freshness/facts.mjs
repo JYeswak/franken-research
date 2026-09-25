@@ -300,7 +300,7 @@ export const BLOBS = join(FRESH, 'fixtures', 'core', 'blobs.json.gz');
 
 async function record() {
   const t0 = Date.now();
-  const w = await import(pathToFileURL(join(ROOT, 'watch', 'watch.mjs')).href);
+  const w = await import('../watch.mjs');
   const { parseTsv } = await import('./revisit.mjs');
   const lockfiles = new Set(parseTsv(readFileSync(join(FRESH, 'revisit.tsv'), 'utf8')).filter((r) => r.detector === 'dependency.edge').map((r) => r.repo));
   const api = w.makeApi(w.resolveToken());
