@@ -1,0 +1,218 @@
+[
+  {
+    "schema": "fr.search.entry/v1",
+    "id": "fr:RP-009",
+    "kind": "practice",
+    "title": "Verify tool and oracle integrity by hash before the suite runs",
+    "summary": "Check the SHA-256 (or blob SHA) of a downloaded tool or oracle checkout before the test suite runs anything with it, and fail the job on a mismatch. Franken Research found this in franken_threed, whose oracle checkout is verified by blob SHA-1 before the suite runs; no other oracle-using repository of the 44 does it.",
+    "copy": {
+      "targets": [
+        {
+          "label": "Practice RP-009 in the rigor practices table",
+          "repo": "JYeswak/franken-research",
+          "path": "stack/rigor-practices.tsv",
+          "lines": "10",
+          "commit": "v1.2.0",
+          "url": "https://github.com/JYeswak/franken-research/blob/v1.2.0/stack/rigor-practices.tsv#L10"
+        }
+      ]
+    },
+    "prompt": {
+      "template": "practice/adopt@1",
+      "text": "In this repository: check the SHA-256 (or blob SHA) of the downloaded tool or oracle checkout before running anything with it; a mismatch fails the job. This is practice RP-009 from Franken Research (https://fr.zeststream.ai/rigor/#rp-009), seen in Jeffrey Emanuel's franken_threed. When you are done, show me the file and line where the check runs, and a run in which a wrong hash makes the job fail."
+    },
+    "posture": "practice",
+    "evidence": {
+      "scheme": "rulebook-tier",
+      "tier": 1,
+      "label": "[Verified]",
+      "confidence": "High",
+      "basis": "The cited line of the uniqueness catalog carries [Verified, High] for the oracle-integrity check in franken_threed at its pinned commit.",
+      "source": {
+        "repo": "JYeswak/franken-research",
+        "path": "synthesis/uniqueness-catalog.md",
+        "lines": "192",
+        "url": "https://github.com/JYeswak/franken-research/blob/v1.2.0/synthesis/uniqueness-catalog.md#L192"
+      }
+    },
+    "license": {
+      "class": "MIT",
+      "label": "MIT (Franken Research's own text)",
+      "rider": false,
+      "url": "https://github.com/JYeswak/franken-research/blob/v1.2.0/LICENSE",
+      "checked": "2026-09-24"
+    },
+    "source_url": "https://github.com/JYeswak/franken-research/blob/v1.2.0/stack/rigor-practices.tsv#L10",
+    "url": "rigor/index.html#rp-009",
+    "credit": {
+      "repos": [
+        { "name": "Dicklesworthstone/franken_threed", "url": "https://github.com/Dicklesworthstone/franken_threed" }
+      ]
+    },
+    "provenance": {
+      "generator": "site/scripts/make-search.mjs@1.0.0",
+      "source": {
+        "name": "fr-repo",
+        "path": "stack/rigor-practices.tsv",
+        "sha256": "ba08ad27a762b0e7c8c9951c357d565bd398ecc3d11d1cedfcbce064a35731a1"
+      },
+      "snapshot_date": "2026-09-24"
+    },
+    "facets": { "areas": ["frankensuite"], "checklist": "A2", "our_status": "partial" }
+  },
+  {
+    "schema": "fr.search.entry/v1",
+    "id": "crate:asupersync/asupersync",
+    "kind": "crate",
+    "title": "asupersync 0.6.0, Rust crate",
+    "summary": "A published Rust crate (library and binary) from Jeffrey Emanuel's asupersync repository: an async runtime written from scratch rather than forked from tokio. 46 of his other repositories depend on it. Franken Research rates the repository Pilot at TRL 6.",
+    "copy": {
+      "targets": [
+        {
+          "label": "Crate manifest",
+          "repo": "Dicklesworthstone/asupersync",
+          "path": "Cargo.toml",
+          "lines": "21-27",
+          "commit": "212f177942e2df7ce077339d8d8eae8bcbd61db8",
+          "url": "https://github.com/Dicklesworthstone/asupersync/blob/212f177942e2df7ce077339d8d8eae8bcbd61db8/Cargo.toml#L21-L27"
+        }
+      ],
+      "command": "cargo add asupersync@=0.6.0"
+    },
+    "prompt": {
+      "template": "crate/pilot@1",
+      "text": "Pilot the Rust crate asupersync 0.6.0 (https://crates.io/crates/asupersync) in one bounded part of this project, behind a thin wrapper we own, so it can be removed without touching the rest. Franken Research rates its repository Pilot at TRL 6 and notes that no public CI has run the assessed code (https://fr.zeststream.ai/briefs/asupersync). Its license is MIT with a rider that bars OpenAI, Anthropic, their affiliates, those acting for them, and ML training or evaluation use: https://github.com/Dicklesworthstone/asupersync/blob/212f177942e2df7ce077339d8d8eae8bcbd61db8/LICENSE. Before you finish, run its tests at that version and tell me which of our workloads the pilot covers and how we would back it out."
+    },
+    "posture": "pilot",
+    "evidence": {
+      "scheme": "verdict",
+      "basis": "The crate inherits its repository's verdict. Version, downloads and consumers come from crates.io and the manifest on 2026-09-24; the crate itself was not assessed separately.",
+      "source": {
+        "repo": "JYeswak/franken-research",
+        "path": "packets/asupersync-assessment.md",
+        "lines": "22",
+        "url": "https://github.com/JYeswak/franken-research/blob/v1.2.0/packets/asupersync-assessment.md#L22"
+      },
+      "verdict": {
+        "ring": "Pilot",
+        "trl": "6",
+        "assessed_commit": "768595203e194573bb713158b5963f55861dfe2d",
+        "assessed_date": "2026-09-22",
+        "verdict_url": "briefs/asupersync.html",
+        "posture_source": { "path": "packets/asupersync-assessment.md", "lines": "22" }
+      }
+    },
+    "license": {
+      "class": "MIT+rider",
+      "label": "MIT with the OpenAI/Anthropic rider",
+      "rider": true,
+      "url": "https://github.com/Dicklesworthstone/asupersync/blob/212f177942e2df7ce077339d8d8eae8bcbd61db8/LICENSE",
+      "metadata_license": "LicenseRef-MIT-OpenAI-Anthropic-Rider",
+      "checked": "2026-09-24"
+    },
+    "source_url": "https://github.com/Dicklesworthstone/asupersync/blob/212f177942e2df7ce077339d8d8eae8bcbd61db8/Cargo.toml#L21-L27",
+    "url": "briefs/asupersync.html",
+    "links": {
+      "crates_io": "https://crates.io/crates/asupersync",
+      "docs_rs": "https://docs.rs/asupersync/0.6.0"
+    },
+    "credit": {
+      "repos": [
+        { "name": "Dicklesworthstone/asupersync", "url": "https://github.com/Dicklesworthstone/asupersync" }
+      ]
+    },
+    "provenance": {
+      "generator": "site/scripts/make-search.mjs@1.0.0",
+      "source": {
+        "name": "crate-snapshot",
+        "path": "atlas/eco2-crates.tsv (intake seed; replaced by search/snapshots/crates.tsv)",
+        "sha256": "98d6715c54ff49c32d3d9ac0d9b56ece57971c55288976011ea63c2fd7fc12f2"
+      },
+      "snapshot_date": "2026-09-24",
+      "pinned": { "commit": "212f177942e2df7ce077339d8d8eae8bcbd61db8", "date": "2026-09-24" }
+    },
+    "quote": {
+      "text": "license = \"LicenseRef-MIT-OpenAI-Anthropic-Rider\"\ndescription = \"Spec-first, cancel-correct, capability-secure async runtime for Rust.\"",
+      "repo": "Dicklesworthstone/asupersync",
+      "path": "Cargo.toml",
+      "lines": "25-26",
+      "commit": "212f177942e2df7ce077339d8d8eae8bcbd61db8",
+      "url": "https://github.com/Dicklesworthstone/asupersync/blob/212f177942e2df7ce077339d8d8eae8bcbd61db8/Cargo.toml#L25-L26",
+      "license_class": "MIT+rider",
+      "license_notice": "Copyright (c) 2026 Jeffrey Emanuel. MIT License (with OpenAI/Anthropic Rider); the full notice and rider: https://github.com/Dicklesworthstone/asupersync/blob/212f177942e2df7ce077339d8d8eae8bcbd61db8/LICENSE",
+      "rider_flag": true
+    },
+    "facets": { "crate_class": "A_published", "published": true, "version": "0.6.0", "downloads": 325399, "cross_repo_consumers": 46, "language": "Rust" }
+  },
+  {
+    "schema": "fr.search.entry/v1",
+    "id": "ra:technique:frankensqlite/mvcc/1df51efc",
+    "kind": "applied-technique",
+    "title": "Snapshot visibility as one unsigned comparison (frankensqlite, MVCC)",
+    "summary": "frankensqlite decides whether a page or cell version is visible to a snapshot with one branch-free comparison: commit sequence minus one, compared against the snapshot's high mark, so an uncommitted version (sequence 0) wraps to the maximum and is never visible. The same test runs at page and at cell granularity, so a small row write does not fork a whole page.",
+    "copy": {
+      "targets": [
+        {
+          "label": "Page-level visibility check",
+          "repo": "Dicklesworthstone/frankensqlite",
+          "path": "crates/fsqlite-mvcc/src/invariants.rs",
+          "lines": "203-219",
+          "commit": "29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75",
+          "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219"
+        },
+        {
+          "label": "Cell-level visibility check",
+          "repo": "Dicklesworthstone/frankensqlite",
+          "path": "crates/fsqlite-mvcc/src/cell_visibility.rs",
+          "lines": "260-283",
+          "commit": "29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75",
+          "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/cell_visibility.rs#L260-L283"
+        }
+      ]
+    },
+    "prompt": {
+      "template": "applied-technique/study@1",
+      "text": "Read how Jeffrey Emanuel's frankensqlite checks MVCC snapshot visibility with one unsigned comparison: https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219 (commit of 2026-09-02). If this project reads versioned records under snapshots, write our own version of that check and a property test that, for random commit sequences, exactly the committed versions at or below each snapshot are visible and an uncommitted version is visible to no snapshot. Its license is MIT with a rider that bars OpenAI, Anthropic, their affiliates, those acting for them, and ML training or evaluation use (https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/LICENSE); keep that notice with anything you copy."
+    },
+    "posture": "practice",
+    "evidence": {
+      "scheme": "rulebook-tier",
+      "tier": 1,
+      "label": "[Verified]",
+      "flavor": "[Code-verified]",
+      "confidence": "Medium",
+      "basis": "rigor-atlas label KNOW: an atlas agent read the code at the pinned commit and five cited lines were checked mechanically at build. Franken Research has not re-graded the claim, so confidence is Medium, not High (TIER-MAP rule TM-RA-1).",
+      "source": {
+        "repo": "Dicklesworthstone/frankensqlite",
+        "path": "crates/fsqlite-mvcc/src/invariants.rs",
+        "lines": "217-218",
+        "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L217-L218"
+      },
+      "mapped_from": { "system": "rigor-atlas", "label": "KNOW", "rule": "TM-RA-1" }
+    },
+    "license": {
+      "class": "MIT+rider",
+      "label": "MIT with the OpenAI/Anthropic rider",
+      "rider": true,
+      "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/LICENSE",
+      "checked": "2026-09-24"
+    },
+    "source_url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219",
+    "credit": {
+      "repos": [
+        { "name": "Dicklesworthstone/frankensqlite", "url": "https://github.com/Dicklesworthstone/frankensqlite" }
+      ]
+    },
+    "provenance": {
+      "generator": "site/scripts/make-search.mjs@1.0.0",
+      "source": {
+        "name": "ra-snapshot",
+        "path": "rigor-atlas data/rigor.sqlite table techniques (to be vendored as search/snapshots/ra-curated.json)",
+        "sha256": "881cce40223af3079311f3390bfa851ff6b36aa792fcc225d45fd12ab91d366f"
+      },
+      "snapshot_date": "2026-09-02",
+      "pinned": { "commit": "29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75", "date": "2026-09-02" }
+    },
+    "facets": { "repo": "frankensqlite", "entity": "mvcc", "atlas_kind": "storage-kernel", "language": "Rust" }
+  }
+]

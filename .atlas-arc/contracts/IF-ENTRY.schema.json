@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fr.zeststream.ai/schema/fr.search.entry/v1.json",
+  "title": "fr.search.entry/v1",
+  "description": "One search result of the Franken Research search index, in its logical (joined) form. Field meanings: IF-ENTRY.md. Id grammar: IF-ID.md. Shard placement: IF-SHARD.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "kind", "title", "summary", "copy", "prompt", "posture", "evidence", "license", "source_url", "credit", "provenance"],
+  "properties": {
+    "schema": { "const": "fr.search.entry/v1" },
+    "id": {
+      "type": "string",
+      "maxLength": 160,
+      "pattern": "^(?:fr:RP-[0-9]{3}|fr:gate-[1-9][0-9]?|fr:kit-[AB][1-9][0-9]?|fr:tech-[a-z0-9]+(?:-[a-z0-9]+)*|fr:fm-p[1-9][0-9]?|fr:lesson-[a-z0-9]+(?:-[a-z0-9]+)*-[A-Za-z0-9._-]+|fr:verdict-[A-Za-z0-9._-]+|fr:cohort-[A-Za-z0-9._-]+|fr:stack-[a-z0-9]+(?:-[a-z0-9]+)*|fh:rigor:L[1-9]|fh:techniques:T[1-9][0-9]?|fh:oracles:D(?:[1-9]|1[0-3])|fh:runbooks:[A-Z]{1,3}[1-9][0-9]?|fh:capabilities:CAP-[A-Z0-9]+(?:-[A-Z0-9]+)*|ra:prescription:[a-z0-9]+(?:-[a-z0-9]+)*|ra:kind:[a-z0-9]+(?:-[a-z0-9]+)*|ra:profile:[A-Za-z0-9._-]+|ra:technique:[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/[0-9a-f]{8}|crate:[A-Za-z0-9._-]+/[A-Za-z0-9_-]+(?:~[0-9a-f]{6})?)$"
+    },
+    "kind": {
+      "enum": ["practice", "readiness-gate", "checklist-item", "technique", "failure-mode", "lesson", "repo-verdict", "stack-verdict", "rigor-layer", "oracle", "runbook-step", "capability", "prescription", "crate-kind", "repo-profile", "applied-technique", "crate"]
+    },
+    "title": { "type": "string", "minLength": 3, "maxLength": 140 },
+    "summary": { "type": "string", "minLength": 20, "maxLength": 600 },
+    "copy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targets"],
+      "properties": {
+        "targets": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/pinnedTarget" } },
+        "command": { "type": "string", "minLength": 3, "maxLength": 300 }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["template", "text"],
+      "properties": {
+        "template": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*/[a-z]+(?:-[a-z]+)*@[1-9][0-9]*$" },
+        "text": { "type": "string", "minLength": 40, "maxLength": 1600 }
+      }
+    },
+    "posture": { "$ref": "#/$defs/posture" },
+    "evidence": { "$ref": "#/$defs/evidence" },
+    "license": { "$ref": "#/$defs/license" },
+    "source_url": { "$ref": "#/$defs/pinnedGithubUrl" },
+    "url": {
+      "description": "On-site page for the item, relative to site/, resolvable on disk (gate Q1). Required for fr: entries.",
+      "type": "string",
+      "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!/)(?!.*\\.\\.)[A-Za-z0-9._/-]+\\.html(?:#[A-Za-z0-9._-]+)?$"
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "crates_io": { "type": "string", "pattern": "^https://crates\\.io/crates/[A-Za-z0-9_-]+$" },
+        "docs_rs": { "type": "string", "pattern": "^https://docs\\.rs/[A-Za-z0-9_-]+/[0-9A-Za-z.+-]+$" }
+      }
+    },
+    "credit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repos"],
+      "properties": {
+        "repos": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "url"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" },
+              "url": { "type": "string", "pattern": "^https://github\\.com/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" }
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generator", "source", "snapshot_date"],
+      "properties": {
+        "generator": { "type": "string", "pattern": "^[A-Za-z0-9._/-]+@[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "path", "sha256"],
+          "properties": {
+            "name": { "enum": ["fr-repo", "fh-snapshot", "ra-snapshot", "crate-snapshot"] },
+            "path": { "type": "string", "minLength": 1 },
+            "sha256": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        "snapshot_date": { "$ref": "#/$defs/date" },
+        "pinned": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["commit", "date"],
+          "properties": { "commit": { "$ref": "#/$defs/sha40" }, "date": { "$ref": "#/$defs/date" } }
+        }
+      }
+    },
+    "quote": { "$ref": "#/$defs/quote" },
+    "facets": {
+      "description": "Engine facets. Non-normative until S05 contracts ranking; keys may be added then under a schema minor version.",
+      "type": "object"
+    }
+  },
+  "allOf": [
+    { "if": { "properties": { "id": { "pattern": "^fr:" } } }, "then": { "required": ["url"], "properties": { "provenance": { "properties": { "source": { "properties": { "name": { "const": "fr-repo" } } } } } } } },
+    { "if": { "properties": { "id": { "pattern": "^fh:" } } }, "then": { "properties": { "provenance": { "required": ["pinned"], "properties": { "source": { "properties": { "name": { "const": "fh-snapshot" } } } } } } } },
+    { "if": { "properties": { "id": { "pattern": "^ra:" } } }, "then": { "properties": { "provenance": { "properties": { "source": { "properties": { "name": { "const": "ra-snapshot" } } } } } } } },
+    { "if": { "properties": { "id": { "pattern": "^crate:" } } }, "then": { "properties": { "kind": { "const": "crate" }, "provenance": { "required": ["pinned"], "properties": { "source": { "properties": { "name": { "const": "crate-snapshot" } } } } } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:RP-" } } }, "then": { "properties": { "kind": { "const": "practice" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:gate-" } } }, "then": { "properties": { "kind": { "const": "readiness-gate" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:kit-" } } }, "then": { "properties": { "kind": { "const": "checklist-item" } } } },
+    { "if": { "properties": { "id": { "pattern": "^(?:fr:tech-|fh:techniques:)" } } }, "then": { "properties": { "kind": { "const": "technique" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:fm-" } } }, "then": { "properties": { "kind": { "const": "failure-mode" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:lesson-" } } }, "then": { "properties": { "kind": { "const": "lesson" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:(?:verdict|cohort)-" } } }, "then": { "properties": { "kind": { "const": "repo-verdict" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fr:stack-" } } }, "then": { "properties": { "kind": { "const": "stack-verdict" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fh:rigor:" } } }, "then": { "properties": { "kind": { "const": "rigor-layer" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fh:oracles:" } } }, "then": { "properties": { "kind": { "const": "oracle" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fh:runbooks:" } } }, "then": { "properties": { "kind": { "const": "runbook-step" } } } },
+    { "if": { "properties": { "id": { "pattern": "^fh:capabilities:" } } }, "then": { "properties": { "kind": { "const": "capability" } } } },
+    { "if": { "properties": { "id": { "pattern": "^ra:prescription:" } } }, "then": { "properties": { "kind": { "const": "prescription" } } } },
+    { "if": { "properties": { "id": { "pattern": "^ra:kind:" } } }, "then": { "properties": { "kind": { "const": "crate-kind" } } } },
+    { "if": { "properties": { "id": { "pattern": "^ra:profile:" } } }, "then": { "properties": { "kind": { "const": "repo-profile" } } } },
+    { "if": { "properties": { "id": { "pattern": "^ra:technique:" } } }, "then": { "properties": { "kind": { "const": "applied-technique" } } } },
+    { "if": { "properties": { "kind": { "enum": ["repo-verdict", "stack-verdict", "crate", "repo-profile", "capability"] } } }, "then": { "properties": { "posture": { "not": { "const": "practice" } } } }, "else": { "properties": { "posture": { "const": "practice" } } } },
+    { "if": { "properties": { "posture": { "enum": ["use", "use-wrapped", "pilot", "patterns-only", "do-not-depend", "watch", "reference-only"] } }, "required": ["posture"] }, "then": { "properties": { "evidence": { "required": ["verdict"] } } } },
+    { "if": { "properties": { "quote": { "type": "object" } }, "required": ["quote"] }, "then": { "properties": { "license": { "properties": { "class": { "enum": ["MIT", "MIT+rider", "Apache-2.0"] } } } } } }
+  ],
+  "$defs": {
+    "sha40": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "date": { "type": "string", "pattern": "^20[0-9]{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$" },
+    "lines": { "type": "string", "pattern": "^[1-9][0-9]*(?:-[1-9][0-9]*)?$" },
+    "pinnedGithubUrl": {
+      "description": "A GitHub blob or tree URL at a 40-hex commit, or at this repo's release tag for Franken Research's own files. Never a branch.",
+      "type": "string",
+      "pattern": "^https://github\\.com/(?:[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/(?:blob|tree)/[0-9a-f]{40}|JYeswak/franken-research/(?:blob|tree)/v[0-9]+\\.[0-9]+\\.[0-9]+)/[^\\s#?]+(?:#L[1-9][0-9]*(?:-L[1-9][0-9]*)?)?$"
+    },
+    "pinnedTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "repo", "path", "commit", "url"],
+      "properties": {
+        "label": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "repo": { "type": "string", "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" },
+        "path": { "type": "string", "minLength": 1, "pattern": "^[^\\s#?][^#?]*$" },
+        "lines": { "$ref": "#/$defs/lines" },
+        "commit": { "type": "string", "pattern": "^(?:[0-9a-f]{40}|v[0-9]+\\.[0-9]+\\.[0-9]+)$" },
+        "url": { "$ref": "#/$defs/pinnedGithubUrl" }
+      }
+    },
+    "posture": {
+      "description": "What the reader may do with the thing the entry points at. 'practice' is for entries that teach a pattern, not software to depend on.",
+      "enum": ["practice", "use", "use-wrapped", "pilot", "patterns-only", "do-not-depend", "watch", "reference-only", "unassessed"]
+    },
+    "tierLabel": { "enum": ["[Verified]", "[CI-observed]", "[Maintainer claim]", "[External]", "[Inference]"] },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "basis", "source"],
+      "properties": {
+        "scheme": { "enum": ["rulebook-tier", "verdict", "ungraded"] },
+        "tier": { "type": ["integer", "null"], "minimum": 1, "maximum": 5 },
+        "label": { "oneOf": [{ "$ref": "#/$defs/tierLabel" }, { "type": "null" }] },
+        "flavor": { "type": "string", "pattern": "^\\[[A-Z][A-Za-z -]+\\]$" },
+        "confidence": { "enum": ["High", "Medium", "Low", null] },
+        "basis": { "type": "string", "minLength": 20, "maxLength": 400 },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path"],
+          "properties": {
+            "repo": { "type": "string", "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" },
+            "path": { "type": "string", "minLength": 1 },
+            "lines": { "$ref": "#/$defs/lines" },
+            "url": { "$ref": "#/$defs/pinnedGithubUrl" }
+          }
+        },
+        "mapped_from": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["system", "label", "rule"],
+          "properties": {
+            "system": { "enum": ["rigor-atlas", "franken-harvest"] },
+            "label": { "type": "string", "minLength": 2, "maxLength": 40 },
+            "rule": { "type": "string", "pattern": "^TM-[A-Z]{2}-[0-9]+$" }
+          }
+        },
+        "verdict": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["verdict_url", "posture_source", "assessed_date"],
+          "properties": {
+            "ring": { "enum": ["Invest", "Pilot", "Explore", "Monitor"] },
+            "trl": { "type": "string", "pattern": "^[1-9](?:–[1-9])?$" },
+            "stack_verdict": { "enum": ["Adopt", "Adopt and wrap", "Build clean-room", "Watch"] },
+            "assessed_commit": { "$ref": "#/$defs/sha40" },
+            "assessed_date": { "$ref": "#/$defs/date" },
+            "verdict_url": { "type": "string", "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!/)(?!.*\\.\\.)[A-Za-z0-9._/-]+\\.html(?:#[A-Za-z0-9._-]+)?$" },
+            "posture_source": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "lines"],
+              "properties": { "path": { "type": "string", "minLength": 1 }, "lines": { "$ref": "#/$defs/lines" } }
+            }
+          }
+        }
+      },
+      "allOf": [
+        { "if": { "properties": { "scheme": { "const": "rulebook-tier" } } }, "then": { "required": ["tier", "label", "confidence"], "properties": { "tier": { "type": "integer" }, "label": { "$ref": "#/$defs/tierLabel" }, "confidence": { "enum": ["High", "Medium", "Low"] } } } },
+        { "if": { "properties": { "scheme": { "const": "verdict" } } }, "then": { "required": ["verdict"] } },
+        { "if": { "properties": { "scheme": { "const": "ungraded" } } }, "then": { "properties": { "tier": { "const": null }, "label": { "const": null }, "confidence": { "const": null } } } },
+        { "if": { "properties": { "tier": { "const": 1 } }, "required": ["tier"] }, "then": { "properties": { "label": { "const": "[Verified]" } } } },
+        { "if": { "properties": { "tier": { "const": 2 } }, "required": ["tier"] }, "then": { "properties": { "label": { "const": "[CI-observed]" } } } },
+        { "if": { "properties": { "tier": { "const": 3 } }, "required": ["tier"] }, "then": { "properties": { "label": { "const": "[Maintainer claim]" } } } },
+        { "if": { "properties": { "tier": { "const": 4 } }, "required": ["tier"] }, "then": { "properties": { "label": { "const": "[External]" } } } },
+        { "if": { "properties": { "tier": { "const": 5 } }, "required": ["tier"] }, "then": { "properties": { "label": { "const": "[Inference]" } } } }
+      ]
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "label", "rider", "url", "checked"],
+      "properties": {
+        "class": { "enum": ["MIT", "MIT+rider", "Apache-2.0", "none", "proprietary", "other"] },
+        "label": { "type": "string", "minLength": 3, "maxLength": 120 },
+        "rider": { "type": "boolean" },
+        "url": { "oneOf": [{ "$ref": "#/$defs/pinnedGithubUrl" }, { "type": "null" }] },
+        "metadata_license": { "type": "string", "maxLength": 120 },
+        "checked": { "$ref": "#/$defs/date" }
+      },
+      "allOf": [
+        { "if": { "properties": { "class": { "const": "MIT+rider" } } }, "then": { "properties": { "rider": { "const": true }, "url": { "$ref": "#/$defs/pinnedGithubUrl" } } }, "else": { "properties": { "rider": { "const": false } } } },
+        { "if": { "properties": { "class": { "const": "none" } } }, "then": { "properties": { "url": { "const": null } } }, "else": { "properties": { "url": { "$ref": "#/$defs/pinnedGithubUrl" } } } }
+      ]
+    },
+    "quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "repo", "path", "lines", "commit", "url", "license_class", "license_notice", "rider_flag"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "maxLength": 480 },
+        "repo": { "type": "string", "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" },
+        "path": { "type": "string", "minLength": 1 },
+        "lines": { "$ref": "#/$defs/lines" },
+        "commit": { "$ref": "#/$defs/sha40" },
+        "url": { "$ref": "#/$defs/pinnedGithubUrl" },
+        "license_class": { "enum": ["MIT", "MIT+rider", "Apache-2.0"] },
+        "license_notice": { "type": "string", "minLength": 20, "maxLength": 400 },
+        "rider_flag": { "type": "boolean" }
+      },
+      "allOf": [
+        { "if": { "properties": { "license_class": { "const": "MIT+rider" } } }, "then": { "properties": { "rider_flag": { "const": true } } }, "else": { "properties": { "rider_flag": { "const": false } } } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+# IF-HONESTY: honesty and license rules as gate checks (S08)
+
+Owner: S08. Enforced by gate Q3 (GATES-PLAN.md), which reads the built shards, not the HTML, so client-rendered results cannot slip past the static-HTML gates (intake-IntakeFR2 U11). Each rule is a statement a script can decide, the data it reads, and the planted known-bad fixture that must make it fail. A rule whose known-bad passes is a broken rule, and the gate fails ("a gate that checked nothing has not passed", site/BUILD-GATES.md:45-49).
+
+Sources: charter REQ-O3 and Constraints; DEC-003, DEC-006, DEC-008, DEC-009; IF-ENTRY.md; IF-PROMPT.md; TIER-MAP.md.
+
+Fixtures live in one file (proposed `search/fixtures/honesty-known-bad.json`), one entry per rule, each otherwise valid against the schema so the failure is attributable to the one rule it plants.
+
+## Rules
+
+**HON-01 Every result shows its trust level.** Every entry has `evidence.scheme`; `rulebook-tier` entries have a tier 1–5 with its exact label and a confidence; `verdict` entries have `evidence.verdict`; `ungraded` entries have null tier, label and confidence and a `basis` of at least 20 characters. (REQ-O3.) Known-bad: an entry with `scheme: rulebook-tier`, `tier: 2`, `label: "[Verified]"`.
+
+**HON-02 Every result shows its license, read from the repo LICENSE.** Every entry has `license.class`. For `crate:`, `fh:` and `ra:` entries the class equals the class recorded for that repository at that commit in the snapshot's LICENSE column, never the manifest's `license` field (DEC-006). Known-bad: `crate:charmed_rust/charmed-bubbletea`, whose manifest declares `MIT`, with `license.class: "MIT"` while the crate snapshot records `MIT+rider` for charmed_rust at that commit (a real pattern: 569 crates say MIT in metadata inside a rider repo; IF-SOURCES.md §2.4).
+
+**HON-03 Every result links its source at a pin.** `source_url` and every `copy.targets[].url` is a GitHub URL at a 40-hex commit, or at this repo's release tag for this repo's own files; no `main`, `master`, `HEAD` or other branch. Every `fr:` entry also has an on-site `url` that resolves on disk, fragment included. Known-bad: `source_url` ending `/blob/main/Cargo.toml`; and a second fixture, `url: "rigor/index.html#rp-999"`.
+
+**HON-04 No adoption imperative against a verdict.** For an entry whose `posture` is `patterns-only`, `do-not-depend`, `watch`, `reference-only` or `unassessed`: (a) `prompt.template` is not an adopt or pilot variant (IF-PROMPT.md §2 table); (b) `copy.command` is absent; (c) `prompt.text` matches none of these, case-insensitive: `\bcargo (add|install)\b`, `\bnpm (i|install)\b`, `\bpip install\b`, `\buv add\b`, `\[dependencies\]`, `\badd (it|\S+) as a dependency\b` unless preceded within 12 characters by `not` or `n't`, `\b(adopt|use|install|depend on|switch to) (it|this crate|this library|<repo>|<crate>)\b` unless preceded within 12 characters by `not`/`n't`. (REQ-O3: "No result tells a reader to use a repository whose verdict says not to.") Known-bad: `crate:frankensearch/frankensearch` (its repo's packet says "adopt the patterns, not the package" and "Do not depend on the software" on `packets/frankensearch-assessment.md:215`) with posture `do-not-depend` and prompt text "Add frankensearch as a dependency with `cargo add frankensearch`".
+
+**HON-05 Postures come from cited verdicts.** Every posture other than `practice` and `unassessed` comes from a row of `search/verdict-posture.tsv` whose cited packet or verdict line exists and contains the posture's phrase or ring (a K2-style check); a crate, capability or repo profile takes the posture of its repository's row; a repository with no verdict row gives `unassessed`. Posture from ring when no explicit sentence exists: Invest → `use`, Pilot → `pilot`, Explore → `watch`, Monitor → `reference-only` (ring meanings: `site/assets/data.js` `ringDefinitions`). An explicit sentence ("Do not depend on the software", "adopt the patterns, not the package") overrides the ring. Known-bad: a crate from asupersync (ring Pilot) carrying posture `use`.
+
+**HON-06 Rider quotes carry the flag and the notice.** Every quote whose repository class is `MIT+rider` has `rider_flag: true` and a `license_notice` containing the copyright line from that repository's LICENSE at the quote's commit and the LICENSE URL at that commit. Known-bad: the asupersync `Cargo.toml` quote from IF-ENTRY.examples.json with `rider_flag: false` (the schema also rejects this; Q3 checks it again against the snapshot's class, which the schema cannot see).
+
+**HON-07 No quotes without a grant, and quotes stay short and exact.** A quote comes only from a repository of class `MIT`, `MIT+rider` or `Apache-2.0`; it has at most 6 lines and 480 characters; its text equals the cited lines at the commit byte for byte (checked by the sha256 recorded when the snapshot was taken); it cites repo, path, lines and a 40-hex commit. Known-bad fixtures: a quote from `mechanism_interferometry_causality` (all rights reserved); a 7-line quote; a quote whose text differs from its recorded hash by one character.
+
+**HON-08 The rider is described one way, and never as barring ordinary users.** Every rider mention in any entry or prompt is the constant sentence in IF-PROMPT.md §3 (charter wording). No entry text matches: `\byou (may|can) ?not use\b`, `\bif you use (ChatGPT|Claude|OpenAI|Anthropic)\b`, `\busers of (ChatGPT|Claude|OpenAI|Anthropic)\b`, `\b(Claude|ChatGPT|Codex) (users|agents) (may|can) ?not\b`, and no text states or guesses Jeffrey's motive (`\b(because|so that) (he|Jeffrey)\b`, `\bto (punish|protest|stop|block) (the )?(AI )?labs?\b`). (Charter Constraints; "Any change to how the rider is described" needs the maintainer.) Known-bad: a prompt saying "You may not use this code if you use Claude."
+
+**HON-09 Quotes live only in the quotes shard.** No entry in core or deep has a `quote` field; every key of the quotes shard is an id present in core or deep. Known-bad: a core entry carrying `quote`.
+
+**HON-10 Nothing private.** No entry field contains: `/Users/`, `/home/`, `local@`, `sibling:`, `~/`, an email address other than the allowed forms of gate L, or the private repository names `franken-harvest`, `control-plane`, `zesttube`, `zeststream-cast`, `clutterfreespaces`; no `fh:oracles:` id outside D1–D13. Known-bad: an `fh:oracles:D14` entry (repository `franken-harvest`) and a capability entry keeping the `replaces` text "franken-harvest build.rs sha2::".
+
+**HON-11 Tiers from fh and rigor-atlas follow TIER-MAP.** Every `ra:` and `fh:` entry with a tier has `evidence.mapped_from`, and recomputing the rule from the snapshot row gives the same tier, label and confidence; no such entry has confidence High. Known-bad: `ra:technique:atp/raptorq-fountain/<h8>` (GUESS, docs-only, TM-RA-4 → Tier 3) shown as Tier 1 `[Verified]`.
+
+**HON-12 Summaries and prompts are our words.** No `title`, `summary`, `prompt.text`, `evidence.basis` or `copy.command` contains a run of 12 or more consecutive words that also occurs in any quote text, fh quote, rigor-atlas evidence quote, or crate manifest `description` in the snapshots (compared by hash of normalized 12-word shingles, so the check needs no verbatim text in the repo). Known-bad: a crate summary that pastes a manifest description of 12+ words verbatim.
+
+**HON-13 Credit.** Every entry names at least one repository in `credit.repos`, and an entry whose copy targets are in a `Dicklesworthstone/*` repository names that repository. (Charter: "every result names the maintainer's repository and links it.") Known-bad: `ra:technique:frankensqlite/mvcc/1df51efc` with `credit.repos` listing only `JYeswak/franken-research`.
+
+**HON-14 Pins show their age.** Every `fh:` and `crate:` entry has `provenance.pinned{commit, date}`, every `ra:` entry has `provenance.snapshot_date`, and the rendered card template prints the date (checked by gate Q5's render run: a card for each namespace must contain its date text). (UNK-009.) Known-bad: a crate entry with `pinned` removed.
+
+**HON-15 Quotes wait for the crawler decision.** `search/crawler-policy` holds one of `pending`, `open`, `block-ai-lab-quotes`, set by the maintainer's decision on UNK-008. While it is `pending`, the quotes shard has zero quotes. When it is `block-ai-lab-quotes`, `site/robots.txt` contains a group for each of GPTBot, ClaudeBot, anthropic-ai, Google-Extended and CCBot that disallows `/assets/search-quotes.js`, and the rest of the site stays allowed for every agent. (DEC-008 proposed; UNK-008 HUMAN_DECISION.) Known-bad: policy `pending` with one quote in the shard; and policy `block-ai-lab-quotes` with a `robots.txt` missing the CCBot group.
+
+**HON-16 One id per repo verdict; forks are not Jeffrey's work.** No repo has both `fr:verdict-<repo>` and `fr:cohort-<repo>`; no entry credits a fork (`bun`, `exacl`, `ffn`, `gonode`, `hnswlib-rs`, `rust-block`, `textract-py3`, `wezterm`; intake-IntakeEco2 §0) as Jeffrey's repository. Known-bad: an `ra:technique:hnswlib-rs/...` entry.
+
+**HON-17 crates.io links only for owner-verified names.** `links.crates_io` and `links.docs_rs` appear only for crate names in the crates.io owner list of the snapshot (216 today). Known-bad: `crate:meta_skill/ms` (a real unpublished crate) linking `https://crates.io/crates/ms`, a name owned by an unrelated project (intake-IntakeEco2 §1b).
+
+## Not decidable by a script (reviewer checks)
+
+- Whether a summary is fair to the source, and whether a verdict-derived sentence reads as a new verdict (charter non-goal "New verdicts"). The release review samples 20 entries per namespace.
+- Whether a quote is the most useful few lines; the gate only proves it is short, exact and licensed.
+- Whether HON-08's phrase list is complete. The maintainer approves the constant rider sentence; the list only catches drift away from it.
