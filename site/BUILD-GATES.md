@@ -417,9 +417,12 @@ under `watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
 declares them. `node ops/write-job.mjs` parses `.github/workflows/watch.yml`
 and checks the job that writes: it runs only on `refs/heads/main`, its
 checkout sets `persist-credentials: false`, no token is in the workflow or job
-env or in the env of an install, build or gate step, no run line writes a
-credential into the Git config, and the dashboard sync is the last step,
-after the gate chain and the push, with the token (FR-O.6, FR-D.5).
+env, only the watch, push and sync steps receive the token (in env, `with:` or
+run text, written as `github.token`, `secrets.GITHUB_TOKEN` or
+`secrets['GITHUB_TOKEN']`, any case), no install, build or gate step receives
+it, no run line writes a credential into the Git config, and the dashboard
+sync comes after the gate chain and the push, with the token, and no push
+follows it (FR-O.6, FR-D.5).
 `node site/scripts/make-live.mjs --check` re-renders the
 live:card region on every brief from `watch/live.json`. No network and no
 token. **Fails** on a nonzero exit of any of the four, any failed case, an

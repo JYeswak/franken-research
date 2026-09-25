@@ -502,7 +502,7 @@ const rest = [
   },
   {
     id: 'HAR-O6-write-job', clauses: ['FR-O.6'], level: 'MUST',
-    title: 'the watch job runs only on main, its checkout persists no credentials, and no install, build or gate step holds the token',
+    title: 'the watch job runs only on main, its checkout persists no credentials, and only the watch, push and sync steps receive the token, in any notation',
     run(ctx) {
       const c = checks();
       const text = readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8');
@@ -515,20 +515,31 @@ const rest = [
         ['guard names another branch', "if: github.ref == 'refs/heads/main'", "if: github.ref == 'refs/heads/dev'", /lacks `if:/],
         ['checkout persists credentials (default)', '          persist-credentials: false\n', '', /persist-credentials: false/],
         ['checkout persists credentials (explicit)', 'persist-credentials: false', 'persist-credentials: true', /persist-credentials: false/],
-        ['token on install', '        run: bun install --frozen-lockfile\n', `        env:\n${tokenLine}        run: bun install --frozen-lockfile\n`, /Install.*token in its env/],
-        ['token on build', '      - name: Build (cards, feed, report)\n', `      - name: Build (cards, feed, report)\n        env:\n${tokenLine}`, /Build.*token in its env/],
-        ['token on the gate chain', '          CHROME_PATH: /usr/bin/google-chrome\n', `          CHROME_PATH: /usr/bin/google-chrome\n${tokenLine}`, /Gate chain.*token in its env/],
+        ['token on install', '        run: bun install --frozen-lockfile\n', `        env:\n${tokenLine}        run: bun install --frozen-lockfile\n`, /Install.*installs, builds or runs gates with the token in reach \(env\)/],
+        ['token on build', '      - name: Build (cards, feed, report)\n', `      - name: Build (cards, feed, report)\n        env:\n${tokenLine}`, /Build.*installs, builds or runs gates with the token in reach \(env\)/],
+        ['token on the gate chain', '          CHROME_PATH: /usr/bin/google-chrome\n', `          CHROME_PATH: /usr/bin/google-chrome\n${tokenLine}`, /Gate chain.*installs, builds or runs gates with the token in reach \(env\)/],
         ['token in the job env', '    timeout-minutes: 5\n', `    timeout-minutes: 5\n    env:\n      GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}\n`, /token is in the job env/],
         ['token in the workflow env', 'concurrency:\n', `env:\n  GITHUB_TOKEN: \${{ github.token }}\nconcurrency:\n`, /token is in the workflow env/],
         ['push writes the token into .git/config', '          auth="$(', '          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic x"\n          auth="$(', /writes a credential into the Git config/],
+        // Review 3b (GPT-6-Luna): three plants the check missed before this case covered them.
+        ['review 3b: bracket notation on the build step', '      - name: Build (cards, feed, report)\n', "      - name: Build (cards, feed, report)\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n", /Build.*receives the token \(env\) but is not the watch, push or sync step/],
+        ['review 3b: token on a uses step (setup-node)', '          node-version: 22\n', `          node-version: 22\n        env:\n${tokenLine}`, /actions\/setup-node.*receives the token \(env\) but is not the watch, push or sync step/],
+        ['review 3b: a second push after the sync', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', `        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n\n      - name: Push again\n        env:\n${tokenLine}        run: git push origin HEAD:main\n`, /a git push \(step \d+\) follows the dashboard sync/],
+        // Further notations and channels.
+        ['token as a checkout input (double-quoted brackets)', '          persist-credentials: false\n', '          persist-credentials: false\n          token: ${{ secrets["GITHUB_TOKEN"] }}\n', /actions\/checkout.*receives the token \(with:\) but is not the watch, push or sync step/],
+        ['token expanded into a comment line of the build run text', '          node site/scripts/make-live.mjs\n', '          # debug ${{ github.token }}\n          node site/scripts/make-live.mjs\n', /Build.*receives the token \(run text\)/],
+        ['lower-case secrets.github_token on the gate chain', '          CHROME_PATH: /usr/bin/google-chrome\n', '          CHROME_PATH: /usr/bin/google-chrome\n          GH_TOKEN: ${{ secrets.github_token }}\n', /Gate chain.*receives the token \(env\)/],
       ];
       for (const [name, find, replace, want] of plants) {
         let p;
         try { p = probs(plantWorkflow(text, find, replace)); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
         c.expect(p.some((x) => want.test(x)), `${name}: not reported (got ${p.join(' | ') || 'nothing'})`);
       }
-      const direct = { permissions: { contents: 'write' }, jobs: { w: { if: "github.ref == 'refs/heads/main'", steps: [{ run: 'bash site/scripts/verify-site.sh', env: { GITHUB_TOKEN: '${{ github.token }}' } }] } } };
-      c.expect(writeJobProblems(direct).some((x) => /token in its env/.test(x)), 'a direct verify-site.sh run with a token is accepted');
+      const direct = (run) => ({ permissions: { contents: 'write' }, jobs: { w: { if: "github.ref == 'refs/heads/main'", steps: [{ run, env: { GITHUB_TOKEN: '${{ github.token }}' } }] } } });
+      c.expect(writeJobProblems(direct('bash site/scripts/verify-site.sh')).some((x) => /installs, builds or runs gates/.test(x)), 'a direct verify-site.sh run with a token is accepted');
+      c.expect(writeJobProblems(direct('node watch/watch.mjs --apply && bun install')).some((x) => /installs, builds or runs gates/.test(x)), 'an allowed step that also installs is accepted');
+      const other = { permissions: { contents: 'write' }, jobs: { w: { if: "github.ref == 'refs/heads/main'", steps: [{ run: 'echo ${{ secrets.GITHUB_TOKEN_EXTRA }}' }] } } };
+      c.expect(writeJobProblems(other).every((x) => !/receives the token/.test(x)), 'a different secret whose name starts with GITHUB_TOKEN counts as the token');
       return c.result();
     },
   },
