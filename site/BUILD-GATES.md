@@ -473,7 +473,7 @@ offline: GitHub settings, and what runner software (`git`, `gh`, `jq`) does
 with a token. The `production` environment's branch policy is one such
 setting; it is attested below by hand, and `deploy.yml` also checks the ref
 itself.
-**Attestation, production environment (2026-09-25T13:25:38Z).** The deploy
+**Attestation, production environment (2026-09-25T18:08:35Z).** The deploy
 job reads `CLOUDFLARE_API_TOKEN` from the `production` environment only. Its
 deployment branch policy, read with the maintainer's `gh` login (names and
 policy only; no secret value is readable through this API or printed):
@@ -481,7 +481,7 @@ policy only; no secret value is readable through this API or printed):
 ```
 $ gh api repos/JYeswak/franken-research/environments/production \
     --jq '{name, deployment_branch_policy, protection_rules: [.protection_rules[] | {type}], can_admins_bypass}'
-{"can_admins_bypass":true,"deployment_branch_policy":{"custom_branch_policies":true,"protected_branches":false},"name":"production","protection_rules":[{"type":"branch_policy"}]}
+{"can_admins_bypass":false,"deployment_branch_policy":{"custom_branch_policies":true,"protected_branches":false},"name":"production","protection_rules":[{"type":"branch_policy"}]}
 $ gh api repos/JYeswak/franken-research/environments/production/deployment-branch-policies \
     --jq '{total_count, branch_policies: [.branch_policies[] | {name, type}]}'
 {"branch_policies":[{"name":"main","type":"branch"}],"total_count":1}
@@ -492,10 +492,11 @@ $ gh api repos/JYeswak/franken-research/actions/secrets --jq '{total_count, name
 ```
 
 So only `main` may deploy to `production`, the Cloudflare token exists only
-there, and the repository holds no other secret. `can_admins_bypass` is true:
-an administrator can still deploy from another branch by hand, which this
-gate cannot prevent. Re-run these commands after any change to the
-environment, and date the new output here.
+there, and the repository holds no other secret. `can_admins_bypass` is false
+(turned off 2026-09-25 with the maintainer's approval; the earlier attestation
+at 13:25:38Z read true), so the branch policy binds administrators too. Re-run
+these commands after any change to the environment, and date the new output
+here.
 **Why:** the freshness work replaces per-event issues with computed classes,
 a card on every brief, and one dashboard issue, all written by a scheduled
 job nobody reads first. The contract says what must hold; this gate proves
