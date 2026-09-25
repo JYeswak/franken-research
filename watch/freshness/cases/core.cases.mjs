@@ -249,13 +249,12 @@ const C3 = [
     const got = classifyCi(f, 'now');
     return all(expectClass(got, 'C5', 'FR-C.2/C5-no-push-trigger'), ciCommit(f, 'now', got) === SHA_NOW ? true : { pass: false, detail: `now_commit ${ciCommit(f, 'now', got)}` });
   } },
-  { id: 'CORE-C3-frankengit-now-C5', clauses: ['FR-C.3', 'FR-C.2'], level: 'MUST', title: 'frankengit on the reference fixture reads C5 now from HEAD\'s dispatch-only files, not C3 from a settled commit that predates the workflow removal', run(ctx) {
+  { id: 'CORE-C3-frankengit-now-C5', clauses: ['FR-C.3', 'FR-C.2'], level: 'MUST', title: 'frankengit on the reference fixture: no commit on its push-runs page has a push-triggered test run, so there is no CI point, and CI now is C5 from HEAD\'s dispatch-only files with now_commit HEAD', run(ctx) {
     const r = ref().records.frankengit;
     const f = factsFor(r, ref().summaries, { checkedAt: ref().recorded_at, pointMap: { pin: 'pin', now: 'now', baseline: 'recheck', ci: 'ci' } });
     const got = classifyCi(f, 'now');
-    const ci = r.points.ci;
     return all(expectClass(got, 'C5'), ciCommit(f, 'now', got) === r.head ? true : { pass: false, detail: `now_commit ${ciCommit(f, 'now', got)}` },
-      ci && ci.sha !== r.head && ci.date < r.points.recheck.date ? true : { pass: false, detail: `the fixture no longer holds a stale CI point for frankengit (ci ${ci?.sha?.slice(0, 7)} ${ci?.date})` });
+      r.points.ci === null && r.ci_page?.commits > 0 ? true : { pass: false, detail: `the fixture holds a CI point for frankengit (${r.points.ci?.sha?.slice(0, 7)}) or an empty page (${JSON.stringify(r.ci_page)})` });
   } },
 ];
 

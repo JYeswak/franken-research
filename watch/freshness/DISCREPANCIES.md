@@ -18,7 +18,7 @@ Format, one block per entry (the harness parses the Resolution and Review date l
 
 The matrix is never edited to match the machine. Where the matrix disagrees with its own legend, the entry says so, and the finding goes to a dated note under `updates/`.
 
-All facts below are from the reference fixture `watch/freshness/fixtures/core/` (recorded 2026-09-25 02:08 UTC, see `fixtures/PROVENANCE.md`) unless a packet line is cited.
+All facts below are from the reference fixture `watch/freshness/fixtures/core/` (recorded 2026-09-25 04:02 UTC, see `fixtures/PROVENANCE.md`) unless a packet line is cited.
 
 ## DISC-001: franken_manim CI: a path-filtered test workflow failed on the pin
 - **Clause:** FR-H.1, FR-C.2

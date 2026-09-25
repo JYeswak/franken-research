@@ -1,15 +1,15 @@
 {
  "schema": "fr.watch.facts-fixture/v1",
- "recorded_at": "2026-09-25T02:08:40Z",
- "git_ref": "b5c18d16f0a8a95e222dad1fba45089ed9363046",
+ "recorded_at": "2026-09-25T04:02:38Z",
+ "git_ref": "5c7877fa4af3f5886ac265f41401b42838ec4d85",
  "command": "node watch/freshness/facts.mjs --record",
  "api": {
-  "graphql_calls": 99,
-  "graphql_cost": 99,
-  "graphql_remaining": 4477,
+  "graphql_calls": 89,
+  "graphql_cost": 89,
+  "graphql_remaining": 4797,
   "rest_calls": 176,
-  "rest_remaining": 4868,
-  "elapsed_s": 54.8
+  "rest_remaining": 3809,
+  "elapsed_s": 71.3
  },
  "records": {
   "asupersync": {
@@ -20,11 +20,11 @@
    "default_branch": "main",
    "pin": "768595203e194573bb713158b5963f55861dfe2d",
    "pin_date": "2026-09-22T15:31:19Z",
-   "head": "5cc3a89f1d971dd56645bdc81fe7356e5a7e202e",
-   "head_date": "2026-09-25T01:48:36Z",
+   "head": "29f9cabdadd9fcf49e981ce228f73cf986cf95a7",
+   "head_date": "2026-09-25T03:22:35Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 132,
+   "commits_since_pin": 133,
    "releases": [
     {
      "tag": "v0.2.5",
@@ -412,7 +412,7 @@
     }
    },
    "ci_page": {
-    "total": 26266,
+    "total": 22105,
     "commits": 37
    },
    "points": {
@@ -482,8 +482,8 @@
      }
     },
     "now": {
-     "sha": "5cc3a89f1d971dd56645bdc81fe7356e5a7e202e",
-     "date": "2026-09-25T01:48:36Z",
+     "sha": "29f9cabdadd9fcf49e981ce228f73cf986cf95a7",
+     "date": "2026-09-25T03:22:35Z",
      "workflows": [
       {
        "path": ".github/workflows/atp-proof-lanes.yml",
@@ -691,31 +691,7 @@
      "licenses": [],
      "runs": null
     },
-    "ci": {
-     "sha": "50e2709a59becd2cf33071f0aa031c5447635c04",
-     "date": "2026-03-09T00:20:12Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/static.yml",
-       "blob": "082e3ad4fd804fe44c96fb546926e6652ba0cd7c"
-      }
-     ],
-     "licenses": [],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "50e2709a59becd2cf33071f0aa031c5447635c04",
-        "path": ".github/workflows/static.yml",
-        "name": "Deploy static content to Pages",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "beads-for-frankentui": {
@@ -784,31 +760,7 @@
      "licenses": [],
      "runs": null
     },
-    "ci": {
-     "sha": "2c6fe856601bd680c16b409bc045efdc3b08c1ab",
-     "date": "2026-09-24T22:10:15Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/static.yml",
-       "blob": "082e3ad4fd804fe44c96fb546926e6652ba0cd7c"
-      }
-     ],
-     "licenses": [],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "2c6fe856601bd680c16b409bc045efdc3b08c1ab",
-        "path": ".github/workflows/static.yml",
-        "name": "Deploy static content to Pages",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "franken_agent_detection": {
@@ -1112,8 +1064,8 @@
      "runs": null
     },
     "ci": {
-     "sha": "026f60b28784ca77c5b8e47e3dba9b22d154b4d9",
-     "date": "2026-09-22T04:29:33Z",
+     "sha": "b2d57053e83d5854062d8f55ed2c34bee6641933",
+     "date": "2026-09-25T01:47:58Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -1143,11 +1095,19 @@
       }
      ],
      "runs": {
-      "total": 2,
+      "total": 3,
       "complete": true,
       "list": [
        {
-        "sha": "026f60b28784ca77c5b8e47e3dba9b22d154b4d9",
+        "sha": "b2d57053e83d5854062d8f55ed2c34bee6641933",
+        "path": ".github/workflows/validate-codex-prompt-patch.yml",
+        "name": "Codex prompt integrity",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success"
+       },
+       {
+        "sha": "b2d57053e83d5854062d8f55ed2c34bee6641933",
         "path": ".github/workflows/codex-exclusions.yml",
         "name": "Codex exclusions",
         "event": "push",
@@ -1155,12 +1115,12 @@
         "conclusion": "success"
        },
        {
-        "sha": "026f60b28784ca77c5b8e47e3dba9b22d154b4d9",
+        "sha": "b2d57053e83d5854062d8f55ed2c34bee6641933",
         "path": ".github/workflows/ci.yml",
         "name": "CI",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure"
+        "conclusion": "success"
        }
       ]
      }
@@ -1175,11 +1135,11 @@
    "default_branch": "main",
    "pin": "d05cb8c8dcbf1e5057b9ba208ad3921e8107a487",
    "pin_date": "2026-09-22T15:13:39Z",
-   "head": "eecf09e23c4599d3b176fecc364186b320242f20",
-   "head_date": "2026-09-25T01:24:41Z",
+   "head": "a42b70e3e21d4693608fa288e0f73555242977de",
+   "head_date": "2026-09-25T03:06:48Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 33,
+   "commits_since_pin": 34,
    "releases": [],
    "tags": [],
    "workflow_states": {},
@@ -1205,8 +1165,8 @@
      }
     },
     "now": {
-     "sha": "eecf09e23c4599d3b176fecc364186b320242f20",
-     "date": "2026-09-25T01:24:41Z",
+     "sha": "a42b70e3e21d4693608fa288e0f73555242977de",
+     "date": "2026-09-25T03:06:48Z",
      "workflows": [],
      "licenses": [
       {
@@ -1417,11 +1377,11 @@
    "default_branch": "main",
    "pin": "bff9a4da7059717335926b4bacdbb03d96408a7f",
    "pin_date": "2026-09-21T01:12:02Z",
-   "head": "6eae41f98100f89514f0a634c108daae527e4053",
-   "head_date": "2026-09-25T02:07:17Z",
+   "head": "737500fce8d11491efcae3c752cb91223d2c62bf",
+   "head_date": "2026-09-25T03:16:50Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 90,
+   "commits_since_pin": 98,
    "releases": [
     {
      "tag": "v0.1.0",
@@ -1538,8 +1498,8 @@
     }
    },
    "ci_page": {
-    "total": 5058,
-    "commits": 20
+    "total": 5373,
+    "commits": 18
    },
    "points": {
     "pin": {
@@ -1723,8 +1683,8 @@
      }
     },
     "now": {
-     "sha": "6eae41f98100f89514f0a634c108daae527e4053",
-     "date": "2026-09-25T02:07:17Z",
+     "sha": "737500fce8d11491efcae3c752cb91223d2c62bf",
+     "date": "2026-09-25T03:16:50Z",
      "workflows": [
       {
        "path": ".github/workflows/adversarial_fuzz.yml",
@@ -1832,8 +1792,8 @@
      "runs": null
     },
     "ci": {
-     "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
-     "date": "2026-09-22T20:13:26Z",
+     "sha": "737500fce8d11491efcae3c752cb91223d2c62bf",
+     "date": "2026-09-25T03:16:50Z",
      "workflows": [
       {
        "path": ".github/workflows/adversarial_fuzz.yml",
@@ -1846,6 +1806,10 @@
       {
        "path": ".github/workflows/claim-truth-reconciliation.yml",
        "blob": "b3d839351fee9b27a5fd7b993ac7e297f700dd8d"
+      },
+      {
+       "path": ".github/workflows/collection-runtime.yml",
+       "blob": "00d30738a211608aa408de612f625fe71bc29521"
       },
       {
        "path": ".github/workflows/dist.yml",
@@ -1873,7 +1837,7 @@
       },
       {
        "path": ".github/workflows/json-runtime.yml",
-       "blob": "b3dfb3198e8871dd568a7462d49695944a4349f5"
+       "blob": "580cb1bca8ff7da4c9ee69f6d3abeed367e57d51"
       },
       {
        "path": ".github/workflows/main-safety.yml",
@@ -1935,11 +1899,11 @@
       }
      ],
      "runs": {
-      "total": 8,
+      "total": 4,
       "complete": true,
       "list": [
        {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
+        "sha": "737500fce8d11491efcae3c752cb91223d2c62bf",
         "path": ".github/workflows/main-safety.yml",
         "name": "Main Safety",
         "event": "push",
@@ -1947,31 +1911,7 @@
         "conclusion": "success"
        },
        {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
-        "path": ".github/workflows/primitive-conversions.yml",
-        "name": "Native Primitive Conversions",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
-        "path": ".github/workflows/reflect-properties.yml",
-        "name": "Native Reflect Properties",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
-        "path": ".github/workflows/json-runtime.yml",
-        "name": "Native JSON Runtime",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
+        "sha": "737500fce8d11491efcae3c752cb91223d2c62bf",
         "path": ".github/workflows/adversarial_fuzz.yml",
         "name": "Adversarial Fuzz Targets",
         "event": "push",
@@ -1979,28 +1919,20 @@
         "conclusion": "failure"
        },
        {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
-        "path": ".github/workflows/engine-object-id-versioning-guard.yml",
-        "name": "EngineObjectId Persisted-Consumer Versioning Guard",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
-        "path": ".github/workflows/native-runtime.yml",
-        "name": "Native Runtime",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "b32c1e573eefa467f26e6e62e018efaa9e85ba9f",
+        "sha": "737500fce8d11491efcae3c752cb91223d2c62bf",
         "path": ".github/workflows/version_matrix_conformance.yml",
         "name": "Version Matrix Conformance",
         "event": "push",
         "status": "completed",
         "conclusion": "failure"
+       },
+       {
+        "sha": "737500fce8d11491efcae3c752cb91223d2c62bf",
+        "path": ".github/workflows/engine-object-id-versioning-guard.yml",
+        "name": "EngineObjectId Persisted-Consumer Versioning Guard",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success"
        }
       ]
      }
@@ -2015,11 +1947,11 @@
    "default_branch": "main",
    "pin": "e91da19970591cf5c0ed0c113b475d748577291c",
    "pin_date": "2026-09-22T15:17:18Z",
-   "head": "c4c4d4a569f0cd479c958538780ab9246fb6c0a8",
-   "head_date": "2026-09-25T02:04:46Z",
+   "head": "0466f4240d0364bbb4736086c75e6d5e8c93c21f",
+   "head_date": "2026-09-25T03:49:57Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 125,
+   "commits_since_pin": 130,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -2429,8 +2361,8 @@
     }
    },
    "ci_page": {
-    "total": 7070,
-    "commits": 8
+    "total": 7114,
+    "commits": 9
    },
    "points": {
     "pin": {
@@ -2854,8 +2786,8 @@
      }
     },
     "now": {
-     "sha": "c4c4d4a569f0cd479c958538780ab9246fb6c0a8",
-     "date": "2026-09-25T02:04:46Z",
+     "sha": "0466f4240d0364bbb4736086c75e6d5e8c93c21f",
+     "date": "2026-09-25T03:49:57Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -3075,7 +3007,7 @@
       },
       {
        "path": ".github/workflows/fln-proof-conversion-landing.yml",
-       "blob": "12e74f35b3695237c9ce78059179050c9770a7fe"
+       "blob": "04b76ab8573a63f857efbfcdb45a3dd44de0e3fe"
       },
       {
        "path": ".github/workflows/fln-propositional-families-landing.yml",
@@ -3723,8 +3655,8 @@
      }
     },
     "ci": {
-     "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-     "date": "2026-09-25T01:16:25Z",
+     "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
+     "date": "2026-09-25T03:03:20Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -3924,7 +3856,7 @@
       },
       {
        "path": ".github/workflows/fln-native-toolchain-snapshot.yml",
-       "blob": "6f6f6c5f72c469095917f471dca85efef5dbd6a9"
+       "blob": "a636957e0c0ce50e7580fa0113b01280c2ba068c"
       },
       {
        "path": ".github/workflows/fln-parameterized-recursion-landing.yml",
@@ -4138,11 +4070,11 @@
       }
      ],
      "runs": {
-      "total": 19,
+      "total": 9,
       "complete": true,
       "list": [
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
         "path": ".github/workflows/fln-lsp-versioned-diagnostics-landing.yml",
         "name": ".github/workflows/fln-lsp-versioned-diagnostics-landing.yml",
         "event": "push",
@@ -4150,7 +4082,7 @@
         "conclusion": "failure"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
         "path": ".github/workflows/fln-lsp-jsonrpc-lifecycle-landing.yml",
         "name": ".github/workflows/fln-lsp-jsonrpc-lifecycle-landing.yml",
         "event": "push",
@@ -4158,63 +4090,7 @@
         "conclusion": "failure"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/fln-unifier-integration.yml",
-        "name": "Native unifier integration",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/fln-native-equality-decisions-landing.yml",
-        "name": "Native equality decision tests",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-lake-integrity.yml",
-        "name": "Native Lake integrity",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-goal-inspection.yml",
-        "name": "Native goal inspection",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-source-regressions.yml",
-        "name": "Native parser regressions",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-propositional-logic.yml",
-        "name": "Native propositional logic",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-nested-lets.yml",
-        "name": "Native nested let terms",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
         "path": ".github/workflows/windows-functional.yml",
         "name": "windows-functional",
         "event": "push",
@@ -4222,31 +4098,7 @@
         "conclusion": "failure"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/product-gate.yml",
-        "name": "product gate",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "cancelled"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-section-variables.yml",
-        "name": "Native section variables",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-named-arguments.yml",
-        "name": "Native named arguments",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
         "path": ".github/workflows/ci.yml",
         "name": "ci",
         "event": "push",
@@ -4254,31 +4106,23 @@
         "conclusion": "failure"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-instance-variants.yml",
-        "name": "Native instance variant integration",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
+        "path": ".github/workflows/product-gate.yml",
+        "name": "product gate",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure"
+        "conclusion": "cancelled"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/native-list-notation.yml",
-        "name": "Native collection source integration",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
+        "path": ".github/workflows/native-propositional-logic.yml",
+        "name": "Native propositional logic",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure"
+        "conclusion": "cancelled"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
-        "path": ".github/workflows/fln-elab-native.yml",
-        "name": "Native elaborator functional tests",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
         "path": ".github/workflows/fln-lsp-versioned-diagnostics-landing.yml",
         "name": ".github/workflows/fln-lsp-versioned-diagnostics-landing.yml",
         "event": "push",
@@ -4286,7 +4130,15 @@
         "conclusion": "failure"
        },
        {
-        "sha": "43e02899807ed8cf3c0509c495576d996ce0bf20",
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
+        "path": ".github/workflows/native-instance-variants.yml",
+        "name": "Native instance variant integration",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "b303b798a618975672485d99d92ebcc2b09c2d28",
         "path": ".github/workflows/fln-lsp-jsonrpc-lifecycle-landing.yml",
         "name": ".github/workflows/fln-lsp-jsonrpc-lifecycle-landing.yml",
         "event": "push",
@@ -4306,11 +4158,11 @@
    "default_branch": "main",
    "pin": "d3a8090e6950a440876f5eb389b6b9fbb5f910d4",
    "pin_date": "2026-09-22T14:59:17Z",
-   "head": "0ad26a94f4705a4204b693c951a1b4853f88275d",
-   "head_date": "2026-09-25T01:52:36Z",
+   "head": "b98f190ae987ccc9dc5391451bd73e3bb4c653c9",
+   "head_date": "2026-09-25T03:58:15Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 157,
+   "commits_since_pin": 179,
    "releases": [
     {
      "tag": "v0.1.0",
@@ -4588,6 +4440,10 @@
      "state": "active",
      "since": "2026-09-22T16:58:48Z"
     },
+    ".github/workflows/native-surface-lifecycle.yml": {
+     "state": "active",
+     "since": "2026-09-25T03:32:10Z"
+    },
     ".github/workflows/native-tables.yml": {
      "state": "active",
      "since": "2026-09-23T15:59:25Z"
@@ -4770,8 +4626,8 @@
     }
    },
    "ci_page": {
-    "total": 3737,
-    "commits": 23
+    "total": 3820,
+    "commits": 22
    },
    "points": {
     "pin": {
@@ -5162,8 +5018,8 @@
      }
     },
     "now": {
-     "sha": "0ad26a94f4705a4204b693c951a1b4853f88275d",
-     "date": "2026-09-25T01:52:36Z",
+     "sha": "b98f190ae987ccc9dc5391451bd73e3bb4c653c9",
+     "date": "2026-09-25T03:58:15Z",
      "workflows": [
       {
        "path": ".github/workflows/activate-animation-semantics.yml",
@@ -5339,7 +5195,7 @@
       },
       {
        "path": ".github/workflows/native-frame-pipeline.yml",
-       "blob": "fd82a68401b358304e56d94e916d743a35012149"
+       "blob": "b8d15fe9abcec8eb00e8349595abb0d820c42eaa"
       },
       {
        "path": ".github/workflows/native-graph-lifecycles.yml",
@@ -5384,6 +5240,10 @@
       {
        "path": ".github/workflows/native-surface-admission.yml",
        "blob": "aac965e3bef67d359e7650245b265dcdab7cfeac"
+      },
+      {
+       "path": ".github/workflows/native-surface-lifecycle.yml",
+       "blob": "1a3fa1cbc0a92a6421ddcda5baa3a51472b1c699"
       },
       {
        "path": ".github/workflows/native-tables.yml",
@@ -6001,8 +5861,8 @@
      }
     },
     "ci": {
-     "sha": "0e7e47f3bdbd0cd7b72976bba62ffd9f8d370bc0",
-     "date": "2026-09-25T01:35:28Z",
+     "sha": "9fe8f15c50caa4aec52d3752fc005b11f8ba5ef5",
+     "date": "2026-09-25T03:39:56Z",
      "workflows": [
       {
        "path": ".github/workflows/activate-animation-semantics.yml",
@@ -6153,6 +6013,10 @@
        "blob": "a40bd9789568317bd9f37649c10f469c3c14f682"
       },
       {
+       "path": ".github/workflows/mixed-camera-wasm.yml",
+       "blob": "8486a4f89eab30866f633ad178545c3838b1648d"
+      },
+      {
        "path": ".github/workflows/native-audio-ingestion.yml",
        "blob": "9ca69327321a948643c330dea6bfc62c9b4f49e2"
       },
@@ -6174,11 +6038,11 @@
       },
       {
        "path": ".github/workflows/native-frame-pipeline.yml",
-       "blob": "6b5a5287617dcd5dafe96bfb01e383f7ac46f03e"
+       "blob": "b8d15fe9abcec8eb00e8349595abb0d820c42eaa"
       },
       {
        "path": ".github/workflows/native-graph-lifecycles.yml",
-       "blob": "514b5db1b5bc66eb755e483758ccaf4cff7924e0"
+       "blob": "830872b32f6a30d60383a4597d88e694294991e2"
       },
       {
        "path": ".github/workflows/native-graph-sampling.yml",
@@ -6219,6 +6083,10 @@
       {
        "path": ".github/workflows/native-surface-admission.yml",
        "blob": "aac965e3bef67d359e7650245b265dcdab7cfeac"
+      },
+      {
+       "path": ".github/workflows/native-surface-lifecycle.yml",
+       "blob": "1a3fa1cbc0a92a6421ddcda5baa3a51472b1c699"
       },
       {
        "path": ".github/workflows/native-tables.yml",
@@ -6412,15 +6280,15 @@
       "complete": true,
       "list": [
        {
-        "sha": "0e7e47f3bdbd0cd7b72976bba62ffd9f8d370bc0",
-        "path": ".github/workflows/ci.yml",
-        "name": "CI",
+        "sha": "9fe8f15c50caa4aec52d3752fc005b11f8ba5ef5",
+        "path": ".github/workflows/native-surface-lifecycle.yml",
+        "name": "Native surface lifecycle acceptance",
         "event": "push",
-        "status": "completed",
-        "conclusion": "cancelled"
+        "status": "queued",
+        "conclusion": null
        },
        {
-        "sha": "0e7e47f3bdbd0cd7b72976bba62ffd9f8d370bc0",
+        "sha": "9fe8f15c50caa4aec52d3752fc005b11f8ba5ef5",
         "path": ".github/workflows/canonical-branches.yml",
         "name": "Canonical Branch Policy",
         "event": "push",
@@ -6428,12 +6296,12 @@
         "conclusion": "cancelled"
        },
        {
-        "sha": "0e7e47f3bdbd0cd7b72976bba62ffd9f8d370bc0",
-        "path": ".github/workflows/native-frame-pipeline.yml",
-        "name": "Native frame pipeline",
+        "sha": "9fe8f15c50caa4aec52d3752fc005b11f8ba5ef5",
+        "path": ".github/workflows/ci.yml",
+        "name": "CI",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure"
+        "conclusion": "cancelled"
        }
       ]
      }
@@ -6448,11 +6316,11 @@
    "default_branch": "main",
    "pin": "88a6a99ed1ebc48c7910c28213005d8b35963079",
    "pin_date": "2026-09-22T14:37:59Z",
-   "head": "92e8c1e47a1d2625d4da297e60116be73f8bfa6f",
-   "head_date": "2026-09-25T01:33:39Z",
+   "head": "6ca37bbe764a3cefbdd9ad833ca1db5bc1ec307d",
+   "head_date": "2026-09-25T03:34:58Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 51,
+   "commits_since_pin": 54,
    "releases": [
     {
      "tag": "v0.1.0",
@@ -6651,8 +6519,8 @@
      }
     },
     "now": {
-     "sha": "92e8c1e47a1d2625d4da297e60116be73f8bfa6f",
-     "date": "2026-09-25T01:33:39Z",
+     "sha": "6ca37bbe764a3cefbdd9ad833ca1db5bc1ec307d",
+     "date": "2026-09-25T03:34:58Z",
      "workflows": [
       {
        "path": ".github/workflows/release-wasm.yml",
@@ -6667,64 +6535,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "d0ab648a2fe9f3d983b324bf39673f0b571deded",
-     "date": "2026-09-03T04:05:10Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/apple.yml",
-       "blob": "ded1ba58e7b1f96e5b1f7301c98f949233af0aaf"
-      },
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "77f457f90d4f9957df7a8b907b1b467de45a4179"
-      },
-      {
-       "path": ".github/workflows/fuzz.yml",
-       "blob": "a5e25f97699ae1bd4622ff1e5b6d817dae76f598"
-      },
-      {
-       "path": ".github/workflows/pdf-a-validation.yml",
-       "blob": "cb8b093746b63c8d555bcb13c1eb02dbeb791648"
-      },
-      {
-       "path": ".github/workflows/publish-readiness.yml",
-       "blob": "fbc4b2c8a25b21898f5d1937bd6bbf04afb2022f"
-      },
-      {
-       "path": ".github/workflows/release-wasm.yml",
-       "blob": "5ee6a5bdbfefc92883b2eb69008b2de44a0c1a28"
-      },
-      {
-       "path": ".github/workflows/release.yml",
-       "blob": "de792cf0e7d6ef1957dc23353e2336793392b47d"
-      },
-      {
-       "path": ".github/workflows/verify-docs.yml",
-       "blob": "9880401bb72d58ac124db80c7e64abdc4ad2dba0"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "d0ab648a2fe9f3d983b324bf39673f0b571deded",
-        "path": ".github/workflows/apple.yml",
-        "name": "Apple app",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "cancelled"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "franken_markdown_website": {
@@ -6829,11 +6640,11 @@
    "default_branch": "main",
    "pin": "841a711634c1c38c51c6f344598e1fc7ec273dd4",
    "pin_date": "2026-09-22T15:25:58Z",
-   "head": "4d45fc2709909ff10ea05050d19368095332caea",
-   "head_date": "2026-09-25T02:07:58Z",
+   "head": "979a5eadf86902af6349ef1a89bd542fea3698a2",
+   "head_date": "2026-09-25T03:38:01Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 70,
+   "commits_since_pin": 74,
    "releases": [
     {
      "tag": "v0.2.0",
@@ -6941,8 +6752,8 @@
      }
     },
     "now": {
-     "sha": "4d45fc2709909ff10ea05050d19368095332caea",
-     "date": "2026-09-25T02:07:58Z",
+     "sha": "979a5eadf86902af6349ef1a89bd542fea3698a2",
+     "date": "2026-09-25T03:38:01Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -7117,11 +6928,11 @@
    "default_branch": "main",
    "pin": "08447a0aa5ed016d5ff9abb5aa0d44e9f5061dc4",
    "pin_date": "2026-09-22T05:23:51Z",
-   "head": "89b7fcded459fce42ff87367ada2ee61482dda6a",
-   "head_date": "2026-09-24T18:53:09Z",
+   "head": "96f8f0188ffb682898d45f0ec8f8a5a9fd9f030e",
+   "head_date": "2026-09-25T03:17:08Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 54,
+   "commits_since_pin": 67,
    "releases": [
     {
      "tag": "v0.1.0",
@@ -7339,11 +7150,19 @@
     ".github/workflows/verified-rewrite.yml": {
      "state": "active",
      "since": "2026-09-16T14:19:40Z"
+    },
+    ".github/workflows/verifier-sdk-standalone.yml": {
+     "state": "active",
+     "since": "2026-09-25T02:20:06Z"
+    },
+    ".github/workflows/workflow-lint.yml": {
+     "state": "active",
+     "since": "2026-09-25T04:03:07Z"
     }
    },
    "ci_page": {
-    "total": 15543,
-    "commits": 9
+    "total": 15643,
+    "commits": 11
    },
    "points": {
     "pin": {
@@ -7625,8 +7444,8 @@
      }
     },
     "now": {
-     "sha": "89b7fcded459fce42ff87367ada2ee61482dda6a",
-     "date": "2026-09-24T18:53:09Z",
+     "sha": "96f8f0188ffb682898d45f0ec8f8a5a9fd9f030e",
+     "date": "2026-09-25T03:17:08Z",
      "workflows": [
       {
        "path": ".github/workflows/adjacent-substrate-gate.yml",
@@ -7831,6 +7650,10 @@
       {
        "path": ".github/workflows/verified-rewrite.yml",
        "blob": "5a61b659098c1819c5af17a3999abb600f65b0d3"
+      },
+      {
+       "path": ".github/workflows/verifier-sdk-standalone.yml",
+       "blob": "1f9fecc3200cf28cd11f9519ec257c6dc923e349"
       }
      ],
      "licenses": [
@@ -7842,8 +7665,8 @@
      "runs": null
     },
     "ci": {
-     "sha": "89b7fcded459fce42ff87367ada2ee61482dda6a",
-     "date": "2026-09-24T18:53:09Z",
+     "sha": "aa595f0ae554fee359235b3343e0383087244188",
+     "date": "2026-09-25T02:56:54Z",
      "workflows": [
       {
        "path": ".github/workflows/adjacent-substrate-gate.yml",
@@ -8048,6 +7871,10 @@
       {
        "path": ".github/workflows/verified-rewrite.yml",
        "blob": "5a61b659098c1819c5af17a3999abb600f65b0d3"
+      },
+      {
+       "path": ".github/workflows/verifier-sdk-standalone.yml",
+       "blob": "1f9fecc3200cf28cd11f9519ec257c6dc923e349"
       }
      ],
      "licenses": [
@@ -8057,40 +7884,32 @@
       }
      ],
      "runs": {
-      "total": 4,
+      "total": 3,
       "complete": true,
       "list": [
        {
-        "sha": "89b7fcded459fce42ff87367ada2ee61482dda6a",
+        "sha": "aa595f0ae554fee359235b3343e0383087244188",
+        "path": ".github/workflows/placeholder-remediation-gate.yml",
+        "name": "Placeholder Remediation Gate",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success"
+       },
+       {
+        "sha": "aa595f0ae554fee359235b3343e0383087244188",
         "path": ".github/workflows/readme-cli-drift-gate.yml",
         "name": "README CLI Drift Gate",
         "event": "push",
         "status": "completed",
-        "conclusion": "success"
+        "conclusion": "cancelled"
        },
        {
-        "sha": "89b7fcded459fce42ff87367ada2ee61482dda6a",
-        "path": ".github/workflows/proof-carrying-execution-ledger-gate.yml",
-        "name": "Proof-Carrying Execution Ledger Gate",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "89b7fcded459fce42ff87367ada2ee61482dda6a",
-        "path": ".github/workflows/closer-discipline-gate.yml",
-        "name": "closer-discipline-gate",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "89b7fcded459fce42ff87367ada2ee61482dda6a",
+        "sha": "aa595f0ae554fee359235b3343e0383087244188",
         "path": ".github/workflows/readme-quick-example-smoke.yml",
         "name": "README Quick Example Smoke",
         "event": "push",
         "status": "completed",
-        "conclusion": "success"
+        "conclusion": "cancelled"
        }
       ]
      }
@@ -8740,60 +8559,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "8a685213a437ee952c6d821b7444f6ff33ac3009",
-     "date": "2026-09-03T04:22:47Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/apple.yml",
-       "blob": "9ce5a909bad7af0345a56f8c1b4790f2450209d2"
-      },
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "05acc7823d6e2b936cd324b89728fe342861a7c1"
-      },
-      {
-       "path": ".github/workflows/dist.yml",
-       "blob": "462a5aff6479712101b92943d8e362f50730bcc5"
-      },
-      {
-       "path": ".github/workflows/model-parity.yml",
-       "blob": "de962f0ebb4f1bbf4d300d71a738ca5ab8bbdee7"
-      },
-      {
-       "path": ".github/workflows/performance-gauntlet.yml",
-       "blob": "07b282a6937e6c83639e2628c0d16fc3f4ffac2e"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "a5cf91e06ea9f5ffbe5424e395949cbdd7c63f6d"
-      }
-     ],
-     "runs": {
-      "total": 2,
-      "complete": true,
-      "list": [
-       {
-        "sha": "8a685213a437ee952c6d821b7444f6ff33ac3009",
-        "path": ".github/workflows/ci.yml",
-        "name": "CI",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "8a685213a437ee952c6d821b7444f6ff33ac3009",
-        "path": ".github/workflows/dist.yml",
-        "name": "dist",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "franken_overlap": {
@@ -8845,40 +8611,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "481582091391fdcaba85a87478b437ca5cca2476",
-     "date": "2026-08-15T00:35:22Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/apply-agent-wave.yml",
-       "blob": "c2acf59cd529699bc3d869f12da82d03cdd4fd31"
-      },
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "61c0164e55902fc6ce307e4a5febf5a2557c11c8"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "481582091391fdcaba85a87478b437ca5cca2476",
-        "path": ".github/workflows/ci.yml",
-        "name": "CI",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "franken_remote": {
@@ -8889,11 +8622,11 @@
    "default_branch": "main",
    "pin": "fdeb7a2ec079136e4d47a24138ce18d74b30d105",
    "pin_date": "2026-09-22T15:22:17Z",
-   "head": "507358aebaf3c572525496af9385ff57c1abe404",
-   "head_date": "2026-09-25T01:46:54Z",
+   "head": "a87b3fa3537bebadbdda848c4d56ed9d0bf93e56",
+   "head_date": "2026-09-25T03:54:15Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 91,
+   "commits_since_pin": 125,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -9043,7 +8776,7 @@
     }
    },
    "ci_page": {
-    "total": 4915,
+    "total": 5093,
     "commits": 8
    },
    "points": {
@@ -9209,8 +8942,8 @@
      }
     },
     "now": {
-     "sha": "507358aebaf3c572525496af9385ff57c1abe404",
-     "date": "2026-09-25T01:46:54Z",
+     "sha": "a87b3fa3537bebadbdda848c4d56ed9d0bf93e56",
+     "date": "2026-09-25T03:54:15Z",
      "workflows": [
       {
        "path": ".github/workflows/docs-integrity.yml",
@@ -9226,7 +8959,7 @@
       },
       {
        "path": ".github/workflows/rust-verification.yml",
-       "blob": "7746d9d2f0c1d7c9a9dd20e0224b2531b75705fb"
+       "blob": "34e0a435531f9d5f3b3116a976ab92d605fbb1e4"
       },
       {
        "path": ".github/workflows/source-maintenance.yml",
@@ -9366,8 +9099,8 @@
      "runs": null
     },
     "ci": {
-     "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-     "date": "2026-09-24T20:46:34Z",
+     "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+     "date": "2026-09-25T03:16:12Z",
      "workflows": [
       {
        "path": ".github/workflows/docs-integrity.yml",
@@ -9383,7 +9116,7 @@
       },
       {
        "path": ".github/workflows/rust-verification.yml",
-       "blob": "7746d9d2f0c1d7c9a9dd20e0224b2531b75705fb"
+       "blob": "34e0a435531f9d5f3b3116a976ab92d605fbb1e4"
       },
       {
        "path": ".github/workflows/source-maintenance.yml",
@@ -9525,55 +9258,7 @@
       "complete": true,
       "list": [
        {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-reconciled-capture.yml",
-        "name": "Verify reconciled capture",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-integration-slice.yml",
-        "name": "Verify native QUIC integration",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-input-capture-wake.yml",
-        "name": "Verify input capture wake",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-ticket-renewal.yml",
-        "name": "Verify input ticket renewal",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-control-renewal.yml",
-        "name": "Verify control lease renewal",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-desktop.yml",
-        "name": "Verify composed native desktop",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
         "path": ".github/workflows/verify-native-connection.yml",
         "name": "Verify native connection",
         "event": "push",
@@ -9581,31 +9266,15 @@
         "conclusion": "failure"
        },
        {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-continuous-viewer.yml",
-        "name": "Verify continuous native viewer",
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/rust-verification.yml",
+        "name": "Rust verification",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure"
+        "conclusion": "cancelled"
        },
        {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-host-publication.yml",
-        "name": "Verify host publication",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/verify-worker-integration.yml",
-        "name": "Verify media worker integration",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
         "path": ".github/workflows/verify-display-selection.yml",
         "name": "Verify display selection",
         "event": "push",
@@ -9613,7 +9282,55 @@
         "conclusion": "failure"
        },
        {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-control-renewal.yml",
+        "name": "Verify control lease renewal",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-worker-integration.yml",
+        "name": "Verify media worker integration",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-desktop.yml",
+        "name": "Verify composed native desktop",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-input-capture-wake.yml",
+        "name": "Verify input capture wake",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-continuous-viewer.yml",
+        "name": "Verify continuous native viewer",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-host-publication.yml",
+        "name": "Verify host publication",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
         "path": ".github/workflows/verify-receiver-feedback.yml",
         "name": "Verify receiver feedback",
         "event": "push",
@@ -9621,12 +9338,28 @@
         "conclusion": "failure"
        },
        {
-        "sha": "4f2ddc2cff97bd5634210843c69604041b716530",
-        "path": ".github/workflows/rust-verification.yml",
-        "name": "Rust verification",
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-reconciled-capture.yml",
+        "name": "Verify reconciled capture",
         "event": "push",
         "status": "completed",
-        "conclusion": "cancelled"
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-integration-slice.yml",
+        "name": "Verify native QUIC integration",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "05a371b4823c83762be0f7a7bb30855777a8c8ee",
+        "path": ".github/workflows/verify-ticket-renewal.yml",
+        "name": "Verify input ticket renewal",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
        }
       ]
      }
@@ -9641,11 +9374,11 @@
    "default_branch": "main",
    "pin": "e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86",
    "pin_date": "2026-09-22T13:28:48Z",
-   "head": "5e82e4668d7c2706cd571333e8b487471ae1ec3e",
-   "head_date": "2026-09-25T00:57:27Z",
+   "head": "8cf75ccfc1dca1f00f18e811a639328adc4e78e9",
+   "head_date": "2026-09-25T03:02:41Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 57,
+   "commits_since_pin": 59,
    "releases": [
     {
      "tag": "v0.0.1",
@@ -9735,8 +9468,8 @@
      }
     },
     "now": {
-     "sha": "5e82e4668d7c2706cd571333e8b487471ae1ec3e",
-     "date": "2026-09-25T00:57:27Z",
+     "sha": "8cf75ccfc1dca1f00f18e811a639328adc4e78e9",
+     "date": "2026-09-25T03:02:41Z",
      "workflows": [],
      "licenses": [
       {
@@ -9746,36 +9479,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "a4d44eb64588c0e3e0726182e45fc00bddf89555",
-     "date": "2026-09-13T04:26:44Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "0f6a91704cb5b215d0757b6e7e0f2f03489bc79e"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "a4d44eb64588c0e3e0726182e45fc00bddf89555",
-        "path": ".github/workflows/ci.yml",
-        "name": "ci",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "franken_surveillance_system": {
@@ -9786,11 +9490,11 @@
    "default_branch": "main",
    "pin": "3dcc111c67979a0225edbc8f5ff30343aec33388",
    "pin_date": "2026-09-22T13:15:33Z",
-   "head": "a4d0255f2b186693919e0d03c44f53315d4daab0",
-   "head_date": "2026-09-25T02:07:15Z",
+   "head": "97d108c72753e7f5727a1a05f19f2c4843451c16",
+   "head_date": "2026-09-25T03:22:51Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 739,
+   "commits_since_pin": 741,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -9808,7 +9512,7 @@
     }
    },
    "ci_page": {
-    "total": 691,
+    "total": 692,
     "commits": 99
    },
    "points": {
@@ -9846,8 +9550,8 @@
      }
     },
     "now": {
-     "sha": "a4d0255f2b186693919e0d03c44f53315d4daab0",
-     "date": "2026-09-25T02:07:15Z",
+     "sha": "97d108c72753e7f5727a1a05f19f2c4843451c16",
+     "date": "2026-09-25T03:22:51Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -9870,8 +9574,8 @@
      }
     },
     "ci": {
-     "sha": "78d42e307ea251885a8665b8382ee5248754e458",
-     "date": "2026-09-25T01:29:30Z",
+     "sha": "e3efdaa0c674fa64268eab1f14bf4c745d765b01",
+     "date": "2026-09-25T02:08:59Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -9893,7 +9597,7 @@
       "complete": true,
       "list": [
        {
-        "sha": "78d42e307ea251885a8665b8382ee5248754e458",
+        "sha": "e3efdaa0c674fa64268eab1f14bf4c745d765b01",
         "path": ".github/workflows/ci.yml",
         "name": "portable qualification specification",
         "event": "push",
@@ -9913,11 +9617,11 @@
    "default_branch": "main",
    "pin": "72dcaa1adbad6b3d552a071cc7db31a16ee4ba9d",
    "pin_date": "2026-09-22T15:10:21Z",
-   "head": "a8cc4363f4849b7b44597a09486b610a1c86d48f",
-   "head_date": "2026-09-25T01:38:02Z",
+   "head": "5539f6e43af2e02cc9d6e8016abfc20a00ae2b5f",
+   "head_date": "2026-09-25T03:10:35Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 29,
+   "commits_since_pin": 30,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -9927,8 +9631,8 @@
     }
    },
    "ci_page": {
-    "total": 31,
-    "commits": 31
+    "total": 32,
+    "commits": 32
    },
    "points": {
     "pin": {
@@ -9961,8 +9665,8 @@
      }
     },
     "now": {
-     "sha": "a8cc4363f4849b7b44597a09486b610a1c86d48f",
-     "date": "2026-09-25T01:38:02Z",
+     "sha": "5539f6e43af2e02cc9d6e8016abfc20a00ae2b5f",
+     "date": "2026-09-25T03:10:35Z",
      "workflows": [
       {
        "path": ".github/workflows/marching-cubes.yml",
@@ -9978,8 +9682,8 @@
      "runs": null
     },
     "ci": {
-     "sha": "a8cc4363f4849b7b44597a09486b610a1c86d48f",
-     "date": "2026-09-25T01:38:02Z",
+     "sha": "5539f6e43af2e02cc9d6e8016abfc20a00ae2b5f",
+     "date": "2026-09-25T03:10:35Z",
      "workflows": [
       {
        "path": ".github/workflows/marching-cubes.yml",
@@ -9997,7 +9701,7 @@
       "complete": true,
       "list": [
        {
-        "sha": "a8cc4363f4849b7b44597a09486b610a1c86d48f",
+        "sha": "5539f6e43af2e02cc9d6e8016abfc20a00ae2b5f",
         "path": ".github/workflows/marching-cubes.yml",
         "name": "Marching cubes integration",
         "event": "push",
@@ -10229,40 +9933,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "5798ccadc3d56d9318ad81a8ffdaaa192a153804",
-     "date": "2026-09-03T20:58:58Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/apple.yml",
-       "blob": "ca8f8f1e1f0e6290e1d0e68371dcc8d8024da86e"
-      },
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "1dd013cb80d0fde183357df4ecec6f28eb12abf4"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "2253842845d1eb59ad946108e513d393d4db78fe"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "5798ccadc3d56d9318ad81a8ffdaaa192a153804",
-        "path": ".github/workflows/ci.yml",
-        "name": "CI",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "franken_whisper": {
@@ -10526,44 +10197,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "9d6fad9566f7a91e3b6668d55fead8720aa87883",
-     "date": "2026-09-03T04:06:59Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/apple.yml",
-       "blob": "c27c6719e92c8c5b4ff0d0a4e23811a9a6675a5e"
-      },
-      {
-       "path": ".github/workflows/dist.yml",
-       "blob": "2e1e13335d2e69fb43bbcb55831913d1f0baff7a"
-      },
-      {
-       "path": ".github/workflows/release-automation.yml",
-       "blob": "0af2631d4d561b7f539024a2ef476fcc8f7cee6a"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "9d6fad9566f7a91e3b6668d55fead8720aa87883",
-        "path": ".github/workflows/apple.yml",
-        "name": "Apple source contract",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "cancelled"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "frankenfs": {
@@ -10574,11 +10208,11 @@
    "default_branch": "main",
    "pin": "49acf5d5a9b7d48d7d459e28bb5a32e8546900b6",
    "pin_date": "2026-09-22T14:50:19Z",
-   "head": "1b0164c762b67cf4f6e28f21e51f24929b5a682b",
-   "head_date": "2026-09-25T02:06:51Z",
+   "head": "9d4717fcede6f447e694710854965ed33d4f91ec",
+   "head_date": "2026-09-25T03:52:07Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 73,
+   "commits_since_pin": 79,
    "releases": [
     {
      "tag": "v0.2.0",
@@ -10623,8 +10257,8 @@
     }
    },
    "ci_page": {
-    "total": 14725,
-    "commits": 37
+    "total": 14736,
+    "commits": 39
    },
    "points": {
     "pin": {
@@ -10676,8 +10310,8 @@
      }
     },
     "now": {
-     "sha": "1b0164c762b67cf4f6e28f21e51f24929b5a682b",
-     "date": "2026-09-25T02:06:51Z",
+     "sha": "9d4717fcede6f447e694710854965ed33d4f91ec",
+     "date": "2026-09-25T03:52:07Z",
      "workflows": [
       {
        "path": ".github/workflows/artifact-gates.yml",
@@ -10776,8 +10410,8 @@
      }
     },
     "ci": {
-     "sha": "e32469ddb84750c219de014051bba303393959f1",
-     "date": "2026-09-24T20:57:16Z",
+     "sha": "29065bea6d858a2747f09eca1ff51cb6679c4363",
+     "date": "2026-09-25T02:26:17Z",
      "workflows": [
       {
        "path": ".github/workflows/artifact-gates.yml",
@@ -10811,24 +10445,32 @@
       }
      ],
      "runs": {
-      "total": 2,
+      "total": 3,
       "complete": true,
       "list": [
        {
-        "sha": "e32469ddb84750c219de014051bba303393959f1",
-        "path": ".github/workflows/artifact-gates.yml",
-        "name": "Artifact Gates",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "e32469ddb84750c219de014051bba303393959f1",
+        "sha": "29065bea6d858a2747f09eca1ff51cb6679c4363",
         "path": ".github/workflows/ci.yml",
         "name": "CI",
         "event": "push",
         "status": "completed",
         "conclusion": "failure"
+       },
+       {
+        "sha": "29065bea6d858a2747f09eca1ff51cb6679c4363",
+        "path": ".github/workflows/btrfs-reads.yml",
+        "name": "Btrfs Read Recovery",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure"
+       },
+       {
+        "sha": "29065bea6d858a2747f09eca1ff51cb6679c4363",
+        "path": ".github/workflows/artifact-gates.yml",
+        "name": "Artifact Gates",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success"
        }
       ]
      }
@@ -10843,11 +10485,11 @@
    "default_branch": "main",
    "pin": "894585a35e23d31bb462de24c6691124054d9c9e",
    "pin_date": "2026-09-22T14:52:00Z",
-   "head": "444fbe6bf17d10b7c2107a55ca66bdd0f22cfef0",
-   "head_date": "2026-09-25T01:52:36Z",
+   "head": "4c31ff4f367282d426b76b92c470e08271a9e3df",
+   "head_date": "2026-09-25T03:58:25Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 157,
+   "commits_since_pin": 181,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -10862,10 +10504,6 @@
     ".github/workflows/fetch-integration-work.yml": {
      "state": "active",
      "since": "2026-09-11T14:05:16Z"
-    },
-    ".github/workflows/gpt56pro-apply-format-20260904.yml": {
-     "state": "active",
-     "since": "2026-09-22T19:56:13Z"
     },
     ".github/workflows/gpt56pro-asb8-diagnostic.yml": {
      "state": "active",
@@ -11362,8 +11000,8 @@
      }
     },
     "now": {
-     "sha": "444fbe6bf17d10b7c2107a55ca66bdd0f22cfef0",
-     "date": "2026-09-25T01:52:36Z",
+     "sha": "4c31ff4f367282d426b76b92c470e08271a9e3df",
+     "date": "2026-09-25T03:58:25Z",
      "workflows": [
       {
        "path": ".github/workflows/docs-integrity.yml",
@@ -11372,10 +11010,6 @@
       {
        "path": ".github/workflows/exact-patch.yml",
        "blob": "e65751f63e0a71098dce5fe1fc8da7bf1d5cc6c2"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-apply-format-20260904.yml",
-       "blob": "43d707003783c52a2423aa3c9ed56e0527f976bc"
       },
       {
        "path": ".github/workflows/index-maintenance.yml",
@@ -11455,480 +11089,7 @@
       "list": []
      }
     },
-    "ci": {
-     "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-     "date": "2026-09-22T18:11:20Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/core-integration-session.yml",
-       "blob": "dd523fc6dc0e32e5ec3d18af74cf8eefc4faee85"
-      },
-      {
-       "path": ".github/workflows/docs-integrity.yml",
-       "blob": "54ccd6a70f5a024a097b1ce4a4664dae88733abb"
-      },
-      {
-       "path": ".github/workflows/event-feed-session.yml",
-       "blob": "90ec071ab4300aa5292055cc2e307a5d3eda48b6"
-      },
-      {
-       "path": ".github/workflows/event-feed-verify.yml",
-       "blob": "0589a12fa995a3d9fd10cf50f1fecdc4e4a80098"
-      },
-      {
-       "path": ".github/workflows/exact-patch.yml",
-       "blob": "f56736759e015dc0e4bc6f05bf2ef3b8846fa7fc"
-      },
-      {
-       "path": ".github/workflows/exact-source-read.yml",
-       "blob": "bd7320cfc7c3c004636d8cea6899aa04919372e3"
-      },
-      {
-       "path": ".github/workflows/fetch-cutoffs-work.yml",
-       "blob": "f25c44c1dec4bb7f330dc721aa9a5692dd9828b2"
-      },
-      {
-       "path": ".github/workflows/fetch-progress.yml",
-       "blob": "158ea819336e139b2120cf4a8eb560e3932e7b6f"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-agent-context-hardening.yml",
-       "blob": "cc0e119e189d03f3bcde7740d80460174a8ee197"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-agent-context-sequence.yml",
-       "blob": "f6b704e932a03f207e8bea3e80adffa311d11908"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-agent-next-work.yml",
-       "blob": "a348bf1ca0f854964a3daa2e1ff5141ae6373a0b"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-apply-agents-patch.yml",
-       "blob": "1f51307fc9aa1c1d4a1d6f467edf9378162c1bfb"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-apply-asb8-core-20260904.yml",
-       "blob": "5c51462077eaae564d4a92939cdb17ad7a3c34fd"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-apply-bv-changelog.yml",
-       "blob": "b39f186f7d24976048f6c2775f244e6225bc76c9"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-apply-bv-status-docs.yml",
-       "blob": "6fa24ad299371bfa558bf7781f921f5029cf42bd"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-asb8-env-profile.yml",
-       "blob": "3c33f34c4d6f5eeb9ea6a57bdb1456655b8ae05b"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-asb8-mainline-sequence.yml",
-       "blob": "bce14d2c314e60b935ef98616e9dda70674bdbda"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-asb8-phase-reset.yml",
-       "blob": "8709f5fd513a1d608fb7ee9a1e9c3a8047f1b8bf"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-bv-compat-verify.yml",
-       "blob": "2f084a1e667384736a00b549c3a8a866fd7c9f9b"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-bv-triage.yml",
-       "blob": "f5278a8cdc953f998d729b4a6b7d70326c8eec62"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-campaign-seal.yml",
-       "blob": "cce436c77c9537c3290ca0f8ab338828feb64c12"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-claim-bv-compat.yml",
-       "blob": "c716d73977297ece04ac789ca83da8b6e0e91158"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-final-checkpoint-v2.yml",
-       "blob": "45c2caf21c2f4c53de0a083d3bcfca87739b1aec"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-final-checkpoint.yml",
-       "blob": "81319a9714d2077ccb2483c339a17248a8e2eeb8"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-finalize-bv-compat.yml",
-       "blob": "32224b575cf9a7d8ffe283dc6eacf9931d2afc87"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-fix-bv-test-quote.yml",
-       "blob": "e3dd1a17cfb3bceeea82ae8286ba2d5d03e5ecec"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-format-live-main.yml",
-       "blob": "5eb1a9ac989646f1e7da83dc8c37a7328b935e26"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-mainline-reconcile.yml",
-       "blob": "26c851e6ed54a27a641b8c5d99c84277516ee65b"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-nodeconfig-doc-fix.yml",
-       "blob": "d19b921486625bdaeeb2b85327f93f4f33edbba5"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-publish-bv-agent-contract.yml",
-       "blob": "7aea5b8b63db9113504f04230adc10fb8cb3754f"
-      },
-      {
-       "path": ".github/workflows/gpt56pro-toolchain-pin-gate.yml",
-       "blob": "0307d71608bb0b85e6e16c62ab332b929e2e2ba8"
-      },
-      {
-       "path": ".github/workflows/http-transfer.yml",
-       "blob": "4567c27d48b3533cd3da12dc8e273a68489b7c9f"
-      },
-      {
-       "path": ".github/workflows/incremental-bundle-session.yml",
-       "blob": "ed683371ac9758f2799963d25446620ab7dfc7ab"
-      },
-      {
-       "path": ".github/workflows/incremental-integration-b7cc80e4.yml",
-       "blob": "d8e510e9b818f0dfc59c664fb153cf1764628331"
-      },
-      {
-       "path": ".github/workflows/index-maintenance.yml",
-       "blob": "daa88b06bb9db2c0542b2f23a819b6ed0ab8ef88"
-      },
-      {
-       "path": ".github/workflows/initial-commit-cli.yml",
-       "blob": "29f1e546cc892b4292e4b82fc22db5d1faddbcb1"
-      },
-      {
-       "path": ".github/workflows/initial-commit-core.yml",
-       "blob": "e920fefdd7fa2552421184917d111bd4fd781f5d"
-      },
-      {
-       "path": ".github/workflows/initial-commit-final.yml",
-       "blob": "22485b35f451bc0c835b67dfcdc26779d4a6af5d"
-      },
-      {
-       "path": ".github/workflows/initial-commit-node.yml",
-       "blob": "4ebe76539543c63c16f7137a47e31abb5b1f9ef4"
-      },
-      {
-       "path": ".github/workflows/initial-octal-fix.yml",
-       "blob": "3b7a6bfbfd24cde84551ae222b56b5e8fc053d04"
-      },
-      {
-       "path": ".github/workflows/issue-integration-work.yml",
-       "blob": "6d3abaf24ca35950445d747a07012c5bd16da4f9"
-      },
-      {
-       "path": ".github/workflows/native-bundle.yml",
-       "blob": "00120efd0da3d776ccc967969970e38ac6b0f0fc"
-      },
-      {
-       "path": ".github/workflows/native-continuation-snapshot.yml",
-       "blob": "36e872ed5ac40146a03e47c1e6a4922901ef5898"
-      },
-      {
-       "path": ".github/workflows/native-integration-recovery.yml",
-       "blob": "591e3ce07ac630aa09927adf328c1ce480300fbb"
-      },
-      {
-       "path": ".github/workflows/native-integration-source.yml",
-       "blob": "419a2b9dc08eb093e8f86f2b7a0c19d44939ba9b"
-      },
-      {
-       "path": ".github/workflows/native-merge-recovery-verify.yml",
-       "blob": "1332737c507337399e32fb4fd2ced714b92c1141"
-      },
-      {
-       "path": ".github/workflows/native-patch-publication.yml",
-       "blob": "ecc35fb333d317f3ce66d1fbdcc9c890644f0597"
-      },
-      {
-       "path": ".github/workflows/native-service-source.yml",
-       "blob": "a17b4d5d0cef2cd496be1c1e4010b9634ee87b24"
-      },
-      {
-       "path": ".github/workflows/native-tag-cli-work.yml",
-       "blob": "c52a78db441cc5860fc71b98c606d32e8a02084d"
-      },
-      {
-       "path": ".github/workflows/native-tag-final.yml",
-       "blob": "c49fbbccefe56408574b3c9594acc8a272221fd4"
-      },
-      {
-       "path": ".github/workflows/native-tag-work.yml",
-       "blob": "bdc70649bb6c25891058c885699d14bd1e98a455"
-      },
-      {
-       "path": ".github/workflows/native-tags-work.yml",
-       "blob": "d02f794d313f2049c61968579220bef372085524"
-      },
-      {
-       "path": ".github/workflows/node-smart-http-discovery.yml",
-       "blob": "2f45cab84154fa278f84e8b0d45340ed206db877"
-      },
-      {
-       "path": ".github/workflows/node-smart-http-receive-discovery.yml",
-       "blob": "e05440936e5ec44164f093e79f55700d221aca2c"
-      },
-      {
-       "path": ".github/workflows/node-smart-http-upload.yml",
-       "blob": "bf18838ebef1fe032726948f7755138e2f37920b"
-      },
-      {
-       "path": ".github/workflows/partial-cli-check.yml",
-       "blob": "ac657e1ef4ca186b4a21f1a8b7b88b4ea860f747"
-      },
-      {
-       "path": ".github/workflows/partial-clone-work.yml",
-       "blob": "bfd915ec95fdec6cf833810bd4a558ebb681b727"
-      },
-      {
-       "path": ".github/workflows/policy-integration-work.yml",
-       "blob": "d110eee1c84f9f1ba79659d06468a72cd7a6afba"
-      },
-      {
-       "path": ".github/workflows/rebase-session.yml",
-       "blob": "d732a794dc865050d14edde4d892af14acbd4d19"
-      },
-      {
-       "path": ".github/workflows/ref-kind-session.yml",
-       "blob": "fc6f9aaf5da8d77dbeb05d372d407fb291b65f9b"
-      },
-      {
-       "path": ".github/workflows/repository-protection-session.yml",
-       "blob": "22bfa3f623b323b2e2ed0fcf4049aee1ee128bd3"
-      },
-      {
-       "path": ".github/workflows/review-protection-activation-verify.yml",
-       "blob": "9de19e80ac2eef3888a23f5b87a5a6592087d6b0"
-      },
-      {
-       "path": ".github/workflows/review-protection-session.yml",
-       "blob": "5b1d09328b1aee9c5606f47c92629864b304854b"
-      },
-      {
-       "path": ".github/workflows/shallow-diagnostic-readonly.yml",
-       "blob": "946897f26b2ae50e6a7c1fadb066caddaf20d0c3"
-      },
-      {
-       "path": ".github/workflows/shallow-integration-work.yml",
-       "blob": "456f1eded0338c894ff05927683d470de466aec8"
-      },
-      {
-       "path": ".github/workflows/shallow-publication.yml",
-       "blob": "5b3219fa14c2ed9d83fa886c582b9cae3bdfca41"
-      },
-      {
-       "path": ".github/workflows/source-browse-bounds.yml",
-       "blob": "95d514669f69c23797e2f83823d880b020148a52"
-      },
-      {
-       "path": ".github/workflows/source-browse-cli-work.yml",
-       "blob": "77ebd6007a222aa4e239fe255ce9d7b548f02ef4"
-      },
-      {
-       "path": ".github/workflows/source-browse-published.yml",
-       "blob": "b388c38df92f0e820ed7bd2fd2bcc66ed83d504a"
-      },
-      {
-       "path": ".github/workflows/source-browse-work.yml",
-       "blob": "798b86151fdf206e6c479833af8ba14086248297"
-      },
-      {
-       "path": ".github/workflows/source-current-4bac5390.yml",
-       "blob": "3a7a7e8d8644ebce29607196fddcf650db843387"
-      },
-      {
-       "path": ".github/workflows/source-snapshot.yml",
-       "blob": "bed7295016284444274649f0a248e53be1d12c02"
-      },
-      {
-       "path": ".github/workflows/source-symbols.yml",
-       "blob": "fbaee0642d044bcca39accb10b8d3175baf4636d"
-      },
-      {
-       "path": ".github/workflows/symbol-index.yml",
-       "blob": "c96dc05c74772459e7fad29fbd6110eb7d07ba12"
-      },
-      {
-       "path": ".github/workflows/upload-visibility-verify.yml",
-       "blob": "cce92321d7acf5dfa7a0ba8f6496629829e7a7a2"
-      },
-      {
-       "path": ".github/workflows/workflow-core-transport.yml",
-       "blob": "be3903a39c523133a457510b2cdce2eeba58c0bb"
-      },
-      {
-       "path": ".github/workflows/workflow-execution-transport.yml",
-       "blob": "d0c0a7962ddf0f8c714ceeddeb99042e8a902a46"
-      },
-      {
-       "path": ".github/workflows/workflow-native-environment.yml",
-       "blob": "875c7f259b1c2096c3e39e3f13f01f6b4a154ad5"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "490c02a23e9c73cd8660222a1808714fccd3aa2d"
-      }
-     ],
-     "runs": {
-      "total": 18,
-      "complete": true,
-      "list": [
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-agent-context-sequence.yml",
-        "name": ".github/workflows/gpt56pro-agent-context-sequence.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-agent-next-work.yml",
-        "name": ".github/workflows/gpt56pro-agent-next-work.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-asb8-phase-reset.yml",
-        "name": ".github/workflows/gpt56pro-asb8-phase-reset.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-agent-context-hardening.yml",
-        "name": ".github/workflows/gpt56pro-agent-context-hardening.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-agent-next-work.yml",
-        "name": ".github/workflows/gpt56pro-agent-next-work.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-nodeconfig-doc-fix.yml",
-        "name": ".github/workflows/gpt56pro-nodeconfig-doc-fix.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-asb8-mainline-sequence.yml",
-        "name": ".github/workflows/gpt56pro-asb8-mainline-sequence.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-publish-bv-agent-contract.yml",
-        "name": ".github/workflows/gpt56pro-publish-bv-agent-contract.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-mainline-reconcile.yml",
-        "name": ".github/workflows/gpt56pro-mainline-reconcile.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-agent-context-hardening.yml",
-        "name": ".github/workflows/gpt56pro-agent-context-hardening.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-agent-context-sequence.yml",
-        "name": ".github/workflows/gpt56pro-agent-context-sequence.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-nodeconfig-doc-fix.yml",
-        "name": ".github/workflows/gpt56pro-nodeconfig-doc-fix.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-asb8-phase-reset.yml",
-        "name": ".github/workflows/gpt56pro-asb8-phase-reset.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-publish-bv-agent-contract.yml",
-        "name": ".github/workflows/gpt56pro-publish-bv-agent-contract.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-mainline-reconcile.yml",
-        "name": ".github/workflows/gpt56pro-mainline-reconcile.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-asb8-mainline-sequence.yml",
-        "name": ".github/workflows/gpt56pro-asb8-mainline-sequence.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-asb8-env-profile.yml",
-        "name": ".github/workflows/gpt56pro-asb8-env-profile.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "870c1cc42a7aab4822fa150d6145c046d161c75b",
-        "path": ".github/workflows/gpt56pro-asb8-env-profile.yml",
-        "name": ".github/workflows/gpt56pro-asb8-env-profile.yml",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "frankengraphdb": {
@@ -11939,11 +11100,11 @@
    "default_branch": "main",
    "pin": "f077badcc4c6e201942e3b10cd20d09354afdc79",
    "pin_date": "2026-09-22T15:29:33Z",
-   "head": "c57c169a2dab22077bffc22ab3ce3563544cd7f2",
-   "head_date": "2026-09-25T01:45:37Z",
+   "head": "629f53b6cb3630650da1fdfcf04bcacf41fd3839",
+   "head_date": "2026-09-25T03:58:39Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 183,
+   "commits_since_pin": 201,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -11987,8 +11148,8 @@
      }
     },
     "now": {
-     "sha": "c57c169a2dab22077bffc22ab3ce3563544cd7f2",
-     "date": "2026-09-25T01:45:37Z",
+     "sha": "629f53b6cb3630650da1fdfcf04bcacf41fd3839",
+     "date": "2026-09-25T03:58:39Z",
      "workflows": [
       {
        "path": ".github/workflows/agent-context.yml",
@@ -12103,11 +11264,11 @@
    "default_branch": "main",
    "pin": "36e5be9448c8c26eed16f421672775aae048f936",
    "pin_date": "2026-09-22T15:54:07Z",
-   "head": "91d1c64b94806c29f62e5a0e06f6d862d00c673c",
-   "head_date": "2026-09-25T01:41:10Z",
+   "head": "d7cdc6477a06cedc45bf907bd1302788a91ba47d",
+   "head_date": "2026-09-25T04:01:59Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 145,
+   "commits_since_pin": 158,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -12165,8 +11326,8 @@
     }
    },
    "ci_page": {
-    "total": 9023,
-    "commits": 44
+    "total": 8621,
+    "commits": 100
    },
    "points": {
     "pin": {
@@ -12210,8 +11371,8 @@
      }
     },
     "now": {
-     "sha": "91d1c64b94806c29f62e5a0e06f6d862d00c673c",
-     "date": "2026-09-25T01:41:10Z",
+     "sha": "d7cdc6477a06cedc45bf907bd1302788a91ba47d",
+     "date": "2026-09-25T04:01:59Z",
      "workflows": [
       {
        "path": ".github/workflows/addrinfo.yml",
@@ -12235,7 +11396,7 @@
       },
       {
        "path": ".github/workflows/native-global-scope.yml",
-       "blob": "b3c2e47372b2e81e257e237456b9ee86d8c78404"
+       "blob": "487fe8ea9e59ae9c3569f2db402b78fe9ab6d208"
       },
       {
        "path": ".github/workflows/native-hostent.yml",
@@ -12350,60 +11511,12 @@
      }
     },
     "ci": {
-     "sha": "6fbc5efbb3119053e1d2578c080122aba57e61e6",
-     "date": "2026-09-25T01:29:45Z",
+     "sha": "548e1725974374ea9b15e3f2ec26cd5ae7c42319",
+     "date": "2026-09-19T07:14:42Z",
      "workflows": [
-      {
-       "path": ".github/workflows/addrinfo.yml",
-       "blob": "99700ea2122f48319b64178596ffea6664acb415"
-      },
       {
        "path": ".github/workflows/ci.yml",
        "blob": "577c951bca291bae83879f4d773da0030333fb6e"
-      },
-      {
-       "path": ".github/workflows/hostent-portable-check.yml",
-       "blob": "bf74dd641f8a37940cfbb5138959e5f0cd0d733b"
-      },
-      {
-       "path": ".github/workflows/legacy-host-dns.yml",
-       "blob": "83290f455b01465d9be9ec277b610e4fb844994b"
-      },
-      {
-       "path": ".github/workflows/locale-objects.yml",
-       "blob": "1d4fe19271d6b60516fccdd3a4434d11558b1c4f"
-      },
-      {
-       "path": ".github/workflows/native-global-scope.yml",
-       "blob": "b3c2e47372b2e81e257e237456b9ee86d8c78404"
-      },
-      {
-       "path": ".github/workflows/native-hostent.yml",
-       "blob": "bac73702d9aae9ff97ecc1ef2b92ac87c886643f"
-      },
-      {
-       "path": ".github/workflows/native-loader-inspection.yml",
-       "blob": "a392799cef1a16cfa1e29d3fed4fc02d7a638f8b"
-      },
-      {
-       "path": ".github/workflows/native-loader.yml",
-       "blob": "38dc8713725f05b5125cae69d96b27cea800bb8c"
-      },
-      {
-       "path": ".github/workflows/native-resolver.yml",
-       "blob": "738a4bc5c37544aed92dd13cbb3e072140e56c90"
-      },
-      {
-       "path": ".github/workflows/nss-hosts.yml",
-       "blob": "085d874270f19613e68fa24cecf6ebc183e5f9c5"
-      },
-      {
-       "path": ".github/workflows/shared-sync.yml",
-       "blob": "17813aabdca39251ccd0bfb576b2f75e5849a530"
-      },
-      {
-       "path": ".github/workflows/stdio-file-layout.yml",
-       "blob": "4975a3241118d41a13786f287bba5b3c8814ec49"
       }
      ],
      "licenses": [
@@ -12413,40 +11526,16 @@
       }
      ],
      "runs": {
-      "total": 4,
+      "total": 1,
       "complete": true,
       "list": [
        {
-        "sha": "6fbc5efbb3119053e1d2578c080122aba57e61e6",
-        "path": ".github/workflows/legacy-host-dns.yml",
-        "name": "Legacy host DNS integration",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "6fbc5efbb3119053e1d2578c080122aba57e61e6",
+        "sha": "548e1725974374ea9b15e3f2ec26cd5ae7c42319",
         "path": ".github/workflows/ci.yml",
         "name": "FrankenLibC CI",
         "event": "push",
         "status": "completed",
-        "conclusion": "cancelled"
-       },
-       {
-        "sha": "6fbc5efbb3119053e1d2578c080122aba57e61e6",
-        "path": ".github/workflows/native-resolver.yml",
-        "name": "Native resolver",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
-       },
-       {
-        "sha": "6fbc5efbb3119053e1d2578c080122aba57e61e6",
-        "path": ".github/workflows/addrinfo.yml",
-        "name": "Native address selection",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success"
+        "conclusion": "failure"
        }
       ]
      }
@@ -12461,11 +11550,11 @@
    "default_branch": "main",
    "pin": "5e153c1154f18e54d04c3569e5c350804faae14e",
    "pin_date": "2026-09-21T14:11:48Z",
-   "head": "9da1586e833e15e7ed09e4529562a959213ab4fe",
-   "head_date": "2026-09-25T01:38:23Z",
+   "head": "1db072796b6e3c1025a3bca36d3de5f06076f4fc",
+   "head_date": "2026-09-25T03:21:55Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 10,
+   "commits_since_pin": 12,
    "releases": [
     {
      "tag": "v0.2.0",
@@ -12519,8 +11608,8 @@
      }
     },
     "now": {
-     "sha": "9da1586e833e15e7ed09e4529562a959213ab4fe",
-     "date": "2026-09-25T01:38:23Z",
+     "sha": "1db072796b6e3c1025a3bca36d3de5f06076f4fc",
+     "date": "2026-09-25T03:21:55Z",
      "workflows": [],
      "licenses": [
       {
@@ -12530,44 +11619,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "662478d54acf9d6d1e38bd3b5d72c7b8a7aa8e19",
-     "date": "2026-09-03T04:17:04Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/apple.yml",
-       "blob": "c2b78b235db3acae031b21d842722b5a46e37f8e"
-      },
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "a6488909b105ee0d9a7bef05335326030966dd43"
-      },
-      {
-       "path": ".github/workflows/pages.yml",
-       "blob": "9e63efa706b1557b12e19950f2d6f9565d76fff3"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "662478d54acf9d6d1e38bd3b5d72c7b8a7aa8e19",
-        "path": ".github/workflows/apple.yml",
-        "name": "Apple app",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "cancelled"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "frankenpandas": {
@@ -12578,11 +11630,11 @@
    "default_branch": "main",
    "pin": "ebe79a3b4ae0470402ea76f9547ae93093360b37",
    "pin_date": "2026-09-22T13:13:20Z",
-   "head": "bbf1164294cbeebb8933361d6d669f91e0fbd96d",
-   "head_date": "2026-09-25T02:01:14Z",
+   "head": "2a67142d7f669d012815acc35152a57452dee1ef",
+   "head_date": "2026-09-25T03:49:52Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 120,
+   "commits_since_pin": 129,
    "releases": [
     {
      "tag": "fp-bench-v0.1.0",
@@ -13607,7 +12659,7 @@
     }
    },
    "ci_page": {
-    "total": 13788,
+    "total": 13797,
     "commits": 100
    },
    "points": {
@@ -13665,8 +12717,8 @@
      }
     },
     "now": {
-     "sha": "bbf1164294cbeebb8933361d6d669f91e0fbd96d",
-     "date": "2026-09-25T02:01:14Z",
+     "sha": "2a67142d7f669d012815acc35152a57452dee1ef",
+     "date": "2026-09-25T03:49:52Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -13705,60 +12757,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "bbf1164294cbeebb8933361d6d669f91e0fbd96d",
-     "date": "2026-09-25T02:01:14Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "089ac89328656a54c3e5624a9217e648c5b361ad"
-      },
-      {
-       "path": ".github/workflows/fast-gate.yml",
-       "blob": "829aef6993908ef74d2da38af04963ebb928f827"
-      },
-      {
-       "path": ".github/workflows/fuzz-minimize.yml",
-       "blob": "72d7d59385cf40e61463e0cf60eec01945a7effc"
-      },
-      {
-       "path": ".github/workflows/fuzz-nightly.yml",
-       "blob": "82c7fb2c9891c0319873b2d3ac673ef8c375563d"
-      },
-      {
-       "path": ".github/workflows/fuzz-tsan.yml",
-       "blob": "858df3e76476b30554dd7b75caa72ffe9bb73786"
-      },
-      {
-       "path": ".github/workflows/release-plz.yml",
-       "blob": "196b8111d59aae5a2f71ad73bc19191399ff8055"
-      },
-      {
-       "path": ".github/workflows/wheels.yml",
-       "blob": "6f32066ecbbc8cce0408084fe1c5f9bd6d4430c2"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 1,
-      "complete": true,
-      "list": [
-       {
-        "sha": "bbf1164294cbeebb8933361d6d669f91e0fbd96d",
-        "path": ".github/workflows/release-plz.yml",
-        "name": "release-plz",
-        "event": "push",
-        "status": "queued",
-        "conclusion": null
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "frankenredis": {
@@ -13919,11 +12918,11 @@
    "default_branch": "main",
    "pin": "2fce54d56ee9af37ea8876a5248ce8aa0f882a22",
    "pin_date": "2026-09-22T12:39:40Z",
-   "head": "603d9b96b3312c70264891df183871c897f6eae3",
-   "head_date": "2026-09-25T02:01:05Z",
+   "head": "e2c52d41ec0d1a049f602bdaf9a7ab954c84c117",
+   "head_date": "2026-09-25T02:10:56Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 42,
+   "commits_since_pin": 44,
    "releases": [
     {
      "tag": "v0.1.0",
@@ -13969,7 +12968,7 @@
     }
    },
    "ci_page": {
-    "total": 3842,
+    "total": 8088,
     "commits": 100
    },
    "points": {
@@ -14011,8 +13010,8 @@
      }
     },
     "now": {
-     "sha": "603d9b96b3312c70264891df183871c897f6eae3",
-     "date": "2026-09-25T02:01:05Z",
+     "sha": "e2c52d41ec0d1a049f602bdaf9a7ab954c84c117",
+     "date": "2026-09-25T02:10:56Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -14036,8 +13035,8 @@
      "runs": null
     },
     "ci": {
-     "sha": "a3da7134a567a947b07df21db8043893806f3721",
-     "date": "2026-09-24T17:09:59Z",
+     "sha": "e2c52d41ec0d1a049f602bdaf9a7ab954c84c117",
+     "date": "2026-09-25T02:10:56Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -14063,12 +13062,12 @@
       "complete": true,
       "list": [
        {
-        "sha": "a3da7134a567a947b07df21db8043893806f3721",
+        "sha": "e2c52d41ec0d1a049f602bdaf9a7ab954c84c117",
         "path": ".github/workflows/ci.yml",
         "name": "CI Gates (G1-G9)",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure"
+        "conclusion": "success"
        }
       ]
      }
@@ -14083,11 +13082,11 @@
    "default_branch": "main",
    "pin": "c4b5e48e5851050675b2260fb72d096404d32608",
    "pin_date": "2026-09-22T14:49:20Z",
-   "head": "2d8fa58bfc7d19f0502d59395465c090c3a31a59",
-   "head_date": "2026-09-25T01:41:01Z",
+   "head": "ea4d200de5f980821d529fafd4c52fd30d2e9767",
+   "head_date": "2026-09-25T03:28:39Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 217,
+   "commits_since_pin": 228,
    "releases": [
     {
      "tag": "crates-v0.4.3",
@@ -14553,8 +13552,8 @@
      }
     },
     "now": {
-     "sha": "2d8fa58bfc7d19f0502d59395465c090c3a31a59",
-     "date": "2026-09-25T01:41:01Z",
+     "sha": "ea4d200de5f980821d529fafd4c52fd30d2e9767",
+     "date": "2026-09-25T03:28:39Z",
      "workflows": [
       {
        "path": ".github/workflows/ci.yml",
@@ -14701,11 +13700,11 @@
    "default_branch": "main",
    "pin": "4b004dcd3efa502ef5de84cf2ed118ccdeafde02",
    "pin_date": "2026-09-22T15:46:14Z",
-   "head": "4f53827cf0926932ccb3a47c94625125e1d32899",
-   "head_date": "2026-09-25T01:58:53Z",
+   "head": "cfba94ae69b46156b4f5fd4e35eef3b91ac5c498",
+   "head_date": "2026-09-25T03:31:32Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 175,
+   "commits_since_pin": 188,
    "releases": [],
    "tags": [],
    "workflow_states": {
@@ -14731,8 +13730,8 @@
     }
    },
    "ci_page": {
-    "total": 907,
-    "commits": 30
+    "total": 946,
+    "commits": 31
    },
    "points": {
     "pin": {
@@ -14787,12 +13786,12 @@
      }
     },
     "now": {
-     "sha": "4f53827cf0926932ccb3a47c94625125e1d32899",
-     "date": "2026-09-25T01:58:53Z",
+     "sha": "cfba94ae69b46156b4f5fd4e35eef3b91ac5c498",
+     "date": "2026-09-25T03:31:32Z",
      "workflows": [
       {
        "path": ".github/workflows/percussion-physics.yml",
-       "blob": "5210d3f763b9e2d72e80833e96eec6a2fbbc72ef"
+       "blob": "9d1beb7d87becf8eed503803e56db053fbd5478e"
       },
       {
        "path": ".github/workflows/piano-physics.yml",
@@ -14875,12 +13874,12 @@
      }
     },
     "ci": {
-     "sha": "96090672d17e0f00cb7a7e2c3e0a108031afc6a2",
-     "date": "2026-09-25T01:51:50Z",
+     "sha": "6f141bec659872fa5f7fe8d5207f1dfdb4ad99e5",
+     "date": "2026-09-25T03:15:05Z",
      "workflows": [
       {
        "path": ".github/workflows/percussion-physics.yml",
-       "blob": "5210d3f763b9e2d72e80833e96eec6a2fbbc72ef"
+       "blob": "9d1beb7d87becf8eed503803e56db053fbd5478e"
       },
       {
        "path": ".github/workflows/piano-physics.yml",
@@ -14910,7 +13909,7 @@
       "complete": true,
       "list": [
        {
-        "sha": "96090672d17e0f00cb7a7e2c3e0a108031afc6a2",
+        "sha": "6f141bec659872fa5f7fe8d5207f1dfdb4ad99e5",
         "path": ".github/workflows/piano-physics.yml",
         "name": "Piano physics smoke",
         "event": "push",
@@ -14918,17 +13917,17 @@
         "conclusion": "skipped"
        },
        {
-        "sha": "96090672d17e0f00cb7a7e2c3e0a108031afc6a2",
-        "path": ".github/workflows/topology-optimization.yml",
-        "name": "Topology optimization",
+        "sha": "6f141bec659872fa5f7fe8d5207f1dfdb4ad99e5",
+        "path": ".github/workflows/percussion-physics.yml",
+        "name": "Percussion physics",
         "event": "push",
         "status": "completed",
         "conclusion": "skipped"
        },
        {
-        "sha": "96090672d17e0f00cb7a7e2c3e0a108031afc6a2",
-        "path": ".github/workflows/percussion-physics.yml",
-        "name": "Percussion physics",
+        "sha": "6f141bec659872fa5f7fe8d5207f1dfdb4ad99e5",
+        "path": ".github/workflows/topology-optimization.yml",
+        "name": "Topology optimization",
         "event": "push",
         "status": "completed",
         "conclusion": "skipped"
@@ -15788,11 +14787,11 @@
    "default_branch": "main",
    "pin": "ce183cd1f7dd074ce187e279f6b99442256040d8",
    "pin_date": "2026-09-22T06:31:53Z",
-   "head": "c938e6d346ed594454f5a23598961eda1ac815c4",
-   "head_date": "2026-09-25T02:02:45Z",
+   "head": "207afad7f71caef09d87a26650e2affee963b23c",
+   "head_date": "2026-09-25T03:52:47Z",
    "pin_reachable": true,
    "compare_status": "ahead",
-   "commits_since_pin": 197,
+   "commits_since_pin": 213,
    "releases": [
     {
      "tag": "v0.10.0",
@@ -17147,8 +16146,8 @@
      }
     },
     "now": {
-     "sha": "c938e6d346ed594454f5a23598961eda1ac815c4",
-     "date": "2026-09-25T02:02:45Z",
+     "sha": "207afad7f71caef09d87a26650e2affee963b23c",
+     "date": "2026-09-25T03:52:47Z",
      "workflows": [],
      "licenses": [
       {
@@ -17158,156 +16157,7 @@
      ],
      "runs": null
     },
-    "ci": {
-     "sha": "f03dfac5acc2684721498a754666a6b267615f85",
-     "date": "2026-09-01T23:06:56Z",
-     "workflows": [
-      {
-       "path": ".github/workflows/adversarial-contract-fuzz.yml",
-       "blob": "e841421e4033b8d2184a95c8ab8c31fb3863ebcf"
-      },
-      {
-       "path": ".github/workflows/cargo-install-validation.yml",
-       "blob": "5c34a7ad8495b6ba7cb3b3edce55d2bd5ce02597"
-      },
-      {
-       "path": ".github/workflows/ci.yml",
-       "blob": "1fa6ba4243bfb46b55f35aaab4b0f5856ccd5a9e"
-      },
-      {
-       "path": ".github/workflows/competitor-bench.yml",
-       "blob": "359496b17e7ec7d7f8f7393c561e5c8859b30b2f"
-      },
-      {
-       "path": ".github/workflows/contract-families-matrix.yml",
-       "blob": "26a2689478b042f8ceece579a17d38abaa4de7ec"
-      },
-      {
-       "path": ".github/workflows/cx-propagation-burndown-cron.yml",
-       "blob": "16aa4132f67b972ccbf12de787d7c13340b980c8"
-      },
-      {
-       "path": ".github/workflows/dependabot-automerge.yml",
-       "blob": "40f8049940af603472e6984bb4efde4de28f6edc"
-      },
-      {
-       "path": ".github/workflows/finish-line-guards.yml",
-       "blob": "b2b61ea86770f8f47463b4b4f03d4087a35122d1"
-      },
-      {
-       "path": ".github/workflows/headline-claims-bench.yml",
-       "blob": "90f03c4dbea7f873e35196af208aae9907273d9d"
-      },
-      {
-       "path": ".github/workflows/lab-runtime-multi-seed-nightly.yml",
-       "blob": "d3154abb2c684b0d174cac16a859ae174b3f3d12"
-      },
-      {
-       "path": ".github/workflows/lindley-bounds-check.yml",
-       "blob": "ed7f2aa2e46a9809ad893b65a845e92821b5d0ec"
-      },
-      {
-       "path": ".github/workflows/loom.yml",
-       "blob": "d6b8ba0411f2baf00be2f4d2ff87e9ada506ff06"
-      },
-      {
-       "path": ".github/workflows/nightly-recorder-validation.yml",
-       "blob": "e5c7be4165b60a7853f91b5124cf9d763190ab7f"
-      },
-      {
-       "path": ".github/workflows/notify-acfs.yml",
-       "blob": "f0f6513235b70d0a520890a703387202b00688d9"
-      },
-      {
-       "path": ".github/workflows/reality-check-drumbeat.yml",
-       "blob": "d5ab53e31a08e9857bcb570944bf1d1f17169351"
-      },
-      {
-       "path": ".github/workflows/release.yml",
-       "blob": "ffa81546654f11a0a9a8dc525635d311de7f808d"
-      },
-      {
-       "path": ".github/workflows/renderer-fuzz.yml",
-       "blob": "6458e780df15b9518a14448ea96ea4e64382d8c8"
-      },
-      {
-       "path": ".github/workflows/replay-gates.yml",
-       "blob": "f6445760494412d379db643a3604c8f7d18a86cc"
-      },
-      {
-       "path": ".github/workflows/robot-work-atomicity-model.yml",
-       "blob": "d26fcb5c34e0cc4697764c2f3a1240942db460ae"
-      },
-      {
-       "path": ".github/workflows/storage-backend-callsites-check.yml",
-       "blob": "6d9086a2ac2be03ba9b990ce9f2a5b6cd46f47c4"
-      },
-      {
-       "path": ".github/workflows/storage-backend-comparison-check.yml",
-       "blob": "9e773d8c24c8e5af5ae1db1b7eb0408c2bdc62f5"
-      },
-      {
-       "path": ".github/workflows/wezterm-render-differential.yml",
-       "blob": "cba3f69bd94f7166bc2b7f1401ec5a527eaeb410"
-      },
-      {
-       "path": ".github/workflows/windows-check.yml",
-       "blob": "ffbdadbbfd04e1c75187a407c140859173195995"
-      }
-     ],
-     "licenses": [
-      {
-       "name": "LICENSE",
-       "blob": "3d414da6ff83defe084707be6030866e8a7fb794"
-      }
-     ],
-     "runs": {
-      "total": 5,
-      "complete": true,
-      "list": [
-       {
-        "sha": "f03dfac5acc2684721498a754666a6b267615f85",
-        "path": ".github/workflows/lindley-bounds-check.yml",
-        "name": "Lindley-Bounds Check",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "f03dfac5acc2684721498a754666a6b267615f85",
-        "path": ".github/workflows/cargo-install-validation.yml",
-        "name": "Cargo Install Validation",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "f03dfac5acc2684721498a754666a6b267615f85",
-        "path": ".github/workflows/windows-check.yml",
-        "name": "Windows Check",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "f03dfac5acc2684721498a754666a6b267615f85",
-        "path": ".github/workflows/finish-line-guards.yml",
-        "name": "Finish-Line Guards",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       },
-       {
-        "sha": "f03dfac5acc2684721498a754666a6b267615f85",
-        "path": ".github/workflows/ci.yml",
-        "name": "CI",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "failure"
-       }
-      ]
-     }
-    }
+    "ci": null
    }
   },
   "frankentorch": {

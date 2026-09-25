@@ -193,7 +193,8 @@
    "FR-C.2"
   ],
   "must_fail": [
-   "CORE-C3-frankengit-now-C5"
+   "CORE-C3-files-read-at-head",
+   "CORE-C3-ci-point-before-baseline"
   ]
  },
  {
