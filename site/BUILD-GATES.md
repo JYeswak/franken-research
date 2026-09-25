@@ -658,20 +658,31 @@ curator's six sections in order, https `public_work`, `study_next` and
 effort S/M/L), a deep dive lacks its front matter, its `## Sources` first or
 its `## What we could not verify` last, covers a rank that is not listed,
 carries raw HTML or an "Internal notes" section, or the correction form lacks
-the "Independent 100 study" option every page prefills; **N4** a study source
+the "Independent 100 study" option every page prefills; **N4** a study source (evidence files included)
 or rendered page carries a home-directory path, an email address, a phone
 number, an image, an X API field name (`followers_count`, `pinned_tweet_id`,
 `twitter_username` and the like), an internal ticket id, or a gendered
 pronoun on a record marked `pseudonymous`; and on any rendered study page
 (scripts aside) the text `undefined`, `null` or `NaN`, a placeholder printed
-where content was meant to be. The gate block also counts on its
+where content was meant to be; **N5** a row in `evidence/x-reads.jsonl`,
+`credits.jsonl` or `licenses.jsonl` breaks its key list (a profile row has no
+place for profile text), a cited X post or an "X API" label has no row in
+`x-reads.jsonl`, a "license API" label does not name `licenses.jsonl`, a GitHub
+repository in `public_work` has no license row or disagrees with it, or a URL
+in a record marked `pseudonymous` passes none of the README's rules: (a) x.com
+under the handle; (b) a GitHub or Hugging Face owner equal to the handle,
+ignoring case; (c) a URL the listed X account links one hop, in a row of
+`x-reads.jsonl`; (d) a page in `credits.jsonl` whose quote names the handle.
+It also fails, naming the record and URL, on Thread Reader or Nitter mirrors,
+on a site or blog named after the handle whatever its route, and on any
+`links.site` or `links.blog` in such a record. The gate block also counts on its
 own, without the script: `people.jsonl` must have 99 lines and the page files
 on disk must number the people plus one plus the deep dives. The study pages
 join `SITE_PAGES`, so gates B, C, E, F, G and H scan them too, and the index
 is in gate I's render list. A quoted count over the 44 assessed repositories
 in a study source carries gate B's `STAT` annotation, added by the renderer.
 **The fix for drift is `node site/scripts/make-study.mjs`**, which refuses to
-write when N3 or N4 finds anything, removes pages whose source is gone, and
+write when N3, N4 or N5 finds anything, removes pages whose source is gone, and
 rewrites the sitemap block.
 **Why:** decision D4 (2026-09-25) published the study with a page for every
 person, under rules a reviewer from another model family set: public work
@@ -928,3 +939,23 @@ placeholder namespace. N4 now also fails on the literal text `undefined`,
 failed with the expected check named (the 20 above, plus "undefined" set in a
 record and "null" in a deep-dive sentence), and a label holding a code span
 rendered as `[Verified at <code>…</code>]` with `--check` passing.
+
+Study review 4b (2026-09-25): the lead ruled that a URL in a pseudonymous
+record needs one of four mechanical routes (x.com under the handle, a GitHub or
+Hugging Face owner equal to the handle, a one-hop link from the listed X
+account, a page that names the handle) and that every X read and license read
+behind a [Verified] label is a committed row. N5 was added with three evidence
+files: 111 X reads (23 profiles, URLs only, and 88 posts), 8 credit quotes, and
+339 license reads (221 answered 200, 118 answered 404). N4 now scans the
+evidence files too: one cited post quoted an email address, which the evidence
+row replaces. Records for 18 pseudonymous accounts were edited to what the
+routes allow, and the two records the RLM deep dive covers (#11, #20) lost
+their internal tool names and plans, as the deep dive did. On clones of the
+tree, 35 planted faults failed with the expected check and the expected text
+in the finding (the 22 above, an email address in an X read for N4, and 12 for
+N5: a handle-named site, a GitHub owner one character off, a two-hop
+repository, a Thread Reader URL, a one-hop URL whose read was removed from the
+evidence, `links.site` set, a credit quote that no longer names the handle, a
+profile row carrying profile text, a cited post with no read, an "X API" label
+without the file, a license that disagrees with its row, a missing license
+row), and the code-span pass case still passed.

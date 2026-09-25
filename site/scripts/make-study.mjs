@@ -19,6 +19,12 @@
 //   N3 schema  people.jsonl or a deep dive's front matter and sections break the schema in the README
 //   N4 scan    a study source or page carries a local path, an email address, a phone number, an image, an
 //              X API field name, an internal ticket id, or a gendered pronoun on a pseudonymous record
+//   N5 links   an evidence row breaks its schema; an X status URL, an X API label or a GitHub repository has no
+//              committed evidence row, or a license disagrees with its row; or a URL in a pseudonymous record
+//              passes none of rules a-d in the README (x.com under the handle; a GitHub or Hugging Face owner
+//              equal to the handle; linked one hop by the listed X account in evidence/x-reads.jsonl; a page in
+//              evidence/credits.jsonl whose quote names the handle), is a third-party mirror, is a handle-named
+//              personal site, or sits in links.site or links.blog
 // and ends with STUDY_OK or STUDY_BAD. No dependencies beyond node's standard library.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -465,6 +471,95 @@ function scanPseudonymous(people) {
   }
 }
 
+// ---------- evidence rows and the pseudonym link rule (N5) ----------
+const EV = {
+  'x-reads.jsonl': { profile: ['handle', 'kind', 'fetched_at', 'profile_url', 'description_urls'], post: ['handle', 'kind', 'id', 'url', 'fetched_at', 'text', 'linked_urls'] },
+  'credits.jsonl': ['handle', 'url', 'fetched_at', 'quote', 'commit_sha', 'source'],
+  'licenses.jsonl': ['repo', 'http_status', 'spdx_id', 'license_name', 'path', 'sha', 'html_url', 'fetched_at'],
+};
+const STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
+function loadEvidence() {
+  const out = {};
+  for (const [f, keys] of Object.entries(EV)) {
+    const rel = `${SRC}/evidence/${f}`;
+    out[f] = [];
+    if (!fs.existsSync(path.join(ROOT, rel))) { find('N5', rel + ': missing'); continue; }
+    readText(rel).split('\n').forEach((line, i) => {
+      if (!line.trim()) return;
+      let r;
+      try { r = JSON.parse(line); } catch (e) { find('N5', `${rel}:${i + 1}: not JSON`); return; }
+      const want = Array.isArray(keys) ? keys : keys[r.kind];
+      if (!want || !same(Object.keys(r), want)) { find('N5', `${rel}:${i + 1}: keys ${JSON.stringify(Object.keys(r))} (want ${JSON.stringify(want || Object.keys(keys))})`); return; }
+      if (!STAMP.test(r.fetched_at)) find('N5', `${rel}:${i + 1}: fetched_at is not a UTC timestamp`);
+      out[f].push(r);
+    });
+    if (!out[f].length) find('N5', rel + ': no rows (a gate that checks nothing is not a pass)');
+  }
+  return out;
+}
+// host and path, lowercased host, twitter.com folded into x.com, no fragment or trailing slash
+const normUrl = (u) => {
+  const m = /^https?:\/\/(?:www\.)?([^/?#]+)([^#]*)/i.exec(u);
+  if (!m) return u;
+  const host = m[1].toLowerCase();
+  return (host === 'twitter.com' ? 'x.com' : host) + m[2].replace(/\/+$/, '');
+};
+const MIRROR = /^(?:threadreaderapp\.com|nitter\.[^/]+|[^/]*\.nitter\.[^/]+|xcancel\.com|twstalker\.com)(?:\/|$)/;
+const OWNER = /^(?:github\.com|huggingface\.co|raw\.githubusercontent\.com)\/([^/?]+)|^api\.github\.com\/(?:users|repos|orgs)\/([^/?]+)/;
+const flat = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+function pseudonymRule(p, ev, where, u) {
+  const h = p.handle.slice(1).toLowerCase();
+  const n = normUrl(u);
+  const host = n.split('/')[0];
+  if (MIRROR.test(n)) return 'a third-party mirror';
+  if (host === 'x.com' && n.split('/')[1]?.toLowerCase() === h) return null;                       // rule a
+  const own = OWNER.exec(n);
+  if (own && (own[1] || own[2]).toLowerCase() === h) return null;                                   // rule b
+  const seg = (n.split('/')[1] || '').toLowerCase();
+  if (!own && host !== 'x.com' && (flat(host).includes(flat(h)) || flat(seg).includes(flat(h)))) return 'a handle-named personal site';
+  const oneHop = ev['x-reads.jsonl'].filter((r) => r.handle.slice(1).toLowerCase() === h)
+    .flatMap((r) => (r.kind === 'profile' ? [r.profile_url, ...r.description_urls] : r.linked_urls)).filter(Boolean).map(normUrl);
+  if (oneHop.includes(n)) return null;                                                             // rule c
+  if (ev['credits.jsonl'].some((r) => r.handle.slice(1).toLowerCase() === h && normUrl(r.url) === n && r.quote.toLowerCase().includes(h))) return null; // rule d
+  return (own ? `under GitHub or Hugging Face owner "${own[1] || own[2]}", which is not the handle, ` : host === 'x.com' ? 'an X URL under another account, ' : '')
+    + 'not linked one hop by the listed X account in evidence/x-reads.jsonl, and not a page in evidence/credits.jsonl that names the handle';
+}
+const GH_REPO = /^https:\/\/github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)(?:[/?#]|$)/;
+const licenseOf = (r) => (r.http_status === 404 ? 'no license file' : r.http_status !== 200 ? null : r.spdx_id === 'NOASSERTION' ? 'license file present, not recognised by GitHub' : r.spdx_id);
+function checkEvidence(people, deeps, ev) {
+  const posts = new Set(ev['x-reads.jsonl'].filter((r) => r.kind === 'post').map((r) => r.id));
+  const profiles = new Set(ev['x-reads.jsonl'].filter((r) => r.kind === 'profile').map((r) => r.handle.toLowerCase()));
+  for (const r of ev['x-reads.jsonl']) if (r.kind === 'post' && r.url !== `https://x.com/${r.handle.slice(1)}/status/${r.id}`) find('N5', `evidence/x-reads.jsonl: post ${r.id} url does not match its handle and id`);
+  const lic = new Map(ev['licenses.jsonl'].map((r) => [r.repo.toLowerCase(), r]));
+  const texts = [...people.map((p) => [`people.jsonl #${p.rank}`, JSON.stringify(p), p]), ...deeps.map((d) => [d.rel, readText(d.rel), null])];
+  for (const [at, t, p] of texts) {
+    for (const m of t.matchAll(/https:\/\/(?:x|twitter)\.com\/\w+\/status\/(\d+)/g)) if (!posts.has(m[1])) find('N5', `${at}: X status ${m[1]} has no row in evidence/x-reads.jsonl`);
+    for (const m of t.matchAll(/\[(?:Verified|Reported)[^\]\n]*\]/g)) {
+      const l = m[0];
+      if (/X API/.test(l) && !l.includes('evidence/x-reads.jsonl')) find('N5', `${at}: ${l.slice(0, 80)} does not point at evidence/x-reads.jsonl`);
+      if (/license API/i.test(l) && !l.includes('evidence/licenses.jsonl')) find('N5', `${at}: ${l.slice(0, 80)} does not point at evidence/licenses.jsonl`);
+      if (/X API profile read/.test(l) && p && !profiles.has(p.handle.toLowerCase())) find('N5', `${at}: cites an X API profile read but evidence/x-reads.jsonl has no profile row for ${p.handle}`);
+    }
+  }
+  for (const p of people) {
+    p.public_work.forEach((w, j) => {
+      const m = GH_REPO.exec(w.url);
+      if (!m || ['orgs', 'users', 'sponsors'].includes(m[1].toLowerCase())) return;
+      const r = lic.get(`${m[1]}/${m[2]}`.toLowerCase());
+      if (!r) find('N5', `people.jsonl #${p.rank} public_work[${j}]: ${m[1]}/${m[2]} has no row in evidence/licenses.jsonl`);
+      else if (licenseOf(r) !== w.license) find('N5', `people.jsonl #${p.rank} public_work[${j}]: license ${JSON.stringify(w.license)} but evidence/licenses.jsonl says ${JSON.stringify(licenseOf(r))}`);
+    });
+    if (p.pseudonymous !== true) continue;
+    for (const k of ['site', 'blog']) if (p.links && p.links[k] !== null) find('N5', `people.jsonl #${p.rank} links.${k}: ${p.links[k]} (a pseudonymous record carries no site or blog)`);
+    const walk = (o, where) => {
+      if (typeof o === 'string') for (const u of o.match(URL_RX) || []) { const why = pseudonymRule(p, ev, where, u); if (why) find('N5', `people.jsonl #${p.rank} ${where}: ${u} is ${why}`); }
+      else if (Array.isArray(o)) o.forEach((v, i) => walk(v, `${where}[${i}]`));
+      else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) walk(v, where ? where + '.' + k : k);
+    };
+    walk(p, '');
+  }
+}
+
 // ---------- render ----------
 function render(people, deeps, readme) {
   const pages = new Map();
@@ -516,7 +611,7 @@ function render(people, deeps, readme) {
 <section class="card" id="work" aria-labelledby="h-work">
   <h2 id="h-work">Public work</h2>
   ${work}
-  <p class="small">Licenses of GitHub repositories are from the authenticated GitHub license API on 2026-09-25 (&ldquo;no license file&rdquo; means the API found none; &ldquo;license file present, not recognised by GitHub&rdquo; means GitHub could not classify it). Other licenses are as the source states. Check the license file before reusing anything.</p>
+  <p class="small">Licenses of GitHub repositories are from the authenticated GitHub license API on 2026-09-25, one row per repository in <a href="${GH}${SRC}/evidence/licenses.jsonl">evidence/licenses.jsonl</a> (&ldquo;no license file&rdquo; means the API found none; &ldquo;license file present, not recognised by GitHub&rdquo; means GitHub could not classify it). Other licenses are as the source states. Check the license file before reusing anything.</p>
 </section>
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
@@ -682,15 +777,16 @@ if (!fs.existsSync(form) || !new RegExp('^\\s*-\\s+' + CORRECTION_OPTION + '\\s*
 }
 
 // scan the sources and the rendered pages
-for (const f of [readmeRel, `${SRC}/people.jsonl`, ...deeps.map((d) => d.rel)]) if (fs.existsSync(path.join(ROOT, f))) scanText(f, readText(f));
+for (const f of [readmeRel, `${SRC}/people.jsonl`, ...deeps.map((d) => d.rel), ...Object.keys(EV).map((e) => `${SRC}/evidence/${e}`)]) if (fs.existsSync(path.join(ROOT, f))) scanText(f, readText(f));
 for (const [rel, html] of pages) {
   scanText('site/' + rel, html.replace(/<!-- shell:footer -->[\s\S]*?<!-- \/shell:footer -->/, ''));
   scanRendered('site/' + rel, html);
 }
 scanPseudonymous(people);
+checkEvidence(people, deeps, loadEvidence());
 
 if (!CHECK) {
-  if (findings.some((f) => f.startsWith('N3') || f.startsWith('N4'))) {
+  if (findings.some((f) => /^N[345] /.test(f))) {
     console.log('STUDY_BAD (nothing written)');
     findings.slice(0, 40).forEach((f) => console.log('  ' + f));
     process.exit(1);

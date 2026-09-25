@@ -137,47 +137,40 @@ footer p{margin:0 0 8px}
 </section>
 <section class="card" id="public" aria-labelledby="h-public">
   <h2 id="h-public">What they publicly do</h2>
-  <p>Pseudonymous software engineer who writes essays and threads on AI, alignment and minds, mirrored at tenobrus.io <span class="tier">[Verified: <a href="https://tenobrus.io">tenobrus.io</a>]</span>. The account publishes small agent tools, including a Claude Code skill that implements Recursive Language Models <span class="tier">[Verified: <a href="https://github.com/Tenobrus/claude-rlm">github.com/Tenobrus/claude-rlm</a>]</span>.</p>
+  <p>Pseudonymous account. The GitHub account Tenobrus publishes small agent tools, including a Claude Code skill that implements Recursive Language Models <span class="tier">[Verified: <a href="https://github.com/Tenobrus/claude-rlm">github.com/Tenobrus/claude-rlm</a>]</span>.</p>
   <ul><li>X profile: <a href="https://x.com/tenobrus">x.com/tenobrus</a></li>
-<li>GitHub: <a href="https://github.com/Tenobrus">github.com/Tenobrus</a></li>
-<li>Site: <a href="https://tenobrus.io">tenobrus.io</a></li>
-<li>Blog: <a href="https://tenobrus.io/writing/">tenobrus.io/writing</a></li></ul>
+<li>GitHub: <a href="https://github.com/Tenobrus">github.com/Tenobrus</a></li></ul>
 </section>
 <section class="card" id="work" aria-labelledby="h-work">
   <h2 id="h-work">Public work</h2>
   <ul class="work"><li><b><a href="https://github.com/Tenobrus/claude-rlm">claude-rlm</a></b> <span class="tag">repo</span> <span class="tag lic none">no license file</span> <span class="small">last activity 2026-02-09</span> <span class="small">&middot; 95 GitHub stars on 2026-09-24</span><p class="what">A Claude Code skill implementing Recursive Language Models (Zhang, Kraska, Khattab 2026). The long input is kept as an external variable; the model inspects it with code and recursively calls sub-agents on slices, as an alternative to lossy compaction.</p></li>
 <li><b><a href="https://github.com/Tenobrus/graphglyph">graphglyph</a></b> <span class="tag">repo</span> <span class="tag lic none">no license file</span> <span class="small">last activity 2026-05-23</span> <span class="small">&middot; 76 GitHub stars on 2026-09-24</span><p class="what">Encodes text as reversible unit-distance graph images.</p></li>
-<li><b><a href="https://github.com/Tenobrus/no-sigmoids">no-sigmoids</a></b> <span class="tag">repo</span> <span class="tag lic none">no license file</span> <span class="small">last activity 2026-02-06</span> <span class="small">&middot; 3 GitHub stars on 2026-09-24</span><p class="what">An addendum using new METR time-horizon data to challenge a 'plateau' hypothesis in a 2026 paper.</p></li>
-<li><b><a href="https://tenobrus.io/writing/">Essays and threads</a></b> <span class="tag">blog</span> <span class="tag lic none">no license stated</span> <span class="small">last activity 2026-06-01</span><p class="what">Essays such as 'white room' (why aligned models still disclose vulnerabilities), 'speciation' (identical Claude instances individuating in a group chat) and 'if claude wrote it, say so'.</p></li></ul>
-  <p class="small">Licenses of GitHub repositories are from the authenticated GitHub license API on 2026-09-25 (&ldquo;no license file&rdquo; means the API found none; &ldquo;license file present, not recognised by GitHub&rdquo; means GitHub could not classify it). Other licenses are as the source states. Check the license file before reusing anything.</p>
+<li><b><a href="https://github.com/Tenobrus/no-sigmoids">no-sigmoids</a></b> <span class="tag">repo</span> <span class="tag lic none">no license file</span> <span class="small">last activity 2026-02-06</span> <span class="small">&middot; 3 GitHub stars on 2026-09-24</span><p class="what">An addendum using new METR time-horizon data to challenge a 'plateau' hypothesis in a 2026 paper.</p></li></ul>
+  <p class="small">Licenses of GitHub repositories are from the authenticated GitHub license API on 2026-09-25, one row per repository in <a href="https://github.com/JYeswak/franken-research/blob/main/study/independent-100/evidence/licenses.jsonl">evidence/licenses.jsonl</a> (&ldquo;no license file&rdquo; means the API found none; &ldquo;license file present, not recognised by GitHub&rdquo; means GitHub could not classify it). Other licenses are as the source states. Check the license file before reusing anything.</p>
 </section>
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">4 of 5</span> <span class="small">lenses: agents, memory, orchestration, security</span></p>
-  <p>claude-rlm addresses long-context handling in the exact harness we run (Claude Code skills) and competes with our compaction and memory approach. The 'white room' essay frames a real agent-security limit. It has no license, so the skill is study-only.</p>
+  <p>claude-rlm addresses long-context handling in the harness we run (Claude Code skills) and competes with our compaction and memory approach. It has no license file, so the skill is study-only.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Read claude-rlm and benchmark RLM-style recursive slicing against our compaction plus ee/cass recall on a long-log analysis task (<a href="https://github.com/Tenobrus/claude-rlm">github.com/Tenobrus/claude-rlm</a>). It may beat summarization for huge inputs (session logs, corpora) in our fleet. Build our own version, because there is no license. <span class="small">Effort: medium.</span></li>
-<li>Read the RLM paper it cites (<a href="https://arxiv.org/abs/2512.24601">arxiv.org/abs/2512.24601</a>). Primary source for the method; lets us implement it cleanly under our own terms. <span class="small">Effort: medium.</span></li>
-<li>Read 'white room' as input to prompt-injection and dual-use policy (<a href="https://tenobrus.io/writing/white-room/">tenobrus.io/writing/white-room</a>). It is a concise argument that refusals can't separate whitehat from blackhat bug-finding, which is relevant to our security skills. <span class="small">Effort: small.</span></li></ol>
+  <ol><li>Read claude-rlm and benchmark RLM-style recursive slicing against our compaction plus ee/cass recall on a long-log analysis task (<a href="https://github.com/Tenobrus/claude-rlm">github.com/Tenobrus/claude-rlm</a>). It may beat summarization for huge inputs (session logs, corpora) in our fleet. Build our own version, because there is no license. <span class="small">Effort: medium.</span></li></ol>
   <p><b>Before reusing anything:</b> No LICENSE file on any listed repo (all rights reserved by default): study, don't vendor.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">
   <h2 id="h-sources">Sources</h2>
-  <ul><li><a href="https://tenobrus.io">tenobrus.io</a></li>
-<li><a href="https://tenobrus.io/writing/">tenobrus.io/writing</a></li>
-<li><a href="https://github.com/Tenobrus/claude-rlm">github.com/Tenobrus/claude-rlm</a></li>
+  <ul><li><a href="https://github.com/Tenobrus/claude-rlm">github.com/Tenobrus/claude-rlm</a></li>
 <li><a href="https://github.com/Tenobrus/graphglyph">github.com/Tenobrus/graphglyph</a></li>
 <li><a href="https://github.com/Tenobrus/no-sigmoids">github.com/Tenobrus/no-sigmoids</a></li></ul>
   <p class="small">Overall confidence in this record: High. Sources were read on 2026-09-24 and every link was checked on 2026-09-25. The full record is line 51 of <a href="https://github.com/JYeswak/franken-research/blob/main/study/independent-100/people.jsonl">people.jsonl</a>.</p>
 </section>
 <section class="card" id="limits" aria-labelledby="h-limits">
   <h2 id="h-limits">Limits</h2>
-  <p><b>Not verified:</b> What the 'update: i am now doing something about this' on the site refers to; how well claude-rlm performs (no benchmarks were read).</p>
+  <p><b>Not verified:</b> How well claude-rlm performs (no benchmarks were read).</p>
   <p>This record comes from a first-pass survey of public material by an AI agent session on 2026-09-24, edited for publication on 2026-09-25. Nothing was installed or run for it. Roles, stars and licenses change; see the <a href="index.html#limits">study&rsquo;s limits</a>.</p>
 </section>
 <section class="card fix" id="correct" aria-labelledby="h-correct">

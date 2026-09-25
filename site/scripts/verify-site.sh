@@ -1363,7 +1363,9 @@ fi
 # keys and order, https URLs, labels, scores; deep-dive front matter and required sections; no "Internal notes";
 # the correction-form option every page prefills) and N4 scan (local paths, emails, phone numbers, images, X API
 # field names, internal ticket ids, gendered pronouns on pseudonymous records, and the literal text undefined, null or
-# NaN on a rendered page). This block also counts the files
+# NaN on a rendered page), and N5 evidence and links (rows in study/independent-100/evidence/ behind every cited X post,
+# X API label and GitHub license; every URL in a pseudonymous record on route a, b, c or d of the study README; no
+# links.site or links.blog there). This block also counts the files
 # itself, independently of the script: page files on disk must equal the people records, plus the index, plus one
 # per deep dive. Fix drift with `node site/scripts/make-study.mjs`. Details: ../BUILD-GATES.md.
 echo "== N  Independent 100 study =="

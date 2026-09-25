@@ -29,26 +29,31 @@ Each score is one reviewer's judgement: one agent session scored each person, an
 
 ## Evidence labels
 
-Claims carry the labels used across Franken Research. **[Verified]** means we read the page, file or API response ourselves. **[Reported]** means a source says so and we did not check the underlying thing; a role that comes only from a person's X profile is labelled [Reported: X profile] and paraphrased. **[Inference]** is our own reasoning. Each record also has an overall confidence (High, Medium or Low) and a list of what could not be verified.
+Claims carry the labels used across Franken Research. **[Verified]** means we read the page, file or API response ourselves. **[Reported]** means a source says so and we did not check the underlying thing; a role that comes only from a person's X profile is labelled [Reported: X profile] and paraphrased. **[Inference]** is our own reasoning. Each record also has an overall confidence (High, Medium or Low) and a list of what could not be verified. A [Verified] label that rests on an X API read or a GitHub license read names the file in `evidence/` that holds the row, and every X post the study cites has a row there.
 
 ## Dates
 
 - List published by the curator: 2026-09-24.
 - First-pass survey: 2026-09-24. Stars and activity dates are as returned by the GitHub API that day.
-- Licenses of GitHub repositories: the authenticated GitHub license API, 2026-09-25. "No license file" means the API found none; "license file present, not recognised by GitHub" means GitHub could not classify the file.
+- Licenses of GitHub repositories: the authenticated GitHub license API, 2026-09-25, one row per repository in `evidence/licenses.jsonl`. "No license file" means the API answered 404; "license file present, not recognised by GitHub" means GitHub could not classify the file.
 - Deep dives: 2026-09-24 and 2026-09-25, as dated on each page.
 - Public edition, link check and review corrections: 2026-09-25.
 
 ## What the public edition leaves out
 
 - **Public work first.** Each page is about what a person has published: code, writing, papers, talks and products. Biography is limited to a sourced professional role where it explains the work, and nothing here judges anyone's character or states their motives.
-- **No raw X data.** We do not republish profile text, pinned posts, locations or follower counts. The survey's raw X API responses are not in this repository.
+- **No raw X data.** We do not republish profile text, pinned posts, locations or follower counts, and the raw X API responses are not in this repository. `evidence/x-reads.jsonl` keeps only what the study relies on: for a cited post, its text (with any email address or phone number it quotes replaced) and the URLs it links; for a pseudonymous account's profile, the URLs it links and nothing else.
 - **Nothing personal.** No home or work location, contact details, family or relationship details, health, financial or legal information about a person, private communications, images of people, or inferences about sensitive traits.
-- **No identity resolution.** Pseudonymous accounts appear under their handle and the name shown on the list, with no gendered pronouns. For them we list only work published under the listed handle: an account or site named as the handle, a project page that credits the handle, or an account or site the listed one itself links in a source it wrote (cited). A personal site that carries or points toward an offline identity, anything learned from it (biography, employer, name clues), and other accounts the listed one does not itself link are left out, even where that leaves no work to list.
+- **No identity resolution.** Pseudonymous accounts appear under their handle and the name shown on the list, with no gendered pronouns. Routes and handles are those on the curator's public list. A URL may appear in a pseudonymous record only under one of four rules, and gate N checks every URL against them:
+  - **a.** It is on x.com (or twitter.com) under the listed handle.
+  - **b.** It is a GitHub or Hugging Face account or repository whose owner is exactly the handle, ignoring case.
+  - **c.** The listed X account links it itself, one hop: its profile link, a link in its profile description, or a link in one of its own posts, with the read in `evidence/x-reads.jsonl`.
+  - **d.** A project page or README names the handle, with the quoted line in `evidence/credits.jsonl`.
+  - **Never:** personal sites or blogs (even ones named after the handle), biography, profession, employer or location, anything reached through a chain of more than one link, or third-party mirrors of X such as Thread Reader or Nitter. Where that leaves no work to list, the record lists none.
 - **Roles and shared affiliations are sourced.** A person's role, or a statement that two people share a lab or employer, appears only with a primary source (their own site, repository or paper) or their own profile, labelled as such.
 - **No private material.** Local file paths, machine names, process ids, internal ticket ids and the names of private repositories were removed or replaced with a short public description. Each record's list of where the person's work appears in our own files was replaced by one public sentence (`in_our_work`) or omitted.
 - **Neutral on sensitive topics.** Crypto tokens, politics and persona accounts are mentioned only where they are part of the person's public work, without judgement and without allegations.
-- **Pliny the Liberator (#7)** is covered from public metadata and press coverage only, for defensive study. No repository contents were opened, run or summarised.
+- **Pliny the Liberator (#7)** is covered from public metadata and press coverage only, for defensive study. No repository contents were run or summarised; the only line quoted from a repository is its contact line, which names the handle (`evidence/credits.jsonl`).
 - **Security behaviour of third-party tools** is stated only as documented behaviour, with a link to the project's own documentation or source, never as a way to reproduce it.
 - **Dead links.** A link that returned 404 or 410 on 2026-09-25 was removed together with its claim, or kept and marked "link dead as of 2026-09-25" where the item itself still stands.
 
@@ -56,6 +61,9 @@ Claims carry the labels used across Franken Research. **[Verified]** means we re
 
 - `people.jsonl`: one JSON object per line, 99 lines, ordered by rank. Keys, in this order: `rank`, `slug`, `handle`, `name`, `section`, `pseudonymous` (true or false), `identity`, `links` (`x`, `github`, `site`, `blog`, `other`), `public_work` (each: `name`, `url`, `kind`, `what`, `license`, `last_activity`, `stars`), `relevance` (`score`, `lenses`, `why`), `in_our_work`, `study_next` (each: `what`, `url`, `why`, `effort`), `adoption_notes`, `confidence`, `evidence`, `could_not_verify`. Every `public_work`, `study_next` and `evidence` URL is https. A pseudonymous record carries no gendered pronoun.
 - `deep/<slug>.md`: one deep dive per file. Front matter first (`title`, `covers` as comma-separated ranks, `written` as a date, `summary` as one sentence), then Markdown limited to `##` and `###` headings, paragraphs, `- ` bullets with one nested level, `1. ` lists, pipe tables, `> ` quotes, bold, code spans and https links. The first section is `## Sources` and the last is `## What we could not verify`. A section headed "Internal notes" is not allowed in a public edition.
+- `evidence/x-reads.jsonl`: one X API read per line, 2026-09-25. A post row has `handle`, `kind` ("post"), `id`, `url`, `fetched_at`, `text` and `linked_urls` (the expanded URLs in the post). A profile row has `handle`, `kind` ("profile"), `fetched_at`, `profile_url` and `description_urls`, and no profile text.
+- `evidence/credits.jsonl`: one page that names a pseudonymous handle per line (rule d): `handle`, `url`, `fetched_at`, `quote` (the line naming the handle), `commit_sha` (the commit read, where the page is in a repository) and `source` (where the quote was read).
+- `evidence/licenses.jsonl`: one GitHub license read per repository: `repo`, `http_status` (404 when the repository has no license file), `spdx_id`, `license_name`, `path`, `sha` (the license file's blob), `html_url` and `fetched_at`. Gate N fails when a repository in `public_work` has no row or its license disagrees with the row.
 - To regenerate the pages after editing any of these files: `node site/scripts/make-study.mjs`, then `node site/scripts/make-study.mjs --check`.
 
 ## Limits

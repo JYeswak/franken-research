@@ -2,7 +2,7 @@
 title: Omar Khattab and alex zhang, GEPA for skills and Recursive Language Models for long context
 covers: 11, 20
 written: 2026-09-25
-summary: How GEPA's outcome-scored optimizer and Recursive Language Models compare with how we grade skills and recover after compaction, and what a small client-side search index can take from ColBERT and WARP.
+summary: What GEPA's outcome-scored optimizer, gskill, Recursive Language Models and spec-ptc do, how they are licensed and documented, and which parts carry risks to know before reuse.
 ---
 
 ## Sources
@@ -16,12 +16,11 @@ summary: How GEPA's outcome-scored optimizer and Recursive Language Models compa
 - gskill post, "Automatically Learning Skills for Coding Agents": https://gepa-ai.github.io/gepa/blog/automatically-learning-skills-for-coding-agents/ (source file `docs/docs/blog/posts/2026-02-18-automatically-learning-skills-for-coding-agents/index.md` at the GEPA commit).
 - optimize_anything post: https://gepa-ai.github.io/gepa/blog/introducing-optimize-anything/ (source file `.../2026-02-18-introducing-optimize-anything/index.md` at the GEPA commit).
 - RLM blog post https://alexzhang13.github.io/blog/2025/rlm/ and spec-ptc blog post https://alexzhang13.github.io/blog/2026/spec-ptc/ (read 2026-09-25).
-- OMP (oh-my-pi), the harness we run: https://github.com/can1357/oh-my-pi/tree/v18.3.1 (tag `v18.3.1`).
 - Personal pages https://omarkhattab.com/ and https://alexzhang13.github.io/ (read 2026-09-25).
 
 Ranks 11 (Omar Khattab, `@lateinteraction`) and 20 (listed as "alex zhang", `@a1zhang`) in dan's Independent 100, section "The Frontier Outside". Written 2026-09-25 by an AI agent session. This page is about public work and artifacts; it is one reviewer's reading, not a ranking of people.
 
-Labels: **[Verified]** we read it at the pin or ran it; **[Reported]** the authors say so and we did not reproduce it; **[Inference]** our reasoning; **[Verified, our own setup]** a fact about our own tools. File references like "engine.py L373" are at the pinned commits above.
+Labels: **[Verified]** we read it at the pin or ran it; **[Reported]** the authors say so and we did not reproduce it; **[Inference]** our reasoning. File references like "engine.py L373" are at the pinned commits above.
 
 ## Roles and licences
 
@@ -68,13 +67,6 @@ The authors say SWE-smith tasks are "on the simpler side" and that some skills f
 - **Setup failures score 0.0**: Docker and git errors count as the skill failing [Verified: swe_fitness_fn.py L156-L187].
 - **Costs are logged, not published**: the runner writes an agent/reflection cost split; the post gives no dollar figure [Verified: gskill README L119].
 
-### How GEPA could score our SKILL.md files
-
-- **Metric.** A per-task score from an external oracle on the outcome, not the skill's form, with a deterministic check (validator exit code, tests, required facts) and the checker's messages returned as ASI [Inference]. gskill has this shape: tests are the oracle, truncated test output the ASI (swe_fitness_fn.py L118-L137).
-- **Gold set.** 40-60 tasks per skill from real work, split into train, validation and a sealed `test_set`, with held-out families. This matches the certification rule one of our skill-authoring skills already sets: a fresh agent given only the skill completes held-out work sealed by a different model lineage, with at least three out-of-distribution families [Verified, our own setup].
-- **Scope.** Optimize the body only and freeze the `description`, as gskill does [Inference].
-- **Cost.** (rollouts x tokens x agent price) + (reflection calls x tokens x reflection price) + test passes outside `max_evals` [Inference].
-
 ### DSPy, only as far as GEPA needs it
 
 DSPy pins `gepa[dspy]==0.1.4` [Verified: DSPy pyproject.toml L37]. `dspy.GEPA` needs exactly one of `auto`, `max_full_evals` or `max_metric_calls`, and its metric may return a score with textual feedback [Verified: [gepa.py L34-L59](https://github.com/stanfordnlp/dspy/blob/2413b67a4d08a476e4bc6f40b9f8f42f87711ee7/dspy/teleprompt/gepa/gepa.py#L34-L59), L451-L453]. For SKILL.md files DSPy is not needed: optimize_anything takes a plain string and evaluator. `dspy.RLM`'s REPL defaults to a Deno/Pyodide WebAssembly interpreter [Verified: DSPy predict/rlm.py L117-L127].
@@ -86,13 +78,13 @@ An RLM keeps the long prompt out of the model's context. The prompt is a variabl
 - **Reported results.** Inputs "two orders of magnitude beyond model context windows"; on GPT-5, median gains of 26% over compaction, 130% over CodeAct with sub-calls and 13% over Claude Code across four long-context tasks "while having comparable cost"; a post-trained RLM-Qwen3-8B [Reported: RLM paper]. RLM(GPT-5-mini) more than doubles GPT-5's correct answers on an OOLONG split, and quality holds at 10M+ tokens on BrowseComp-Plus [Reported: RLM blog].
 - **Stated limits.** Sub-calls are blocking with no prefix caching, and "we do not currently have strong guarantees about controlling either the total API cost or the total runtime" [Verified: RLM blog, "Limitations"].
 - **Library.** `RLM(...)` defaults to `environment="local"`, `max_depth=1`, `max_iterations=30`, with optional `max_budget` (needs a cost-tracking backend), `max_timeout`, `max_tokens` and `max_errors` [Verified: [core/rlm.py L53-L61](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/rlm/core/rlm.py#L53-L61), L86-L94]. Environments: `local`, `ipython`, `modal`, `docker`, `daytona`, `prime`, `e2b`.
-- **Compaction keeps the full history.** With `compaction=True` the root context is summarized at 85% of the model's limit while the full trajectory stays in a REPL variable, `history` [Verified: [core/rlm.py L319-L323](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/rlm/core/rlm.py#L319-L323), L460-L461]. This is the sharpest contrast with our compaction.
+- **Compaction keeps the full history.** With `compaction=True` the root context is summarized at 85% of the model's limit while the full trajectory stays in a REPL variable, `history` [Verified: [core/rlm.py L319-L323](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/rlm/core/rlm.py#L319-L323), L460-L461].
 - **rlm-minimal** is a roughly 1,200-line, OpenAI-only reference with depth-1 recursion [Verified: rlm-minimal README].
 
 Execution environments, as the project documents them:
 
 - "The default RLM client uses a REPL environment that runs on the host process through Python `exec` calls. It uses the same virtual environment as the host process" [Verified: [README L51](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/README.md#L51)]. Non-isolated environments are "pretty reasonable for some local low-risk tasks, like simple benchmarking, but can be problematic if the prompts or tool calls can interact with malicious users" (README L87). `LocalREPL` has namespaces "for minimal security" and "should not be used for production settings" [Verified: [README L97](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/README.md#L97)]. rlm-minimal also executes in-process.
-- `DockerREPL` defaults to `python:3.11-slim`; the README says the container "runs fully isolated from the host" with a host-side proxy for LM access (README L103). At start-up the code adds a `host.docker.internal:host-gateway` route and runs `pip install -q dill requests` in the container [Verified: [docker_repl.py L524-L552](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/rlm/environments/docker_repl.py#L524-L552)]. For our use we would want a prebuilt pinned image instead of a per-run install [Inference].
+- `DockerREPL` defaults to `python:3.11-slim`; the README says the container "runs fully isolated from the host" with a host-side proxy for LM access (README L103). At start-up the code adds a `host.docker.internal:host-gateway` route and runs `pip install -q dill requests` in the container [Verified: [docker_repl.py L524-L552](https://github.com/alexzhang13/rlm/blob/d04208afbad29ca675ab13478c40ee8bebc84bfe/rlm/environments/docker_repl.py#L524-L552)].
 - Both packages create the REPL directory with `tempfile.mkdtemp`, so `TMPDIR` controls its location [Verified: rlm local_repl.py L177; rlm-minimal repl.py L83].
 
 ### spec-ptc (speculative programmatic tool calling)
@@ -103,60 +95,17 @@ Execution environments, as the project documents them:
 - **Integration.** A daemon on a Unix socket defaulting to `/tmp/spec-ptc.sock`; the Claude Code plugin is a PreToolUse hook returning `{"decision": "block", "reason": "spec-ptc claimed result: ..."}`, so the model gets the result as a block reason [Verified: [claude_code.py L9-L20](https://github.com/alexzhang13/spec-ptc/blob/9b78b7d6ceeaf8afd1557c4e3a999ce653fc0e17/plugins/claude_code.py#L9-L20); client.py L10].
 - The blog credits Khattab with proofreading and names Conveyor, Speculative Interaction Agents and AsyncFC as related work.
 
-## Where our setup differs
-
-### Compaction and post-compact recovery
-
-- OMP has five automatic context-maintenance methods: `remote` (provider-native server compaction), `snapcompact` (history archived onto images the vision model reads back), `handoff`, `soft` (in-place summary by a compaction model) and `shake` (drop recoverable heavy content, no LLM call); `/compact` takes `soft`, `remote` or `snapcompact` as one-off modes [Verified: [compaction-methods.ts L11-L37](https://github.com/can1357/oh-my-pi/blob/v18.3.1/packages/coding-agent/src/session/compaction-methods.ts#L11-L37); [compact-modes.ts L16](https://github.com/can1357/oh-my-pi/blob/v18.3.1/packages/coding-agent/src/session/compact-modes.ts#L16)]. OMP also exposes read-only session transcripts and spilled tool output through internal URLs [Verified, our own setup].
-- Our post-compact-reminder skill uses three hooks (a pre-compaction marker, a recovery prompt after compaction, a one-time check on the next prompt). The prompt tells the agent to re-read the project's agent rule files, not to re-fetch specific facts from the pre-compaction transcript [Verified, our own setup].
-- **The gap.** rlm keeps the full history as a programmable variable beside the summary. Our recovery restores rules, but pre-compaction facts survive only through the summary unless the agent opens the transcript [Inference]. The paper's +26% median over compaction is the effect size to test on our sessions [Reported].
-
-### Session memory tools
-
-We use ee (Eidetic Engine: working, episodic, semantic and procedural memory, budgeted context packs that report omissions), cass (search over past agent sessions, lexical by default, semantic and hybrid optional) and cm (cass-memory: a playbook of rules with helpful/harmful marks and decay) [Verified, our own setup]. All three are retrieve-then-read. None lets the model run code over the whole history or recursively sub-query slices for aggregation questions such as "how many times did X fail, and what changed each time" [Inference]. RLM targets aggregation and multi-hop questions where top-k retrieval loses the long tail; for needle questions lexical search should suffice [Inference]. The RLM blog compares against "ReAct + BM25", not a curated memory like cm [Reported]. The second experiment tests which questions each approach wins.
-
-### skill-autoresearch versus GEPA
-
-Our skill-autoresearch skill hill-climbs on a static 7-gate rubric (structure, trigger quality, progressive disclosure, actionability, anti-patterns, operational tooling, sources): each round rewrites the weakest gate and keeps the change only if that gate rises and no other drops by more than 0.5. Its grader is a 1,398-line static analyser with form-count thresholds (at least 15 trigger phrases, a 400-line script, 15 references, a soft 150-line minimum) that calls no model and runs no task [Verified, our own setup].
-
-| | skill-autoresearch | GEPA optimize_anything |
-|---|---|---|
-| Scored | the skill's form | task outcome, external oracle |
-| Feedback | gate remediation strings | evaluator diagnostics (ASI) |
-| Acceptance | one gate up, 0.5 regression guard | minibatch up, then validation |
-| Search | one lineage, revert on failure | pool with Pareto selection |
-| Held-out data | none | optional sealed `test_set` |
-
-A skill can score 9.0 on every gate and still fail its task, and our loop cannot see that: Goodhart's law applied to skill quality [Inference]. Our skill-forge and skill-authoring-discipline skills already define "done" as a fresh agent succeeding on held-out work against an external oracle [Verified, our own setup], which is the oracle GEPA consumes [Inference]. No skill of ours has a task-outcome gold set yet; existing golden files are CLI-surface and shape fixtures. One of our skills already has a deterministic, dependency-free validator with good and bad fixtures [Verified, our own setup].
-
-### ColBERT and WARP for a small client-side search index
-
-- ColBERT and WARP need a transformer encoder at query time and per-token vectors per document [Verified: WARP abstract]. WARP reports 41x lower latency than XTR's reference implementation and 3x faster than ColBERTv2/PLAID on server-class kernels [Reported].
-- For a small search index that ships to the browser with no server, that makes them a better offline relevance oracle, or a source of precomputed related-item lists, than the query-time engine [Inference].
-
 ## A comparison study (proposed, not run)
 
-We propose a comparative study of GEPA-optimised skills and of RLM-style recall over long agent sessions against our current methods; it is designed but has not been run, and nothing on this page depends on its outcome.
-
-## Proposals
-
-1. **Make task outcome the acceptance metric of skill-autoresearch**, keeping the 7 gates as a lint that cannot accept a change alone. Risk: needs a gold set per skill and costs model calls. Effort M. Test: a planted skill that scores 9.0+ but fails every task must be rejected.
-2. **Pilot GEPA `optimize_anything` on one skill** that already has a deterministic validator, in an isolated environment with core `gepa` only, under a fixed spend cap. Effort M. Test: a held-out task set the optimizer never sees.
-3. **Make skill-forge's held-out runner emit one `(score, info)` row per task** with a sealed split, so one runner serves certification and optimization (contract shape only, no import). Effort S. Test: a planted skill failing one task yields `score=0` with `info` naming the failure, and test rows never reach the optimizer.
-4. **Add "retrieve, don't trust the summary" to post-compact recovery**: re-read any concrete fact (path, commit, command, decision) from the transcript or an artifact before acting on it. Effort S. Test: a seeded session changes a fact late, then compacts; the agent must report the late value.
-5. **Try an RLM for history questions only in an isolated container**, and wrap it as a read-only tool only if it beats retrieval on aggregation questions. Effort M.
-6. **Use a late-interaction model offline as a relevance oracle** for a lexical search index; ship nothing from it. Risk: checkpoint licence unchecked; the builder must not judge. Effort S-M.
-7. **Add spec-ptc's rule to our concurrency guidance**: only tools explicitly marked pure may run speculatively, citing spec-ptc's tools.py L25-L31. Effort S.
+A comparative study of these methods against our own tooling is proposed and has not been run.
 
 ## Do not adopt
 
 - **rlm's default `local` environment, or rlm-minimal, near real files or secrets.** The project documents it as in-process `exec` with "minimal security", not for production.
-- **spec-ptc, for now.** 1-1.2x reported speedups on RLM runs, and our harnesses mostly use JSON tool calls, not a code REPL [Inference]. Its daemon socket defaults to a shared temp directory, which conflicts with our own rule against shared temp paths.
+- **spec-ptc near other users' processes.** 1-1.2x reported speedups on RLM runs, and its daemon socket defaults to a shared temp directory, `/tmp/spec-ptc.sock` [Verified: client.py L10].
 - **gskill as-is.** It needs Docker and SWE-smith, targets bug-fix skills, freezes a boilerplate description, scores setup errors as skill failures, and its example config sets an OpenAI regional base URL (train_optimize_anything.py L655-L657) [Verified]. Reuse the pattern, not the pipeline.
-- **DSPy for SKILL.md optimization**, and **`gepa[full]` on macOS** (it pulls LiteLLM, MLflow and W&B; core is enough).
-- **Any optimizer tuned against a search index's own golden queries.** It breaks the independence of the golden set, and a small query set would be overfitted [Inference].
-- **ColBERT, WARP or PLAID as the engine of a small browser index.** The query-time encoder and per-token vectors do not fit it [Inference].
-- **The headline numbers as a forecast for our skills.** They come from SWE-smith bug-fix tasks, and the posts disagree internally.
+- **DSPy for optimizing a plain-text file**, and **`gepa[full]` on macOS** (it pulls LiteLLM, MLflow and W&B; core is enough).
+- **The headline numbers as a forecast for other tasks.** They come from SWE-smith bug-fix tasks, and the posts disagree internally.
 
 ## Attribution we owe
 
@@ -168,7 +117,7 @@ We propose a comparative study of GEPA-optimised skills and of RLM-style recall 
 - **Recursive Language Models:** Zhang, Kraska, Khattab, arXiv:2512.24601; rlm and rlm-minimal MIT.
 - **spec-ptc:** Zhang (2026), MIT; its post credits Conveyor (Xu et al., 2024), Speculative Interaction Agents (Hooper et al., 2026) and AsyncFC (Feng et al., 2026) as related work.
 - **WARP:** Scheerer, Zaharia, Potts, Alonso, Khattab, arXiv:2501.17788; `xtr-warp` MIT. ColBERT MIT.
-- Copied code keeps its MIT notice. Proposal 8 cites the idea, not the code.
+- Copied code keeps its MIT notice.
 
 ## What we could not verify
 
