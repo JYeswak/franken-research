@@ -1,0 +1,688 @@
+[
+ {
+  "id": "M-C2-order-C6-C5",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  const c6 = ruleC6(facts, p, tests, byPath);\n  if (c6) return c6;\n  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n",
+  "replace": "  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n  const c6 = ruleC6(facts, p, tests, byPath);\n  if (c6) return c6;\n",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-order-C6-over-C5"
+  ]
+ },
+ {
+  "id": "M-C2-order-C5-C4",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n",
+  "replace": "  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-order-C5-over-C4"
+  ]
+ },
+ {
+  "id": "M-C2-order-C4-runs",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
+  "replace": "  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-order-C4-before-runs"
+  ]
+ },
+ {
+  "id": "M-C2-order-C2-C1",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (runs.some((r) => RED.has(r.conclusion))) return result('C2', 'FR-C.2/C2', TIER.external, ciEvidence(facts, p));\n  if (runs.some((r) => r.conclusion === 'success')) return result('C1', 'FR-C.2/C1', TIER.external, ciEvidence(facts, p));\n",
+  "replace": "  if (runs.some((r) => r.conclusion === 'success')) return result('C1', 'FR-C.2/C1', TIER.external, ciEvidence(facts, p));\n  if (runs.some((r) => RED.has(r.conclusion))) return result('C2', 'FR-C.2/C2', TIER.external, ciEvidence(facts, p));\n",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-C2"
+  ]
+ },
+ {
+  "id": "M-C2-order-C1-C3",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (runs.some((r) => r.conclusion === 'success')) return result('C1', 'FR-C.2/C1', TIER.external, ciEvidence(facts, p));\n",
+  "replace": "  if (!runs.some((r) => RED.has(r.conclusion))) return result('C3', 'FR-C.2/C3', TIER.external, ciEvidence(facts, p));\n  if (runs.some((r) => r.conclusion === 'success')) return result('C1', 'FR-C.2/C1', TIER.external, ciEvidence(facts, p));\n",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-C1",
+   "CORE-C2-C1-no-verdict-runs"
+  ]
+ },
+ {
+  "id": "M-C2-private-ignored",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (facts.private_ci) return result(",
+  "replace": "  if (false) return result(",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-C6-private",
+   "CORE-C2-order-C6-over-C4"
+  ]
+ },
+ {
+  "id": "M-C2-disabled-ignored",
+  "file": "watch/freshness/classify.mjs",
+  "find": "const disabledAt = (facts, point, p, path) => /^disabled/.test(stateAt(facts, point, p, path) ?? '');",
+  "replace": "const disabledAt = () => false;",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-C5-disabled"
+  ]
+ },
+ {
+  "id": "M-C2-verdictless-counted",
+  "file": "watch/freshness/classify.mjs",
+  "find": "const RED = new Set(['failure', 'timed_out', 'startup_failure']);",
+  "replace": "const RED = new Set(['failure', 'timed_out', 'startup_failure', 'cancelled']);",
+  "clauses": [
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C2-C1-no-verdict-runs"
+  ]
+ },
+ {
+  "id": "M-C3-in-progress",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (runs.some((r) => r.status !== 'completed')) return unknown('FR-C.3/in-progress', ciEvidence(facts, p));\n",
+  "replace": "",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-in-progress"
+  ]
+ },
+ {
+  "id": "M-C3-young-head",
+  "file": "watch/freshness/classify.mjs",
+  "find": "const YOUNG_MS = 6 * 3600 * 1000;",
+  "replace": "const YOUNG_MS = 0;",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-young-head"
+  ]
+ },
+ {
+  "id": "M-C3-api-gap",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
+  "replace": "  if (!p.runs) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-api-gap"
+  ]
+ },
+ {
+  "id": "M-C4-date-ignored",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  const rels = facts.releases.filter((r) => !r.draft && onTime(tagDate(facts, r.tag)));",
+  "replace": "  const rels = facts.releases.filter((r) => !r.draft);",
+  "clauses": [
+   "FR-C.4"
+  ],
+  "must_fail": [
+   "CORE-C4-future-ignored",
+   "CORE-C4-tag-date-not-publish-date"
+  ]
+ },
+ {
+  "id": "M-C4-assets-ignored",
+  "file": "watch/freshness/classify.mjs",
+  "find": " ?? rels.find((r) => r.assets > 0);",
+  "replace": ";",
+  "clauses": [
+   "FR-C.4"
+  ],
+  "must_fail": [
+   "CORE-C4-R3-asset"
+  ]
+ },
+ {
+  "id": "M-C4-draft-counted",
+  "file": "watch/freshness/classify.mjs",
+  "find": "(r) => !r.draft && onTime(",
+  "replace": "(r) => onTime(",
+  "clauses": [
+   "FR-C.4"
+  ],
+  "must_fail": [
+   "CORE-C4-draft-ignored"
+  ]
+ },
+ {
+  "id": "M-C7-deploy-first",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  if (jobs.some((j) => stepsOf(j).some(stepTests))) return 'test';\n  if (jobs.some(jobDeploys)) return 'deploy';\n",
+  "replace": "  if (jobs.some(jobDeploys)) return 'deploy';\n  if (jobs.some((j) => stepsOf(j).some(stepTests))) return 'test';\n",
+  "clauses": [
+   "FR-C.7"
+  ],
+  "must_fail": [
+   "CORE-C7-kind-from-steps"
+  ]
+ },
+ {
+  "id": "M-T2-always-tracked",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  const tracked = base.value !== 'unknown' && base.value === reference;",
+  "replace": "  const tracked = base.value !== 'unknown';",
+  "clauses": [
+   "FR-T.2"
+  ],
+  "must_fail": [
+   "CORE-T2-untracked-no-class-crossing"
+  ]
+ },
+ {
+  "id": "M-T2-no-fallback",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  for (const d of DIMS) if (!dims[d].cmp.tracked) candidates.push(...eventFallback(record.repo, d, facts, dims));\n",
+  "replace": "",
+  "clauses": [
+   "FR-T.2"
+  ],
+  "must_fail": [
+   "CORE-T2-event-fallback"
+  ]
+ },
+ {
+  "id": "M-T4-crossing-without-change",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  return { tracked, crossing: tracked && known && now.value !== base.value };",
+  "replace": "  return { tracked, crossing: tracked && known };",
+  "clauses": [
+   "FR-T.4"
+  ],
+  "must_fail": [
+   "CORE-T4-tag-on-R3-no-crossing",
+   "CORE-T4-workflow-added-same-class"
+  ]
+ },
+ {
+  "id": "M-T5-unknown-crosses",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  const known = base.value !== 'unknown' && now.value !== 'unknown';",
+  "replace": "  const known = true;",
+  "clauses": [
+   "FR-T.5"
+  ],
+  "must_fail": [
+   "CORE-T5-unknown-no-crossing"
+  ]
+ },
+ {
+  "id": "M-T3-archived-dropped",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  if (record.archived) out.push(x('archived', 'active', 'archived', [api(`/repos/${OWNER}/${name}`), gh(name)]));\n",
+  "replace": "",
+  "clauses": [
+   "FR-T.3"
+  ],
+  "must_fail": [
+   "CORE-T3-existence",
+   "CORE-T3-existence-opens-now"
+  ]
+ },
+ {
+  "id": "M-T6-no-debounce",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "if (c.source === 'existence' || (seen && prevDay && prevDay < today))",
+  "replace": "if (true)",
+  "clauses": [
+   "FR-T.6"
+  ],
+  "must_fail": [
+   "CORE-T6-debounce"
+  ]
+ },
+ {
+  "id": "M-T8-resolve-early",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "    if (r && r.date >= e.date) out.push(",
+  "replace": "    if (r) out.push(",
+  "clauses": [
+   "FR-T.8"
+  ],
+  "must_fail": [
+   "CORE-T8-resolve"
+  ]
+ },
+ {
+  "id": "M-G3-prefix-unchecked",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  if (!nextText.startsWith(prevText)) throw",
+  "replace": "  if (false) throw",
+  "clauses": [
+   "FR-G.3"
+  ],
+  "must_fail": [
+   "CORE-G3-prefix-violation"
+  ]
+ },
+ {
+  "id": "M-L1-key-order",
+  "file": "watch/freshness/live.mjs",
+  "find": "  const c = canonLive(live);\n",
+  "replace": "  const c = live;\n",
+  "clauses": [
+   "FR-L.1"
+  ],
+  "must_fail": [
+   "CORE-L1-canon-order"
+  ]
+ },
+ {
+  "id": "M-OUT-L4-wording",
+  "file": "watch/freshness/card.mjs",
+  "find": "the verdict has not been re-checked'",
+  "replace": "the verdict has changed'",
+  "clauses": [
+   "FR-L.4"
+  ],
+  "must_fail": [
+   "OUT-L4-changed-wording",
+   "OUT-L4-never-says-changed"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-colour-only",
+  "file": "watch/freshness/card.mjs",
+  "find": "State: <strong style=\"${S.badge(st.colour)}\">${st.word}</strong>",
+  "replace": "State: <strong style=\"${S.badge(st.colour)}\">&#9679;</strong>",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-state-in-words",
+   "OUT-L3-facts"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-no-escape",
+  "file": "watch/freshness/card.mjs",
+  "find": "export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')",
+  "replace": "export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;')",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-escape"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-link-any-url",
+  "file": "watch/freshness/card.mjs",
+  "find": "export const link = (url, text, label) => (SAFE_URL.test(String(url ?? ''))",
+  "replace": "export const link = (url, text, label) => (true",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-escape"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-first-evidence-only",
+  "file": "watch/freshness/card.mjs",
+  "find": "return list.map((u, i) => link(u,",
+  "replace": "return list.slice(0, 1).map((u, i) => link(u,",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-facts"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-low-contrast",
+  "file": "watch/freshness/card.mjs",
+  "find": "unknown: { word: 'Unknown', colour: 'var(--muted)' }",
+  "replace": "unknown: { word: 'Unknown', colour: 'var(--line)' }",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-contrast"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-no-table-headers",
+  "file": "watch/freshness/card.mjs",
+  "find": "<th scope=\"row\" style=",
+  "replace": "<td scope=\"row\" style=",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-a11y-table"
+  ]
+ },
+ {
+  "id": "M-OUT-L5-touches-outside",
+  "file": "watch/freshness/card.mjs",
+  "find": "return `${html.slice(0, i)}${text}\\n\\n${html.slice(i)}`;",
+  "replace": "return `${html.slice(0, i)}${text}\\n\\n${html.slice(i).replace('<main id', '<main data-live id')}`;",
+  "clauses": [
+   "FR-L.5"
+  ],
+  "must_fail": [
+   "OUT-L5-write-is-local"
+  ]
+ },
+ {
+  "id": "M-OUT-L5-check-blind",
+  "file": "watch/freshness/card.mjs",
+  "find": "else if (r.text !== block(renderCard(rec, live)))",
+  "replace": "else if (false)",
+  "clauses": [
+   "FR-L.5"
+  ],
+  "must_fail": [
+   "OUT-L5-check-mode"
+  ]
+ },
+ {
+  "id": "M-OUT-L5-no-record-check",
+  "file": "watch/freshness/card.mjs",
+  "find": "if (!rec) { errs.push(`${rel}: no watch/live.json record names this brief`); continue; }",
+  "replace": "if (!rec) continue;",
+  "clauses": [
+   "FR-L.5"
+  ],
+  "must_fail": [
+   "OUT-L5-records"
+  ]
+ },
+ {
+  "id": "M-OUT-D1-always-edit",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "return issue.body === body ? 'unchanged' : 'edited';",
+  "replace": "return 'edited';",
+  "clauses": [
+   "FR-D.1"
+  ],
+  "must_fail": [
+   "OUT-D1-lifecycle"
+  ]
+ },
+ {
+  "id": "M-OUT-D1-dry-run-writes",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "if (dryRun || action === 'unchanged') return result;",
+  "replace": "if (action === 'unchanged') return result;",
+  "clauses": [
+   "FR-D.1"
+  ],
+  "must_fail": [
+   "OUT-D1-dry-run"
+  ]
+ },
+ {
+  "id": "M-OUT-D2-trust-anyone",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "issue?.user?.login === bot",
+  "replace": "true",
+  "clauses": [
+   "FR-D.2"
+  ],
+  "must_fail": [
+   "OUT-D2-impostors"
+  ]
+ },
+ {
+  "id": "M-OUT-D2-marker-anywhere",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "const MARKER_LINE = /^<!-- watch-dashboard: v1 -->$/m;",
+  "replace": "const MARKER_LINE = /<!-- watch-dashboard: v1 -->/;",
+  "clauses": [
+   "FR-D.2"
+  ],
+  "must_fail": [
+   "OUT-D2-impostors"
+  ]
+ },
+ {
+  "id": "M-OUT-D2-no-reopen",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "if (issue.state === 'closed') return 'reopened';",
+  "replace": "",
+  "clauses": [
+   "FR-D.2"
+  ],
+  "must_fail": [
+   "OUT-D2-reopen"
+  ]
+ },
+ {
+  "id": "M-OUT-D2-newest-wins",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": ".sort((a, b) => a.number - b.number)",
+  "replace": ".sort((a, b) => b.number - a.number)",
+  "clauses": [
+   "FR-D.2"
+  ],
+  "must_fail": [
+   "OUT-D2-oldest-and-labels"
+  ]
+ },
+ {
+  "id": "M-OUT-D3-order",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    ...dueSection(live),\n    ...unknownSection(live),",
+  "replace": "    ...unknownSection(live),\n    ...dueSection(live),",
+  "clauses": [
+   "FR-D.3"
+  ],
+  "must_fail": [
+   "OUT-D3-sections",
+   "OUT-D3-quiet",
+   "OUT-H3-dashboard"
+  ]
+ },
+ {
+  "id": "M-OUT-D3-no-mdtext",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "(c.reasons ?? []).map(mdText).join('; ')",
+  "replace": "(c.reasons ?? []).join('; ')",
+  "clauses": [
+   "FR-D.3"
+  ],
+  "must_fail": [
+   "OUT-D3-escape"
+  ]
+ },
+ {
+  "id": "M-OUT-D3-resolved-listed",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "if (!c.resolved_by) out.push({ repo: r, c });",
+  "replace": "out.push({ repo: r, c });",
+  "clauses": [
+   "FR-D.3"
+  ],
+  "must_fail": [
+   "OUT-D3-sections"
+  ]
+ },
+ {
+  "id": "M-OUT-D3-empty-silent",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "['No open crossings.']",
+  "replace": "[]",
+  "clauses": [
+   "FR-D.3"
+  ],
+  "must_fail": [
+   "OUT-D3-quiet"
+  ]
+ },
+ {
+  "id": "M-OUT-D4-no-cut",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "if (body.length <= limit) return body;",
+  "replace": "return body;",
+  "clauses": [
+   "FR-D.4"
+  ],
+  "must_fail": [
+   "OUT-D4-limit"
+  ]
+ },
+ {
+  "id": "M-OUT-D4-cut-without-link",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "return body.slice(0, cut > 0 ? cut : room) + TAIL;",
+  "replace": "return body.slice(0, limit);",
+  "clauses": [
+   "FR-D.4"
+  ],
+  "must_fail": [
+   "OUT-D4-limit"
+  ]
+ },
+ {
+  "id": "M-OUT-O4-no-last-run",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "`Last run: ${utc(live.checked_at)}. Watched:",
+  "replace": "`Watched:",
+  "clauses": [
+   "FR-O.4"
+  ],
+  "must_fail": [
+   "OUT-O4-last-run"
+  ]
+ },
+ {
+  "id": "M-OUT-O5-boundary",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "age > SNAPSHOT_MAX_DAYS ?",
+  "replace": "age >= SNAPSHOT_MAX_DAYS ?",
+  "clauses": [
+   "FR-O.5"
+  ],
+  "must_fail": [
+   "OUT-O5-snapshots"
+  ]
+ },
+ {
+  "id": "M-OUT-G1-per-event-entry",
+  "file": "watch/freshness/digest.mjs",
+  "find": "const { label } = isoWeek(e.date);",
+  "replace": "const label = `${e.date}-${e.event}-${e.id}`;",
+  "clauses": [
+   "FR-G.1"
+  ],
+  "must_fail": [
+   "OUT-G1-weeks",
+   "OUT-G1-feed",
+   "OUT-H3-digest"
+  ]
+ },
+ {
+  "id": "M-OUT-G1-first-day",
+  "file": "watch/freshness/digest.mjs",
+  "find": "const date = events.map((e) => e.date).sort().at(-1);",
+  "replace": "const date = events.map((e) => e.date).sort().at(0);",
+  "clauses": [
+   "FR-G.1"
+  ],
+  "must_fail": [
+   "OUT-G1-weeks",
+   "OUT-H3-digest"
+  ]
+ },
+ {
+  "id": "M-OUT-G1-calendar-year",
+  "file": "watch/freshness/digest.mjs",
+  "find": "const year = thursday.getUTCFullYear();",
+  "replace": "const year = d.getUTCFullYear();",
+  "clauses": [
+   "FR-G.1"
+  ],
+  "must_fail": [
+   "OUT-G1-weeks"
+  ]
+ },
+ {
+  "id": "M-OUT-G1-informational-accepted",
+  "file": "watch/freshness/digest.mjs",
+  "find": "if (e.event !== 'opened' && e.event !== 'resolved') throw",
+  "replace": "if (false) throw",
+  "clauses": [
+   "FR-G.1"
+  ],
+  "must_fail": [
+   "OUT-G1-feed"
+  ]
+ },
+ {
+  "id": "M-OUT-G1-feed-omits-digest",
+  "file": "site/scripts/make-feed.mjs",
+  "find": "...readDigestEntries(ROOT, ledger), ",
+  "replace": "",
+  "clauses": [
+   "FR-G.1"
+  ],
+  "must_fail": [
+   "OUT-G1-feed",
+   "OUT-H3-digest"
+  ]
+ },
+ {
+  "id": "M-OUT-G2-uncommitted-recheck",
+  "file": "watch/freshness/digest.mjs",
+  "find": "if (!existsSync(join(root, e.resolved_by))) throw",
+  "replace": "if (false) throw",
+  "clauses": [
+   "FR-G.2"
+  ],
+  "must_fail": [
+   "OUT-G2-committed-sources"
+  ]
+ },
+ {
+  "id": "M-OUT-G2-build-time",
+  "file": "watch/freshness/digest.mjs",
+  "find": "Source: watch/crossings.jsonl.');",
+  "replace": "Source: watch/crossings.jsonl, built ' + new Date().toISOString() + '.');",
+  "clauses": [
+   "FR-G.2"
+  ],
+  "must_fail": [
+   "OUT-G2-committed-sources",
+   "OUT-H3-digest"
+  ]
+ },
+ {
+  "id": "M-OUT-D4-issue-per-crossing",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    result.number = (await api.rest('POST', `${base}/issues`, { title: TITLE, body, labels: LABELS })).body.number;",
+  "replace": "    result.number = (await api.rest('POST', `${base}/issues`, { title: TITLE, body, labels: LABELS })).body.number;\n    for (const x of openCrossings(live)) await api.rest('POST', `${base}/issues`, { title: x.c.id, body: x.c.id, labels: ['watch'] });",
+  "clauses": [
+   "FR-D.4"
+  ],
+  "must_fail": [
+   "OUT-D4-one-issue"
+  ]
+ }
+]

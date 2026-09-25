@@ -1,0 +1,7 @@
+# private_ci facts for FR-C.2 rule C6 (watch/freshness/SPEC.md). One row per repository whose packet states, as a finding, that the pinned tree has no GitHub Actions workflow and that its tests are verified on private or owner-controlled machines. Each row cites the packet line (path:line) and quotes it.
+# Rows come only from packet lines. Considered and not listed: franken_code_browser (packets/franken_code_browser-assessment.md:212 asks whether a private lane exists; a question, not a finding); franken_whisper (:131) and frankenmermaid (:130) name a private remote-worker path for reproduction and benchmarks, not for tests; repositories with workflow files in the pinned tree are classified from those files and their runs.
+repo	source	tier	quote
+franken_alignment	packets/franken_alignment-assessment.md:97	[Code-verified, High]	No GitHub Actions: quality gates run operator-local via Cargo + DSR by design
+franken_overlap	packets/franken_overlap-assessment.md:89	[Code-verified, High]	No GitHub Actions; validation is owner-local via `scripts/ci-local.sh`
+franken_tts	packets/franken_tts-assessment.md:82	[Maintainer claim, Medium]	no `.github/` workflow configuration exists anywhere in the tree (`git ls-tree` confirms), so the CI that gates those releases runs off-tree on owner infrastructure
+frankenterm	packets/frankenterm-assessment.md:150	[Verified, High]	No public CI; verification is maintainer-hosted. `.github/` contains only `dependabot.yml`. All heavy verification runs on RCH proof workers
