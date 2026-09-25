@@ -26,6 +26,7 @@
 //              evidence/credits.jsonl whose quote names the handle), is a third-party mirror, is a handle-named
 //              personal site, or sits in links.site or links.blog
 // and ends with STUDY_OK or STUDY_BAD. No dependencies beyond node's standard library.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -473,7 +474,7 @@ function scanPseudonymous(people) {
 
 // ---------- evidence rows and the pseudonym link rule (N5) ----------
 const EV = {
-  'x-reads.jsonl': { profile: ['handle', 'kind', 'fetched_at', 'profile_url', 'description_urls'], post: ['handle', 'kind', 'id', 'url', 'fetched_at', 'text', 'linked_urls'] },
+  'x-reads.jsonl': { profile: ['handle', 'kind', 'fetched_at', 'profile_url', 'description_urls', 'withheld_site_sha256'], post: ['handle', 'kind', 'id', 'url', 'fetched_at', 'text', 'linked_urls'] },
   'credits.jsonl': ['handle', 'url', 'fetched_at', 'quote', 'commit_sha', 'source'],
   'licenses.jsonl': ['repo', 'http_status', 'spdx_id', 'license_name', 'path', 'sha', 'html_url', 'fetched_at'],
 };
@@ -507,6 +508,40 @@ const normUrl = (u) => {
 const MIRROR = /^(?:threadreaderapp\.com|nitter\.[^/]+|[^/]*\.nitter\.[^/]+|xcancel\.com|twstalker\.com)(?:\/|$)/;
 const OWNER = /^(?:github\.com|huggingface\.co|raw\.githubusercontent\.com)\/([^/?]+)|^api\.github\.com\/(?:users|repos|orgs)\/([^/?]+)/;
 const flat = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+// Withheld sites (review 4b, ruling 1): a site that a pseudonymous account links from its X profile and that its record
+// does not use is withheld from the whole study, and so is any site named after a pseudonymous handle. The profile
+// rows in evidence/x-reads.jsonl carry each withheld site key only as a sha256, so the study never names it. The key
+// is the lowercased host without "www.", plus the first path segment on a platform host (substack.com/@name).
+const PLATFORM = new Set(['substack.com', 'medium.com', 'tinyurl.com', 'linktr.ee', 'youtube.com', 'bsky.app', 't.me']);
+const NEUTRAL = new Set(['x.com', 'twitter.com', 'github.com', 'gist.github.com', 'huggingface.co', 'raw.githubusercontent.com', 'api.github.com']);
+const siteKey = (u) => {
+  const s = u.trim().replace(/^https?:\/\//i, '').split('#')[0].split('?')[0];
+  const i = s.indexOf('/');
+  const host = (i < 0 ? s : s.slice(0, i)).toLowerCase().replace(/^www\./, '').replace(/\.$/, '');
+  const seg = i < 0 ? '' : s.slice(i + 1).split('/')[0].toLowerCase();
+  return PLATFORM.has(host) && seg ? host + '/' + seg : host;
+};
+const DOMAIN_RX = /(?<![\w@./-])(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s"'<>)\]`]*)?/gi;
+const FILE_EXT = /\.(?:html?|md|jsonl?|py|ts|tsx|js|mjs|cjs|rs|toml|ya?ml|txt|png|jpe?g|gif|svg|webp|css|sh|xml|lock|cff|ipynb|go|c|h|cpp|java|rb|zip|gz|pdf)$/i;
+function checkWithheld(people, ev, files) {
+  const keys = people.filter((p) => p.pseudonymous === true).map((p) => flat(p.handle)).filter((k) => k.length >= 4);
+  const hashes = new Set(ev['x-reads.jsonl'].filter((r) => r.kind === 'profile').flatMap((r) => r.withheld_site_sha256));
+  for (const r of ev['x-reads.jsonl']) if (r.kind === 'profile' && !r.withheld_site_sha256.every((h) => /^[0-9a-f]{64}$/.test(h))) find('N5', `evidence/x-reads.jsonl: ${r.handle} withheld_site_sha256 must be sha256 hex digests`);
+  if (!hashes.size) find('N5', 'evidence/x-reads.jsonl: no withheld site digests (a check that matches nothing is not a pass)');
+  for (const [rel, text] of files) {
+    text.split('\n').forEach((line, i) => {
+      for (const m of line.matchAll(DOMAIN_RX)) {
+        const tok = m[0].replace(/[.,;:!?]+$/, '');
+        if (!/^https?:\/\//i.test(tok) && FILE_EXT.test(tok.split('/')[0])) continue;
+        const k = siteKey(tok);
+        const host = k.split('/')[0];
+        if (NEUTRAL.has(host)) continue;
+        if (hashes.has(crypto.createHash('sha256').update(k).digest('hex'))) find('N5', `${rel}:${i + 1}: ${tok} is a site withheld from the study (linked from a pseudonymous account's profile, not used by its record)`);
+        else if (keys.some((h) => flat(k).includes(h))) find('N5', `${rel}:${i + 1}: ${tok} is a site named after a pseudonymous handle`);
+      }
+    });
+  }
+}
 function pseudonymRule(p, ev, where, u) {
   const h = p.handle.slice(1).toLowerCase();
   const n = normUrl(u);
@@ -783,8 +818,13 @@ for (const [rel, html] of pages) {
   scanRendered('site/' + rel, html);
 }
 scanPseudonymous(people);
-checkEvidence(people, deeps, loadEvidence());
-
+const evidence = loadEvidence();
+checkEvidence(people, deeps, evidence);
+checkWithheld(people, evidence, [
+  ...[readmeRel, `${SRC}/people.jsonl`, ...deeps.map((d) => d.rel), ...Object.keys(EV).map((e) => `${SRC}/evidence/${e}`)]
+    .filter((f) => fs.existsSync(path.join(ROOT, f))).map((f) => [f, readText(f)]),
+  ...[...pages].map(([rel, html]) => ['site/' + rel, html]),
+]);
 if (!CHECK) {
   if (findings.some((f) => /^N[345] /.test(f))) {
     console.log('STUDY_BAD (nothing written)');

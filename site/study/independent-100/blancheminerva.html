@@ -157,16 +157,16 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: evals, verification, research-method, training</span></p>
-  <p>lm-evaluation-harness is already a named oracle in franken-research and a skill we ship; the reproducible-evaluation paper and Bergson's one-line-reproducible runs map directly onto our evidence and verification discipline.</p>
-  <p><b>Where it already touches our work:</b> Franken Research uses EleutherAI's lm-evaluation-harness as a named oracle in its eval-harness verdict, and we carry a skill for it.</p>
+  <p>lm-evaluation-harness is already a named oracle in franken-research; the reproducible-evaluation paper and Bergson's one-line-reproducible runs map directly onto our evidence and verification discipline.</p>
+  <p><b>Where it already touches our work:</b> Franken Research uses EleutherAI's lm-evaluation-harness as a named oracle in its eval-harness verdict.</p>
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Read 'Lessons from the Trenches on Reproducible Evaluation' (<a href="https://arxiv.org/abs/2405.14782">arxiv.org/abs/2405.14782</a>). Written by the harness maintainers; likely source of rules for the franken-research rulebook on eval evidence <span class="small">Effort: small.</span></li>
-<li>Study lm-eval CI: changed-task-only runs with DummyLM and versioned task YAMLs (<a href="https://github.com/EleutherAI/lm-evaluation-harness">github.com/EleutherAI/lm-evaluation-harness</a>). Already cited as a pattern; a deep read could turn it into a gate for our own evals <span class="small">Effort: medium.</span></li>
-<li>Evaluate Bergson for attributing model behavior to data (<a href="https://github.com/EleutherAI/bergson">github.com/EleutherAI/bergson</a>). Only relevant if we fine-tune local models; its reproducibility design is worth reading regardless <span class="small">Effort: large.</span></li></ol>
+  <ol><li>Read 'Lessons from the Trenches on Reproducible Evaluation' (<a href="https://arxiv.org/abs/2405.14782">arxiv.org/abs/2405.14782</a>). Written by the harness maintainers; likely source of rules on eval evidence <span class="small">Effort: small.</span></li>
+<li>Study lm-eval CI: changed-task-only runs with DummyLM and versioned task YAMLs (<a href="https://github.com/EleutherAI/lm-evaluation-harness">github.com/EleutherAI/lm-evaluation-harness</a>). Already cited as a pattern; it is a model for gating eval changes <span class="small">Effort: medium.</span></li>
+<li>Evaluate Bergson for attributing model behavior to data (<a href="https://github.com/EleutherAI/bergson">github.com/EleutherAI/bergson</a>). Only relevant to teams that fine-tune models; its reproducibility design is worth reading regardless <span class="small">Effort: large.</span></li></ol>
   <p><b>Before reusing anything:</b> Code is MIT/Apache-2.0. Datasets reached through the harness carry their own licenses; check each task's upstream dataset license before redistributing results or data.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">

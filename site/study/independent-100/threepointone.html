@@ -157,16 +157,15 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: agents, orchestration, memory, business, writing</span></p>
-  <p>The Agents SDK is an MIT, production-grade base for hosting stateful client agents on Cloudflare, where ZestStream already deploys (wrangler, Workers). His durable-inference design, where the provider stream outlives process death and is resumed by cursor, applies to our long agent turns and fleet restarts.</p>
+  <p>The Agents SDK is an MIT, production-grade base for hosting stateful agents on Cloudflare Workers. His durable-inference design, where the provider stream outlives process death and is resumed by cursor, applies to long agent turns and restarts.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Read 'never waste a token' and RFC #1257, then decide whether our long agent runs need a durable provider buffer (<a href="https://sunilpai.dev/posts/never-waste-a-token/">sunilpai.dev/posts/never-waste-a-token</a>). Crash and deploy restarts mid-stream re-bill output tokens; the one-log-two-readers design is simple and testable. <span class="small">Effort: small.</span></li>
-<li>Evaluate cloudflare/agents as the runtime for ZestStream client agents (<a href="https://github.com/cloudflare/agents">github.com/cloudflare/agents</a>). MIT, actively maintained, Durable Object state per agent; it fits our existing Cloudflare stack. <span class="small">Effort: medium.</span></li>
-<li>Read his 2025 agent-infrastructure series (tracking, addressable agents, event bus, local-first) (<a href="https://sunilpai.dev/posts/ai-agents-need-tracking/">sunilpai.dev/posts/ai-agents-need-tracking</a>). Early statements of patterns we built with beads and Agent Mail; useful comparison and vocabulary. <span class="small">Effort: small.</span></li></ol>
+  <ol><li>Read 'never waste a token' and RFC #1257, then assess when long agent runs need a durable provider buffer (<a href="https://sunilpai.dev/posts/never-waste-a-token/">sunilpai.dev/posts/never-waste-a-token</a>). Crash and deploy restarts mid-stream re-bill output tokens; the one-log-two-readers design is simple and testable. <span class="small">Effort: small.</span></li>
+<li>Read his 2025 agent-infrastructure series (tracking, addressable agents, event bus, local-first) (<a href="https://sunilpai.dev/posts/ai-agents-need-tracking/">sunilpai.dev/posts/ai-agents-need-tracking</a>). Early statements of patterns also found in beads and Agent Mail; useful comparison and vocabulary. <span class="small">Effort: small.</span></li></ol>
   <p><b>Before reusing anything:</b> cloudflare/agents and partykit are MIT; partyserver is ISC; durable-chat is MIT. emojico's LICENSE is ISC text, though the API reports NOASSERTION. Several starter repos (partyvite, react-ppr-workers) have no license. The SDK ties hosting to Cloudflare Workers.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">

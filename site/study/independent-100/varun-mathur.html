@@ -156,17 +156,17 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">3 of 5</span> <span class="small">lenses: agents, security, memory, orchestration, local-models</span></p>
-  <p>jevcache targets the same Jev model we are evaluating, and its redact-then-hash key and CI replay are ideas we could apply to our own client for it <span class="tier">[Inference]</span>. The AVM rule 'ML can restrict, never relax' is a crisp doctrine for our hooks and guards <span class="tier">[Inference]</span>. Most shipped code is unlicensed binaries, so this is ideas, not adoption.</p>
+  <p>jevcache targets TypeSafe's Jev model, and its redact-then-hash key and CI replay are ideas any client for that model could apply <span class="tier">[Inference]</span>. The AVM rule 'ML can restrict, never relax' is a crisp doctrine for agent hooks and guards <span class="tier">[Inference]</span>. Most shipped code is unlicensed binaries, so this is ideas, not adoption.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>jevcache README design (<a href="https://github.com/hyperspaceai/jevcache">github.com/hyperspaceai/jevcache</a>). Compare its fingerprinting (redact PII and volatile fields before hashing, per-schema salt) and replay mode with our jev-client and measurement rows. <span class="small">Effort: small.</span></li>
-<li>AVM entries in the changelog (<a href="https://changelog.hyper.space/">changelog.hyper.space</a>). Rules-first, ML-advisory gate design with an adversarial corpus; check against our prompt-injection guards. <span class="small">Effort: small.</span></li>
-<li>hyperspaceai/agi repo layout (<a href="https://github.com/hyperspaceai/agi">github.com/hyperspaceai/agi</a>). How agent-written experiment results are recorded and peer-scored; relevant to our evidence ledgers. <span class="small">Effort: medium.</span></li></ol>
-  <p><b>Before reusing anything:</b> jevcache, hyperspace-node and aios-cli have no license file (default all rights reserved) and install closed binaries via curl|sh; do not adopt. agi is MIT. The platform includes blockchain, wallet and points components outside our scope. Hyperspace also ships a product called 'Agent Mail' (agent mailboxes) that is unrelated to the MCP Agent Mail we use; watch for name confusion. Network size, download and experiment figures are self-reported.</p>
+  <ol><li>jevcache README design (<a href="https://github.com/hyperspaceai/jevcache">github.com/hyperspaceai/jevcache</a>). Its fingerprinting (redact PII and volatile fields before hashing, per-schema salt) and replay mode are a compact design for caching and replaying model decisions. <span class="small">Effort: small.</span></li>
+<li>AVM entries in the changelog (<a href="https://changelog.hyper.space/">changelog.hyper.space</a>). Rules-first, ML-advisory gate design with an adversarial corpus; relevant to prompt-injection guards. <span class="small">Effort: small.</span></li>
+<li>hyperspaceai/agi repo layout (<a href="https://github.com/hyperspaceai/agi">github.com/hyperspaceai/agi</a>). How agent-written experiment results are recorded and peer-scored; relevant to any evidence ledger. <span class="small">Effort: medium.</span></li></ol>
+  <p><b>Before reusing anything:</b> jevcache, hyperspace-node and aios-cli have no license file (default all rights reserved) and install closed binaries via curl|sh; do not adopt. agi is MIT. The platform includes blockchain, wallet and points components outside our scope. Hyperspace also ships a product called 'Agent Mail' (agent mailboxes) that is unrelated to MCP Agent Mail; watch for name confusion. Network size, download and experiment figures are self-reported.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">
   <h2 id="h-sources">Sources</h2>

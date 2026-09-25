@@ -155,16 +155,15 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">4 of 5</span> <span class="small">lenses: memory, orchestration, rust</span></p>
-  <p>One of our automation skills is built on the atuin history database, but atuin was not installed on the machine we checked, so that skill's main data source was absent <span class="tier">[Verified, our own setup]</span>. Atuin Desktop's runnable runbooks are a model for ops docs that agents can execute. lgtm is a public data point on shipping unreviewed AI-written Rust.</p>
-  <p><b>Where it already touches our work:</b> One of our automation skills is built on atuin shell history.</p>
+  <p>Atuin's SQLite history (exit code, cwd, duration, session) is a structured data source for tools that mine shell history. Atuin Desktop's runnable runbooks are a model for ops docs that agents can execute. lgtm is a public data point on shipping unreviewed AI-written Rust.</p>
+  
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Install atuin (no sync) so the automating-your-automations skill has real data (<a href="https://github.com/atuinsh/atuin">github.com/atuinsh/atuin</a>). Closes a gap between a skill we ship and the state of our own machines <span class="small">Effort: small.</span></li>
-<li>Atuin Desktop runbook model (<a href="https://github.com/atuinsh/desktop">github.com/atuinsh/desktop</a>). Candidate format for agent-executable ops runbooks (RCH, Railway, NTM recovery) <span class="small">Effort: medium.</span></li></ol>
-  <p><b>Before reusing anything:</b> atuin MIT, Atuin Desktop Apache-2.0. Hosted sync is optional; keep it off or self-host for client machines.</p>
+  <ol><li>Atuin Desktop runbook model (<a href="https://github.com/atuinsh/desktop">github.com/atuinsh/desktop</a>). Candidate format for agent-executable ops runbooks <span class="small">Effort: medium.</span></li></ol>
+  <p><b>Before reusing anything:</b> atuin MIT, Atuin Desktop Apache-2.0. Hosted sync is optional and can be left off or self-hosted.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">
   <h2 id="h-sources">Sources</h2>
@@ -177,7 +176,7 @@ footer p{margin:0 0 8px}
 </section>
 <section class="card" id="limits" aria-labelledby="h-limits">
   <h2 id="h-limits">Limits</h2>
-  <p><b>Not verified:</b> Whether atuin is installed under another path or on our other machines; only one machine was checked.</p>
+  <p><b>Not verified:</b> Atuin, Atuin Desktop, lgtm and yeet were not installed or run for this study.</p>
   <p>This record comes from a first-pass survey of public material by an AI agent session on 2026-09-24, edited for publication on 2026-09-25. Nothing was installed or run for it. Roles, stars and licenses change; see the <a href="index.html#limits">study&rsquo;s limits</a>.</p>
 </section>
 <section class="card fix" id="correct" aria-labelledby="h-correct">

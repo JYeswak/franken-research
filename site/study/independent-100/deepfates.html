@@ -154,17 +154,17 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: agents, orchestration, evals, memory, search, mcp</span></p>
-  <p>cantrip is an MIT agent runtime whose vocabulary maps onto our fleet: wards are our guards and limits, gates are our tools and capabilities, loom is our session history, child cantrips are our subagents, and it has seed-varied rubric evals. It can be benchmarked or mined for design now. hnsw (MIT) is a candidate browser vector index for the search shop.</p>
+  <p>cantrip is an MIT agent runtime whose vocabulary maps onto common agent-harness parts: wards are guards and limits, gates are tools and capabilities, loom is session history, child cantrips are subagents, and it has seed-varied rubric evals. It can be benchmarked or mined for design now. hnsw (MIT) is a vector index that runs in the browser.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Map cantrip's wards, gates and loom onto OMP/NTM guards, tools and session transcripts, and note which enforced limits we lack (<a href="https://github.com/deepfates/cantrip">github.com/deepfates/cantrip</a>). The formula A = M ∪ G − W (action space = medium plus gates minus wards) is a compact spec for agent capability boundaries that our hooks enforce only piecemeal. <span class="small">Effort: medium.</span></li>
-<li>Review cantrip's familiar evals (curated scenarios, multiple seeds, rubric scoring, persisted transcripts) against our eval discipline (<a href="https://github.com/deepfates/cantrip">github.com/deepfates/cantrip</a>). Seed-varied rubric evals with saved transcripts are the kind of repeatable harness our verification rules ask for. <span class="small">Effort: small.</span></li>
-<li>Test the hnsw npm package as a client-side index for the franken-research search shop (<a href="https://github.com/deepfates/hnsw">github.com/deepfates/hnsw</a>). MIT-licensed in-browser ANN search could serve a static search shop without a server. <span class="small">Effort: small.</span></li></ol>
-  <p><b>Before reusing anything:</b> All the listed repositories are MIT (GitHub license API, 2026-09-25, evidence/licenses.jsonl). cantrip is Elixir/BEAM, not Rust or TypeScript, so adopt its ideas and evals rather than the runtime itself. Its star count is small, so check maturity before depending on it.</p>
+  <ol><li>Map cantrip's wards, gates and loom onto OMP/NTM guards, tools and session transcripts (<a href="https://github.com/deepfates/cantrip">github.com/deepfates/cantrip</a>). The formula A = M ∪ G − W (action space = medium plus gates minus wards) is a compact spec for agent capability boundaries. <span class="small">Effort: medium.</span></li>
+<li>Review cantrip's familiar evals (curated scenarios, multiple seeds, rubric scoring, persisted transcripts) (<a href="https://github.com/deepfates/cantrip">github.com/deepfates/cantrip</a>). Seed-varied rubric evals with saved transcripts are the kind of repeatable harness that makes agent eval results checkable. <span class="small">Effort: small.</span></li>
+<li>Test the hnsw npm package as a client-side vector index (<a href="https://github.com/deepfates/hnsw">github.com/deepfates/hnsw</a>). MIT-licensed in-browser ANN search can serve a static site's search without a server. <span class="small">Effort: small.</span></li></ol>
+  <p><b>Before reusing anything:</b> All the listed repositories are MIT (GitHub license API, 2026-09-25, evidence/licenses.jsonl). cantrip is Elixir/BEAM, so teams on other stacks can adopt its ideas and evals rather than the runtime itself. Its star count is small, so check maturity before depending on it.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">
   <h2 id="h-sources">Sources</h2>

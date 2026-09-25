@@ -129,7 +129,7 @@ footer p{margin:0 0 8px}
   <h1>Taelin</h1>
   <p class="meta"><span>#84 in <b>The Builders on Main</b>, the curator&rsquo;s rank and section</span> <span><a href="https://x.com/VictorTaelin">@VictorTaelin</a></span> <span>Relevance to our work: <b>5 of 5</b></span></p>
 </header>
-<div class="vocab">Bracketed tags are evidence labels: <b>[Verified]</b> means we read the page, file or API response ourselves, <b>[Reported]</b> means a source says so and we did not check the underlying thing, and <b>[Inference]</b> is our own reasoning. To <b>pin</b> is to freeze a dependency, oracle, or assessment at an exact commit or version, so later changes cannot silently alter what was checked.</div>
+<div class="vocab">Bracketed tags are evidence labels: <b>[Verified]</b> means we read the page, file or API response ourselves, <b>[Reported]</b> means a source says so and we did not check the underlying thing, and <b>[Inference]</b> is our own reasoning.</div>
 <main id="main">
 <section class="card credit" aria-labelledby="h-credit">
   <h2 id="h-credit">Credit</h2>
@@ -155,16 +155,16 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: verification, agents, memory, research-method</span></p>
-  <p>Bend 2 (Apache-2.0) is an adoptable 'laws plus machine-checked proof' gate for AI-written code, and we already run a mega-skill and two franken-research cohort packets on it. OptMem is a compact memory design to compare with ee/cass, though it has no license.</p>
-  <p><b>Where it already touches our work:</b> We carry a Bend 2 skill, and two Franken Research cohort packets assess Bend-based repositories.</p>
+  <p>Bend 2 (Apache-2.0) is an adoptable 'laws plus machine-checked proof' gate for AI-written code, and two franken-research cohort packets assess Bend-based repositories. OptMem is a compact memory design to compare with ee/cass, though it has no license.</p>
+  <p><b>Where it already touches our work:</b> Two Franken Research cohort packets assess Bend-based repositories.</p>
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
   <ol><li>OptMem's design: append-only fixed-width log, rebuildable summary tree, merges surfaced inline by 'note', one wake budget knob (<a href="https://github.com/VictorTaelin/OptMem">github.com/VictorTaelin/OptMem</a>). A minimal memory contract to benchmark ee/cass against (wake cost, recall fidelity, no background jobs). No license, so study the design only. <span class="small">Effort: small.</span></li>
-<li>Refresh bend2-mega-skill against Bend v2.0.27 (skill snapshots cite v2.0.12-2.0.16) (<a href="https://github.com/bendlang/bend/releases/tag/v2.0.27">github.com/bendlang/bend/releases/tag/v2.0.27</a>). Taelin ships near-daily releases; our skill's STATUS-LEDGER and SOURCE-MAP pin older versions, and the beads_bend packet's kill test (a quantified codec round-trip law) should be re-tried on the current checker. <span class="small">Effort: medium.</span></li>
-<li>AI-scripts 'board' and 'long' tools (<a href="https://github.com/VictorTaelin/AI-scripts">github.com/VictorTaelin/AI-scripts</a>). A small multi-advisor review panel and a goal/work/review loop; comparable to our multi-model triangulation and loop skills. <span class="small">Effort: small.</span></li></ol>
+<li>Re-try the beads_bend packet's kill test on Bend v2.0.27 (<a href="https://github.com/bendlang/bend/releases/tag/v2.0.27">github.com/bendlang/bend/releases/tag/v2.0.27</a>). Taelin ships near-daily releases, so the beads_bend packet's kill test (a quantified codec round-trip law) should be re-tried on the current checker. <span class="small">Effort: medium.</span></li>
+<li>AI-scripts 'board' and 'long' tools (<a href="https://github.com/VictorTaelin/AI-scripts">github.com/VictorTaelin/AI-scripts</a>). A small multi-advisor review panel and a goal/work/review loop; comparable to multi-model review and agent-loop patterns. <span class="small">Effort: small.</span></li></ol>
   <p><b>Before reusing anything:</b> Bend 2 is Apache-2.0 (OSI) <span class="tier">[Verified: GitHub license API, 2026-09-25, evidence/licenses.jsonl]</span>; install is curl | sh from bend-lang.com. OptMem, AI-scripts, Interaction-Calculus and HVM4 have no LICENSE file (all rights reserved by default): study only, do not copy code or the prompt text. Bend performance and checker-speed claims ('checks in under a second') are maintainer claims; our own beads_bend packet records 316-529 s and 11-12.8 GB proof checks at real-tool scale.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">

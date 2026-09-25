@@ -2,7 +2,7 @@
 title: Geoffrey Huntley: the Ralph loop, the porting recipe, preflight and underclass
 covers: 90
 written: 2026-09-24
-summary: What Geoffrey Huntley built (the Ralph loop, a four-step porting recipe, the preflight and underclass proxies), how it compares with our loop practice and Jeffrey's port method, and what we would adopt.
+summary: What Geoffrey Huntley built (the Ralph loop, a four-step porting recipe, the preflight and underclass proxies), how it compares with Jeffrey's port method, and which of its practices carry general lessons.
 ---
 
 ## Sources
@@ -100,23 +100,19 @@ MIT ("Copyright (c) 2026 Geoffrey Huntley"). Documented behaviour only, all [Ver
 - **README drift.** The README says "43 unit tests + 8 Hegel property tests" ([README](https://github.com/ghuntley/underclass/blob/34df0895df96/README.md#L233)); [tests/properties.rs](https://github.com/ghuntley/underclass/blob/34df0895df96/tests/properties.rs) alone has 16 `hegel::test` attributes.
 - **Vendored skill.** `code-contracts` comes from spolu/code-contracts ([skills-lock.json](https://github.com/ghuntley/underclass/blob/34df0895df96/skills-lock.json)), which GitHub reports as unlicensed.
 
-## Where our practice differs
+## Design choices in the Ralph loop
 
-Two layers. **Our loop kit** is Ian Nuttall's ralph templates (https://github.com/iannuttall/ralph) with local changes to agent routing, an injected principles block and a completion-validation script. Its `package.json` says MIT but the repo has no LICENSE file [Verified: https://github.com/iannuttall/ralph/blob/5bc402540c45/package.json]. **Our loop-engineering practice** is a skill defining a stateless, human-invoked tick. Statements about both are [Verified, our own setup].
+Ian Nuttall's ralph templates (https://github.com/iannuttall/ralph) are one public implementation of the technique. Its `package.json` says MIT but the repo has no LICENSE file [Verified: https://github.com/iannuttall/ralph/blob/5bc402540c45/package.json].
 
-- **Loop driver.** He loops forever. Our kit caps iterations (default 25); loop-engineering has no daemon, and the operator invokes each tick. [Inference] Ours bounds spend and blast radius for a fleet; his /loop post already allows a manual loop, so our tick is closer to his current view than our kit is.
-- **Next unit.** His agent picks "the most important thing"; ours takes the next ready item from a dependency graph. [Inference] Ours fits several writers; his fits one writer on greenfield.
-- **Plan artifact.** His `fix_plan.md` is disposable; ours are durable (PRD JSON, a task graph, a signed charter). [Inference] Split: our own measurement found about 80% of files touched over 14 days were documents and task bookkeeping, evidence that durable plans accrete. Durable tasks are still needed for multi-agent claims.
-- **Specs.** He reloads the full spec every loop; we load one story, cheaper per tick with less global context.
-- **Completion.** His loop checks nothing; the agent runs the tests. Our kit marks a story done when the agent prints a completion token found in the log, and quality gates are rendered into the prompt, never executed by the loop. The token also appears in the prompt, so a runner that echoes its prompt could mark every story done [Inference, untested]. Loop-engineering lets a classifier decide from the diff whether the product moved. [Inference] The classifier is the strongest of the three.
-- **Commits.** He and our kit use `git add -A`; loop-engineering commits by pathspec. [Inference] `git add -A` is safe only with one process per repo, and our multi-agent trees are shared.
-- **Learning.** Same mechanism: our kit inherited his "Signs". Loop-engineering adds a negative-evidence ledger with retry conditions.
-- **Parallelism.** His one-build-lane rule is cheap and right. We enforce it for Rust through a shared build queue, but no loop skill states it as a tick rule.
-- **Brownfield.** He avoids existing code; we loop on existing repos by default. [Inference] Neither side has measured it, and his porting recipe is a brownfield on-ramp we lack.
-- **Skill-use validation.** Our kit's validation script accepts a commit subject containing words like "refactor" as proof a simplification pass ran. [Inference] Having no check is better than one an agent can satisfy with a commit message.
-- **Secrets.** preflight redacts outbound requests before the provider receives them (OpenAI-style APIs only). Our guards act after emission, and our own guidance says reactive redaction "cannot un-leak". [Inference] His is the only one of the two layers that stops a secret before the provider sees it.
-
-We also found an internal misconfiguration between our PRD skill and the loop kit; that is our housekeeping.
+- **Loop driver.** He loops forever, though his /loop post also counts a manual loop that waits for CTRL+C as ralphing. [Inference] An iteration cap or an operator-invoked tick bounds spend and blast radius when many loops run at once.
+- **Next unit.** His agent picks "the most important thing". [Inference] That fits one writer on greenfield; several writers need a shared rule, such as taking the next ready item from a dependency graph.
+- **Plan artifact.** His `fix_plan.md` is disposable. [Inference] Durable plans tend to accrete documents and bookkeeping, but durable tasks are still needed when several agents claim work.
+- **Specs.** He reloads the full spec every loop. [Inference] Loading one story per tick is cheaper but carries less global context.
+- **Completion.** His loop checks nothing; the agent runs the tests. [Inference] A loop that marks work done when a completion token shows up in the log can be fooled when the token also appears in the prompt and the runner echoes its prompt; gates run by the loop itself, or a classifier judging from the diff whether the product moved, are stronger checks.
+- **Commits.** He uses `git add -A`. [Inference] That is safe only with one process per repo; where several agents share a tree, commits by pathspec avoid sweeping in other writers' files.
+- **Parallelism.** His one-build-lane rule is cheap and right [Inference].
+- **Brownfield.** He avoids existing code, and his porting recipe is his on-ramp to it. [Inference] His posts give no measurement of loops on existing code bases.
+- **Secrets.** preflight redacts outbound requests before the provider receives them (OpenAI-style APIs only). [Inference] Redaction after emission cannot un-leak; only a layer in front of the provider stops a secret before the provider sees it.
 
 ### The porting recipe against Franken Research's account of Jeffrey's method
 
@@ -136,48 +132,43 @@ Franken Research's [RULEBOOK.md](https://github.com/JYeswak/franken-research/blo
 
 **Evidence.** Huntley's post has no example port and no numbers. Franken Research found 0 of 44 of Jeffrey's repos independently validated and 1 of 44 behaviourally reproduced by an analyst (00-overview.md); a later analyst rerun of toon_bend on macOS arm64 passed 1068 of 1078 captured cases on each of three lanes, the 10 failures being Linux-only `/dev/full` cases. We found no assessment of Huntley's recipe by anyone.
 
-In short: Huntley's recipe is the cheaper, more exhaustive way to extract intent; Jeffrey's method is the stronger way to prove a port, where its oracles run. Our preferred combination is his P1 and P2, an executable oracle, and franken_lean-style checked anchors.
+In short: Huntley's recipe is the cheaper, more exhaustive way to extract intent; Jeffrey's method is the stronger way to prove a port, where its oracles run. [Inference] The strongest combination on this reading is his P1 and P2, an executable oracle, and franken_lean-style checked anchors.
 
-## What we would adopt
+## General lessons
 
-1. **Attribution in our loop skills.** Add the lineage (text below) to our loop-engineering and PRD skills and our loop kit's documentation. Test: each edited file contains https://ghuntley.com/ralph/.
-2. **Loop-verified completion in our loop kit.** Mark a story done only if HEAD advanced, the tree is clean, and every quality gate, run by the loop, exits 0; match the completion token only in the agent's final message. Risk: gates come from an agent-written PRD, so allowlist the commands. Test: three fake-agent fixtures (echoes its prompt only; prints the token without committing; commits and passes); only the last may be marked done. Not yet run.
-3. **Pathspec commits.** Stage only the files a story touched. Test: a planted unrelated dirty file must not appear in the commit.
-4. **Citation-anchored port specs in our porting skill.** (a) One subagent per upstream test file writes clauses that cite the test, and the tests stay the oracle. (b) Each structure clause carries an anchor (legacy path, line, expected token), and a lint fails if the token is missing at the pinned commit. (c) Follow an anchor only to answer a behaviour question, then amend the clause before implementing. Risk: anchors rot when the pin moves. License: ideas only; Jeffrey's repos carry a rider Franken Research classes as non-OSI (RULEBOOK.md), so reimplement the lint from its description. Test: on one small port, a planted wrong anchor turns the lint red.
-5. **A preflight pilot on OpenAI-API lanes only,** on a Linux host, `advisory` then `redact`. In a fork, enable the vendored Cloudflare and HubSpot rules and add rules for xAI, Infisical and Supabase keys, which Gitleaks v8.30.1 lacks [Verified: the vendored database]. Risks: no Anthropic route, Linux-only sandbox (do not run it unsandboxed on macOS), compile-time rules, weekly auto-commits to `main` (pin a commit), OCR is not proof of absence, and the project is days old. Test: one synthetic token per enabled rule in a prompt, a tool-result JSON, a PNG and a PDF must never reach a mock upstream; a clean control must forward byte-identical; a `/v1/messages` request must be refused.
-6. **One build lane per tick.** Add to our tick contract: fan out reads and searches, and let exactly one lane run build and test. Test: at most one build or test process per repo per tick in the next swarm run.
+1. **Let the loop decide completion.** Mark an item done only if HEAD advanced, the tree is clean, and every quality gate, run by the loop, exits 0; match a completion token only in the agent's final message [Inference]. Where the gates come from an agent-written plan, allowlist the commands.
+2. **Citation-anchored port specs.** (a) One subagent per upstream test file writes clauses that cite the test, and the tests stay the oracle. (b) Each structure clause carries an anchor (legacy path, line, expected token), and a lint fails if the token is missing at the pinned commit. (c) Follow an anchor only to answer a behaviour question, then amend the clause before implementing. Risk: anchors rot when the pin moves. License: ideas only; Jeffrey's repos carry a rider Franken Research classes as non-OSI (RULEBOOK.md), so reimplement the lint from its description.
+3. **Know preflight's limits.** No Anthropic route, a Linux-only sandbox (do not run it unsandboxed on macOS), compile-time rules, weekly auto-commits to `main` (pin a commit), OCR that is not proof of absence, and a project days old.
 
-## What we would not adopt
+## Do not adopt
 
-- **underclass, as software.** Its own documents record plaintext tokens as an accepted risk (ADR 0005), a mode-0666 monitor socket by design, several subscriptions pooled behind one key, and session rebinding that ADR 0003 says "leaks conversation context across subscriptions". Its code sends an `originator: opencode` header upstream (codex.rs). We make no claim about any provider's terms, which we did not assess; for a client-facing fleet the design is a data-boundary problem either way [Inference]. Worth studying as ideas: cooling with an absolute reset time, a fail-fast 429 carrying the earliest reset, stickiness on `prompt_cache_key`, and failover only before the first byte.
+- **underclass, as software.** Its own documents record plaintext tokens as an accepted risk (ADR 0005), a mode-0666 monitor socket by design, several subscriptions pooled behind one key, and session rebinding that ADR 0003 says "leaks conversation context across subscriptions". Its code sends an `originator: opencode` header upstream (codex.rs). We make no claim about any provider's terms, which we did not assess; for any fleet that handles client data the design is a data-boundary problem either way [Inference]. Worth studying as ideas: cooling with an absolute reset time, a fail-fast 429 carrying the earliest reset, stickiness on `prompt_cache_key`, and failover only before the first byte.
 - **The bare `while :` loop.** No cap, stop condition or loop-side check.
 - **"I don't plan" in multi-agent trees.** Independent choosers duplicate work, as he warns: "If you wake up to find that Ralph is doing multiple implementations, then you need to tune this step."
 - **`git add -A` and push on every green.** It assumes one process per repo.
-- **Following citations into legacy source during implementation, unamended.** Use proposal 4(c).
+- **Following citations into legacy source during implementation, unamended.** Follow a citation only to answer a behaviour question, then amend the clause first.
 - **Tests compressed into prose without keeping the tests as the gate.** That invites "spec-editing as progress".
 - **sup.** No license, a hard-coded script path, no stop condition.
 - **Copying from these sources:** his CURSED prompts (blog content is his copyright), `how-to-build-a-coding-agent`, `sup` and spolu/code-contracts (no license), and loom.
-- **`code-contracts` as enforcement.** preflight's AGENTS.md validates contracts with `cc-check format` and reviews semantics manually; our claim registries and fires-on-known-bad gates are stronger.
+- **`code-contracts` as enforcement.** preflight's AGENTS.md validates contracts with `cc-check format` and reviews semantics manually, so a passing format check does not show that a contract holds [Inference].
 
 ## Attribution we owe
 
-For our loop-engineering skill:
+For a loop that descends from Ralph:
 
-> The tick loop descends from Geoffrey Huntley's Ralph loop: a fresh context each iteration, the same specs and plan loaded every loop, one item per loop, back pressure from tests and types, and "signs" added after observed failures (https://ghuntley.com/ralph/, 2025-07-14; https://ghuntley.com/loop/, 2026-01-17).
+> This loop descends from Geoffrey Huntley's Ralph loop: a fresh context each iteration, the same specs and plan loaded every loop, one item per loop, back pressure from tests and types, and "signs" added after observed failures (https://ghuntley.com/ralph/, 2025-07-14; https://ghuntley.com/loop/, 2026-01-17).
 
-For our loop kit:
+For work built on Ian Nuttall's templates:
 
 > Templates from Ian Nuttall's ralph (https://github.com/iannuttall/ralph, commit 5bc4025, MIT per package.json), an implementation of Geoffrey Huntley's Ralph technique (https://ghuntley.com/ralph/), with local changes.
 
-- Our PRD skill should name its loop route "the Ralph loop (Huntley), via Ian Nuttall's implementation"; our kit's guardrails, which quote him, should link https://ghuntley.com/ralph/.
-- If we adopt proposal 4, cite https://ghuntley.com/porting/ for the tests-to-specs and source-to-specs passes, and Jeffrey Emanuel's franken_lean anchors as described in the Franken Research franken_lean assessment.
+- For the tests-to-specs and source-to-specs passes, cite https://ghuntley.com/porting/; for checked anchors, cite Jeffrey Emanuel's franken_lean anchors as described in the Franken Research franken_lean assessment.
 - For the back pressure essay, cite Moss (https://banay.me/dont-waste-your-backpressure/). Huntley credits Moss for it, and his own use of the term appears earlier, in the 2025 Ralph post.
 - The how-to-ralph-wiggum playbook is Clayton Farr's (https://github.com/ClaytonFarr/ralph-playbook).
 
 ## What we could not verify
 
 - Whether preflight and underclass work: we built and ran neither. preflight's tests need a networked bootstrap and it packages Linux only.
-- The completion-token false positive in our own kit; proposal 2's first fixture would settle it.
 - Who first used the term "loop engineering".
 - The parts of https://ghuntley.com/specs/ (where his spec method is described) and https://ghuntley.com/pressure/ that are marked for subscribers.
 - Any outcome of the porting recipe; the post gives none and we found none.

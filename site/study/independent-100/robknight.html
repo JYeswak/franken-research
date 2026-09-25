@@ -156,17 +156,17 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: agents, orchestration, verification</span></p>
-  <p>terminal-browser is an MIT tool that fits our tmux fleet directly: agents get an in-pane browser with an agent-browser compatible CLI, it works over SSH on remote workers, and it can show HTML plans next to the agent. It is a candidate for UI verification by agents without a separate headed Chromium.</p>
+  <p>terminal-browser is an MIT tool that fits tmux-based agent fleets directly: agents get an in-pane browser with an agent-browser compatible CLI, it works over SSH on remote workers, and it can show HTML plans next to the agent. It is a candidate for UI verification by agents without a separate headed Chromium.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Try terminal-browser in an NTM tmux pane, and test <code>terminal-browser action</code> against our agent-browser skill (<a href="https://github.com/zenbu-labs/terminal-browser">github.com/zenbu-labs/terminal-browser</a>). It could give fleet agents browser verification inside the same tmux session, including on remote hosts over SSH. <span class="small">Effort: small.</span></li>
-<li>Read the terminal-browser Claude Code plugin (<a href="https://github.com/zenbu-labs/terminal-browser/tree/main/claude-code-plugin">github.com/zenbu-labs/terminal-browser/tree/main/claude-code-plugin</a>). It shows how a browser CLI is packaged as an agent plugin; compare with our skills and hooks. <span class="small">Effort: small.</span></li>
+  <ol><li>Try terminal-browser in an NTM tmux pane, and test <code>terminal-browser action</code> against the agent-browser CLI (<a href="https://github.com/zenbu-labs/terminal-browser">github.com/zenbu-labs/terminal-browser</a>). It could give agents browser verification inside the same tmux session, including on remote hosts over SSH. <span class="small">Effort: small.</span></li>
+<li>Read the terminal-browser Claude Code plugin (<a href="https://github.com/zenbu-labs/terminal-browser/tree/main/claude-code-plugin">github.com/zenbu-labs/terminal-browser/tree/main/claude-code-plugin</a>). It shows how a browser CLI is packaged as an agent plugin; compare with other skill and hook packaging. <span class="small">Effort: small.</span></li>
 <li>Skim zenbu.js for the 'hackable software' architecture (<a href="https://github.com/zenbu-labs/zenbu.js">github.com/zenbu-labs/zenbu.js</a>). Context on what Zenbu is building; low priority. <span class="small">Effort: medium.</span></li></ol>
-  <p><b>Before reusing anything:</b> terminal-browser, terminal-code, zenbu.js and react-scan are MIT per the GitHub license API (2026-09-25). react-scratch has no license. The installer is curl|bash from terminal-browser.sh; review it before running on fleet hosts. A browser driven by an agent is a prompt-injection surface (PI_WEB).</p>
+  <p><b>Before reusing anything:</b> terminal-browser, terminal-code, zenbu.js and react-scan are MIT per the GitHub license API (2026-09-25). react-scratch has no license. The installer is curl|bash from terminal-browser.sh; review it before running it. A browser driven by an agent is a prompt-injection surface.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">
   <h2 id="h-sources">Sources</h2>

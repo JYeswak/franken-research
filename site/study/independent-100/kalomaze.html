@@ -154,15 +154,15 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">4 of 5</span> <span class="small">lenses: evals, training, local-models, memory, research-method</span></p>
-  <p>Min P is a sampler we can set today on llama.cpp/MLX local models. Their current posts name two failure modes we must guard against: eval scores polluted by harness parser bugs, and agent memory files full of non-generalizing notes. Most current work lives inside Prime Intellect repos.</p>
+  <p>Min P is a sampler we can set today on llama.cpp/MLX local models. Their current posts name two failure modes agent builders must guard against: eval scores polluted by harness parser bugs, and agent memory files full of non-generalizing notes. Most current work lives inside Prime Intellect repos.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Tool-call parser / chat-template confound thread (<a href="https://x.com/kalomaze/status/2101192284025069884">x.com/kalomaze/status/2101192284025069884</a>). Before trusting any cross-model eval we run, check that the harness parses each model's tool calls correctly <span class="small">Effort: small.</span></li>
-<li>Narrow memory-note critique (<a href="https://x.com/kalomaze/status/2099006407953838541">x.com/kalomaze/status/2099006407953838541</a>). Test our ee/cass/retain rules against it: do our memories state principles or instances? <span class="small">Effort: small.</span></li>
+  <ol><li>Tool-call parser / chat-template confound thread (<a href="https://x.com/kalomaze/status/2101192284025069884">x.com/kalomaze/status/2101192284025069884</a>). Before trusting any cross-model eval, check that the harness parses each model's tool calls correctly <span class="small">Effort: small.</span></li>
+<li>Narrow memory-note critique (<a href="https://x.com/kalomaze/status/2099006407953838541">x.com/kalomaze/status/2099006407953838541</a>). A test for any agent memory: do stored notes state principles or instances? <span class="small">Effort: small.</span></li>
 <li>Min P PR and discussion (<a href="https://github.com/ggml-org/llama.cpp/pull/3841">github.com/ggml-org/llama.cpp/pull/3841</a>). Default sampler choice for local MLX/llama.cpp models <span class="small">Effort: small.</span></li></ol>
   <p><b>Before reusing anything:</b> Min P ships inside MIT llama.cpp. koboldcpp fork is AGPL-3.0; do not vendor. Note the min-p paper's authors do not include kalomaze.</p>
 </section>

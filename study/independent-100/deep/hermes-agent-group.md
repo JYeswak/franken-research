@@ -95,7 +95,7 @@ All commits below are authored by the GitHub login `shannonsands` [Verified: Git
 
 ## General lessons
 
-None of these has been applied; this was a read-only study of Hermes's public code. Each is stated as a general practice for agent harnesses.
+This was a read-only study of Hermes's public code. Each is stated as a general practice for agent harnesses.
 
 1. **Provenance is declared, never inferred.** A job that archives or prunes skills should act only on skills whose recorded provenance allows it, as the Curator does. Usage-based ageing is only safe when every tool that reads a skills directory updates the usage counters [Inference].
 2. **Scan what persists.** Memory re-injected at session start is where one injected entry keeps working across sessions; Hermes scans every memory write for that reason (see above).
@@ -119,7 +119,7 @@ None of these has been applied; this was a read-only study of Hermes's public co
 ## Attribution we owe
 
 - **Hermes Agent code**, if copied: the MIT notice `Copyright (c) 2025 Nous Research` and permission text in each copied file.
-- **Commit credit** for ideas we reimplement:
+- **Commit credit** for anyone reimplementing these ideas:
   - memory-aware dispatch: GitHub account `shannonsands`, `4beca7a`, building on @Dusk1e's PR #28695;
   - startup watchdog: GitHub account `shannonsands`, `8a3b6f3`, `f5bb1e1`, `852db61`;
   - empty-response guard: GitHub account `shannonsands`, `ac06c2f`, `d10f872`; the usage-less extension by fangliquanflq, `3755dca`;

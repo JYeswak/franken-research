@@ -675,7 +675,13 @@ ignoring case; (c) a URL the listed X account links one hop, in a row of
 `x-reads.jsonl`; (d) a page in `credits.jsonl` whose quote names the handle.
 It also fails, naming the record and URL, on Thread Reader or Nitter mirrors,
 on a site or blog named after the handle whatever its route, and on any
-`links.site` or `links.blog` in such a record. The gate block also counts on its
+`links.site` or `links.blog` in such a record. Study-wide (every record, deep
+dive, evidence file and rendered page, as a URL or as bare text) it fails on a
+withheld site: one whose key hashes to a `withheld_site_sha256` digest in a
+profile row of `x-reads.jsonl` (a site the pseudonymous account links from its
+profile and its record does not use), or one named after any pseudonymous
+handle. The digests are computed from the X reads, not from a hand list, so the
+study never names the site it withholds. The gate block also counts on its
 own, without the script: `people.jsonl` must have 99 lines and the page files
 on disk must number the people plus one plus the deep dives. The study pages
 join `SITE_PAGES`, so gates B, C, E, F, G and H scan them too, and the index
@@ -959,3 +965,23 @@ evidence, `links.site` set, a credit quote that no longer names the handle, a
 profile row carrying profile text, a cited post with no read, an "X API" label
 without the file, a license that disagrees with its row, a missing license
 row), and the code-span pass case still passed.
+
+Study review 4b, second rulings (2026-09-25): a site withheld from a
+pseudonymous record is withheld from the whole study, and the study states
+nothing about our own deployment. N5 gained the study-wide withheld-site check:
+the profile rows of `x-reads.jsonl` now keep only the URLs each record uses and
+carry a SHA-256 digest for each of 15 withheld site keys, and every record, deep
+dive, evidence file and rendered page is scanned for those keys and for sites
+named after a pseudonymous handle, as URLs and as bare text. Two
+non-pseudonymous claims that cited a withheld site got primary sources (the
+publisher's page for a 2016 book, the LessWrong API for a 2007 post) or were
+dropped; gwern's site-source repository left the record, because its name
+spells the withheld site. License reads now cover only repositories the study
+cites: 233 (176 answered 200, 57 answered 404). 301 record edits across 85
+records and 188 deep-dive line edits replaced statements about how we run
+things, gaps in our systems, internal sizes and internal plans with the
+general lesson from the subject's work; the RLM deep dive keeps its one
+proposed-study sentence under the earlier ruling. On clones of the tree, 38
+planted faults failed as expected (the 35 above plus a withheld site cited in a
+non-pseudonymous record, a withheld site named as bare text in a deep dive, and
+a handle-named site linked in an X read), and the pass case still passed.

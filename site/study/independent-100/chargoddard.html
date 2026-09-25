@@ -155,15 +155,15 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">4 of 5</span> <span class="small">lenses: training, local-models</span></p>
-  <p>MergeKit and DistillKit are the reference open tools for merging and distilling small models, which is how custom local models get made; we do little training today, so this is study-first rather than adopt-now.</p>
+  <p>MergeKit and DistillKit are the reference open tools for merging and distilling small models, which is how custom local models get made; for teams that do little training, this is study-first rather than adopt-now.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Read the KDA-into-AFM distillation post and DistillKit's logprob compression (<a href="https://www.arcee.ai/blog/distilling-kimi-delta-attention-into-afm-4-5b-and-the-tool-we-used-to-do-it">arcee.ai/blog/distilling-kimi-delta-attention-into-afm-4-5b-and-the-tool-we-used-to-do-it</a>). Shows how a small team distills a new architecture cheaply; relevant if we build local specialist models <span class="small">Effort: small.</span></li>
-<li>Try a MergeKit merge of two MLX-convertible models (<a href="https://github.com/arcee-ai/mergekit">github.com/arcee-ai/mergekit</a>). Cheapest way to test whether merged local models beat single ones on our eval set <span class="small">Effort: medium.</span></li></ol>
+  <ol><li>Read the KDA-into-AFM distillation post and DistillKit's logprob compression (<a href="https://www.arcee.ai/blog/distilling-kimi-delta-attention-into-afm-4-5b-and-the-tool-we-used-to-do-it">arcee.ai/blog/distilling-kimi-delta-attention-into-afm-4-5b-and-the-tool-we-used-to-do-it</a>). Shows how a small team distills a new architecture cheaply; relevant to anyone building small specialist models <span class="small">Effort: small.</span></li>
+<li>Try a MergeKit merge of two MLX-convertible models (<a href="https://github.com/arcee-ai/mergekit">github.com/arcee-ai/mergekit</a>). Cheapest way to test whether merged local models beat single ones on a given eval set <span class="small">Effort: medium.</span></li></ol>
   <p><b>Before reusing anything:</b> MergeKit was relicensed to BSL on 2025-02-05 (commit 'MergeKit v0.1 ... BSL license') and returned to LGPL-3.0 on 2025-10-31 <span class="tier">[Verified via LICENSE commit history; also <a href="https://x.com/chargoddard/status/1984321399310172171">x.com/chargoddard/status/1984321399310172171</a>]</span>. Releases from that window are under BSL, not OSI; pin to a post-2025-10-31 version. LGPL obligations apply if modified and redistributed. cg123/rathe is NOASSERTION; pptx-api has no license.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">

@@ -157,16 +157,16 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: search, memory, evals, mcp, rust</span></p>
-  <p>Chroma (Apache-2.0) is already named as an adopt-and-wrap option in franken-research's vector-DB verdict, and the Context Rot toolkit (MIT) is a runnable benchmark we could point at our own context packing (ee pack, cass) and long-session agents.</p>
+  <p>Chroma (Apache-2.0) is already named as an adopt-and-wrap option in franken-research's vector-DB verdict, and the Context Rot toolkit (MIT) is a runnable benchmark for context packing (for example ee pack and cass) and for long-session agents.</p>
   <p><b>Where it already touches our work:</b> Franken Research's vector-database verdict covers Chroma, which his company builds.</p>
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>Run the Context Rot toolkit against the local models and context sizes our fleet uses (<a href="https://github.com/chroma-core/context-rot">github.com/chroma-core/context-rot</a>). Gives measured evidence for how much context to pack per agent turn instead of guessing <span class="small">Effort: medium.</span></li>
-<li>Read 'The Rise of Context Engineering' (<a href="https://jeffhuber.substack.com/p/the-rise-of-context-engineering">jeffhuber.substack.com/p/the-rise-of-context-engineering</a>). Framing for our memory and context-packing work <span class="small">Effort: small.</span></li>
-<li>Read OpenFS's design (VFS + WAL + MCP + sim harness) (<a href="https://github.com/jeffchuber/open-fs">github.com/jeffchuber/open-fs</a>). Close to our agent-memory/file-access needs; design reading only because it has no license <span class="small">Effort: small.</span></li></ol>
+  <ol><li>Run the Context Rot toolkit against local models at realistic context sizes (<a href="https://github.com/chroma-core/context-rot">github.com/chroma-core/context-rot</a>). Gives measured evidence for how much context to pack per agent turn instead of guessing <span class="small">Effort: medium.</span></li>
+<li>Read 'The Rise of Context Engineering' (<a href="https://jeffhuber.substack.com/p/the-rise-of-context-engineering">jeffhuber.substack.com/p/the-rise-of-context-engineering</a>). Framing for agent memory and context-packing work <span class="small">Effort: small.</span></li>
+<li>Read OpenFS's design (VFS + WAL + MCP + sim harness) (<a href="https://github.com/jeffchuber/open-fs">github.com/jeffchuber/open-fs</a>). Close to common agent-memory and file-access needs; design reading only because it has no license <span class="small">Effort: small.</span></li></ol>
   <p><b>Before reusing anything:</b> Chroma Apache-2.0 and context-rot MIT are safe to adopt. OpenFS has no license file (all rights reserved by default) and chroma-core/package-search has no license: read only, do not copy. Chroma Cloud is a separate paid service.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">

@@ -155,17 +155,17 @@ footer p{margin:0 0 8px}
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
   <p><span class="score">5 of 5</span> <span class="small">lenses: agents, orchestration, security, mcp</span></p>
-  <p>This is the closest match to our fleet in the batch. pi-side-agents is our NTM-plus-worktree workflow as a packaged extension, pi-omplike-advisor copies a feature of the OMP harness we run, and pi-super covers remote control of a tmux fleet. All are MIT, active this week, and small enough to benchmark against our own setup.</p>
+  <p>This is the closest match in the batch to tmux-based agent fleets. pi-side-agents packages a tmux-plus-worktree side-agent workflow as an extension, pi-omplike-advisor ports the advisor from the OMP harness, and pi-super covers remote control of a tmux fleet. All are MIT, active this week, and small enough to benchmark against NTM and OMP.</p>
   
   
   <p class="judgement">Scored 0 to 5 against the study&rsquo;s <a href="index.html#rubric">relevance rubric</a>: 5 means public, openly licensed work squarely in our lanes that we could study or adopt now, and 1 means little connection to our work. The score is one reviewer&rsquo;s judgement of how much this public work bears on our own work. It is not a ranking of people and says nothing about the person or the quality of their work.</p>
 </section>
 <section class="card" id="next" aria-labelledby="h-next">
   <h2 id="h-next">What we would study next</h2>
-  <ol><li>pi-side-agents lifecycle (spawn, worktree, merge, agent-spawned children) (<a href="https://github.com/pasky/pi-side-agents">github.com/pasky/pi-side-agents</a>). Benchmark against NTM dispatch plus our worktree rules; may be simpler for one-off tasks <span class="small">Effort: medium.</span></li>
+  <ol><li>pi-side-agents lifecycle (spawn, worktree, merge, agent-spawned children) (<a href="https://github.com/pasky/pi-side-agents">github.com/pasky/pi-side-agents</a>). Benchmark against NTM dispatch with git worktrees; may be simpler for one-off tasks <span class="small">Effort: medium.</span></li>
 <li>pi-omplike-advisor delivery policy (<a href="https://github.com/pasky/pi-omplike-advisor">github.com/pasky/pi-omplike-advisor</a>). Written spec of the nit/concern/blocker queue, cross-checkable against OMP's own advisor <span class="small">Effort: small.</span></li>
-<li>Muaddib threat model for untrusted multi-user channels (<a href="https://github.com/pasky/muaddib">github.com/pasky/muaddib</a>). Prompt-injection and isolation design for any client-facing ZestStream agent <span class="small">Effort: medium.</span></li></ol>
-  <p><b>Before reusing anything:</b> pi-omplike-advisor declares MIT only in package.json and has no LICENSE file; pi-session-summary has neither. pachi is GPL-2.0 (copyleft). pi-side-agents README asks users not to drive Claude subscriptions with pi; that is a usage norm, not a license term. chrome-cdp-skill gives the agent a logged-in browser, so it needs our prompt-injection guards before use.</p>
+<li>Muaddib threat model for untrusted multi-user channels (<a href="https://github.com/pasky/muaddib">github.com/pasky/muaddib</a>). Prompt-injection and isolation design for any client-facing agent <span class="small">Effort: medium.</span></li></ol>
+  <p><b>Before reusing anything:</b> pi-omplike-advisor declares MIT only in package.json and has no LICENSE file; pi-session-summary has neither. pachi is GPL-2.0 (copyleft). pi-side-agents README asks users not to drive Claude subscriptions with pi; that is a usage norm, not a license term. chrome-cdp-skill gives the agent a logged-in browser, so it needs prompt-injection guards before use.</p>
 </section>
 <section class="card" id="sources" aria-labelledby="h-sources">
   <h2 id="h-sources">Sources</h2>
