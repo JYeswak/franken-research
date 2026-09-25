@@ -65,6 +65,7 @@ Then follow [the starter kit page](https://fr.zeststream.ai/starter-kit/). Do no
 | [Agent stack](https://fr.zeststream.ai/stack/) | Adopt, copy, or build verdicts for 21 parts of the agent stack, with licenses and cited evidence. | Anyone choosing agent infrastructure. |
 | [Rigor practices](https://fr.zeststream.ai/rigor/) | 136 practices worth copying, where each is evidenced, and whether this repository does it. | Teams hardening their own process. |
 | [Beyond FrankenSuite](https://fr.zeststream.ai/beyond/) | What big-vendor agent-assisted Rust ports and outside validation teach. | Engineers porting or rewriting with agents. |
+| [Independent 100 study](https://fr.zeststream.ai/study/independent-100/) | One page for each of the 99 people on the Independent 100 list curated by dan (@irl_danB): their public work with links and licenses, its relevance to our own work, and what we would study next, plus five deep dives. The list, ranks and sections are his; the study is ours. | Anyone looking for open work worth studying beyond FrankenSuite. |
 | [Updates](https://fr.zeststream.ai/updates/) | What moved in the 44 repositories since their pins, and dated re-checks. | Anyone quoting a verdict today. |
 | [Follow](https://fr.zeststream.ai/follow/) | The Atom feed of releases, re-checks, and daily censuses, and an OPML file for following all 44 repositories. | Anyone who wants to know when something changes. |
 
@@ -109,7 +110,7 @@ bun run verify
 | F | Every file a page references ships. |
 | G | Pages stay keyboard-operable, with no-JS, no-WebGL, and reduced-motion fallbacks. |
 | H | Copy passes a slop scan (em-dash density, filler words, unsupported superlatives). |
-| I | Representative pages (front door, method, a brief, lessons, self, and the new stack, rigor, beyond, and updates pages) render in headless Chrome from `file://` at desktop and phone widths with zero console errors and zero horizontal overflow. |
+| I | Representative pages (front door, method, a brief, lessons, self, and the stack, rigor, beyond, updates, follow and Independent 100 study index pages) render in headless Chrome from `file://` at desktop and phone widths with zero console errors and zero horizontal overflow. |
 | J | No page references removed scaffolding. |
 | K | The agent-stack layer holds up: every verdict has the required fields and an independent reviewer's signature (K1); every citation resolves and its quoted text is on the cited line (K2); every rigor-practice source quote and every adopted or partial proof resolves (K3); the generated pages equal a fresh run of the generator (K4); every adopted project has a license row, and non-permissive licenses are named where they are recommended (K5). |
 | L | No personal email address appears in any tracked file. |
@@ -119,6 +120,7 @@ bun run verify
 | M | The Atom feed and the follow-the-suite OPML equal a fresh `bun run build:feed` and parse as well-formed XML. |
 | S | Every page carries the shared navigation, footer, and head regions exactly as `bun run build:shell` renders them, and the page list matches the sitemap. |
 | V | Every brief opens with a verdict strip (ring, TRL, CI class, license, and the brief's own bottom line) that matches the map's data, uses the map's ring colours, and lists "what would change the verdict" one item per line; `node site/scripts/brief-strip.mjs` regenerates it. |
+| N | The Independent 100 study pages equal a fresh `node site/scripts/make-study.mjs`, number exactly the 99 people plus the index plus the deep dives, and come from a `study/independent-100/people.jsonl` that keeps its schema (key order, https links, evidence labels, scores 0 to 5); the study sources and pages carry no local path, email address, phone number, image, X API field name or internal ticket id, and no pseudonymous record uses a gendered pronoun. |
 
 CI also runs `bun run build:map` and fails if the committed `site/assets/app.bundle.js` differs from what its source builds, and scans the tree and history for secrets with gitleaks. Every push to `main` that passes the gates deploys the site and smoke-tests the deployment ([deploy.yml](.github/workflows/deploy.yml)). [site/BUILD-GATES.md](site/BUILD-GATES.md) explains why each gate exists.
 
@@ -134,12 +136,13 @@ What the gates prove is that the site says what the packets say, consistently an
 | `starter-kit/` | The method packaged for reuse: templates, checklists, scripts. |
 | `ecosystem/` | Design notes on how the pieces fit, the A-Z playbook, and the project-pickup planning system. |
 | `stack/` | The agent-stack layer: the method, 21 verdicts, the license census, the rigor-practices index, and the review records. |
+| `study/` | The Independent 100 study: one public record per person (`people.jsonl`), the deep dives, and the method, rubric and limits (`README.md`). |
 | `updates/` | Dated movement census and re-checks since the pins. Pins are never edited in place. |
 | `watch/` | The daily watch and weekly discovery sweep: the scripts, the latest state and summary, one census and one change file per day, weekly candidate lists, and the fixtures gates W and W2 replay. |
 | `candidates/` | The screening rule for projects outside the 44. |
 | `docs/` | The contribution pipeline, from issue to deploy. |
 | `.github/` | CI, deploy, watch, discovery, and triage workflows, and the issue forms. |
-| `site/` | The static site served at fr.zeststream.ai. Runs from `file://` with no build step; `site/packets/` and `site/RULEBOOK.md` are byte-identical copies checked by gate A, and `site/stack/` and `site/rigor/` are generated from `stack/` by `node site/scripts/make-stack.mjs` (gate K4 checks they match). |
+| `site/` | The static site served at fr.zeststream.ai. Runs from `file://` with no build step; `site/packets/` and `site/RULEBOOK.md` are byte-identical copies checked by gate A, `site/stack/` and `site/rigor/` are generated from `stack/` by `node site/scripts/make-stack.mjs` (gate K4 checks they match), and `site/study/` is generated from `study/` by `node site/scripts/make-study.mjs` (gate N checks it matches). |
 
 ## Corrections and right of reply
 

@@ -13,9 +13,10 @@ body:
     id: repository
     attributes:
       label: Repository
-      description: Which assessed repository does this concern? Pick "suite-wide / synthesis" for counts and claims that span the suite.
+      description: Which assessed repository does this concern? Pick "suite-wide / synthesis" for counts and claims that span the suite, or "Independent 100 study" for a page about a person on that list.
       options:
         - suite-wide / synthesis
+        - Independent 100 study
         - asupersync
         - beads-for-frankentui
         - beads_for_franken_engine

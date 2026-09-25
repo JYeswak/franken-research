@@ -18,7 +18,8 @@ list, `SITE_PAGES` at the top of the script: the front door, the six section
 pages (`method/`, `failure-modes/`, `lessons/`, `techniques/`, `reproduce/`,
 `starter-kit/`), the self-assessment page `self/index.html`, the agent-stack
 pages (`stack/index.html`, `rigor/index.html`, the hand-written
-`beyond/index.html`), the hand-written "Since the pin" page `updates/index.html`, the hand-written "Follow the suite" page `follow/index.html`, plus every generated `stack/<slug>.html` and every
+`beyond/index.html`), the hand-written "Since the pin" page `updates/index.html`, the hand-written "Follow the suite" page `follow/index.html`, plus every generated `stack/<slug>.html`, every
+generated page under `study/independent-100/` (the index, the person pages and the deep-dive pages), and every
 `briefs/*.html`. A listed page that does not exist fails every gate that opens
 it.
 
@@ -186,7 +187,7 @@ valid copy.
 `method/index.html`, `briefs/asupersync.html`, `lessons/index.html`,
 `self/index.html`, `stack/index.html`, the first generated
 `stack/<slug>.html` by name (all verdict pages share one template; none
-existing is a FAIL), `rigor/index.html`, `beyond/index.html`, `updates/index.html`, and `follow/index.html` via `file://` — the site is designed to run straight from
+existing is a FAIL), `rigor/index.html`, `beyond/index.html`, `updates/index.html`, `follow/index.html`, and `study/independent-100/index.html` via `file://` — the site is designed to run straight from
 the ZIP, so the gate tests exactly that — at 1440×900 and 390×844. Collects
 `Runtime.consoleAPICalled`, `Runtime.exceptionThrown`, and `Log.entryAdded`;
 fails on any console error, any exception, any page rendering blank (<200
@@ -636,6 +637,54 @@ pass cover what the strip looks like. The share cards are not gated: a
 Chromium PNG is not byte-stable across versions, so `make-og.mjs` is rerun by
 hand when the data or the palette changes.
 
+## Gate N — Independent 100 study pages
+
+**What:** `study/independent-100/` holds the study of the people on the
+Independent 100 list (curated by dan, @irl_danB, at
+https://independent.prose.md/): `people.jsonl` (one public record per person),
+`deep/*.md` (public editions of the deep dives) and `README.md` (method,
+rubric, labels, dates, what the public edition leaves out, limits,
+corrections). `site/scripts/make-study.mjs` renders them into
+`site/study/independent-100/` (an index, one page per person, one page per deep
+dive present) and into the block between `<!-- study:independent-100 -->` and
+`<!-- /study:independent-100 -->` in `sitemap.xml`. The gate runs
+`make-study.mjs --check`, which writes nothing and fails with one line per
+finding: **N1** a page or the sitemap block differs from a fresh render, or a
+page exists that no source renders; **N2** the page files are not exactly the
+people, the index and the deep dives; **N3** `people.jsonl` breaks the schema
+in the README (99 records in rank order, keys in the fixed order, the
+curator's six sections in order, https `public_work`, `study_next` and
+`evidence` URLs, an evidence label in every identity, a score from 0 to 5,
+effort S/M/L), a deep dive lacks its front matter, its `## Sources` first or
+its `## What we could not verify` last, covers a rank that is not listed,
+carries raw HTML or an "Internal notes" section, or the correction form lacks
+the "Independent 100 study" option every page prefills; **N4** a study source
+or rendered page carries a home-directory path, an email address, a phone
+number, an image, an X API field name (`followers_count`, `pinned_tweet_id`,
+`twitter_username` and the like), an internal ticket id, or a gendered
+pronoun on a record marked `pseudonymous`. The gate block also counts on its
+own, without the script: `people.jsonl` must have 99 lines and the page files
+on disk must number the people plus one plus the deep dives. The study pages
+join `SITE_PAGES`, so gates B, C, E, F, G and H scan them too, and the index
+is in gate I's render list. A quoted count over the 44 assessed repositories
+in a study source carries gate B's `STAT` annotation, added by the renderer.
+**The fix for drift is `node site/scripts/make-study.mjs`**, which refuses to
+write when N3 or N4 finds anything, removes pages whose source is gone, and
+rewrites the sitemap block.
+**Why:** decision D4 (2026-09-25) published the study with a page for every
+person, under rules a reviewer from another model family set: public work
+first; no raw X data, locations, contact details, family, health, financial
+or legal details, images or identity resolution; roles and shared
+affiliations only from primary sources. A page that drifts from its reviewed
+source, or a source edit that reintroduces a path, an address or a pronoun on
+a pseudonymous account, fails here instead of reaching the site.
+**Accepted:** the scan is mechanical. It cannot tell a biography from a work
+description, or catch a combination of clues that identifies someone; those
+rules are applied by hand in the public edition and checked by review. The
+link check (every URL fetched with `curl -I -L`, a browser user agent and a
+bounded concurrency of 8) is run when the sources change, not by the gate,
+which stays offline.
+
 ## Accepted limitations (all gates)
 
 - Raw packet/Rulebook `.md` files have no navigation by design.
@@ -844,3 +893,26 @@ rules throw on read, so the check reads the rules). An emptied `data.js`
 failed I with "window.FRANKEN_DATA undefined". The live host answered
 `/assets/shell.css?v=0323daf6e7` with 200 `text/css` and `cf-cache-status:
 MISS`, a separate cache entry from the unstamped URL.
+
+Study pass (decision D4, 2026-09-25): Gate N added with
+`site/scripts/make-study.mjs` and `study/independent-100/`. The first run wrote
+105 pages (99 people, the index, 5 deep dives) and the sitemap block; a second
+run rewrote nothing. `shell.mjs` gained the study in its page list (every
+page's footer directory and the home page's directory changed, so
+`bun run build:shell` and `make-stack.mjs` were rerun) and now marks a page
+two folders deep with its nearest listed ancestor. `make-study.mjs --check
+--root <clone>` was run on APFS clones of the tree (never the real tree): the
+unchanged clone passed, and 20 of 20 planted faults failed with the expected
+check named. N1: one byte appended to a person page, a stray page in the
+folder, the sitemap block edited. N2: a person page deleted. N3: a record's
+keys out of order, an `http://` evidence URL, a `public_work` URL without a
+scheme, an identity without an evidence label, a score of 7, a record
+dropped (98 lines), a deep dive with an "Internal notes" section, a deep dive
+covering rank 150, the study option removed from the correction form. N4: a
+`/Users/` path, an email address, a phone number, a Markdown image and an
+internal ticket id in a deep dive or the README, `followers_count` in a
+record, and "He" on a pseudonymous record. The gate N block itself, run on
+the clones, passed the unchanged one and failed three planted ones (a deleted
+page, an "Internal notes" section, a pronoun). Gate B's scan of quoted
+counts over the 44 repositories failed on four study sentences until the
+renderer added the `STAT` annotation the gate exempts.

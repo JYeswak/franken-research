@@ -51,6 +51,7 @@ export const PAGES = [
   { key: 'stack', label: 'Agent stack', file: 'stack/index.html' },
   { key: 'rigor', label: 'Rigor practices', file: 'rigor/index.html' },
   { key: 'beyond', label: 'Beyond FrankenSuite', file: 'beyond/index.html' },
+  { key: 'study', label: 'Independent 100 study', file: 'study/independent-100/index.html' },
   { key: 'updates', label: 'Updates', file: 'updates/index.html' },
   { key: 'follow', label: 'Follow', file: 'follow/index.html' },
   { key: 'self', label: 'Graded by our own method', file: 'self/index.html' },
@@ -80,13 +81,16 @@ export function urlPath(rel) {
 }
 const briefSlug = (rel) => (/^briefs\/([^/]+)\.html$/.exec(rel) || [])[1] || null;
 const hrefOf = (p, up) => up + p.file + (p.hash ? '#' + p.hash : '');
-// The canonical entry a page is, or failing that the section it sits in (stack/mcp.html is in Agent stack;
-// a brief is in the Map). Returns [entry, 'page' | 'true'].
+// The canonical entry a page is, or failing that the nearest section above it (stack/mcp.html is in Agent
+// stack; study/independent-100/deep/x.html is in the study; a brief is in the Map). Returns [entry, 'page' | 'true'].
 function currentOf(rel) {
   const exact = PAGES.find((p) => p.file === rel && !p.hash);
   if (exact) return [exact, 'page'];
-  const parent = PAGES.find((p) => !p.hash && p.file === dirname(rel) + '/index.html');
-  return [parent || byKey.map, 'true'];
+  for (let d = dirname(rel); d && d !== '.'; d = dirname(d)) {
+    const parent = PAGES.find((p) => !p.hash && p.file === d + '/index.html');
+    if (parent) return [parent, 'true'];
+  }
+  return [byKey.map, 'true'];
 }
 const currentAttr = (rel, p) => {
   const [cur, kind] = currentOf(rel);
