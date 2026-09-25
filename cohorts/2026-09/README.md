@@ -19,7 +19,7 @@ Results as literally observed. "Not recorded" means the packet treats the predic
 | annus-mirabilis.com | Pass | Fail | Pass | Pass | Pass | Pass | Fail | [packet](annus-mirabilis.com-assessment.md), table at lines 29-35 |
 | toon_bend | Pass | Fail | Pass | Pass | Pass | Not recorded | Fail | [packet](toon_bend-assessment.md), line 9 |
 | dwarf_fortress_mcp | Pass | Pass | Pass | Pass | Pass | Pass | Fail | [packet](dwarf_fortress_mcp-assessment.md), line 9 |
-| skillranker | Not recorded | Not recorded | Not recorded | Not recorded | Not recorded | Not recorded | Fail | Packet in progress. |
+| skillranker | Pass | Pass | Pass | Pass | Pass | Pass | Fail | [packet](skillranker-assessment.md), table at lines 17-23 |
 
 ## Review
 
@@ -32,6 +32,6 @@ Every packet so far was written by a Claude Opus 5.5 agent session. Each is revi
 | [annus-mirabilis.com](annus-mirabilis.com-assessment.md) | Claude | GPT-6-Luna | [reviews/luna-review-1.md](reviews/luna-review-1.md) | Accept with corrections | Corrections applied |
 | [toon_bend](toon_bend-assessment.md) | Claude | none yet | none | none | Awaiting review |
 | [dwarf_fortress_mcp](dwarf_fortress_mcp-assessment.md) | Claude | none yet | none | none | Awaiting review |
-| skillranker | Claude | none yet | none | none | In progress |
+| [skillranker](skillranker-assessment.md) | Claude | none yet | none | none | Awaiting review |
 
 toon_bend's predicate-2 line was changed from "PASS with a note" to a recorded failure, to match the reviewed beads_bend correction. Nothing else in that packet has been reviewed.
