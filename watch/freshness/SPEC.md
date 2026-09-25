@@ -104,7 +104,9 @@ Upstream text is Markdown-escaped with the existing `mdText`.
 
 **FR-G.1** (MUST) `site/feed.xml` carries at most one watch digest entry per ISO week, dated the last day of that week that had data. It lists the crossings opened and resolved that week. A week with neither gets no entry. Informational events never produce feed entries.
 
-**FR-G.2** (MUST) The digest is built only from committed files: `watch/live.json` history and `updates/`. The feed stays byte-identical on reruns, as gate M requires today.
+**FR-G.2** (MUST) The digest is built only from committed files: the append-only crossing ledger `watch/crossings.jsonl`, with one line per crossing opened or resolved, and `updates/`. The feed stays byte-identical on reruns, as gate M requires today.
+
+**FR-G.3** (MUST) `watch/crossings.jsonl` is append-only. Each `--apply` that opens or resolves a crossing appends one line per event, with fixed key order: `{date, event: opened|resolved, id, repo, dim, from, to, source, evidence, resolved_by}`. A run whose output does not start with the previous committed file, byte for byte, fails.
 
 ## FR-H: harness and measurement
 
@@ -139,3 +141,4 @@ The report gives precision and recall on this set, and names its size.
 - `run` returns `true`, or `{ pass, detail?, xfail? }`, where `xfail` is a `DISC-NNN` id.
 - `ctx` = `{ root, fixtures, golden(name, text), updating }`.
 - `node watch/freshness/harness/run.mjs` prints one JSON line per case, then the coverage table. It exits 0 when every case passes or XFAILs and every MUST clause is covered, 1 otherwise, and 2 on a harness error.
+- A result may also carry `metrics: { name: value }`. The runner collects these into `REPORT.md` (FR-H.8), and a metric that no case reports is shown as `not measured`, never as zero.
