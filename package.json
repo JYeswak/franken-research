@@ -7,7 +7,8 @@
   "scripts": {
     "build:map": "esbuild site/assets/app.src.js --bundle --format=iife --minify --target=es2020 --alias:three=./site/assets/vendor/three.module.js --outfile=site/assets/app.bundle.js --log-level=warning && node site/scripts/shell.mjs",
     "build:feed": "node site/scripts/make-feed.mjs",
-    "build:shell": "node site/scripts/shell.mjs",
+    "build:llms": "node site/scripts/make-llms.mjs",
+    "build:shell": "node site/scripts/shell.mjs && node site/scripts/make-llms.mjs",
     "freshness": "node watch/freshness/harness/run.mjs",
     "verify": "bash site/scripts/verify-site.sh",
     "watch": "node watch/watch.mjs"
