@@ -1,0 +1,671 @@
+// watch/freshness/cases/outputs.cases.mjs: conformance cases for the outputs of the freshness watch: the live card
+// (FR-L.3 to FR-L.5), the dashboard issue (FR-D.1 to FR-D.4, FR-O.4's dashboard half, FR-O.5), the weekly feed
+// digest (FR-G.1, FR-G.2), and their goldens (FR-H.3).
+// writes: temporary files only
+//
+// Inputs are the hand-written fixtures in watch/freshness/fixtures/outputs/ (PROVENANCE.md there), the committed
+// briefs, updates/, SPEC.md and site/feed.xml. Temporary files go to a fresh directory under os.tmpdir() and are
+// removed. Case ids start with OUT-; run them with `node watch/freshness/harness/run.mjs --only OUT`.
+
+import { readFileSync, writeFileSync, copyFileSync, mkdirSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { spawnSync } from 'node:child_process';
+import { memoryIssues } from '../../watch.mjs';
+import { renderCard, applyCard, checkBriefs, regionOf, OPEN, CLOSE } from '../card.mjs';
+import { writeBriefs } from '../../../site/scripts/make-live.mjs';
+import { renderDashboard, syncDashboard, readSnapshots, TITLE, MARKER, LIMIT } from '../dashboard.mjs';
+import { readLedger, digestEntries, isoWeek } from '../digest.mjs';
+
+// ---------- helpers ----------
+const fixture = (ctx, name) => JSON.parse(readFileSync(join(ctx.fixtures, 'outputs', name), 'utf8'));
+const clone = (x) => JSON.parse(JSON.stringify(x));
+const NO_SNAPSHOTS = { status: 'ok', rows: [] };
+const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', rsquo: '\u2019', rarr: '\u2192', '#39': "'" };
+const textOf = (html) => html.replace(/<[^>]+>/g, ' ').replace(/&(#39|[a-z]+);/g, (m, e) => ENT[e] ?? m).replace(/\s+/g, ' ').trim();
+/** { pass, detail } from [ok, message] pairs: every failing message is reported. */
+function verdict(checks, extra = {}) {
+  const bad = checks.filter(([ok]) => !ok).map(([, m]) => m);
+  return { pass: bad.length === 0, detail: bad.join('; ').slice(0, 600), ...extra };
+}
+function withScratch(fn) {
+  const dir = mkdtempSync(join(tmpdir(), 'fr-out-'));
+  const done = () => rmSync(dir, { recursive: true, force: true });
+  try {
+    const r = fn(dir);
+    if (r && typeof r.then === 'function') return r.finally(done);
+    done();
+    return r;
+  } catch (e) { done(); throw e; }
+}
+const node = (ctx, args) => spawnSync(process.execPath, args, { cwd: ctx.root, encoding: 'utf8' });
+const bySet = (live) => live.repos.filter((r) => r.brief);
+/** The FR-L.4 sentence, quoted from SPEC.md itself so the case follows the spec text, not the code. */
+function specChangedText(ctx) {
+  const m = /\*\*FR-L\.4\*\*[^\n]*`changed` reads as "([^"]+)"/.exec(readFileSync(join(ctx.root, 'watch/freshness/SPEC.md'), 'utf8'));
+  if (!m) throw new Error('SPEC.md FR-L.4 no longer quotes the changed wording');
+  return m[1];
+}
+const STATE_WORDS = { current: 'Current', changed: 'Changed', due: 'Due for re-check', unknown: 'Unknown' };
+
+// An in-memory issues API (watch.mjs memoryIssues) that records every call.
+function recordingIssues(login = 'github-actions[bot]') {
+  const mem = memoryIssues(login);
+  const calls = [];
+  const api = { stats: {}, rest: (method, path, payload) => { calls.push({ method, path: path.replace(/\?.*$/, ''), payload }); return mem.api.rest(method, path, payload); } };
+  const writes = () => calls.filter((c) => c.method !== 'GET');
+  return { mem, api, calls, writes };
+}
+const BOT = 'github-actions[bot]';
+const trustedShape = (extra) => ({ title: TITLE, body: `${MARKER}\nold body\n`, labels: [{ name: 'watch' }, { name: 'dashboard' }], user: { login: BOT }, ...extra });
+
+// Relative luminance and contrast ratio (WCAG 2.x) of #rrggbb colours.
+const lum = (hex) => {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+
+function feedFromLedger(ctx, dir, ledger) {
+  const r = node(ctx, ['site/scripts/make-feed.mjs', '--out', dir, '--crossings', ledger]);
+  return { r, xml: r.status === 0 ? readFileSync(join(dir, 'feed.xml'), 'utf8') : '' };
+}
+const digestBlocks = (xml) => [...xml.matchAll(/  <entry>\n    <id>tag:fr\.zeststream\.ai,2026:digest\/[^<]+<\/id>[\s\S]*?  <\/entry>\n/g)].map((m) => m[0]);
+
+// ---------- FR-L.3: the card's content ----------
+const cardCases = [
+  {
+    id: 'OUT-L3-facts', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'every card shows verdict date, live-as-of time, the three classes at pin and now, commits since pin, latest release, state, and links every evidence URL',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const checks = [];
+      for (const rec of bySet(live)) {
+        const html = renderCard(rec, live);
+        const text = textOf(html);
+        const hrefs = new Set([...html.matchAll(/href="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&')));
+        checks.push([text.includes(`Live, as of ${live.checked_at.slice(0, 10)} ${live.checked_at.slice(11, 16)} UTC`), `${rec.repo}: no live-as-of time`]);
+        checks.push([text.includes(rec.baseline.date.slice(0, 10)) && /Verdict (pinned|re-checked)/.test(text), `${rec.repo}: no pinned verdict date`]);
+        checks.push([new RegExp(`Commits since the pin ${rec.commits_since_pin}\\b`).test(text), `${rec.repo}: commits since the pin missing`]);
+        checks.push([rec.latest_release ? text.includes(rec.latest_release.tag) : /Latest release none/.test(text), `${rec.repo}: latest release missing`]);
+        for (const [dim, word] of [['ci', 'CI'], ['rel', 'Release'], ['license', 'License']]) {
+          const d = rec.dims[dim];
+          const row = [...html.matchAll(/<tr><th scope="row"[^>]*>([^<]*)<\/th>([\s\S]*?)<\/tr>/g)].find((m) => m[1].startsWith(word));
+          const cells = row ? [...row[2].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((m) => textOf(m[1])) : [];
+          const want = [d.reference, d.at_pin, ...(rec.baseline.source === 'packet' ? [] : [d.at_baseline])];
+          checks.push([JSON.stringify(cells.slice(0, want.length)) === JSON.stringify(want) && cells[want.length]?.startsWith(d.now), `${rec.repo} ${dim}: row ${JSON.stringify(cells)}, want ${JSON.stringify([...want, d.now])}`]);
+          const rowLinks = new Set([...(row?.[2] ?? '').matchAll(/href="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&')));
+          for (const u of d.evidence) checks.push([rowLinks.has(u), `${rec.repo} ${dim}: evidence ${u} not linked in its row`]);
+        }
+        for (const c of [...rec.crossings, ...rec.pending]) for (const u of c.evidence) checks.push([hrefs.has(u), `${rec.repo}: crossing evidence ${u} not linked`]);
+        checks.push([text.includes(`State: ${STATE_WORDS[rec.state]}`), `${rec.repo}: state ${rec.state} not stated in words`]);
+      }
+      return verdict(checks);
+    },
+  },
+  {
+    id: 'OUT-L3-no-js', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'the card is static HTML: no script, no event handler attribute, no noscript fallback needed',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const checks = bySet(live).map((rec) => {
+        const html = renderCard(rec, live);
+        return [!/<script|<noscript|\son[a-z]+\s*=/i.test(html), `${rec.repo}: card needs or runs script`];
+      });
+      return verdict(checks);
+    },
+  },
+  {
+    id: 'OUT-L3-state-in-words', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'with every style removed, each card still names its state in words',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const seen = new Set();
+      const checks = bySet(live).map((rec) => {
+        seen.add(rec.state);
+        const bare = renderCard(rec, live).replace(/\sstyle="[^"]*"/g, '');
+        return [bare.includes(`State: <strong>${STATE_WORDS[rec.state]}</strong>`), `${rec.repo}: without colour the state ${rec.state} is not in words`];
+      });
+      checks.push([['current', 'changed', 'due', 'unknown'].every((s) => seen.has(s)), `fixture covers only states ${[...seen].join(', ')}`]);
+      return verdict(checks);
+    },
+  },
+  {
+    id: 'OUT-L3-contrast', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'badge colours and card text read at 4.5:1 or better on the card background, using the brief\'s own CSS variables',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const brief = readFileSync(join(ctx.root, 'site/briefs/frankengit.html'), 'utf8');
+      const vars = Object.fromEntries([...brief.matchAll(/--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6});/g)].map((m) => [m[1], m[2]]));
+      const bg = vars['bg-2'];
+      const checks = [[Boolean(bg), 'brief has no --bg-2']];
+      const used = new Set();
+      for (const rec of bySet(live)) {
+        for (const m of renderCard(rec, live).matchAll(/color:var\(--([a-z0-9-]+)\)/g)) used.add(m[1]);
+      }
+      for (const v of used) {
+        const c = vars[v];
+        checks.push([Boolean(c), `--${v} is not a brief colour`]);
+        if (c && bg) checks.push([contrast(c, bg) >= 4.5, `--${v} ${c} on --bg-2 ${bg} is ${contrast(c, bg).toFixed(2)}:1`]);
+      }
+      checks.push([used.size >= 5, `only ${used.size} text colours found`]);
+      return verdict(checks);
+    },
+  },
+  {
+    id: 'OUT-L3-a11y-table', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'the class table has a caption, column and row header cells, and the card is a labelled landmark',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const html = renderCard(live.repos[0], live);
+      const label = /<aside[^>]*aria-labelledby="([^"]+)"/.exec(html)?.[1];
+      return verdict([
+        [/<caption[^>]*>[^<]+<\/caption>/.test(html), 'no table caption'],
+        [(html.match(/<th scope="col"/g) ?? []).length === 5, 'want 5 column headers without a re-check'],
+        [(renderCard(live.repos.find((r) => r.repo === 'franken_code_browser'), live).match(/<th scope="col"[^>]*>At re-check</g) ?? []).length === 1, 'a re-checked repository has no At re-check column'],
+        [(html.match(/<th scope="row"/g) ?? []).length === 3, 'want 3 row headers (CI, Release, License)'],
+        [Boolean(label) && html.includes(`<h2 id="${label}"`), 'aside is not labelled by its heading'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-L3-escape', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'upstream tag names and URLs are HTML-escaped; only absolute https URLs become links',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const term = live.repos.find((r) => r.repo === 'frankenterm');
+      const html = renderCard(term, live);
+      const evil = clone(term);
+      evil.dims.ci.evidence = ['javascript:alert(1)', 'https://x.example/" onmouseover="alert(1)', 'http://plain.example/'];
+      evil.latest_release = { tag: '"><img src=x onerror=alert(1)>', date: '2026-09-23T00:00:00Z', url: 'javascript:alert(2)' };
+      const bad = renderCard(evil, live);
+      return verdict([
+        [!html.includes('<script>') && html.includes('&lt;script&gt;alert(1)&lt;/script&gt;'), 'tag with <script> not escaped'],
+        [html.includes('v0.15.12|&lt;script&gt;alert(1)&lt;/script&gt;`rm`@here'), 'tag text altered beyond HTML escaping'],
+        [!/href="(javascript|http):/.test(bad), 'a javascript: or http: URL became a link'],
+        [!/<img/.test(bad) && ![...bad.matchAll(/<[^>]*>/g)].some((t) => /\son[a-z]+=/.test(t[0])), 'an element or event attribute was injected'],
+      ]);
+    },
+  },
+];
+
+// ---------- FR-L.4: never implies a verdict changed ----------
+const FORBIDDEN = /\bverdicts?\s+(?:has\s+|have\s+|was\s+|were\s+|is\s+|are\s+)?(?:been\s+)?(?:now\s+)?(?:changed|moved|updated|revised|downgraded|upgraded|out of date|outdated|stale|wrong|superseded)\b|\bnew verdict\b|\bre-?rated\b|\bverdict (?:changes|changed) to\b/i;
+const l4Cases = [
+  {
+    id: 'OUT-L4-changed-wording', clauses: ['FR-L.4'], level: 'MUST',
+    title: 'a changed card carries the exact FR-L.4 sentence, quoted from SPEC.md',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const want = specChangedText(ctx);
+      const changed = bySet(live).filter((r) => r.state === 'changed');
+      return verdict([
+        [changed.length >= 2, 'fixture has fewer than two changed repositories'],
+        ...changed.map((r) => [textOf(renderCard(r, live)).includes(want), `${r.repo}: missing "${want}"`]),
+      ]);
+    },
+  },
+  {
+    id: 'OUT-L4-never-says-changed', clauses: ['FR-L.4'], level: 'MUST',
+    title: 'no card in any state says or implies that a verdict changed',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const checks = [];
+      for (const rec of bySet(live)) {
+        const t = textOf(renderCard(rec, live));
+        const m = FORBIDDEN.exec(t);
+        checks.push([!m, `${rec.repo} (${rec.state}): "${m?.[0]}"`]);
+      }
+      // the forbidden pattern itself must catch the sentences it exists for
+      for (const s of ['The verdict changed.', 'Verdict is now out of date', 'a new verdict applies', 'the verdict has been updated']) checks.push([FORBIDDEN.test(s), `pattern misses "${s}"`]);
+      return verdict(checks);
+    },
+  },
+];
+
+// ---------- FR-L.5: the region equals a fresh render; check mode; nothing outside touched ----------
+function scratchSite(ctx, dir, live) {
+  const site = join(dir, 'site');
+  mkdirSync(join(site, 'briefs'), { recursive: true });
+  for (const r of bySet(live)) copyFileSync(join(ctx.root, r.brief), join(site, r.brief.replace(/^site\//, '')));
+  const file = join(dir, 'live.json');
+  writeFileSync(file, JSON.stringify(live));
+  return { site, file };
+}
+const l5Cases = [
+  {
+    id: 'OUT-L5-write-is-local', clauses: ['FR-L.5', 'FR-L.3'], level: 'MUST',
+    title: 'writing the card changes nothing outside the markers, places it before <main>, and a rewrite is a no-op',
+    run: (ctx) => withScratch((dir) => {
+      const live = fixture(ctx, 'live-states.json');
+      const { site } = scratchSite(ctx, dir, live);
+      const before = Object.fromEntries(bySet(live).map((r) => [r.brief, readFileSync(join(ctx.root, r.brief), 'utf8')]));
+      const first = writeBriefs(site, live);
+      const second = writeBriefs(site, live);
+      const checks = [[first.length === bySet(live).length, `first run rewrote ${first.length} briefs`], [second.length === 0, `second run rewrote ${second.length} briefs`]];
+      for (const r of bySet(live)) {
+        const after = readFileSync(join(site, r.brief.replace(/^site\//, '')), 'utf8');
+        const reg = regionOf(r.brief, after);
+        const outside = after.slice(0, reg.start) + after.slice(reg.end + 2);
+        checks.push([outside === before[r.brief], `${r.brief}: bytes outside the region changed`]);
+        checks.push([after.slice(reg.end, reg.end + 2 + '<main id="main-content">'.length) === '\n\n<main id="main-content">', `${r.brief}: region not placed just before <main>`]);
+        checks.push([after.indexOf('<div class="vocab"') < reg.start, `${r.brief}: region precedes the vocabulary block`]);
+      }
+      return verdict(checks);
+    }),
+  },
+  {
+    id: 'OUT-L5-check-mode', clauses: ['FR-L.5'], level: 'MUST',
+    title: 'make-live.mjs --check passes a fresh render and fails a hand edit inside the region, a missing region, a stale live.json and a doubled marker, but not an edit outside the region',
+    run: (ctx) => withScratch((dir) => {
+      const live = fixture(ctx, 'live-states.json');
+      const { site, file } = scratchSite(ctx, dir, live);
+      const cli = (...a) => node(ctx, ['site/scripts/make-live.mjs', '--site', site, '--live', file, ...a]);
+      const n = bySet(live).length;
+      const write = cli();
+      const ok = cli('--check');
+      const brief = join(site, 'briefs/frankengit.html');
+      const good = readFileSync(brief, 'utf8');
+      const run = (html, label) => { writeFileSync(brief, html); const r = cli('--check'); writeFileSync(brief, good); return [r, label]; };
+      const outside = run(good.replace('<main id="main-content">', '<main id="main-content"><!-- analyst note -->'), 'outside edit');
+      const inside = run(good.replace('Live facts since the pin', 'Live facts since the pin (edited)'), 'inside edit');
+      const missing = run(good.slice(0, good.indexOf(OPEN)) + good.slice(good.indexOf(CLOSE) + CLOSE.length), 'missing region');
+      const doubled = run(good.replace(CLOSE, `${CLOSE}\n${OPEN}${CLOSE}`), 'doubled marker');
+      const stale = clone(live); stale.checked_at = '2026-09-25T06:12:45Z'; writeFileSync(file, JSON.stringify(stale));
+      const staleRun = cli('--check');
+      return verdict([
+        [write.status === 0, `write exited ${write.status}: ${write.stdout}${write.stderr}`],
+        [ok.status === 0 && ok.stdout.includes(`LIVE_OK briefs=${n} regions=${n}`), `check after write: ${ok.status} ${ok.stdout.trim()}`],
+        [outside[0].status === 0, `an edit outside the region failed the check: ${outside[0].stdout.trim()}`],
+        ...[inside, missing, doubled].map(([r, label]) => [r.status === 1 && r.stdout.startsWith('LIVE_BAD'), `${label} passed the check`]),
+        [staleRun.status === 1 && /differs from a fresh render/.test(staleRun.stdout), 'a newer live.json did not fail the check'],
+      ]);
+    }),
+  },
+  {
+    id: 'OUT-L5-records', clauses: ['FR-L.5', 'FR-L.3'], level: 'MUST',
+    title: 'check mode fails a brief with no live.json record, a record naming a missing brief, and an empty brief set',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      return withScratch((dir) => {
+        const { site } = scratchSite(ctx, dir, live);
+        writeBriefs(site, live);
+        const noRecord = clone(live); noRecord.repos = noRecord.repos.filter((r) => r.repo !== 'frankengit');
+        const ghost = clone(live); ghost.repos.push({ ...clone(live.repos[0]), repo: 'ghost', brief: 'site/briefs/ghost.html' });
+        const empty = join(dir, 'empty'); mkdirSync(join(empty, 'briefs'), { recursive: true });
+        const cohortOnly = checkBriefs(site, live);
+        return verdict([
+          [cohortOnly.errs.length === 0, `a cohort record with brief null was reported: ${cohortOnly.errs[0]}`],
+          [checkBriefs(site, noRecord).errs.some((e) => /frankengit\.html: no watch\/live\.json record/.test(e)), 'a brief without a record passed'],
+          [checkBriefs(site, ghost).errs.some((e) => /ghost\.html, which does not exist/.test(e)), 'a record naming a missing brief passed'],
+          [checkBriefs(empty, live).errs.some((e) => /empty scan set/.test(e)), 'an empty brief set passed'],
+        ]);
+      });
+    },
+  },
+  {
+    id: 'OUT-L5-committed', clauses: ['FR-L.5', 'FR-L.3'], level: 'MUST',
+    title: 'the committed briefs carry cards equal to a fresh render of the committed watch/live.json',
+    run(ctx) {
+      const r = node(ctx, ['site/scripts/make-live.mjs', '--check']);
+      const n = /^LIVE_OK briefs=(\d+) regions=(\d+)/m.exec(r.stdout);
+      return verdict([[r.status === 0 && n && Number(n[1]) > 0, `make-live --check exited ${r.status}: ${r.stdout.trim().split('\n').slice(0, 3).join(' | ')}`]]);
+    },
+  },
+];
+
+// ---------- FR-D: the dashboard issue ----------
+function sections(body) {
+  return [...body.matchAll(/^## (.+)$/gm)].map((m, i, all) => ({ title: m[1], text: body.slice(m.index, all[i + 1]?.index ?? body.length) }));
+}
+const tableRows = (text) => text.split('\n').filter((l) => l.startsWith('| ') && !l.startsWith('| Repo |') && !l.startsWith('| Snapshot |'));
+const D3_ORDER = ['Changed', 'Due for re-check', 'Unknown', 'New repositories flagged as candidates', 'Revisit triggers a machine cannot observe', 'Informational'];
+
+const dashCases = [
+  {
+    id: 'OUT-D1-lifecycle', clauses: ['FR-D.1'], level: 'MUST',
+    title: 'one issue with the title and both labels is created, left alone when the body is unchanged, and edited in place when it changes',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const { mem, api, writes } = recordingIssues();
+      const a = await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const w1 = writes().length;
+      const b = await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const w2 = writes().length;
+      const next = clone(live); next.checked_at = '2026-09-25T06:10:00Z';
+      const c = await syncDashboard(api, next, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const patch = writes().slice(w2);
+      const issue = mem.issues[0];
+      return verdict([
+        [a.action === 'created' && mem.issues.length === 1, `first run ${a.action}, ${mem.issues.length} issues`],
+        [issue.title === '[watch] Freshness dashboard', `title ${issue.title}`],
+        [['watch', 'dashboard'].every((l) => issue.labels.some((x) => x.name === l)), 'labels missing'],
+        [b.action === 'unchanged' && w2 === w1, `second run ${b.action} with ${w2 - w1} writes`],
+        [c.action === 'edited' && c.number === a.number && mem.issues.length === 1, `third run ${c.action} #${c.number}, ${mem.issues.length} issues`],
+        [patch.length === 1 && patch[0].method === 'PATCH' && Object.keys(patch[0].payload).join() === 'body', `edit wrote ${JSON.stringify(patch.map((p) => [p.method, p.payload && Object.keys(p.payload)]))}`],
+        [issue.body === renderDashboard(next, { snapshots: NO_SNAPSHOTS }), 'stored body is not the fresh render'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D1-dry-run', clauses: ['FR-D.1'], level: 'MUST',
+    title: 'a dry run reports the action it would take and writes nothing',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const { mem, api, writes } = recordingIssues();
+      const r = await syncDashboard(api, live, { bot: BOT, dryRun: true, snapshots: NO_SNAPSHOTS });
+      return verdict([[r.action === 'created' && r.number === null, `dry run said ${r.action} #${r.number}`], [writes().length === 0 && mem.issues.length === 0, `dry run wrote ${writes().length} times`]]);
+    },
+  },
+  {
+    id: 'OUT-D2-impostors', clauses: ['FR-D.2'], level: 'MUST',
+    title: 'same-title issues by another author, or ours without a label or the marker, are never edited and are reported as ignored; a trusted one is created',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const { mem, api, writes } = recordingIssues();
+      mem.add(trustedShape({ user: { login: 'mallory' } }));
+      mem.add(trustedShape({ labels: [{ name: 'watch' }] }));
+      mem.add(trustedShape({ body: 'no marker here\n' }));
+      mem.add(trustedShape({ body: `see ${MARKER} inline, not on its own line\n` }));
+      const before = mem.issues.map((i) => i.body);
+      const r = await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const patched = writes().filter((w) => w.method === 'PATCH');
+      return verdict([
+        [r.action === 'created' && r.number === 5, `action ${r.action} #${r.number}`],
+        [JSON.stringify(r.ignored) === '[1,2,3,4]', `ignored ${JSON.stringify(r.ignored)}`],
+        [patched.length === 0, `${patched.length} PATCH calls`],
+        [mem.issues.slice(0, 4).every((i, k) => i.body === before[k] && i.state === 'open'), 'an untrusted issue changed'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D2-reopen', clauses: ['FR-D.2', 'FR-D.1'], level: 'MUST',
+    title: 'a closed trusted dashboard is reopened with the fresh body, not replaced',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const { mem, api } = recordingIssues();
+      await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      mem.issues[0].state = 'closed';
+      const r = await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      return verdict([[r.action === 'reopened' && r.number === 1, `action ${r.action} #${r.number}`], [mem.issues.length === 1 && mem.issues[0].state === 'open', `issues ${mem.issues.length}, state ${mem.issues[0].state}`]]);
+    },
+  },
+  {
+    id: 'OUT-D2-oldest-and-labels', clauses: ['FR-D.2', 'FR-D.1'], level: 'MUST',
+    title: 'with two trusted dashboards the oldest is the one kept and the other is reported; on a fresh repository both labels are created',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const two = recordingIssues();
+      two.mem.add(trustedShape());
+      two.mem.add(trustedShape());
+      const r = await syncDashboard(two.api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const fresh = recordingIssues();
+      await syncDashboard(fresh.api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const made = fresh.writes().filter((w) => w.method === 'POST' && w.path.endsWith('/labels')).map((w) => w.payload.name).sort();
+      return verdict([
+        [r.action === 'edited' && r.number === 1 && JSON.stringify(r.duplicates) === '[2]', `kept #${r.number} (${r.action}), duplicates ${JSON.stringify(r.duplicates)}`],
+        [two.mem.issues[1].body === `${MARKER}\nold body\n`, 'the newer duplicate was edited'],
+        [made.join() === 'dashboard,watch', `labels created: ${made.join()}`],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D3-sections', clauses: ['FR-D.3'], level: 'MUST',
+    title: 'the body has the six sections in order, one Changed row per open crossing with evidence and a re-check link, and the other sections list what live.json lists',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const body = renderDashboard(live, { snapshots: NO_SNAPSHOTS });
+      const secs = sections(body);
+      const titles = secs.map((s) => s.title);
+      const at = (t) => secs.find((s) => s.title === t)?.text ?? '';
+      const open = live.repos.flatMap((r) => r.crossings.filter((c) => !c.resolved_by).map((c) => ({ r, c })));
+      const changedRows = tableRows(at('Changed'));
+      const humanTriggers = live.repos.reduce((s, r) => s + r.revisit.human, 0);
+      const humanRepos = live.repos.filter((r) => r.revisit.human > 0).length;
+      const checks = [
+        [JSON.stringify(titles.slice(0, 6)) === JSON.stringify(D3_ORDER), `sections ${JSON.stringify(titles)}`],
+        [changedRows.length === open.length, `${changedRows.length} Changed rows for ${open.length} open crossings`],
+        [!at('Changed').includes('franken\\_code\\_browser'), 'a resolved crossing is listed as open'],
+        [!at('Changed').includes('Rider | plain MIT'), 'a pending (seen once) crossing is listed as open'],
+        [tableRows(at('Due for re-check')).length === live.repos.filter((r) => r.due.due).length, 'Due rows do not match due repositories'],
+        [tableRows(at('Unknown')).length === live.unknowns.length, 'Unknown rows do not match live.unknowns'],
+        [tableRows(at('New repositories flagged as candidates')).length === live.candidates.length, 'candidate rows do not match'],
+        [at('Revisit triggers a machine cannot observe').includes(`${humanTriggers} triggers across ${humanRepos} repositories need a person`), `revisit count is not ${humanTriggers} across ${humanRepos}`],
+        [!/\| \[/.test(at('Informational')) && /23 today, 311 since the pins/.test(at('Informational')), 'Informational is not counts only'],
+      ];
+      for (const { r, c } of open) {
+        const row = changedRows.find((l) => l.includes(`](https://github.com/Dicklesworthstone/${r.repo})`) && l.includes(` ${c.from} | ${c.to} `));
+        checks.push([Boolean(row), `${c.id}: no row`]);
+        if (row) {
+          for (const u of c.evidence) checks.push([row.includes(`(${u})`), `${c.id}: evidence ${u} missing`]);
+          checks.push([row.includes('updates/METHOD.md') && row.includes(r.packet), `${c.id}: no re-check link`]);
+        }
+      }
+      return verdict(checks);
+    },
+  },
+  {
+    id: 'OUT-D3-escape', clauses: ['FR-D.3', 'FR-D.2'], level: 'MUST',
+    title: 'upstream text in the body goes through mdText: no raw HTML, mention, pipe or link syntax survives, and unsafe URLs are not linked',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      live.candidates.push({ repo: 'evil|repo', created_at: '2026-09-24T00:00:00Z', reasons: ['<img src=x onerror=alert(1)> [x](javascript:alert(1)) @everyone #1 `code`'] });
+      live.unknowns.push({ repo: 'frankengit', dim: 'ci', why: '<!-- watch-dashboard: v1 -->\n| forged | row |' });
+      live.repos[0].crossings[0].evidence.push('javascript:alert(1)', 'https://e.example/a b');
+      const body = renderDashboard(live, { snapshots: NO_SNAPSHOTS });
+      return verdict([
+        [!/(^|[^\\])<(img|b)\b/m.test(body), 'raw HTML survived'],
+        [!/\]\(javascript:/.test(body) && !/\(https:\/\/e\.example\/a b\)/.test(body), 'an unsafe URL became a link'],
+        [!/(^|[^\\])@everyone/.test(body) && !/(^|[^\\])@someone/.test(body), 'a mention survived'],
+        [body.includes('evil\\|repo') && body.includes('\\<b\\>in Rust\\</b\\>'), 'pipes or angle brackets not escaped'],
+        [(body.match(/^<!-- watch-dashboard: v1 -->$/gm) ?? []).length === 1, 'upstream text forged a marker line'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D3-quiet', clauses: ['FR-D.3'], level: 'MUST',
+    title: 'with nothing to report each section says so in words and keeps its place',
+    run(ctx) {
+      const body = renderDashboard(fixture(ctx, 'live-quiet.json'), { snapshots: NO_SNAPSHOTS });
+      const secs = sections(body);
+      return verdict([
+        [JSON.stringify(secs.slice(0, 6).map((s) => s.title)) === JSON.stringify(D3_ORDER), 'section order'],
+        [/No open crossings\./.test(secs[0].text) && /Nothing is due\./.test(secs[1].text) && /read every repository/.test(secs[2].text) && /None\./.test(secs[3].text), 'an empty section is blank or missing its sentence'],
+        [/2 pinned, 0 from cohort matrices/.test(body), 'cohort count 0 is not reported as 0'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D4-limit', clauses: ['FR-D.4'], level: 'MUST',
+    title: 'a body over 65,536 characters is cut at a line, keeps its marker, and ends with a link to live.json; a body under the limit is not cut',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const big = clone(live);
+      const c0 = big.repos[0].crossings[0];
+      for (let k = 0; k < 2500; k++) big.repos[0].crossings.push({ ...c0, id: `frankengit:ci:${k}`, since: `2026-09-${String(1 + (k % 28)).padStart(2, '0')}` });
+      const body = renderDashboard(big, { snapshots: NO_SNAPSHOTS });
+      const small = renderDashboard(live, { snapshots: NO_SNAPSHOTS });
+      const { mem, api } = recordingIssues();
+      await syncDashboard(api, big, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const rows = tableRows(sections(body)[0]?.text ?? '').length;
+      return verdict([
+        [body.length <= 65536 && LIMIT === 65536, `body is ${body.length} characters`],
+        [rows > 100 && rows < 2503, `cut kept ${rows} rows (want a real cut)`],
+        [body.startsWith('<!-- watch-dashboard: v1 -->\n'), 'marker lost'],
+        [body.endsWith('[watch/live.json](https://github.com/JYeswak/franken-research/blob/main/watch/live.json)'), `ends with ${JSON.stringify(body.slice(-80))}`],
+        [small.endsWith('\n') && !small.includes('did not fit'), 'a small body was cut'],
+        [mem.issues[0].body.length <= 65536, 'the stored issue body is over the limit'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D4-one-issue', clauses: ['FR-D.4'], level: 'MUST',
+    title: 'open crossings and new-repository candidates reach the dashboard only: one issue in all, whatever the number of events',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const { mem, api, writes } = recordingIssues();
+      await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const body = mem.issues[0]?.body ?? '';
+      return verdict([
+        [writes().filter((w) => w.method === 'POST' && w.path.endsWith('/issues')).length === 1 && mem.issues.length === 1, `${mem.issues.length} issues opened`],
+        [live.candidates.every((c) => body.includes(`[${c.repo.replace(/_/g, '\\_')}]`)), 'a candidate is not on the dashboard'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-O4-last-run', clauses: ['FR-O.4'], level: 'SHOULD',
+    title: 'dashboard half of FR-O.4: the body shows the time of the last run (the deploy warning is the harness\'s case)',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      return verdict([[renderDashboard(live, { snapshots: NO_SNAPSHOTS }).includes('Last run: 2026-09-24 06:12 UTC.'), 'no last-run time']]);
+    },
+  },
+  {
+    id: 'OUT-O5-snapshots', clauses: ['FR-O.5'], level: 'SHOULD',
+    title: 'the dashboard shows each vendored snapshot\'s age from ops/schedule.tsv; over 30 days is due for rebuild; no snapshots and a missing file read cleanly',
+    run: (ctx) => withScratch((dir) => {
+      const live = fixture(ctx, 'live-states.json');
+      const tsv = join(dir, 'schedule.tsv');
+      writeFileSync(tsv, ['# ops/schedule.tsv fixture', 'artifact\tgenerator\tworkflow\tcadence\tgate\tsnapshot_built',
+        'watch/live.json\tnode watch/watch.mjs --apply\twatch.yml\tdaily\tW3\t-',
+        'search/index-a.json\tnode x\tverify.yml\tweekly\tW3\t2026-08-24',
+        'search/index-b.json\tnode x\tverify.yml\tweekly\tW3\t2026-08-25',
+        'search/index-c.json\tnode x\tverify.yml\tweekly\tW3\t2026-09-20', ''].join('\n'));
+      const snaps = readSnapshots(tsv);
+      const body = renderDashboard(live, { snapshots: snaps });
+      writeFileSync(tsv, 'artifact\tgenerator\tworkflow\tcadence\tgate\tsnapshot_built\nwatch/live.json\tnode w\twatch.yml\tdaily\tW3\t-\n');
+      const none = renderDashboard(live, { snapshots: readSnapshots(tsv) });
+      const missing = renderDashboard(live, { snapshots: readSnapshots(join(dir, 'absent.tsv')) });
+      return verdict([
+        [snaps.rows.length === 3, `${snaps.rows.length} snapshot rows (the '-' row is not a snapshot)`],
+        [body.includes('| search/index-a.json | 2026-08-24 | 31 days | due for rebuild (over 30 days) |'), 'a 31-day snapshot is not due'],
+        [body.includes('| search/index-b.json | 2026-08-25 | 30 days | fresh |'), 'a 30-day snapshot is due (the limit is more than 30)'],
+        [body.includes('| search/index-c.json | 2026-09-20 | 4 days | fresh |'), 'a 4-day snapshot age'],
+        [none.includes('No vendored snapshots are listed in ops/schedule.tsv.'), 'no clean "no snapshots" state'],
+        [missing.includes('ops/schedule.tsv is missing, so snapshot ages are unknown.'), 'a missing schedule is not stated'],
+      ]);
+    }),
+  },
+];
+
+// ---------- FR-G: weekly digest ----------
+const LEDGER_FX = 'watch/freshness/fixtures/outputs/crossings.jsonl';
+const ledgerLine = (o) => JSON.stringify({ date: o.date, event: o.event, id: o.id ?? 'x:ci:C1>C2', repo: o.repo ?? 'frankengit', dim: 'ci', from: 'C1', to: 'C2', source: 'class', evidence: [], resolved_by: o.resolved_by ?? null });
+const digestCases = [
+  {
+    id: 'OUT-G1-weeks', clauses: ['FR-G.1'], level: 'MUST',
+    title: 'one entry per ISO week with a crossing opened or resolved, dated the last day with data, listing every event of the week; a quiet week gets none',
+    run(ctx) {
+      const events = readLedger(join(ctx.root, LEDGER_FX), ctx.root);
+      const entries = digestEntries(events);
+      const w39 = entries.find((e) => e.id.endsWith('/2026-W39'));
+      const weeks = [
+        ['2026-01-01', '2026-W01'], ['2025-12-29', '2026-W01'], ['2026-09-21', '2026-W39'], ['2026-09-27', '2026-W39'],
+        ['2026-09-28', '2026-W40'], ['2026-12-31', '2026-W53'], ['2027-01-03', '2026-W53'], ['2027-01-04', '2027-W01'],
+      ];
+      return verdict([
+        [entries.map((e) => e.id.split('/').pop()).join() === '2026-W41,2026-W39', `weeks ${entries.map((e) => e.id).join()}`],
+        [w39?.date === '2026-09-24' && entries[0].date === '2026-10-08', 'an entry is not dated its week\'s last day with data'],
+        [/2 crossings opened, 1 resolved/.test(w39?.title ?? ''), `W39 title ${w39?.title}`],
+        [['franken_code_browser Release R1 \u2192 R3 (2026-09-23', 'frankengit CI C3 \u2192 C5 (2026-09-24', 'by updates/franken_code_browser-2026-09-24.md'].every((s) => w39?.summary.includes(s)), 'W39 does not list every event'],
+        [digestEntries([]).length === 0, 'an empty ledger made an entry'],
+        ...weeks.map(([d, w]) => [isoWeek(d).label === w, `${d} is ${isoWeek(d).label}, want ${w}`]),
+      ]);
+    },
+  },
+  {
+    id: 'OUT-G1-feed', clauses: ['FR-G.1', 'FR-G.2'], level: 'MUST',
+    title: 'make-feed.mjs puts the digest entries in a well-formed feed, newest first, XML-escaped; an informational line is refused, never published',
+    run: (ctx) => withScratch((dir) => {
+      const { r, xml } = feedFromLedger(ctx, dir, join(ctx.root, LEDGER_FX));
+      const check = node(ctx, ['site/scripts/make-feed.mjs', '--check', join(dir, 'feed.xml')]);
+      const blocks = digestBlocks(xml);
+      const bad = join(dir, 'bad.jsonl');
+      writeFileSync(bad, `${ledgerLine({ date: '2026-09-24', event: 'informational' })}\n`);
+      const refused = node(ctx, ['site/scripts/make-feed.mjs', '--out', join(dir, 'b'), '--crossings', bad]);
+      const emptyLedger = join(dir, 'empty.jsonl'); writeFileSync(emptyLedger, '');
+      const quiet = feedFromLedger(ctx, join(dir, 'q'), emptyLedger);
+      return verdict([
+        [r.status === 0, `make-feed exited ${r.status}: ${r.stderr.trim()}`],
+        [check.status === 0 && /^FEED_OK/m.test(check.stdout), `feed check: ${check.stdout.trim()}`],
+        [blocks.length === 2 && xml.indexOf('digest/2026-W41') < xml.indexOf('digest/2026-W39'), `${blocks.length} digest entries or wrong order`],
+        [xml.includes('other:Copyright (c) 2026 &lt;Jeffrey&gt; &amp; &quot;friends&quot;') && !xml.includes('<Jeffrey>'), 'upstream text not XML-escaped'],
+        [refused.status !== 0 && /neither opened nor resolved/.test(refused.stderr), 'an informational ledger line was accepted'],
+        [quiet.r.status === 0 && digestBlocks(quiet.xml).length === 0, 'an empty ledger produced a digest entry (watch/changes/ holds informational events; they must not reach the feed)'],
+      ]);
+    }),
+  },
+  {
+    id: 'OUT-G2-committed-sources', clauses: ['FR-G.2'], level: 'MUST',
+    title: 'the digest reads only committed files: a resolved event must name a committed re-check, the ledger must be well formed, and reruns are byte-identical',
+    run: (ctx) => withScratch((dir) => {
+      const lines = readFileSync(join(ctx.root, LEDGER_FX), 'utf8');
+      const tryLedger = (text) => { const f = join(dir, `l${Math.random().toString(36).slice(2)}.jsonl`); writeFileSync(f, text); try { readLedger(f, ctx.root); return null; } catch (e) { return e.message; } };
+      const ghost = tryLedger(`${ledgerLine({ date: '2026-09-24', event: 'resolved', resolved_by: 'updates/frankengit-2026-09-30.md' })}\n`);
+      const torn = tryLedger(lines.slice(0, -1));
+      const order = tryLedger(`${JSON.stringify({ event: 'opened', date: '2026-09-24', id: 'a', repo: 'b', dim: 'ci', from: 'C1', to: 'C2', source: 'class', evidence: [], resolved_by: null })}\n`);
+      const a = feedFromLedger(ctx, join(dir, 'a'), join(ctx.root, LEDGER_FX));
+      const b = feedFromLedger(ctx, join(dir, 'b'), join(ctx.root, LEDGER_FX));
+      return verdict([
+        [/is not a committed file/.test(ghost ?? ''), `a resolved_by naming a missing re-check: ${ghost}`],
+        [/no newline/.test(torn ?? ''), `a torn last line: ${torn}`],
+        [/keys .* in that order/.test(order ?? ''), `keys out of FR-G.3 order: ${order}`],
+        [a.xml.length > 0 && a.xml === b.xml, 'two builds differ'],
+      ]);
+    }),
+  },
+  {
+    id: 'OUT-G2-committed-feed', clauses: ['FR-G.2', 'FR-G.1'], level: 'MUST',
+    title: 'site/feed.xml equals a fresh build from the committed ledger (gate M\'s rule)',
+    run: (ctx) => withScratch((dir) => {
+      const r = node(ctx, ['site/scripts/make-feed.mjs', '--out', dir]);
+      const same = r.status === 0 && readFileSync(join(dir, 'feed.xml'), 'utf8') === readFileSync(join(ctx.root, 'site/feed.xml'), 'utf8');
+      return verdict([[same, `fresh feed differs from site/feed.xml (exit ${r.status} ${r.stderr.trim()})`]]);
+    }),
+  },
+];
+
+// ---------- FR-H.3: goldens ----------
+function goldens(ctx, pairs) {
+  const results = pairs.map(([name, text]) => ctx.golden(name, text));
+  const bad = results.filter((r) => !r.pass);
+  return { pass: bad.length === 0, detail: (bad.length ? bad : results).map((r) => r.detail).filter(Boolean).join('; ') };
+}
+const goldenCases = [
+  {
+    id: 'OUT-H3-cards', clauses: ['FR-H.3', 'FR-L.3'], level: 'MUST',
+    title: 'golden cards for four repositories in four states (changed, current with a resolved crossing, due, unknown) and one with hostile upstream strings',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const card = (repo) => renderCard(live.repos.find((r) => r.repo === repo), live) + '\n';
+      return goldens(ctx, [
+        ['outputs/card-frankengit-changed.html', card('frankengit')],
+        ['outputs/card-franken_code_browser-current-resolved.html', card('franken_code_browser')],
+        ['outputs/card-frankensearch-due.html', card('frankensearch')],
+        ['outputs/card-franken_tts-unknown.html', card('franken_tts')],
+        ['outputs/card-frankenterm-escaping.html', card('frankenterm')],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-H3-dashboard', clauses: ['FR-H.3', 'FR-D.3'], level: 'MUST',
+    title: 'golden dashboard bodies: every section populated, and the quiet state',
+    run(ctx) {
+      return goldens(ctx, [
+        ['outputs/dashboard-states.md', renderDashboard(fixture(ctx, 'live-states.json'), { snapshots: { status: 'ok', rows: [{ artifact: 'search/index.json', built: '2026-08-01' }] } })],
+        ['outputs/dashboard-quiet.md', renderDashboard(fixture(ctx, 'live-quiet.json'), { snapshots: NO_SNAPSHOTS })],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-H3-digest', clauses: ['FR-H.3', 'FR-G.1'], level: 'MUST',
+    title: 'golden digest entries as they appear in the built feed',
+    run: (ctx) => withScratch((dir) => {
+      const { r, xml } = feedFromLedger(ctx, dir, join(ctx.root, LEDGER_FX));
+      if (r.status !== 0) return { pass: false, detail: `make-feed exited ${r.status}: ${r.stderr.trim()}` };
+      return goldens(ctx, [['outputs/digest-entries.xml', digestBlocks(xml).join('')]]);
+    }),
+  },
+];
+
+export default [...cardCases, ...l4Cases, ...l5Cases, ...dashCases, ...digestCases, ...goldenCases];

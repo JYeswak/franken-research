@@ -3,6 +3,8 @@
 //
 //   node site/scripts/make-feed.mjs                 write site/feed.xml and site/follow/franken-suite.opml
 //   node site/scripts/make-feed.mjs --out DIR       write DIR/feed.xml and DIR/follow/franken-suite.opml
+//   --crossings FILE                                read the crossing ledger from FILE instead of watch/crossings.jsonl
+//                                                   (the freshness harness builds a feed from a fixture ledger)
 //   node site/scripts/make-feed.mjs --check FEED [OPML]
 //                                                   strict well-formedness parse plus Atom/OPML structure;
 //                                                   prints FEED_OK / OPML_OK or *_BAD lines, exits 1 on any problem
@@ -15,6 +17,9 @@
 //                         the file; when both exist for a day the watch census (the later reading) wins
 //   packets/*-assessment.md
 //                         the assessed repositories, parsed by the daily watch's own parser
+//   watch/crossings.jsonl
+//                         one watch digest entry per ISO week that opened or resolved a crossing, dated the
+//                         last day of that week with an event (watch/freshness/digest.mjs, SPEC.md FR-G.1)
 // Output is deterministic: the feed's <updated> is the newest entry's date, never the build time, so a
 // rerun on unchanged sources is byte-identical (verify-site.sh gate M compares against a fresh run).
 
@@ -22,6 +27,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parsePackets } from '../../watch/watch.mjs';
+import { readDigestEntries, LEDGER } from '../../watch/freshness/digest.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const SITE_URL = 'https://fr.zeststream.ai';
@@ -166,9 +172,10 @@ function censusEntries() {
 }
 
 // ---------- rendering ----------
-const RANK = { recheck: 0, census: 1, release: 2 };
-function buildFeed() {
-  const all = [...changelogEntries(), ...recheckEntries(), ...censusEntries()];
+// Same-day order: re-checks, then the week's watch digest, then the census, then releases.
+const RANK = { recheck: 0, digest: 1, census: 2, release: 3 };
+function buildFeed(ledger) {
+  const all = [...changelogEntries(), ...recheckEntries(), ...readDigestEntries(ROOT, ledger), ...censusEntries()];
   for (const e of all) if (!DAY.test(e.date)) die(`${e.id}: bad date ${e.date}`);
   all.sort((a, b) => (a.date !== b.date ? (a.date < b.date ? 1 : -1)
     : RANK[a.kind] - RANK[b.kind] || (a.sortKey < b.sortKey ? 1 : a.sortKey > b.sortKey ? -1 : 0)));
@@ -446,11 +453,13 @@ function main(argv) {
     return bad ? 1 : 0;
   }
   let out = join(ROOT, 'site');
+  let ledger = join(ROOT, LEDGER);
   for (let k = 0; k < argv.length; k++) {
     if (argv[k] === '--out' && argv[k + 1]) out = resolve(argv[++k]);
+    else if (argv[k] === '--crossings' && argv[k + 1]) ledger = resolve(argv[++k]);
     else die(`unknown argument ${argv[k]}`);
   }
-  const feed = buildFeed();
+  const feed = buildFeed(ledger);
   const opml = buildOpml();
   // Never write a file the checker would reject.
   const fe = checkFeed(feed.xml).errs;

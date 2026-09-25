@@ -1,0 +1,191 @@
+{
+  "schema": "fr.watch.live/v1",
+  "checked_at": "2026-10-01T06:00:00Z",
+  "totals": {
+    "repos": 2,
+    "pinned": 2,
+    "cohort": 0,
+    "current": 2,
+    "changed": 0,
+    "due": 0,
+    "unknown": 0
+  },
+  "repos": [
+    {
+      "repo": "franken_code_browser",
+      "packet": "packets/franken_code_browser-assessment.md",
+      "brief": "site/briefs/franken_code_browser.html",
+      "set": "pinned",
+      "baseline": {
+        "sha": "c7c5310e2d4f6a8b0c1d3e5f7a9b1c3d5e7f9a1b",
+        "date": "2026-09-24T00:00:00Z",
+        "source": "updates/franken_code_browser-2026-09-24.md"
+      },
+      "pin": {
+        "sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+        "date": "2026-09-22T11:02:44Z"
+      },
+      "head": {
+        "sha": "c7c5310e2d4f6a8b0c1d3e5f7a9b1c3d5e7f9a1b",
+        "date": "2026-09-23T21:30:00Z"
+      },
+      "commits_since_pin": 12,
+      "latest_release": {
+        "tag": "v0.1.0",
+        "date": "2026-09-23T21:31:07Z",
+        "url": "https://github.com/Dicklesworthstone/franken_code_browser/releases/tag/v0.1.0"
+      },
+      "existence": {
+        "found": true,
+        "archived": false,
+        "pin_reachable": true
+      },
+      "dims": {
+        "ci": {
+          "matrix": "C4",
+          "reference": "C4",
+          "at_pin": "C4",
+          "at_baseline": "C4",
+          "now": "C4",
+          "tracked": true,
+          "rule_at_pin": "FR-C.2/C4",
+          "rule_now": "FR-C.2/C4",
+          "evidence": [
+            "https://github.com/Dicklesworthstone/franken_code_browser/tree/c7c5310e2d4f6a8b0c1d3e5f7a9b1c3d5e7f9a1b/.github/workflows"
+          ]
+        },
+        "rel": {
+          "matrix": "R1",
+          "reference": "R3",
+          "at_pin": "R1",
+          "at_baseline": "R3",
+          "now": "R3",
+          "tracked": true,
+          "rule_at_pin": "FR-C.4/R1",
+          "rule_now": "FR-C.4/R3",
+          "evidence": [
+            "https://github.com/Dicklesworthstone/franken_code_browser/releases/tag/v0.1.0"
+          ]
+        },
+        "license": {
+          "matrix": "Rider",
+          "reference": "Rider",
+          "at_pin": "Rider",
+          "at_baseline": "Rider",
+          "now": "Rider",
+          "tracked": true,
+          "rule_at_pin": "FR-C.5/Rider",
+          "rule_now": "FR-C.5/Rider",
+          "evidence": [
+            "https://github.com/Dicklesworthstone/franken_code_browser/blob/c7c5310e2d4f6a8b0c1d3e5f7a9b1c3d5e7f9a1b/LICENSE"
+          ]
+        }
+      },
+      "crossings": [],
+      "pending": [],
+      "revisit": {
+        "machine": 1,
+        "human": 2,
+        "fired": [
+          "release.first"
+        ]
+      },
+      "state": "current",
+      "state_reason": "no computed class moved since the pin",
+      "due": {
+        "due": false,
+        "reason": null
+      }
+    },
+    {
+      "repo": "frankenterm",
+      "packet": "packets/frankenterm-assessment.md",
+      "brief": "site/briefs/frankenterm.html",
+      "set": "pinned",
+      "baseline": {
+        "sha": "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f",
+        "date": "2026-09-22T07:55:20Z",
+        "source": "packet"
+      },
+      "pin": {
+        "sha": "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f",
+        "date": "2026-09-22T07:55:20Z"
+      },
+      "head": {
+        "sha": "9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b",
+        "date": "2026-09-24T05:01:12Z"
+      },
+      "commits_since_pin": 58,
+      "latest_release": {
+        "tag": "v0.15.12|<script>alert(1)</script>`rm`@here",
+        "date": "2026-09-23T18:20:00Z",
+        "url": "https://github.com/Dicklesworthstone/frankenterm/releases/tag/v0.15.12%7C%3Cscript%3Ealert(1)%3C%2Fscript%3E%60rm%60%40here"
+      },
+      "existence": {
+        "found": true,
+        "archived": false,
+        "pin_reachable": true
+      },
+      "dims": {
+        "ci": {
+          "matrix": "C6",
+          "reference": "C6",
+          "at_pin": "C6",
+          "at_baseline": "C6",
+          "now": "C6",
+          "tracked": true,
+          "rule_at_pin": "FR-C.2/C6",
+          "rule_now": "FR-C.2/C6",
+          "evidence": [
+            "https://api.github.com/repos/Dicklesworthstone/frankenterm/actions/runs?head_sha=9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b"
+          ]
+        },
+        "rel": {
+          "matrix": "R3",
+          "reference": "R3",
+          "at_pin": "R3",
+          "at_baseline": "R3",
+          "now": "R3",
+          "tracked": true,
+          "rule_at_pin": "FR-C.4/R3",
+          "rule_now": "FR-C.4/R3",
+          "evidence": [
+            "https://api.github.com/repos/Dicklesworthstone/frankenterm/releases"
+          ]
+        },
+        "license": {
+          "matrix": "Rider",
+          "reference": "Rider",
+          "at_pin": "Rider",
+          "at_baseline": "Rider",
+          "now": "Rider",
+          "tracked": true,
+          "rule_at_pin": "FR-C.5/Rider",
+          "rule_now": "FR-C.5/Rider",
+          "evidence": [
+            "https://github.com/Dicklesworthstone/frankenterm/blob/9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b/LICENSE"
+          ]
+        }
+      },
+      "crossings": [],
+      "pending": [],
+      "revisit": {
+        "machine": 0,
+        "human": 4,
+        "fired": []
+      },
+      "state": "current",
+      "state_reason": "no computed class moved since the pin",
+      "due": {
+        "due": false,
+        "reason": null
+      }
+    }
+  ],
+  "candidates": [],
+  "unknowns": [],
+  "informational": {
+    "events_today": 0,
+    "events_since_pin": 0
+  }
+}
