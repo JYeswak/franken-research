@@ -37,9 +37,14 @@ permissions:
 
 jobs:
   deploy:
+    # Main only, whatever the trigger: a push to main, a dispatch from main, or a successful
+    # watch or discover run on main. The production environment's branch policy admits main
+    # alone too, but that is a GitHub setting no offline gate can see, so the workflow checks
+    # the ref itself (ops/write-job.mjs pins this condition, gate W3; since 2026-09-25).
     if: >-
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
-      || (github.event_name != 'workflow_run' && github.ref == 'refs/heads/main')
+      github.ref == 'refs/heads/main'
+      && (github.event_name != 'workflow_run'
+      || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'))
     runs-on: ubuntu-latest
     # The Cloudflare token lives only in the `production` environment, whose deployment branch
     # policy admits `main` alone: a workflow on any other branch cannot read it

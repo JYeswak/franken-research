@@ -15,16 +15,19 @@
 
 ## Modes
 
+Since 2026-09-25 the scheduled run (`.github/workflows/discover.yml`) has two jobs, like the daily watch (`watch/freshness/SPEC.md` FR-O.6). The `build` job holds a read-only token: it installs dependencies, runs `--apply`, runs the gate chain, and uploads only the week file. The `publish` job holds the write token, installs nothing and runs only dependency-free scripts: it copies the week file into its checkout (`ops/take-build-output.mjs discover`, which refuses any other path), commits and pushes it, and only then runs `--sync-issue` on the committed file. `--sync-issue` refuses a file that is untracked or differs from HEAD, and a checkout that is not the GitHub tip of the default branch; a refusal makes no issue lookup. `--issues`, which swept and wrote the issue in one process, is retired and is now a usage error. Gate W3 (`ops/write-job.mjs`) checks the workflow, including each `publish` run body byte for byte.
+
 ```
 node watch/discover.mjs              dry report on stdout; writes nothing
 node watch/discover.mjs --apply      also write watch/discovery/<ISO-week>.json
-node watch/discover.mjs --issues     also create or update the week's one rollup issue
+node watch/discover.mjs --sync-issue watch/discovery/<YYYY-Www>.json
+                                     create or update that week's one rollup issue, from the committed file
 node watch/discover.mjs --selftest   offline check on watch/fixtures/discover-*.json
 ```
 
 The dry run still reads the issue list (one call) so that known candidates are skipped the same way the scheduled run skips them.
 
-Exit codes: 0 ok; 1 selftest failure; 2 usage or token error; 3 GitHub API failure. Any 403 or 429 (a rate limit, or a forbidden repository) stops the run at once with exit 3. Everything is fetched before anything is written, so a stopped run leaves no file and no issue edit. Token: `GITHUB_TOKEN` or `GH_TOKEN`, else `gh auth token`; it is never printed.
+Exit codes: 0 ok; 1 selftest failure; 2 usage or token error, or a refused sync; 3 GitHub API failure. Any 403 or 429 (a rate limit, or a forbidden repository) stops the run at once with exit 3. Everything is fetched before anything is written, so a stopped run leaves no file. Token: `GITHUB_TOKEN` or `GH_TOKEN`, else `gh auth token`; it is never printed.
 
 ## Output: `watch/discovery/<YYYY-Www>.json`
 
@@ -42,7 +45,7 @@ One file per ISO week (the week of the run date, e.g. `2026-W39`). A rerun in th
 
 ## The rollup issue
 
-`--issues` keeps one issue per ISO week, titled `[discovery] Rust candidates, week <YYYY-Www>` and labelled `candidate` and `discovery` (both labels are created if missing). Its body is a table of the top 15 with their signals and a triage checklist that links the screening rule. Repository names in the table are escaped (`|`, backslash, backtick, `*`, `_`, `~`, brackets, `<`, `>`, `&`; newlines become spaces), and links are built from the percent-encoded name, not taken from the API.
+`--sync-issue` keeps one issue per ISO week, titled `[discovery] Rust candidates, week <YYYY-Www>` and labelled `candidate` and `discovery` (both labels are created if missing). Its body is a table of the top 15 with their signals and a triage checklist that links the screening rule. Repository names in the table are escaped (`|`, backslash, backtick, `*`, `_`, `~`, brackets, `<`, `>`, `&`; newlines become spaces), and links are built from the percent-encoded name, not taken from the API.
 
 Titles are public and predictable, so a title match alone proves nothing: anyone can open an issue with next week's title first. An issue counts as the week's rollup only if the token's own identity opened it (`github-actions[bot]` under GitHub Actions, otherwise the login `GET /user` returns for the token), it carries both labels, and its body holds this week's `discovery-week` and `discovery-value` markers. Any other issue with the title is ignored and never edited or commented on; the sweep opens its own issue beside it and names the ignored numbers in its report. The value marker is a digest of the listed repositories and their signals, not their star counts. A rerun with the same listing does nothing, a changed listing edits the body of the trusted issue, and a closed rollup is never reopened or edited.
 

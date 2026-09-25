@@ -9,6 +9,11 @@ name: triage
 #
 # The issue title and body are never read or passed to a shell; only the issue number and the
 # label names are used.
+#
+# The job holds issues: write, so it follows the write-job rules of ops/write-job.mjs (gate W3; since
+# 2026-09-25): it installs nothing, its checkout keeps no token in .git/config, it runs only
+# .github/scripts/triage-ack.mjs (Node built-ins only) plus gh, and its run body is pinned byte for
+# byte in the checker. An issues event always runs this file as it is on the default branch.
 
 on:
   issues:
@@ -20,13 +25,15 @@ concurrency:
   group: triage-${{ github.event.issue.number }}
   cancel-in-progress: false
 
-permissions:
-  contents: read
-  issues: write
+# Nothing by default; the one job names what it needs.
+permissions: {}
 
 jobs:
   ack:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     # Checkout, one node run, and at most two GitHub API calls. 3 minutes is a hung-job guard,
     # not a measurement; re-derive from `gh run list --workflow triage.yml` once runs exist.
     timeout-minutes: 3

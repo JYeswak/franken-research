@@ -2,11 +2,21 @@ name: discover
 
 # Weekly Rust discovery sweep (watch/discovery/README.md). Searches GitHub
 # for recently active public Rust repositories with agent-built signals,
-# writes watch/discovery/<ISO-week>.json, creates or updates ONE rollup
-# issue for the week (labels candidate, discovery), runs the full gate chain,
-# and commits watch/discovery/ only if every gate passes. A push made with
-# GITHUB_TOKEN does not trigger verify.yml, so the gate chain here is the
-# only gate this commit gets.
+# writes watch/discovery/<ISO-week>.json, runs the full gate chain, commits
+# the file only if every gate passes, pushes, and only then creates or updates
+# ONE rollup issue for the week (labels candidate, discovery) from the
+# committed file. A push made with GITHUB_TOKEN does not trigger verify.yml,
+# so the gate chain here is the only gate this commit gets.
+#
+# Two jobs, as in watch.yml (watch/freshness/SPEC.md FR-O.6; since
+# 2026-09-25). `build` installs dependencies, sweeps, and runs the gate chain
+# with a read-only token, and uploads only the week file. `publish` holds the
+# write token: it installs nothing, runs no build or gate, and runs only
+# dependency-free scripts from this commit. It downloads the artifact outside
+# the checkout, copies in watch/discovery/*.json and nothing else
+# (ops/take-build-output.mjs), commits, pushes and syncs the rollup issue.
+# Neither checkout persists credentials. ops/write-job.mjs checks all of this,
+# including every publish run body byte for byte, in gate W3.
 
 on:
   schedule:
@@ -14,25 +24,33 @@ on:
     - cron: "17 12 * * 1"
   workflow_dispatch:
 
-# One sweep at a time, never cancelled: a run that edited the rollup issue
-# must also get to commit the file that issue links to.
+# One sweep at a time, never cancelled: a run that pushed the week file must
+# also get to sync the rollup issue that links to it.
 concurrency:
   group: discover
   cancel-in-progress: false
 
-permissions:
-  contents: write
-  issues: write
+# Nothing by default; each job names what it needs.
+permissions: {}
 
 jobs:
-  discover:
+  build:
+    # Main only, scheduled or dispatched by hand. A dispatch from another
+    # branch is skipped.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # Sized from measurements, not guessed. A local dry run on 2026-09-24
-    # took 23 s (3 search + 121 REST calls, search calls spaced 2.5 s).
-    # The verify job's own guard is 4 minutes (verify.yml). About twice the
-    # sweep plus that guard gives 5 minutes. Re-derive from
+    # Read-only: the sweep reads the search, repository and issue APIs, and
+    # nothing in this job can push or edit an issue.
+    permissions:
+      contents: read
+      issues: read
+    # Sized from measurements, not guessed: a local sweep on 2026-09-24 took
+    # 23 s (3 search + 121 REST calls), and the gate chain with W3 took 99 s on
+    # a GitHub ubuntu-latest runner (verify run 36087416333). Before the split
+    # into two jobs one 5-minute limit covered both; about 2 minutes of work
+    # plus install and Chrome start-up gives 6. Re-derive from
     # `gh run list --workflow discover.yml` once runs exist; do not guess.
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       # Actions pinned to the same commits as verify.yml.
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -41,6 +59,7 @@ jobs:
           # stack/rigor-practices.tsv with `git cat-file`, and fails on a
           # shallow clone.
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -53,11 +72,11 @@ jobs:
       - name: Install (lockfile must be current)
         run: bun install --frozen-lockfile
 
-      - name: Discover (file, rollup issue)
+      - name: Discover (week file only; no issue is written here)
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          node watch/discover.mjs --apply --issues
+          node watch/discover.mjs --apply
           # Stage the new file so gate L (tracked files only) scans it.
           git add watch/discovery/
 
@@ -69,20 +88,89 @@ jobs:
           "$CHROME_PATH" --version
           bun run verify
 
-      - name: Commit watch/discovery/ only
+      # Only the generated file, never code: the list equals
+      # ops/take-build-output.mjs PATH_SETS.discover (gate W3 checks it).
+      # actions/upload-artifact v7.0.1, pinned to the commit v7 resolved to on
+      # 2026-09-25.
+      - name: Upload the generated file
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: discover-output
+          path: |
+            watch/discovery/*.json
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    # A checkout, a download, two short scripts, one commit, one push and one
+    # issue sync; each took seconds in local runs. 3 minutes leaves room for a
+    # slow API. Re-derive from `gh run list` once runs exist.
+    timeout-minutes: 3
+    steps:
+      # The commit the build job read (github.sha), so a push fails if main
+      # moved during the run rather than landing a combination the gate chain
+      # did not check.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      # Outside the checkout, so the artifact cannot overwrite a script this job
+      # runs. actions/download-artifact v8.0.1, pinned to the commit v8 resolved
+      # to on 2026-09-25.
+      - name: Download the generated file
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: discover-output
+          path: ${{ runner.temp }}/discover-output
+
+      - name: Apply the generated file and commit it
+        id: commit
         run: |
+          # Copies only watch/discovery/*.json; anything else in the artifact fails the run.
+          node ops/take-build-output.mjs discover "$RUNNER_TEMP/discover-output"
           git add watch/discovery/
           if git diff --cached --quiet -- watch/discovery/; then
             echo "watch/discovery/ unchanged; nothing to commit"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           # The one file this run wrote (a rerun in the same week rewrites it).
           file="$(git diff --cached --name-only -- 'watch/discovery/*.json' | head -n 1)"
           week="$(basename "$file" .json)"
-          n="$(node -p "require('./watch/discovery/${week}.json').candidates.length")"
+          n="$(jq '.candidates | length' "$file")"
           git -c user.name='github-actions[bot]' \
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
               commit -m "discover: ${week} Rust candidates (${n}) [live]" -- watch/discovery/
-          # A plain push: if main moved during the run, this fails rather than
-          # landing a combination the gate chain did not check.
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # The token authenticates this one command and is never written to
+          # .git/config. A plain push: if main moved during the run, this fails.
+          auth="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
+          git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth}" \
+              push origin "HEAD:${GITHUB_REF_NAME}"
+
+      # Last, after the gates (build job) and the push: the issue describes only
+      # what main now holds. The script refuses a file that differs from HEAD and
+      # a checkout that is not the default-branch tip on GitHub. A failed gate or
+      # push skips this step and leaves the issue as it was.
+      - name: Sync the rollup issue from the committed week file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # The newest committed week file is the one this run wrote: the sweep always writes the current ISO week.
+          node watch/discover.mjs --sync-issue "$(git ls-files 'watch/discovery/*.json' | sort | tail -n 1)"

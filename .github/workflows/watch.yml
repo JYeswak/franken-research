@@ -107,7 +107,7 @@ jobs:
           bun run verify
 
       # Only the generated files, never code: the list equals
-      # ops/take-build-output.mjs PATHS (gate W3 checks it). actions/upload-artifact
+      # ops/take-build-output.mjs PATH_SETS.watch (gate W3 checks it). actions/upload-artifact
       # v7.0.1, pinned to the commit v7 resolved to on 2026-09-25.
       - name: Upload the generated files
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -162,7 +162,7 @@ jobs:
         id: commit
         run: |
           # Copies only the generated paths; anything else in the artifact fails the run.
-          node ops/take-build-output.mjs "$RUNNER_TEMP/watch-output"
+          node ops/take-build-output.mjs watch "$RUNNER_TEMP/watch-output"
           git add watch/ site/feed.xml site/briefs/
           if git diff --cached --quiet -- watch/ site/feed.xml site/briefs/; then
             echo "watch/, feed and cards unchanged; nothing to commit"

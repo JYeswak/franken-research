@@ -31,7 +31,7 @@ export const MUTANTS = join(HERE, 'mutants.json');
 // What the cases read, per the owners of the case files (FreshCore, FreshOutputs, FreshHarness).
 export const COPY = [
   'watch', 'site/scripts', 'site/briefs', 'site/feed.xml', 'synthesis/00-overview.md',
-  'packets', 'updates', 'ops', 'cohorts', '.github/workflows', 'package.json', 'CHANGELOG.md',
+  'packets', 'updates', 'ops', 'cohorts', '.github/workflows', '.github/scripts', 'package.json', 'CHANGELOG.md',
 ];
 
 // FR-H.6 names these clauses. FR-C.2 has six rules in a fixed order (C6, C5, C4, C2, C1, C3); swapping each

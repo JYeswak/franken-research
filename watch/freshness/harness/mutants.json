@@ -1170,7 +1170,7 @@
  {
   "id": "M-O6-run-body-not-wired",
   "file": "ops/write-job.mjs",
-  "find": "...runBodyProblems(steps, where), ",
+  "find": "  out.push(...runBodyProblems(steps, where, policy.runs));\n",
   "replace": "",
   "clauses": [
    "FR-O.6"
@@ -1182,8 +1182,8 @@
  {
   "id": "M-O6-run-body-prefix",
   "file": "ops/write-job.mjs",
-  "find": "if (got === want) return;",
-  "replace": "if (got.startsWith(want)) return;",
+  "find": "if (got === want) return null;",
+  "replace": "if (got.startsWith(want)) return null;",
   "clauses": [
    "FR-O.6"
   ],
@@ -1213,6 +1213,78 @@
   ],
   "must_fail": [
    "HAR-O6-write-job"
+  ]
+ },
+ {
+  "id": "M-O6-any-workflow-write",
+  "file": "ops/write-job.mjs",
+  "find": "if (!isWrite) for (const p of notReadOnly",
+  "replace": "if (false) for (const p of notReadOnly",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-all-workflows"
+  ]
+ },
+ {
+  "id": "M-O6-unrecorded-secret-step",
+  "file": "ops/write-job.mjs",
+  "find": "if (!rec) { out.push(`${at}: references",
+  "replace": "if (false) { out.push(`${at}: references",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-all-workflows"
+  ]
+ },
+ {
+  "id": "M-O6-secret-step-body",
+  "file": "ops/write-job.mjs",
+  "find": "if (diff) out.push(`${at}: holds a recorded secret",
+  "replace": "if (false) out.push(`${at}: holds a recorded secret",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-all-workflows"
+  ]
+ },
+ {
+  "id": "M-O6-deploy-guard",
+  "file": "ops/write-job.mjs",
+  "find": "if (guardOf(job.if) !== reviewed.guard) out.push",
+  "replace": "if (false) out.push",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-all-workflows"
+  ]
+ },
+ {
+  "id": "M-O6-checkout-every-workflow",
+  "file": "ops/write-job.mjs",
+  "find": "    out.push(...checkoutProblems(job, where));",
+  "replace": "    if (policy) out.push(...checkoutProblems(job, where));",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-all-workflows"
+  ]
+ },
+ {
+  "id": "M-O6-id-token",
+  "file": "ops/write-job.mjs",
+  "find": "if (hasIdToken(job.permissions)) out.push",
+  "replace": "if (false) out.push",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-all-workflows"
   ]
  }
 ]

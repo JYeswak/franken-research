@@ -42,7 +42,7 @@ Gate W3 in `site/scripts/verify-site.sh` runs `--check-report` (whose case HAR-H
 
 ## The scheduled run
 
-`.github/workflows/watch.yml` runs two jobs (FR-O.6), both only on `refs/heads/main` (a hand dispatch from another branch is skipped), and neither checkout persists credentials.
+`.github/workflows/watch.yml` runs two jobs (FR-O.6), and since 2026-09-25 so does `.github/workflows/discover.yml`, with the same checks (see `watch/discovery/README.md`); `ops/write-job.mjs` checks every workflow, not only these two. The watch's two jobs run only on `refs/heads/main` (a hand dispatch from another branch is skipped), and neither checkout persists credentials.
 
 `build`, with a read-only token (`contents: read`, `issues: read`):
 

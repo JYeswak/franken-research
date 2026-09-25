@@ -8,19 +8,26 @@
 //
 //   node watch/discover.mjs              dry report on stdout, writes nothing
 //   node watch/discover.mjs --apply      also write watch/discovery/<ISO-week>.json
-//   node watch/discover.mjs --issues     also create or update ONE rollup issue for the week
+//   node watch/discover.mjs --sync-issue watch/discovery/<ISO-week>.json
+//                                        create or update ONE rollup issue for that week, from the committed file
 //   node watch/discover.mjs --selftest   offline: recorded fixtures through the same transport and code
 //
-// Exit: 0 ok; 1 failed selftest; 2 usage or token error; 3 GitHub API failure, including any 403 or
-// 429 (rate limit): nothing is written from partial data.
+// The scheduled run (.github/workflows/discover.yml) sweeps with --apply in a job whose token is read-only,
+// and syncs the rollup with --sync-issue in a separate job, after the file is committed and pushed. The sync
+// refuses a file that is untracked or differs from HEAD, and a checkout that is not the GitHub tip of the
+// default branch; a refusal makes no issue lookup. --issues, which swept and wrote the issue in one process,
+// is retired (2026-09-25, watch/freshness/SPEC.md FR-O.6).
+//
+// Exit: 0 ok; 1 failed selftest; 2 usage, token or refused-sync error; 3 GitHub API failure, including any
+// 403 or 429 (rate limit): nothing is written from partial data.
 // Token: GITHUB_TOKEN or GH_TOKEN, else `gh auth token`. The token is never printed.
 // Node 22 built-ins only.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
-import { join, dirname } from 'node:path';
+import { join, dirname, relative, isAbsolute, sep, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ISSUE_REPO = 'JYeswak/franken-research';
@@ -426,18 +433,82 @@ export async function syncRollup(api, res, issues, bot) {
 
 // ---------------------------------------------------------------- one run
 // Everything is fetched and computed before anything is written, so an API failure (exit 3) leaves the
-// tree as it was.
-export async function runOnce(api, { now, apply = false, issues: fileIssues = false, outDir = OUT_DIR, priorFiles, cohortsDir = COHORTS, check }) {
+// tree as it was. A sweep reads issues (to skip known candidates) but never writes one.
+export async function runOnce(api, { now, apply = false, outDir = OUT_DIR, priorFiles, cohortsDir = COHORTS, check }) {
   const week = isoWeek(now);
-  // The identity is resolved before anything is written, like every other API read.
-  const bot = fileIssues ? await botIdentity(api) : null;
   const issueList = await listIssues(api);
   const known = knownCandidates(issueList, priorFiles ?? priorDiscovery(outDir), week);
   const res = await discover(api, { now, known, assessed: assessedRepos(cohortsDir), check });
-  const out = { result: res, wrote: null, issue: null };
+  const out = { result: res, wrote: null };
   if (apply) out.wrote = writeResult(res, outDir);
-  if (fileIssues) out.issue = await syncRollup(api, res, issueList, bot);
   return out;
+}
+
+// ---------------------------------------------------------------- sync the rollup from a committed file
+// The same checks as watch/freshness/dashboard.mjs (FR-D.5), over this script's own transport.
+
+/** Refuses a file that is outside the repository, untracked, or different from HEAD. */
+export function assertCommitted(file, root = ROOT) {
+  const rel = relative(root, file);
+  if (!rel || rel.startsWith('..') || isAbsolute(rel)) throw usageError(`${file} is outside the repository`);
+  const git = (...a) => spawnSync('git', a, { cwd: root, encoding: 'utf8' }).status;
+  const path = rel.split(sep).join('/');
+  if (git('ls-files', '--error-unmatch', '--', path) !== 0) throw usageError(`${path} is not committed`);
+  if (git('diff', '--quiet', 'HEAD', '--', path) !== 0) throw usageError(`${path} differs from HEAD; the rollup is synced only from the committed file`);
+}
+
+/** The local checkout: the commit HEAD names, and the branch it is on (null when HEAD is detached). */
+export function headState(root = ROOT) {
+  const git = (...a) => spawnSync('git', a, { cwd: root, encoding: 'utf8' });
+  const head = git('rev-parse', '--verify', 'HEAD').stdout?.trim() ?? '';
+  if (!/^[0-9a-f]{40}$/.test(head)) throw usageError('cannot read HEAD of the checkout');
+  const b = git('symbolic-ref', '--quiet', '--short', 'HEAD');
+  return { head, branch: b.status === 0 ? b.stdout.trim() : null };
+}
+
+/** Resolves only when the checkout is the GitHub tip of the default branch, read now; fails closed. */
+export async function assertCanonical(api, { head, branch }) {
+  let def;
+  let tip;
+  try {
+    def = (await api.get(`/repos/${ISSUE_REPO}`)).body?.default_branch;
+    if (typeof def !== 'string' || !def) throw new Error('the repository record has no default_branch');
+    tip = (await api.get(`/repos/${ISSUE_REPO}/commits/${encodeURIComponent(def)}`)).body?.sha;
+    if (!/^[0-9a-f]{40}$/.test(String(tip ?? ''))) throw new Error(`no commit sha for ${def}`);
+  } catch (e) {
+    throw usageError(`cannot read the default-branch tip from GitHub (${String(e?.message ?? e).split('\n')[0]}); refusing to sync`);
+  }
+  const s = (x) => x.slice(0, 7);
+  if (branch && branch !== def) throw usageError(`the checkout is on branch ${branch}, not ${def}; only ${def} at its GitHub tip ${s(tip)} may sync`);
+  if (head !== tip) throw usageError(`HEAD ${s(head)} is not the GitHub tip ${s(tip)} of ${def}; refusing to sync`);
+}
+
+/** A committed watch/discovery/<week>.json, checked for the fields the rollup body reads. */
+export function readResult(file) {
+  const name = basename(file);
+  const m = name.match(/^(\d{4}-W\d{2})\.json$/);
+  if (!m) throw usageError(`${name} is not a watch/discovery/<ISO-week>.json file`);
+  let res;
+  try { res = JSON.parse(readFileSync(file, 'utf8')); } catch (e) { throw usageError(`${name}: ${e.message}`); }
+  const bad = [];
+  if (res?.week !== m[1]) bad.push(`week ${JSON.stringify(res?.week)} is not ${m[1]}`);
+  if (!Array.isArray(res?.candidates)) bad.push('no candidates list');
+  if (!res?.excluded || typeof res.excluded !== 'object') bad.push('no excluded counts');
+  if (!res?.search || typeof res.search !== 'object') bad.push('no search record');
+  if (bad.length) throw usageError(`${name}: ${bad.join('; ')}`);
+  return res;
+}
+
+/**
+ * The scheduled sync: the file must be committed and the checkout must be the default-branch tip before any
+ * issue is looked up; then the week's rollup is created or updated under the trust rules of syncRollup.
+ */
+export async function syncFromFile(api, file, { committed = assertCommitted, local = headState, env = process.env } = {}) {
+  committed(file);
+  const res = readResult(file);
+  await assertCanonical(api, local());
+  const bot = await botIdentity(api, env);
+  return { result: res, issue: await syncRollup(api, res, await listIssues(api), bot) };
 }
 
 function printReport(out, api, elapsedMs) {
@@ -456,15 +527,20 @@ function printReport(out, api, elapsedMs) {
   });
   console.log('');
   console.log(out.wrote ? `wrote ${out.wrote.replace(`${ROOT}/`, '')}` : 'dry run: nothing written (use --apply)');
-  if (out.issue) console.log(`rollup issue: ${out.issue.decision} #${out.issue.issue.number} ${out.issue.issue.url}${out.issue.ignored.length ? `; ignored untrusted same-title issue(s) #${out.issue.ignored.join(', #')}` : ''}`);
+  if (out.issue) printIssue(out.issue);
   const st = api.stats;
   console.log(`api: ${st.search_calls} search + ${st.rest_calls} REST calls; remaining search ${st.search_remaining ?? '?'}, core ${st.rest_remaining ?? '?'}; ${(elapsedMs / 1000).toFixed(1)} s`);
 }
 
+function printIssue(issue) {
+  console.log(`rollup issue: ${issue.decision} #${issue.issue.number} ${issue.issue.url}${issue.ignored.length ? `; ignored untrusted same-title issue(s) #${issue.ignored.join(', #')}` : ''}`);
+}
+
 // ---------------------------------------------------------------- selftest (offline)
-// In-memory stand-in for the issue, label, and /user endpoints, served through the real transport.
-// Issues it creates are authored by `author`, as GitHub records the token's identity.
+// In-memory stand-in for the repository, default-branch, issue, label, and /user endpoints, served through
+// the real transport. Issues it creates are authored by `author`, as GitHub records the token's identity.
 const SELFTEST_BOT = 'github-actions[bot]';
+const SELFTEST_TIP = 'a'.repeat(40);
 function memoryGitHub(recorded, author = SELFTEST_BOT) {
   const issues = [];
   const labels = new Set();
@@ -478,6 +554,8 @@ function memoryGitHub(recorded, author = SELFTEST_BOT) {
     const page = Number(path.match(/[?&]page=(\d+)/)?.[1] ?? 1);
     const payload = init.body ? JSON.parse(init.body) : null;
     if (path.startsWith(`/repos/${ISSUE_REPO}/`)) calls.push(`${method} ${p}`);
+    if (method === 'GET' && p === '') return json(200, { default_branch: 'main' });
+    if (method === 'GET' && p === '/commits/main') return json(200, { sha: SELFTEST_TIP });
     if (method === 'GET' && p === '/user') return json(200, { login: 'selftest-token-owner' });
     if (method === 'GET' && p === '/labels') return json(200, page === 1 ? [...labels].map((name) => ({ name })) : []);
     if (method === 'POST' && p === '/labels') { labels.add(payload.name); return json(201, payload); }
@@ -637,10 +715,65 @@ async function selftest() {
       const victim = Object.keys(limited).find((p) => p.endsWith('/readme') && limited[p].status !== 404);
       limited[victim] = { status: 403, body: { message: 'API rate limit exceeded' } };
       let code = null;
-      try { await run(limited, { apply: true, issues: true, outDir: dir }); } catch (e) { code = e.code; }
+      try { await run(limited, { apply: true, outDir: dir }); } catch (e) { code = e.code; }
       expect(code === EXIT.API, `exit ${code}`);
       expect(readdirSync(dir).length === 0, `wrote ${readdirSync(dir)}`);
     } finally { rmSync(dir, { recursive: true, force: true }); }
+  });
+  // --sync-issue: the scheduled path, from a committed file at the default-branch tip.
+  const syncWith = async (file, { head = SELFTEST_TIP, branch = 'main', committed = () => {} } = {}) => {
+    const gh = memoryGitHub(fx.responses);
+    const api = makeApi({ token: null, fetchImpl: gh.fetchImpl, ...quiet });
+    let out = null, error = null;
+    try { out = await syncFromFile(api, file, { committed, local: () => ({ head, branch }), env: { GITHUB_ACTIONS: 'true' } }); } catch (e) { error = e; }
+    return { gh, out, error };
+  };
+  const withFile = async (name, text, fn) => {
+    const dir = mkdtempSync(join(tmpdir(), 'discover-sync-'));
+    try { writeFileSync(join(dir, name), text); return await fn(join(dir, name)); } finally { rmSync(dir, { recursive: true, force: true }); }
+  };
+  test('--sync-issue: a committed file at the default-branch tip creates the rollup the sweep would have', async () => {
+    await withFile(`${res.week}.json`, renderResult(res), async (file) => {
+      const { gh, out, error } = await syncWith(file);
+      expect(!error, `refused: ${error?.message}`);
+      expect(out.issue.decision === 'create' && gh.issues.length === 1 && gh.issues[0].body === rollupBody(res), `got ${JSON.stringify(out?.issue)}`);
+      expect(gh.issues[0].user.login === SELFTEST_BOT && trustedRollup(gh.issues[0], res.week, SELFTEST_BOT), 'the new rollup is not trusted by the next run');
+    });
+  });
+  test('--sync-issue refuses before any issue lookup: HEAD not the tip, another branch, uncommitted file', async () => {
+    await withFile(`${res.week}.json`, renderResult(res), async (file) => {
+      const plants = [
+        ['HEAD behind the tip', { head: 'b'.repeat(40) }, /is not the GitHub tip/],
+        ['a feature branch at the tip', { branch: 'feature' }, /on branch feature, not main/],
+        ['an uncommitted file', { committed: () => { throw usageError('watch/discovery/x.json is not committed'); } }, /not committed/],
+      ];
+      for (const [name, opts, want] of plants) {
+        const { gh, error } = await syncWith(file, opts);
+        expect(error?.code === EXIT.USAGE && want.test(error.message), `${name}: ${error ? `${error.code} ${error.message}` : 'not refused'}`);
+        expect(!gh.calls.some((c) => c.includes('/issues') || c.includes('/labels')), `${name}: looked up issues after refusing (${gh.calls})`);
+      }
+    });
+  });
+  test('--sync-issue refuses a file that is not a week result', async () => {
+    const plants = [
+      ['2026-W38.json', renderResult(res), /week "2026-W39" is not 2026-W38/],
+      [`${res.week}.json`, JSON.stringify({ week: res.week }), /no candidates list/],
+      ['latest.json', renderResult(res), /not a watch\/discovery\/<ISO-week>\.json file/],
+      [`${res.week}.json`, '{', /Unexpected end|JSON/],
+    ];
+    for (const [name, text, want] of plants) {
+      await withFile(name, text, async (file) => {
+        const { error } = await syncWith(file);
+        expect(error?.code === EXIT.USAGE && want.test(error.message), `${name}: ${error ? error.message : 'accepted'}`);
+      });
+    }
+  });
+  test('--issues is retired, and --sync-issue takes exactly one file and no other flag', () => {
+    const refused = (argv, re) => { try { parseArgs(argv); return false; } catch (e) { return e.code === EXIT.USAGE && re.test(e.message); } };
+    expect(refused(['--apply', '--issues'], /--issues is retired.*--sync-issue/), '--issues is accepted');
+    expect(refused(['--sync-issue'], /--sync-issue needs a file/), '--sync-issue without a file is accepted');
+    expect(refused(['--sync-issue', 'a.json', '--apply'], /takes no other flag/), '--sync-issue with --apply is accepted');
+    expect(parseArgs(['--sync-issue', 'watch/discovery/2026-W39.json']).syncIssue === 'watch/discovery/2026-W39.json', 'the file is not read');
   });
 
   let failed = 0;
@@ -659,19 +792,28 @@ async function selftest() {
 }
 
 // ---------------------------------------------------------------- main
-const USAGE = `usage: node watch/discover.mjs [--apply] [--issues] | --selftest
-  (no flags)  dry report on stdout; writes nothing (the issue list is read to skip known candidates)
-  --apply     write watch/discovery/<ISO-week>.json
-  --issues    create or update the week's one rollup issue in ${ISSUE_REPO} (labels candidate, discovery)
-  --selftest  offline check on watch/fixtures/discover-*.json
-exit: 0 ok, 1 selftest failure, 2 usage/token, 3 GitHub API failure or rate limit (nothing written)`;
+const USAGE = `usage: node watch/discover.mjs [--apply] | --sync-issue <committed watch/discovery/<ISO-week>.json> | --selftest
+  (no flags)    dry report on stdout; writes nothing (the issue list is read to skip known candidates)
+  --apply       write watch/discovery/<ISO-week>.json
+  --sync-issue  create or update that week's one rollup issue in ${ISSUE_REPO} (labels candidate, discovery),
+                only from a committed file, and only at the GitHub tip of the default branch
+  --selftest    offline check on watch/fixtures/discover-*.json
+exit: 0 ok, 1 selftest failure, 2 usage/token/refused sync, 3 GitHub API failure or rate limit (nothing written)`;
 
 function parseArgs(argv) {
-  const known = new Set(['--apply', '--issues', '--selftest', '--help', '-h']);
   const flags = argv.filter((a) => a !== '--');
+  if (flags.includes('--issues')) throw usageError('--issues is retired (2026-09-25): the sweep writes no issue; after the file is committed and pushed, run --sync-issue watch/discovery/<ISO-week>.json');
+  const i = flags.indexOf('--sync-issue');
+  if (i >= 0) {
+    const file = flags[i + 1];
+    if (!file || file.startsWith('--')) throw usageError(`--sync-issue needs a file\n${USAGE}`);
+    if (flags.length !== 2) throw usageError(`--sync-issue takes no other flag\n${USAGE}`);
+    return { apply: false, selftest: false, help: false, syncIssue: file };
+  }
+  const known = new Set(['--apply', '--selftest', '--help', '-h']);
   const bad = flags.filter((a) => !known.has(a));
   if (bad.length) throw usageError(`unknown argument(s): ${bad.join(' ')}\n${USAGE}`);
-  const o = { apply: flags.includes('--apply'), issues: flags.includes('--issues'), selftest: flags.includes('--selftest'), help: flags.includes('--help') || flags.includes('-h') };
+  const o = { apply: flags.includes('--apply'), selftest: flags.includes('--selftest'), help: flags.includes('--help') || flags.includes('-h'), syncIssue: null };
   if (o.selftest && flags.length > 1) throw usageError(`--selftest takes no other flags\n${USAGE}`);
   return o;
 }
@@ -682,7 +824,12 @@ async function main(argv) {
   if (opts.selftest) return selftest();
   const t0 = Date.now();
   const api = makeApi({ token: resolveToken() });
-  const out = await runOnce(api, { now: new Date(), apply: opts.apply, issues: opts.issues });
+  if (opts.syncIssue) {
+    const out = await syncFromFile(api, join(process.cwd(), opts.syncIssue));
+    printIssue(out.issue);
+    return EXIT.OK;
+  }
+  const out = await runOnce(api, { now: new Date(), apply: opts.apply });
   printReport(out, api, Date.now() - t0);
   return EXIT.OK;
 }

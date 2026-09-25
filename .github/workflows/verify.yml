@@ -41,6 +41,9 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0 # full history for the gitleaks history scan
+          # The token is read-only here, but no step needs it in .git/config either
+          # (ops/write-job.mjs requires this of every checkout, gate W3).
+          persist-credentials: false
 
       - name: Secret scan (gitleaks, pinned binary)
         env:
