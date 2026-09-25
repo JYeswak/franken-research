@@ -16,6 +16,8 @@ import {
 } from '../harness/run.mjs';
 import { validateMutants, applyMutant, coverageGaps, runMutants, loadMutants, REQUIRED } from '../harness/mutate.mjs';
 import { parseSchedule, checkSchedule, activeWorkflowText } from '../../../ops/schedule.mjs';
+import { writeJobProblems, orderProblems, SYNC } from '../../../ops/write-job.mjs';
+import { parseYaml } from '../yaml.mjs';
 import { staleness, staleLine } from '../../../ops/stale-run.mjs';
 import { outsideRegionChange } from '../../../ops/briefs-guard.mjs';
 
@@ -444,14 +446,23 @@ const o = [
 
 // ---------- FR-D.4 (workflow half) and FR-L.5 (commit guard) ----------
 
-// The problems with a watch workflow text: it must run the dashboard and never the retired --issues path.
+// The problems with a watch workflow text: it must run the watch with --apply and never the retired
+// --issues path, and it must guard the brief commit.
 export function watchWorkflowProblems(text) {
   const active = activeWorkflowText(text);
   const out = [];
-  if (!active.includes('node watch/watch.mjs --apply --dashboard')) out.push('does not run `node watch/watch.mjs --apply --dashboard`');
+  if (!active.includes('node watch/watch.mjs --apply')) out.push('does not run `node watch/watch.mjs --apply`');
   if (/watch\.mjs[^\n]*--issues/.test(active)) out.push('still runs watch.mjs with --issues');
   if (!/node ops\/briefs-guard\.mjs/.test(active)) out.push('commits briefs without ops/briefs-guard.mjs');
   return out;
+}
+
+// The real watch.yml with one exact edit; throws when `find` is not there once, so a plant that no longer
+// applies fails its case instead of passing silently.
+function plantWorkflow(text, find, replace) {
+  const i = text.indexOf(find);
+  if (i < 0 || text.indexOf(find, i + 1) >= 0) throw new Error(`plant text ${JSON.stringify(find.slice(0, 50))} is not in watch.yml exactly once`);
+  return text.slice(0, i) + replace + text.slice(i + find.length);
 }
 
 // The goldens listed in the confidence matrix of watch/freshness/README.md, and the golden files on disk.
@@ -476,16 +487,73 @@ function goldenFiles(dir, rel = '') {
 const rest = [
   {
     id: 'HAR-D4-workflow', clauses: ['FR-D.4'], level: 'MUST',
-    title: 'the scheduled watch runs --dashboard, never --issues, and guards the brief commit',
+    title: 'the scheduled watch runs --apply, never --issues, and guards the brief commit',
     run(ctx) {
       const c = checks();
       const real = watchWorkflowProblems(readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8'));
       c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
-      const good = '        run: |\n          node watch/watch.mjs --apply --dashboard\n          node ops/briefs-guard.mjs\n';
+      const good = '        run: |\n          node watch/watch.mjs --apply\n          node ops/briefs-guard.mjs\n';
       c.expect(watchWorkflowProblems(good).length === 0, 'a good workflow is refused');
-      c.expect(watchWorkflowProblems(good.replace('--dashboard', '--dashboard --issues')).some((p) => /--issues/.test(p)), 'a workflow still passing --issues is accepted');
-      c.expect(watchWorkflowProblems(good.replace('          node watch', '          # node watch')).some((p) => /does not run/.test(p)), 'a commented-out dashboard run is accepted');
+      c.expect(watchWorkflowProblems(good.replace('--apply', '--apply --issues')).some((p) => /--issues/.test(p)), 'a workflow still passing --issues is accepted');
+      c.expect(watchWorkflowProblems(good.replace('          node watch', '          # node watch')).some((p) => /does not run/.test(p)), 'a commented-out watch run is accepted');
       c.expect(watchWorkflowProblems(good.replace('node ops/briefs-guard.mjs', 'true')).some((p) => /briefs-guard/.test(p)), 'an unguarded brief commit is accepted');
+      return c.result();
+    },
+  },
+  {
+    id: 'HAR-O6-write-job', clauses: ['FR-O.6'], level: 'MUST',
+    title: 'the watch job runs only on main, its checkout persists no credentials, and no install, build or gate step holds the token',
+    run(ctx) {
+      const c = checks();
+      const text = readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8');
+      const probs = (t) => writeJobProblems(parseYaml(t), 'watch.yml');
+      const real = probs(text);
+      c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
+      const tokenLine = '          GITHUB_TOKEN: ${{ github.token }}\n';
+      const plants = [
+        ['no main-only guard', "    if: github.ref == 'refs/heads/main'\n", '', /lacks `if: github\.ref == 'refs\/heads\/main'`/],
+        ['guard names another branch', "if: github.ref == 'refs/heads/main'", "if: github.ref == 'refs/heads/dev'", /lacks `if:/],
+        ['checkout persists credentials (default)', '          persist-credentials: false\n', '', /persist-credentials: false/],
+        ['checkout persists credentials (explicit)', 'persist-credentials: false', 'persist-credentials: true', /persist-credentials: false/],
+        ['token on install', '        run: bun install --frozen-lockfile\n', `        env:\n${tokenLine}        run: bun install --frozen-lockfile\n`, /Install.*token in its env/],
+        ['token on build', '      - name: Build (cards, feed, report)\n', `      - name: Build (cards, feed, report)\n        env:\n${tokenLine}`, /Build.*token in its env/],
+        ['token on the gate chain', '          CHROME_PATH: /usr/bin/google-chrome\n', `          CHROME_PATH: /usr/bin/google-chrome\n${tokenLine}`, /Gate chain.*token in its env/],
+        ['token in the job env', '    timeout-minutes: 5\n', `    timeout-minutes: 5\n    env:\n      GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}\n`, /token is in the job env/],
+        ['token in the workflow env', 'concurrency:\n', `env:\n  GITHUB_TOKEN: \${{ github.token }}\nconcurrency:\n`, /token is in the workflow env/],
+        ['push writes the token into .git/config', '          auth="$(', '          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic x"\n          auth="$(', /writes a credential into the Git config/],
+      ];
+      for (const [name, find, replace, want] of plants) {
+        let p;
+        try { p = probs(plantWorkflow(text, find, replace)); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
+        c.expect(p.some((x) => want.test(x)), `${name}: not reported (got ${p.join(' | ') || 'nothing'})`);
+      }
+      const direct = { permissions: { contents: 'write' }, jobs: { w: { if: "github.ref == 'refs/heads/main'", steps: [{ run: 'bash site/scripts/verify-site.sh', env: { GITHUB_TOKEN: '${{ github.token }}' } }] } } };
+      c.expect(writeJobProblems(direct).some((x) => /token in its env/.test(x)), 'a direct verify-site.sh run with a token is accepted');
+      return c.result();
+    },
+  },
+  {
+    id: 'HAR-D5-order', clauses: ['FR-D.5'], level: 'MUST',
+    title: 'the dashboard sync is the watch job\'s own step, after the gate chain and the push, with the token',
+    run(ctx) {
+      const c = checks();
+      const text = readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8');
+      const steps = parseYaml(text).jobs.watch.steps;
+      const real = orderProblems(steps, 'watch');
+      c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
+      const tok = { GITHUB_TOKEN: '${{ github.token }}' };
+      const watch = { run: 'node watch/watch.mjs --apply', env: tok };
+      const gates = { run: 'bun run verify' };
+      const push = { run: 'git -c x=y \\\n  push origin HEAD:main', env: tok };
+      const sync = { run: SYNC, env: tok };
+      c.expect(orderProblems([watch, gates, push, sync], 'w').length === 0, 'a good order is refused');
+      const has = (steps2, re) => orderProblems(steps2, 'w').some((p) => re.test(p));
+      c.expect(has([watch, sync, gates, push], /after the gate chain/), 'a sync before the gates is accepted');
+      c.expect(has([watch, gates, sync, push], /after the push/), 'a sync before the push is accepted');
+      c.expect(has([watch, gates, push], /no step runs/), 'a missing sync is accepted');
+      c.expect(has([{ ...watch, run: 'node watch/watch.mjs --apply --dashboard' }, gates, push, sync], /still syncs the dashboard/), 'a watch step that syncs itself is accepted');
+      c.expect(has([watch, gates, push, { run: SYNC }], /no token/), 'a sync step without a token is accepted');
+      c.expect(has([watch, gates, { run: '# git push origin HEAD:main', env: tok }, sync], /after the push/), 'a commented-out push counts as a push');
       return c.result();
     },
   },

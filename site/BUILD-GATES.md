@@ -400,7 +400,7 @@ pagination past one page run only live.
 
 ## Gate W3 — freshness conformance harness
 
-**What:** three offline commands, all of which must pass.
+**What:** four offline commands, all of which must pass.
 `node watch/freshness/harness/run.mjs --check-report` runs every case in
 `watch/freshness/cases/*.cases.mjs` against the clauses it parses from
 `watch/freshness/SPEC.md` (the freshness contract: class triggers, the live
@@ -414,12 +414,18 @@ case's verdict and counts instead of running the mutants twice.
 `node ops/schedule.mjs` checks `ops/schedule.tsv`: each generated artifact's
 command runs in its workflow, its gate exists in this script, and every script
 under `watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
-declares them. `node site/scripts/make-live.mjs --check` re-renders the
+declares them. `node ops/write-job.mjs` parses `.github/workflows/watch.yml`
+and checks the job that writes: it runs only on `refs/heads/main`, its
+checkout sets `persist-credentials: false`, no token is in the workflow or job
+env or in the env of an install, build or gate step, no run line writes a
+credential into the Git config, and the dashboard sync is the last step,
+after the gate chain and the push, with the token (FR-O.6, FR-D.5).
+`node site/scripts/make-live.mjs --check` re-renders the
 live:card region on every brief from `watch/live.json`. No network and no
-token. **Fails** on a nonzero exit of any of the three, any failed case, an
+token. **Fails** on a nonzero exit of any of the four, any failed case, an
 uncovered MUST clause, a `CASES` count of zero or missing, a stale
 `REPORT.md`, a missing HAR-H6-mutants result, zero mutants or one that
-survives, a schedule problem, and a missing `make-live.mjs`. The runbook,
+survives, a schedule problem, a write-job problem, and a missing `make-live.mjs`. The runbook,
 including how to add a clause, a discrepancy, a golden or a mutant, is
 `watch/freshness/README.md`.
 **Why:** the freshness work replaces per-event issues with computed classes,

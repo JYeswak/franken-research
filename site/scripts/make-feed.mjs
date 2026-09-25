@@ -18,8 +18,8 @@
 //   packets/*-assessment.md
 //                         the assessed repositories, parsed by the daily watch's own parser
 //   watch/crossings.jsonl
-//                         one watch digest entry per ISO week that opened or resolved a crossing, dated the
-//                         last day of that week with an event (watch/freshness/digest.mjs, SPEC.md FR-G.1)
+//                         one watch digest entry per ISO week that opened, resolved or withdrew a crossing,
+//                         dated the last day of that week with an event (watch/freshness/digest.mjs, SPEC.md FR-G.1)
 // Output is deterministic: the feed's <updated> is the newest entry's date, never the build time, so a
 // rerun on unchanged sources is byte-identical (verify-site.sh gate M compares against a fresh run).
 

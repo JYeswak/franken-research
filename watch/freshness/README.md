@@ -38,7 +38,20 @@ node ops/schedule.mjs                                 # the schedule check (FR-O
 
 The runner prints one JSON line per case (`id`, `clauses`, `level`, `verdict`, `detail`, `title`, and `metrics` when a case reports any), then the coverage table, then `CASES`, `PASS`, `XFAIL`, `FAILED`, `UNCOVERED_MUST` and `SECONDS` lines. Exit codes: 0 when every case passes or XFAILs and every MUST clause is covered; 1 on a failed case, an uncovered MUST clause (full runs only), an empty case set, or a stale `REPORT.md` with `--check-report`; 2 on a harness error, which includes an unknown clause id in a case, a duplicate case id, a clause line in `SPEC.md` the parser cannot read, and bad arguments.
 
-Gate W3 in `site/scripts/verify-site.sh` runs `--check-report` (whose case HAR-H6-mutants runs `mutate.mjs` on every mutant; the gate reads that case's counts rather than running the mutants twice), `ops/schedule.mjs` and `node site/scripts/make-live.mjs --check`, and passes only when all three do. The scheduled watch (`.github/workflows/watch.yml`) runs `--report` after the watch, so the report it commits matches what W3 checks.
+Gate W3 in `site/scripts/verify-site.sh` runs `--check-report` (whose case HAR-H6-mutants runs `mutate.mjs` on every mutant; the gate reads that case's counts rather than running the mutants twice), `ops/schedule.mjs`, `ops/write-job.mjs` and `node site/scripts/make-live.mjs --check`, and passes only when all four do. The scheduled watch (`.github/workflows/watch.yml`) runs `--report` after the watch, so the report it commits matches what W3 checks.
+
+## The scheduled run
+
+`.github/workflows/watch.yml` runs these steps, in this order (FR-D.5):
+
+1. `node watch/watch.mjs --apply` (GitHub API reads; the token is in this step's env);
+2. build, without the token: `make-live.mjs`, `make-feed.mjs`, `run.mjs --report`;
+3. the gate chain, `bun run verify`, without the token;
+4. commit `watch/`, `site/feed.xml` and `site/briefs/`, after `ops/briefs-guard.mjs`;
+5. push, with the token passed to that one `git push` as `-c http…extraheader`, never written to `.git/config`;
+6. `node watch/freshness/dashboard.mjs --sync watch/live.json`, with the token, from the committed `watch/live.json`.
+
+A failed gate or push skips step 6, so the issue never describes files that did not land. The job runs only on `refs/heads/main` (a hand dispatch from another branch is skipped), and its checkout sets `persist-credentials: false` (FR-O.6). `ops/write-job.mjs` fails W3 when the guard is missing, when a checkout persists credentials, when a token is in the workflow or job env or in the env of an install, build or gate step, when a run line writes a credential into the Git config, and when the sync is missing, lacks the token, or does not come after the gate chain and the push.
 
 ## Layout
 
@@ -55,6 +68,7 @@ Gate W3 in `site/scripts/verify-site.sh` runs `--check-report` (whose case HAR-H
 | `../../ops/schedule.tsv`, `../../ops/schedule.mjs` | The generated-artifact schedule and its check. |
 | `../../ops/stale-run.mjs` | The missed-run warning in the deploy smoke step (FR-O.4). |
 | `../../ops/briefs-guard.mjs` | Refuses a scheduled commit that changes a brief outside its live card. |
+| `../../ops/write-job.mjs` | Checks the watch job: main only, no persisted credential, the token only where FR-O.6 allows it, the dashboard sync last (FR-D.5). |
 
 ## Adding or changing a clause
 
@@ -148,5 +162,7 @@ A crossing means a computed class moved since the baseline, or the repository it
 1. Write a dated re-check `updates/<repo>-YYYY-MM-DD.md` under [`updates/METHOD.md`](../../updates/METHOD.md) rules 3 to 6. Its header carries `**Re-check pin:** \`<40-hex sha>\` (<date>)`, and its matrix-cells table has rows `CI class`, `Release class` and `License` with the value at the pin and at the re-check. "unchanged" keeps the pinned value.
 2. Have a separate session review it.
 3. From the next watch run on, that re-check pin and its classes are the repository's baseline (FR-T.8). The crossing gets a `resolved` line in `watch/crossings.jsonl` naming the re-check, and leaves the dashboard; the weekly digest lists it as resolved.
+
+A class crossing (`source: class`) can also close without a re-check: when its class returns to the baseline value and stays there for two consecutive daily observations, the watch appends a `withdrawn` line, with `resolved_by` null, and the digest lists it as withdrawn (FR-T.10). Crossings from any other source are never withdrawn.
 
 A verdict is also due for a re-check 90 days after its baseline date, with or without a crossing (FR-T.9).

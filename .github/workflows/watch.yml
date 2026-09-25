@@ -3,17 +3,22 @@ name: watch
 # Daily watch of Dicklesworthstone's public repositories (watch/README.md).
 # Reads the GitHub API only, writes watch/state.json plus the day's census and
 # changes, watch/live.json (computed CI, release and license classes now and at
-# the pin) and the crossing ledger watch/crossings.jsonl, and keeps one
-# dashboard issue up to date (watch/freshness/SPEC.md FR-D). Since 2026-09-25 it
+# the pin) and the crossing ledger watch/crossings.jsonl. Since 2026-09-25 it
 # opens no per-event issues for assessed repositories. It then re-renders the
 # live:card region on every brief, the feed, and watch/freshness/REPORT.md,
-# runs the full gate chain, and commits watch/, site/feed.xml and the brief
-# cards only if every gate passes. A push made with GITHUB_TOKEN does not
-# trigger verify.yml, so the gate chain here is the only gate the census commit
-# gets. The daily state.json commit also keeps the repository active, so GitHub
-# does not disable this schedule after 60 days without activity. Every command
-# that regenerates an artifact listed in ops/schedule.tsv must appear below
-# (gate W3 checks it).
+# runs the full gate chain, commits watch/, site/feed.xml and the brief cards
+# only if every gate passes, pushes, and only then syncs the one dashboard
+# issue from the committed watch/live.json (watch/freshness/SPEC.md FR-D.5).
+# A push made with GITHUB_TOKEN does not trigger verify.yml, so the gate chain
+# here is the only gate the census commit gets. The daily state.json commit
+# also keeps the repository active, so GitHub does not disable this schedule
+# after 60 days without activity. Every command that regenerates an artifact
+# listed in ops/schedule.tsv must appear below, and ops/write-job.mjs checks
+# the token rules and the step order (gate W3 runs both).
+#
+# The token (FR-O.6): checkout does not persist it, and it is in the env of
+# three steps only: the watch's API reads, the push, and the dashboard sync.
+# Install, build and the gate chain run without it.
 
 on:
   schedule:
@@ -21,8 +26,8 @@ on:
     - cron: "23 11 * * *"
   workflow_dispatch:
 
-# One watch at a time, never cancelled: a run that opened issues must also
-# get to commit the state that records them.
+# One watch at a time, never cancelled: a run that pushed must also get to
+# sync the dashboard that describes what it pushed.
 concurrency:
   group: watch
   cancel-in-progress: false
@@ -33,6 +38,10 @@ permissions:
 
 jobs:
   watch:
+    # The job writes to main and to the one dashboard issue, so it runs only on
+    # main, scheduled or dispatched by hand (FR-O.6). A dispatch from another
+    # branch is skipped, not run as a dry run.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     # Sized from measurements, not guessed. Two local runs of
     # `node watch/watch.mjs --apply` on 2026-09-24 took 15.9 s and 16.9 s
@@ -49,6 +58,8 @@ jobs:
           # stack/rigor-practices.tsv with `git cat-file`, and fails on a
           # shallow clone.
           fetch-depth: 0
+          # Leave no token in .git/config for install, build or gate steps to read.
+          persist-credentials: false
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -61,11 +72,14 @@ jobs:
       - name: Install (lockfile must be current)
         run: bun install --frozen-lockfile
 
-      - name: Watch (census, changes, live data, dashboard, cards, feed, report)
+      # The only step before the gates that holds the token: GitHub API reads.
+      - name: Watch (census, changes, live data)
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        run: node watch/watch.mjs --apply
+
+      - name: Build (cards, feed, report)
         run: |
-          node watch/watch.mjs --apply --dashboard
           # The live:card region on every brief, from the new watch/live.json (gate W3).
           node site/scripts/make-live.mjs
           # A new census is a feed entry, and a finished ISO week may add a digest
@@ -86,10 +100,12 @@ jobs:
           bun run verify
 
       - name: Commit watch/, the feed and the brief cards only
+        id: commit
         run: |
           git add watch/ site/feed.xml site/briefs/
           if git diff --cached --quiet -- watch/ site/feed.xml site/briefs/; then
             echo "watch/, feed and cards unchanged; nothing to commit"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           # Briefs may change only inside their live:card regions (SPEC.md FR-L.5).
@@ -99,7 +115,26 @@ jobs:
           git -c user.name='github-actions[bot]' \
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
               commit -m "watch: ${day} census (${n} material) [live]" -- watch/ site/feed.xml site/briefs/
-          # A plain push: if main moved during the run, this fails rather than
-          # landing a combination the gate chain did not check. The next run
-          # starts from the new main.
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # The token authenticates this one command and is never written to
+          # .git/config. A plain push: if main moved during the run, this fails
+          # rather than landing a combination the gate chain did not check. The
+          # next run starts from the new main.
+          auth="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
+          git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth}" \
+              push origin "HEAD:${GITHUB_REF_NAME}"
+
+      # Last, after the gates and the push (FR-D.5): the issue describes only
+      # what main now holds. The script refuses a watch/live.json that differs
+      # from HEAD. A failed gate or push skips this step and leaves the issue as
+      # it was; a failed sync fails the run but leaves the pushed files in place.
+      - name: Sync the dashboard issue from the committed watch/live.json
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node watch/freshness/dashboard.mjs --sync watch/live.json

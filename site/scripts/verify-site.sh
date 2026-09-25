@@ -1226,10 +1226,12 @@ fi
 # those cases, HAR-H6-mutants, runs the mutation runner (harness/mutate.mjs) on every mutant in
 # harness/mutants.json; W3 reads its verdict and counts from the harness output rather than running the
 # mutants a second time. ops/schedule.mjs checks ops/schedule.tsv against the workflows, this script,
-# and the scripts that write files; make-live.mjs --check re-renders the live:card region of every
-# brief. No network, no token. Fails on a nonzero exit of any of the three, any failed case, an
-# uncovered MUST clause, zero cases, a stale REPORT.md, a missing HAR-H6-mutants result, zero mutants
-# or one that survives, and a missing make-live.mjs. Details: ../BUILD-GATES.md.
+# and the scripts that write files; ops/write-job.mjs checks that the watch job runs only on main, keeps
+# no token in .git/config or in reach of install, build and gate steps, and syncs the dashboard only after
+# the gates and the push; make-live.mjs --check re-renders the live:card region of every brief. No
+# network, no token. Fails on a nonzero exit of any of the four, any failed case, an uncovered MUST
+# clause, zero cases, a stale REPORT.md, a missing HAR-H6-mutants result, zero mutants or one that
+# survives, and a missing make-live.mjs. Details: ../BUILD-GATES.md.
 echo "== W3 freshness harness =="
 W3_OK=1; W3_DETAIL=""
 W3_OUT="$(node "$REPO_ROOT/watch/freshness/harness/run.mjs" --check-report 2>&1)"; W3_RC=$?
@@ -1251,6 +1253,10 @@ W3_SR="$(printf '%s\n' "$W3S_OUT" | sed -n 's/^SCHEDULE_OK rows=\([0-9][0-9]*\).
 if [ $W3S_RC -ne 0 ] || [ "${W3_SR:-0}" -eq 0 ]; then
   W3_OK=0; W3_DETAIL="${W3_DETAIL}schedule check exit $W3S_RC; "
 fi
+W3J_OUT="$(node "$REPO_ROOT/ops/write-job.mjs" 2>&1)"; W3J_RC=$?
+if [ $W3J_RC -ne 0 ] || ! printf '%s\n' "$W3J_OUT" | grep -q '^WRITE_JOB_OK'; then
+  W3_OK=0; W3_DETAIL="${W3_DETAIL}write-job check exit $W3J_RC; "
+fi
 W3L_OUT=""
 if [ -f "$SITE_DIR/scripts/make-live.mjs" ]; then
   W3L_OUT="$(node "$SITE_DIR/scripts/make-live.mjs" --check 2>&1)"; W3L_RC=$?
@@ -1262,11 +1268,11 @@ else
   W3_OK=0; W3_DETAIL="${W3_DETAIL}site/scripts/make-live.mjs is missing; "
 fi
 if [ $W3_OK -eq 1 ]; then
-  pass "W3 freshness harness ($W3_N cases in ${W3_S:-?} s, REPORT.md fresh, $W3_MK of $W3_MT mutants killed, $W3_SR schedule rows, $W3_LB brief cards)"
+  pass "W3 freshness harness ($W3_N cases in ${W3_S:-?} s, REPORT.md fresh, $W3_MK of $W3_MT mutants killed, $W3_SR schedule rows, write job guarded, $W3_LB brief cards)"
 else
   fail "W3 freshness harness" "$W3_DETAIL"
-  printf '%s\n' "$W3_OUT" "$W3S_OUT" "$W3L_OUT" |
-    grep -E '"verdict":"FAIL"|^REPORT_STALE|^HARNESS ERROR|^NO CASES|^SCHEDULE_BAD|^LIVE_BAD|^  ' |
+  printf '%s\n' "$W3_OUT" "$W3S_OUT" "$W3J_OUT" "$W3L_OUT" |
+    grep -E '"verdict":"FAIL"|^REPORT_STALE|^HARNESS ERROR|^NO CASES|^SCHEDULE_BAD|^WRITE_JOB_(BAD|ERROR)|^LIVE_BAD|^  ' |
     head -40 | sed 's/^/      /'
 fi
 
