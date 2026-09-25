@@ -149,13 +149,14 @@ const unknown = (rule, evidence = []) => result('unknown', rule, null, evidence)
 const RED = new Set(['failure', 'timed_out', 'startup_failure']);
 const PENDING = new Set(['queued', 'in_progress', 'waiting', 'pending', 'requested']);
 const TEST_EVENTS = new Set(['push', 'pull_request']);
-// FR-C.3: for `now`, the run rules read the newest default-branch commit whose push-triggered test
-// runs have all completed, found in one page of the default branch's push runs. The API lists runs
-// newest first, so commits are taken in the order they first appear (a commit's author timestamp
-// is not a push order: an old commit pushed again carries its old date). Runs carry `sha`. The
-// oldest commit on a page that does not hold every run may have runs cut off, so it qualifies only
-// when the page is complete. `isTest(path)` says which workflow paths run tests (as HEAD's files
-// define them). Returns { sha, runs } or null when no commit qualifies.
+// FR-C.3: for `now`, the run rules read the newest default-branch commit that has at least one
+// push-triggered test run and whose push-triggered test runs have all completed, found in one page
+// of the default branch's push runs. The API lists runs newest first, so commits are taken in the
+// order they first appear (a commit's author timestamp is not a push order: an old commit pushed
+// again carries its old date). Runs carry `sha`. The oldest commit on a page that does not hold
+// every run may have runs cut off, so it qualifies only when the page is complete. `isTest(path)`
+// says which workflow paths run tests (as HEAD's files define them). Returns { sha, runs } or null
+// when no commit qualifies.
 export function settledCommit(page, isTest) {
   if (!page?.list?.length) return null;
   const bySha = new Map();
@@ -165,7 +166,9 @@ export function settledCommit(page, isTest) {
   }
   const commits = [...bySha.values()];
   const usable = page.complete ? commits : commits.slice(0, -1);
-  const settled = (c) => c.runs.filter((r) => r.event === 'push' && isTest(runPath(r))).every((r) => r.status === 'completed');
+  // At least one push-triggered test run, and all of them completed: a commit with none (a docs-only
+  // push that path filters skipped, say) says nothing about CI and never qualifies.
+  const settled = (c) => { const t = c.runs.filter((r) => r.event === 'push' && isTest(runPath(r))); return t.length > 0 && t.every((r) => r.status === 'completed'); };
   const hit = usable.find(settled);
   return hit ? { sha: hit.sha, runs: hit.runs } : null;
 }

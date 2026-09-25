@@ -11,7 +11,7 @@
 //   node watch/watch.mjs                  dry report on stdout, writes nothing
 //   node watch/watch.mjs --apply          also write watch/state.json, census/<date>.tsv, changes/<date>.json, latest.json,
 //                                         live.json, and append the day's crossing events to crossings.jsonl
-//   node watch/watch.mjs --dashboard      also create or edit the one freshness dashboard issue
+//   (the dashboard issue is synced by watch/freshness/dashboard.mjs --sync, after the gates and push)
 //   node watch/watch.mjs --json           machine-readable report
 //   node watch/watch.mjs --fail-on-change dry report; exit 1 if anything material is new since the last state
 //   node watch/watch.mjs --selftest       offline: recorded fixtures through the same collect/diff code
@@ -934,7 +934,6 @@ function printReport(rep) {
     L.push(`crossings open: ${f.open.length}${f.open.length ? `: ${f.open.join(', ')}` : ''}; pending (seen once): ${f.pending.length}${f.pending.length ? `: ${f.pending.join(', ')}` : ''}`);
     L.push(`ledger events this run: ${f.events.length}${f.events.length ? `: ${f.events.map((e) => `${e.event} ${e.id}`).join(', ')}` : ''}`);
   }
-  if (rep.dashboard) L.push(`dashboard: ${rep.dashboard.action} #${rep.dashboard.number}${rep.dashboard.ignored.length ? `; ignored same-title issues ${rep.dashboard.ignored.map((n) => `#${n}`).join(', ')}` : ''}`);
   console.log(L.join('\n'));
 }
 
@@ -1187,33 +1186,38 @@ async function selftest() {
 }
 
 // ---------------------------------------------------------------- main
-const USAGE = `usage: node watch/watch.mjs [--apply [--dashboard]] [--json] [--fail-on-change] | --selftest
+const SYNC = 'node watch/freshness/dashboard.mjs --sync watch/live.json';
+const USAGE = `usage: node watch/watch.mjs [--apply] [--json] [--fail-on-change] | --selftest
   (no flags)        dry report on stdout; writes nothing
   --apply           write watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json, watch/latest.json,
                     watch/live.json, and append this run's crossing events to watch/crossings.jsonl
-  --dashboard       with --apply: create or edit the one freshness dashboard issue in ${ISSUE_REPO}
   --json            print the report as JSON
   --fail-on-change  dry report; exit 1 if a material change is new since the last state
   --selftest        offline check of the collect and diff logic on watch/fixtures/
-Per-event issues (--issues, --backfill-since-pin) are retired: watch/freshness/SPEC.md FR-D.4.
+The dashboard issue is synced separately, after the gate chain and the push: ${SYNC}
+(watch/freshness/SPEC.md FR-D.5). Per-event issues (--issues, --backfill-since-pin) are retired (FR-D.4).
 exit: 0 ok, 1 change (--fail-on-change) or selftest failure, 2 usage/input/token, 3 GitHub API failure`;
 
+// Flags that no longer exist, and what replaced them.
+const MOVED = {
+  '--issues': `retired; the run keeps one dashboard issue instead, synced by ${SYNC} (watch/freshness/SPEC.md FR-D.4)`,
+  '--backfill-since-pin': `retired; the run keeps one dashboard issue instead, synced by ${SYNC} (watch/freshness/SPEC.md FR-D.4)`,
+  '--dashboard': `moved; after the gate chain and push, run ${SYNC} (watch/freshness/SPEC.md FR-D.5)`,
+};
 function parseArgs(argv) {
-  const known = new Set(['--apply', '--dashboard', '--json', '--fail-on-change', '--selftest', '--help', '-h']);
-  const retired = new Set(['--issues', '--backfill-since-pin']);
+  const known = new Set(['--apply', '--json', '--fail-on-change', '--selftest', '--help', '-h']);
   const flags = argv.filter((a) => a !== '--');
-  const gone = flags.filter((a) => retired.has(a));
-  if (gone.length) throw usageError(`${gone.join(' ')}: retired; the run keeps one dashboard issue instead (--apply --dashboard; watch/freshness/SPEC.md FR-D.4)\n${USAGE}`);
+  const gone = flags.find((a) => a in MOVED);
+  if (gone) throw usageError(`${gone}: ${MOVED[gone]}\n${USAGE}`);
   const bad = flags.filter((a) => !known.has(a));
   if (bad.length) throw usageError(`unknown argument(s): ${bad.join(' ')}\n${USAGE}`);
   const o = {
-    apply: flags.includes('--apply'), dashboard: flags.includes('--dashboard'), json: flags.includes('--json'),
+    apply: flags.includes('--apply'), json: flags.includes('--json'),
     failOnChange: flags.includes('--fail-on-change'), selftest: flags.includes('--selftest'),
     help: flags.includes('--help') || flags.includes('-h'),
   };
   if (o.selftest && flags.length > 1) throw usageError(`--selftest takes no other flags\n${USAGE}`);
-  if (o.failOnChange && (o.apply || o.dashboard)) throw usageError(`--fail-on-change is for the dry report only\n${USAGE}`);
-  if (o.dashboard && !o.apply) throw usageError(`--dashboard requires --apply: the dashboard describes the live.json this run writes\n${USAGE}`);
+  if (o.failOnChange && o.apply) throw usageError(`--fail-on-change is for the dry report only\n${USAGE}`);
   return o;
 }
 
@@ -1247,10 +1251,6 @@ async function main(argv) {
     events: fresh.events.map((e) => ({ event: e.event, id: e.id })),
   };
   if (opts.apply) rep.wrote = writeOutputs(snap, diff, fresh);
-  if (opts.dashboard) {
-    const { syncDashboard } = await import('./freshness/dashboard.mjs');
-    rep.dashboard = await syncDashboard(api, fresh.live, { bot: await botLogin(api), dryRun: false });
-  }
   rep.api = { ...api.stats, elapsed_s: Math.round((Date.now() - t0) / 100) / 10 };
   if (opts.json) console.log(JSON.stringify(rep, null, 2));
   else printReport(rep);

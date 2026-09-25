@@ -11,7 +11,7 @@
 // revisit triggers from revisit.tsv raise one with source `revisit` (FR-T.7). Crossings other than
 // existence open only on the second consecutive daily observation (FR-T.6), and only a dated
 // re-check resolves one (FR-T.8). An open crossing whose value returns to its `from` value and holds
-// for a second daily observation is withdrawn (FR-T.10); existence crossings never are. Everything
+// for a second daily observation is withdrawn (FR-T.10); only class crossings are. Everything
 // here is a pure function of its arguments.
 //
 // Node 22 built-ins only.
@@ -116,7 +116,9 @@ function classCrossings(repo, dims) {
 
 // FR-T.2: an untracked dimension falls back to the event rules of watch/README.md, measured from
 // the baseline: a release or tag dated after it, a license file set that differs, a workflow file
-// removed or workflows appearing where there were none.
+// removed or workflows appearing where there were none. FR-T.4 applies here too: an event raises
+// a crossing only when the dimension's computed class at the baseline and now are both known and
+// differ.
 export function eventFallback(repo, dim, facts, dims) {
   const b = facts.points.baseline;
   const n = facts.points.now;
@@ -124,6 +126,7 @@ export function eventFallback(repo, dim, facts, dims) {
   const x = dims[dim];
   const from = x.base.value;
   const to = x.now.value;
+  if (from === 'unknown' || to === 'unknown' || from === to) return [];
   const ev = (ident, evidence) => crossing(repo, dim, from, to, 'event-fallback', evidence, `${repo}:${dim}:event:${ident}`);
   if (dim === 'rel') {
     const rels = (facts.releases ?? []).filter((r) => r.date > b.date).map((r) => ev(`release:${r.tag}`, [gh(repo, `/releases/tag/${encodeURIComponent(r.tag)}`)]));
@@ -275,27 +278,20 @@ export function resolutions(open, rechecks) {
 }
 
 // ---------------------------------------------------------------- FR-T.10 withdrawal
-// The value a crossing's dimension has now, in the crossing's own terms: the computed class for
-// ci, rel and license; for existence, the repository's state; null where there is no such value.
-export function currentValue(c, dims, record) {
-  if (DIMS.includes(c.dim)) return dims?.[c.dim]?.now?.value ?? null;
-  if (c.dim !== 'existence' || !record) return null;
-  const what = c.id.split(':').at(-1);
-  if (what === 'deleted') return record.found ? 'public' : 'not found';
-  if (what === 'archived' || what === 'unarchived') return record.archived ? 'archived' : 'active';
-  if (what === 'pin-rewritten') return record.pin_reachable ? 'ancestor' : (record.compare_status ?? 'unreachable');
-  return null;
+// The computed class a class crossing's dimension has now, or null.
+export function currentValue(c, dims) {
+  return DIMS.includes(c.dim) ? dims?.[c.dim]?.now?.value ?? null : null;
 }
 
-// An open crossing whose value is back at its `from` value is withdrawing on the first observation
-// (a pending entry with phase `withdrawing`) and withdrawn when the previous run, on an earlier day,
-// already saw it withdrawing. A crossing that never moved (from equals to, as an event-fallback
-// crossing may) never returns. Existence crossings are never withdrawn.
+// An open crossing with source `class` whose class is back at its `from` value is withdrawing on
+// the first observation (a pending entry with phase `withdrawing`) and withdrawn when the previous
+// run, on an earlier day, already saw it withdrawing. Crossings from any other source (existence,
+// event-fallback, revisit) are never withdrawn: their event does not go away when the class does.
 export function withdrawals(open, valueNow, prevPending, prevDay, today) {
   const withdrawn = [];
   const returning = [];
   for (const c of open.values()) {
-    if (c.source === 'existence' || c.from === c.to) continue;
+    if (c.source !== 'class') continue;
     const v = valueNow(c);
     if (v == null || v === 'unknown' || v !== c.from) continue;
     const prev = prevPending.get(c.id);

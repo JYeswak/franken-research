@@ -120,7 +120,7 @@ export function computeFreshness({ records, summaries, watched, rechecks = {}, p
   const prevPending = new Map([...prevRepos.values()].flatMap((r) => r.pending ?? []).map((p) => [p.id, p]));
   const prevDay = prevLive ? day(prevLive.checked_at) : null;
   const byRepo = new Map(evals.map((e) => [e.w.repo, e]));
-  const valueNow = (c) => { const e = byRepo.get(c.repo); return e ? currentValue(c, e.ev.dims, e.record) : null; };
+  const valueNow = (c) => currentValue(c, byRepo.get(c.repo)?.ev.dims);
   const { withdrawn, returning } = withdrawals(open, valueNow, prevPending, prevDay, today);
   for (const e of withdrawn) open.delete(e.id);
   const all = evals.flatMap((e) => e.ev.candidates).map((c) => liveCrossing(c, today));

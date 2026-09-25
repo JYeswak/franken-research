@@ -147,6 +147,18 @@
   ]
  },
  {
+  "id": "M-C3-empty-set-settles",
+  "file": "watch/freshness/classify.mjs",
+  "find": "return t.length > 0 && t.every(",
+  "replace": "return t.every(",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-docs-only-head-skipped"
+  ]
+ },
+ {
   "id": "M-C3-stale-point-used",
   "file": "watch/freshness/classify.mjs",
   "find": "  const fresh = pts.ci && !(base?.date && pts.ci.date && pts.ci.date < base.date) ? pts.ci : null;",
@@ -282,6 +294,32 @@
   ]
  },
  {
+  "id": "M-T2-fallback-without-class-change",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  if (from === 'unknown' || to === 'unknown' || from === to) return [];\n",
+  "replace": "",
+  "clauses": [
+   "FR-T.2",
+   "FR-T.4"
+  ],
+  "must_fail": [
+   "CORE-T2-fallback-needs-class-change"
+  ]
+ },
+ {
+  "id": "M-T2-fallback-to-unknown",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  if (from === 'unknown' || to === 'unknown' || from === to) return [];\n",
+  "replace": "  if (from === to) return [];\n",
+  "clauses": [
+   "FR-T.2",
+   "FR-T.5"
+  ],
+  "must_fail": [
+   "CORE-T2-fallback-needs-class-change"
+  ]
+ },
+ {
   "id": "M-T4-crossing-without-change",
   "file": "watch/freshness/triggers.mjs",
   "find": "  return { tracked, crossing: tracked && known && now.value !== base.value };",
@@ -359,13 +397,26 @@
  {
   "id": "M-T10-existence-withdrawn",
   "file": "watch/freshness/triggers.mjs",
-  "find": "    if (c.source === 'existence' || c.from === c.to) continue;",
-  "replace": "    if (c.from === c.to) continue;",
+  "find": "    if (c.source !== 'class') continue;",
+  "replace": "    if (c.source === 'event-fallback' || c.source === 'revisit') continue;",
   "clauses": [
    "FR-T.10"
   ],
   "must_fail": [
    "CORE-T10-existence-never-withdrawn"
+  ]
+ },
+ {
+  "id": "M-T10-fallback-withdrawn",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "    if (c.source !== 'class') continue;",
+  "replace": "    if (c.source === 'existence') continue;",
+  "clauses": [
+   "FR-T.10"
+  ],
+  "must_fail": [
+   "CORE-T10-existence-never-withdrawn",
+   "CORE-T10-event-fallback-stays-open"
   ]
  },
  {
@@ -415,6 +466,19 @@
   ],
   "must_fail": [
    "CORE-L1-canon-order"
+  ]
+ },
+ {
+  "id": "M-D5-watch-keeps-dashboard",
+  "file": "watch/watch.mjs",
+  "find": "  '--dashboard': `moved;",
+  "replace": "  '--dashboard-kept': `moved;",
+  "clauses": [
+   "FR-D.4",
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "CORE-D4-issues-retired"
   ]
  },
  {

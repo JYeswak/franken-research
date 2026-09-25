@@ -20,7 +20,7 @@ import { parseYaml } from '../yaml.mjs';
 import { loadReference, loadReplay, summariesFromTexts, factsFor, REFERENCE } from '../facts.mjs';
 import {
   matrixClasses, parseRecheck, latestRechecks, parsePrivateCi, evaluateRepo, compareDim, debounce, resolutions,
-  appendLedger, assertLedgerPrefix, parseLedger, openFromLedger, ledgerLine, LEDGER_KEYS, repoState, existenceCrossings, withdrawals, currentValue,
+  appendLedger, assertLedgerPrefix, parseLedger, openFromLedger, ledgerLine, LEDGER_KEYS, repoState, existenceCrossings, withdrawals, currentValue, eventFallback,
 } from '../triggers.mjs';
 import { computeFreshness, renderLiveJson, canonLive, safeName, MAX_BYTES, SCHEMA } from '../live.mjs';
 import { parseTsv, renderTsv, revisitRows, TSV_HEAD, DETECTORS, UNREVIEWED } from '../revisit.mjs';
@@ -207,6 +207,15 @@ const C3 = [
     const page = { total: 3, complete: true, list: [pageRun(HEAD, 'pages.yml', null, 'in_progress'), pageRun(HEAD, 'a.yml', 'failure'), pageRun('e'.repeat(40), 'a.yml', 'success')] };
     const sel = settledCommit(page, (p) => p === '.github/workflows/a.yml');
     return sel?.sha === HEAD ? true : { pass: false, detail: `selected ${sel?.sha}` };
+  } },
+  { id: 'CORE-C3-docs-only-head-skipped', clauses: ['FR-C.3'], level: 'MUST', title: 'a docs-only HEAD with no push-triggered test run (only a finished Pages run) is skipped: the parent, whose test runs have finished, is the CI point', run(ctx) {
+    const HEAD = 'd'.repeat(40);
+    const PARENT = 'e'.repeat(40);
+    const isTest = (p) => p === '.github/workflows/a.yml';
+    const page = { total: 3, complete: true, list: [pageRun(HEAD, 'pages.yml', 'success'), pageRun(PARENT, 'a.yml', 'failure'), pageRun(PARENT, 'pages.yml', 'success')] };
+    const bare = { total: 1, complete: true, list: [pageRun(HEAD, 'pages.yml', 'success')] };
+    const sel = settledCommit(page, isTest);
+    return sel?.sha === PARENT && settledCommit(bare, isTest) === null ? true : { pass: false, detail: `selected ${sel?.sha?.slice(0, 1)}, alone ${settledCommit(bare, isTest)?.sha?.slice(0, 1)}` };
   } },
   { id: 'CORE-C3-no-settled-commit', clauses: ['FR-C.3'], level: 'MUST', title: 'no settled commit on the page gives unknown (never C3), with no now_commit; the files still decide C4', run(ctx) {
     const busy = { total: 2, complete: true, list: [pageRun('d'.repeat(40), 'a.yml', null, 'queued'), pageRun('e'.repeat(40), 'a.yml', null, 'in_progress')] };
@@ -401,15 +410,26 @@ const T = [
     const e = evalWith({ pin: C_ALL('C2', 'R1'), baseline: C_ALL('C2', 'R1'), now: C_ALL('C1', 'R1') }, REF);
     return !e.dims.ci.cmp.tracked && e.candidates.length === 0 ? true : { pass: false, detail: ids(e.candidates) };
   } },
-  { id: 'CORE-T2-event-fallback', clauses: ['FR-T.2'], level: 'MUST', title: 'an untracked dimension\'s events follow watch/README.md rules, labelled event-fallback', run(ctx) {
+  { id: 'CORE-T2-event-fallback', clauses: ['FR-T.2'], level: 'MUST', title: 'an untracked dimension whose class changed raises its watch/README.md events, labelled event-fallback', run(ctx) {
     const facts = mk({ releases: [rel('v9', SHA_NOW, 1, { date: '2026-09-23T00:00:00Z' })], tags: [tag('v9', SHA_NOW, '2026-09-23T00:00:00Z'), tag('t1', SHA_NOW, '2026-09-23T00:00:00Z')], pin: { workflows: [wf('a.yml'), wf('b.yml')] }, now: { workflows: [wf('a.yml'), wf('c.yml')] } });
-    const e = evalWith({ pin: C_ALL('C2', 'R2'), baseline: C_ALL('C2', 'R2'), now: C_ALL('C2', 'R3') }, REF, { facts });
-    const got = e.candidates.map((c) => `${c.dim}:${c.source}:${c.id.split(':').slice(2).join(':')}`).sort().join(',');
-    return got === 'ci:event-fallback:event:' + e.candidates.find((c) => c.dim === 'ci')?.id.split(':').at(-1) + ',rel:event-fallback:event:release:v9,rel:event-fallback:event:tag:t1' ? true : { pass: false, detail: got };
+    const e = evalWith({ pin: C_ALL('C2', 'R2'), baseline: C_ALL('C2', 'R2'), now: C_ALL('C1', 'R3') }, REF, { facts });
+    const got = e.candidates.map((c) => `${c.dim}:${c.source}:${c.from}>${c.to}:${c.id.split(':').slice(2).join(':')}`).sort().join(',');
+    const want = `ci:event-fallback:C2>C1:event:${e.candidates.find((c) => c.dim === 'ci')?.id.split(':').at(-1)},rel:event-fallback:R2>R3:event:release:v9,rel:event-fallback:R2>R3:event:tag:t1`;
+    return got === want ? true : { pass: false, detail: got };
   } },
-  { id: 'CORE-T2-fallback-additions-quiet', clauses: ['FR-T.2', 'FR-T.4'], level: 'MUST', title: 'under event-fallback, workflow files added to a set that had files raise nothing', run(ctx) {
+  { id: 'CORE-T2-fallback-needs-class-change', clauses: ['FR-T.2', 'FR-T.4'], level: 'MUST', title: 'a new release on an untracked dimension already at R3 (sample:rel:event:release:v2, R3 to R3) raises no crossing, nor does it when the class now is unknown; the same event with the class moving from R2 does', run(ctx) {
+    const facts = mk({ repo: 'sample', releases: [rel('v2', SHA_NOW, 3, { date: '2026-09-23T00:00:00Z' })], tags: [tag('v2', SHA_NOW, '2026-09-23T00:00:00Z')] });
+    const run = (base, now = 'R3') => evaluateRepo({ record: REC({ repo: 'sample', name: 'sample' }), facts, reference: REF, classify: (f, p) => C_ALL('C3', p === 'now' ? now : base), revisitRows: [], prevExistence: null });
+    const same = run('R3');
+    const unknown = run('R2', 'unknown');
+    const moved = run('R2');
+    const direct = eventFallback('sample', 'rel', facts, same.dims);
+    const ok = !same.dims.rel.cmp.tracked && same.candidates.length === 0 && direct.length === 0 && unknown.candidates.length === 0 && ids(moved.candidates) === 'sample:rel:event:release:v2';
+    return ok ? true : { pass: false, detail: `R3>R3: ${ids(same.candidates) || '-'} (direct ${ids(direct) || '-'}); R2>unknown: ${ids(unknown.candidates) || '-'}; R2>R3: ${ids(moved.candidates) || '-'}` };
+  } },
+  { id: 'CORE-T2-fallback-additions-quiet', clauses: ['FR-T.2', 'FR-T.4'], level: 'MUST', title: 'under event-fallback, workflow files added to a set that had files raise nothing, even when the class moved', run(ctx) {
     const facts = mk({ pin: { workflows: [wf('a.yml')] }, now: { workflows: [wf('a.yml'), wf('b.yml')] } });
-    const e = evalWith({ pin: C_ALL('C2', 'R1'), baseline: C_ALL('C2', 'R1'), now: C_ALL('C2', 'R1') }, REF, { facts });
+    const e = evalWith({ pin: C_ALL('C2', 'R1'), baseline: C_ALL('C2', 'R1'), now: C_ALL('C1', 'R1') }, REF, { facts });
     return e.candidates.length === 0 ? true : { pass: false, detail: ids(e.candidates) };
   } },
   { id: 'CORE-T3-existence', clauses: ['FR-T.3'], level: 'MUST', title: 'deleted, archived, unarchived and pin-rewritten raise existence crossings', run(ctx) {
@@ -497,14 +517,16 @@ const T = [
 ];
 
 // ---------------------------------------------------------------- FR-T.10: withdrawal
-// Runs over the reference fixture with frankenjax's computed CI class now (C4 at the baseline) set
+// Runs over the reference fixture with one repository's computed class now, for one dimension, set
 // per run. `runs` lists [class, UTC time] pairs; a bare class is a daily run at 11:23 on successive
-// days from 2026-10-01.
+// days from 2026-10-01. `patch` edits that repository's record before the first run.
 const JAX = 'frankenjax';
 const JAX_ID = 'frankenjax:ci:C4>C1';
-function jaxDays(root, runs) {
+function overrideDays(root, repo, dim, runs, patch = (r) => r) {
   const f = ref();
-  const base = { records: f.records, summaries: f.summaries, watched: watchedFromRef(root), rechecks: rechecks(root), privateCi: privateCi(root), revisitRows: revisit(root), informational: { events_today: 0, events_since_pin: 0 } };
+  const records = { ...f.records, [repo]: patch(structuredClone(f.records[repo])) };
+  const base = { records, summaries: f.summaries, watched: watchedFromRef(root), rechecks: rechecks(root), privateCi: privateCi(root), revisitRows: revisit(root), informational: { events_today: 0, events_since_pin: 0 } };
+  const rule = { ci: 'FR-C.2', rel: 'FR-C.4', license: 'FR-C.5' }[dim];
   const out = [];
   let prevLive = null;
   let ledgerText = '';
@@ -512,16 +534,17 @@ function jaxDays(root, runs) {
     const [value, at] = Array.isArray(spec) ? spec : [spec, `2026-10-${String(1 + i).padStart(2, '0')}T11:23:00Z`];
     const override = (facts, point) => {
       const c = classify(facts, point);
-      return point === 'now' && facts.repo === JAX ? { ...c, ci: { value, rule: `FR-C.2/${value}`, tier: '[External, High]', evidence: [`https://github.com/Dicklesworthstone/${JAX}/actions`] } } : c;
+      return point === 'now' && facts.repo === repo ? { ...c, [dim]: { value, rule: `${rule}/${value}`, tier: '[External, High]', evidence: [`https://github.com/Dicklesworthstone/${repo}`] } } : c;
     };
     const r = computeFreshness({ ...base, classify: override, checkedAt: at, prevLive, ledgerText });
     prevLive = JSON.parse(renderLiveJson(r.live));
     ledgerText = r.ledgerText;
-    const row = prevLive.repos.find((x) => x.repo === JAX);
-    out.push({ day: at.slice(0, 10), row, ledger: parseLedger(ledgerText).filter((e) => e.repo === JAX), events: r.events.filter((e) => e.repo === JAX) });
+    const row = prevLive.repos.find((x) => x.repo === repo);
+    out.push({ day: at.slice(0, 10), row, ledger: parseLedger(ledgerText).filter((e) => e.repo === repo), events: r.events.filter((e) => e.repo === repo) });
   });
   return out;
 }
+const jaxDays = (root, runs) => overrideDays(root, JAX, 'ci', runs);
 const jaxState = (d) => `${d.day}: open ${d.row.crossings.map((c) => `${c.id}@${c.since}`).join(',') || '-'}; pending ${d.row.pending.map((c) => `${c.id}/${c.phase}@${c.since}`).join(',') || '-'}; ledger ${d.ledger.map((e) => `${e.date} ${e.event}`).join(', ') || '-'}`;
 const T10 = [
   { id: 'CORE-T10-withdrawn-after-hold', clauses: ['FR-T.10', 'FR-G.3'], level: 'MUST', title: 'a class back at its baseline on two daily observations is withdrawn: a withdrawn ledger line with resolved_by null, and the crossing leaves the open list', run(ctx) {
@@ -549,15 +572,31 @@ const T10 = [
       && JSON.stringify(kinds) === JSON.stringify([`${d[1].day} opened`, `${d[3].day} withdrawn`, `${d[5].day} opened`]);
     return ok ? true : { pass: false, detail: d.map(jaxState).join(' | ') };
   } },
-  { id: 'CORE-T10-existence-never-withdrawn', clauses: ['FR-T.10', 'FR-T.3'], level: 'MUST', title: 'an existence crossing whose repository reverts (unarchived) stays open over two observations', run(ctx) {
-    const c = { ...existenceCrossings(REC({ archived: true }), null)[0], date: '2026-10-01' };
-    const open = new Map([[c.id, c]]);
-    const back = REC({ archived: false });
-    const valueNow = (x) => currentValue(x, null, back);
-    const d1 = withdrawals(open, valueNow, new Map(), '2026-10-01', '2026-10-02');
-    const d2 = withdrawals(open, valueNow, new Map([[c.id, { ...c, phase: 'withdrawing', since: '2026-10-02' }]]), '2026-10-02', '2026-10-03');
-    const ok = valueNow(c) === c.from && d1.withdrawn.length + d1.returning.length + d2.withdrawn.length + d2.returning.length === 0;
-    return ok ? true : { pass: false, detail: JSON.stringify({ value: valueNow(c), from: c.from, d1, d2 }) };
+  { id: 'CORE-T10-existence-never-withdrawn', clauses: ['FR-T.10', 'FR-T.3'], level: 'MUST', title: 'only class crossings are withdrawn: existence, event-fallback and revisit crossings whose value is back at from stay open over two observations, while a class crossing in the same position is withdrawn', run(ctx) {
+    const arch = existenceCrossings(REC({ archived: true }), null)[0];
+    const others = [arch, { id: 'x:rel:event:release:v2', repo: 'x', dim: 'rel', from: 'R2', to: 'R3', source: 'event-fallback' }, { id: 'x:revisit:release.first', repo: 'x', dim: 'rel', from: 'R1', to: 'R2', source: 'revisit' }];
+    const cls = { id: 'x:ci:C3>C5', repo: 'x', dim: 'ci', from: 'C3', to: 'C5', source: 'class' };
+    const back = (x) => x.from;
+    const twoDays = (c) => {
+      const open = new Map([[c.id, { ...c, date: '2026-10-01' }]]);
+      const d1 = withdrawals(open, back, new Map(), '2026-10-01', '2026-10-02');
+      const d2 = withdrawals(open, back, new Map([[c.id, { ...c, phase: 'withdrawing', since: '2026-10-02' }]]), '2026-10-02', '2026-10-03');
+      return `${d1.returning.length}/${d1.withdrawn.length}+${d2.returning.length}/${d2.withdrawn.length}`;
+    };
+    const got = others.map((c) => `${c.source}:${twoDays(c)}`);
+    const ok = got.every((g) => g.endsWith(':0/0+0/0')) && twoDays(cls) === '1/0+0/1' && currentValue(arch, null) === null;
+    return ok ? true : { pass: false, detail: `${got.join(', ')}; class ${twoDays(cls)}` };
+  } },
+  { id: 'CORE-T10-event-fallback-stays-open', clauses: ['FR-T.10', 'FR-T.2'], level: 'MUST', title: 'an event-fallback crossing (franken_numpy rel, untracked, a release after the baseline) whose class returns to its baseline value stays open under its first since: no withdrawing, no withdrawn line, no reopening', run(ctx) {
+    const addRelease = (r) => ({ ...r, releases: [...r.releases, { tag: 'v0.4.0', target: r.head, date: '2026-09-30T00:00:00Z', draft: false, prerelease: false, assets: 2 }], tags: [...r.tags, { name: 'v0.4.0', target: r.head, date: '2026-09-30T00:00:00Z' }] });
+    const d = overrideDays(ctx.root, 'franken_numpy', 'rel', ['R3', 'R3', 'R2', 'R2', 'R2', 'R2'], addRelease);
+    const ID = 'franken_numpy:rel:event:release:v0.4.0';
+    const state = (x) => `${x.day}: open ${x.row.crossings.map((c) => `${c.id}@${c.since}`).join(',') || '-'}; pending ${x.row.pending.map((c) => `${c.id}/${c.phase}@${c.since}`).join(',') || '-'}; ledger ${x.ledger.map((e) => `${e.date} ${e.event}`).join(', ') || '-'}`;
+    const opened = d[1].row.crossings.find((c) => c.id === ID);
+    const ok = d[0].row.pending.some((c) => c.id === ID && c.phase === 'opening') && opened?.source === 'event-fallback' && opened.from === 'R2' && opened.to === 'R3'
+      && d.slice(2).every((x) => x.row.crossings.length === 1 && x.row.crossings[0].id === ID && x.row.crossings[0].since === d[1].day && x.row.pending.length === 0)
+      && JSON.stringify(d[5].ledger.map((e) => `${e.date} ${e.event} ${e.id}`)) === JSON.stringify([`${d[1].day} opened ${ID}`]);
+    return ok ? true : { pass: false, detail: d.map(state).join(' | ') };
   } },
   { id: 'CORE-G3-withdrawn-line', clauses: ['FR-G.3', 'FR-T.10'], level: 'MUST', title: 'a withdrawn ledger line has resolved_by null; a withdrawn line naming a re-check, a resolved line without one, and a withdrawal of a crossing that is not open are rejected', run(ctx) {
     const opened = ledgerLine(EV('x:ci:C3>C5'));
@@ -761,9 +800,11 @@ const MISC = [
       return ok ? true : { pass: false, detail: JSON.stringify({ cohort, totals: live.totals, row: row && { set: row.set, baseline: row.baseline }, none: none.totals }) };
     } finally { rmSync(dir, { recursive: true, force: true }); }
   } },
-  { id: 'CORE-D4-issues-retired', clauses: ['FR-D.4'], level: 'MUST', title: 'the watch opens no per-event issues: --issues and --backfill-since-pin are refused (exit 2) before any API call, naming the dashboard instead', run(ctx) {
-    const exits = ['--issues', '--backfill-since-pin'].map((flag) => [flag, spawnSync(process.execPath, [join(ctx.root, 'watch', 'watch.mjs'), flag], { encoding: 'utf8', env: { ...process.env, GITHUB_TOKEN: 'not-a-token' } })]);
-    const ok = exits.every(([flag, x]) => x.status === 2 && x.stderr.startsWith(`watch: ${flag}: retired; the run keeps one dashboard issue instead (--apply --dashboard`));
+  { id: 'CORE-D4-issues-retired', clauses: ['FR-D.4', 'FR-D.5'], level: 'MUST', title: 'the watch opens no issues itself: --issues and --backfill-since-pin (retired) and --dashboard (moved) are refused (exit 2) before any API call, naming the separate dashboard sync command', run(ctx) {
+    const SYNC = 'node watch/freshness/dashboard.mjs --sync watch/live.json';
+    const want = { '--issues': `retired; the run keeps one dashboard issue instead, synced by ${SYNC}`, '--backfill-since-pin': `retired; the run keeps one dashboard issue instead, synced by ${SYNC}`, '--dashboard': `moved; after the gate chain and push, run ${SYNC}` };
+    const exits = Object.keys(want).map((flag) => [flag, spawnSync(process.execPath, [join(ctx.root, 'watch', 'watch.mjs'), '--apply', flag], { encoding: 'utf8', env: { ...process.env, GITHUB_TOKEN: 'not-a-token' } })]);
+    const ok = exits.every(([flag, x]) => x.status === 2 && x.stderr.startsWith(`watch: ${flag}: ${want[flag]}`));
     return ok ? true : { pass: false, detail: exits.map(([flag, x]) => `${flag}: exit ${x.status}, ${x.stderr.split('\n')[0]}`).join('; ') };
   } },
   { id: 'CORE-H7-provenance', clauses: ['FR-H.7'], level: 'MUST', title: 'PROVENANCE.md records the recorder command, UTC time, endpoints and git ref of each core fixture', run(ctx) {
