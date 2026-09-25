@@ -1,6 +1,6 @@
 # Freshness contract (watch v2)
 
-Status: v1, 2026-09-25. Clause ids are stable. Change a clause only by adding a new id and marking the old one `RETIRED`; never renumber.
+Status: v1, 2026-09-25. Clause ids are stable and are never renumbered. Every change to a clause's text is logged, with its evidence, in the amendment log at the end of this file. After the first release, a change to what a clause requires gets a new id, and the old clause is marked `RETIRED`.
 
 ## Why
 
@@ -25,17 +25,17 @@ Requirement levels follow RFC 2119. Every MUST clause needs at least one harness
 
 **FR-C.1** (MUST) `classify(facts, point)` is a pure function of recorded facts. `point` is `pin` or `now`. It returns `ci`, `rel` and `license`, each `{value, rule, tier, evidence}`, where `value` is a legend class or `unknown`. `rule` names the clause below that decided it. It makes no network call and reads no clock.
 
-**FR-C.2** (MUST) CI class at a point, taking the first rule that holds:
-- C6: no public workflow runs the tests, and every run on the point's commit sits on a self-hosted runner or is queued or cancelled. Or the facts carry `private_ci: true`. That flag comes only from a packet statement, and the harness records its source.
-- C5: workflow files exist, but none triggers on `push` or `pull_request` to the default branch, or every test workflow is disabled in the Actions API. Or workflow files that existed at the pin are gone at `now`.
+**FR-C.2** (MUST) CI class at a point, taking the first rule that holds. A workflow that the Actions API reports as `disabled_*` triggers on nothing. That state applies at an earlier point only if the workflow's `updated_at` is on or before that commit's date; otherwise the state at that point is unknown.
+- C6: no public workflow runs the tests, and every run on the point's commit is on a self-hosted runner, or is queued or cancelled. Or the facts carry `private_ci: true`. That flag comes only from a packet statement, and the harness records its source.
+- C5: test workflow files exist, but none of them triggers on `push` or `pull_request` to the default branch. Or workflow files that existed at the pin are gone at `now`.
 - C4: no workflow file at the point runs tests. There are none, or only deploy/pages workflows.
 - C2: at least one completed test-workflow run on the point's commit, triggered by `push` or `pull_request`, concluded `failure`, `timed_out` or `startup_failure`.
-- C1: at least one such run exists, and all such runs concluded `success`.
-- C3: test workflows trigger on push or pull request, but no completed run exists on the point's commit.
+- C1: at least one such run concluded `success`, and none concluded `failure`, `timed_out` or `startup_failure`. A run that concluded `cancelled`, `skipped` or `neutral` gives no verdict.
+- C3: test workflows trigger on push or pull request, but no completed run with a verdict exists on the point's commit.
 
 **FR-C.3** (MUST) Runs still in progress, and API gaps, give `unknown` for CI, never C3. For `now`, a HEAD younger than 6 hours with no completed test run is also `unknown`.
 
-**FR-C.4** (MUST) Release class at a point with commit date D. Consider only non-draft releases, and tags whose date (the tag date, else the target commit's date) is on or before D.
+**FR-C.4** (MUST) Release class at a point with commit date D. Consider only tags dated on or before D, using the tag's own date or, failing that, its target commit's date. A non-draft release counts only if its tag is considered. The release's publish date is not used, because a release can be published minutes after the commit it tags.
 - R1: none.
 - R3: a release targets the point's commit, or any considered release has at least one uploaded asset.
 - R2: otherwise. Releases or tags exist but point at earlier commits, with no uploaded asset.
@@ -161,3 +161,11 @@ The report gives precision and recall on this set, and names its size.
 - `ctx` = `{ root, fixtures, golden(name, text), updating }`.
 - `node watch/freshness/harness/run.mjs` prints one JSON line per case, then the coverage table. It exits 0 when every case passes or XFAILs and every MUST clause is covered, 1 otherwise, and 2 on a harness error.
 - A result may also carry `metrics: { name: value }`. The runner collects these into `REPORT.md` (FR-H.8), and a metric that no case reports is shown as `not measured`, never as zero.
+
+## Amendment log
+
+| Date | Clause | Change | Evidence |
+|---|---|---|---|
+| 2026-09-25 | FR-C.2 | C1 no longer requires every run to succeed: a cancelled, skipped or neutral run gives no verdict. C5 now tests whether a test workflow triggers on push or pull request, instead of any workflow. A disabled workflow triggers on nothing, and its state applies at an earlier point only if it was updated on or before that commit. | FreshCore found two rule gaps: mixed success and cancelled runs matched no rule, and dispatch-only test workflows next to a push-triggered deploy workflow matched no rule. Both returned `FR-C.2/no-rule`. frankensearch and franken_networkx depend on the disabled-state reading. |
+| 2026-09-25 | FR-C.4 | A release counts only if its tag's date (the tag's own, else its target commit's) is on or before the point; the publish date is not used. | franken_code_browser v0.1.0 was published 3 minutes after the commit it tags (c7c5310). Filtering by publish date would make FR-H.4's labelled R3 impossible. |
+| 2026-09-25 | FR-O.2 | Goldens and recorded fixtures are exempt from the schedule check, and write calls need a `// writes:` header. | FreshHarness: a scheduled job must never rewrite a golden or a fixture, or the harness would test against whatever the API says today. |
