@@ -7,7 +7,7 @@
 //                                        edits its body only when the rendered body differs, reopens it when it
 //                                        was closed; returns { action, number, ignored, duplicates }
 //
-// Trust follows watch/README.md and syncIssues in watch/watch.mjs: an issue counts as the dashboard only if the
+// Trust follows the issue trust rule of watch/README.md: an issue counts as the dashboard only if the
 // token's own identity authored it, it carries the labels `watch` and `dashboard`, and its body has the marker
 // line <!-- watch-dashboard: v1 -->. A same-title issue that fails any of these is never edited; its number is
 // returned in `ignored`. Upstream text reaches the body only through mdText (watch.mjs), and a URL becomes a
