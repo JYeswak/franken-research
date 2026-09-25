@@ -402,6 +402,39 @@ bot may edit can only be checked on recorded inputs.
 repositories, not every shape the API returns; rate-limit timing and
 pagination past one page run only live.
 
+## Gate W3 — freshness conformance harness
+
+**What:** four offline commands, all of which must pass.
+`node watch/freshness/harness/run.mjs --check-report` runs every case in
+`watch/freshness/cases/*.cases.mjs` against the clauses it parses from
+`watch/freshness/SPEC.md` (the freshness contract: class triggers, the live
+card, the dashboard issue, the weekly digest, scheduled jobs, and the harness
+itself), then compares `watch/freshness/REPORT.md` with a fresh render.
+`node watch/freshness/harness/mutate.mjs` plants every mutant in
+`watch/freshness/harness/mutants.json` in a temporary copy of the repository
+and checks that each one makes its named cases fail. `node ops/schedule.mjs`
+checks `ops/schedule.tsv`: each generated artifact's command runs in its
+workflow, its gate exists in this script, and every script under
+`watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
+declares them. `node site/scripts/make-live.mjs --check` re-renders the
+live:card region on every brief from `watch/live.json`. No network and no
+token. **Fails** on a nonzero exit of any of the four, any failed case, an
+uncovered MUST clause, a `CASES` count of zero or missing, a stale
+`REPORT.md`, zero mutants or one that survives, a schedule problem, and a
+missing `make-live.mjs`. The runbook, including how to add a clause, a
+discrepancy, a golden or a mutant, is `watch/freshness/README.md`.
+**Why:** the freshness work replaces per-event issues with computed classes,
+a card on every brief, and one dashboard issue, all written by a scheduled
+job nobody reads first. The contract says what must hold; this gate proves
+each MUST clause has a case that passes or a documented discrepancy, that the
+cases can fail (the mutants), and that every new generated file is refreshed
+by a scheduled job.
+**Accepted:** `watch/live.json` and `watch/crossings.jsonl` come from API
+facts that are not committed, so W3 checks their committed shape and ledger
+order and proves the byte-equal render on a recorded fixture, not by re-running
+the watch. The mutants run twice per `bun run verify`: once inside the harness
+case HAR-H6-mutants, which feeds `REPORT.md`, and once on their own.
+
 ## Gate M — feed and OPML fresh and well-formed
 
 **What:** `site/feed.xml` (Atom 1.0) and `site/follow/franken-suite.opml`

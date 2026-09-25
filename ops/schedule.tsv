@@ -1,0 +1,14 @@
+# ops/schedule.tsv: every generated artifact the freshness contract adds (watch/freshness/SPEC.md FR-O.1), one row each.
+# Columns, tab-separated: artifact, generator command, workflow file, cadence, gate that fails when the
+# committed artifact differs from a fresh run, and snapshot_built (YYYY-MM-DD for a vendored snapshot, else -).
+# Artifacts that existed before 2026-09-25 are out of scope. `node ops/schedule.mjs` checks this file (gate W3).
+# watch/live.json and watch/crossings.jsonl come from GitHub API facts that are not committed, so W3 cannot
+# re-run the watch offline: it checks the committed files' schema, key order, size and ledger order
+# (cases CORE-L1-committed, CORE-G3-committed), and proves the byte-equal render on the recorded fixture
+# (CORE-L1-deterministic). The other rows are re-rendered from committed files and compared byte for byte.
+artifact	generator	workflow	cadence	gate	snapshot_built
+watch/live.json	node watch/watch.mjs --apply --dashboard	.github/workflows/watch.yml	daily	W3	-
+watch/crossings.jsonl	node watch/watch.mjs --apply --dashboard	.github/workflows/watch.yml	daily	W3	-
+site/briefs/*.html (live:card regions)	node site/scripts/make-live.mjs	.github/workflows/watch.yml	daily	W3	-
+site/feed.xml (weekly digest entries)	node site/scripts/make-feed.mjs	.github/workflows/watch.yml	daily	M	-
+watch/freshness/REPORT.md	node watch/freshness/harness/run.mjs --report	.github/workflows/watch.yml	daily	W3	-

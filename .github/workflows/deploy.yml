@@ -150,6 +150,9 @@ jobs:
           brief="$(basename "$1" .html)"
           test -n "$want" && test -f "$1" || { echo "::error::could not read the expected title or a brief name"; exit 1; }
           test -n "$DEPLOY_URL" && test -n "$DEPLOY_SHA" || { echo "::error::the deploy step left no deployment URL or commit"; exit 1; }
+          # A missed daily watch run is a warning, never a failure (watch/freshness/SPEC.md FR-O.4):
+          # prints ::warning when watch/live.json checked_at is more than 36 hours old or unreadable.
+          node ops/stale-run.mjs watch/live.json
           page="$RUNNER_TEMP/page.html"
           headers="$RUNNER_TEMP/headers.txt"
           # Prints "<home status> <brief status> <title found 0|1>" for a base URL. 000 means no
