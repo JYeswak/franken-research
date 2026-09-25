@@ -2,16 +2,19 @@
 // watch/watch.mjs: daily watch of Dicklesworthstone's public GitHub repositories for Franken Research.
 //
 // Reads the GitHub API only (GraphQL + REST); never a local mirror. Compares each of the 44 assessed
-// repositories with its pin (from packets/*-assessment.md) and with the previous watch/state.json.
-// It flags events that could move a master-matrix cell; it never judges them and never edits pins,
-// packets, or synthesis. See watch/README.md.
+// repositories, and every repository in a cohort matrix (cohorts/*/matrix.md), with its pin and with
+// the previous watch/state.json. It never judges an event and never edits pins, packets, or
+// synthesis. See watch/README.md; the freshness contract (class triggers, live.json, the crossing
+// ledger, the dashboard) is watch/freshness/SPEC.md.
+// writes: watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json, watch/latest.json, watch/live.json, watch/crossings.jsonl
 //
 //   node watch/watch.mjs                  dry report on stdout, writes nothing
-//   node watch/watch.mjs --apply          also write watch/state.json, census/<date>.tsv, changes/<date>.json, latest.json
-//   node watch/watch.mjs --issues         also open or comment on issues for changes new since the last state
+//   node watch/watch.mjs --apply          also write watch/state.json, census/<date>.tsv, changes/<date>.json, latest.json,
+//                                         live.json, and append the day's crossing events to crossings.jsonl
+//   node watch/watch.mjs --dashboard      also create or edit the one freshness dashboard issue
 //   node watch/watch.mjs --json           machine-readable report
 //   node watch/watch.mjs --fail-on-change dry report; exit 1 if anything material is new since the last state
-//   node watch/watch.mjs --selftest       offline: recorded fixtures through the same collect/diff/dedupe code
+//   node watch/watch.mjs --selftest       offline: recorded fixtures through the same collect/diff code
 //
 // Exit: 0 ok; 1 material change with --fail-on-change (or a failed selftest); 2 usage, input, or token
 // error; 3 GitHub API failure (nothing is written from partial data).
@@ -23,6 +26,10 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { gatherFreshness } from './freshness/facts.mjs';
+import { computeFreshness, renderLiveJson, MAX_BYTES } from './freshness/live.mjs';
+import { latestRechecks, parsePrivateCi, assertLedgerPrefix } from './freshness/triggers.mjs';
+import { parseTsv as parseRevisit } from './freshness/revisit.mjs';
 
 const OWNER = 'Dicklesworthstone';
 const ISSUE_REPO = 'JYeswak/franken-research';
@@ -33,7 +40,6 @@ const OVERVIEW = join(ROOT, 'synthesis', '00-overview.md');
 const EXPECTED_ASSESSED = 44;
 // Assessment date of the pinned corpus (README "What we found"; synthesis/00-overview.md master matrix).
 const ASSESSMENT_DATE = '2026-09-22';
-const ISSUE_CAP = 20;
 const GQL_CONCURRENCY = 3;
 const GQL_BATCH = 8;
 const REST_CONCURRENCY = 6;
@@ -46,7 +52,8 @@ class WatchError extends Error {
 const usageError = (m) => new WatchError(EXIT.USAGE, m);
 const apiError = (m) => new WatchError(EXIT.API, m);
 
-// Change kind -> issue label, and the master-matrix cells it may affect (synthesis/00-overview.md).
+// Change kind -> label and the master-matrix cells it may affect (synthesis/00-overview.md), as
+// recorded in each entry of watch/changes/<date>.json.
 const KINDS = {
   release: { label: 'release', affects: ['Rel', 'TRL', 'NODUS'] },
   tag: { label: 'release', affects: ['Rel', 'TRL', 'NODUS'] },
@@ -59,27 +66,9 @@ const KINDS = {
   pin_unreachable: { label: 'pin-rewritten', affects: ['All'] },
   new_repo: { label: 'new-repo', affects: ['Set'] },
 };
-const CELLS = {
-  TRL: 'TRL (technology readiness level)',
-  NODUS: 'NODUS ring (Explore, Monitor, Pilot)',
-  License: 'License (Rider = MIT plus the OpenAI/Anthropic rider; plain MIT; none = no operative grant)',
-  Bus: 'Bus factor',
-  CI: 'CI class (C1 public CI green at pin; C2 red at pin; C3 CI exists, no pin verdict; C4 no test CI or deploy-only; C5 CI disabled or deleted; C6 private-only)',
-  Rel: 'Release class (R1 no release or tag; R2 release targets an earlier commit, or phantom; R3 release artifact exists)',
-  Identity: 'No cell directly: the packet, brief, and site links name the old repository',
-  All: 'Every cell: evidence at the pin may no longer be re-derivable',
-  Set: 'The assessed set of 44: candidate for a new packet (no existing cell)',
-};
+// The labels the dashboard issue carries (watch/freshness/dashboard.mjs creates them if missing).
 export const LABELS = {
   watch: ['c5def5', 'Opened by the daily watch (watch/watch.mjs)'],
-  release: ['0e8a16', 'Watch: release or tag after the pin'],
-  license: ['d93f0b', 'Watch: license SPDX or LICENSE text changed'],
-  ci: ['1d76db', 'Watch: .github/workflows file set changed'],
-  archived: ['777777', 'Watch: repository archived or unarchived'],
-  renamed: ['fbca04', 'Watch: repository renamed'],
-  deleted: ['b60205', 'Watch: repository deleted or made private'],
-  'pin-rewritten': ['b60205', 'Watch: pinned commit no longer an ancestor of HEAD'],
-  'new-repo': ['5319e7', 'Watch: new public repository, assessment candidate'],
   dashboard: ['5319e7', 'Watch: the single living freshness dashboard issue (watch/freshness/dashboard.mjs)'],
 };
 
@@ -124,26 +113,32 @@ const PIN_PATTERNS = [
   /\*\*Pin:\*\*\s*`([0-9a-f]{40})`/g,
   /^\| Pinned revision \|\s*`([0-9a-f]{40})`/gm,
 ];
+// One packet's repository name and pin; `problem` says why it cannot be used.
+export function parsePacketText(text, file) {
+  const names = new Set();
+  for (const line of text.split('\n')) {
+    if (!REPO_LINE.test(line)) continue;
+    const m = line.match(REPO_NAME);
+    if (m) names.add(m[1]);
+  }
+  const pins = new Set();
+  for (const re of PIN_PATTERNS) for (const m of text.matchAll(re)) pins.add(m[1]);
+  const expect = file.replace(/-assessment\.md$/, '');
+  const problems = [];
+  if (names.size !== 1) problems.push(`${file}: ${names.size} repository names (${[...names].join(', ') || 'none'})`);
+  else if (!names.has(expect)) problems.push(`${file}: repository line names ${[...names][0]}, file name says ${expect}`);
+  if (pins.size !== 1) problems.push(`${file}: ${pins.size} distinct pins`);
+  return { repo: [...names][0] ?? null, pin: [...pins][0] ?? null, problem: problems.join('; ') || null, ok: names.size === 1 && pins.size === 1 };
+}
 export function parsePackets(dir) {
   if (!existsSync(dir)) throw usageError(`packets directory not found: ${dir}`);
   const files = readdirSync(dir).filter((f) => f.endsWith('-assessment.md')).sort();
   const out = [];
   const problems = [];
   for (const f of files) {
-    const text = readFileSync(join(dir, f), 'utf8');
-    const names = new Set();
-    for (const line of text.split('\n')) {
-      if (!REPO_LINE.test(line)) continue;
-      const m = line.match(REPO_NAME);
-      if (m) names.add(m[1]);
-    }
-    const pins = new Set();
-    for (const re of PIN_PATTERNS) for (const m of text.matchAll(re)) pins.add(m[1]);
-    const expect = f.replace(/-assessment\.md$/, '');
-    if (names.size !== 1) problems.push(`${f}: ${names.size} repository names (${[...names].join(', ') || 'none'})`);
-    else if (!names.has(expect)) problems.push(`${f}: repository line names ${[...names][0]}, file name says ${expect}`);
-    if (pins.size !== 1) problems.push(`${f}: ${pins.size} distinct pins`);
-    if (names.size === 1 && pins.size === 1) out.push({ repo: [...names][0], pin: [...pins][0], packet: `packets/${f}` });
+    const p = parsePacketText(readFileSync(join(dir, f), 'utf8'), f);
+    if (p.problem) problems.push(p.problem);
+    if (p.ok) out.push({ repo: p.repo, pin: p.pin, packet: `packets/${f}` });
   }
   if (problems.length) throw usageError(`packet parse failed:\n  ${problems.join('\n  ')}`);
   if (out.length !== EXPECTED_ASSESSED) throw usageError(`expected ${EXPECTED_ASSESSED} assessed repos, parsed ${out.length}`);
@@ -539,8 +534,7 @@ export function candidateReasons(d) {
 }
 export const isCandidate = (d) => candidateReasons(d).length > 0;
 
-// Titles and evidence shared by the daily diff and the since-pin backfill, so one event always gets
-// one issue title (issues are deduplicated by exact title).
+// Titles and evidence for the daily changes file (watch/changes/<date>.json).
 const TITLE = {
   release: (tag) => `release ${tag}`,
   tag: (tag) => `tag ${tag}`,
@@ -556,72 +550,6 @@ const EVIDENCE = {
   pinGone: (name, pin, head) => [apiUrl(`/repos/${OWNER}/${name}/compare/${pin}...${head}`), ghUrl(name, `/commit/${pin}`)],
 };
 const workflowSummary = (added, removed) => `The .github/workflows file set changed: ${[...added.map((w) => `+${w}`), ...removed.map((w) => `-${w}`)].join(', ')}.`;
-
-// One change per material-since-pin event (--backfill-since-pin): events that predate the first
-// state never appear in a daily diff, so this is how they reach the issue queue.
-export function sincePinChanges(snap) {
-  const day = snap.checked_at.slice(0, 10);
-  const out = [];
-  for (const r of Object.values(snap.assessed)) {
-    const name = r.name ?? r.repo;
-    const atPin = `at the pin (${short(r.pin)}, ${r.pin_date ?? 'date unknown'})`;
-    for (const ev of materialSincePin(r)) {
-      const e = ev.event;
-      if (ev.kind === 'deleted') {
-        out.push(change(r.repo, 'deleted', 'gone', TITLE.deleted, {
-          summary: `${OWNER}/${r.repo} is not readable through the API (deleted, made private, or transferred).`,
-          before: `public ${atPin}`, after: 'not found', value: `gone@${day}`,
-          evidence: [r.id != null ? apiUrl(`/repositories/${r.id}`) : apiUrl(`/repos/${OWNER}/${r.repo}`), ghUrl(r.repo)],
-        }));
-      } else if (ev.kind === 'renamed') {
-        out.push(change(r.repo, 'renamed', r.name, TITLE.renamed(r.name), {
-          summary: `${OWNER}/${r.repo}, the name in the packet, is now ${OWNER}/${r.name} (GitHub id ${r.id}).`,
-          before: r.repo, after: r.name, value: `${r.repo}->${r.name}`, evidence: [apiUrl(`/repositories/${r.id}`), ghUrl(r.name)],
-        }));
-      } else if (ev.kind === 'pin_unreachable') {
-        out.push(change(r.repo, 'pin_unreachable', r.pin, TITLE.pinGone(r.pin), {
-          summary: `The pinned commit ${r.pin} is not an ancestor of the default branch (compare: ${r.compare_status}). History was rewritten or the branch reset.`,
-          before: `the pin ${short(r.pin)}`, after: `${r.compare_status} at HEAD ${short(r.head)}`, value: r.compare_status,
-          evidence: EVIDENCE.pinGone(name, r.pin, r.head),
-        }));
-      } else if (ev.kind === 'archived') {
-        out.push(change(r.repo, 'archived', 'archived', 'archived', {
-          summary: `${OWNER}/${name} is archived.`, before: `active ${atPin}`, after: 'archived', value: `archived@${day}`,
-          evidence: [apiUrl(`/repos/${OWNER}/${name}`), ghUrl(name)],
-        }));
-      } else if (ev.kind === 'release') {
-        out.push(change(r.repo, 'release', e.name, TITLE.release(e.name), {
-          summary: `GitHub release ${e.name}${r.releases[e.name]?.prerelease ? ' (prerelease)' : ''} was published after the pin.`,
-          before: `no release ${e.name} ${atPin}`, after: `release ${e.name} -> ${short(e.target)}, published ${e.date}`,
-          value: e.target ?? 'none', evidence: EVIDENCE.release(name, e.name, e.target),
-        }));
-      } else if (ev.kind === 'tag') {
-        out.push(change(r.repo, 'tag', e.name, TITLE.tag(e.name), {
-          summary: `Tag ${e.name} was created after the pin${e.target === r.pin ? ', on the pinned commit itself' : ''}; there is no GitHub release for it.`,
-          before: `no tag ${e.name} ${atPin}`, after: `tag ${e.name} -> ${short(e.target)} (${e.date})`,
-          value: e.target ?? 'none', evidence: EVIDENCE.tag(name, e.name),
-        }));
-      } else if (ev.kind === 'license') {
-        const files = licenseText(r.license_files);
-        out.push(change(r.repo, 'license', digest(licenseKey(r.license_files)), `license text changed since the pin (SPDX now ${r.license_spdx}, ${files})`, {
-          summary: `A license file differs from the pin; GitHub now detects ${r.license_spdx}. A rider lives in the text, so read the diff.`,
-          before: `${licenseText(r.license_files_at_pin ?? [])} ${atPin}`, after: `${r.license_spdx}; ${files}`,
-          value: `${r.license_spdx}|${licenseKey(r.license_files)}`,
-          evidence: [...r.license_files.map((f) => ghUrl(name, `/blob/${r.head}/${f.name}`)), ghUrl(name, `/compare/${r.pin}...${r.head}`)],
-        }));
-      } else if (ev.kind === 'workflows') {
-        const a = r.workflows_added_since_pin;
-        const d = r.workflows_removed_since_pin;
-        out.push(change(r.repo, 'workflows', digest(r.workflows), TITLE.workflows(a.length, d.length, r.workflows.length), {
-          summary: workflowSummary(a, d),
-          before: `${r.workflows.length - a.length + d.length} files ${atPin}`, after: `${r.workflows.length} files at ${short(r.head)}`,
-          value: digest(r.workflows), evidence: EVIDENCE.workflows(name, r.pin, r.head),
-        }));
-      }
-    }
-  }
-  return out.map((c) => ({ ...c, origin: 'pin' })).sort(byKey);
-}
 
 export function diffSnapshots(prev, cur) {
   if (!prev) return { baseline: true, material: [], informational: [], commits: { repos: 0, total: 0 } };
@@ -833,11 +761,17 @@ export function renderLatest(snap, changes) {
   }, null, 2) + '\n';
 }
 
-function writeOutputs(snap, diff) {
+// fresh: { liveText, ledgerText, prevLedger } from freshnessStep. The ledger is written only when it
+// starts with the previous one byte for byte (FR-G.3); live.json only under its size budget (FR-L.2).
+function writeOutputs(snap, diff, fresh) {
   const day = snap.checked_at.slice(0, 10);
+  assertLedgerPrefix(fresh.prevLedger, fresh.ledgerText);
+  if (Buffer.byteLength(fresh.liveText) >= MAX_BYTES) throw usageError(`watch/live.json would be ${Buffer.byteLength(fresh.liveText)} bytes; FR-L.2 allows under ${MAX_BYTES}`);
   const files = {
     [join(WATCH_DIR, 'state.json')]: toJson(snap),
     [join(WATCH_DIR, 'census', `${day}.tsv`)]: renderCensus(snap),
+    [join(WATCH_DIR, 'live.json')]: fresh.liveText,
+    [join(WATCH_DIR, 'crossings.jsonl')]: fresh.ledgerText,
   };
   const changesFile = join(WATCH_DIR, 'changes', `${day}.json`);
   const existing = existsSync(changesFile) ? JSON.parse(readFileSync(changesFile, 'utf8')) : null;
@@ -850,27 +784,12 @@ function writeOutputs(snap, diff) {
   return { files: Object.keys(files).map((f) => f.slice(ROOT.length + 1)), material: changes.material.length };
 }
 
-// ---------------------------------------------------------------- issues
-// Anyone can open an issue with a predictable `[watch] ...` title or paste a marker into a body or
-// comment, so a title match counts only on an issue this token's identity authored, labelled
-// `watch`, whose body carries this change's key marker; value markers count only in that body and
-// in comments by the same identity. Marker lines stand alone and their values are URI-encoded (a
-// tag may legally contain `-->`), and external text is Markdown-escaped before it reaches a body.
-const KEY_MARK = /^<!-- watch-key: (\S+) -->$/gm;
-const VALUE_MARK = /^<!-- watch-value: (\S*) -->$/gm;
-const lastMark = (re, body) => [...(body ?? '').matchAll(re)].at(-1)?.[1] ?? null;
-const safeDecode = (s) => { try { return decodeURIComponent(s); } catch { return null; } };
-const markValue = (body) => { const m = lastMark(VALUE_MARK, body); return m == null ? null : safeDecode(m); };
-const valueMark = (v) => `<!-- watch-value: ${encodeURIComponent(v)} -->`;
-export const watchKey = (ch) => ch.key ?? [ch.repo, ch.kind, ch.ident].map(encodeURIComponent).join('|');
-export const markKey = (body) => lastMark(KEY_MARK, body);
+// ---------------------------------------------------------------- issue text helpers
+// Per-event issues for assessed repositories are retired (watch/freshness/SPEC.md FR-D.4): the run
+// keeps one dashboard issue (watch/freshness/dashboard.mjs), which uses these.
 // GitHub issue text is Markdown: escape table pipes, emphasis, links, HTML, mentions, references,
 // and math in anything that came from an upstream repository (tag, release, file names).
 export const mdText = (s) => String(s ?? '').replace(/[\r\n]+/g, ' ').replace(/[\\`*_{}[\]<>()#+!|~&@$]/g, '\\$&');
-const byLogin = (x, bot) => typeof bot === 'string' && bot !== '' && x?.user?.login === bot;
-const labelNames = (i) => (i?.labels ?? []).map((l) => (typeof l === 'string' ? l : l?.name));
-export const trustedIssue = (issue, ch, bot) => byLogin(issue, bot) && labelNames(issue).includes('watch')
-  && markKey(issue.body) === watchKey(ch) && markValue(issue.body) != null;
 // The login the token acts as: the Actions token cannot read GET /user, and posts as github-actions[bot].
 export async function botLogin(api, env = process.env) {
   if (env.GITHUB_ACTIONS === 'true') return 'github-actions[bot]';
@@ -878,148 +797,63 @@ export async function botLogin(api, env = process.env) {
   if (typeof login !== 'string' || !login) throw apiError('GET /user returned no login; cannot tell our issues from anyone else\'s');
   return login;
 }
-// 'create' when no trusted issue exists (open or closed); 'exists' when the trusted issue or one of
-// the identity's own comments already records this value; 'comment' when the value changed
-// ('check-comments' asks the caller to load comments first). A closed issue is never reopened.
-export function dedupe(issue, ch, bot) {
-  if (!issue) return 'create';
-  if (markValue(issue.body) === ch.value) return 'exists';
-  if (issue.comments == null) return 'check-comments';
-  return issue.comments.some((c) => byLogin(c, bot) && markValue(c.body) === ch.value) ? 'exists' : 'comment';
-}
 
-const valueTable = (ch) => ['| | Value |', '|---|---|', `| Before | ${mdText(ch.before)} |`, `| After | ${mdText(ch.after)} |`];
-export const commentBody = (ch) => ['The watch saw this again with a new value.', '', ...valueTable(ch), '', 'Evidence:',
-  ...ch.evidence.map((u) => `- ${u}`), '', valueMark(ch.value)].join('\n');
-
-export function issueBody(ch, snap, matrix) {
-  const row = matrix[ch.repo];
-  const repoLink = (p) => `https://github.com/${ISSUE_REPO}/blob/main/${p}`;
-  const run = process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null;
-  const rec = snap.assessed[ch.repo];
-  return [
-    `**What changed:** ${mdText(ch.summary)}`,
-    '',
-    ...valueTable(ch),
-    '',
-    ch.origin === 'pin'
-      ? `Found by the since-pin backfill at ${snap.checked_at}. It compares with the pin, not with the previous check, because this event predates the watch's first state.`
-      : `Observed by the daily watch at ${snap.checked_at}; previous check ${snap.previous_checked_at ?? 'none'}.${run ? ` Run: ${run}` : ''}`,
-    '',
-    '**Evidence (GitHub API and web):**',
-    ...ch.evidence.map((u) => `- ${u}`),
-    '',
-    `**Assessment cells this may affect** (legend: [synthesis/00-overview.md](${repoLink('synthesis/00-overview.md')}); values are the pinned master-matrix cells, not a new judgment):`,
-    ...ch.affects.map((cell) => `- ${CELLS[cell]}${row?.[cell] ? `: **${row[cell]}** at the pin` : ''}`),
-    rec ? `\nPacket: [${rec.packet}](${repoLink(rec.packet)}), pinned at \`${rec.pin}\`.` : '',
-    '',
-    '**Analyst checklist** (the watch does not judge; it only reports):',
-    '- [ ] Triage: could this move a matrix cell? If not, close with a one-line reason.',
-    `- [ ] If yes: write a dated re-check \`updates/${ch.repo}-YYYY-MM-DD.md\` per [updates/METHOD.md](${repoLink('updates/METHOD.md')}), pinned to the new commit.`,
-    '- [ ] Have a separate agent session review the re-check before it lands.',
-    `- [ ] Harvest any new practice into [stack/rigor-practices.tsv](${repoLink('stack/rigor-practices.tsv')}).`,
-    '- [ ] Close with links to the re-check, the review, and any rigor row.',
-    '',
-    `<!-- watch-key: ${watchKey(ch)} -->`,
-    valueMark(ch.value),
-  ].join('\n');
-}
-
-// Dated re-checks under updates/ that name this release or tag (for example
-// updates/franken_code_browser-2026-09-24.md naming v0.1.0). They get one pointer comment on the
-// issue; the analyst still triages and closes it.
-export function recheckFiles(ch, root = ROOT) {
-  if (ch.kind !== 'release' && ch.kind !== 'tag') return [];
-  const dir = join(root, 'updates');
+// ---------------------------------------------------------------- freshness (watch/freshness/SPEC.md)
+// Cohort matrices (FR-O.3): cohorts/<name>/matrix.md, in the master matrix's columns, lists the
+// cohort's repositories; each one's pin comes from cohorts/<name>/<repo>-assessment.md, parsed like
+// the 44 packets. The verdict date is the first YYYY-MM-DD in the matrix file.
+export function parseCohorts(dir) {
   if (!existsSync(dir)) return [];
-  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const file = new RegExp(`^${esc(ch.repo)}-\\d{4}-\\d{2}-\\d{2}\\.md$`);
-  const names = new RegExp(`(?<![\\w.-])${esc(ch.ident)}(?![\\w-]|\\.\\d)`);
-  return readdirSync(dir).filter((f) => file.test(f)).sort()
-    .filter((f) => names.test(readFileSync(join(dir, f), 'utf8'))).map((f) => `updates/${f}`);
+  const out = [];
+  for (const name of readdirSync(dir).sort()) {
+    const file = join(dir, name, 'matrix.md');
+    if (!existsSync(file)) continue;
+    const text = readFileSync(file, 'utf8');
+    const rows = parseMatrix(text);
+    const verdictDate = text.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0] ?? null;
+    for (const repo of Object.keys(rows).sort()) {
+      const packet = join(dir, name, `${repo}-assessment.md`);
+      if (!existsSync(packet)) throw usageError(`cohort ${name}: matrix lists ${repo} but ${packet.slice(dir.length + 1)} does not exist`);
+      const parsed = parsePacketText(readFileSync(packet, 'utf8'), `${repo}-assessment.md`);
+      if (parsed.problem) throw usageError(`cohort ${name}: ${parsed.problem}`);
+      out.push({ repo, pin: parsed.pin, packet: `cohorts/${name}/${repo}-assessment.md`, set: `cohort:${name}`, matrixRow: rows[repo], verdictDate });
+    }
+  }
+  return out;
 }
 
-export async function syncIssues(api, snap, changes, { bot, root = ROOT } = {}) {
-  if (typeof bot !== 'string' || !bot) throw usageError('syncIssues needs the bot login the token acts as');
-  const result = { created: [], commented: [], exists: [], rechecks: [], rollup: null, untrusted: [] };
-  const ours = (c) => byLogin(c, bot);
-  if (!changes.length) return result;
-  const base = `/repos/${ISSUE_REPO}`;
-  const have = new Set();
-  for (let page = 1; ; page++) {
-    const r = await api.rest('GET', `${base}/labels?per_page=100&page=${page}`);
-    r.body.forEach((l) => have.add(l.name));
-    if (r.body.length < 100) break;
-  }
-  const needed = new Set(['watch', ...changes.map((c) => c.label)]);
-  for (const name of [...needed].sort()) {
-    if (!have.has(name)) await api.rest('POST', `${base}/labels`, { name, color: LABELS[name][0], description: LABELS[name][1] });
-  }
-  const all = [];
-  for (let page = 1; ; page++) {
-    const r = await api.rest('GET', `${base}/issues?state=all&per_page=100&page=${page}&sort=created&direction=asc`);
-    for (const i of r.body) if (!i.pull_request) all.push(i);
-    if (r.body.length < 100) break;
-  }
-  // The oldest trusted issue for this change; same-title issues that fail the check are only reported.
-  const find = (ch) => {
-    const same = all.filter((i) => i.title === ch.title);
-    const hit = same.find((i) => trustedIssue(i, ch, bot)) ?? null;
-    for (const i of same) if (i !== hit && !result.untrusted.some((u) => u.number === i.number) && !trustedIssue(i, ch, bot)) result.untrusted.push(ref(i));
-    return hit;
+function readFreshInputs(root) {
+  const fresh = join(root, 'watch', 'freshness');
+  const updates = join(root, 'updates');
+  const recheckFiles = existsSync(updates) ? readdirSync(updates).filter((f) => /-\d{4}-\d{2}-\d{2}\.md$/.test(f)).map((file) => ({ file, text: readFileSync(join(updates, file), 'utf8') })) : [];
+  const live = join(root, 'watch', 'live.json');
+  const ledger = join(root, 'watch', 'crossings.jsonl');
+  return {
+    rechecks: latestRechecks(recheckFiles),
+    privateCi: parsePrivateCi(readFileSync(join(fresh, 'private-ci.tsv'), 'utf8')),
+    revisitRows: parseRevisit(readFileSync(join(fresh, 'revisit.tsv'), 'utf8')),
+    prevLive: existsSync(live) ? JSON.parse(readFileSync(live, 'utf8')) : null,
+    prevLedger: existsSync(ledger) ? readFileSync(ledger, 'utf8') : '',
   };
-  const matrix = existsSync(OVERVIEW) ? parseMatrix(readFileSync(OVERVIEW, 'utf8')) : {};
-  const loadComments = async (n) => (await api.rest('GET', `${base}/issues/${n}/comments?per_page=100`)).body;
-  const post = async (n, body) => (await api.rest('POST', `${base}/issues/${n}/comments`, { body })).body;
-  function ref(i) { return { number: i.number, title: i.title, url: i.html_url }; }
-  const repoLink = (p) => `https://github.com/${ISSUE_REPO}/blob/main/${p}`;
-  const recheckBody = (ch, files) => `A dated re-check that names ${mdText(ch.ident)} already exists: ${files.map((p) => `[${p}](${repoLink(p)})`).join(', ')}. Triage against it. The watch does not close issues; the analyst does.\n\n${files.map((p) => `<!-- watch-recheck: ${p} -->`).join('\n')}`;
-  const overflow = [];
-  let actions = 0;
-  for (const ch of changes) {
-    let issue = find(ch);
-    let comments = null;
-    let decision = dedupe(issue, ch, bot);
-    if (decision === 'check-comments') {
-      comments = await loadComments(issue.number);
-      decision = dedupe({ ...issue, comments }, ch, bot);
-    }
-    if (decision === 'exists') result.exists.push(ref(issue));
-    else if (actions >= ISSUE_CAP) { overflow.push(ch); continue; }
-    else if (decision === 'create') {
-      actions++;
-      issue = (await api.rest('POST', `${base}/issues`, { title: ch.title, body: issueBody(ch, snap, matrix), labels: ['watch', ch.label] })).body;
-      all.push(issue);
-      comments = [];
-      result.created.push(ref(issue));
-    } else {
-      actions++;
-      comments = [...(comments ?? []), await post(issue.number, commentBody(ch))];
-      result.commented.push(ref(issue));
-    }
-    const files = recheckFiles(ch, root);
-    if (files.length) {
-      comments ??= await loadComments(issue.number);
-      const missing = files.filter((p) => !comments.some((c) => ours(c) && (c.body ?? '').includes(`<!-- watch-recheck: ${p} -->`)));
-      if (missing.length) {
-        await post(issue.number, recheckBody(ch, missing));
-        result.rechecks.push({ ...ref(issue), files: missing });
-      }
-    }
-  }
-  if (overflow.length) {
-    const day = snap.checked_at.slice(0, 10);
-    const roll = { title: `[watch] rollup ${day}`, key: `rollup|${day}`, value: digest(overflow.map((c) => `${c.title}|${c.value}`)) };
-    const list = overflow.map((c) => `- ${mdText(c.title)}: ${mdText(c.summary)} (${c.evidence[0]})`).join('\n');
-    const body = `The watch capped this run at ${ISSUE_CAP} issue actions. ${overflow.length} more material change(s) are listed here instead of opening one issue each; triage them from this list (records for ${day} in watch/changes/ and watch/census/).\n\n${list}\n\n<!-- watch-key: ${roll.key} -->\n${valueMark(roll.value)}`;
-    const issue = find(roll);
-    let decision = dedupe(issue, roll, bot);
-    if (decision === 'check-comments') decision = dedupe({ ...issue, comments: await loadComments(issue.number) }, roll, bot);
-    if (decision === 'create') result.rollup = ref((await api.rest('POST', `${base}/issues`, { title: roll.title, body, labels: ['watch'] })).body);
-    else if (decision === 'comment') { await post(issue.number, body); result.rollup = ref(issue); }
-    else result.rollup = ref(issue);
-  }
-  return result;
+}
+
+// Gather the freshness facts (re-check pins and dependency.edge lockfiles included), compute
+// live.json and the next ledger, and keep the blob-summary and runs cache in the state.
+async function freshnessStep(api, snap, diff, watched, prev, root = ROOT) {
+  const inputs = readFreshInputs(root);
+  const extra = Object.fromEntries(Object.values(inputs.rechecks).map((r) => [r.repo, [{ key: 'recheck', sha: r.sha }]]));
+  const lockfiles = new Set(inputs.revisitRows.filter((r) => r.detector === 'dependency.edge').map((r) => r.repo));
+  const got = await gatherFreshness(api, snap, { cache: prev?.freshness ?? null, extra, lockfiles });
+  snap.freshness = got.cache;
+  const assessedIds = new Set(Object.values(snap.assessed).map((r) => r.id).filter((x) => x != null));
+  const candidates = snap.discovery.filter((d) => !assessedIds.has(d.id) && d.created_at >= `${ASSESSMENT_DATE}T00:00:00Z` && isCandidate(d))
+    .map((d) => ({ repo: d.name, created_at: d.created_at, reasons: candidateReasons(d) }));
+  const recs = Object.values(snap.assessed);
+  const out = computeFreshness({
+    records: got.records, summaries: got.cache.summaries, watched, ...inputs, candidates, checkedAt: snap.checked_at,
+    informational: { events_today: diff.material.length + diff.informational.length, events_since_pin: recs.reduce((s, r) => s + materialSincePin(r).length, 0) },
+  });
+  return { live: out.live, liveText: renderLiveJson(out.live), ledgerText: out.ledgerText, prevLedger: inputs.prevLedger, events: out.events, blobsFetched: got.fetched.blobs };
 }
 
 // ---------------------------------------------------------------- report
@@ -1093,21 +927,19 @@ function printReport(rep) {
   const s = rep.api;
   L.push(`api: ${s.graphql_calls} GraphQL calls (cost ${s.graphql_cost}, ${s.graphql_remaining ?? '?'} left), ${s.rest_calls} REST calls (${s.rest_remaining ?? '?'} left); ${s.elapsed_s} s`);
   if (rep.wrote) L.push(`wrote: ${rep.wrote.files.join(', ')} (${rep.wrote.material} material today)`);
-  if (rep.issues) {
-    const i = rep.issues;
-    const line = (tag, x) => L.push(`  ${tag} #${x.number} ${x.title}`);
-    L.push(`issues${rep.backfill ? ' (with since-pin backfill)' : ''}: created ${i.created.length}, commented ${i.commented.length}, already filed ${i.exists.length}, re-check pointers ${i.rechecks.length}${i.rollup ? `, rollup #${i.rollup.number}` : ''}`);
-    i.created.forEach((x) => line('created  ', x));
-    i.commented.forEach((x) => line('commented', x));
-    i.exists.forEach((x) => line('exists   ', x));
-    i.rechecks.forEach((x) => L.push(`  re-check #${x.number} -> ${x.files.join(', ')}`));
-    i.untrusted.forEach((x) => L.push(`  ignored  #${x.number} ${x.title} (same title, not a watch issue by this identity)`));
+  if (rep.freshness) {
+    const f = rep.freshness;
+    const t = f.totals;
+    L.push(`freshness: ${t.repos} repos (${t.pinned} pinned, ${t.cohort} cohort): ${t.current} current, ${t.changed} changed, ${t.due} due, ${t.unknown} unknown; live.json ${f.bytes} bytes; ${f.blobs_fetched} blob(s) parsed`);
+    L.push(`crossings open: ${f.open.length}${f.open.length ? `: ${f.open.join(', ')}` : ''}; pending (seen once): ${f.pending.length}${f.pending.length ? `: ${f.pending.join(', ')}` : ''}`);
+    L.push(`ledger events this run: ${f.events.length}${f.events.length ? `: ${f.events.map((e) => `${e.event} ${e.id}`).join(', ')}` : ''}`);
   }
+  if (rep.dashboard) L.push(`dashboard: ${rep.dashboard.action} #${rep.dashboard.number}${rep.dashboard.ignored.length ? `; ignored same-title issues ${rep.dashboard.ignored.map((n) => `#${n}`).join(', ')}` : ''}`);
   console.log(L.join('\n'));
 }
 
 // ---------------------------------------------------------------- selftest (offline)
-// In-memory stand-in for the GitHub issues and labels endpoints syncIssues calls. Everything the
+// In-memory stand-in for the GitHub issues and labels endpoints the dashboard calls. Everything the
 // token posts is authored by `login`; tests add other authors' issues and comments directly.
 export function memoryIssues(login = 'github-actions[bot]') {
   const issues = [];
@@ -1200,7 +1032,6 @@ async function selftest() {
   };
   const wfPin = (snap) => ({
     material: materialSincePin(snap.assessed.frankenlibc).filter((e) => e.kind === 'workflows').map((e) => e.text),
-    backfill: sincePinChanges(snap).filter((c) => c.kind === 'workflows').map((c) => c.title),
   });
   test('workflow additions to a set that already had files are informational, daily and since the pin', () => {
     expect(wfBase.length > 0, 'fixture frankenlibc has no workflows');
@@ -1208,9 +1039,9 @@ async function selftest() {
     const d1 = wfDaily(s1, cur);
     expect(d1.m.length === 0 && d1.i.length === 1 && d1.i[0] === `[watch] frankenlibc: workflows +1 -0 (${wfBase.length + 1} now)`, `daily ${JSON.stringify(d1)}`);
     const p = wfPin(cur);
-    expect(p.material.length === 0 && p.backfill.length === 0, `since pin ${JSON.stringify(p)}`);
+    expect(p.material.length === 0, `since pin ${JSON.stringify(p)}`);
     // The recorded fixture itself: frankenlibc added 7 files to the 2 it had at the pin.
-    expect(JSON.stringify(wfPin(s1)) === '{"material":[],"backfill":[]}', `recorded frankenlibc ${JSON.stringify(wfPin(s1))}`);
+    expect(JSON.stringify(wfPin(s1)) === '{"material":[]}', `recorded frankenlibc ${JSON.stringify(wfPin(s1))}`);
     const row = renderCensus(s1).split('\n').find((ln) => ln.startsWith('frankenlibc\t')).split('\t');
     expect(row[CENSUS_COLUMNS.indexOf('workflows_changed_since_pin')] === '+7 -0', `census still lists the additions: ${row}`);
   });
@@ -1221,7 +1052,7 @@ async function selftest() {
     const d1 = wfDaily(s1, cur);
     expect(d1.m.length === 1 && d1.m[0] === title && d1.i.length === 0, `daily ${JSON.stringify(d1)}`);
     const p = wfPin(cur);
-    expect(p.material.length === 1 && p.backfill.length === 1 && p.backfill[0] === title, `since pin ${JSON.stringify(p)}`);
+    expect(p.material.length === 1 && p.material[0] === `workflows +1 -1 (${wfBase.length} now)`, `since pin ${JSON.stringify(p)}`);
     const gone = wfDaily(s1, wfSnap([], wfBase));
     expect(gone.m.length === 1 && gone.m[0] === `[watch] frankenlibc: workflows +0 -${wfBase.length} (0 now)`, `non-empty to empty ${JSON.stringify(gone)}`);
   });
@@ -1231,7 +1062,7 @@ async function selftest() {
     const d1 = wfDaily(wfSnap([], []), cur);
     expect(d1.m.length === 1 && d1.m[0] === title && d1.i.length === 0, `daily ${JSON.stringify(d1)}`);
     const p = wfPin(cur);
-    expect(p.material.length === 1 && p.backfill.length === 1 && p.backfill[0] === title, `since pin ${JSON.stringify(p)}`);
+    expect(p.material.length === 1 && p.material[0] === 'workflows +1 -0 (1 now)', `since pin ${JSON.stringify(p)}`);
   });
   test('commits-only change is not material', () => {
     const before = s1.assessed.franken_alignment;
@@ -1291,103 +1122,20 @@ async function selftest() {
     expect(why('lonely_bend') === 'the name ends with _bend' && why('mytool') === 'its description says "clean-room"', `single clauses: ${why('lonely_bend')} | ${why('mytool')}`);
     const ch = x.material.find((c) => c.repo === 'beads_bend');
     expect(ch.summary.includes('Assessment candidate: the name ends with _bend; its description says "law-proved".'), `summary ${ch.summary}`);
-    expect(issueBody(ch, cur, {}).includes(mdText('Assessment candidate: the name ends with _bend')), 'issue body does not name the clause');
     expect(x.informational.find((c) => c.repo === 'franken_x').summary.includes('Informational: a fork.'), 'fork reason missing');
   });
   test('nothing else is material', () => {
     const titles = d.material.map((c) => c.title).sort();
     expect(titles.length === 6, `material: ${JSON.stringify(titles)}`);
   });
-  const BOT = 'github-actions[bot]';
-  test('dedupe: an existing title with the same value is exists; a new value is comment; none is create', () => {
-    const ch = mat('franken_code_browser', 'release')[0];
-    const filed = { title: ch.title, body: issueBody(ch, s2, {}), comments: [] };
-    expect(dedupe(filed, ch, BOT) === 'exists', `got ${dedupe(filed, ch, BOT)}`);
-    expect(dedupe({ ...filed, comments: null }, ch, BOT) === 'exists', 'body marker ignored');
-    const moved = { ...ch, value: 'f'.repeat(40) };
-    expect(dedupe({ ...filed, comments: null }, moved, BOT) === 'check-comments', 'did not ask for comments');
-    expect(dedupe(filed, moved, BOT) === 'comment', `got ${dedupe(filed, moved, BOT)}`);
-    const mark = `<!-- watch-value: ${moved.value} -->`;
-    expect(dedupe({ ...filed, comments: [{ body: mark, user: { login: BOT } }] }, moved, BOT) === 'exists', 'own comment marker ignored');
-    expect(dedupe({ ...filed, comments: [{ body: mark, user: { login: 'someone-else' } }] }, moved, BOT) === 'comment', 'another user\'s comment marker was trusted');
-    expect(dedupe(null, ch, BOT) === 'create', 'no issue should create');
-  });
-  const relCh = mat('franken_code_browser', 'release')[0];
-  const watchLabels = (ch) => [{ name: 'watch' }, { name: ch.label }];
-  test('a same-title issue by another user is ignored: the bot files its own and never comments on theirs', async () => {
-    const store = memoryIssues(BOT);
-    const copied = { title: relCh.title, labels: watchLabels(relCh), user: { login: 'someone-else' } };
-    // Same value (would suppress the report) and an older value (would receive the watch's comment).
-    const same = store.add({ ...copied, body: issueBody(relCh, s2, {}) });
-    const older = store.add({ ...copied, body: issueBody({ ...relCh, value: 'f'.repeat(40) }, s2, {}) });
-    const r = await syncIssues(store.api, s2, [relCh], { bot: BOT });
-    expect(r.created.length === 1 && r.exists.length === 0 && r.commented.length === 0, `first: ${JSON.stringify(r)}`);
-    const mine = store.issues.find((i) => i.number === r.created[0].number);
-    expect(mine.user.login === BOT && mine.title === relCh.title && trustedIssue(mine, relCh, BOT), 'own issue not filed or not trusted');
-    expect(store.comments.get(same.number).length === 0 && store.comments.get(older.number).length === 0, 'commented on another user\'s issue');
-    expect(r.untrusted.map((x) => x.number).join() === `${same.number},${older.number}`, `untrusted ${JSON.stringify(r.untrusted)}`);
-    const again = await syncIssues(store.api, s2, [relCh], { bot: BOT });
-    expect(again.exists.length === 1 && again.exists[0].number === mine.number && again.created.length === 0 && again.commented.length === 0, `second: ${JSON.stringify(again)}`);
-  });
-  test('a bot issue without the watch label or its key marker is not trusted; another user\'s comment marker does not count', async () => {
-    const body = issueBody(relCh, s2, {});
-    const planted = [
-      ['no watch label', { labels: [{ name: relCh.label }], body }],
-      ['no key marker', { labels: watchLabels(relCh), body: body.replace(/^<!-- watch-key: .* -->$/m, '') }],
-      ['another change\'s key', { labels: watchLabels(relCh), body: body.replace(watchKey(relCh), watchKey({ ...relCh, ident: 'v9.9.9' })) }],
-    ];
-    for (const [what, p] of planted) {
-      const store = memoryIssues(BOT);
-      const x = store.add({ title: relCh.title, user: { login: BOT }, ...p });
-      const r = await syncIssues(store.api, s2, [relCh], { bot: BOT });
-      expect(r.created.length === 1 && r.exists.length === 0 && r.commented.length === 0 && store.comments.get(x.number).length === 0, `${what}: ${JSON.stringify(r)}`);
-    }
-    const store = memoryIssues(BOT);
-    const filed = store.add({ title: relCh.title, user: { login: BOT }, labels: watchLabels(relCh), body: issueBody({ ...relCh, value: 'f'.repeat(40) }, s2, {}) },
-      [{ body: `<!-- watch-value: ${relCh.value} -->`, user: { login: 'someone-else' } }]);
-    const r = await syncIssues(store.api, s2, [relCh], { bot: BOT });
-    expect(r.commented.length === 1 && r.commented[0].number === filed.number && r.created.length === 0, `stranger marker suppressed the update: ${JSON.stringify(r)}`);
-  });
-  test('external tag names stay inside one table cell and cannot break the machine markers', async () => {
+  test('upstream tag names with table and comment syntax reach the changes file intact', () => {
     const cur = JSON.parse(JSON.stringify(s2));
     const sha = 'a'.repeat(40);
     for (const t of ['v1|cell', 'v2-->x']) cur.assessed.franken_alignment.tags[t] = { target: sha, date: '2026-09-25T00:00:00Z' };
     const tags = diffSnapshots(s1, cur).material.filter((c) => c.repo === 'franken_alignment' && c.kind === 'tag');
     const pipe = tags.find((c) => c.ident === 'v1|cell');
     const arrow = tags.find((c) => c.ident === 'v2-->x');
-    expect(pipe && arrow && /v1\|cell/.test(pipe.after), `tag changes ${JSON.stringify(tags.map((c) => c.title))}`);
-    const rows = (text) => text.split('\n').filter((ln) => /^\| (Before|After) \|/.test(ln));
-    const cells = (ln) => ln.split(/(?<!\\)\|/).length - 2;
-    const body = issueBody(pipe, cur, {});
-    expect(rows(body).length === 2 && rows(body).every((ln) => cells(ln) === 2), `issue rows ${JSON.stringify(rows(body))}`);
-    const store = memoryIssues(BOT);
-    const filed = store.add({ title: pipe.title, user: { login: BOT }, labels: watchLabels(pipe), body: issueBody({ ...pipe, value: 'b'.repeat(40) }, cur, {}) });
-    const r = await syncIssues(store.api, cur, [pipe, arrow], { bot: BOT });
-    const posted = store.comments.get(filed.number).at(-1)?.body ?? '';
-    expect(r.commented.length === 1 && rows(posted).length === 2 && rows(posted).every((ln) => cells(ln) === 2), `comment rows ${JSON.stringify(rows(posted))}`);
-    const made = store.issues.find((i) => i.title === arrow.title);
-    expect(made && trustedIssue(made, arrow, BOT), `marker for v2-->x unreadable: ${made?.body.split('\n').slice(-2)}`);
-    const marks = made.body.split('\n').filter((ln) => ln.startsWith('<!-- '));
-    expect(marks.length === 2 && marks.every((ln) => ln.indexOf('-->') === ln.length - 3), `a tag name closes the HTML comment early: ${JSON.stringify(marks)}`);
-    const again = await syncIssues(store.api, cur, [pipe, arrow], { bot: BOT });
-    expect(again.exists.length === 2 && again.created.length === 0 && again.commented.length === 0, `second: ${JSON.stringify(again)}`);
-  });
-  test('backfill on day1 files each since-pin event once; a second backfill finds only existing issues', async () => {
-    const titles = sincePinChanges(s1).map((c) => c.title);
-    // frankenlibc's since-pin workflow change is additions only (+7 to the 2 at the pin): not filed.
-    const want = ['[watch] franken_code_browser: release v0.1.0'];
-    expect(JSON.stringify(titles) === JSON.stringify(want), `titles ${JSON.stringify(titles)}`);
-    const daily = mat('franken_code_browser', 'release')[0].title;
-    expect(daily === '[watch] franken_code_browser: release v0.1.1', 'daily and backfill title formats differ');
-    const store = memoryIssues();
-    const first = await syncIssues(store.api, s1, sincePinChanges(s1), { bot: BOT });
-    expect(first.created.length === 1 && first.exists.length === 0 && !first.rollup, `first: ${JSON.stringify(first)}`);
-    expect(store.labels.has('watch') && store.labels.has('release') && !store.labels.has('ci'), `labels ${[...store.labels]}`);
-    const rc = first.rechecks;
-    expect(rc.length === 1 && rc[0].title === want[0] && rc[0].files.join() === 'updates/franken_code_browser-2026-09-24.md', `re-check pointers ${JSON.stringify(rc)}`);
-    const second = await syncIssues(store.api, s1, sincePinChanges(s1), { bot: BOT });
-    expect(second.exists.length === 1 && second.created.length === 0 && second.commented.length === 0 && second.rechecks.length === 0 && !second.rollup, `second: ${JSON.stringify(second)}`);
-    expect(store.issues.length === 1 && store.issues.every((i) => i.state === 'open') && store.comments.get(1).length === 1, 'duplicate issue or comment, or an issue was closed');
+    expect(pipe && arrow && /v1\|cell/.test(pipe.after) && /v2-->x/.test(arrow.after), `tag changes ${JSON.stringify(tags.map((c) => c.title))}`);
   });
   test('outputs are deterministic regardless of API node order', async () => {
     const shuffled = { ...day1, discovery: [...day1.discovery].reverse() };
@@ -1439,32 +1187,46 @@ async function selftest() {
 }
 
 // ---------------------------------------------------------------- main
-const USAGE = `usage: node watch/watch.mjs [--apply] [--issues [--backfill-since-pin]] [--json] [--fail-on-change] | --selftest
+const USAGE = `usage: node watch/watch.mjs [--apply [--dashboard]] [--json] [--fail-on-change] | --selftest
   (no flags)        dry report on stdout; writes nothing
-  --apply           write watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json, watch/latest.json
-  --issues          open or comment on issues in ${ISSUE_REPO} for material changes new since the last state
-  --backfill-since-pin  with --issues: also file every material-since-pin event (events older than the
-                    first state never reach a daily diff); same titles, dedupe, and 20-per-run cap
+  --apply           write watch/state.json, watch/census/<date>.tsv, watch/changes/<date>.json, watch/latest.json,
+                    watch/live.json, and append this run's crossing events to watch/crossings.jsonl
+  --dashboard       with --apply: create or edit the one freshness dashboard issue in ${ISSUE_REPO}
   --json            print the report as JSON
   --fail-on-change  dry report; exit 1 if a material change is new since the last state
-  --selftest        offline check of the diff and dedupe logic on watch/fixtures/
+  --selftest        offline check of the collect and diff logic on watch/fixtures/
+Per-event issues (--issues, --backfill-since-pin) are retired: watch/freshness/SPEC.md FR-D.4.
 exit: 0 ok, 1 change (--fail-on-change) or selftest failure, 2 usage/input/token, 3 GitHub API failure`;
 
 function parseArgs(argv) {
-  const known = new Set(['--apply', '--issues', '--backfill-since-pin', '--json', '--fail-on-change', '--selftest', '--help', '-h']);
+  const known = new Set(['--apply', '--dashboard', '--json', '--fail-on-change', '--selftest', '--help', '-h']);
+  const retired = new Set(['--issues', '--backfill-since-pin']);
   const flags = argv.filter((a) => a !== '--');
+  const gone = flags.filter((a) => retired.has(a));
+  if (gone.length) throw usageError(`${gone.join(' ')}: retired; the run keeps one dashboard issue instead (--apply --dashboard; watch/freshness/SPEC.md FR-D.4)\n${USAGE}`);
   const bad = flags.filter((a) => !known.has(a));
   if (bad.length) throw usageError(`unknown argument(s): ${bad.join(' ')}\n${USAGE}`);
   const o = {
-    apply: flags.includes('--apply'), issues: flags.includes('--issues'), json: flags.includes('--json'),
-    backfill: flags.includes('--backfill-since-pin'),
+    apply: flags.includes('--apply'), dashboard: flags.includes('--dashboard'), json: flags.includes('--json'),
     failOnChange: flags.includes('--fail-on-change'), selftest: flags.includes('--selftest'),
     help: flags.includes('--help') || flags.includes('-h'),
   };
   if (o.selftest && flags.length > 1) throw usageError(`--selftest takes no other flags\n${USAGE}`);
-  if (o.failOnChange && (o.apply || o.issues)) throw usageError(`--fail-on-change is for the dry report only\n${USAGE}`);
-  if (o.backfill && !o.issues) throw usageError(`--backfill-since-pin requires --issues\n${USAGE}`);
+  if (o.failOnChange && (o.apply || o.dashboard)) throw usageError(`--fail-on-change is for the dry report only\n${USAGE}`);
+  if (o.dashboard && !o.apply) throw usageError(`--dashboard requires --apply: the dashboard describes the live.json this run writes\n${USAGE}`);
   return o;
+}
+
+// The 44 assessed repositories (master matrix rows) and every cohort matrix row (FR-O.3).
+function watchedSet(root = ROOT) {
+  const matrix = parseMatrix(readFileSync(OVERVIEW, 'utf8'));
+  const pinned = parsePackets(PACKETS_DIR).map((a) => ({ ...a, set: 'pinned', matrixRow: matrix[a.repo] ?? null, verdictDate: ASSESSMENT_DATE }));
+  const missing = pinned.filter((a) => !a.matrixRow).map((a) => a.repo);
+  if (missing.length) throw usageError(`synthesis/00-overview.md has no master-matrix row for ${missing.join(', ')}`);
+  const cohort = parseCohorts(join(root, 'cohorts'));
+  const clash = cohort.filter((c) => pinned.some((p) => p.repo === c.repo)).map((c) => c.repo);
+  if (clash.length) throw usageError(`cohort matrices list assessed repositories: ${clash.join(', ')}`);
+  return [...pinned, ...cohort];
 }
 
 async function main(argv) {
@@ -1472,19 +1234,22 @@ async function main(argv) {
   if (opts.help) { console.log(USAGE); return EXIT.OK; }
   if (opts.selftest) return selftest();
   const t0 = Date.now();
-  const assessed = parsePackets(PACKETS_DIR);
+  const watched = watchedSet();
   const prev = readState(join(WATCH_DIR, 'state.json'));
   const api = makeApi(resolveToken());
-  const snap = await collect(liveSource(api), assessed, prev, iso(new Date().toISOString()));
+  const snap = await collect(liveSource(api), watched, prev, iso(new Date().toISOString()));
   const diff = diffSnapshots(prev, snap);
+  const fresh = await freshnessStep(api, snap, diff, watched, prev);
   const rep = buildReport(snap, diff, prev, opts, api, Date.now() - t0);
-  if (opts.apply) rep.wrote = writeOutputs(snap, diff);
-  if (opts.issues) {
-    const seen = new Set();
-    const changes = [...diff.material, ...(opts.backfill ? sincePinChanges(snap) : [])]
-      .filter((c) => !seen.has(c.title) && seen.add(c.title));
-    rep.backfill = opts.backfill;
-    rep.issues = await syncIssues(api, snap, changes, { bot: await botLogin(api) });
+  rep.freshness = {
+    totals: fresh.live.totals, bytes: Buffer.byteLength(fresh.liveText), blobs_fetched: fresh.blobsFetched,
+    open: fresh.live.repos.flatMap((r) => r.crossings.map((c) => c.id)), pending: fresh.live.repos.flatMap((r) => r.pending.map((c) => c.id)),
+    events: fresh.events.map((e) => ({ event: e.event, id: e.id })),
+  };
+  if (opts.apply) rep.wrote = writeOutputs(snap, diff, fresh);
+  if (opts.dashboard) {
+    const { syncDashboard } = await import('./freshness/dashboard.mjs');
+    rep.dashboard = await syncDashboard(api, fresh.live, { bot: await botLogin(api), dryRun: false });
   }
   rep.api = { ...api.stats, elapsed_s: Math.round((Date.now() - t0) / 100) / 10 };
   if (opts.json) console.log(JSON.stringify(rep, null, 2));
