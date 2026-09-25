@@ -2,7 +2,7 @@
 title: Omar Khattab and alex zhang, GEPA for skills and Recursive Language Models for long context
 covers: 11, 20
 written: 2026-09-25
-summary: How GEPA's outcome-scored optimizer and Recursive Language Models compare with how we grade skills, recover after compaction and plan search, with two costed experiments.
+summary: How GEPA's outcome-scored optimizer and Recursive Language Models compare with how we grade skills and recover after compaction, and what a small client-side search index can take from ColBERT and WARP.
 ---
 
 ## Sources
@@ -17,7 +17,6 @@ summary: How GEPA's outcome-scored optimizer and Recursive Language Models compa
 - optimize_anything post: https://gepa-ai.github.io/gepa/blog/introducing-optimize-anything/ (source file `.../2026-02-18-introducing-optimize-anything/index.md` at the GEPA commit).
 - RLM blog post https://alexzhang13.github.io/blog/2025/rlm/ and spec-ptc blog post https://alexzhang13.github.io/blog/2026/spec-ptc/ (read 2026-09-25).
 - OMP (oh-my-pi), the harness we run: https://github.com/can1357/oh-my-pi/tree/v18.3.1 (tag `v18.3.1`).
-- franken-research search plan: https://github.com/JYeswak/franken-research/tree/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc (commit `385c026`).
 - Personal pages https://omarkhattab.com/ and https://alexzhang13.github.io/ (read 2026-09-25).
 
 Ranks 11 (Omar Khattab, `@lateinteraction`) and 20 (listed as "alex zhang", `@a1zhang`) in dan's Independent 100, section "The Frontier Outside". Written 2026-09-25 by an AI agent session. This page is about public work and artifacts; it is one reviewer's reading, not a ranking of people.
@@ -74,7 +73,7 @@ The authors say SWE-smith tasks are "on the simpler side" and that some skills f
 - **Metric.** A per-task score from an external oracle on the outcome, not the skill's form, with a deterministic check (validator exit code, tests, required facts) and the checker's messages returned as ASI [Inference]. gskill has this shape: tests are the oracle, truncated test output the ASI (swe_fitness_fn.py L118-L137).
 - **Gold set.** 40-60 tasks per skill from real work, split into train, validation and a sealed `test_set`, with held-out families. This matches the certification rule one of our skill-authoring skills already sets: a fresh agent given only the skill completes held-out work sealed by a different model lineage, with at least three out-of-distribution families [Verified, our own setup].
 - **Scope.** Optimize the body only and freeze the `description`, as gskill does [Inference].
-- **Cost.** (rollouts x tokens x agent price) + (reflection calls x tokens x reflection price) + test passes outside `max_evals`; about $35 for one skill at assumed prices, capped at $50 (first experiment below) [Inference].
+- **Cost.** (rollouts x tokens x agent price) + (reflection calls x tokens x reflection price) + test passes outside `max_evals` [Inference].
 
 ### DSPy, only as far as GEPA needs it
 
@@ -128,61 +127,26 @@ Our skill-autoresearch skill hill-climbs on a static 7-gate rubric (structure, t
 | Search | one lineage, revert on failure | pool with Pareto selection |
 | Held-out data | none | optional sealed `test_set` |
 
-A skill can score 9.0 on every gate and still fail its task, and our loop cannot see that: Goodhart's law applied to skill quality [Inference]. Our skill-forge and skill-authoring-discipline skills already define "done" as a fresh agent succeeding on held-out work against an external oracle [Verified, our own setup], which is the oracle GEPA consumes [Inference]. No skill of ours has a task-outcome gold set yet; existing golden files are CLI-surface and shape fixtures. readme-update has a deterministic, dependency-free validator (exit 0 pass, 1 fail, 2 error; an empty scan set never passes) with good and bad fixtures, so it is the cheapest first target [Verified, our own setup].
+A skill can score 9.0 on every gate and still fail its task, and our loop cannot see that: Goodhart's law applied to skill quality [Inference]. Our skill-forge and skill-authoring-discipline skills already define "done" as a fresh agent succeeding on held-out work against an external oracle [Verified, our own setup], which is the oracle GEPA consumes [Inference]. No skill of ours has a task-outcome gold set yet; existing golden files are CLI-surface and shape fixtures. One of our skills already has a deterministic, dependency-free validator with good and bad fixtures [Verified, our own setup].
 
-### The franken-research search plan, and ColBERT/WARP
+### ColBERT and WARP for a small client-side search index
 
-- **Plan** [Verified at `385c026`]: v1 search is "a small in-house client-side index (no service)"; frankensearch was rejected for lacking a WASM or browser path and for 621 MB of models ([decisions.jsonl L5](https://github.com/JYeswak/franken-research/blob/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc/registries/decisions.jsonl#L5), DEC-005). 3,855 entries with summaries of at most 280 characters; candidates are BM25+ variants, a MiniSearch control and naive scans ([DEFINE.md](https://github.com/JYeswak/franken-research/blob/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc/artifacts/perf/20260925T005518Z-ebac079/DEFINE.md#L4-L13)). Budgets: keystroke p95 at most 8 ms desktop and 16 ms phone; core shard 150 KB and full index 1.5 MB after brotli ([budgets.md](https://github.com/JYeswak/franken-research/blob/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc/artifacts/perf/20260925T005518Z-ebac079/budgets.md)).
-- **Relevance.** REQ-O1: on at least 40 real queries, a correct item in the top 3 for at least 80%, judged by a session that did not build the index and confirmed by a human; an optimization "may not change which items the golden-set queries rank in the top 3" ([PROJECT_CHARTER.md L17-L25](https://github.com/JYeswak/franken-research/blob/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc/PROJECT_CHARTER.md#L17-L25)). The golden set has 88 queries: 41 intent, 25 exact, 9 synonym, 7 typo, 6 negation ([golden.jsonl](https://github.com/JYeswak/franken-research/blob/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc/eval/golden.jsonl), counted). REQ-O1 "was not evaluated" yet, and 17 typo queries return nothing in candidate A ([perf README L64](https://github.com/JYeswak/franken-research/blob/385c026cbafd60544c61c42b17b788e4498dde40/.atlas-arc/artifacts/perf/20260925T005518Z-ebac079/README.md#L64)).
-- **ColBERT/WARP in the shipped engine: no.** They need a transformer encoder at query time and per-token vectors per document [Verified: WARP abstract]. WARP reports 41x lower latency than XTR's reference implementation and 3x faster than ColBERTv2/PLAID on server-class kernels [Reported]. Neither fits a 1.5 MB brotli budget and a 16 ms phone keystroke [Inference].
-- **Offline only.** As a relevance oracle, score the 88 golden queries with a late-interaction model and compare hit@3 by difficulty with the BM25 candidates; a wide margin on the 50 intent and synonym queries would suggest lexical v1 will struggle to reach 80% without intent terms or synonyms. As a build-time neighbour list, ship precomputed related-item ids [Inference]. Both must respect golden-set identity and the independent-judge rule.
+- ColBERT and WARP need a transformer encoder at query time and per-token vectors per document [Verified: WARP abstract]. WARP reports 41x lower latency than XTR's reference implementation and 3x faster than ColBERTv2/PLAID on server-class kernels [Reported].
+- For a small search index that ships to the browser with no server, that makes them a better offline relevance oracle, or a source of precomputed related-item lists, than the query-time engine [Inference].
 
-## Two experiments (designed, not run)
+## A comparison study (proposed, not run)
 
-### GEPA on one skill: readme-update
-
-- **Question.** Does GEPA-optimizing a skill body raise held-out outcomes over the hand-written skill, and does our structural grader predict the outcome?
-- **Gold set.** 48 README-update tasks from git histories of our own and permissively licensed public repositories: README at commit N-1, change notes (subjects plus diffstat), 2-5 required facts from the human-written README at N, and forbidden worklog phrases. Split 24/8/16; the test set is sealed by a session that does not run the optimizer, spans at least 3 repository families, and goes in `test_set`.
-- **Rollout.** One call to a fixed small model (skill + README + notes to new README), no tools, temperature 0; `description` frozen.
-- **Metric.** `s = gate_pass x fact_recall x (1 - forbidden_hit)`. Validator exit 2 or an API error is infrastructure: retried once, then excluded, never scored 0 (unlike gskill). ASI: the validator's per-rule counts and line numbers, missing facts, forbidden hits.
-- **Config.** `GepaEngine`, Pareto selection, `reflection_minibatch_size=3`, `max_evals=240`, `max_token_cost=20`.
-- **Baselines.** B0 no skill; B1 current SKILL.md; B2 skill-autoresearch output (structural 9.0+). Each on the 16 sealed tasks x 3 seeds, structural grade recorded.
-- **Win rule (preregistered).** The top GEPA candidate beats B1 by at least +0.10 mean `s` on the sealed test, the paired-bootstrap 90% CI excludes 0, and no family drops more than 0.05.
-- **Falsified if** (a) the gain is under 0.10 or the CI includes 0; (b) validation improves but test drops; (c) `gate_pass` rises while `fact_recall` falls (a validator blind spot); or, separately, (d) B2 matches or beats B1 on structural grade but not on `s`, which falsifies skill-autoresearch's premise.
-
-Cost bound [Inference], at assumed prices of $1/$5 per M tokens (agent) and $5/$25 (reflection), with a median README of about 6.5k tokens:
-
-| Part | Tokens | Assumed cost |
-|---|---|---|
-| 240 optimization rollouts | 2.6 M in, 1.7 M out | about $11 |
-| 144 test rollouts | 1.6 M in, 1.0 M out | about $7 |
-| Up to 40 reflection calls | 2.4 M in, 0.2 M out | about $17 |
-| Total | | about $35 |
-
-Hard cap $50: `max_token_cost=20` for reflection plus an evaluator wallet that refuses calls after $30 of agent spend. Under an hour at 8 concurrent rollouts.
-
-### RLM over our own long sessions
-
-- **Question.** After compaction, does an RLM recover facts from a long agent session better than the summary or lexical retrieval, at bounded cost?
-- **Corpus.** 6 real session transcripts, each over 300k tokens and through at least one compaction, secrets redacted, mounted read-only.
-- **Gold set.** 60 questions with gold answers, written by a session that runs no arm: 20 needle (path, commit, command), 20 aggregation (counts or lists), 20 decision (what was decided or rejected before event X, and why).
-- **Arms, same small model.** A0 compaction summary; A1 BM25 top-20 chunks of 2k tokens; A2 the RLM with the transcript as `context`, depth 1.
-- **Isolation.** Never the in-process `local` environment. Use a prebuilt pinned container image, outbound traffic limited to the LM proxy and no API keys in the REPL environment, or `dspy.RLM`'s WebAssembly interpreter. A canary file outside the mount fails the run if any arm reads it.
-- **Budgets.** `max_iterations=15`, `max_tokens=250_000`, `max_timeout=240` s, `max_errors=3` per question: worst case 15 M tokens, about $7 at an assumed $0.25/$2 per M; baselines about $1; hard cap $15 [Inference].
-- **Metric.** Accuracy by type (exact match for needles; a judge for the rest, first validated on 30 human labels to true-positive and true-negative rates of at least 0.9), cost per question, p50 and p95 latency.
-- **Win rule.** A2 beats max(A0, A1) by at least 15 points on aggregation plus decision at no more than 5x A1's cost. **Falsified if** it leads by less, A1 is within 5 points of A2 overall, or A2 costs more than 5x A1.
-- **Prediction.** A1 roughly equals A2 on needles [Inference]; if A2 loses there, the root model is not using grep and the prompt is at fault.
+We propose a comparative study of GEPA-optimised skills and of RLM-style recall over long agent sessions against our current methods; it is designed but has not been run, and nothing on this page depends on its outcome.
 
 ## Proposals
 
-1. **Make task outcome the acceptance metric of skill-autoresearch**, keeping the 7 gates as a lint that cannot accept a change alone. Risk: needs a gold set per skill and costs model calls. Effort M. Test: falsifier (d), and a planted skill that scores 9.0+ but fails every task must be rejected.
-2. **Pilot GEPA `optimize_anything` on readme-update** as designed, in an isolated virtualenv with core `gepa` only. Risk: spend (capped at $50), overfitting on 24 train tasks. Effort M. Test: the win rule and falsifiers.
+1. **Make task outcome the acceptance metric of skill-autoresearch**, keeping the 7 gates as a lint that cannot accept a change alone. Risk: needs a gold set per skill and costs model calls. Effort M. Test: a planted skill that scores 9.0+ but fails every task must be rejected.
+2. **Pilot GEPA `optimize_anything` on one skill** that already has a deterministic validator, in an isolated environment with core `gepa` only, under a fixed spend cap. Effort M. Test: a held-out task set the optimizer never sees.
 3. **Make skill-forge's held-out runner emit one `(score, info)` row per task** with a sealed split, so one runner serves certification and optimization (contract shape only, no import). Effort S. Test: a planted skill failing one task yields `score=0` with `info` naming the failure, and test rows never reach the optimizer.
 4. **Add "retrieve, don't trust the summary" to post-compact recovery**: re-read any concrete fact (path, commit, command, decision) from the transcript or an artifact before acting on it. Effort S. Test: a seeded session changes a fact late, then compacts; the agent must report the late value.
-5. **Run the RLM pilot on our own sessions, isolated**, and wrap it as a read-only history-question tool only if it passes. Effort M. Test: the win rule plus the canary check.
-6. **Score the 88 golden queries offline with a late-interaction model** as a headroom oracle before REQ-O1 is judged; ship nothing. Risk: checkpoint licence unchecked; builder must not judge. Effort S-M. Test: hit@3 by difficulty, BM25 candidate A versus late interaction, scored by a session that built neither.
-7. **Optional: build-time related-item ids** from a late-interaction model. Risk: payload growth; must not move golden top-3. Effort M. Test: payload within the full-index budget and `top3_changed = 0`.
-8. **Add spec-ptc's rule to our concurrency guidance**: only tools explicitly marked pure may run speculatively, citing spec-ptc's tools.py L25-L31. Effort S.
+5. **Try an RLM for history questions only in an isolated container**, and wrap it as a read-only tool only if it beats retrieval on aggregation questions. Effort M.
+6. **Use a late-interaction model offline as a relevance oracle** for a lexical search index; ship nothing from it. Risk: checkpoint licence unchecked; the builder must not judge. Effort S-M.
+7. **Add spec-ptc's rule to our concurrency guidance**: only tools explicitly marked pure may run speculatively, citing spec-ptc's tools.py L25-L31. Effort S.
 
 ## Do not adopt
 
@@ -190,8 +154,8 @@ Hard cap $50: `max_token_cost=20` for reflection plus an evaluator wallet that r
 - **spec-ptc, for now.** 1-1.2x reported speedups on RLM runs, and our harnesses mostly use JSON tool calls, not a code REPL [Inference]. Its daemon socket defaults to a shared temp directory, which conflicts with our own rule against shared temp paths.
 - **gskill as-is.** It needs Docker and SWE-smith, targets bug-fix skills, freezes a boilerplate description, scores setup errors as skill failures, and its example config sets an OpenAI regional base URL (train_optimize_anything.py L655-L657) [Verified]. Reuse the pattern, not the pipeline.
 - **DSPy for SKILL.md optimization**, and **`gepa[full]` on macOS** (it pulls LiteLLM, MLflow and W&B; core is enough).
-- **Any optimizer tuning franken-research ranking against its 88 golden queries.** It breaks golden-set identity and the independent-judge rule, and 88 queries would be overfitted [Inference on overfitting].
-- **ColBERT, WARP or PLAID as the v1 browser engine.** DEC-005 and the budgets rule them out.
+- **Any optimizer tuned against a search index's own golden queries.** It breaks the independence of the golden set, and a small query set would be overfitted [Inference].
+- **ColBERT, WARP or PLAID as the engine of a small browser index.** The query-time encoder and per-token vectors do not fit it [Inference].
 - **The headline numbers as a forecast for our skills.** They come from SWE-smith bug-fix tasks, and the posts disagree internally.
 
 ## Attribution we owe
@@ -210,7 +174,7 @@ Hard cap $50: `max_token_cost=20` for reflection plus an evaluator wallet that r
 
 - No GEPA or RLM run with a model; every benchmark number is [Reported].
 - Only the GEPA, RLM and WARP abstracts were read. Meta-Harness (arXiv:2603.28052, also a GEPA engine) was not read.
-- All prices are assumptions, not quotes. ColBERT checkpoint licences were not checked.
+- ColBERT checkpoint licences were not checked.
 - The GEPA repository showed a push on 2026-09-24, but the default-branch head we read is dated 2026-09-22; other branches were not read.
 - `dspy.RLM`'s WebAssembly interpreter, spec-ptc's shadow REPL and `DockerREPL`'s defaults were not tested.
 - Corrections: open an issue or pull request on https://github.com/JYeswak/franken-research.

@@ -73,7 +73,7 @@ His theory: citations "tease the file_read tool to study the original implementa
 
 **how-to-ralph-wiggum** is a fork of Clayton Farr's https://github.com/ClaytonFarr/ralph-playbook [Verified: GitHub API `parent`]. The playbook is Clayton Farr's work.
 
-**loom**: described as "if your name is not Geoffrey Huntley then do not use loom", no license [Verified: metadata]. Not read. **how-to-build-a-coding-agent**: a workshop repo with about 5,800 stars and no license [Verified: GitHub API]. Link to it; do not copy.
+**loom**: described as "if your name is not Geoffrey Huntley then do not use loom", no license [Verified: metadata]. Not read. **how-to-build-a-coding-agent**: a workshop repo with about 5,800 stars and no license file [Verified: GitHub license API, 2026-09-25]. Link to it; do not copy.
 
 ### preflight
 

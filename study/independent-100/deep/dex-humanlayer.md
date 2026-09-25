@@ -174,7 +174,7 @@ All twelve are drafts for review; nothing in our setup was changed during this s
 - **Change.** An A/B arm with OMP's `compaction.thresholdTokens` at 400,000 ([settings-schema.ts lines 2590-2597](https://github.com/can1357/oh-my-pi/blob/v18.3.0/packages/coding-agent/src/config/settings-schema.ts#L2590-L2597), "overrides percentage if set") against the default (about 850k), tasks assigned at random. Outcomes: 14-day reopen, failed verification at close, reviewer findings and cost per closed task. Pre-registered.
 - **Why.** Tests the context-rot claim under ACE-FCA and the smart zone on our own work.
 - **Cost.** M; configuration only. More compactions lose detail and cost money.
-- **Test.** Confirm the arm's median trigger is near 400k, then compare reopen rates at a sample size set in advance. A null result is a result.
+- **Test.** Confirm the arm's median trigger is near 400k, then compare reopen rates at a sample size set in advance. A negative result is a result.
 
 ### P4. OMP post-compaction recovery extension
 

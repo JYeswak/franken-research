@@ -2,7 +2,7 @@
 title: Hermes Agent, with Teknium, Shannon Sands and mephisto
 covers: 26, 63, 78
 written: 2026-09-25
-summary: How Nous Research's Hermes Agent handles skills, memory, MCP and reliability, how that compares with our agent stack, and what we would adopt.
+summary: How Nous Research's Hermes Agent handles skills, memory, MCP and reliability, and the general lessons it offers anyone building an agent harness.
 ---
 
 ## Sources
@@ -11,8 +11,6 @@ summary: How Nous Research's Hermes Agent handles skills, memory, MCP and reliab
 - hermes-starter-profile, `teknium1/hermes-starter-profile`: https://github.com/teknium1/hermes-starter-profile/tree/24dc015efa46936c8370ae7582796437b9735822 (commit `24dc015efa46`, 2026-08-08).
 - Nous Research, Hermes 4 Technical Report: https://nousresearch.com/wp-content/uploads/2025/08/Hermes_4_Technical_Report.pdf (PDF, sha256 `3294402e20a3f506d033f24157e8f007a34eaadf045292282de5d39bc011d130`, read 2026-09-25).
 - GitHub REST API for commits, contributors and user records, for example https://api.github.com/repos/NousResearch/hermes-agent/contributors (queried 2026-09-25).
-- mephisto's own site, linked from the @karan4d account: https://www.karan4d.com (read 2026-09-25).
-- oh-my-pi (OMP): https://github.com/can1357/oh-my-pi/tree/v18.3.1 (tag `v18.3.1`, read 2026-09-25).
 - OpenHermes-2.5 dataset card: https://huggingface.co/datasets/teknium/OpenHermes-2.5/blob/b82037821055c377bed0d495e72e46de3bc72e84/README.md (revision `b820378`, read 2026-09-25).
 
 Licences: hermes-agent is MIT, `Copyright (c) 2025 Nous Research` [Verified: https://github.com/NousResearch/hermes-agent/blob/59004a62356f3a4697ab0fe8ad5086d2b405e2a6/LICENSE#L1-L3]. hermes-starter-profile is MIT, `Copyright (c) 2026 Teknium` [Verified: https://github.com/teknium1/hermes-starter-profile/blob/24dc015efa46936c8370ae7582796437b9735822/LICENSE#L1-L3]. The Hermes 4 report states no licence on its first page; we cite it and copy nothing from it.
@@ -24,8 +22,8 @@ This page is about public code and documents. It does not describe anyone's char
 ### Who did what, from primary sources
 
 - **Teknium.** The GitHub account `teknium1` names the X handle `Teknium` on its own profile [Verified: https://api.github.com/users/teknium1]. `teknium1` is the largest contributor to hermes-agent, with 18,642 contributions [Verified: GitHub contributors API, 2026-09-25], and publishes hermes-starter-profile ([distribution.yaml line 5](https://github.com/teknium1/hermes-starter-profile/blob/24dc015efa46936c8370ae7582796437b9735822/distribution.yaml#L5): `author: Teknium`).
-- **Shannon Sands (@max_paperclips).** Nous Research's Hermes 4 Technical Report lists "Shannon Sands" as an author with "X: @max_paperclips" [Verified: report page 1, author block]. The GitHub login `shannonsands` authors commits as "Shannon Sands" and has 80 contributions to hermes-agent [Verified: GitHub commits and contributors API]. Neither account links the other; the attribution check is below.
-- **mephisto (@karan4d).** The site linked from the account says its author does "model behavior and agents stuff at nous", and lists co-founding Nous Research and creating WorldSim [Verified: https://www.karan4d.com, read 2026-09-25]. We found no GitHub account for the handle and no hermes-agent commits we could attribute to it, so this page credits mephisto only with that context and claims no authorship of Hermes code.
+- **Shannon Sands (@max_paperclips).** Nous Research's Hermes 4 Technical Report lists Shannon Sands, with the X handle @max_paperclips, among its authors [Verified: https://nousresearch.com/wp-content/uploads/2025/08/Hermes_4_Technical_Report.pdf, page 1]. The reliability commits below are credited to the GitHub account `shannonsands`, which authored them [Verified: GitHub commit API]. That account's profile names no person and no X handle [Verified: https://api.github.com/users/shannonsands], so this page makes no claim about who operates it.
+- **mephisto (@karan4d).** Listed with this group. We found no code or writing published under the handle, and the personal site the account links is left out under our rule against identity clues, so this page credits mephisto with no Hermes work.
 
 ### The skill lifecycle and the Curator
 
@@ -69,7 +67,7 @@ hermes-starter-profile is a profile distribution, not code:
 - DESIGN.md explains the two layers: the platform list sets the baseline, and the deny list "blocks dangerous component toolsets even if another resolution path attempts to recover them". It calls itself "a constrained starting configuration, not a sandbox against the machine owner" [Verified: https://github.com/teknium1/hermes-starter-profile/blob/24dc015efa46936c8370ae7582796437b9735822/DESIGN.md#L27-L39].
 - `scripts/audit_profile.py` is the part worth copying. It imports Hermes's own resolver and asserts that the resolved tool names on every platform equal the five intended tools, and fails if the resolver cannot be exercised [Verified: https://github.com/teknium1/hermes-starter-profile/blob/24dc015efa46936c8370ae7582796437b9735822/scripts/audit_profile.py#L11-L107].
 
-### Shannon Sands's reliability commits
+### Reliability commits by the GitHub account shannonsands
 
 All commits below are authored by the GitHub login `shannonsands` [Verified: GitHub commit API].
 
@@ -95,70 +93,45 @@ All commits below are authored by the GitHub login `shannonsands` [Verified: Git
 
 **Collective Wisdom Agent V1**, [a6ee31f](https://github.com/NousResearch/hermes-agent/commit/a6ee31f55aad08cc51ba348db2febacd541eec01) (2026-09-11, co-authored with hbizi), shares skills organisation-wide via Nous Portal; not reviewed for adoption.
 
-**GitHub-to-X attribution.** The GitHub profile `shannonsands` has no name and no X handle [Verified: https://api.github.com/users/shannonsands]. The link rests on one document: Nous Research's Hermes 4 report pairs the name "Shannon Sands" with @max_paperclips [Verified: https://nousresearch.com/wp-content/uploads/2025/08/Hermes_4_Technical_Report.pdf, page 1], and the GitHub commits carry the same author name. So "GitHub `shannonsands` is @max_paperclips" stays **[Inference, High]**. Code credit on this page names the GitHub login and commit-author name, which is what the commits show.
+## General lessons
 
-## Where our stack differs
+None of these has been applied; this was a read-only study of Hermes's public code. Each is stated as a general practice for agent harnesses.
 
-We run OMP with NTM for agent panes, jsm for skills, cass for session search, dcg and slb as command guards, and a separate typed memory store [Verified, our own setup].
-
-- **Skills on a shared tree.** In our own setup Hermes shared one skills directory with other harnesses, and its Curator's usage counters only see Hermes's own use, so skills the other harnesses read looked unused to it [Verified, our own setup]. Hermes's "declared, never inferred" provenance rule is right; usage-based ageing is only safe when every reader updates the counters [Inference].
-- **Curator backups inside the tree.** The Curator's pre-run tarballs of the whole skills directory were being written inside that same shared directory [Verified, our own setup].
-- **Memory writes are not threat-scanned in our stack.** A memory tool we use accepted an injection-shaped test memory with no warning, where Hermes's write-time scanner flags the same string [Verified, our own setup, one probe]. Our memory reaches new sessions at session start; whether anything filters it on the way out is not verified.
-- **Empty-stop retries.** OMP retries an empty stop up to `EMPTY_STOP_MAX_RETRIES = 3`, each time resending the context with a one-line reminder, with no signature or cost check [Verified: https://github.com/can1357/oh-my-pi/blob/v18.3.1/packages/coding-agent/src/session/turn-recovery.ts#L90]. We have no frequency figure for our fleet.
-- **Dispatch admission** in our setup is static per-agent caps and reads no host memory signal [Verified, our own setup]. macOS exposes `kern.memorystatus_vm_pressure_level` and `memory_pressure -Q`, which a macOS port could read.
-- **Skill index cost** has the same shape as Hermes's: one name and description per skill on every request. OMP's `skills.includeSkills` and `skills.ignoredSkills` settings exist to cut it [Verified: https://github.com/can1357/oh-my-pi/blob/v18.3.1/packages/coding-agent/src/extensibility/settings.ts#L71-L81].
-- **Memory scale.** Our memory and session-search tools scale further than two frozen files; the write-time threat scan is the gap. Session search is comparable; Hermes's demotion of cron sessions is worth checking in cass [Inference].
-- **Project MCP config.** OMP loads a project `.mcp.json` by default (`mcp.enableProjectConfig` default `true`) [Verified: https://github.com/can1357/oh-my-pi/blob/v18.3.1/packages/coding-agent/src/mcp/settings.ts#L9-L12], and we are turning that off. Hermes already has that posture, and adds a trust allowlist for project skills, which our change does not cover.
-- **Least privilege.** OMP has a `--tools=<list>` flag and per-tool enable settings, but we have no audit of the resolved tool set.
-- **Pre-ready hangs.** Our pane liveness check compares two captures over time; nothing puts a deadline on a pane that never became ready.
-- **Command approval.** We keep deterministic guards (dcg, slb and our own danger gates) rather than an LLM guardian.
-
-## Proposals
-
-None has been applied; this pass was read-only. "Known-bad" means a planted input the check must reject.
-
-1. **Keep Hermes's Curator off a shared skills tree.** Where Hermes shares a skills directory with other harnesses, set `curator.prune_builtins: false` (upstream's default since 1b8e4c5), give Hermes its own skills directory and mount the shared tree via `skills.external_dirs`, which the Curator and `skill_manage` treat as read-only [Verified: https://github.com/NousResearch/hermes-agent/blob/59004a62356f3a4697ab0fe8ad5086d2b405e2a6/tools/skill_usage.py#L271-L285]. Keep Curator backups outside the shared tree. Risk: skills Hermes creates no longer land in the shared tree. Test: a throwaway Hermes home with one bundled record backdated 100 days must appear in `hermes curator run --dry-run` before the change and not after. Licence: none (config).
-2. **Port `threat_patterns.py`** (162 lines, stdlib) as a filter on memory read at session start and a pre-write check on agent memory writes. Risk: false positives on notes that quote attacks, so it needs an allow tag. Test: the injection-shaped probe and a zero-width-space entry must be flagged; run over the current memory export and report false positives before blocking. Licence: MIT, keep the Nous Research notice in the ported file.
-3. **Measure, then maybe propose, empty-stop guards for OMP.** Count empty-stop retries across all profiles; if material, draft an upstream issue proposing Hermes's two guards. Risk: OMP's retry reminder changes the prompt, so the benefit may be smaller. Test: two zero-output responses with the same signature give 1 retry, different signatures keep 3. Licence: idea only unless code is copied.
-4. **Memory-pressure admission for agent spawns on macOS**: critical spawns none this tick, warning at most one, unreadable no restriction, deferred work stays queued, read behind a seam tests can pin as Hermes's conftest does. Risk: wrong mapping of sysctl levels; must fail open. Test: pinned samples at levels 1, 2, 4 and unreadable must give allow-all, allow-1, allow-0 and allow-all. Licence: idea only (Hermes code is Linux-specific).
-5. **A "never became ready" deadline** for spawned panes and hook processes: arm at spawn, disarm at the first ready output, and on expiry capture scrollback, record `STARTUP_WEDGED` and recycle. Borrow progress leases, a cap on CPU-based extensions and a bounded exit. Risk: killing slow cold starts, which leases address. Test: a pane running `sleep 600` before any banner must be classed wedged; one printing progress every 10 s for 5 minutes must not.
-6. **Resolved-toolset audit** for read-only roles and client deployments: launch OMP with `--tools=<list>` and assert the tool set OMP reports at runtime, not the config, following `audit_profile.py`. Test: a scout launch that adds `bash` must fail. Licence: idea only; MIT if the script is copied.
-7. **Trust allowlist for project skills**: load project skill directories only for allowlisted roots and rescan on content change with fail-closed quarantine, as Hermes does. Risk: whether OMP offers a hook before skill discovery is not verified. Test: a planted `SKILL.md` outside the allowlist must be absent from the skill index.
-8. **Carry the MIT notice with copied Hermes skills.** Bundled Hermes skills say `license: MIT` in frontmatter, but no notice file travels with them when copied into another skills tree; add a third-party notice entry.
+1. **Provenance is declared, never inferred.** A job that archives or prunes skills should act only on skills whose recorded provenance allows it, as the Curator does. Usage-based ageing is only safe when every tool that reads a skills directory updates the usage counters [Inference].
+2. **Scan what persists.** Memory re-injected at session start is where one injected entry keeps working across sessions; Hermes scans every memory write for that reason (see above).
+3. **Admit work by host memory.** A concurrency cap derived from total memory, plus a per-tick memory-pressure check that fails open when unreadable and leaves deferred work queued, as in `4beca7a`.
+4. **Put a deadline on "never became ready".** Arm a watchdog before heavy imports and disarm it once the event loop is live, with renewable progress leases, a cap on CPU-based extensions and an exit that cannot block, as in `8a3b6f3`.
+5. **Stop paying for deterministic empty replies.** Skip the remaining retries once two same-signature attempts prove zero output, and shrink the retry budget when one attempt is expensive, as in `ac06c2f`.
+6. **Audit the resolved tool set, not the configuration.** hermes-starter-profile's `audit_profile.py` asserts what the resolver actually grants on every platform.
+7. **Pin distributions to a commit.** Hermes's profile installer records a source URL, not a commit, so an update installs whatever the branch holds at that moment; pin and review the diff instead.
+8. **Carry license notices with copied skills.** Bundled Hermes skills declare `license: MIT` in frontmatter, but no notice file travels with a copied skill.
 
 ## Do not adopt
 
-- **The Curator's LLM consolidation pass on a shared tree.** It rewrites and merges skills that other harnesses read. Upstream ships it off.
-- **Usage-based archiving of skills other harnesses read.** The inputs are incomplete; proposal 1 removes it rather than tuning it.
-- **An LLM approval guardian in place of deterministic guards.** Ours give the same answer every time; a model-judged gate does not.
-- **Profile distributions from a moving branch.** If we ship profiles this way, pin a commit and review the diff.
-- **Hermes's memory sampler as-is.** It reads `/proc`, so on macOS it silently imposes no limit. Proposal 4 ports the policy, not the sampler.
-- **Collective Wisdom.** An organisation-wide skill-sharing service; our skills include private client material.
-- **Replacing our memory store with MEMORY.md and USER.md.** The frozen-snapshot idea matches what we already do at session start; 3.6k characters is too small for fleet memory.
+- **The Curator's LLM consolidation pass on a skills directory other tools also read.** It rewrites and merges skills those tools depend on. Upstream ships it off.
+- **Usage-based archiving of skills other tools read.** The usage inputs are incomplete.
+- **A model-judged approval gate as the only gate.** A deterministic guard gives the same answer every time; a model-judged one does not.
+- **Profile distributions from a moving branch.** Pin a commit and review the diff.
+- **Hermes's memory sampler as-is.** It reads `/proc`, so on macOS it silently imposes no limit. Port the policy, not the sampler.
+- **Collective Wisdom.** An organisation-wide skill-sharing service, not reviewed here; skills often carry private material.
 - **OpenHermes-2.5 for training.** Its dataset card has no licence field and describes the data as "primarily synthetically generated", tagged GPT-4 [Verified: dataset card at revision `b820378`].
 
 ## Attribution we owe
 
 - **Hermes Agent code**, if copied: the MIT notice `Copyright (c) 2025 Nous Research` and permission text in each copied file.
 - **Commit credit** for ideas we reimplement:
-  - memory-aware dispatch: Shannon Sands, `4beca7a`, building on @Dusk1e's PR #28695;
-  - startup watchdog: Shannon Sands, `8a3b6f3`, `f5bb1e1`, `852db61`;
-  - empty-response guard: Shannon Sands, `ac06c2f`, `d10f872`; the usage-less extension by fangliquanflq, `3755dca`;
+  - memory-aware dispatch: GitHub account `shannonsands`, `4beca7a`, building on @Dusk1e's PR #28695;
+  - startup watchdog: GitHub account `shannonsands`, `8a3b6f3`, `f5bb1e1`, `852db61`;
+  - empty-response guard: GitHub account `shannonsands`, `ac06c2f`, `d10f872`; the usage-less extension by fangliquanflq, `3755dca`;
   - Curator provenance and prune rules: Teknium, `70e1571`, [72de75c](https://github.com/NousResearch/hermes-agent/commit/72de75c0ab367e231c207075ee972f7d2fcc0744), `1b8e4c5`.
-- Credit uses the commit-author name and GitHub login; an X handle is added only with the [Inference] label above.
+- Credit names the GitHub account that authored each commit.
 - **Starter profile**, if `audit_profile.py` is copied: `Copyright (c) 2026 Teknium` and the MIT permission notice.
 - **OSV preflight idea**: Hermes credits Block's goose; carry that credit if copied.
-- **mephisto**: credited for WorldSim and Nous Research context only, as stated on the linked site; not for any code here.
+- **mephisto**: no work credited on this page.
 
 ## What we could not verify
 
-- A declared link between GitHub `shannonsands` and X @max_paperclips. It remains [Inference, High].
-- Any hermes-agent commit by mephisto. No GitHub account was found for the handle.
+- Any hermes-agent commit by the @karan4d account. No code account was found for the handle.
 - The file list for commit `8a3b6f3`: the GitHub API returns no files for it, so its code is attributed through the two follow-ups.
-- That a shared-tree Curator would actually archive bundled skills; this is derived from Hermes code and usage records, not observed.
-- Whether our session-start memory path filters injection-shaped memories on read. Only the write path was probed, once.
-- How often OMP's empty-stop retries fire in our fleet.
-- The meaning of macOS `kern.memorystatus_vm_pressure_level` values 1, 2 and 4 (normal, warning, critical), which is from general knowledge; proposal 4's test must confirm it.
-- Whether OMP offers a hook before project skill discovery.
 - The licence terms of the Hermes 4 report.
 - Everything in "What they built" comes from reading source at the pinned commit; hermes-agent was not installed from that commit or run.

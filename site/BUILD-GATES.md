@@ -662,7 +662,9 @@ the "Independent 100 study" option every page prefills; **N4** a study source
 or rendered page carries a home-directory path, an email address, a phone
 number, an image, an X API field name (`followers_count`, `pinned_tweet_id`,
 `twitter_username` and the like), an internal ticket id, or a gendered
-pronoun on a record marked `pseudonymous`. The gate block also counts on its
+pronoun on a record marked `pseudonymous`; and on any rendered study page
+(scripts aside) the text `undefined`, `null` or `NaN`, a placeholder printed
+where content was meant to be. The gate block also counts on its
 own, without the script: `people.jsonl` must have 99 lines and the page files
 on disk must number the people plus one plus the deep dives. The study pages
 join `SITE_PAGES`, so gates B, C, E, F, G and H scan them too, and the index
@@ -916,3 +918,13 @@ the clones, passed the unchanged one and failed three planted ones (a deleted
 page, an "Internal notes" section, a pronoun). Gate B's scan of quoted
 counts over the 44 repositories failed on four study sentences until the
 renderer added the `STAT` annotation the gate exempts.
+
+Study review 4 (2026-09-25): the pre-publication review from another model
+family found "[Verified at undefined]" on the RLM deep-dive page. `inline()` in
+`make-study.mjs` resolved a caller's placeholders (a code span inside an
+evidence label) against the nested call's own list; each call now owns its
+placeholder namespace. N4 now also fails on the literal text `undefined`,
+`null` or `NaN` on a rendered page. On clones of the tree, 22 planted faults
+failed with the expected check named (the 20 above, plus "undefined" set in a
+record and "null" in a deep-dive sentence), and a label holding a code span
+rendered as `[Verified at <code>…</code>]` with `--check` passing.

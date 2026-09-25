@@ -1362,7 +1362,8 @@ fi
 # or the sitemap block differs from a fresh render, or a page no source makes), N2 count, N3 schema (people.jsonl
 # keys and order, https URLs, labels, scores; deep-dive front matter and required sections; no "Internal notes";
 # the correction-form option every page prefills) and N4 scan (local paths, emails, phone numbers, images, X API
-# field names, internal ticket ids, gendered pronouns on pseudonymous records). This block also counts the files
+# field names, internal ticket ids, gendered pronouns on pseudonymous records, and the literal text undefined, null or
+# NaN on a rendered page). This block also counts the files
 # itself, independently of the script: page files on disk must equal the people records, plus the index, plus one
 # per deep dive. Fix drift with `node site/scripts/make-study.mjs`. Details: ../BUILD-GATES.md.
 echo "== N  Independent 100 study =="

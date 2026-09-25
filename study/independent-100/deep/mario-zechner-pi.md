@@ -16,7 +16,7 @@ summary: How Pi's small core, project-trust gate and enforced supply-chain rules
 - https://github.com/badlogic/terminalcp, https://github.com/badlogic/cchistory and https://github.com/badlogic/agent-tools (read 2026-09-24).
 - `pi_agent_rust`, a Rust port of Pi whose `Cargo.toml` lists Jeffrey Emanuel as author: https://github.com/Dicklesworthstone/pi_agent_rust/blob/8ce178e5d7fbf06f94cb808c9fde9fe46b83f28e/Cargo.toml#L7 (commit `8ce178e`, read 2026-09-25).
 
-Licenses: Pi is MIT, `Copyright (c) 2025 Mario Zechner` [Verified: https://github.com/earendil-works/pi/blob/v0.87.1/LICENSE#L3]; OMP is MIT [Verified: https://github.com/can1357/oh-my-pi/blob/v18.3.0/LICENSE]. terminalcp and cchistory have no LICENSE file [Verified: GitHub license API returns `null`], though terminalcp's `package.json` declares MIT [Verified: https://raw.githubusercontent.com/badlogic/terminalcp/HEAD/package.json]. agent-tools is archived with no LICENSE file [Verified: GitHub API].
+Licenses: Pi is MIT, `Copyright (c) 2025 Mario Zechner` [Verified: https://github.com/earendil-works/pi/blob/v0.87.1/LICENSE#L3]; OMP is MIT [Verified: https://github.com/can1357/oh-my-pi/blob/v18.3.0/LICENSE]. terminalcp and cchistory have no LICENSE file [Verified: GitHub license API, 2026-09-25: no license file], though terminalcp's `package.json` declares MIT [Verified: https://raw.githubusercontent.com/badlogic/terminalcp/HEAD/package.json]. agent-tools is archived with no LICENSE file [Verified: GitHub license API, 2026-09-25].
 
 ## What he built
 

@@ -11,7 +11,7 @@ The Independent 100 was curated by dan (@irl_danB) and published on 2026-09-24 a
 - **Scope.** The 99 people named on the list, taken with the curator's rank and section as given. We did not add, drop or reorder anyone.
 - **First-pass survey, 2026-09-24.** Ten AI agent sessions each profiled about ten people from public sources: personal sites and blogs, GitHub repositories and the GitHub API (licenses, stars, last activity, contributor counts), papers, and a small number of public posts. Each record says what the person publicly does, lists their public work with links and licenses, scores its relevance to our own work, and names what we would study next.
 - **Deep dives, 2026-09-24 and 2026-09-25.** For a few people whose work overlaps ours most, a separate agent session read the source code and writing in depth and compared it with how we work. Each deep dive has its own page.
-- **Public edition, 2026-09-25.** The records and deep dives were edited for publication under the rules below, every link was checked, and the result was schema-checked before any page was rendered.
+- **Public edition, 2026-09-25.** The records and deep dives were edited for publication under the rules below, every link was checked, and the result was schema-checked before any page was rendered. A reviewer from another model family then reviewed it, and its corrections were applied the same day.
 - **Nothing was installed, run or benchmarked** for the survey. Where a deep dive ran something, it says so.
 
 ## Relevance rubric
@@ -34,16 +34,17 @@ Claims carry the labels used across Franken Research. **[Verified]** means we re
 ## Dates
 
 - List published by the curator: 2026-09-24.
-- First-pass survey: 2026-09-24. Stars, licenses and activity dates are as returned by the GitHub API that day.
+- First-pass survey: 2026-09-24. Stars and activity dates are as returned by the GitHub API that day.
+- Licenses of GitHub repositories: the authenticated GitHub license API, 2026-09-25. "No license file" means the API found none; "license file present, not recognised by GitHub" means GitHub could not classify the file.
 - Deep dives: 2026-09-24 and 2026-09-25, as dated on each page.
-- Public edition and link check: 2026-09-25.
+- Public edition, link check and review corrections: 2026-09-25.
 
 ## What the public edition leaves out
 
 - **Public work first.** Each page is about what a person has published: code, writing, papers, talks and products. Biography is limited to a sourced professional role where it explains the work, and nothing here judges anyone's character or states their motives.
 - **No raw X data.** We do not republish profile text, pinned posts, locations or follower counts. The survey's raw X API responses are not in this repository.
 - **Nothing personal.** No home or work location, contact details, family or relationship details, health, financial or legal information about a person, private communications, images of people, or inferences about sensitive traits.
-- **No identity resolution.** Pseudonymous accounts appear under their handle and the name shown on the list, with no gendered pronouns, and we do not link them to any other identity or give clues that would. Where a record linked a pseudonymous account to another account by inference, that link and the work that rested on it were removed.
+- **No identity resolution.** Pseudonymous accounts appear under their handle and the name shown on the list, with no gendered pronouns. For them we list only work published under the listed handle: an account or site named as the handle, a project page that credits the handle, or an account or site the listed one itself links in a source it wrote (cited). A personal site that carries or points toward an offline identity, anything learned from it (biography, employer, name clues), and other accounts the listed one does not itself link are left out, even where that leaves no work to list.
 - **Roles and shared affiliations are sourced.** A person's role, or a statement that two people share a lab or employer, appears only with a primary source (their own site, repository or paper) or their own profile, labelled as such.
 - **No private material.** Local file paths, machine names, process ids, internal ticket ids and the names of private repositories were removed or replaced with a short public description. Each record's list of where the person's work appears in our own files was replaced by one public sentence (`in_our_work`) or omitted.
 - **Neutral on sensitive topics.** Crypto tokens, politics and persona accounts are mentioned only where they are part of the person's public work, without judgement and without allegations.
@@ -62,7 +63,7 @@ Claims carry the labels used across Franken Research. **[Verified]** means we re
 - This is a survey of public material, read in one or two days. Nothing was installed, run or benchmarked for the survey.
 - Every relevance score is one reviewer's judgement, made by one of ten agent sessions that were not cross-calibrated. The scores say how much a person's public work bears on our own work; they do not rank people.
 - Coverage of each person is uneven. Some people publish mostly code, some mostly writing, and some mostly on X, which we read only lightly.
-- Stars, licenses and activity dates are as of 2026-09-24 and will drift. Licenses are as GitHub reports them unless a record says otherwise; check the license file before reusing anything.
+- Stars and activity dates are as of 2026-09-24 and will drift. Licenses of GitHub repositories are as the GitHub license API reported them on 2026-09-25; other licenses are as the source states. Check the license file before reusing anything.
 - Roles and affiliations can change quickly. A role labelled [Reported: X profile] was taken from the person's own profile and not checked elsewhere.
 - The agents that wrote the records and deep dives are AI coding agents. Their work was checked by other agent sessions and by the build gates, not by the people described.
 

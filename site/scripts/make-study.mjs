@@ -58,9 +58,14 @@ const isHttps = (u) => typeof u === 'string' && /^https:\/\/[^\s]+$/.test(u);
 // ---------- inline markdown subset ----------
 const URL_RX = /https?:\/\/[^\s<>"'`\])]*[^\s<>"'`\]).,;:!?]/g;
 const shortUrl = (u) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+// Each call parks finished HTML in its own namespace of placeholders. A nested call (the text of an evidence label,
+// or of a link) can therefore carry the caller's placeholders through untouched: resolving them against the nested
+// call's list is what once printed "[Verified at undefined]" for a label holding a code span.
+let inlineCalls = 0;
 function inline(text, { labels = true } = {}) {
+  const ns = ++inlineCalls;
   const hold = [];
-  const put = (html) => '\u0000' + (hold.push(html) - 1) + '\u0000';
+  const put = (html) => '\u0000' + ns + '.' + (hold.push(html) - 1) + '\u0000';
   let s = String(text);
   s = s.replace(/`([^`\n]+)`/g, (_, c) => put('<code>' + esc(c) + '</code>'));
   s = s.replace(/\[([^\]\n]+)\]\((https:\/\/[^)\s]+)\)/g, (_, t, u) => put('<a href="' + esc(u) + '">' + inline(t, { labels: false }) + '</a>'));
@@ -72,8 +77,9 @@ function inline(text, { labels = true } = {}) {
   // it carries the STAT annotation gate B exempts (the live counts come from data.js on the other pages).
   s = esc(s).replace(/\*\*([^*\n]+?)\*\*/g, '<b>$1</b>')
     .replace(/\b\d+(?:\s+of\s+|\/)44\b/g, (m) => '<!-- STAT: dated Franken Research count quoted in study source (not in data.js) -->' + m);
-  // nested holds (a label holding a link) resolve from the inside out
-  for (let i = 0; i < 3 && s.includes('\u0000'); i++) s = s.replace(/\u0000(\d+)\u0000/g, (_, n) => hold[+n]);
+  // nested holds (a label holding a link) resolve from the inside out; other calls' placeholders are left alone
+  const own = new RegExp('\\u0000' + ns + '\\.(\\d+)\\u0000', 'g');
+  for (let i = 0; i < 3 && own.test(s); i++) { own.lastIndex = 0; s = s.replace(own, (_, n) => hold[+n]); }
   return s;
 }
 
@@ -426,6 +432,16 @@ const SCAN = [
   ['internal ticket id', /\bcp-[a-z0-9]{5}\b/],
 ];
 const GENDERED = /\b(he|him|his|himself|she|her|hers|herself)\b/i;
+// A rendered page must not show a JavaScript or JSON placeholder where text was meant to be ("[Verified at
+// undefined]" was one). Checked on the whole rendered page minus its scripts.
+const RENDER_LITERAL = /\b(undefined|null|NaN)\b/;
+function scanRendered(rel, html) {
+  const lines = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, (m) => m.replace(/[^\n]/g, '')).split('\n');
+  lines.forEach((l, i) => {
+    const m = RENDER_LITERAL.exec(l);
+    if (m) find('N4', `${rel}:${i + 1}: rendered placeholder text "${m[1]}": ${JSON.stringify(l.slice(Math.max(0, m.index - 40), m.index + 30))}`);
+  });
+}
 function scanText(rel, text) {
   const lines = text.split('\n');
   for (const [what, rx] of SCAN) {
@@ -468,7 +484,9 @@ function render(people, deeps, readme) {
       ? '<ul class="work">' + p.public_work.map((w) => {
         const meta = [
           `<span class="tag">${esc(w.kind)}</span>`,
-          w.license ? `<span class="tag lic">${inline(w.license)}</span>` : '<span class="tag lic none">no license stated</span>',
+          w.license
+            ? `<span class="tag lic${/^(no license file|license file present, not recognised by GitHub|unverified)$/.test(w.license) ? ' none' : ''}">${inline(w.license)}</span>`
+            : '<span class="tag lic none">no license stated</span>',
           w.last_activity ? `<span class="small">last activity ${inline(w.last_activity)}</span>` : '',
           w.stars !== null ? `<span class="small">${w.last_activity ? '&middot; ' : ''}${w.stars.toLocaleString('en-US')} GitHub stars on 2026-09-24</span>` : '',
         ].filter(Boolean).join(' ');
@@ -498,7 +516,7 @@ function render(people, deeps, readme) {
 <section class="card" id="work" aria-labelledby="h-work">
   <h2 id="h-work">Public work</h2>
   ${work}
-  <p class="small">Licenses are as GitHub or the source reported them on 2026-09-24; check the license file before reusing anything.</p>
+  <p class="small">Licenses of GitHub repositories are from the authenticated GitHub license API on 2026-09-25 (&ldquo;no license file&rdquo; means the API found none; &ldquo;license file present, not recognised by GitHub&rdquo; means GitHub could not classify it). Other licenses are as the source states. Check the license file before reusing anything.</p>
 </section>
 <section class="card" id="relevance" aria-labelledby="h-relevance">
   <h2 id="h-relevance">Relevance to our work</h2>
@@ -665,7 +683,10 @@ if (!fs.existsSync(form) || !new RegExp('^\\s*-\\s+' + CORRECTION_OPTION + '\\s*
 
 // scan the sources and the rendered pages
 for (const f of [readmeRel, `${SRC}/people.jsonl`, ...deeps.map((d) => d.rel)]) if (fs.existsSync(path.join(ROOT, f))) scanText(f, readText(f));
-for (const [rel, html] of pages) scanText('site/' + rel, html.replace(/<!-- shell:footer -->[\s\S]*?<!-- \/shell:footer -->/, ''));
+for (const [rel, html] of pages) {
+  scanText('site/' + rel, html.replace(/<!-- shell:footer -->[\s\S]*?<!-- \/shell:footer -->/, ''));
+  scanRendered('site/' + rel, html);
+}
 scanPseudonymous(people);
 
 if (!CHECK) {
