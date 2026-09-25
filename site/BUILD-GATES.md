@@ -431,9 +431,12 @@ by a scheduled job.
 **Accepted:** `watch/live.json` and `watch/crossings.jsonl` come from API
 facts that are not committed, so W3 checks their committed shape and ledger
 order and proves the byte-equal render on a recorded fixture, not by re-running
-the watch. W3 is one of the slower gates: on 2026-09-25, on an Apple M3 Ultra with
-8 mutation workers, it took 40.1 s wall (268 cases in 38.5 s, 65 of 65 mutants
-killed); a 4-core CI runner has not been measured.
+the watch. Timing on 2026-09-25: on an Apple M3 Ultra under load, with 8 mutation
+workers, the harness took 40.1 s (268 cases, 65 of 65 mutants killed). On a GitHub
+`ubuntu-latest` runner (verify run 36087416333, branch `ci-probe/freshness-w3`) it
+took 13.8 s (269 cases, 66 of 66 mutants). The whole gate chain took 99 s there,
+against 76 s for the last `main` run without W3. That leaves the 4-minute verify,
+5-minute watch and 8-minute deploy timeouts unchanged.
 
 ## Gate M — feed and OPML fresh and well-formed
 
