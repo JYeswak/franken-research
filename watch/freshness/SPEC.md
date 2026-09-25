@@ -108,6 +108,25 @@ Upstream text is Markdown-escaped with the existing `mdText`.
 
 **FR-G.3** (MUST) `watch/crossings.jsonl` is append-only. Each `--apply` that opens or resolves a crossing appends one line per event, with fixed key order: `{date, event: opened|resolved, id, repo, dim, from, to, source, evidence, resolved_by}`. A run whose output does not start with the previous committed file, byte for byte, fails.
 
+## FR-O: scheduled jobs
+
+The repository's scheduled jobs are the GitHub Actions workflows: `watch.yml` (daily), `discover.yml` (weekly), `verify.yml` (weekly), and `deploy.yml`, which runs after each of the others and on every push. Nothing in this repository relies on a local cron.
+
+**FR-O.1** (MUST) `ops/schedule.tsv` has one row per generated artifact that this contract, or later work, adds. Columns: artifact (path or glob), generator command, workflow file, cadence, and the gate that fails when the committed artifact differs from a fresh run. Today that means `watch/live.json`, `watch/crossings.jsonl`, the live:card regions, and the feed's weekly digest entries; the search index joins later. Artifacts that existed before 2026-09-25 are out of scope and are not retrofitted.
+
+**FR-O.2** (MUST) A check fails in each of these cases:
+- A row's generator command does not appear in the named workflow file.
+- A row's gate is not in `site/scripts/verify-site.sh`.
+- A script under `watch/freshness/`, or `site/scripts/make-live.mjs`, writes committed files but has no row.
+
+So a new generated artifact that no scheduled job refreshes cannot land.
+
+**FR-O.3** (MUST) The watch covers the 44 assessed repositories and every repository listed in a cohort matrix `cohorts/*/matrix.md`. A cohort matrix uses the master matrix's columns and legend. It is written only after the cohort packets pass their independent review, and its rows are the FR-T.2 reference for those repositories. `live.json` totals report pinned and cohort counts separately. With no cohort matrix, the cohort count is 0 and is reported as 0.
+
+**FR-O.4** (SHOULD) The deploy job's smoke step warns when `watch/live.json` `checked_at` is more than 36 hours old, which means a missed daily run. The dashboard shows the time of the last run.
+
+**FR-O.5** (SHOULD) Vendored snapshots listed in `ops/schedule.tsv` carry their build date. The dashboard shows each snapshot's age, and a snapshot more than 30 days old is due for a rebuild.
+
 ## FR-H: harness and measurement
 
 **FR-H.1** (MUST) Differential fidelity: over all 44 repositories and the three dimensions, `classify(pin facts)` is compared with the matrix. Each mismatch is XFAIL with a `DISC-NNN` entry, or it is a failure. The report gives agreement per dimension as matched / 44.
