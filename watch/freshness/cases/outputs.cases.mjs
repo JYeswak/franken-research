@@ -754,7 +754,7 @@ const dashCases = [
   },
   {
     id: 'OUT-D5-canonical', clauses: ['FR-D.5'], level: 'MUST',
-    title: 'the sync runs only when HEAD is the GitHub tip of the default branch, read at sync time: a detached HEAD elsewhere, a feature branch, a main that moved on and a failed API read each exit 2 before the issue is looked up; --dry-run reports the refusal and then the plan; main or a detached HEAD at the tip, and a default branch not called main, pass',
+    title: 'the sync runs only when HEAD is the GitHub tip of the default branch, read at sync time: a detached HEAD elsewhere, a feature branch, a main that moved on and a failed API read each exit 2 before the issue is looked up; --dry-run reports the refusal and the rendered body with no issue lookup either (zero issue listings on every refusal path); main or a detached HEAD at the tip, and a default branch not called main, pass',
     run: (ctx) => withScratch(async (dir) => {
       const live = fixture(ctx, 'live-states.json');
       const file = join(dir, 'live.json');
@@ -769,6 +769,10 @@ const dashCases = [
       const moved = await sync({ head: OTHER, branch: 'main' });
       const failed = await sync({ head: TIP, branch: 'main' }, 'fail');
       const dry = await runDashCli(['--sync', file, '--dry-run'], { local: () => ({ head: OTHER, branch: null }) });
+      const dryRefused = (local, repo) => runDashCli(['--sync', file, '--dry-run'], { local: () => local, repo });
+      const dryFeature = await dryRefused({ head: TIP, branch: 'feature/x' });
+      const dryMoved = await dryRefused({ head: OTHER, branch: 'main' });
+      const dryFailed = await dryRefused({ head: TIP, branch: 'main' }, 'fail');
       const refusedBeforeLookup = (r) => r.code === 2 && r.listed === 0 && r.writes.length === 0;
       // headState on a real repository: on main, detached, on a feature branch (plumbing only, no hooks run)
       const { repo, git, commit } = scratchRepo(join(dir, 'repo'));
@@ -788,7 +792,8 @@ const dashCases = [
         [refusedBeforeLookup(feature) && /on branch feature\/x, not main/.test(feature.lines[0] ?? ''), `feature branch: exit ${feature.code}, listed ${feature.listed}, ${JSON.stringify(feature.lines[0])}`],
         [refusedBeforeLookup(moved) && /HEAD 1234567 is not the GitHub tip abcdefa of main: main has moved past it/.test(moved.lines[0] ?? ''), `main moved: exit ${moved.code}, listed ${moved.listed}, ${JSON.stringify(moved.lines[0])}`],
         [refusedBeforeLookup(failed) && /cannot read the default-branch tip from GitHub .*HTTP 502/.test(failed.lines[0] ?? ''), `API read failed: exit ${failed.code}, listed ${failed.listed}, ${JSON.stringify(failed.lines[0])}`],
-        [dry.code === 2 && /^DASHBOARD_FAIL HEAD is detached/.test(dry.lines[0] ?? '') && /^DASHBOARD_PLAN action=created issue=none /.test(dry.lines[1] ?? '') && dry.lines[3] === renderDashboard(live) && dry.writes.length === 0, `dry run refused: exit ${dry.code} ${JSON.stringify(dry.lines.slice(0, 2))}`],
+        [refusedBeforeLookup(dry) && /^DASHBOARD_FAIL HEAD is detached/.test(dry.lines[0] ?? '') && dry.lines[1] === 'DASHBOARD_PLAN action=not-determined issue=not-looked-up (refused before any issue lookup)' && dry.lines[2] === '' && dry.lines[3] === renderDashboard(live) && dry.lines.length === 4, `dry run refused: exit ${dry.code}, listed ${dry.listed}, ${JSON.stringify(dry.lines.slice(0, 2))}`],
+        ...[['feature', dryFeature], ['moved', dryMoved], ['API read failed', dryFailed]].map(([what, r]) => [refusedBeforeLookup(r) && r.lines[1]?.startsWith('DASHBOARD_PLAN action=not-determined'), `dry run refused (${what}): exit ${r.code}, listed ${r.listed} issue listings, ${r.writes.length} writes`]),
         [attached.head === c1 && attached.branch === 'main' && loose.head === c1 && loose.branch === null && onFeature.branch === 'feature/x', `headState: ${JSON.stringify([attached, loose, onFeature])}`],
       ]);
     }),

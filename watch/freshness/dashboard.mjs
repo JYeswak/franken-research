@@ -6,8 +6,8 @@
 // The scheduled workflow runs --sync as its last step, after the gate chain and the push (FR-D.5), so the issue
 // is rendered only from a committed watch/live.json: a file that is untracked or differs from HEAD is refused, and
 // so is a checkout whose HEAD is not the tip of the default branch on GitHub, read from the API at sync time (a
-// feature branch, a detached HEAD elsewhere, a main that moved on, or a failed read). --dry-run reports the same
-// refusal, then prints the plan it would have carried out.
+// feature branch, a detached HEAD elsewhere, a main that moved on, or a failed read). A refusal makes no issue
+// lookup, in --dry-run too: --dry-run then prints the rendered body with the plan's action as not determined.
 // Token: GITHUB_TOKEN, else GH_TOKEN, else `gh auth token` (watch.mjs resolveToken); it is never printed.
 // Prints DASHBOARD_OK action=... issue=#N ignored=N closed_duplicates=N, or DASHBOARD_PLAN ... and the body
 // with --dry-run, or DASHBOARD_FAIL <reason>. Exit: 0 ok; 1 sync failed or refused by the FR-D.6 bound, and a
@@ -347,17 +347,23 @@ async function defaultClient() {
   return { api, bot: await watch.botLogin(api) };
 }
 
+/** What --dry-run prints after a canonical-tip refusal: the body only, since no issue is looked up (FR-D.5). */
+function refusedPlan(live, out) {
+  out('DASHBOARD_PLAN action=not-determined issue=not-looked-up (refused before any issue lookup)');
+  out('');
+  out(renderDashboard(live));
+}
+
 /**
  * The CLI, with its collaborators injectable for tests: `client()` gives { api, bot }, `committed(file)` throws
  * when the file is not committed, `local()` gives the checkout's { head, branch }, `out(line)` prints. Returns the
- * exit code. A checkout that is not the default branch's GitHub tip is refused with exit 2 before the issue is
- * looked up; with --dry-run the refusal is printed first, then the plan it would have carried out, still exit 2.
+ * exit code. A checkout that is not the default branch's GitHub tip is refused with exit 2 and no issue lookup,
+ * in --dry-run too; --dry-run then prints the rendered body with the plan's action shown as not determined.
  */
 export async function main(argv, { client = defaultClient, committed = assertCommitted, local = headState, out = (l) => console.log(l) } = {}) {
   const k = argv.indexOf('--sync');
   const known = new Set(['--sync', '--dry-run']);
   let input = true; // usage, the committed check, live.json and HEAD come before any API call; they fail with exit 2
-  let refused = false;
   try {
     if (k < 0 || !argv[k + 1] || argv[k + 1].startsWith('--') || argv.some((a, j) => a.startsWith('--') && !known.has(a) && j !== k + 1)) throw new UsageError(USAGE);
     const file = resolve(argv[k + 1]);
@@ -370,9 +376,10 @@ export async function main(argv, { client = defaultClient, committed = assertCom
     try {
       await assertCanonical(api, here);
     } catch (e) {
-      if (!(e instanceof NotCanonical) || !dryRun) throw e;
-      refused = true;
+      if (!(e instanceof NotCanonical)) throw e;
       out(`DASHBOARD_FAIL ${e.message}`);
+      if (dryRun) refusedPlan(live, out);
+      return 2;
     }
     const r = await syncDashboard(api, live, { bot, dryRun });
     const issue = r.number == null ? 'none' : `#${r.number}`;
@@ -381,10 +388,10 @@ export async function main(argv, { client = defaultClient, committed = assertCom
       out('');
       out(r.body);
     } else out(`DASHBOARD_OK action=${r.action} issue=${issue} ignored=${r.ignored.length} closed_duplicates=${r.closed.length}`);
-    return refused ? 2 : 0;
+    return 0;
   } catch (e) {
     out(`DASHBOARD_FAIL ${String(e?.message ?? e).split('\n')[0]}`);
-    return input || refused || e instanceof UsageError || e instanceof NotCanonical || e?.code === 2 ? 2 : 1;
+    return input || e instanceof UsageError || e?.code === 2 ? 2 : 1;
   }
 }
 

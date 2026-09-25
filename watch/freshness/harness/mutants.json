@@ -1062,7 +1062,7 @@
  {
   "id": "M-OUT-D5-failure-exits-zero",
   "file": "watch/freshness/dashboard.mjs",
-  "find": "    return input || refused || e instanceof UsageError || e instanceof NotCanonical || e?.code === 2 ? 2 : 1;",
+  "find": "    return input || e instanceof UsageError || e?.code === 2 ? 2 : 1;",
   "replace": "    return 0;",
   "clauses": [
    "FR-D.5"
@@ -1146,8 +1146,20 @@
  {
   "id": "M-OUT-D5-dry-run-refusal-exits-zero",
   "file": "watch/freshness/dashboard.mjs",
-  "find": "    return refused ? 2 : 0;",
-  "replace": "    return 0;",
+  "find": "      if (dryRun) refusedPlan(live, out);\n      return 2;",
+  "replace": "      if (dryRun) refusedPlan(live, out);\n      return 0;",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-lookup-after-refusal",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "      if (dryRun) refusedPlan(live, out);",
+  "replace": "      if (dryRun) { const r = await syncDashboard(api, live, { bot, dryRun }); out(`DASHBOARD_PLAN action=not-determined issue=not-looked-up ${r.action}`); out(''); out(r.body); }",
   "clauses": [
    "FR-D.5"
   ],
