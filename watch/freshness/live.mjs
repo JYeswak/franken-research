@@ -8,7 +8,7 @@
 //
 // Node 22 built-ins only.
 
-import { classify as classifyFacts, DIMS } from './classify.mjs';
+import { classify as classifyFacts, ciCommit, DIMS } from './classify.mjs';
 import { factsFor } from './facts.mjs';
 import {
   matrixClasses, evaluateRepo, repoState, OBSERVED_DETECTORS, parseLedger, openFromLedger, resolutions, debounce, appendLedger,
@@ -35,6 +35,8 @@ const K = {
   release: ['tag', 'date', 'url'],
   existence: ['found', 'archived', 'pin_reachable'],
   dim: ['matrix', 'reference', 'at_pin', 'at_baseline', 'now', 'tracked', 'rule_at_pin', 'rule_now', 'evidence'],
+  // ci also names the commit its `now` class describes (FR-C.3).
+  dimCi: ['matrix', 'reference', 'at_pin', 'at_baseline', 'now', 'now_commit', 'tracked', 'rule_at_pin', 'rule_now', 'evidence'],
   crossing: ['id', 'dim', 'from', 'to', 'since', 'source', 'evidence', 'resolved_by'],
   revisit: ['machine', 'human', 'fired'],
   due: ['due', 'reason'],
@@ -49,7 +51,7 @@ function canonRepo(r) {
     ...pick(K.repo, r),
     baseline: pick(K.baseline, r.baseline), pin: pick(K.commit, r.pin), head: pick(K.commit, r.head),
     latest_release: pick(K.release, r.latest_release), existence: pick(K.existence, r.existence),
-    dims: Object.fromEntries(DIMS.map((d) => [d, pick(K.dim, r.dims?.[d])])),
+    dims: Object.fromEntries(DIMS.map((d) => [d, pick(d === 'ci' ? K.dimCi : K.dim, r.dims?.[d])])),
     crossings: (r.crossings ?? []).map(canonCrossing), pending: (r.pending ?? []).map(canonCrossing),
     revisit: pick(K.revisit, r.revisit), due: pick(K.due, r.due),
   };
@@ -77,8 +79,8 @@ function latestRelease(record) {
   const r = [...(record.releases ?? [])].sort((a, b) => cmp(b.date ?? '', a.date ?? '') || cmp(a.tag, b.tag))[0];
   return r ? { tag: safeName(r.tag), date: r.date, url: `https://github.com/Dicklesworthstone/${record.name ?? record.repo}/releases/tag/${encodeURIComponent(r.tag)}` } : null;
 }
-const dimRow = (x, matrix) => ({
-  matrix, reference: x.reference, at_pin: x.pin.value, at_baseline: x.base.value, now: x.now.value, tracked: x.cmp.tracked,
+const dimRow = (x, matrix, nowCommit) => ({
+  matrix, reference: x.reference, at_pin: x.pin.value, at_baseline: x.base.value, now: x.now.value, now_commit: nowCommit, tracked: x.cmp.tracked,
   rule_at_pin: x.pin.rule, rule_now: x.now.rule, evidence: x.now.evidence.slice(0, MAX_EVIDENCE),
 });
 const liveCrossing = (c, since) => ({ ...c, id: safeName(c.id).replace(/%3A/g, ':').replace(/%3E/g, '>'), since, evidence: c.evidence.slice(0, MAX_EVIDENCE), resolved_by: null });
@@ -102,7 +104,7 @@ export function computeFreshness({ records, summaries, watched, rechecks = {}, p
     const record = records[w.repo];
     const re = rechecks[w.repo] ?? null;
     const reference = re ? re.classes : matrixClasses(w.matrixRow);
-    const pointMap = { pin: 'pin', now: 'now', baseline: re ? 'recheck' : 'pin' };
+    const pointMap = { pin: 'pin', now: 'now', baseline: re ? 'recheck' : 'pin', ci: 'ci' };
     const facts = factsFor(record, summaries, { checkedAt, privateCi: privateCi[w.repo] ?? null, pointMap });
     const ev = evaluateRepo({ record, facts, reference, classify, revisitRows: revisitRows.filter((r) => r.repo === w.repo), prevExistence: prevRepos.get(w.repo)?.existence ?? null });
     return { w, record, re, facts, ev };
@@ -133,7 +135,7 @@ function repoRow({ w, record, re, facts, ev }, open, pending, revisitRows, check
     pin: { sha: record.pin, date: record.pin_date }, head: { sha: record.head, date: record.head_date },
     commits_since_pin: record.commits_since_pin, latest_release: latestRelease(record),
     existence: { found: record.found, archived: record.archived, pin_reachable: record.pin_reachable },
-    dims: Object.fromEntries(DIMS.map((d) => [d, dimRow(ev.dims[d], matrixClasses(w.matrixRow)?.[d] ?? null)])),
+    dims: Object.fromEntries(DIMS.map((d) => [d, dimRow(ev.dims[d], matrixClasses(w.matrixRow)?.[d] ?? null, d === 'ci' ? ciCommit(facts, 'now', ev.dims.ci.now) : undefined)])),
     crossings, pending,
     revisit: { machine, human: mine.length - machine, fired: ev.revisit.fired },
     state: st.state, state_reason: st.state_reason, due: st.due,

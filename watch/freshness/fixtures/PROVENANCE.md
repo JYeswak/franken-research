@@ -7,16 +7,17 @@ Each fixture here says how it was made: the command, the UTC time, the endpoints
 ### reference.json and blobs.json.gz
 
 - **Command:** `node watch/freshness/facts.mjs --record` (token from `gh auth token`; never printed).
-- **Recorded:** 2026-09-25T01:42:40Z (UTC), 34.2 s.
-- **Git ref of this repository:** `983e0efdfc37539fccb413761ac60fa3f93823ee`.
-- **API use:** 78 GraphQL calls (cost 78) and 174 REST calls.
+- **Recorded:** 2026-09-25T02:08:40Z (UTC), 54.8 s.
+- **Git ref of this repository:** `b5c18d16f0a8a95e222dad1fba45089ed9363046`.
+- **API use:** 99 GraphQL calls (cost 99) and 176 REST calls.
 - **Endpoints:**
   - GraphQL `https://api.github.com/graphql`: the watch's own collection (`user.repositories`, and per repository `defaultBranchRef`, `licenseInfo`, `releases` with `releaseAssets { totalCount }`, `refs(refPrefix: "refs/tags/")`), the commit, root tree and `.github/workflows` tree (entries with blob ids) at every recorded point, and the text of each blob through `repository.object(oid:)`.
   - REST `GET /repos/Dicklesworthstone/{repo}/compare/{pin}...{head}?per_page=1&page=2` (status, ahead_by, behind_by only).
-  - REST `GET /repos/Dicklesworthstone/{repo}/actions/runs?head_sha={sha}&per_page=100` for every recorded point, trimmed to each run's `path`, `name`, `event`, `status`, `conclusion`.
+  - REST `GET /repos/Dicklesworthstone/{repo}/actions/runs?head_sha={sha}&per_page=100` for every recorded point except HEAD, trimmed to each run's `path`, `name`, `event`, `status`, `conclusion`.
+  - REST `GET /repos/Dicklesworthstone/{repo}/actions/runs?branch={default}&event=push&per_page=100`, one page per repository (FR-C.3), trimmed to each run's `head_sha`, `path`, `name`, `event`, `status`, `conclusion`; only the runs of the chosen CI point are kept.
   - REST `GET /repos/Dicklesworthstone/{repo}/actions/workflows?per_page=100`, trimmed to `path`, `state` and `updated_at` (kept as `since`).
-- **Points recorded:** the packet pin and HEAD of all 44 assessed repositories (88), the two re-check pins (frankengit `dfa5bb861e1f08802c72d33e96796a1aad9d5d06`, franken_code_browser `c7c531061e250d81afc58da7cb35ec0b4e7129cb`), and the commits named by watch issues #2, #3, #4, #6 and #7 (franken_lean `9d6d77b`, franken_manim `b2322be`, frankenfs `c8de05f`, frankenlibc `0d662e3`, frankensim `950ef5c`; the head of each issue's compare URL). 95 points in all, every one with its runs.
-- **Trimming:** `reference.json` keeps only the fields the classifier and triggers read (see `snapFields` and `rawPoint` in `facts.mjs`). `blobs.json.gz` holds the text of the 534 blobs those records name, keyed by blob id: every workflow file and license file at every point, and the HEAD `Cargo.lock` of the two repositories with a `dependency.edge` revisit trigger, reduced to its `name = "..."` lines. It is gzipped because the workflow YAML alone is about 3.8 MB.
+- **Points recorded:** the packet pin and HEAD of all 44 assessed repositories (88); the FR-C.3 CI point, the newest commit on the push-runs page whose push-triggered test runs had all completed (36 repositories: HEAD for 10, an older commit for 26; none on the page for 8, recorded as `ci: null`); the two re-check pins (frankengit `dfa5bb861e1f08802c72d33e96796a1aad9d5d06`, franken_code_browser `c7c531061e250d81afc58da7cb35ec0b4e7129cb`); and the commits named by watch issues #2, #3, #4, #6 and #7 (franken_lean `9d6d77b`, franken_manim `b2322be`, frankenfs `c8de05f`, frankenlibc `0d662e3`, frankensim `950ef5c`; the head of each issue's compare URL). 131 points in all.
+- **Trimming:** `reference.json` keeps only the fields the classifier and triggers read (see `snapFields` and `rawPoint` in `facts.mjs`), plus each repository's push-page size (`ci_page`). `blobs.json.gz` holds the text of the 597 blobs those records name, keyed by blob id: every workflow file and license file at every point, and the HEAD `Cargo.lock` of the two repositories with a `dependency.edge` revisit trigger, reduced to its `name = "..."` lines. It is gzipped because the texts total about 4.7 MB.
 - **What it does not hold:** commit authors, issue data, run logs, job lists.
 
 ### replay-states.json.gz

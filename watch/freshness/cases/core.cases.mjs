@@ -15,7 +15,7 @@ import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFil
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
-import { classify, classifyCi, classifyRel, classifyLicense, workflowKind, summarizeWorkflow, summarizeLicense, DIMS } from '../classify.mjs';
+import { classify, classifyCi, classifyRel, classifyLicense, workflowKind, summarizeWorkflow, summarizeLicense, settledCommit, ciCommit, DIMS } from '../classify.mjs';
 import { parseYaml } from '../yaml.mjs';
 import { loadReference, loadReplay, summariesFromTexts, factsFor, REFERENCE } from '../facts.mjs';
 import {
@@ -58,10 +58,12 @@ const wf = (path, over = {}) => ({ path: `.github/workflows/${path}`, blob: path
 const run = (path, conclusion, over = {}) => ({ path: `.github/workflows/${path}`, name: path, event: 'push', status: 'completed', conclusion, ...over });
 const runs = (...list) => ({ total: list.length, complete: true, list });
 const pt = (over = {}) => ({ sha: SHA_PIN, date: '2026-09-20T00:00:00Z', workflows: [], licenses: [], runs: runs(), lockfile: null, ...over });
-const mk = ({ pin = {}, now = {}, ...top } = {}) => ({
+// `ci` (optional): the FR-C.3 CI point for `now`; null means no commit on the push-runs page settled.
+const mk = ({ pin = {}, now = {}, ci, ...top } = {}) => ({
   repo: 'x', checked_at: '2026-09-25T12:00:00Z', default_branch: 'main', private_ci: null, releases: [], tags: [], workflow_states: null,
-  points: { pin: pt(pin), now: pt({ sha: SHA_NOW, date: '2026-09-24T00:00:00Z', ...now }), baseline: pt(pin) }, ...top,
+  points: { pin: pt(pin), now: pt({ sha: SHA_NOW, date: '2026-09-24T00:00:00Z', ...now }), baseline: pt(pin), ...(ci === undefined ? {} : { ci: ci && pt(ci) }) }, ...top,
 });
+const pageRun = (sha, path, conclusion, status = 'completed') => ({ sha, path: `.github/workflows/${path}`, name: path, event: 'push', status, conclusion });
 const PRIVATE = { source: 'packets/x-assessment.md:1', tier: '[Code-verified, High]', quote: 'q', source_url: 'https://github.com/JYeswak/franken-research/blob/main/packets/x-assessment.md#L1' };
 const expectClass = (got, value, rule) => (got.value === value && (!rule || got.rule === rule) ? true : { pass: false, detail: `got ${got.value} (${got.rule}), want ${value}${rule ? ` (${rule})` : ''}` });
 const all = (...rs) => { for (const r of rs) if (r !== true) return r; return true; };
@@ -187,11 +189,65 @@ const C3 = [
     const none = mk({ pin: { workflows: [wf('a.yml')], runs: null } });
     return all(expectClass(classifyCi(gap, 'pin'), 'unknown', 'FR-C.3/api-gap'), expectClass(classifyCi(none, 'pin'), 'unknown', 'FR-C.3/api-gap'));
   } },
-  { id: 'CORE-C3-young-head', clauses: ['FR-C.3'], level: 'MUST', title: 'HEAD younger than 6 hours with no completed test run is unknown; 6 hours or older is C3', run(ctx) {
-    const at = (date) => classifyCi(mk({ now: { workflows: [wf('a.yml')], date } }), 'now');
-    return all(expectClass(at('2026-09-25T06:00:01Z'), 'unknown', 'FR-C.3/young-head'), expectClass(at('2026-09-25T06:00:00Z'), 'C3'));
+  { id: 'CORE-C3-busy-head-settled-parent', clauses: ['FR-C.3'], level: 'MUST', title: 'a busy HEAD and a settled parent: CI now is read at the parent, and now_commit names it', run(ctx) {
+    const HEAD = 'd'.repeat(40);
+    const PARENT = 'e'.repeat(40);
+    const page = { total: 3, complete: true, list: [
+      pageRun(HEAD, 'a.yml', null, 'in_progress'),
+      pageRun(PARENT, 'a.yml', 'success'),
+      pageRun(PARENT, 'lint.yml', 'failure', 'completed'),
+    ] };
+    const sel = settledCommit(page, (p) => p === '.github/workflows/a.yml');
+    const f = mk({ now: { sha: HEAD, workflows: [wf('a.yml')] }, ci: sel && { sha: sel.sha, date: '2026-09-25T09:00:00Z', workflows: [wf('a.yml')], licenses: [], runs: runs(...sel.runs), lockfile: null } });
+    const got = classifyCi(f, 'now');
+    return all(sel?.sha === PARENT ? true : { pass: false, detail: `selected ${sel?.sha}` }, expectClass(got, 'C1', 'FR-C.2/C1'), ciCommit(f, 'now', got) === PARENT ? true : { pass: false, detail: 'now_commit is not the parent' });
   } },
-  { id: 'CORE-C3-young-head-not-at-pin', clauses: ['FR-C.3'], level: 'MUST', title: 'the young-HEAD rule applies to now only', run: () => expectClass(classifyCi(mk({ pin: { workflows: [wf('a.yml')], date: '2026-09-25T11:00:00Z' } }), 'pin'), 'C3') },
+  { id: 'CORE-C3-head-settled-wins', clauses: ['FR-C.3'], level: 'MUST', title: 'HEAD is the CI point when its test runs have settled, even if a non-test run on it is still going', run(ctx) {
+    const HEAD = 'd'.repeat(40);
+    const page = { total: 3, complete: true, list: [pageRun(HEAD, 'pages.yml', null, 'in_progress'), pageRun(HEAD, 'a.yml', 'failure'), pageRun('e'.repeat(40), 'a.yml', 'success')] };
+    const sel = settledCommit(page, (p) => p === '.github/workflows/a.yml');
+    return sel?.sha === HEAD ? true : { pass: false, detail: `selected ${sel?.sha}` };
+  } },
+  { id: 'CORE-C3-no-settled-commit', clauses: ['FR-C.3'], level: 'MUST', title: 'no settled commit on the page gives unknown (never C3), with no now_commit; the files still decide C4', run(ctx) {
+    const busy = { total: 2, complete: true, list: [pageRun('d'.repeat(40), 'a.yml', null, 'queued'), pageRun('e'.repeat(40), 'a.yml', null, 'in_progress')] };
+    const isTest = (p) => p === '.github/workflows/a.yml';
+    const tests = mk({ now: { workflows: [wf('a.yml')] }, ci: null });
+    const deploy = mk({ now: { workflows: [wf('pages.yml', { kind: 'deploy' })] }, ci: null });
+    const got = classifyCi(tests, 'now');
+    return all(
+      settledCommit(busy, isTest) === null && settledCommit({ total: 0, complete: true, list: [] }, isTest) === null ? true : { pass: false, detail: 'a commit was selected' },
+      expectClass(got, 'unknown', 'FR-C.3/no-settled-commit'), ciCommit(tests, 'now', got) === null ? true : { pass: false, detail: 'now_commit set for an unknown class' },
+      expectClass(classifyCi(deploy, 'now'), 'C4'), ciCommit(deploy, 'now', classifyCi(deploy, 'now')) === SHA_NOW ? true : { pass: false, detail: 'file-decided class does not name HEAD' },
+    );
+  } },
+  { id: 'CORE-C3-cut-page-oldest', clauses: ['FR-C.3'], level: 'MUST', title: 'on a page that does not hold every run, the oldest listed commit cannot be the CI point', run(ctx) {
+    const list = [pageRun('d'.repeat(40), 'a.yml', null, 'in_progress'), pageRun('e'.repeat(40), 'a.yml', 'success')];
+    const isTest = (p) => p === '.github/workflows/a.yml';
+    const cut = settledCommit({ total: 250, complete: false, list }, isTest);
+    const whole = settledCommit({ total: 2, complete: true, list }, isTest);
+    return cut === null && whole?.sha === 'e'.repeat(40) ? true : { pass: false, detail: `cut ${cut?.sha}, whole ${whole?.sha}` };
+  } },
+  { id: 'CORE-C3-ci-point-before-baseline', clauses: ['FR-C.3'], level: 'MUST', title: 'a settled commit dated before the baseline commit is not used: CI now is unknown, with no now_commit', run(ctx) {
+    const old = { sha: 'e'.repeat(40), date: '2026-09-10T00:00:00Z', workflows: [wf('a.yml')], runs: runs(run('a.yml', 'failure')) };
+    const f = mk({ now: { workflows: [wf('a.yml')] }, ci: old });
+    const fresh = mk({ now: { workflows: [wf('a.yml')] }, ci: { ...old, date: '2026-09-21T00:00:00Z' } });
+    const got = classifyCi(f, 'now');
+    return all(expectClass(got, 'unknown', 'FR-C.3/no-settled-commit'), ciCommit(f, 'now', got) === null ? true : { pass: false, detail: 'now_commit set' }, expectClass(classifyCi(fresh, 'now'), 'C2'));
+  } },
+  { id: 'CORE-C3-files-read-at-head', clauses: ['FR-C.3', 'FR-C.2'], level: 'MUST', title: 'the file rules read HEAD\'s files even when the CI point is another commit (dispatch-only at HEAD is C5 at HEAD)', run(ctx) {
+    const ci = { sha: 'e'.repeat(40), date: '2026-09-23T00:00:00Z', workflows: [wf('a.yml')], runs: runs(run('a.yml', 'success')) };
+    const f = mk({ now: { workflows: [wf('a.yml', { push: null, events: ['workflow_dispatch'] })] }, ci });
+    const got = classifyCi(f, 'now');
+    return all(expectClass(got, 'C5', 'FR-C.2/C5-no-push-trigger'), ciCommit(f, 'now', got) === SHA_NOW ? true : { pass: false, detail: `now_commit ${ciCommit(f, 'now', got)}` });
+  } },
+  { id: 'CORE-C3-frankengit-now-C5', clauses: ['FR-C.3', 'FR-C.2'], level: 'MUST', title: 'frankengit on the reference fixture reads C5 now from HEAD\'s dispatch-only files, not C3 from a settled commit that predates the workflow removal', run(ctx) {
+    const r = ref().records.frankengit;
+    const f = factsFor(r, ref().summaries, { checkedAt: ref().recorded_at, pointMap: { pin: 'pin', now: 'now', baseline: 'recheck', ci: 'ci' } });
+    const got = classifyCi(f, 'now');
+    const ci = r.points.ci;
+    return all(expectClass(got, 'C5'), ciCommit(f, 'now', got) === r.head ? true : { pass: false, detail: `now_commit ${ciCommit(f, 'now', got)}` },
+      ci && ci.sha !== r.head && ci.date < r.points.recheck.date ? true : { pass: false, detail: `the fixture no longer holds a stale CI point for frankengit (ci ${ci?.sha?.slice(0, 7)} ${ci?.date})` });
+  } },
 ];
 
 // ---------------------------------------------------------------- FR-C.4
@@ -521,7 +577,9 @@ const L = [
     const r = live.repos[0];
     const need = ['repo', 'packet', 'brief', 'set', 'baseline', 'pin', 'head', 'commits_since_pin', 'latest_release', 'existence', 'dims', 'crossings', 'pending', 'revisit', 'state', 'state_reason', 'due'];
     const dimKeys = ['matrix', 'reference', 'at_pin', 'at_baseline', 'now', 'tracked', 'rule_at_pin', 'rule_now', 'evidence'];
-    const ok = live.schema === SCHEMA && JSON.stringify(Object.keys(r)) === JSON.stringify(need) && DIMS.every((d) => JSON.stringify(Object.keys(r.dims[d])) === JSON.stringify(dimKeys))
+    const ciKeys = ['matrix', 'reference', 'at_pin', 'at_baseline', 'now', 'now_commit', 'tracked', 'rule_at_pin', 'rule_now', 'evidence'];
+    const nowCommits = live.repos.every((x) => (x.dims.ci.now === 'unknown') === (x.dims.ci.now_commit === null) && (x.dims.ci.now_commit === null || /^[0-9a-f]{40}$/.test(x.dims.ci.now_commit)));
+    const ok = live.schema === SCHEMA && JSON.stringify(Object.keys(r)) === JSON.stringify(need) && nowCommits && DIMS.every((d) => JSON.stringify(Object.keys(r.dims[d])) === JSON.stringify(d === 'ci' ? ciKeys : dimKeys))
       && live.totals.repos === 44 && live.totals.current + live.totals.changed + live.totals.due + live.totals.unknown === 44
       && live.repos.every((x) => ['current', 'changed', 'due', 'unknown'].includes(x.state));
     return ok ? true : { pass: false, detail: JSON.stringify({ keys: Object.keys(r), totals: live.totals }) };

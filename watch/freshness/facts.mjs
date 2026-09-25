@@ -7,13 +7,17 @@
 // commit) it reads: the commit and its date, the root tree (license files) and the
 // `.github/workflows` tree with blob ids (GraphQL, batched); the text of every blob not already
 // summarized (GraphQL `object(oid:)`, batched; summaries are cached by blob id, so a file is parsed
-// once for its lifetime); the Actions runs for the commit (REST `actions/runs?head_sha=`); and, once
-// per repository, the registered workflows and their states (REST `actions/workflows`). Releases,
-// tags, HEAD, archived and pin reachability come from watch/watch.mjs's snapshot.
+// once for its lifetime); the Actions runs for the commit (REST `actions/runs?head_sha=`), except
+// HEAD; and, once per repository, the registered workflows and their states (REST
+// `actions/workflows`) and one page of the default branch's push runs (REST
+// `actions/runs?branch=<default>&event=push&per_page=100`), from which the `ci` point for `now` is
+// chosen (FR-C.3). Releases, tags, HEAD, archived and pin reachability come from watch/watch.mjs's
+// snapshot.
 //
-//   node watch/freshness/facts.mjs --record     re-record fixtures/core/reference.json (all 44 at
-//                                               pin and HEAD, plus the labelled points), with the
-//                                               blob texts; see fixtures/PROVENANCE.md
+//   node watch/freshness/facts.mjs --record          re-record fixtures/core/reference.json and
+//                                                    blobs.json.gz (all 44 at pin, HEAD and the CI
+//                                                    point, plus the labelled points)
+//   node watch/freshness/facts.mjs --record-replay   re-record fixtures/core/replay-states.json.gz
 //
 // Node 22 built-ins only.
 
@@ -22,7 +26,7 @@ import { execFileSync } from 'node:child_process';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { summarizeWorkflow, summarizeLicense } from './classify.mjs';
+import { summarizeWorkflow, summarizeLicense, settledCommit } from './classify.mjs';
 
 const OWNER = 'Dicklesworthstone';
 const FRESH = dirname(fileURLToPath(import.meta.url));
@@ -111,6 +115,18 @@ export async function fetchRuns(api, name, sha) {
 }
 const cmpRun = (a, b) => [a.path, a.event, a.status, a.conclusion, a.name].join('|').localeCompare([b.path, b.event, b.status, b.conclusion, b.name].join('|'));
 
+// One page of the default branch's push runs, newest first (FR-C.3): the source of the `now` CI
+// point. Each run keeps its commit (`sha`); the order is the API's, newest first. `complete` says whether the page
+// holds every run the API counted.
+export async function fetchPushPage(api, name, branch) {
+  const r = await api.rest('GET', `/repos/${OWNER}/${name}/actions/runs?branch=${encodeURIComponent(branch)}&event=push&per_page=100`, null, [404]);
+  if (r.status !== 200) return null;
+  const list = (r.body.workflow_runs ?? []).map((w) => ({
+    sha: w.head_sha, path: w.path ?? null, name: w.name ?? null, event: w.event, status: w.status, conclusion: w.conclusion ?? null,
+  }));
+  return { total: r.body.total_count, complete: r.body.total_count <= list.length, list };
+}
+
 // Registered workflows: path -> { state, since }. `since` is the workflow's `updated_at`, the last
 // time GitHub changed its record (a state change among them), which dates a state to a point.
 export async function fetchWorkflowStates(api, name) {
@@ -197,8 +213,11 @@ export function factsFor(record, summaries, { checkedAt, privateCi = null, point
 // snap: watch/watch.mjs collect() output; cache: the previous state's `freshness` (or null);
 // extra: repo -> [{ key, sha }] points beyond pin and HEAD (re-check pins, labelled commits);
 // lockfiles: repositories whose HEAD Cargo.lock is read (dependency.edge revisit triggers).
-// Returns { records, texts, cache }: cache is what the next state stores (blob summaries, and the
-// runs of commits other than HEAD once every run on them has completed).
+// Every point but `now` gets its runs by commit (head_sha). `now` gets none: its CI is read at the
+// `ci` point (FR-C.3), the newest commit settledCommit finds in the default branch's push-runs page,
+// using HEAD's test workflows; `ci` is null when no commit on the page qualifies.
+// Returns { records, texts, cache, fetched }: cache is what the next state stores (blob summaries,
+// and the runs of commits other than HEAD once every run on them has completed).
 export async function gatherFreshness(api, snap, { cache = null, extra = {}, lockfiles = new Set() } = {}) {
   const old = cache?.version === SUMMARY_VERSION ? cache : { version: SUMMARY_VERSION, summaries: {}, runs: {} };
   const found = Object.values(snap.assessed).filter((r) => r.found && r.head);
@@ -207,32 +226,53 @@ export async function gatherFreshness(api, snap, { cache = null, extra = {}, loc
     points: dedupePoints([{ key: 'pin', sha: r.pin }, { key: 'now', sha: r.head }, ...(extra[r.repo] ?? [])]),
   }));
   const trees = await fetchTrees(api, jobs);
-  const need = [];
-  for (const j of jobs) for (const [key, t] of Object.entries(trees.get(j.repo) ?? {})) {
-    if (t) for (const e of textEntries(t, key === 'now' && lockfiles.has(j.repo))) if (!(e.blob in old.summaries)) need.push({ name: j.name, oid: e.blob });
-  }
-  const texts = need.length ? Object.fromEntries(await fetchBlobs(api, need)) : {};
+  const texts = {};
+  await fetchMissingTexts(api, jobs.map((j) => [j, trees.get(j.repo) ?? {}]), old.summaries, texts, lockfiles);
   const states = new Map(await mapLimit(found, REST_CONCURRENCY, async (r) => [r.repo, await fetchWorkflowStates(api, r.name)]));
+  const pages = new Map(await mapLimit(found, REST_CONCURRENCY, async (r) => [r.repo, await fetchPushPage(api, r.name, r.default_branch)]));
   const runCache = {};
-  const runJobs = jobs.flatMap((j) => j.points.map((p) => ({ j, p, key: `${j.repo}@${p.sha}`, head: snap.assessed[j.repo].head })));
-  const runs = await mapLimit(runJobs, REST_CONCURRENCY, async ({ j, p, key, head }) => {
+  const runJobs = jobs.flatMap((j) => j.points.filter((p) => p.key !== 'now').map((p) => ({ j, p, key: `${j.repo}@${p.sha}`, head: snap.assessed[j.repo].head })));
+  const runs = new Map(await mapLimit(runJobs, REST_CONCURRENCY, async ({ j, p, key, head }) => {
     const settled = p.sha !== head;
     const got = settled && old.runs[key] ? old.runs[key] : await fetchRuns(api, j.name, p.sha);
     if (settled && got?.complete && got.list.every((x) => x.status === 'completed')) runCache[key] = got;
-    return got;
-  });
+    return [`${j.repo}|${p.key}`, got];
+  }));
+  const summaryOf = (blob) => (blob in old.summaries ? old.summaries[blob] : summarize('workflow', texts[blob] ?? null));
   const records = {};
-  let k = 0;
+  const ciJobs = [];
   for (const j of jobs) {
     const t = trees.get(j.repo) ?? {};
     const points = {};
-    for (const p of j.points) points[p.key] = rawPoint(t[p.key], runs[k++], p.key === 'now' && lockfiles.has(j.repo));
-    records[j.repo] = { ...snapFields(snap.assessed[j.repo]), workflow_states: states.get(j.repo), points };
+    for (const p of j.points) points[p.key] = rawPoint(t[p.key], p.key === 'now' ? null : runs.get(`${j.repo}|${p.key}`), p.key === 'now' && lockfiles.has(j.repo));
+    const page = pages.get(j.repo);
+    const tests = new Set((points.now?.workflows ?? []).filter((w) => summaryOf(w.blob)?.kind === 'test').map((w) => w.path));
+    const sel = settledCommit(page, (path) => tests.has(path));
+    const selRuns = sel && { total: sel.runs.length, complete: true, list: sel.runs };
+    if (sel && sel.sha === snap.assessed[j.repo].head && points.now) points.ci = { ...points.now, runs: selRuns, lockfile: undefined };
+    else if (sel) ciJobs.push({ repo: j.repo, name: j.name, points: [{ key: 'ci', sha: sel.sha }], runs: selRuns });
+    else points.ci = null;
+    records[j.repo] = { ...snapFields(snap.assessed[j.repo]), workflow_states: states.get(j.repo), ci_page: page ? { total: page.total, commits: new Set(page.list.map((x) => x.sha)).size } : null, points };
   }
-  for (const r of Object.values(snap.assessed)) records[r.repo] ??= { ...snapFields(r), workflow_states: null, points: {} };
+  if (ciJobs.length) {
+    const ciTrees = await fetchTrees(api, ciJobs);
+    await fetchMissingTexts(api, ciJobs.map((j) => [j, ciTrees.get(j.repo) ?? {}]), old.summaries, texts, new Set());
+    for (const j of ciJobs) records[j.repo].points.ci = rawPoint(ciTrees.get(j.repo)?.ci ?? null, j.runs, false);
+  }
+  for (const r of Object.values(snap.assessed)) records[r.repo] ??= { ...snapFields(r), workflow_states: null, ci_page: null, points: {} };
   const fresh = summariesFromTexts(records, texts);
   const summaries = Object.fromEntries(Object.entries(fresh).map(([oid, s]) => [oid, oid in old.summaries ? old.summaries[oid] : s]));
-  return { records, texts, cache: { version: SUMMARY_VERSION, summaries, runs: runCache }, fetched: { blobs: need.length } };
+  return { records, texts, cache: { version: SUMMARY_VERSION, summaries, runs: runCache }, fetched: { blobs: Object.keys(texts).length, ci_trees: ciJobs.length } };
+}
+
+// Fetches the text of every workflow, license (and requested Cargo.lock) blob the trees name that
+// has no cached summary yet, into `texts`.
+async function fetchMissingTexts(api, jobTrees, cached, texts, lockfiles) {
+  const need = [];
+  for (const [j, byKey] of jobTrees) for (const [key, t] of Object.entries(byKey)) {
+    if (t) for (const e of textEntries(t, key === 'now' && lockfiles.has(j.repo))) if (!(e.blob in cached) && !(e.blob in texts)) need.push({ name: j.name, oid: e.blob });
+  }
+  if (need.length) Object.assign(texts, Object.fromEntries(await fetchBlobs(api, need)));
 }
 function dedupePoints(points) {
   const seen = new Map();

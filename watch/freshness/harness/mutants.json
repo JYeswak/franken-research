@@ -2,8 +2,8 @@
  {
   "id": "M-C2-order-C6-C5",
   "file": "watch/freshness/classify.mjs",
-  "find": "  const c6 = ruleC6(facts, p, tests, byPath);\n  if (c6) return c6;\n  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n",
-  "replace": "  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n  const c6 = ruleC6(facts, p, tests, byPath);\n  if (c6) return c6;\n",
+  "find": "  const c6 = ruleC6(facts, f, fileTests, p);\n  if (c6) return c6;\n  const c5 = ruleC5(facts, point, f, fileTests);\n  if (c5) return c5;\n",
+  "replace": "  const c5 = ruleC5(facts, point, f, fileTests);\n  if (c5) return c5;\n  const c6 = ruleC6(facts, f, fileTests, p);\n  if (c6) return c6;\n",
   "clauses": [
    "FR-C.2"
   ],
@@ -14,8 +14,8 @@
  {
   "id": "M-C2-order-C5-C4",
   "file": "watch/freshness/classify.mjs",
-  "find": "  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n",
-  "replace": "  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n  const c5 = ruleC5(facts, point, p, tests);\n  if (c5) return c5;\n",
+  "find": "  const c5 = ruleC5(facts, point, f, fileTests);\n  if (c5) return c5;\n  if (!fileTests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, f));\n",
+  "replace": "  if (!fileTests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, f));\n  const c5 = ruleC5(facts, point, f, fileTests);\n  if (c5) return c5;\n",
   "clauses": [
    "FR-C.2"
   ],
@@ -26,8 +26,8 @@
  {
   "id": "M-C2-order-C4-runs",
   "file": "watch/freshness/classify.mjs",
-  "find": "  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
-  "replace": "  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));\n",
+  "find": "  if (!fileTests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, f));\n  if (p.unsettled) return unknown('FR-C.3/no-settled-commit', [api(`/repos/${OWNER}/${facts.repo}/actions/runs?branch=${facts.default_branch}&event=push`)]);\n  if (!Array.isArray(p.workflows) || !p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
+  "replace": "  if (p.unsettled) return unknown('FR-C.3/no-settled-commit', [api(`/repos/${OWNER}/${facts.repo}/actions/runs?branch=${facts.default_branch}&event=push`)]);\n  if (!Array.isArray(p.workflows) || !p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n  if (!fileTests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, f));\n",
   "clauses": [
    "FR-C.2"
   ],
@@ -110,22 +110,97 @@
   ]
  },
  {
-  "id": "M-C3-young-head",
+  "id": "M-C3-head-always",
   "file": "watch/freshness/classify.mjs",
-  "find": "const YOUNG_MS = 6 * 3600 * 1000;",
-  "replace": "const YOUNG_MS = 0;",
+  "find": "  const hit = usable.find(settled);",
+  "replace": "  const hit = usable[0];",
   "clauses": [
    "FR-C.3"
   ],
   "must_fail": [
-   "CORE-C3-young-head"
+   "CORE-C3-busy-head-settled-parent",
+   "CORE-C3-no-settled-commit"
+  ]
+ },
+ {
+  "id": "M-C3-cut-page-trusted",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  const usable = page.complete ? commits : commits.slice(0, -1);",
+  "replace": "  const usable = commits;",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-cut-page-oldest"
+  ]
+ },
+ {
+  "id": "M-C3-non-test-runs-count",
+  "file": "watch/freshness/classify.mjs",
+  "find": "c.runs.filter((r) => r.event === 'push' && isTest(runPath(r)))",
+  "replace": "c.runs.filter((r) => r.event === 'push')",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-head-settled-wins"
+  ]
+ },
+ {
+  "id": "M-C3-stale-point-used",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  const fresh = pts.ci && !(base?.date && pts.ci.date && pts.ci.date < base.date) ? pts.ci : null;",
+  "replace": "  const fresh = pts.ci;",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-ci-point-before-baseline"
+  ]
+ },
+ {
+  "id": "M-C3-files-at-ci-point",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  return { files: pts.now, runsAt: fresh ?? (pts.now ? { ...pts.now, runs: null, unsettled: true } : null) };",
+  "replace": "  return { files: fresh ?? pts.now, runsAt: fresh ?? (pts.now ? { ...pts.now, runs: null, unsettled: true } : null) };",
+  "clauses": [
+   "FR-C.3",
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C3-files-read-at-head"
+  ]
+ },
+ {
+  "id": "M-C3-both-guards-off",
+  "file": "watch/freshness/classify.mjs",
+  "find": "  const fresh = pts.ci && !(base?.date && pts.ci.date && pts.ci.date < base.date) ? pts.ci : null;\n  return { files: pts.now,",
+  "replace": "  const fresh = pts.ci;\n  return { files: fresh ?? pts.now,",
+  "clauses": [
+   "FR-C.3",
+   "FR-C.2"
+  ],
+  "must_fail": [
+   "CORE-C3-frankengit-now-C5"
+  ]
+ },
+ {
+  "id": "M-C3-unsettled-reads-C3",
+  "file": "watch/freshness/classify.mjs",
+  "find": "{ ...pts.now, runs: null, unsettled: true }",
+  "replace": "{ ...pts.now, runs: { total: 0, complete: true, list: [] } }",
+  "clauses": [
+   "FR-C.3"
+  ],
+  "must_fail": [
+   "CORE-C3-no-settled-commit"
   ]
  },
  {
   "id": "M-C3-api-gap",
   "file": "watch/freshness/classify.mjs",
-  "find": "  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
-  "replace": "  if (!p.runs) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
+  "find": "  if (!Array.isArray(p.workflows) || !p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
+  "replace": "  if (!Array.isArray(p.workflows) || !p.runs) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));\n",
   "clauses": [
    "FR-C.3"
   ],
@@ -683,6 +758,42 @@
   ],
   "must_fail": [
    "OUT-D4-one-issue"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-ci-commit-always-head",
+  "file": "watch/freshness/card.mjs",
+  "find": "(${x.now_commit === rec.head?.sha ? 'HEAD' : 'not HEAD'})",
+  "replace": "(HEAD)",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-ci-commit"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-ci-commit-note",
+  "file": "watch/freshness/card.mjs",
+  "find": "CI now was read at ${commit(rec.repo, x.now_commit)}, an earlier commit than HEAD ${commit(rec.repo, rec.head?.sha)}",
+  "replace": "CI now was read at ${commit(rec.repo, x.now_commit)}",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-ci-commit"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-current-ignores-moves",
+  "file": "watch/freshness/card.mjs",
+  "find": "    if (!movedDims(rec).length) return",
+  "replace": "    if (true) return",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-state-matches-table"
   ]
  }
 ]

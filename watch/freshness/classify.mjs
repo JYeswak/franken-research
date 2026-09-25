@@ -2,7 +2,8 @@
 //
 // classify(facts, point) turns recorded facts into the master-matrix classes CI (C1-C6), release
 // (R1-R3) and license (Rider, plain MIT, none, other:...). It is pure: no network, no clock, no file
-// reads. `facts.checked_at` is the only notion of time, and only FR-C.3's young-HEAD rule uses it.
+// reads. For `now`, CI is read at the CI point the facts carry (FR-C.3: the newest default-branch
+// commit with settled push runs, chosen by settledCommit below when the facts are gathered).
 // The facts shape is built by watch/freshness/facts.mjs (factsFor); the workflow and license
 // summaries it carries come from summarizeWorkflow and summarizeLicense below, applied to the blob
 // text once and cached by blob id.
@@ -148,7 +149,26 @@ const unknown = (rule, evidence = []) => result('unknown', rule, null, evidence)
 const RED = new Set(['failure', 'timed_out', 'startup_failure']);
 const PENDING = new Set(['queued', 'in_progress', 'waiting', 'pending', 'requested']);
 const TEST_EVENTS = new Set(['push', 'pull_request']);
-const YOUNG_MS = 6 * 3600 * 1000;
+// FR-C.3: for `now`, the run rules read the newest default-branch commit whose push-triggered test
+// runs have all completed, found in one page of the default branch's push runs. The API lists runs
+// newest first, so commits are taken in the order they first appear (a commit's author timestamp
+// is not a push order: an old commit pushed again carries its old date). Runs carry `sha`. The
+// oldest commit on a page that does not hold every run may have runs cut off, so it qualifies only
+// when the page is complete. `isTest(path)` says which workflow paths run tests (as HEAD's files
+// define them). Returns { sha, runs } or null when no commit qualifies.
+export function settledCommit(page, isTest) {
+  if (!page?.list?.length) return null;
+  const bySha = new Map();
+  for (const r of page.list) {
+    if (!bySha.has(r.sha)) bySha.set(r.sha, { sha: r.sha, runs: [] });
+    bySha.get(r.sha).runs.push(r);
+  }
+  const commits = [...bySha.values()];
+  const usable = page.complete ? commits : commits.slice(0, -1);
+  const settled = (c) => c.runs.filter((r) => r.event === 'push' && isTest(runPath(r))).every((r) => r.status === 'completed');
+  const hit = usable.find(settled);
+  return hit ? { sha: hit.sha, runs: hit.runs } : null;
+}
 // GitHub records a workflow file it cannot parse as a run named after the file path, with no jobs.
 export const unparsedRun = (r) => r.name === r.path;
 const runPath = (r) => String(r.path ?? '').replace(/@.*$/, '');
@@ -158,12 +178,14 @@ function ciEvidence(facts, p) {
 }
 
 // C6: the packet states the tests run privately (private-ci.tsv), or every test workflow runs on
-// self-hosted runners and every run on the commit sits on one or is queued or cancelled.
-function ruleC6(facts, p, tests, byPath) {
+// self-hosted runners and every run on the commit `r` (the run point) sits on one or is queued or
+// cancelled.
+function ruleC6(facts, f, tests, r) {
   if (facts.private_ci) return result('C6', 'FR-C.2/C6-private', facts.private_ci.tier ?? TIER.code, [facts.private_ci.source_url]);
-  if (!tests.length || !tests.every((w) => w.summary.self_hosted) || !p.runs?.complete) return null;
-  const hidden = (r) => PENDING.has(r.status) || r.conclusion === 'cancelled' || byPath.get(runPath(r))?.summary?.self_hosted === true;
-  return p.runs.list.every(hidden) ? result('C6', 'FR-C.2/C6-self-hosted', TIER.external, ciEvidence(facts, p)) : null;
+  if (!tests.length || !tests.every((w) => w.summary.self_hosted) || !r.runs?.complete) return null;
+  const byPath = new Map((r.workflows ?? []).map((w) => [w.path, w]));
+  const hidden = (x) => PENDING.has(x.status) || x.conclusion === 'cancelled' || byPath.get(runPath(x))?.summary?.self_hosted === true;
+  return r.runs.list.every(hidden) ? result('C6', 'FR-C.2/C6-self-hosted', TIER.external, ciEvidence(facts, r)) : null;
 }
 
 // A registered workflow's state applies to `now` as observed. To an earlier point it applies only
@@ -193,28 +215,47 @@ function ruleC5(facts, point, p, tests) {
   return null;
 }
 
+// Where CI is read. The file rules (C6 private, C5, C4) always read the point's own files: for
+// `now`, HEAD's. The run rules read the run point: for `now` with a CI point recorded (FR-C.3),
+// that commit, but only when it is not older than the baseline commit (a commit before the verdict
+// cannot describe what changed since); otherwise HEAD's files with no runs, marked unsettled.
+function ciPoints(facts, point) {
+  const pts = facts.points ?? {};
+  if (point !== 'now' || !('ci' in pts)) return { files: pts[point], runsAt: pts[point] };
+  const base = pts.baseline ?? pts.pin;
+  const fresh = pts.ci && !(base?.date && pts.ci.date && pts.ci.date < base.date) ? pts.ci : null;
+  return { files: pts.now, runsAt: fresh ?? (pts.now ? { ...pts.now, runs: null, unsettled: true } : null) };
+}
+const testsOf = (p) => (p?.workflows ?? []).filter((w) => w.summary?.ok && w.summary.kind === 'test');
+
 // C2, C1 and C3 read the completed push and pull_request runs of test workflows on the commit. Only
 // success and the red conclusions are verdicts; cancelled, skipped or neutral give none.
 export function classifyCi(facts, point) {
-  const p = facts.points?.[point];
-  if (!p?.sha || !Array.isArray(p.workflows)) return unknown('FR-C.3/api-gap');
-  const tests = p.workflows.filter((w) => w.summary?.ok && w.summary.kind === 'test');
-  const byPath = new Map(p.workflows.map((w) => [w.path, w]));
-  const c6 = ruleC6(facts, p, tests, byPath);
+  const { files: f, runsAt: p } = ciPoints(facts, point);
+  if (!f?.sha || !Array.isArray(f.workflows)) return unknown('FR-C.3/api-gap');
+  const fileTests = testsOf(f);
+  const c6 = ruleC6(facts, f, fileTests, p);
   if (c6) return c6;
-  const c5 = ruleC5(facts, point, p, tests);
+  const c5 = ruleC5(facts, point, f, fileTests);
   if (c5) return c5;
-  if (!tests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, p));
-  if (!p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));
-  const testPaths = new Set(tests.map((w) => w.path));
+  if (!fileTests.length) return result('C4', 'FR-C.2/C4', TIER.code, ciEvidence(facts, f));
+  if (p.unsettled) return unknown('FR-C.3/no-settled-commit', [api(`/repos/${OWNER}/${facts.repo}/actions/runs?branch=${facts.default_branch}&event=push`)]);
+  if (!Array.isArray(p.workflows) || !p.runs?.complete) return unknown('FR-C.3/api-gap', ciEvidence(facts, p));
+  const testPaths = new Set(testsOf(p).map((w) => w.path));
   const runs = p.runs.list.filter((r) => testPaths.has(runPath(r)) && TEST_EVENTS.has(r.event) && !unparsedRun(r));
   if (runs.some((r) => r.status !== 'completed')) return unknown('FR-C.3/in-progress', ciEvidence(facts, p));
   if (runs.some((r) => RED.has(r.conclusion))) return result('C2', 'FR-C.2/C2', TIER.external, ciEvidence(facts, p));
   if (runs.some((r) => r.conclusion === 'success')) return result('C1', 'FR-C.2/C1', TIER.external, ciEvidence(facts, p));
-  const young = point !== 'pin' && facts.checked_at && p.date && Date.parse(facts.checked_at) - Date.parse(p.date) < YOUNG_MS;
-  if (!runs.length && young) return unknown('FR-C.3/young-head', ciEvidence(facts, p));
   // C5 did not hold, so an enabled test workflow starts on push or pull request.
   return result('C3', 'FR-C.2/C3', TIER.external, ciEvidence(facts, p));
+}
+// The commit a known CI class at `point` describes (live.json dims.ci.now_commit for `now`): the
+// point's own commit when its files decided (C6 by packet, C5, C4), else the run point; null when
+// the class is unknown.
+export function ciCommit(facts, point, cls) {
+  if (cls.value === 'unknown') return null;
+  const { files, runsAt } = ciPoints(facts, point);
+  return (/^FR-C\.2\/(C6-private|C5|C4)/.test(cls.rule) ? files : runsAt)?.sha ?? null;
 }
 
 // ---------------------------------------------------------------- FR-C.4: release class
