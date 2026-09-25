@@ -10,7 +10,9 @@
 // are known (FR-T.1, FR-T.5). Existence changes always raise one (FR-T.3); machine-observable
 // revisit triggers from revisit.tsv raise one with source `revisit` (FR-T.7). Crossings other than
 // existence open only on the second consecutive daily observation (FR-T.6), and only a dated
-// re-check resolves one (FR-T.8). Everything here is a pure function of its arguments.
+// re-check resolves one (FR-T.8). An open crossing whose value returns to its `from` value and holds
+// for a second daily observation is withdrawn (FR-T.10); existence crossings never are. Everything
+// here is a pure function of its arguments.
 //
 // Node 22 built-ins only.
 
@@ -200,9 +202,17 @@ function revisitCrossings(repo, rows, facts, dims, record) {
 }
 
 // ---------------------------------------------------------------- the crossing ledger (FR-G.3)
+// Events: `opened`; `resolved` by a dated re-check (resolved_by names it); `withdrawn` when the
+// class came back and held (FR-T.10; resolved_by is null). Resolved and withdrawn close a crossing.
 export const LEDGER_KEYS = ['date', 'event', 'id', 'repo', 'dim', 'from', 'to', 'source', 'evidence', 'resolved_by'];
+export const LEDGER_EVENTS = ['opened', 'resolved', 'withdrawn'];
 export function ledgerLine(e) {
   return JSON.stringify(Object.fromEntries(LEDGER_KEYS.map((k) => [k, e[k] ?? null]))) + '\n';
+}
+function checkLedgerEntry(o, n) {
+  if (JSON.stringify(Object.keys(o)) !== JSON.stringify(LEDGER_KEYS)) throw new Error(`crossings.jsonl line ${n} keys are not ${LEDGER_KEYS.join(', ')}`);
+  if (!LEDGER_EVENTS.includes(o.event)) throw new Error(`crossings.jsonl line ${n} event ${o.event}`);
+  if ((o.event === 'resolved') !== (typeof o.resolved_by === 'string')) throw new Error(`crossings.jsonl line ${n}: resolved_by must name a re-check for resolved, and be null for ${o.event}`);
 }
 export function parseLedger(text) {
   if (text === '') return [];
@@ -210,18 +220,17 @@ export function parseLedger(text) {
   return text.slice(0, -1).split('\n').map((l, i) => {
     let o;
     try { o = JSON.parse(l); } catch { throw new Error(`crossings.jsonl line ${i + 1} is not JSON`); }
-    if (JSON.stringify(Object.keys(o)) !== JSON.stringify(LEDGER_KEYS)) throw new Error(`crossings.jsonl line ${i + 1} keys are not ${LEDGER_KEYS.join(', ')}`);
-    if (!['opened', 'resolved'].includes(o.event)) throw new Error(`crossings.jsonl line ${i + 1} event ${o.event}`);
+    checkLedgerEntry(o, i + 1);
     if (ledgerLine(o) !== l + '\n') throw new Error(`crossings.jsonl line ${i + 1} is not in canonical form`);
     return o;
   });
 }
-// Crossings opened and not yet resolved, in ledger order.
+// Crossings opened and not yet resolved or withdrawn, in ledger order.
 export function openFromLedger(entries) {
   const open = new Map();
   for (const e of entries) {
     if (e.event === 'opened') open.set(e.id, e);
-    else if (!open.delete(e.id)) throw new Error(`crossings.jsonl resolves ${e.id}, which is not open`);
+    else if (!open.delete(e.id)) throw new Error(`crossings.jsonl ${e.event === 'resolved' ? 'resolves' : 'withdraws'} ${e.id}, which is not open`);
   }
   return open;
 }
@@ -234,21 +243,23 @@ export function appendLedger(prevText, events) {
 }
 export function assertLedgerPrefix(prevText, nextText) {
   if (!nextText.startsWith(prevText)) throw new Error('crossings.jsonl: the new ledger does not start with the previous committed ledger');
-  parseLedger(nextText);
+  openFromLedger(parseLedger(nextText));
 }
 
 // ---------------------------------------------------------------- FR-T.6 debounce, FR-T.8 resolve
-// candidates: this run's crossings; open: ledger's open map; prevPending: id -> { since } from the
-// previous live.json; prevDay: the previous run's UTC day. A candidate opens when it is an
-// existence crossing, or when the previous run, on an earlier day, already saw it pending.
+// candidates: this run's crossings; open: ledger's open map; prevPending: id -> pending entry from
+// the previous live.json; prevDay: the previous run's UTC day. A candidate opens when it is an
+// existence crossing, or when the previous run, on an earlier day, already saw it pending to open.
+// Pending entries carry `phase`: `opening` here, `withdrawing` from withdrawals() below.
 export function debounce(candidates, open, prevPending, prevDay, today) {
   const opened = [];
   const pending = [];
   for (const c of candidates) {
     if (open.has(c.id)) continue;
-    const seen = prevPending.get(c.id);
+    const prev = prevPending.get(c.id);
+    const seen = prev && prev.phase !== 'withdrawing' ? prev : null;
     if (c.source === 'existence' || (seen && prevDay && prevDay < today)) opened.push({ ...c, since: seen?.since ?? today });
-    else pending.push({ ...c, since: seen?.since ?? today });
+    else pending.push({ ...c, phase: 'opening', since: seen?.since ?? today });
   }
   return { opened, pending };
 }
@@ -261,6 +272,38 @@ export function resolutions(open, rechecks) {
     if (r && r.date >= e.date) out.push({ ...e, event: 'resolved', resolved_by: r.source });
   }
   return out;
+}
+
+// ---------------------------------------------------------------- FR-T.10 withdrawal
+// The value a crossing's dimension has now, in the crossing's own terms: the computed class for
+// ci, rel and license; for existence, the repository's state; null where there is no such value.
+export function currentValue(c, dims, record) {
+  if (DIMS.includes(c.dim)) return dims?.[c.dim]?.now?.value ?? null;
+  if (c.dim !== 'existence' || !record) return null;
+  const what = c.id.split(':').at(-1);
+  if (what === 'deleted') return record.found ? 'public' : 'not found';
+  if (what === 'archived' || what === 'unarchived') return record.archived ? 'archived' : 'active';
+  if (what === 'pin-rewritten') return record.pin_reachable ? 'ancestor' : (record.compare_status ?? 'unreachable');
+  return null;
+}
+
+// An open crossing whose value is back at its `from` value is withdrawing on the first observation
+// (a pending entry with phase `withdrawing`) and withdrawn when the previous run, on an earlier day,
+// already saw it withdrawing. A crossing that never moved (from equals to, as an event-fallback
+// crossing may) never returns. Existence crossings are never withdrawn.
+export function withdrawals(open, valueNow, prevPending, prevDay, today) {
+  const withdrawn = [];
+  const returning = [];
+  for (const c of open.values()) {
+    if (c.source === 'existence' || c.from === c.to) continue;
+    const v = valueNow(c);
+    if (v == null || v === 'unknown' || v !== c.from) continue;
+    const prev = prevPending.get(c.id);
+    const seen = prev?.phase === 'withdrawing' ? prev : null;
+    if (seen && prevDay && prevDay < today) withdrawn.push({ ...c, event: 'withdrawn', resolved_by: null });
+    else returning.push({ ...c, phase: 'withdrawing', since: seen?.since ?? today });
+  }
+  return { withdrawn, returning };
 }
 
 // ---------------------------------------------------------------- one repository

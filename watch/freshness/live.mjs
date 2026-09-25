@@ -12,6 +12,7 @@ import { classify as classifyFacts, ciCommit, DIMS } from './classify.mjs';
 import { factsFor } from './facts.mjs';
 import {
   matrixClasses, evaluateRepo, repoState, OBSERVED_DETECTORS, parseLedger, openFromLedger, resolutions, debounce, appendLedger,
+  withdrawals, currentValue,
 } from './triggers.mjs';
 
 export const SCHEMA = 'fr.watch.live/v1';
@@ -38,6 +39,8 @@ const K = {
   // ci also names the commit its `now` class describes (FR-C.3).
   dimCi: ['matrix', 'reference', 'at_pin', 'at_baseline', 'now', 'now_commit', 'tracked', 'rule_at_pin', 'rule_now', 'evidence'],
   crossing: ['id', 'dim', 'from', 'to', 'since', 'source', 'evidence', 'resolved_by'],
+  // A pending entry is about to open (phase opening, FR-T.6) or to be withdrawn (withdrawing, FR-T.10).
+  pendingEntry: ['id', 'dim', 'from', 'to', 'since', 'source', 'evidence', 'resolved_by', 'phase'],
   revisit: ['machine', 'human', 'fired'],
   due: ['due', 'reason'],
   candidate: ['repo', 'created_at', 'reasons'],
@@ -52,7 +55,7 @@ function canonRepo(r) {
     baseline: pick(K.baseline, r.baseline), pin: pick(K.commit, r.pin), head: pick(K.commit, r.head),
     latest_release: pick(K.release, r.latest_release), existence: pick(K.existence, r.existence),
     dims: Object.fromEntries(DIMS.map((d) => [d, pick(d === 'ci' ? K.dimCi : K.dim, r.dims?.[d])])),
-    crossings: (r.crossings ?? []).map(canonCrossing), pending: (r.pending ?? []).map(canonCrossing),
+    crossings: (r.crossings ?? []).map(canonCrossing), pending: (r.pending ?? []).map((c) => pick(K.pendingEntry, c)),
     revisit: pick(K.revisit, r.revisit), due: pick(K.due, r.due),
   };
 }
@@ -109,17 +112,28 @@ export function computeFreshness({ records, summaries, watched, rechecks = {}, p
     const ev = evaluateRepo({ record, facts, reference, classify, revisitRows: revisitRows.filter((r) => r.repo === w.repo), prevExistence: prevRepos.get(w.repo)?.existence ?? null });
     return { w, record, re, facts, ev };
   });
-  // FR-G.3 and FR-T.6/T.8: resolve with re-checks, then debounce this run's candidates.
+  // FR-G.3 and FR-T.6/T.8/T.10: resolve with re-checks, withdraw what came back and held, then
+  // debounce this run's candidates.
   const open = openFromLedger(parseLedger(ledgerText));
   const resolved = resolutions(open, rechecks);
   for (const e of resolved) open.delete(e.id);
   const prevPending = new Map([...prevRepos.values()].flatMap((r) => r.pending ?? []).map((p) => [p.id, p]));
+  const prevDay = prevLive ? day(prevLive.checked_at) : null;
+  const byRepo = new Map(evals.map((e) => [e.w.repo, e]));
+  const valueNow = (c) => { const e = byRepo.get(c.repo); return e ? currentValue(c, e.ev.dims, e.record) : null; };
+  const { withdrawn, returning } = withdrawals(open, valueNow, prevPending, prevDay, today);
+  for (const e of withdrawn) open.delete(e.id);
   const all = evals.flatMap((e) => e.ev.candidates).map((c) => liveCrossing(c, today));
-  const { opened, pending } = debounce(all, open, prevPending, prevLive ? day(prevLive.checked_at) : null, today);
-  const events = [...resolved.map((e) => ({ ...e, date: today })), ...opened.map((c) => ({ ...c, date: today, event: 'opened', resolved_by: null }))];
+  const { opened, pending: opening } = debounce(all, open, prevPending, prevDay, today);
+  const events = [
+    ...resolved.map((e) => ({ ...e, date: today })),
+    ...withdrawn.map((e) => ({ ...e, date: today })),
+    ...opened.map((c) => ({ ...c, date: today, event: 'opened', resolved_by: null })),
+  ];
   const nextLedger = appendLedger(ledgerText, events);
   for (const c of opened) open.set(c.id, { ...c, date: today });
-  const rows = evals.map((e) => repoRow(e, [...open.values()].filter((c) => c.repo === e.w.repo), pending.filter((c) => c.repo === e.w.repo), revisitRows, checkedAt));
+  const pending = [...opening, ...returning];
+  const rows = evals.map((e) => repoRow(e, [...open.values()].filter((c) => c.repo === e.w.repo), pending.filter((c) => c.repo === e.w.repo).sort((a, b) => cmp(a.id, b.id)), revisitRows, checkedAt));
   return { live: buildLive({ checkedAt, rows, candidates, informational }), ledgerText: nextLedger, events };
 }
 

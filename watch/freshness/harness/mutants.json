@@ -344,6 +344,56 @@
   ]
  },
  {
+  "id": "M-T10-no-hold",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "    if (seen && prevDay && prevDay < today) withdrawn.push(",
+  "replace": "    if (true) withdrawn.push(",
+  "clauses": [
+   "FR-T.10"
+  ],
+  "must_fail": [
+   "CORE-T10-withdrawn-after-hold",
+   "CORE-T10-one-observation-stays-open"
+  ]
+ },
+ {
+  "id": "M-T10-existence-withdrawn",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "    if (c.source === 'existence' || c.from === c.to) continue;",
+  "replace": "    if (c.from === c.to) continue;",
+  "clauses": [
+   "FR-T.10"
+  ],
+  "must_fail": [
+   "CORE-T10-existence-never-withdrawn"
+  ]
+ },
+ {
+  "id": "M-T10-never-withdrawn",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "    if (v == null || v === 'unknown' || v !== c.from) continue;",
+  "replace": "    continue;",
+  "clauses": [
+   "FR-T.10"
+  ],
+  "must_fail": [
+   "CORE-T10-withdrawn-after-hold",
+   "CORE-T10-moves-again-new-crossing"
+  ]
+ },
+ {
+  "id": "M-G3-withdrawn-names-recheck",
+  "file": "watch/freshness/triggers.mjs",
+  "find": "  if ((o.event === 'resolved') !== (typeof o.resolved_by === 'string')) throw",
+  "replace": "  if (o.event === 'resolved' && typeof o.resolved_by !== 'string') throw",
+  "clauses": [
+   "FR-G.3"
+  ],
+  "must_fail": [
+   "CORE-G3-withdrawn-line"
+  ]
+ },
+ {
   "id": "M-G3-prefix-unchecked",
   "file": "watch/freshness/triggers.mjs",
   "find": "  if (!nextText.startsWith(prevText)) throw",
@@ -701,8 +751,8 @@
  {
   "id": "M-OUT-G1-informational-accepted",
   "file": "watch/freshness/digest.mjs",
-  "find": "if (e.event !== 'opened' && e.event !== 'resolved') throw",
-  "replace": "if (false) throw",
+  "find": "  if (!EVENTS.includes(e.event)) throw",
+  "replace": "  if (false) throw",
   "clauses": [
    "FR-G.1"
   ],
@@ -808,6 +858,44 @@
    "OUT-L3-no-bare-sha",
    "OUT-L3-ci-commit",
    "OUT-H3-cards"
+  ]
+ },
+ {
+  "id": "M-OUT-G1-drop-withdrawn",
+  "file": "watch/freshness/digest.mjs",
+  "find": "  for (const e of events) {",
+  "replace": "  for (const e of events.filter((x) => x.event !== 'withdrawn')) {",
+  "clauses": [
+   "FR-G.1"
+  ],
+  "must_fail": [
+   "OUT-G1-withdrawn",
+   "OUT-G1-weeks",
+   "OUT-H3-digest"
+  ]
+ },
+ {
+  "id": "M-OUT-L3-ignore-withdrawing",
+  "file": "watch/freshness/card.mjs",
+  "find": "{ back: withdrawing(rec, c.id) }",
+  "replace": "{ back: null }",
+  "clauses": [
+   "FR-L.3"
+  ],
+  "must_fail": [
+   "OUT-L3-withdrawing"
+  ]
+ },
+ {
+  "id": "M-OUT-D3-withdrawing-as-seen-once",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "`- Crossings seen once, not yet open: ${pending.length - back}.`",
+  "replace": "`- Crossings seen once, not yet open: ${pending.length}.`",
+  "clauses": [
+   "FR-D.3"
+  ],
+  "must_fail": [
+   "OUT-L3-withdrawing"
   ]
  }
 ]

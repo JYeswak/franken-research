@@ -20,7 +20,7 @@ import { parseYaml } from '../yaml.mjs';
 import { loadReference, loadReplay, summariesFromTexts, factsFor, REFERENCE } from '../facts.mjs';
 import {
   matrixClasses, parseRecheck, latestRechecks, parsePrivateCi, evaluateRepo, compareDim, debounce, resolutions,
-  appendLedger, assertLedgerPrefix, parseLedger, openFromLedger, ledgerLine, LEDGER_KEYS, repoState, existenceCrossings,
+  appendLedger, assertLedgerPrefix, parseLedger, openFromLedger, ledgerLine, LEDGER_KEYS, repoState, existenceCrossings, withdrawals, currentValue,
 } from '../triggers.mjs';
 import { computeFreshness, renderLiveJson, canonLive, safeName, MAX_BYTES, SCHEMA } from '../live.mjs';
 import { parseTsv, renderTsv, revisitRows, TSV_HEAD, DETECTORS, UNREVIEWED } from '../revisit.mjs';
@@ -496,6 +496,83 @@ const T = [
   } },
 ];
 
+// ---------------------------------------------------------------- FR-T.10: withdrawal
+// Runs over the reference fixture with frankenjax's computed CI class now (C4 at the baseline) set
+// per run. `runs` lists [class, UTC time] pairs; a bare class is a daily run at 11:23 on successive
+// days from 2026-10-01.
+const JAX = 'frankenjax';
+const JAX_ID = 'frankenjax:ci:C4>C1';
+function jaxDays(root, runs) {
+  const f = ref();
+  const base = { records: f.records, summaries: f.summaries, watched: watchedFromRef(root), rechecks: rechecks(root), privateCi: privateCi(root), revisitRows: revisit(root), informational: { events_today: 0, events_since_pin: 0 } };
+  const out = [];
+  let prevLive = null;
+  let ledgerText = '';
+  runs.forEach((spec, i) => {
+    const [value, at] = Array.isArray(spec) ? spec : [spec, `2026-10-${String(1 + i).padStart(2, '0')}T11:23:00Z`];
+    const override = (facts, point) => {
+      const c = classify(facts, point);
+      return point === 'now' && facts.repo === JAX ? { ...c, ci: { value, rule: `FR-C.2/${value}`, tier: '[External, High]', evidence: [`https://github.com/Dicklesworthstone/${JAX}/actions`] } } : c;
+    };
+    const r = computeFreshness({ ...base, classify: override, checkedAt: at, prevLive, ledgerText });
+    prevLive = JSON.parse(renderLiveJson(r.live));
+    ledgerText = r.ledgerText;
+    const row = prevLive.repos.find((x) => x.repo === JAX);
+    out.push({ day: at.slice(0, 10), row, ledger: parseLedger(ledgerText).filter((e) => e.repo === JAX), events: r.events.filter((e) => e.repo === JAX) });
+  });
+  return out;
+}
+const jaxState = (d) => `${d.day}: open ${d.row.crossings.map((c) => `${c.id}@${c.since}`).join(',') || '-'}; pending ${d.row.pending.map((c) => `${c.id}/${c.phase}@${c.since}`).join(',') || '-'}; ledger ${d.ledger.map((e) => `${e.date} ${e.event}`).join(', ') || '-'}`;
+const T10 = [
+  { id: 'CORE-T10-withdrawn-after-hold', clauses: ['FR-T.10', 'FR-G.3'], level: 'MUST', title: 'a class back at its baseline on two daily observations is withdrawn: a withdrawn ledger line with resolved_by null, and the crossing leaves the open list', run(ctx) {
+    const d = jaxDays(ctx.root, ['C1', 'C1', 'C4', 'C4']);
+    const ok = d[1].row.crossings.some((c) => c.id === JAX_ID)
+      && d[2].row.crossings.some((c) => c.id === JAX_ID) && d[2].row.pending.some((c) => c.id === JAX_ID && c.phase === 'withdrawing' && c.since === d[2].day)
+      && d[3].row.crossings.length === 0 && d[3].row.pending.length === 0
+      && d[3].events.length === 1 && d[3].events[0].event === 'withdrawn'
+      && JSON.stringify(d[3].ledger.map((e) => [e.date, e.event, e.id, e.resolved_by])) === JSON.stringify([[d[1].day, 'opened', JAX_ID, null], [d[3].day, 'withdrawn', JAX_ID, null]]);
+    return ok ? true : { pass: false, detail: d.map(jaxState).join(' | ') };
+  } },
+  { id: 'CORE-T10-one-observation-stays-open', clauses: ['FR-T.10'], level: 'MUST', title: 'a class back for one observation only (then moved again, or a second run the same day) leaves the crossing open', run(ctx) {
+    const moved = jaxDays(ctx.root, ['C1', 'C1', 'C4', 'C1']);
+    const sameDay = jaxDays(ctx.root, [['C1', '2026-10-01T11:23:00Z'], ['C1', '2026-10-02T11:23:00Z'], ['C4', '2026-10-03T11:23:00Z'], ['C4', '2026-10-03T18:00:00Z']]);
+    const stillOpen = (d) => d.row.crossings.some((c) => c.id === JAX_ID) && !d.ledger.some((e) => e.event === 'withdrawn');
+    const ok = stillOpen(moved[3]) && !moved[3].row.pending.some((c) => c.phase === 'withdrawing')
+      && stillOpen(sameDay[3]) && sameDay[3].row.pending.some((c) => c.id === JAX_ID && c.phase === 'withdrawing' && c.since === '2026-10-03');
+    return ok ? true : { pass: false, detail: `moved again: ${moved.map(jaxState).join(' | ')}; same day: ${sameDay.map(jaxState).join(' | ')}` };
+  } },
+  { id: 'CORE-T10-moves-again-new-crossing', clauses: ['FR-T.10', 'FR-G.3'], level: 'MUST', title: 'a withdrawn crossing that moves again opens as a new crossing with a new since', run(ctx) {
+    const d = jaxDays(ctx.root, ['C1', 'C1', 'C4', 'C4', 'C1', 'C1']);
+    const again = d[5].row.crossings.find((c) => c.id === JAX_ID);
+    const kinds = d[5].ledger.map((e) => `${e.date} ${e.event}`);
+    const ok = again && again.since === d[5].day && again.since !== d[1].day && d[4].row.pending.some((c) => c.id === JAX_ID && c.phase === 'opening' && c.since === d[4].day)
+      && JSON.stringify(kinds) === JSON.stringify([`${d[1].day} opened`, `${d[3].day} withdrawn`, `${d[5].day} opened`]);
+    return ok ? true : { pass: false, detail: d.map(jaxState).join(' | ') };
+  } },
+  { id: 'CORE-T10-existence-never-withdrawn', clauses: ['FR-T.10', 'FR-T.3'], level: 'MUST', title: 'an existence crossing whose repository reverts (unarchived) stays open over two observations', run(ctx) {
+    const c = { ...existenceCrossings(REC({ archived: true }), null)[0], date: '2026-10-01' };
+    const open = new Map([[c.id, c]]);
+    const back = REC({ archived: false });
+    const valueNow = (x) => currentValue(x, null, back);
+    const d1 = withdrawals(open, valueNow, new Map(), '2026-10-01', '2026-10-02');
+    const d2 = withdrawals(open, valueNow, new Map([[c.id, { ...c, phase: 'withdrawing', since: '2026-10-02' }]]), '2026-10-02', '2026-10-03');
+    const ok = valueNow(c) === c.from && d1.withdrawn.length + d1.returning.length + d2.withdrawn.length + d2.returning.length === 0;
+    return ok ? true : { pass: false, detail: JSON.stringify({ value: valueNow(c), from: c.from, d1, d2 }) };
+  } },
+  { id: 'CORE-G3-withdrawn-line', clauses: ['FR-G.3', 'FR-T.10'], level: 'MUST', title: 'a withdrawn ledger line has resolved_by null; a withdrawn line naming a re-check, a resolved line without one, and a withdrawal of a crossing that is not open are rejected', run(ctx) {
+    const opened = ledgerLine(EV('x:ci:C3>C5'));
+    const good = opened + ledgerLine(EV('x:ci:C3>C5', 'withdrawn', { date: '2026-09-27' }));
+    const bad = [
+      opened + ledgerLine(EV('x:ci:C3>C5', 'withdrawn', { resolved_by: 'updates/x-2026-09-27.md' })),
+      opened + ledgerLine(EV('x:ci:C3>C5', 'resolved')),
+      ledgerLine(EV('y:ci:C3>C5', 'withdrawn')),
+    ];
+    const accepted = bad.filter((t) => { try { openFromLedger(parseLedger(t)); return true; } catch { return false; } });
+    const entries = parseLedger(good);
+    return entries[1].resolved_by === null && openFromLedger(entries).size === 0 && accepted.length === 0 ? true : { pass: false, detail: `accepted ${accepted.length} bad ledgers` };
+  } },
+];
+
 // ---------------------------------------------------------------- FR-H.4: labelled events
 // Each event is judged by the trigger rules against the packet pin and the master matrix, as the
 // watch would have judged it before any re-check existed.
@@ -699,4 +776,4 @@ const MISC = [
   } },
 ];
 
-export default [...C1, ...C2, ...C3, ...C4, ...C5, ...C6, ...C7, ...fidelityCases(), ...T, ...H4, ...H5, ...L, ...G, ...MISC];
+export default [...C1, ...C2, ...C3, ...C4, ...C5, ...C6, ...C7, ...fidelityCases(), ...T, ...T10, ...H4, ...H5, ...L, ...G, ...MISC];
