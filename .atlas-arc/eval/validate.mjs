@@ -31,37 +31,14 @@ const warnings = [];
 const read = (p) => readFileSync(p, 'utf8');
 const lines = (p) => read(p).split('\n');
 
-// ---- id grammar: the regex block in IF-ID.md section 5, or the copy below if the file is absent.
-const FALLBACK_REGEXES = `fr-practice	^fr:RP-[0-9]{3}$
-fr-gate	^fr:gate-[1-9][0-9]?$
-fr-kit	^fr:kit-[AB][1-9][0-9]?$
-fr-tech	^fr:tech-[a-z0-9]+(?:-[a-z0-9]+)*$
-fr-fm	^fr:fm-p[1-9][0-9]?$
-fr-lesson	^fr:lesson-[a-z0-9]+(?:-[a-z0-9]+)*-[A-Za-z0-9._-]+$
-fr-verdict	^fr:verdict-[A-Za-z0-9._-]+$
-fr-cohort	^fr:cohort-[A-Za-z0-9._-]+$
-fr-stack	^fr:stack-[a-z0-9]+(?:-[a-z0-9]+)*$
-fh-rigor	^fh:rigor:L[1-9]$
-fh-techniques	^fh:techniques:T[1-9][0-9]?$
-fh-oracles	^fh:oracles:D(?:[1-9]|1[0-3])$
-fh-runbooks	^fh:runbooks:[A-Z]{1,3}[1-9][0-9]?$
-fh-capabilities	^fh:capabilities:CAP-[A-Z0-9]+(?:-[A-Z0-9]+)*$
-ra-prescription	^ra:prescription:[a-z0-9]+(?:-[a-z0-9]+)*$
-ra-kind	^ra:kind:[a-z0-9]+(?:-[a-z0-9]+)*$
-ra-profile	^ra:profile:[A-Za-z0-9._-]+$
-ra-technique	^ra:technique:[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/[0-9a-f]{8}$
-crate	^crate:[A-Za-z0-9._-]+/[A-Za-z0-9_-]+(?:~[0-9a-f]{6})?$`;
-
-let grammarSource = CONTRACT;
-let regexText = FALLBACK_REGEXES;
-if (existsSync(CONTRACT)) {
-  const m = read(CONTRACT).match(/## 5\. Validator regexes[\s\S]*?```text\n([\s\S]*?)```/);
-  if (m) regexText = m[1].trim();
-  else warnings.push(`${CONTRACT} has no "## 5. Validator regexes" text block; using the built-in copy`);
-} else {
-  grammarSource = 'built-in copy (contracts/IF-ID.md not found)';
-  warnings.push(`${CONTRACT} not found; using the built-in copy of the id regexes`);
+// ---- id grammar: the regex block in IF-ID.md section 5 is the only source; no copy is kept here.
+const grammarSource = CONTRACT;
+const block = existsSync(CONTRACT) ? read(CONTRACT).match(/## 5\. Validator regexes[\s\S]*?```text\n([\s\S]*?)```/) : null;
+if (!block) {
+  console.error(`cannot read the id grammar: ${CONTRACT} is missing or has no "## 5. Validator regexes" text block`);
+  process.exit(1);
 }
+const regexText = block[1].trim();
 const FAMILIES = regexText.split('\n').filter(Boolean).map((l) => {
   const [family, rx] = l.split('\t');
   return { family, rx: new RegExp(rx) };

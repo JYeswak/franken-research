@@ -72,7 +72,7 @@ node .atlas-arc/eval/validate.mjs          # human report
 node .atlas-arc/eval/validate.mjs --json   # machine report
 ```
 
-It reads the id regexes from `../contracts/IF-ID.md` section 5, and uses a built-in copy if that file is missing. It resolves each id against its source:
+It reads the id regexes from `../contracts/IF-ID.md` section 5 and keeps no copy of its own; if that file or its regex block is missing, it exits 1. It resolves each id against its source:
 
 | Id family | Resolved against |
 |---|---|
