@@ -16,7 +16,8 @@ import {
 } from '../harness/run.mjs';
 import { validateMutants, applyMutant, coverageGaps, runMutants, loadMutants, REQUIRED } from '../harness/mutate.mjs';
 import { parseSchedule, checkSchedule, activeWorkflowText } from '../../../ops/schedule.mjs';
-import { writeJobProblems, orderProblems, SYNC } from '../../../ops/write-job.mjs';
+import { writeJobProblems, orderProblems, buildProblems, dependencyProblems, importSpecifiers, SYNC } from '../../../ops/write-job.mjs';
+import { listArtifact, takeBuildOutput, PATHS } from '../../../ops/take-build-output.mjs';
 import { parseYaml } from '../yaml.mjs';
 import { staleness, staleLine } from '../../../ops/stale-run.mjs';
 import { outsideRegionChange } from '../../../ops/briefs-guard.mjs';
@@ -502,69 +503,170 @@ const rest = [
   },
   {
     id: 'HAR-O6-write-job', clauses: ['FR-O.6'], level: 'MUST',
-    title: 'the watch job runs only on main, its checkout persists no credentials, and only the watch, push and sync steps receive the token, in any notation',
+    title: 'two jobs: build is read-only and main-only, publish alone writes, installs nothing, runs no build or gate and only listed scripts, and neither checkout persists credentials',
     run(ctx) {
       const c = checks();
       const text = readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8');
       const probs = (t) => writeJobProblems(parseYaml(t), 'watch.yml');
       const real = probs(text);
       c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
-      const tokenLine = '          GITHUB_TOKEN: ${{ github.token }}\n';
+      const tok = '          GITHUB_TOKEN: ${{ github.token }}\n';
+      const buildGuard = "  build:\n    # Main only, scheduled or dispatched by hand (FR-O.6). A dispatch from\n    # another branch is skipped, not run as a dry run.\n    if: github.ref == 'refs/heads/main'\n";
+      const publishCheckout = '      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0\n        with:\n          persist-credentials: false\n';
+      const download = '      - name: Download the generated files\n';
+      const afterSync = '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n';
       const plants = [
-        ['no main-only guard', "    if: github.ref == 'refs/heads/main'\n", '', /lacks `if: github\.ref == 'refs\/heads\/main'`/],
-        ['guard names another branch', "if: github.ref == 'refs/heads/main'", "if: github.ref == 'refs/heads/dev'", /lacks `if:/],
-        ['checkout persists credentials (default)', '          persist-credentials: false\n', '', /persist-credentials: false/],
-        ['checkout persists credentials (explicit)', 'persist-credentials: false', 'persist-credentials: true', /persist-credentials: false/],
-        ['token on install', '        run: bun install --frozen-lockfile\n', `        env:\n${tokenLine}        run: bun install --frozen-lockfile\n`, /Install.*installs, builds or runs gates with the token in reach \(env\)/],
-        ['token on build', '      - name: Build (cards, feed, report)\n', `      - name: Build (cards, feed, report)\n        env:\n${tokenLine}`, /Build.*installs, builds or runs gates with the token in reach \(env\)/],
-        ['token on the gate chain', '          CHROME_PATH: /usr/bin/google-chrome\n', `          CHROME_PATH: /usr/bin/google-chrome\n${tokenLine}`, /Gate chain.*installs, builds or runs gates with the token in reach \(env\)/],
-        ['token in the job env', '    timeout-minutes: 5\n', `    timeout-minutes: 5\n    env:\n      GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}\n`, /token is in the job env/],
-        ['token in the workflow env', 'concurrency:\n', `env:\n  GITHUB_TOKEN: \${{ github.token }}\nconcurrency:\n`, /token is in the workflow env/],
+        ['build without the main-only guard', buildGuard, '  build:\n', /job build: lacks `if: github\.ref == 'refs\/heads\/main'`/],
+        ['publish without the main-only guard', "    needs: build\n    if: github.ref == 'refs/heads/main'\n", '    needs: build\n', /job publish: lacks `if:/],
+        ['write permission added to build', '    permissions:\n      contents: read\n', '    permissions:\n      contents: write\n', /job build: grants a write scope/],
+        ['build names no permissions and inherits a writing workflow', 'permissions: {}\n', 'permissions:\n  contents: write\n', /workflow-level permissions grant a write scope/],
+        ['build persists credentials', '          fetch-depth: 0\n          persist-credentials: false\n', '          fetch-depth: 0\n', /job build step 1 .*persist-credentials: false/],
+        ['publish persists credentials', publishCheckout, publishCheckout.replace('false', 'true'), /job publish step 1 .*persist-credentials: false/],
+        ['bun install in publish', download, `      - name: Install\n        run: bun install --frozen-lockfile\n\n${download}`, /job publish step \d+ \(Install\): installs, builds or runs gates/],
+        ['a gate in publish', download, `      - name: Gates\n        run: bun run verify\n\n${download}`, /job publish step \d+ \(Gates\): installs, builds or runs gates/],
+        ['setup-bun in publish', download, `      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0\n\n${download}`, /job publish step \d+ .*uses oven-sh\/setup-bun/],
+        ['an unlisted script in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          node watch/discover.mjs\n', /runs `node watch\/discover\.mjs`, which is not in PUBLISH_SCRIPTS/],
+        ['inline node code in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          node -e "require(\'./x\')"\n', /runs `node -e`, which is not in PUBLISH_SCRIPTS/],
+        ['another interpreter in publish', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs\n          bash ops/extra.sh\n', /runs an interpreter or script other than the listed node scripts/],
+        ['a push after the sync', afterSync, `${afterSync}\n      - name: Push again\n        env:\n${tok}        run: git push origin HEAD:main\n`, /a git push \(step \d+\) follows the dashboard sync/],
+        ['artifact downloaded into the checkout', 'path: ${{ runner.temp }}/watch-output', 'path: .', /downloads the artifact inside the checkout/],
+        ['upload list drifts from PATHS (code uploaded)', '            site/briefs/*.html\n', '            site/briefs/*.html\n            watch/freshness/dashboard.mjs\n', /the upload lists .*not ops\/take-build-output\.mjs PATHS/],
+        ['publish does not need build', '    needs: build\n', '', /does not need the build job/],
+        ['a personal token reaches build', '        run: node watch/watch.mjs --apply\n', '        run: node watch/watch.mjs --apply\n        with:\n          pat: ${{ secrets.PERSONAL_TOKEN }}\n', /job build: references secrets\.PERSONAL_TOKEN/],
+        ['token on the publish apply step (bracket notation)', '        id: commit\n', "        id: commit\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n", /Apply the generated files.*receives the token \(env\) but is not the push or sync step/],
+        ['token on the publish setup-node step', '          node-version: 22\n\n      # Outside', `          node-version: 22\n        env:\n${tok}\n      # Outside`, /job publish step 2 \(actions\/setup-node\): receives the token/],
+        ['token in the workflow env', 'concurrency:\n', 'env:\n  GITHUB_TOKEN: ${{ github.token }}\nconcurrency:\n', /token is in the workflow env/],
         ['push writes the token into .git/config', '          auth="$(', '          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic x"\n          auth="$(', /writes a credential into the Git config/],
-        // Review 3b (GPT-6-Luna): three plants the check missed before this case covered them.
-        ['review 3b: bracket notation on the build step', '      - name: Build (cards, feed, report)\n', "      - name: Build (cards, feed, report)\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n", /Build.*receives the token \(env\) but is not the watch, push or sync step/],
-        ['review 3b: token on a uses step (setup-node)', '          node-version: 22\n', `          node-version: 22\n        env:\n${tokenLine}`, /actions\/setup-node.*receives the token \(env\) but is not the watch, push or sync step/],
-        ['review 3b: a second push after the sync', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', `        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n\n      - name: Push again\n        env:\n${tokenLine}        run: git push origin HEAD:main\n`, /a git push \(step \d+\) follows the dashboard sync/],
-        // Further notations and channels.
-        ['token as a checkout input (double-quoted brackets)', '          persist-credentials: false\n', '          persist-credentials: false\n          token: ${{ secrets["GITHUB_TOKEN"] }}\n', /actions\/checkout.*receives the token \(with:\) but is not the watch, push or sync step/],
-        ['token expanded into a comment line of the build run text', '          node site/scripts/make-live.mjs\n', '          # debug ${{ github.token }}\n          node site/scripts/make-live.mjs\n', /Build.*receives the token \(run text\)/],
-        ['lower-case secrets.github_token on the gate chain', '          CHROME_PATH: /usr/bin/google-chrome\n', '          CHROME_PATH: /usr/bin/google-chrome\n          GH_TOKEN: ${{ secrets.github_token }}\n', /Gate chain.*receives the token \(env\)/],
       ];
       for (const [name, find, replace, want] of plants) {
         let p;
         try { p = probs(plantWorkflow(text, find, replace)); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
         c.expect(p.some((x) => want.test(x)), `${name}: not reported (got ${p.join(' | ') || 'nothing'})`);
       }
-      const direct = (run) => ({ permissions: { contents: 'write' }, jobs: { w: { if: "github.ref == 'refs/heads/main'", steps: [{ run, env: { GITHUB_TOKEN: '${{ github.token }}' } }] } } });
-      c.expect(writeJobProblems(direct('bash site/scripts/verify-site.sh')).some((x) => /installs, builds or runs gates/.test(x)), 'a direct verify-site.sh run with a token is accepted');
-      c.expect(writeJobProblems(direct('node watch/watch.mjs --apply && bun install')).some((x) => /installs, builds or runs gates/.test(x)), 'an allowed step that also installs is accepted');
-      const other = { permissions: { contents: 'write' }, jobs: { w: { if: "github.ref == 'refs/heads/main'", steps: [{ run: 'echo ${{ secrets.GITHUB_TOKEN_EXTRA }}' }] } } };
-      c.expect(writeJobProblems(other).every((x) => !/receives the token/.test(x)), 'a different secret whose name starts with GITHUB_TOKEN counts as the token');
+      // Harmless by construction, so the structure check must still pass (review 3c, GPT-6-Luna):
+      // (a) the push step copies the write token into $GITHUB_ENV. The only publish step after it is the
+      //     sync, which already holds the token, and publish runs no dependency code at all.
+      // (b) the watch step passes its token to the build step through $GITHUB_OUTPUT. That token is the
+      //     build job's, which is read-only (contents: read, issues: read): it cannot push or edit an issue.
+      const inert = [
+        ['review 3c (a): push copies the token into $GITHUB_ENV', '          auth="$(', '          echo "GH_TOKEN_ALIAS=$GITHUB_TOKEN" >> "$GITHUB_ENV"\n          auth="$('],
+        ['review 3c (b): watch hands its token to build via $GITHUB_OUTPUT', '        run: node watch/watch.mjs --apply\n', '        id: watch\n        run: |\n          node watch/watch.mjs --apply\n          echo "freshness-token=${{ github.token }}" >> "$GITHUB_OUTPUT"\n\n      - name: Read it back\n        env:\n          GH_TOKEN: ${{ steps.watch.outputs[\'freshness-token\'] }}\n        run: node site/scripts/make-live.mjs\n'],
+        ['review 3b (1): bracket-notation token on the build step', '      - name: Build (cards, feed, report)\n', "      - name: Build (cards, feed, report)\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n"],
+      ];
+      for (const [name, find, replace] of inert) {
+        let p;
+        try { p = probs(plantWorkflow(text, find, replace)); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
+        c.expect(p.length === 0, `${name}: expected no finding, the job boundary makes it harmless (got ${p.join(' | ')})`);
+      }
+      const wf = parseYaml(text);
+      c.expect(wf.jobs.build.permissions.contents === 'read' && wf.jobs.build.permissions.issues === 'read' && Object.values(wf.jobs.build.permissions).every((v) => v !== 'write'),
+        'the inert plants rest on build being read-only, and it is not');
+      return c.result();
+    },
+  },
+  {
+    id: 'HAR-O6-publish-deps', clauses: ['FR-O.6'], level: 'MUST',
+    title: 'every script the publish job runs imports only Node built-ins and repository files, all the way down',
+    run(ctx) {
+      const c = checks();
+      const real = dependencyProblems(ctx.root);
+      c.expect(real.problems.length === 0 && real.files >= 5, `${real.files} files: ${real.problems.join('; ')}`);
+      const main = ['a.mjs'];
+      const cases = [
+        ['a package import', { 'a.mjs': "import x from 'left-pad';\n" }, /imports the package `left-pad`/],
+        ['a package two files down', { 'a.mjs': "import './b.mjs';\n", 'b.mjs': "export { y } from './c.mjs';\n", 'c.mjs': "import {\n  z,\n} from 'lodash';\n" }, /c\.mjs: imports the package `lodash`/],
+        ['a non-literal dynamic import', { 'a.mjs': 'const m = await import(name);\n' }, /non-literal import/],
+        ['a require of a package', { 'a.mjs': "const r = require('chalk');\n" }, /imports the package `chalk`/],
+        ['an import outside the repository', { 'a.mjs': "import '../../etc/x.mjs';\n" }, /outside the repository/],
+        ['a missing file', { 'a.mjs': "import './gone.mjs';\n" }, /gone\.mjs: imported by a publish script but missing/],
+        ['a header comment with a glob before the imports, and a `*/` later in the code', { 'a.mjs': "// reads packets/*-assessment.md\nimport x from 'left-pad';\nconst re = /a*/;\n" }, /imports the package `left-pad`/],
+      ];
+      for (const [name, files, want] of cases) {
+        withTmp((dir) => {
+          for (const [f, t] of Object.entries(files)) put(dir, f, t);
+          const p = dependencyProblems(dir, main).problems;
+          c.expect(p.some((x) => want.test(x)), `${name}: not reported (got ${p.join(' | ') || 'nothing'})`);
+        });
+      }
+      withTmp((dir) => {
+        put(dir, 'a.mjs', "import { readFileSync } from 'node:fs';\nimport fs from 'fs';\nimport { b } from './b.mjs';\nconst m = await import('./b.mjs');\n");
+        put(dir, 'b.mjs', 'export const b = 1;\n');
+        const p = dependencyProblems(dir, main);
+        c.expect(p.problems.length === 0 && p.files === 2, `built-ins, a repo file and a literal import() are refused: ${p.problems.join(' | ')}`);
+      });
+      c.expect(JSON.stringify(importSpecifiers("import a from './x.mjs';\nexport * from 'node:fs';\nimport('y');\n")) === JSON.stringify(['./x.mjs', 'node:fs', 'y']), 'import specifiers are misread');
+      return c.result();
+    },
+  },
+  {
+    id: 'HAR-O6-artifact', clauses: ['FR-O.6'], level: 'MUST',
+    title: 'the publish job copies in only generated paths from the artifact, and nothing at all when the artifact holds anything else',
+    run() {
+      const c = checks();
+      const good = ['watch/state.json', 'watch/census/2026-09-25.tsv', 'watch/changes/2026-09-25.json', 'watch/freshness/REPORT.md', 'site/feed.xml', 'site/briefs/frankengit.html'];
+      withTmp((dir) => {
+        const art = join(dir, 'art'), repo = join(dir, 'repo');
+        for (const f of good) put(art, f, `new ${f}\n`);
+        put(repo, 'watch/state.json', 'old\n');
+        const r = takeBuildOutput(art, repo);
+        c.expect(r.problems.length === 0 && r.files.length === good.length, `a clean artifact is refused: ${r.problems.join(' | ')}`);
+        c.expect(readFileSync(join(repo, 'watch/state.json'), 'utf8') === 'new watch/state.json\n', 'a generated file was not copied');
+      });
+      const bad = [
+        ['a script the publish job runs', 'watch/freshness/dashboard.mjs', /dashboard\.mjs: not a generated path/],
+        ['the briefs guard', 'ops/briefs-guard.mjs', /briefs-guard\.mjs: not a generated path/],
+        ['a workflow', '.github/workflows/watch.yml', /watch\.yml: not a generated path/],
+        ['a census file one directory too deep', 'watch/census/x/2026.tsv', /census\/x\/2026\.tsv: not a generated path/],
+        ['a brief with another extension', 'site/briefs/frankengit.js', /frankengit\.js: not a generated path/],
+      ];
+      for (const [name, extra, want] of bad) {
+        withTmp((dir) => {
+          const art = join(dir, 'art'), repo = join(dir, 'repo');
+          put(art, 'watch/state.json', 'new\n');
+          put(art, extra, 'planted\n');
+          put(repo, 'watch/state.json', 'old\n');
+          const r = takeBuildOutput(art, repo);
+          c.expect(r.problems.some((x) => want.test(x)), `${name}: not refused (got ${r.problems.join(' | ') || 'nothing'})`);
+          c.expect(readFileSync(join(repo, 'watch/state.json'), 'utf8') === 'old\n' && !existsSync(join(repo, extra)), `${name}: files were copied despite the problem`);
+        });
+      }
+      withTmp((dir) => {
+        mkdirSync(join(dir, 'art'));
+        c.expect(listArtifact(join(dir, 'art')).problems.some((x) => /holds no files/.test(x)), 'an empty artifact is accepted');
+      });
+      c.expect(PATHS.every((p) => !/\.mjs$|\.js$|\.sh$|\.ya?ml$/.test(p)), 'PATHS lists a code file');
       return c.result();
     },
   },
   {
     id: 'HAR-D5-order', clauses: ['FR-D.5'], level: 'MUST',
-    title: 'the dashboard sync is the watch job\'s own step, after the gate chain and the push, with the token',
+    title: 'the gates run in build before its upload; publish needs build and applies, guards, pushes and syncs, in that order, and nothing pushes after the sync',
     run(ctx) {
       const c = checks();
-      const text = readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8');
-      const steps = parseYaml(text).jobs.watch.steps;
-      const real = orderProblems(steps, 'watch');
+      const wf = parseYaml(readFileSync(join(ctx.root, '.github/workflows/watch.yml'), 'utf8'));
+      const real = [...orderProblems(wf.jobs.publish.steps, 'publish'), ...buildProblems(wf.jobs.build, 'build')];
       c.expect(real.length === 0, `watch.yml: ${real.join('; ')}`);
+      c.expect([].concat(wf.jobs.publish.needs ?? []).includes('build'), 'publish does not need build');
       const tok = { GITHUB_TOKEN: '${{ github.token }}' };
-      const watch = { run: 'node watch/watch.mjs --apply', env: tok };
-      const gates = { run: 'bun run verify' };
+      const take = { run: 'node ops/take-build-output.mjs "$RUNNER_TEMP/out"' };
+      const guard = { run: 'node ops/briefs-guard.mjs' };
       const push = { run: 'git -c x=y \\\n  push origin HEAD:main', env: tok };
       const sync = { run: SYNC, env: tok };
-      c.expect(orderProblems([watch, gates, push, sync], 'w').length === 0, 'a good order is refused');
-      const has = (steps2, re) => orderProblems(steps2, 'w').some((p) => re.test(p));
-      c.expect(has([watch, sync, gates, push], /after the gate chain/), 'a sync before the gates is accepted');
-      c.expect(has([watch, gates, sync, push], /after the push/), 'a sync before the push is accepted');
-      c.expect(has([watch, gates, push], /no step runs/), 'a missing sync is accepted');
-      c.expect(has([{ ...watch, run: 'node watch/watch.mjs --apply --dashboard' }, gates, push, sync], /still syncs the dashboard/), 'a watch step that syncs itself is accepted');
-      c.expect(has([watch, gates, push, { run: SYNC }], /no token/), 'a sync step without a token is accepted');
-      c.expect(has([watch, gates, { run: '# git push origin HEAD:main', env: tok }, sync], /after the push/), 'a commented-out push counts as a push');
+      c.expect(orderProblems([take, guard, push, sync], 'p').length === 0, 'a good order is refused');
+      const has = (steps, re) => orderProblems(steps, 'p').some((p) => re.test(p));
+      c.expect(has([take, guard, sync, push], /does not come after the push/), 'a sync before the push is accepted');
+      c.expect(has([take, guard, push], /no step runs/), 'a missing sync is accepted');
+      c.expect(has([take, guard, push, sync, push], /follows the dashboard sync/), 'a push after the sync is accepted');
+      c.expect(has([guard, take, push, sync], /briefs guard before applying/), 'a guard before the apply is accepted');
+      c.expect(has([take, push, guard, sync], /pushes before the briefs guard/), 'a push before the guard is accepted');
+      c.expect(has([guard, push, sync], /never applies the artifact/), 'a publish without the apply is accepted');
+      c.expect(has([take, guard, push, { run: SYNC }], /no token/), 'a sync step without a token is accepted');
+      c.expect(has([take, guard, { run: '# git push origin HEAD:main', env: tok }, sync], /never pushes/), 'a commented-out push counts as a push');
+      const upload = { uses: 'actions/upload-artifact@x', with: { path: PATHS.join('\n') } };
+      const b = (steps) => buildProblems({ permissions: { contents: 'read' }, steps }, 'b');
+      c.expect(b([{ run: 'bun run verify' }, upload]).length === 0, 'a good build is refused');
+      c.expect(b([upload, { run: 'bun run verify' }]).some((p) => /uploads before the gate chain/.test(p)), 'an upload before the gates is accepted');
+      c.expect(b([upload]).some((p) => /runs no gate chain/.test(p)), 'a build without gates is accepted');
       return c.result();
     },
   },

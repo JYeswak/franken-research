@@ -42,16 +42,27 @@ Gate W3 in `site/scripts/verify-site.sh` runs `--check-report` (whose case HAR-H
 
 ## The scheduled run
 
-`.github/workflows/watch.yml` runs these steps, in this order (FR-D.5):
+`.github/workflows/watch.yml` runs two jobs (FR-O.6), both only on `refs/heads/main` (a hand dispatch from another branch is skipped), and neither checkout persists credentials.
 
-1. `node watch/watch.mjs --apply` (GitHub API reads; the token is in this step's env);
-2. build, without the token: `make-live.mjs`, `make-feed.mjs`, `run.mjs --report`;
-3. the gate chain, `bun run verify`, without the token;
-4. commit `watch/`, `site/feed.xml` and `site/briefs/`, after `ops/briefs-guard.mjs`;
-5. push, with the token passed to that one `git push` as `-c http…extraheader`, never written to `.git/config`;
-6. `node watch/freshness/dashboard.mjs --sync watch/live.json`, with the token, from the committed `watch/live.json`.
+`build`, with a read-only token (`contents: read`, `issues: read`):
 
-A failed gate or push skips step 6, so the issue never describes files that did not land. The job runs only on `refs/heads/main` (a hand dispatch from another branch is skipped), and its checkout sets `persist-credentials: false` (FR-O.6). `ops/write-job.mjs` fails W3 when the guard is missing, when a checkout persists credentials, when a token is in the workflow or job env, when any step other than the watch, the push and the sync receives the token (in its env, its `with:` inputs or its run text, comment lines included, written as `github.token`, `github['token']`, `secrets.GITHUB_TOKEN`, `secrets['GITHUB_TOKEN']` or `secrets["GITHUB_TOKEN"]`, in any letter case), when an install, build or gate command runs with the token whatever the step, when a run line writes a credential into the Git config, and when the sync is missing, lacks the token, does not come after the gate chain and the push, or is followed by another `git push`.
+1. install dependencies;
+2. `node watch/watch.mjs --apply` (GitHub API reads);
+3. build: `make-live.mjs`, `make-feed.mjs`, `run.mjs --report`;
+4. the gate chain, `bun run verify`;
+5. upload the generated files, exactly the list in `ops/take-build-output.mjs` `PATHS`, as the artifact `watch-output`.
+
+`publish`, which needs `build` and holds `contents: write` and `issues: write`:
+
+1. check out the same commit, and download the artifact to `$RUNNER_TEMP`, outside the checkout;
+2. `node ops/take-build-output.mjs`, which copies in the generated paths and fails the run, copying nothing, if the artifact holds any other path;
+3. `node ops/briefs-guard.mjs`, then commit `watch/`, `site/feed.xml` and `site/briefs/`;
+4. push, with the token passed to that one `git push` as `-c http…extraheader`, never written to `.git/config`;
+5. `node watch/freshness/dashboard.mjs --sync watch/live.json`, with the token, from the committed `watch/live.json` (FR-D.5).
+
+A failed gate stops `build`, so `publish` never runs; a failed push skips the sync, so the issue never describes files that did not land. The job boundary is the control: the build job's token cannot write, whatever a dependency does with it, and the publish job runs no dependency code. Pattern matching on step text cannot close every way a token moves inside one job (a step can copy it into `$GITHUB_ENV` or `$GITHUB_OUTPUT`), which is why the split exists. The artifact is downloaded outside the checkout and applied path by path because it comes from the job that runs dependency code: applied over the checkout, it could replace `watch/freshness/dashboard.mjs` or `ops/briefs-guard.mjs`, which `publish` then runs with the write token.
+
+`ops/write-job.mjs` fails W3 when a job lacks the main-only guard; when a checkout persists credentials; when the workflow, or any job but `publish`, grants a write scope, or `build` names no permissions of its own; when `build` references a secret other than `GITHUB_TOKEN`, runs no gate chain, uploads before it, or uploads a list that differs from `PATHS`; when `publish` does not need `build`, uses an action other than checkout, setup-node and download-artifact, downloads inside the checkout, runs an install, build or gate command or an interpreter other than node, or runs a node script other than `ops/take-build-output.mjs`, `ops/briefs-guard.mjs` and `watch/freshness/dashboard.mjs`; when a `publish` step other than the push and the sync receives the token (in env, `with:` or run text, as `github.token`, `secrets.GITHUB_TOKEN` or a bracket form, in any case), or a run line writes a credential into the Git config; when `publish` does not apply, guard, push and sync in that order, or pushes after the sync; and when any of those three scripts, or anything they import, imports a package or uses a non-literal `import()` or `require()`.
 
 ## Layout
 
@@ -68,7 +79,8 @@ A failed gate or push skips step 6, so the issue never describes files that did 
 | `../../ops/schedule.tsv`, `../../ops/schedule.mjs` | The generated-artifact schedule and its check. |
 | `../../ops/stale-run.mjs` | The missed-run warning in the deploy smoke step (FR-O.4). |
 | `../../ops/briefs-guard.mjs` | Refuses a scheduled commit that changes a brief outside its live card. |
-| `../../ops/write-job.mjs` | Checks the watch job: main only, no persisted credential, the token only where FR-O.6 allows it, the dashboard sync last (FR-D.5). |
+| `../../ops/write-job.mjs` | Checks the two-job split: main only, no persisted credential, write permission in `publish` only, nothing but listed dependency-free scripts in `publish`, the dashboard sync last (FR-O.6, FR-D.5). |
+| `../../ops/take-build-output.mjs` | In `publish`: copies the generated paths from the build artifact into the checkout, and refuses an artifact that holds anything else. |
 
 ## Adding or changing a clause
 

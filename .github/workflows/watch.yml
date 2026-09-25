@@ -6,19 +6,24 @@ name: watch
 # the pin) and the crossing ledger watch/crossings.jsonl. Since 2026-09-25 it
 # opens no per-event issues for assessed repositories. It then re-renders the
 # live:card region on every brief, the feed, and watch/freshness/REPORT.md,
-# runs the full gate chain, commits watch/, site/feed.xml and the brief cards
-# only if every gate passes, pushes, and only then syncs the one dashboard
-# issue from the committed watch/live.json (watch/freshness/SPEC.md FR-D.5).
-# A push made with GITHUB_TOKEN does not trigger verify.yml, so the gate chain
-# here is the only gate the census commit gets. The daily state.json commit
-# also keeps the repository active, so GitHub does not disable this schedule
-# after 60 days without activity. Every command that regenerates an artifact
-# listed in ops/schedule.tsv must appear below, and ops/write-job.mjs checks
-# the token rules and the step order (gate W3 runs both).
+# runs the full gate chain, commits the generated files only if every gate
+# passes, pushes, and only then syncs the one dashboard issue from the committed
+# watch/live.json (watch/freshness/SPEC.md FR-D.5). A push made with
+# GITHUB_TOKEN does not trigger verify.yml, so the gate chain here is the only
+# gate the census commit gets. The daily state.json commit also keeps the
+# repository active, so GitHub does not disable this schedule after 60 days
+# without activity. Every command that regenerates an artifact listed in
+# ops/schedule.tsv must appear below.
 #
-# The token (FR-O.6): checkout does not persist it, and it is in the env of
-# three steps only: the watch's API reads, the push, and the dashboard sync.
-# Install, build and the gate chain run without it.
+# Two jobs (FR-O.6). `build` installs dependencies, runs the watch, builds and
+# runs the gate chain with a read-only token, and uploads only the generated
+# files. `publish` holds the write token: it installs nothing, runs no build or
+# gate, and runs only dependency-free scripts from this commit. It downloads the
+# artifact outside the checkout, copies in the generated paths and nothing else
+# (ops/take-build-output.mjs), checks the briefs, commits, pushes and syncs the
+# dashboard. The job boundary, not a pattern match on step text, keeps the write
+# token away from dependency code. Neither checkout persists credentials.
+# ops/write-job.mjs checks all of this in gate W3.
 
 on:
   schedule:
@@ -32,24 +37,28 @@ concurrency:
   group: watch
   cancel-in-progress: false
 
-permissions:
-  contents: write
-  issues: write
+# Nothing by default; each job names what it needs.
+permissions: {}
 
 jobs:
-  watch:
-    # The job writes to main and to the one dashboard issue, so it runs only on
-    # main, scheduled or dispatched by hand (FR-O.6). A dispatch from another
-    # branch is skipped, not run as a dry run.
+  build:
+    # Main only, scheduled or dispatched by hand (FR-O.6). A dispatch from
+    # another branch is skipped, not run as a dry run.
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # Sized from measurements, not guessed. Two local runs of
-    # `node watch/watch.mjs --apply` on 2026-09-24 took 15.9 s and 16.9 s
-    # (11 GraphQL + 32 REST calls). The verify job's own guard is 4 minutes
-    # (verify.yml, from runs of 46 to 54 s). About twice the watch plus that
-    # guard gives 5 minutes. Re-derive from `gh run list --workflow watch.yml`
-    # once runs exist; do not guess.
-    timeout-minutes: 5
+    # Read-only: the watch reads the GitHub API, and nothing in this job can
+    # push or edit an issue, whatever a dependency does with the token.
+    permissions:
+      contents: read
+      issues: read
+    # Sized from measurements, not guessed: the gate chain with W3 took 99 s
+    # on a GitHub ubuntu-latest runner (verify run 36087416333), and 100 to
+    # 140 s in the lead's runs; the watch took 15.9 and 16.9 s locally on
+    # 2026-09-24 and about 30 s with the freshness reads. About 170 s of work,
+    # plus install and Chrome start-up, gives 6 minutes. Before the split into
+    # two jobs (review 3c) one 5-minute limit covered all of it. Re-derive from
+    # `gh run list --workflow watch.yml` once runs exist; do not guess.
+    timeout-minutes: 6
     steps:
       # Actions pinned to the same commits as verify.yml.
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -58,7 +67,6 @@ jobs:
           # stack/rigor-practices.tsv with `git cat-file`, and fails on a
           # shallow clone.
           fetch-depth: 0
-          # Leave no token in .git/config for install, build or gate steps to read.
           persist-credentials: false
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
@@ -72,7 +80,6 @@ jobs:
       - name: Install (lockfile must be current)
         run: bun install --frozen-lockfile
 
-      # The only step before the gates that holds the token: GitHub API reads.
       - name: Watch (census, changes, live data)
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -99,9 +106,63 @@ jobs:
           "$CHROME_PATH" --version
           bun run verify
 
-      - name: Commit watch/, the feed and the brief cards only
+      # Only the generated files, never code: the list equals
+      # ops/take-build-output.mjs PATHS (gate W3 checks it). actions/upload-artifact
+      # v7.0.1, pinned to the commit v7 resolved to on 2026-09-25.
+      - name: Upload the generated files
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: watch-output
+          path: |
+            watch/state.json
+            watch/latest.json
+            watch/live.json
+            watch/crossings.jsonl
+            watch/census/*.tsv
+            watch/changes/*.json
+            watch/freshness/REPORT.md
+            site/feed.xml
+            site/briefs/*.html
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    # A checkout, a download, four short scripts, one commit, one push and
+    # one dashboard sync; each of these took seconds in local runs. 3 minutes
+    # leaves room for a slow API. Re-derive from `gh run list` once runs exist.
+    timeout-minutes: 3
+    steps:
+      # The commit the build job read (github.sha), so a push fails if main
+      # moved during the run rather than landing a combination the gate chain
+      # did not check.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      # Outside the checkout, so the artifact cannot overwrite a script this job
+      # runs. actions/download-artifact v8.0.1, pinned to the commit v8 resolved
+      # to on 2026-09-25.
+      - name: Download the generated files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: watch-output
+          path: ${{ runner.temp }}/watch-output
+
+      - name: Apply the generated files and commit them
         id: commit
         run: |
+          # Copies only the generated paths; anything else in the artifact fails the run.
+          node ops/take-build-output.mjs "$RUNNER_TEMP/watch-output"
           git add watch/ site/feed.xml site/briefs/
           if git diff --cached --quiet -- watch/ site/feed.xml site/briefs/; then
             echo "watch/, feed and cards unchanged; nothing to commit"
@@ -110,8 +171,8 @@ jobs:
           fi
           # Briefs may change only inside their live:card regions (SPEC.md FR-L.5).
           node ops/briefs-guard.mjs
-          day="$(node -p "require('./watch/state.json').checked_at.slice(0, 10)")"
-          n="$(node -p "require('./watch/changes/${day}.json').material.length")"
+          day="$(jq -r '.checked_at[0:10]' watch/state.json)"
+          n="$(jq '.material | length' "watch/changes/${day}.json")"
           git -c user.name='github-actions[bot]' \
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
               commit -m "watch: ${day} census (${n} material) [live]" -- watch/ site/feed.xml site/briefs/
@@ -123,17 +184,16 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           # The token authenticates this one command and is never written to
-          # .git/config. A plain push: if main moved during the run, this fails
-          # rather than landing a combination the gate chain did not check. The
-          # next run starts from the new main.
+          # .git/config. A plain push: if main moved during the run, this fails.
           auth="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
           git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth}" \
               push origin "HEAD:${GITHUB_REF_NAME}"
 
-      # Last, after the gates and the push (FR-D.5): the issue describes only
-      # what main now holds. The script refuses a watch/live.json that differs
-      # from HEAD. A failed gate or push skips this step and leaves the issue as
-      # it was; a failed sync fails the run but leaves the pushed files in place.
+      # Last, after the gates (build job) and the push (FR-D.5): the issue
+      # describes only what main now holds. The script refuses unless HEAD is the
+      # default-branch tip on GitHub. A failed gate or push skips this step and
+      # leaves the issue as it was; a failed sync fails the run but leaves the
+      # pushed files in place.
       - name: Sync the dashboard issue from the committed watch/live.json
         env:
           GITHUB_TOKEN: ${{ github.token }}

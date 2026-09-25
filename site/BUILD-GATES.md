@@ -415,14 +415,17 @@ case's verdict and counts instead of running the mutants twice.
 command runs in its workflow, its gate exists in this script, and every script
 under `watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
 declares them. `node ops/write-job.mjs` parses `.github/workflows/watch.yml`
-and checks the job that writes: it runs only on `refs/heads/main`, its
-checkout sets `persist-credentials: false`, no token is in the workflow or job
-env, only the watch, push and sync steps receive the token (in env, `with:` or
-run text, written as `github.token`, `secrets.GITHUB_TOKEN` or
-`secrets['GITHUB_TOKEN']`, any case), no install, build or gate step receives
-it, no run line writes a credential into the Git config, and the dashboard
-sync comes after the gate chain and the push, with the token, and no push
-follows it (FR-O.6, FR-D.5).
+and checks the two-job split (FR-O.6, FR-D.5): both jobs run only on
+`refs/heads/main` and neither checkout persists credentials; `build` is
+read-only, names no secret but `GITHUB_TOKEN`, runs the gate chain before it
+uploads, and uploads exactly the generated paths `ops/take-build-output.mjs`
+accepts; `publish` alone may write, needs `build`, uses only checkout,
+setup-node and download-artifact, downloads outside the checkout, installs,
+builds and gates nothing, runs only `ops/take-build-output.mjs`,
+`ops/briefs-guard.mjs` and `watch/freshness/dashboard.mjs`, gives the token
+to the push and the sync only, and applies, guards, pushes and syncs in that
+order with no push after the sync; and those three scripts, with everything
+they import, use only Node built-ins and repository files.
 `node site/scripts/make-live.mjs --check` re-renders the
 live:card region on every brief from `watch/live.json`. No network and no
 token. **Fails** on a nonzero exit of any of the four, any failed case, an
@@ -444,8 +447,10 @@ the watch. Timing on 2026-09-25: on an Apple M3 Ultra under load, with 8 mutatio
 workers, the harness took 40.1 s (268 cases, 65 of 65 mutants killed). On a GitHub
 `ubuntu-latest` runner (verify run 36087416333, branch `ci-probe/freshness-w3`) it
 took 13.8 s (269 cases, 66 of 66 mutants). The whole gate chain took 99 s there,
-against 76 s for the last `main` run without W3. That leaves the 4-minute verify,
-5-minute watch and 8-minute deploy timeouts unchanged.
+against 76 s for the last `main` run without W3. That leaves the 4-minute verify
+and 8-minute deploy timeouts unchanged. The watch, split into two jobs after
+review 3c, has 6 minutes for `build` (the gate chain plus about 30 s of watch)
+and 3 for `publish` (a checkout, a download, a commit, a push and a sync).
 
 ## Gate M — feed and OPML fresh and well-formed
 
