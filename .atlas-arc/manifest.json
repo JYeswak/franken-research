@@ -1,0 +1,12 @@
+{
+  "schema": "atlas-arc.manifest/v1",
+  "project": "franken-research search v1",
+  "arc_state": "CHARTERED",
+  "charter": {
+    "path": "PROJECT_CHARTER.md",
+    "sha256": "16b1eca9ef4bb3c81809f9968f1a87890e377a75dd3967bbf39f283c8293b79e",
+    "locked_at": "2026-09-25",
+    "locked_by": "maintainer",
+    "decision": "Lock, but allow quotes"
+  }
+}
