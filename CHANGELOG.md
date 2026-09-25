@@ -13,13 +13,14 @@ The daily watch now flags a verdict only when a computed class moves, instead of
 - **Live card on every brief** (`site/scripts/make-live.mjs`), rendered at build time from the committed `watch/live.json`, with no JavaScript.
 - **One dashboard issue** (`--dashboard`), `[watch] Freshness dashboard`, edited in place under the watch's trust rules, and a **weekly watch digest** entry in `site/feed.xml`.
 - **Freshness harness** (`watch/freshness/harness/run.mjs`, `bun run freshness`): reads the clause list from `SPEC.md`, runs every case in `watch/freshness/cases/`, allows an XFAIL only against a `DISCREPANCIES.md` entry with a resolution and a review date, and writes `watch/freshness/REPORT.md` (coverage per clause, fidelity against the master matrix, labelled-event precision and recall, replay noise, mutation score; a metric no case reports reads "not measured"). Runbook: [`watch/freshness/README.md`](watch/freshness/README.md).
-- **Mutation runner** (`watch/freshness/harness/mutate.mjs`): plants each mutant in `harness/mutants.json` in a temporary copy and requires every named case to fail; an unmutated baseline must pass first, a mutant whose text is missing or ambiguous or that crashes the harness is an error, not a kill.
+- **Mutation runner** (`watch/freshness/harness/mutate.mjs`): plants each mutant in `harness/mutants.json` in temporary copies (one per worker, up to 8) and requires every named case to fail; an unmutated baseline must pass first, and a mutant whose text is missing or ambiguous, or that crashes the harness, is an error, not a kill. The harness case HAR-H6-mutants runs it and reports the score to `REPORT.md`.
 - **Schedule** (`ops/schedule.tsv`, `ops/schedule.mjs`): one row per generated artifact this work adds, with its generator, workflow, cadence and gate. The check fails when a generator is not run by its workflow, a gate does not exist, or a script under `watch/freshness/` writes files without a `// writes:` header naming them.
-- **Gate W3**: the harness with `--check-report`, the mutation runner, the schedule check, and `make-live.mjs --check`. Gate count: 23.
+- **Gate W3**: the harness with `--check-report` (including the mutation score from HAR-H6-mutants), the schedule check, and `make-live.mjs --check`. The chain now prints 23 gate lines (gate K prints five).
 - **Deploy smoke step** warns (never fails) when `watch/live.json` is more than 36 hours old (`ops/stale-run.mjs`).
 
 ### Changed
 
+- **Gate W** runs 18 cases, down from 22: the four that exercised the retired per-event issue sync (dedupe, issue trust, the since-pin backfill) went with it.
 - **The scheduled watch** (`.github/workflows/watch.yml`) runs `node watch/watch.mjs --apply --dashboard`, then `make-live.mjs`, `make-feed.mjs` and `run.mjs --report`, and commits `watch/`, `site/feed.xml` and `site/briefs/`. `ops/briefs-guard.mjs` refuses the commit if a brief changed outside its live card.
 - **`--issues` and `--backfill-since-pin` are retired** for assessed repositories (usage error, exit 2). Issues #1 to #12 stay as filed.
 
