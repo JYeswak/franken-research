@@ -554,8 +554,8 @@
  {
   "id": "M-OUT-D1-dry-run-writes",
   "file": "watch/freshness/dashboard.mjs",
-  "find": "if (dryRun || action === 'unchanged') return result;",
-  "replace": "if (action === 'unchanged') return result;",
+  "find": "  if (dryRun) return result;",
+  "replace": "",
   "clauses": [
    "FR-D.1"
   ],
@@ -896,6 +896,114 @@
   ],
   "must_fail": [
    "OUT-L3-withdrawing"
+  ]
+ },
+ {
+  "id": "M-OUT-D4-cut-at-room",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "  return body.slice(0, cut > 0 ? cut : room) + TAIL;",
+  "replace": "  return body.slice(0, room) + TAIL;",
+  "clauses": [
+   "FR-D.4"
+  ],
+  "must_fail": [
+   "OUT-D4-limit"
+  ]
+ },
+ {
+  "id": "M-OUT-D6-unbounded",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "  for (let page = 1; page <= MAX_PAGES; page++) {",
+  "replace": "  for (let page = 1; ; page++) {",
+  "clauses": [
+   "FR-D.6"
+  ],
+  "must_fail": [
+   "OUT-D6-bounded-listing"
+  ]
+ },
+ {
+  "id": "M-OUT-D6-non-list-accepted",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    if (!Array.isArray(r?.body)) throw new DashboardError",
+  "replace": "    if (false) throw new DashboardError",
+  "clauses": [
+   "FR-D.6"
+  ],
+  "must_fail": [
+   "OUT-D6-bounded-listing"
+  ]
+ },
+ {
+  "id": "M-OUT-D6-unfiltered-listing",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "labels=dashboard&creator=${encodeURIComponent(bot)}&",
+  "replace": "",
+  "clauses": [
+   "FR-D.6"
+  ],
+  "must_fail": [
+   "OUT-D6-bounded-listing"
+  ]
+ },
+ {
+  "id": "M-OUT-D1-leave-duplicates-open",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "  if (issue) result.closed = await closeDuplicates(api, base, issue.number, trusted.slice(1));",
+  "replace": "",
+  "clauses": [
+   "FR-D.1"
+  ],
+  "must_fail": [
+   "OUT-D2-oldest-and-labels"
+  ]
+ },
+ {
+  "id": "M-OUT-D1-close-untrusted",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "  if (issue) result.closed = await closeDuplicates(api, base, issue.number, trusted.slice(1));",
+  "replace": "  if (issue) result.closed = await closeDuplicates(api, base, issue.number, same.filter((i) => i !== issue));",
+  "clauses": [
+   "FR-D.1"
+  ],
+  "must_fail": [
+   "OUT-D2-oldest-and-labels"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-uncommitted-accepted",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    committed(file);",
+  "replace": "",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-cli"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-failure-exits-zero",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    return input || e instanceof UsageError || e?.code === 2 ? 2 : 1;",
+  "replace": "    return 0;",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-cli"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-dry-run-syncs",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    const r = await syncDashboard(api, live, { bot, dryRun });",
+  "replace": "    const r = await syncDashboard(api, live, { bot, dryRun: false });",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-cli"
   ]
  }
 ]

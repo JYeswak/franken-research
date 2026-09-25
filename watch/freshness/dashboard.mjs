@@ -1,25 +1,39 @@
-// watch/freshness/dashboard.mjs: the single living dashboard issue (SPEC.md FR-D.1 to FR-D.4, FR-O.4, FR-O.5).
+// watch/freshness/dashboard.mjs: the single living dashboard issue (SPEC.md FR-D.1 to FR-D.6, FR-O.4, FR-O.5).
+//
+//   node watch/freshness/dashboard.mjs --sync watch/live.json            sync the issue from the committed file
+//   node watch/freshness/dashboard.mjs --sync watch/live.json --dry-run  print the planned action and the body
+//
+// The scheduled workflow runs --sync as its last step, after the gate chain and the push (FR-D.5), so the issue
+// is rendered only from a committed watch/live.json: a file that is untracked or differs from HEAD is refused.
+// Token: GITHUB_TOKEN, else GH_TOKEN, else `gh auth token` (watch.mjs resolveToken); it is never printed.
+// Prints DASHBOARD_OK action=... issue=#N ignored=N closed_duplicates=N, or DASHBOARD_PLAN ... and the body
+// with --dry-run, or DASHBOARD_FAIL <reason>. Exit: 0 ok; 1 sync failed or refused by the FR-D.6 bound, and a
+// failed sync leaves the pushed files as they are; 2 usage, input, token or an uncommitted live.json.
 //
 // renderDashboard(live, { snapshots })   the issue body, a pure function of watch/live.json and the snapshot
 //                                        rows of ops/schedule.tsv (read from the repository when not given)
 // syncDashboard(api, live, { bot, dryRun, snapshots })
-//                                        keeps exactly one issue titled `[watch] Freshness dashboard`: creates it,
+//                                        keeps one canonical issue titled `[watch] Freshness dashboard`: creates it,
 //                                        edits its body only when the rendered body differs, reopens it when it
-//                                        was closed; returns { action, number, ignored, duplicates }
+//                                        was closed, and closes newer trusted copies with a comment linking it;
+//                                        returns { action, number, ignored, duplicates, closed, body }
 //
-// Trust follows the issue trust rule of watch/README.md: an issue counts as the dashboard only if the
-// token's own identity authored it, it carries the labels `watch` and `dashboard`, and its body has the marker
-// line <!-- watch-dashboard: v1 -->. A same-title issue that fails any of these is never edited; its number is
-// returned in `ignored`. Upstream text reaches the body only through mdText (watch.mjs), and a URL becomes a
-// link only when it is an absolute https URL. Bodies stay within GitHub's 65,536-character limit; a cut body
-// ends with a link to watch/live.json. api is watch.mjs makeApi(token); bot is watch.mjs botLogin(api).
-// Writes no files. Node 22 built-ins only.
+// Finding the issue is bounded (FR-D.6): issues labelled `dashboard` that the token's identity opened, any state,
+// at most 3 pages of 100. A listing that reaches the bound or returns something other than a list throws
+// DashboardError before anything is created or edited. Trust follows the issue trust rule of watch/README.md:
+// an issue counts as the dashboard only if the token's own identity authored it, it carries the labels `watch`
+// and `dashboard`, and its body has the marker line <!-- watch-dashboard: v1 -->. A listed issue that fails
+// any of these is never changed; its number is returned in `ignored`. Upstream text reaches the body only
+// through mdText (watch.mjs), and a URL becomes a link only through hrefOf (card.mjs). Bodies stay within
+// GitHub's 65,536-character limit; a cut body ends at a line boundary with a link to watch/live.json.
+// Changes no file. Node 22 built-ins only.
 
 import { readFileSync, existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join, dirname, resolve, relative, isAbsolute, sep } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import * as watch from '../watch.mjs';
-import { UNKNOWN_WORDS, hrefOf } from './card.mjs';
+import { UNKNOWN_WORDS, hrefOf, readLive } from './card.mjs';
 
 const { mdText } = watch;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -170,7 +184,8 @@ export function fitBody(body, limit = LIMIT) {
   return body.slice(0, cut > 0 ? cut : room) + TAIL;
 }
 
-export function renderDashboard(live, { snapshots = readSnapshots() } = {}) {
+/** The whole body before the length limit is applied. */
+export function dashboardText(live, { snapshots = readSnapshots() } = {}) {
   const lines = [
     ...preamble(live),
     ...changedSection(live),
@@ -181,8 +196,10 @@ export function renderDashboard(live, { snapshots = readSnapshots() } = {}) {
     ...informationalSection(live),
     ...snapshotSection(live, snapshots),
   ];
-  return fitBody(lines.join('\n') + '\n');
+  return lines.join('\n') + '\n';
 }
+
+export const renderDashboard = (live, opts) => fitBody(dashboardText(live, opts));
 
 // ---------- the issue ----------
 const labelNames = (i) => (i?.labels ?? []).map((l) => (typeof l === 'string' ? l : l?.name));
@@ -198,14 +215,23 @@ export function decide(issue, body) {
   return issue.body === body ? 'unchanged' : 'edited';
 }
 
-async function allIssues(api, base) {
+/** A sync that must not proceed (FR-D.6 bound or incomplete listing): nothing was created or edited. */
+export class DashboardError extends Error {}
+export const MAX_PAGES = 3;
+
+/**
+ * The issues labelled `dashboard` that the token's identity opened, any state, oldest first (FR-D.6). Reads at most
+ * MAX_PAGES pages of 100; a full last page, or a page that is not a list, throws DashboardError (fail closed).
+ */
+export async function listDashboardIssues(api, base, bot) {
   const all = [];
-  for (let page = 1; ; page++) {
-    const r = await api.rest('GET', `${base}/issues?state=all&per_page=100&page=${page}&sort=created&direction=asc`);
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const r = await api.rest('GET', `${base}/issues?labels=dashboard&creator=${encodeURIComponent(bot)}&state=all&per_page=100&page=${page}&sort=created&direction=asc`);
+    if (!Array.isArray(r?.body)) throw new DashboardError(`incomplete issue listing: page ${page} is not a list; nothing created or edited`);
     for (const i of r.body) if (!i.pull_request) all.push(i);
-    if (r.body.length < 100) break;
+    if (r.body.length < 100) return all;
   }
-  return all;
+  throw new DashboardError(`issue listing reached its bound of ${MAX_PAGES} pages of 100 without ending; nothing created or edited`);
 }
 
 async function ensureLabels(api, base) {
@@ -223,23 +249,92 @@ async function ensureLabels(api, base) {
   }
 }
 
+const issueUrl = (n) => `https://github.com/${ISSUE_REPO}/issues/${n}`;
+export const duplicateComment = (canonical) => `This is a duplicate of the canonical freshness dashboard, #${canonical} (${issueUrl(canonical)}), which is the oldest trusted one. The watch closes newer copies and keeps editing #${canonical}.`;
+
+/** Newer trusted dashboards that are still open: each gets a comment linking the canonical issue, then is closed (FR-D.1). */
+async function closeDuplicates(api, base, canonical, duplicates) {
+  const closed = [];
+  for (const d of duplicates) {
+    if (d.state === 'closed') continue;
+    await api.rest('POST', `${base}/issues/${d.number}/comments`, { body: duplicateComment(canonical) });
+    await api.rest('PATCH', `${base}/issues/${d.number}`, { state: 'closed' });
+    closed.push(d.number);
+  }
+  return closed;
+}
+
 export async function syncDashboard(api, live, { bot, dryRun = false, snapshots } = {}) {
   if (typeof bot !== 'string' || !bot) throw new Error('syncDashboard needs the bot login the token acts as');
   const base = `/repos/${ISSUE_REPO}`;
   const body = renderDashboard(live, snapshots ? { snapshots } : undefined);
-  const same = (await allIssues(api, base)).filter((i) => i.title === TITLE);
+  const same = (await listDashboardIssues(api, base, bot)).filter((i) => i.title === TITLE);
   const trusted = same.filter((i) => trustedDashboard(i, bot)).sort((a, b) => a.number - b.number);
   const ignored = same.filter((i) => !trustedDashboard(i, bot)).map((i) => i.number);
-  const duplicates = trusted.slice(1).map((i) => i.number);
   const issue = trusted[0] ?? null;
   const action = decide(issue, body);
-  const result = { action, number: issue?.number ?? null, ignored, duplicates };
-  if (dryRun || action === 'unchanged') return result;
+  const result = { action, number: issue?.number ?? null, ignored, duplicates: trusted.slice(1).map((i) => i.number), closed: [], body };
+  if (dryRun) return result;
   if (action === 'created') {
     await ensureLabels(api, base);
     result.number = (await api.rest('POST', `${base}/issues`, { title: TITLE, body, labels: LABELS })).body.number;
-  } else {
+  } else if (action !== 'unchanged') {
     await api.rest('PATCH', `${base}/issues/${issue.number}`, action === 'reopened' ? { state: 'open', body } : { body });
   }
+  if (issue) result.closed = await closeDuplicates(api, base, issue.number, trusted.slice(1));
   return result;
+}
+
+// ---------- command line (FR-D.5) ----------
+const USAGE = 'usage: node watch/freshness/dashboard.mjs --sync watch/live.json [--dry-run]';
+class UsageError extends Error {}
+
+/** Refuses a live.json that is outside the repository, untracked, or different from HEAD. */
+export function assertCommitted(file, root = ROOT) {
+  const rel = relative(root, file);
+  if (!rel || rel.startsWith('..') || isAbsolute(rel)) throw new UsageError(`${file} is outside the repository`);
+  const git = (...a) => spawnSync('git', a, { cwd: root, encoding: 'utf8' }).status;
+  if (git('ls-files', '--error-unmatch', '--', rel.split(sep).join('/')) !== 0) throw new UsageError(`${rel} is not committed`);
+  if (git('diff', '--quiet', 'HEAD', '--', rel.split(sep).join('/')) !== 0) throw new UsageError(`${rel} differs from HEAD; the dashboard is rendered only from the committed file`);
+}
+
+async function defaultClient() {
+  let token;
+  try { token = watch.resolveToken(); } catch (e) { throw new UsageError(e.message); }
+  const api = watch.makeApi(token);
+  return { api, bot: await watch.botLogin(api) };
+}
+
+/**
+ * The CLI, with its collaborators injectable for tests: `client()` gives { api, bot }, `committed(file)` throws
+ * when the file is not committed, `out(line)` prints. Returns the exit code.
+ */
+export async function main(argv, { client = defaultClient, committed = assertCommitted, out = (l) => console.log(l) } = {}) {
+  const k = argv.indexOf('--sync');
+  const known = new Set(['--sync', '--dry-run']);
+  let input = true; // usage, the committed check and live.json come before any API call; their failures exit 2
+  try {
+    if (k < 0 || !argv[k + 1] || argv[k + 1].startsWith('--') || argv.some((a, j) => a.startsWith('--') && !known.has(a) && j !== k + 1)) throw new UsageError(USAGE);
+    const file = resolve(argv[k + 1]);
+    committed(file);
+    const live = readLive(file);
+    const dryRun = argv.includes('--dry-run');
+    input = false; // from here a failure is a failed sync (exit 1), except a missing token (UsageError, exit 2)
+    const { api, bot } = await client();
+    const r = await syncDashboard(api, live, { bot, dryRun });
+    const issue = r.number == null ? 'none' : `#${r.number}`;
+    if (dryRun) {
+      out(`DASHBOARD_PLAN action=${r.action} issue=${issue} ignored=${r.ignored.length} duplicates_to_close=${r.duplicates.length}`);
+      out('');
+      out(r.body);
+    } else out(`DASHBOARD_OK action=${r.action} issue=${issue} ignored=${r.ignored.length} closed_duplicates=${r.closed.length}`);
+    return 0;
+  } catch (e) {
+    out(`DASHBOARD_FAIL ${String(e?.message ?? e).split('\n')[0]}`);
+    return input || e instanceof UsageError || e?.code === 2 ? 2 : 1;
+  }
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  main(process.argv.slice(2)).then((code) => { process.exitCode = code; });
 }

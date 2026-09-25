@@ -14,7 +14,7 @@ import { spawnSync } from 'node:child_process';
 import { memoryIssues } from '../../watch.mjs';
 import { renderCard, applyCard, checkBriefs, regionOf, hrefOf, OPEN, CLOSE } from '../card.mjs';
 import { writeBriefs } from '../../../site/scripts/make-live.mjs';
-import { renderDashboard, syncDashboard, readSnapshots, TITLE, MARKER, LIMIT } from '../dashboard.mjs';
+import { renderDashboard, dashboardText, syncDashboard, readSnapshots, DashboardError, duplicateComment, assertCommitted, main as dashMain, TITLE, MARKER, LIMIT } from '../dashboard.mjs';
 import { readLedger, digestEntries, isoWeek } from '../digest.mjs';
 
 // ---------- helpers ----------
@@ -49,10 +49,20 @@ function specChangedText(ctx) {
 const STATE_WORDS = { current: 'Current', changed: 'Changed', due: 'Due for re-check', unknown: 'Unknown' };
 
 // An in-memory issues API (watch.mjs memoryIssues) that records every call.
-function recordingIssues(login = 'github-actions[bot]') {
+function recordingIssues(login = 'github-actions[bot]', { honourFilters = true } = {}) {
   const mem = memoryIssues(login);
   const calls = [];
-  const api = { stats: {}, rest: (method, path, payload) => { calls.push({ method, path: path.replace(/\?.*$/, ''), payload }); return mem.api.rest(method, path, payload); } };
+  // GET /issues honours GitHub's labels, creator and state filters, as the real API does (FR-D.6 listing).
+  const filtered = (path, res) => {
+    if (!honourFilters || !/\/issues\?/.test(path)) return res;
+    const q = new URLSearchParams(path.slice(path.indexOf('?') + 1));
+    const names = (i) => i.labels.map((l) => l.name);
+    const keep = (i) => (!q.get('labels') || q.get('labels').split(',').every((l) => names(i).includes(l)))
+      && (!q.get('creator') || i.user?.login === q.get('creator'))
+      && (!q.get('state') || q.get('state') === 'all' || i.state === q.get('state'));
+    return { ...res, body: res.body.filter(keep) };
+  };
+  const api = { stats: {}, rest: async (method, path, payload) => { calls.push({ method, path: path.replace(/\?.*$/, ''), query: path.includes('?') ? path.slice(path.indexOf('?') + 1) : '', payload }); const res = await mem.api.rest(method, path, payload); return method === 'GET' ? filtered(path, res) : res; } };
   const writes = () => calls.filter((c) => c.method !== 'GET');
   return { mem, api, calls, writes };
 }
@@ -466,23 +476,28 @@ const dashCases = [
   },
   {
     id: 'OUT-D2-impostors', clauses: ['FR-D.2'], level: 'MUST',
-    title: 'same-title issues by another author, or ours without a label or the marker, are never edited and are reported as ignored; a trusted one is created',
+    title: 'same-title issues by another author, or ours without a label or the marker, are never edited; listed ones are reported as ignored; a trusted one is created, even when the API ignores the creator filter',
     async run(ctx) {
       const live = fixture(ctx, 'live-states.json');
-      const { mem, api, writes } = recordingIssues();
-      mem.add(trustedShape({ user: { login: 'mallory' } }));
-      mem.add(trustedShape({ labels: [{ name: 'watch' }] }));
-      mem.add(trustedShape({ body: 'no marker here\n' }));
-      mem.add(trustedShape({ body: `see ${MARKER} inline, not on its own line\n` }));
-      const before = mem.issues.map((i) => i.body);
-      const r = await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
-      const patched = writes().filter((w) => w.method === 'PATCH');
-      return verdict([
-        [r.action === 'created' && r.number === 5, `action ${r.action} #${r.number}`],
-        [JSON.stringify(r.ignored) === '[1,2,3,4]', `ignored ${JSON.stringify(r.ignored)}`],
-        [patched.length === 0, `${patched.length} PATCH calls`],
-        [mem.issues.slice(0, 4).every((i, k) => i.body === before[k] && i.state === 'open'), 'an untrusted issue changed'],
-      ]);
+      const results = [];
+      for (const honour of [true, false]) {
+        const { mem, api, writes } = recordingIssues(BOT, { honourFilters: honour });
+        mem.add(trustedShape({ user: { login: 'mallory' } }));
+        mem.add(trustedShape({ labels: [{ name: 'dashboard' }] }));
+        mem.add(trustedShape({ body: 'no marker here\n' }));
+        mem.add(trustedShape({ body: `see ${MARKER} inline, not on its own line\n` }));
+        const before = mem.issues.map((i) => i.body);
+        const r = await syncDashboard(api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+        const touched = writes().filter((w) => /\/issues\/\d/.test(w.path));
+        const want = honour ? '[2,3,4]' : '[1,2,3,4]';
+        results.push(
+          [r.action === 'created' && r.number === 5, `${honour ? 'filtered' : 'unfiltered'} listing: action ${r.action} #${r.number}`],
+          [JSON.stringify(r.ignored) === want, `${honour ? 'filtered' : 'unfiltered'} listing: ignored ${JSON.stringify(r.ignored)}, want ${want}`],
+          [touched.length === 0, `${touched.length} writes to existing issues`],
+          [mem.issues.slice(0, 4).every((i, k) => i.body === before[k] && i.state === 'open'), 'an untrusted issue changed'],
+        );
+      }
+      return verdict(results);
     },
   },
   {
@@ -499,19 +514,27 @@ const dashCases = [
   },
   {
     id: 'OUT-D2-oldest-and-labels', clauses: ['FR-D.2', 'FR-D.1'], level: 'MUST',
-    title: 'with two trusted dashboards the oldest is the one kept and the other is reported; on a fresh repository both labels are created',
+    title: 'with several trusted dashboards the oldest is canonical and each newer open one is closed with a comment linking it; an untrusted one is never touched; on a fresh repository both labels are created',
     async run(ctx) {
       const live = fixture(ctx, 'live-states.json');
       const two = recordingIssues();
       two.mem.add(trustedShape());
       two.mem.add(trustedShape());
+      two.mem.add(trustedShape({ body: 'ours, labelled, but no marker\n' }));
+      two.mem.add(trustedShape({ state: 'closed' }));
       const r = await syncDashboard(two.api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const again = await syncDashboard(two.api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
+      const commentsOn = (n) => two.mem.comments.get(n) ?? [];
       const fresh = recordingIssues();
       await syncDashboard(fresh.api, live, { bot: BOT, snapshots: NO_SNAPSHOTS });
       const made = fresh.writes().filter((w) => w.method === 'POST' && w.path.endsWith('/labels')).map((w) => w.payload.name).sort();
       return verdict([
-        [r.action === 'edited' && r.number === 1 && JSON.stringify(r.duplicates) === '[2]', `kept #${r.number} (${r.action}), duplicates ${JSON.stringify(r.duplicates)}`],
-        [two.mem.issues[1].body === `${MARKER}\nold body\n`, 'the newer duplicate was edited'],
+        [r.action === 'edited' && r.number === 1 && JSON.stringify(r.duplicates) === '[2,4]' && JSON.stringify(r.closed) === '[2]', `kept #${r.number} (${r.action}), duplicates ${JSON.stringify(r.duplicates)}, closed ${JSON.stringify(r.closed)}`],
+        [two.mem.issues[1].state === 'closed' && two.mem.issues[1].body === `${MARKER}\nold body\n`, 'the newer duplicate was not closed, or its body was edited'],
+        [commentsOn(2).length === 1 && commentsOn(2)[0].body === duplicateComment(1) && commentsOn(2)[0].body.includes('https://github.com/JYeswak/franken-research/issues/1'), 'the duplicate has no comment linking the canonical issue'],
+        [commentsOn(4).length === 0, 'an already-closed duplicate got a comment'],
+        [two.mem.issues[2].state === 'open' && commentsOn(3).length === 0 && JSON.stringify(r.ignored) === '[3]', 'an untrusted issue was touched or not reported'],
+        [again.action === 'unchanged' && again.closed.length === 0 && commentsOn(2).length === 1, 'a second run acted again on the closed duplicate'],
         [made.join() === 'dashboard,watch', `labels created: ${made.join()}`],
       ]);
     },
@@ -595,9 +618,13 @@ const dashCases = [
       const { mem, api } = recordingIssues();
       await syncDashboard(api, big, { bot: BOT, snapshots: NO_SNAPSHOTS });
       const rows = tableRows(sections(body)[0]?.text ?? '').length;
+      const full = dashboardText(big, { snapshots: NO_SNAPSHOTS });
+      const kept = body.slice(0, body.indexOf('\n\nThe rest did not fit'));
       return verdict([
         [body.length <= 65536 && LIMIT === 65536, `body is ${body.length} characters`],
         [rows > 100 && rows < 2503, `cut kept ${rows} rows (want a real cut)`],
+        [kept.length > 0 && full.startsWith(kept) && full[kept.length] === '\n', `the cut is not at a line boundary: kept part ends ${JSON.stringify(kept.slice(-40))}, next character ${JSON.stringify(full[kept.length])}`],
+        [/\|$/.test(kept), 'the last kept line is not a whole table row'],
         [body.startsWith('<!-- watch-dashboard: v1 -->\n'), 'marker lost'],
         [body.endsWith('[watch/live.json](https://github.com/JYeswak/franken-research/blob/main/watch/live.json)'), `ends with ${JSON.stringify(body.slice(-80))}`],
         [small.endsWith('\n') && !small.includes('did not fit'), 'a small body was cut'],
@@ -618,6 +645,85 @@ const dashCases = [
         [live.candidates.every((c) => body.includes(`[${c.repo.replace(/_/g, '\\_')}]`)), 'a candidate is not on the dashboard'],
       ]);
     },
+  },
+  {
+    id: 'OUT-D6-bounded-listing', clauses: ['FR-D.6'], level: 'MUST',
+    title: 'the dashboard is found by listing issues labelled dashboard that the bot opened, any state, 100 a page, at most 3 pages; a listing that fills all 3 pages or returns a non-list fails closed with no write; 2 full pages and a short third proceed',
+    async run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const pagedApi = (pages) => {
+        const calls = [];
+        const filler = (p) => Array.from({ length: 100 }, (_, k) => ({ number: p * 100 + k, title: `other ${k}`, labels: [{ name: 'dashboard' }], user: { login: BOT }, state: 'closed', body: '' }));
+        return { calls, api: { stats: {}, rest: async (method, path, payload) => {
+          calls.push({ method, path, payload });
+          if (method !== 'GET') return { status: 201, body: { number: 999 } };
+          if (/\/labels\?/.test(path)) return { status: 200, body: [{ name: 'watch' }, { name: 'dashboard' }] };
+          const page = Number(new URLSearchParams(path.split('?')[1]).get('page'));
+          const p = pages[page - 1];
+          return { status: 200, body: p === 'full' ? filler(page) : p === 'bad' ? { message: 'Server Error' } : (p ?? []) };
+        } } };
+      };
+      const attempt = async (pages) => {
+        const t = pagedApi(pages);
+        let err = null, r = null;
+        try { r = await syncDashboard(t.api, live, { bot: BOT, snapshots: NO_SNAPSHOTS }); } catch (e) { err = e; }
+        const lists = t.calls.filter((c) => c.method === 'GET' && /\/issues\?/.test(c.path));
+        return { err, r, lists, writes: t.calls.filter((c) => c.method !== 'GET') };
+      };
+      const bound = await attempt(['full', 'full', 'full', []]);
+      const bad = await attempt(['full', 'bad']);
+      const ok = await attempt(['full', 'full', [trustedShape({ number: 250, state: 'open' })]]);
+      const q = new URLSearchParams((ok.lists[0]?.path ?? '').split('?')[1] ?? '');
+      return verdict([
+        [bound.err instanceof DashboardError && /bound of 3 pages/.test(bound.err.message) && bound.writes.length === 0, `three full pages: ${bound.err?.message ?? 'no error'}, ${bound.writes.length} writes`],
+        [bound.lists.length === 3, `read ${bound.lists.length} pages, the bound is 3`],
+        [bad.err instanceof DashboardError && /not a list/.test(bad.err.message) && bad.writes.length === 0, `a non-list page: ${bad.err?.message ?? 'no error'}, ${bad.writes.length} writes`],
+        [!ok.err && ok.r?.action === 'edited' && ok.r.number === 250 && ok.lists.length === 3, `two full pages and a short third: ${ok.err?.message ?? `${ok.r?.action} #${ok.r?.number}`}`],
+        [q.get('labels') === 'dashboard' && q.get('creator') === BOT && q.get('state') === 'all' && q.get('per_page') === '100', `listing query ${ok.lists[0]?.path}`],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-D5-cli', clauses: ['FR-D.5'], level: 'MUST',
+    title: 'dashboard.mjs --sync renders only a committed live.json: --dry-run prints the plan and the body and writes nothing; a sync prints DASHBOARD_OK; a bounded-out sync exits 1; an uncommitted file or bad usage exits 2 before any API call',
+    run: (ctx) => withScratch(async (dir) => {
+      const live = fixture(ctx, 'live-states.json');
+      const file = join(dir, 'live.json');
+      writeFileSync(file, JSON.stringify(live));
+      const run = async (argv, { committed = () => {}, api } = {}) => {
+        const t = api ?? recordingIssues();
+        const lines = [];
+        let asked = 0;
+        const code = await dashMain(argv, { committed, client: async () => { asked++; return { api: t.api, bot: BOT }; }, out: (l) => lines.push(l) });
+        return { code, lines, asked, writes: t.writes ? t.writes() : [] };
+      };
+      const dry = await run(['--sync', file, '--dry-run']);
+      const real = await run(['--sync', file]);
+      const full = { api: { stats: {}, rest: async (m, p) => ({ status: 200, body: /\/issues\?/.test(p) ? Array.from({ length: 100 }, (_, k) => ({ number: k, title: 'x', labels: [], user: { login: BOT } })) : [] }) }, writes: () => [] };
+      const bounded = await run(['--sync', file], { api: full });
+      const dirty = await run(['--sync', file], { committed: () => { throw new Error('live.json differs from HEAD'); } });
+      const usage = await run(['--dry-run']);
+      // assertCommitted against a real repository
+      const repo = join(dir, 'repo');
+      mkdirSync(repo);
+      const git = (...a) => spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.com', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: repo, encoding: 'utf8' }).status;
+      git('init', '-q'); writeFileSync(join(repo, 'live.json'), '{}\n'); git('add', 'live.json'); git('commit', '-q', '-m', 'x');
+      const refuses = (f) => { try { assertCommitted(f, repo); return false; } catch { return true; } };
+      const clean = !refuses(join(repo, 'live.json'));
+      writeFileSync(join(repo, 'live.json'), '{"changed":1}\n');
+      const modified = refuses(join(repo, 'live.json'));
+      writeFileSync(join(repo, 'other.json'), '{}\n');
+      const untracked = refuses(join(repo, 'other.json'));
+      const outside = refuses(file);
+      return verdict([
+        [dry.code === 0 && /^DASHBOARD_PLAN action=created issue=none /.test(dry.lines[0]) && dry.lines[1] === '' && dry.lines[2] === renderDashboard(live) && dry.writes.length === 0, `dry run: exit ${dry.code}, ${dry.writes.length} writes, ${JSON.stringify(dry.lines[0])}`],
+        [real.code === 0 && real.lines.join('\n') === 'DASHBOARD_OK action=created issue=#1 ignored=0 closed_duplicates=0', `sync: exit ${real.code} ${JSON.stringify(real.lines)}`],
+        [bounded.code === 1 && /^DASHBOARD_FAIL .*bound/.test(bounded.lines[0] ?? ''), `bounded: exit ${bounded.code} ${JSON.stringify(bounded.lines)}`],
+        [dirty.code === 2 && dirty.asked === 0 && /^DASHBOARD_FAIL .*differs from HEAD/.test(dirty.lines[0] ?? ''), `uncommitted: exit ${dirty.code}, client asked ${dirty.asked} times`],
+        [usage.code === 2 && usage.asked === 0 && /usage:/.test(usage.lines[0] ?? ''), `usage: exit ${usage.code}`],
+        [clean && modified && untracked && outside, `assertCommitted: clean passes ${clean}, refuses modified ${modified}, untracked ${untracked}, outside the repo ${outside}`],
+      ]);
+    }),
   },
   {
     id: 'OUT-O4-last-run', clauses: ['FR-O.4'], level: 'SHOULD',
