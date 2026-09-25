@@ -70,6 +70,8 @@ Requirement levels follow RFC 2119. Every MUST clause needs at least one harness
 
 **FR-T.9** (SHOULD) A verdict is `due` for a delta re-check when it has an open crossing, or when 90 days have passed since its baseline date.
 
+**FR-T.10** (MUST) An open crossing whose computed class returns to its baseline value, and stays there for two consecutive daily observations, is closed as `withdrawn`: the class moved and then moved back, so nothing needs a re-check. A dated re-check is still the only way to *resolve* a crossing (FR-T.8). A crossing that is withdrawn and later moves again opens as a new crossing, with a new `since` date. `existence` crossings are never withdrawn.
+
 ## FR-L: live data and live card
 
 **FR-L.1** (MUST) `watch/live.json` (schema `fr.watch.live/v1`) is written with every `--apply`. For each repository it holds the pin, the baseline, head and dates, commits since the pin, the latest release, and per dimension `{matrix, at_pin, now, tracked}`. It also holds existence facts, open crossings with evidence and source, revisit counts, `state` (one of `current`, `changed`, `due`, `unknown`) and totals. Key order is fixed. Given the same facts and the same `checked_at`, the output is byte-identical.
@@ -102,11 +104,11 @@ Upstream text is Markdown-escaped with the existing `mdText`.
 
 ## FR-G: weekly digest
 
-**FR-G.1** (MUST) `site/feed.xml` carries at most one watch digest entry per ISO week, dated the last day of that week that had data. It lists the crossings opened and resolved that week. A week with neither gets no entry. Informational events never produce feed entries.
+**FR-G.1** (MUST) `site/feed.xml` carries at most one watch digest entry per ISO week, dated the last day of that week that had data. It lists the crossings opened, resolved and withdrawn that week. A week with none of these gets no entry. Informational events never produce feed entries.
 
 **FR-G.2** (MUST) The digest is built only from committed files: the append-only crossing ledger `watch/crossings.jsonl`, with one line per crossing opened or resolved, and `updates/`. The feed stays byte-identical on reruns, as gate M requires today.
 
-**FR-G.3** (MUST) `watch/crossings.jsonl` is append-only. Each `--apply` that opens or resolves a crossing appends one line per event, with fixed key order: `{date, event: opened|resolved, id, repo, dim, from, to, source, evidence, resolved_by}`. A run whose output does not start with the previous committed file, byte for byte, fails.
+**FR-G.3** (MUST) `watch/crossings.jsonl` is append-only. Each `--apply` that opens, resolves or withdraws a crossing appends one line per event, with fixed key order: `{date, event: opened|resolved|withdrawn, id, repo, dim, from, to, source, evidence, resolved_by}`. For `withdrawn`, `resolved_by` is null. A run whose output does not start with the previous committed file, byte for byte, fails.
 
 ## FR-O: scheduled jobs
 
@@ -171,3 +173,4 @@ The report gives precision and recall on this set, and names its size.
 | 2026-09-25 | FR-O.2 | Goldens and recorded fixtures are exempt from the schedule check, and write calls need a `// writes:` header. | FreshHarness: a scheduled job must never rewrite a golden or a fixture, or the harness would test against whatever the API says today. |
 | 2026-09-25 | FR-C.3 | `now` for CI is the newest default-branch commit whose push-triggered test runs have all completed, not HEAD. CI is unknown only when no listed commit qualifies, and `dims.ci.now_commit` records which commit was used. | First live run: 13 of 44 repositories had CI `unknown`, all at HEAD, because runs were in progress or HEAD was under 6 hours old. The most active repositories would never get a CI class under the old rule. |
 | 2026-09-25 | FR-C.3 | Two guards. File rules read HEAD's workflow files; run rules read the CI point. A CI point dated before the baseline commit is never used. | FreshCore, fixture recorded 02:04 UTC: the newest settled commit was HEAD for 9 repositories, an older commit for 27, and none for 8. frankengit's was 870c1cc, from before its 2026-09-22 workflow removal. Without the guards it read C3 against a C5 baseline, and franken_markdown, franken_whisper and franken_snowflake took classes from old commits' files. |
+| 2026-09-25 | FR-T.10 (new), FR-G.1, FR-G.3 | A crossing whose class returns to its baseline and stays there for two observations is withdrawn; the ledger and the digest gain a `withdrawn` event. | Live run 2026-09-25T02:10Z: all 5 pending crossings were CI flips on active repositories (franken_node C2 to C1, franken_threed and frankenscipy C1 to C2, franken_remote C3 to C2, franken_snowflake C3 to C5). Before this change, a flip that held two days opened a crossing that stayed on the dashboard until someone wrote a re-check, even after CI went green again. That is the kind of stale report this contract exists to remove. |
