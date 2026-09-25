@@ -9,7 +9,10 @@
 // matches one of PATHS. Anything else in the artifact (a script, a workflow, a path outside the
 // repository, a symlink) fails the run and nothing is copied: the artifact must never be able to replace
 // code the publish job then runs with the write token, such as ops/briefs-guard.mjs or
-// watch/freshness/dashboard.mjs. Only file contents are copied, so the modes in the checkout stand.
+// watch/freshness/dashboard.mjs. The destination side is checked too: every existing component of each
+// destination path under the checkout must be a real directory, and an existing destination a regular
+// file, so a symlink in the checkout cannot redirect a generated file onto a script. Every destination is
+// checked before any file is written. Only file contents are copied, so the modes in the checkout stand.
 // The briefs guard then checks that each brief changed only inside its live:card region.
 // Exit 0 with `TAKEN files=N`; 1 with `TAKE_BAD` and one indented line per problem; 2 on a usage error.
 // Node 22 built-ins only; imports nothing from the repository.
@@ -59,9 +62,28 @@ export function listArtifact(dir) {
   return { files, problems };
 }
 
-// Copies the artifact into root when it is clean; returns { files, problems }. Nothing is written on a problem.
+// Problems with where rel would land under root: a symlink anywhere on the path, an existing component that
+// is not a directory, or an existing destination that is not a regular file. Components that do not exist
+// yet are fine; mkdir creates them as directories.
+export function destinationProblems(root, rel) {
+  const parts = rel.split('/');
+  const out = [];
+  for (let i = 1; i <= parts.length; i++) {
+    const sub = parts.slice(0, i).join('/');
+    let st;
+    try { st = lstatSync(join(root, sub)); } catch (e) { if (e.code === 'ENOENT') break; throw e; }
+    if (st.isSymbolicLink()) { out.push(`${rel}: destination component ${sub} is a symlink`); break; }
+    if (i < parts.length && !st.isDirectory()) { out.push(`${rel}: destination component ${sub} is not a directory`); break; }
+    if (i === parts.length && !st.isFile()) out.push(`${rel}: destination exists and is not a regular file`);
+  }
+  return out;
+}
+
+// Copies the artifact into root when it is clean; returns { files, problems }. Nothing is written on a
+// problem: the artifact and every destination are checked before the first write.
 export function takeBuildOutput(dir, root = ROOT) {
   const { files, problems } = listArtifact(dir);
+  for (const rel of files) problems.push(...destinationProblems(root, rel));
   if (problems.length) return { files: [], problems };
   for (const rel of files) {
     mkdirSync(dirname(join(root, rel)), { recursive: true });

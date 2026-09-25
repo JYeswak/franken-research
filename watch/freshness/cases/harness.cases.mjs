@@ -7,7 +7,7 @@
 // ctx.root, so a mutation copy tests itself.
 // writes: temporary files only
 
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync, symlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
@@ -518,8 +518,8 @@ const rest = [
       const plants = [
         ['build without the main-only guard', buildGuard, '  build:\n', /job build: lacks `if: github\.ref == 'refs\/heads\/main'`/],
         ['publish without the main-only guard', "    needs: build\n    if: github.ref == 'refs/heads/main'\n", '    needs: build\n', /job publish: lacks `if:/],
-        ['write permission added to build', '    permissions:\n      contents: read\n', '    permissions:\n      contents: write\n', /job build: grants a write scope/],
-        ['build names no permissions and inherits a writing workflow', 'permissions: {}\n', 'permissions:\n  contents: write\n', /workflow-level permissions grant a write scope/],
+        ['write permission added to build', '    permissions:\n      contents: read\n', '    permissions:\n      contents: write\n', /job build: holds the permission `contents: write`/],
+        ['build names no permissions and inherits a writing workflow', 'permissions: {}\n', 'permissions:\n  contents: write\n', /workflow-level permission `contents: write`/],
         ['build persists credentials', '          fetch-depth: 0\n          persist-credentials: false\n', '          fetch-depth: 0\n', /job build step 1 .*persist-credentials: false/],
         ['publish persists credentials', publishCheckout, publishCheckout.replace('false', 'true'), /job publish step 1 .*persist-credentials: false/],
         ['bun install in publish', download, `      - name: Install\n        run: bun install --frozen-lockfile\n\n${download}`, /job publish step \d+ \(Install\): installs, builds or runs gates/],
@@ -535,23 +535,45 @@ const rest = [
         ['a personal token reaches build', '        run: node watch/watch.mjs --apply\n', '        run: node watch/watch.mjs --apply\n        with:\n          pat: ${{ secrets.PERSONAL_TOKEN }}\n', /job build: references secrets\.PERSONAL_TOKEN/],
         ['token on the publish apply step (bracket notation)', '        id: commit\n', "        id: commit\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n", /Apply the generated files.*receives the token \(env\) but is not the push or sync step/],
         ['token on the publish setup-node step', '          node-version: 22\n\n      # Outside', `          node-version: 22\n        env:\n${tok}\n      # Outside`, /job publish step 2 \(actions\/setup-node\): receives the token/],
-        ['token in the workflow env', 'concurrency:\n', 'env:\n  GITHUB_TOKEN: ${{ github.token }}\nconcurrency:\n', /token is in the workflow env/],
+        ['token in the workflow env', 'concurrency:\n', 'env:\n  GITHUB_TOKEN: ${{ github.token }}\nconcurrency:\n', /sets a workflow-level `env`/],
         ['push writes the token into .git/config', '          auth="$(', '          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic x"\n          auth="$(', /writes a credential into the Git config/],
+        // Review 3d (GPT-6-Luna), O6-1: a permission scope the old list did not name, with the token handed on.
+        ['review 3d O6-1: discussions: write in build', '      contents: read\n      issues: read\n', '      contents: read\n      issues: read\n      discussions: write\n', /job build: holds the permission `discussions: write`/],
+        // Ours, O6-1: the shorthand.
+        ['a build permission value that is neither read nor none (an expression)', '      issues: read\n', "      issues: ${{ github.event_name == 'schedule' && 'read' || 'write' }}\n", /job build: holds the permission `issues: \$\{\{/],
+        ['build permissions: write-all', '    permissions:\n      contents: read\n      issues: read\n', '    permissions: write-all\n', /job build: holds the permission `write-all`/],
+        // Review 3d, O6-2: a loader variable on the sync step, which holds the write token.
+        ['review 3d O6-2: NODE_OPTIONS on the sync step', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', '          NODE_OPTIONS: --import=/tmp/canary.mjs\n        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', /Sync the dashboard.*sets env NODE_OPTIONS; publish steps may set only GITHUB_TOKEN/],
+        // Ours, O6-2: a node flag before the script, a variable set from run text, the path channel, a shell override.
+        ['node --require before an allowlisted script', '          node ops/briefs-guard.mjs\n', '          node --require ./hook.cjs ops/briefs-guard.mjs\n', /runs `node --require`, which is not in PUBLISH_SCRIPTS/],
+        ['review 3c (a): push copies the token into $GITHUB_ENV', '          auth="$(', '          echo "GH_TOKEN_ALIAS=$GITHUB_TOKEN" >> "$GITHUB_ENV"\n          auth="$(', /Push.*names a loader or environment channel \(GITHUB_ENV\)/],
+        ['a prepended PATH entry through $GITHUB_PATH', '          node ops/briefs-guard.mjs\n', '          echo "$RUNNER_TEMP/watch-output" >> "$GITHUB_PATH"\n          node ops/briefs-guard.mjs\n', /names a loader or environment channel \(GITHUB_PATH\)/],
+        ['NODE_OPTIONS as an inline assignment', '          node ops/briefs-guard.mjs\n', '          NODE_OPTIONS=--import=./x.mjs node ops/briefs-guard.mjs\n', /names a loader or environment channel \(NODE_OPTIONS\)/],
+        ['node called by path', '          node ops/briefs-guard.mjs\n', '          /usr/bin/node ops/briefs-guard.mjs\n', /runs an interpreter or script other than the listed node scripts/],
+        ['a shell override on the sync step', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', '        shell: node --import=./x.mjs {0}\n        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', /sets `shell`/],
+        ['an expression in publish run text', '          node ops/briefs-guard.mjs\n', '          node ops/briefs-guard.mjs ${{ steps.commit.outputs.committed }}\n', /puts a `\$\{\{ \}\}` expression into its run text/],
+        ['job-level defaults in publish', '    needs: build\n', '    needs: build\n    defaults:\n      run:\n        shell: bash\n', /sets job-level `defaults`/],
+        // Review 3d, O6-3: the publish actions on moving tags.
+        ['review 3d O6-3: publish checkout on a tag', publishCheckout, publishCheckout.replace('@11d5960a326750d5838078e36cf38b85af677262', '@v4'), /job publish step 1 .*uses actions\/checkout@v4, not pinned/],
+        ['review 3d O6-3: download-artifact on a tag', 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c', 'actions/download-artifact@v8', /uses actions\/download-artifact@v8, not pinned/],
+        // Ours, O6-3: a short SHA in build.
+        ['build setup-bun on a short SHA', 'oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6', 'oven-sh/setup-bun@0c5077e', /job build step \d+ .*uses oven-sh\/setup-bun@0c5077e, not pinned/],
       ];
       for (const [name, find, replace, want] of plants) {
         let p;
         try { p = probs(plantWorkflow(text, find, replace)); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
         c.expect(p.some((x) => want.test(x)), `${name}: not reported (got ${p.join(' | ') || 'nothing'})`);
       }
-      // Harmless by construction, so the structure check must still pass (review 3c, GPT-6-Luna):
-      // (a) the push step copies the write token into $GITHUB_ENV. The only publish step after it is the
-      //     sync, which already holds the token, and publish runs no dependency code at all.
-      // (b) the watch step passes its token to the build step through $GITHUB_OUTPUT. That token is the
-      //     build job's, which is read-only (contents: read, issues: read): it cannot push or edit an issue.
+      // Harmless by construction, so the structure check must still pass: the watch step passes its token
+      // to the build step through $GITHUB_OUTPUT (review 3c, GPT-6-Luna), or the build step names the token
+      // in bracket notation (review 3b). Either way it is the build job's token, which is read-only
+      // (contents: read, issues: read): it cannot push or edit an issue. The $GITHUB_ENV copy in the push
+      // step, inert under review 3c, is now reported above, because publish run text may name no
+      // environment channel at all.
       const inert = [
-        ['review 3c (a): push copies the token into $GITHUB_ENV', '          auth="$(', '          echo "GH_TOKEN_ALIAS=$GITHUB_TOKEN" >> "$GITHUB_ENV"\n          auth="$('],
         ['review 3c (b): watch hands its token to build via $GITHUB_OUTPUT', '        run: node watch/watch.mjs --apply\n', '        id: watch\n        run: |\n          node watch/watch.mjs --apply\n          echo "freshness-token=${{ github.token }}" >> "$GITHUB_OUTPUT"\n\n      - name: Read it back\n        env:\n          GH_TOKEN: ${{ steps.watch.outputs[\'freshness-token\'] }}\n        run: node site/scripts/make-live.mjs\n'],
         ['review 3b (1): bracket-notation token on the build step', '      - name: Build (cards, feed, report)\n', "      - name: Build (cards, feed, report)\n        env:\n          GH_TOKEN: ${{ secrets['GITHUB_TOKEN'] }}\n"],
+        ['build permissions: read-all', '    permissions:\n      contents: read\n      issues: read\n', '    permissions: read-all\n'],
       ];
       for (const [name, find, replace] of inert) {
         let p;
@@ -559,7 +581,7 @@ const rest = [
         c.expect(p.length === 0, `${name}: expected no finding, the job boundary makes it harmless (got ${p.join(' | ')})`);
       }
       const wf = parseYaml(text);
-      c.expect(wf.jobs.build.permissions.contents === 'read' && wf.jobs.build.permissions.issues === 'read' && Object.values(wf.jobs.build.permissions).every((v) => v !== 'write'),
+      c.expect(Object.values(wf.jobs.build.permissions).every((v) => v === 'read' || v === 'none'),
         'the inert plants rest on build being read-only, and it is not');
       return c.result();
     },
@@ -635,6 +657,29 @@ const rest = [
         c.expect(listArtifact(join(dir, 'art')).problems.some((x) => /holds no files/.test(x)), 'an empty artifact is accepted');
       });
       c.expect(PATHS.every((p) => !/\.mjs$|\.js$|\.sh$|\.ya?ml$/.test(p)), 'PATHS lists a code file');
+      // Destination side (review 3d O6-4, GPT-6-Luna, plus ours): a symlink or a non-file in the checkout
+      // must not redirect an allowed generated path; the refusal is atomic, so the clean file in the same
+      // artifact is not written either.
+      const dest = [
+        ['review 3d O6-4: REPORT.md in the checkout is a symlink to the briefs guard', (repo) => { put(repo, 'ops/briefs-guard.mjs', 'guard\n'); symlinkSync('../../ops/briefs-guard.mjs', join(repo, 'watch/freshness/REPORT.md')); }, 'watch/freshness/REPORT.md', /REPORT\.md: destination component watch\/freshness\/REPORT\.md is a symlink/],
+        ['a destination directory in the checkout is a symlink to ops/', (repo) => { put(repo, 'ops/briefs-guard.mjs', 'guard\n'); symlinkSync('../ops', join(repo, 'watch/census')); }, 'watch/census/briefs-guard.tsv', /destination component watch\/census is a symlink/],
+        ['the destination exists as a directory', (repo) => mkdirSync(join(repo, 'watch/live.json'), { recursive: true }), 'watch/live.json', /live\.json: destination exists and is not a regular file/],
+        ['a destination parent exists as a file', (repo) => put(repo, 'site/briefs', 'a file\n'), 'site/briefs/frankengit.html', /destination component site\/briefs is not a directory/],
+      ];
+      for (const [name, prepare, rel, want] of dest) {
+        withTmp((dir) => {
+          const art = join(dir, 'art'), repo = join(dir, 'repo');
+          put(art, 'watch/state.json', 'new\n');
+          put(art, rel, 'planted\n');
+          put(repo, 'watch/state.json', 'old\n');
+          mkdirSync(join(repo, 'watch/freshness'), { recursive: true });
+          prepare(repo);
+          const r = takeBuildOutput(art, repo);
+          c.expect(r.problems.some((x) => want.test(x)), `${name}: not refused (got ${r.problems.join(' | ') || 'nothing'})`);
+          c.expect(readFileSync(join(repo, 'watch/state.json'), 'utf8') === 'old\n', `${name}: the clean file was written despite the refusal`);
+          if (existsSync(join(repo, 'ops/briefs-guard.mjs'))) c.expect(readFileSync(join(repo, 'ops/briefs-guard.mjs'), 'utf8') === 'guard\n', `${name}: the briefs guard was overwritten`);
+        });
+      }
       return c.result();
     },
   },

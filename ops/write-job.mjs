@@ -10,21 +10,30 @@
 // repository. The job boundary is the control: whatever a dependency does with the build token, the token
 // cannot write. The check parses the workflow with the watch's own YAML reader and fails when
 //   - a job lacks `if: github.ref == 'refs/heads/main'`, or a checkout lacks `persist-credentials: false`;
-//   - the workflow-level permissions, or any job other than `publish`, grant a write scope; `build` does
-//     not name its own read-only permissions; or `build` references a secret other than GITHUB_TOKEN (a
-//     personal token would carry its own write scope past the job's permissions);
-//   - a token is in the workflow env, where every job would see it;
+//   - any `uses:` (step or job) is not `owner/repo[/path]@<full 40-hex commit SHA>`: a tag or branch can be
+//     moved to code the job then runs with its token;
+//   - the workflow-level permissions, or any job other than `publish`, hold a permission value other than
+//     `read` or `none` (or the shorthand `read-all`), whatever the scope name; `build` does not name its
+//     own permissions; or `build` references a secret other than GITHUB_TOKEN (a personal token would
+//     carry its own write scope past the job's permissions);
+//   - the workflow sets `env` or `defaults`, which reach the publish job;
 //   - `build` does not run the gate chain before it uploads, or its upload lists other paths than
 //     ops/take-build-output.mjs PATHS;
-//   - `publish` does not need `build`, uses an action other than checkout, setup-node and
-//     download-artifact, downloads the artifact inside the checkout, runs an install, build or gate
-//     command or any interpreter other than node, or runs a node script outside PUBLISH_SCRIPTS;
-//   - in `publish`, a step other than the push and the sync receives the token, or a run line writes a
-//     credential into the Git config;
+//   - `publish` does not need `build`; sets job `env`, `defaults`, `container` or `services`, or a step
+//     `shell`; uses an action other than checkout, setup-node and download-artifact; downloads the
+//     artifact inside the checkout; runs an install, build or gate command or any interpreter other than
+//     node; calls node other than as `node <allowlisted script> [args]` (no flags before the script, no
+//     node by path); names a loader variable (NODE_OPTIONS, NODE_PATH, LD_*, DYLD_*, BUN_*), `export`,
+//     `env`, $GITHUB_ENV or $GITHUB_PATH in run text; or puts a `${{ }}` expression in run text;
+//   - in `publish`, a step has any env variable other than GITHUB_TOKEN, or has GITHUB_TOKEN without being
+//     the push or the sync step; a step other than those two receives the token by any route; or a run
+//     line writes a credential into the Git config;
 //   - in `publish`, the steps are not in the order apply, briefs guard, push, sync, or a `git push`
 //     follows the sync (FR-D.5);
 //   - a script in PUBLISH_SCRIPTS, or any file it imports, imports anything but a Node built-in or a
 //     repository file, or imports through a non-literal import() or require().
+// These are a closed list of structural rules. The job boundary is the control; a new kind of workflow
+// change needs a new rule here (site/BUILD-GATES.md, gate W3, "Limits").
 // A token is any expression naming `github.token`, `github['token']`, `secrets.GITHUB_TOKEN` or
 // `secrets['GITHUB_TOKEN']` / `secrets["GITHUB_TOKEN"]`, in any letter case, inside or outside `${{ }}`.
 // Exit 0 with `WRITE_JOB_OK`; 1 with `WRITE_JOB_BAD` and one indented line per problem; 2 on a
@@ -52,11 +61,15 @@ const SECRET = /\bsecrets\s*(?:\.\s*([A-Za-z_][A-Za-z0-9_]*)|\[\s*['"]([^'"]+)['
 // Commands that install, build or gate.
 const UNTRUSTED = /\b(bun|npm|pnpm|yarn)\s+(install|ci|i|run|x|add|exec)\b|\bnpx\b|\bbunx\b|verify-site\.sh|make-live\.mjs|make-feed\.mjs|shell\.mjs|brief-strip\.mjs|make-stack\.mjs|harness\/run\.mjs|harness\/mutate\.mjs/;
 // Interpreters and script launches other than node.
-const OTHER_RUNNER = /(^|[\s;&|(])(bash|sh|zsh|dash|python3?|perl|ruby|deno|bun|php|source)\s|(^|[\s;&|(])\.\.?\/[\w./-]+/;
+const OTHER_RUNNER = /(^|[\s;&|(])(bash|sh|zsh|dash|python3?|perl|ruby|deno|bun|php|source|nodejs)\s|(^|[\s;&|(])\.\.?\/[\w./-]+|(^|[\s;&|(])\S*\/node(js)?(\s|$)/;
+// Ways a publish run line could change what node or git load, or pass state to a later step's environment.
+const LOADER = /\b(NODE_OPTIONS|NODE_PATH|NODE_REPL_EXTERNAL_MODULE|LD_[A-Z_]+|DYLD_[A-Z_]+|BUN_[A-Z_]+|GITHUB_ENV|GITHUB_PATH)\b|(^|[\s;&|(])(export|env)\s/;
+// A full commit pin: owner/repo[/path]@<40 hex>.
+const PINNED = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(\/[A-Za-z0-9_./-]+)?@[0-9a-f]{40}$/;
 const CONFIG_WRITE = /\bgit\s+config\b[^\n]*(extraheader|x-access-token|GITHUB_TOKEN)|\bgit\s+remote\s+(set-url|add)\b[^\n]*(x-access-token|GITHUB_TOKEN|@github\.com)/;
 const PUSH = /\bgit\b[^\n]*\bpush\b/;
 const GATES = /\bbun run verify\b|verify-site\.sh/;
-const WRITE_SCOPES = ['contents', 'issues', 'pull-requests', 'actions', 'packages', 'deployments', 'statuses', 'checks', 'id-token', 'pages', 'security-events', 'attestations'];
+const READ_VALUES = ['read', 'none'];
 
 // The run text of a step without comment lines, with `\`-continued lines joined, so a commented-out
 // command counts for nothing and a command split over lines is read as one.
@@ -82,10 +95,14 @@ export function secretNames(v) {
   return strings(v).flatMap((s) => [...s.matchAll(SECRET)].map((m) => (m[1] ?? m[2]).toUpperCase()));
 }
 
-export function grantsWrite(perms) {
-  if (perms === 'write-all') return true;
-  if (!perms || typeof perms !== 'object') return false;
-  return WRITE_SCOPES.some((k) => perms[k] === 'write');
+// The permission entries that are not read-only, as `scope: value`. `read-all` and `{}` are read-only;
+// `write-all`, any other shorthand, and any scope whose value is not `read` or `none` are not, whatever
+// the scope is called.
+export function notReadOnly(perms) {
+  if (perms == null) return [];
+  if (typeof perms === 'string') return perms === 'read-all' ? [] : [perms];
+  if (typeof perms !== 'object' || Array.isArray(perms)) return [JSON.stringify(perms)];
+  return Object.entries(perms).filter(([, v]) => !READ_VALUES.includes(String(v))).map(([k, v]) => `${k}: ${v}`);
 }
 
 // The node scripts a run text starts, as written (quotes removed).
@@ -93,14 +110,17 @@ export function nodeScripts(run) {
   return [...run.matchAll(/(?:^|[\s;&|(])node\s+(\S+)/g)].map((m) => m[1].replace(/^['"]|['"]$/g, ''));
 }
 
-// Problems that hold for every job: the main-only guard and checkouts without stored credentials.
+// Problems that hold for every job: the main-only guard, checkouts without stored credentials, and every
+// action pinned to a full commit SHA.
 function everyJobProblems(id, job, where) {
   const out = [];
   if (guardOf(job.if) !== MAIN_GUARD) out.push(`${where}: lacks \`if: ${MAIN_GUARD}\``);
+  if (job.uses !== undefined && !PINNED.test(String(job.uses))) out.push(`${where}: uses ${job.uses}, not pinned to a full 40-hex commit SHA`);
   (job.steps ?? []).forEach((step, i) => {
     if (String(step.uses ?? '').startsWith('actions/checkout@') && String(step.with?.['persist-credentials']) !== 'false') {
       out.push(`${where} ${stepName(step, i)}: checkout without \`persist-credentials: false\` leaves the token in .git/config`);
     }
+    if (step.uses !== undefined && !PINNED.test(String(step.uses))) out.push(`${where} ${stepName(step, i)}: uses ${step.uses}, not pinned to a full 40-hex commit SHA`);
   });
   return out;
 }
@@ -109,7 +129,7 @@ function everyJobProblems(id, job, where) {
 export function buildProblems(job, where) {
   const out = [];
   const steps = job.steps ?? [];
-  if (!job.permissions || typeof job.permissions !== 'object') out.push(`${where}: names no permissions of its own, so it inherits the workflow's`);
+  if (job.permissions == null) out.push(`${where}: names no permissions of its own, so it inherits the workflow's`);
   const others = [...new Set(secretNames([job.env, steps]).filter((n) => n !== 'GITHUB_TOKEN'))];
   if (others.length) out.push(`${where}: references ${others.map((n) => `secrets.${n}`).join(', ')}; only the read-only GITHUB_TOKEN may reach dependency code`);
   const gates = steps.findIndex((s) => GATES.test(runOf(s)));
@@ -124,23 +144,32 @@ export function buildProblems(job, where) {
   return out;
 }
 
-// The publish job: no install, build or gate; only listed actions and scripts; token on push and sync only.
+// The publish job: no install, build or gate; only listed actions and scripts, called plainly; no env but
+// the token, and the token on push and sync only.
 export function publishProblems(job, where) {
   const out = [];
   const steps = job.steps ?? [];
   const needs = [].concat(job.needs ?? []);
   if (!needs.includes('build')) out.push(`${where}: does not need the build job, so it could run before the gates`);
+  for (const k of ['env', 'defaults', 'container', 'services']) if (job[k] !== undefined) out.push(`${where}: sets job-level \`${k}\`, which reaches every step that holds the write token`);
   steps.forEach((step, i) => {
     const at = `${where} ${stepName(step, i)}`;
     const run = runOf(step);
     const uses = String(step.uses ?? '');
     if (uses && !PUBLISH_ACTIONS.some((p) => uses.startsWith(p))) out.push(`${at}: uses ${uses.split('@')[0]}; publish may use only ${PUBLISH_ACTIONS.map((p) => p.slice(0, -1)).join(', ')}`);
     if (uses.startsWith('actions/download-artifact@') && !/^\$\{\{\s*runner\.temp\s*\}\}\//.test(String(step.with?.path ?? ''))) out.push(`${at}: downloads the artifact inside the checkout, where it could replace a script publish runs; use \${{ runner.temp }}/…`);
+    if (step.shell !== undefined) out.push(`${at}: sets \`shell\`, which decides what runs the step`);
     if (UNTRUSTED.test(run)) out.push(`${at}: installs, builds or runs gates in the job that holds the write token`);
     if (OTHER_RUNNER.test(run)) out.push(`${at}: runs an interpreter or script other than the listed node scripts`);
     for (const s of nodeScripts(run)) if (!PUBLISH_SCRIPTS.includes(s)) out.push(`${at}: runs \`node ${s}\`, which is not in PUBLISH_SCRIPTS`);
-    const src = tokenSource(step);
+    if (LOADER.test(run)) out.push(`${at}: names a loader or environment channel (${run.match(LOADER)[0].trim()}) in its run text`);
+    if (/\$\{\{/.test(String(step.run ?? ''))) out.push(`${at}: puts a \`\${{ }}\` expression into its run text`);
     const role = run.includes(SYNC) ? 'sync' : PUSH.test(run) ? 'push' : null;
+    for (const k of Object.keys(step.env ?? {})) {
+      if (k !== 'GITHUB_TOKEN') out.push(`${at}: sets env ${k}; publish steps may set only GITHUB_TOKEN`);
+      else if (!role) out.push(`${at}: sets env GITHUB_TOKEN but is not the push or sync step`);
+    }
+    const src = tokenSource(step);
     if (src && !role) out.push(`${at}: receives the token (${src}) but is not the push or sync step`);
     if (CONFIG_WRITE.test(run)) out.push(`${at}: writes a credential into the Git config`);
   });
@@ -174,14 +203,15 @@ export function orderProblems(steps, where) {
 export function writeJobProblems(wf, name = WORKFLOW) {
   const out = [];
   if (!wf || typeof wf !== 'object' || !wf.jobs) return [`${name}: no jobs`];
-  if (grantsWrite(wf.permissions)) out.push(`${name}: the workflow-level permissions grant a write scope to every job that names none`);
-  if (tokenIn(wf.env)) out.push(`${name}: a token is in the workflow env, so every job sees it`);
+  for (const p of notReadOnly(wf.permissions)) out.push(`${name}: the workflow-level permission \`${p}\` reaches every job that names none`);
+  if (wf.env !== undefined) out.push(`${name}: sets a workflow-level \`env\`, which reaches the publish job`);
+  if (wf.defaults !== undefined) out.push(`${name}: sets workflow-level \`defaults\`, which reach the publish job`);
   const ids = Object.keys(wf.jobs);
   for (const need of ['build', 'publish']) if (!ids.includes(need)) out.push(`${name}: has no \`${need}\` job`);
   for (const [id, job] of Object.entries(wf.jobs)) {
     const where = `${name} job ${id}`;
     out.push(...everyJobProblems(id, job, where));
-    if (id !== 'publish' && grantsWrite(job.permissions ?? wf.permissions)) out.push(`${where}: grants a write scope; only the publish job may`);
+    if (id !== 'publish') for (const p of notReadOnly(job.permissions ?? wf.permissions)) out.push(`${where}: holds the permission \`${p}\`; only the publish job may hold anything but read or none`);
     if (id !== 'publish' && tokenIn(job.env)) out.push(`${where}: a token is in the job env`);
     if (id === 'build') out.push(...buildProblems(job, where));
     if (id === 'publish') {

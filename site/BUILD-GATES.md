@@ -416,16 +416,25 @@ command runs in its workflow, its gate exists in this script, and every script
 under `watch/freshness/` (and `site/scripts/make-live.mjs`) that writes files
 declares them. `node ops/write-job.mjs` parses `.github/workflows/watch.yml`
 and checks the two-job split (FR-O.6, FR-D.5): both jobs run only on
-`refs/heads/main` and neither checkout persists credentials; `build` is
-read-only, names no secret but `GITHUB_TOKEN`, runs the gate chain before it
-uploads, and uploads exactly the generated paths `ops/take-build-output.mjs`
-accepts; `publish` alone may write, needs `build`, uses only checkout,
-setup-node and download-artifact, downloads outside the checkout, installs,
-builds and gates nothing, runs only `ops/take-build-output.mjs`,
-`ops/briefs-guard.mjs` and `watch/freshness/dashboard.mjs`, gives the token
-to the push and the sync only, and applies, guards, pushes and syncs in that
-order with no push after the sync; and those three scripts, with everything
-they import, use only Node built-ins and repository files.
+`refs/heads/main`, neither checkout persists credentials, and every action is
+pinned to a full 40-hex commit SHA; the workflow sets no `env` or `defaults`;
+`build` holds no permission value but `read` or `none` (or `read-all`),
+whatever the scope, names no secret but `GITHUB_TOKEN`, runs the gate chain
+before it uploads, and uploads exactly the generated paths
+`ops/take-build-output.mjs` accepts; `publish` alone may write, needs `build`,
+sets no job `env`, `defaults`, `container`, `services` or step `shell`, uses
+only checkout, setup-node and download-artifact, downloads outside the
+checkout, installs, builds and gates nothing, calls node only as
+`node <script> [args]` for `ops/take-build-output.mjs`,
+`ops/briefs-guard.mjs` or `watch/freshness/dashboard.mjs`, names no loader
+variable (`NODE_OPTIONS`, `NODE_PATH`, `LD_*`, `DYLD_*`, `BUN_*`),
+`$GITHUB_ENV`, `$GITHUB_PATH` or `${{ }}` expression in run text, sets no env
+variable but `GITHUB_TOKEN` and that only on the push and the sync, and
+applies, guards, pushes and syncs in that order with no push after the sync;
+and those three scripts, with everything they import, use only Node built-ins
+and repository files. `ops/take-build-output.mjs` also refuses, before
+writing anything, a destination whose path in the checkout holds a symlink or
+which exists and is not a regular file.
 `node site/scripts/make-live.mjs --check` re-renders the
 live:card region on every brief from `watch/live.json`. No network and no
 token. **Fails** on a nonzero exit of any of the four, any failed case, an
@@ -434,6 +443,15 @@ uncovered MUST clause, a `CASES` count of zero or missing, a stale
 survives, a schedule problem, a write-job problem, and a missing `make-live.mjs`. The runbook,
 including how to add a clause, a discrepancy, a golden or a mutant, is
 `watch/freshness/README.md`.
+**Limits:** `ops/write-job.mjs` enforces a closed list of structural rules,
+each added after a review found a way around the one before (reviews 3 to
+3d). It proves the workflow has the shape FR-O.6 describes; it does not prove
+that no other way for a token to move exists. The control is the job
+boundary: the job that runs dependency code holds a read-only token, and the
+job that holds the write token runs only three dependency-free scripts. A new
+kind of workflow change, such as a new action, a new step in `publish` or a
+new way to pass data between jobs, needs a new rule and a planted case that
+shows the rule fails without it.
 **Why:** the freshness work replaces per-event issues with computed classes,
 a card on every brief, and one dashboard issue, all written by a scheduled
 job nobody reads first. The contract says what must hold; this gate proves
