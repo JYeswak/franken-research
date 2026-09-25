@@ -423,7 +423,7 @@
           "at_pin": "C5",
           "at_baseline": "C5",
           "now": "C5",
-          "now_commit": null,
+          "now_commit": "4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e",
           "tracked": true,
           "rule_at_pin": "FR-C.2/C5",
           "rule_now": "FR-C.2/C5",

@@ -165,24 +165,21 @@ function classCell(value, before) {
   return esc(value);
 }
 
-// FR-C.3: the CI class "now" describes dims.ci.now_commit, the newest default-branch commit whose push-triggered
-// test runs have all completed, which need not be HEAD; null means the class came from HEAD's workflow files, and
-// an absent field (a live.json from before the amendment) names no commit.
-// The cell names the commit and says whether it is HEAD.
+// FR-C.3: the CI class "now" was read at dims.ci.now_commit: the newest default-branch commit whose push-triggered
+// test runs have all settled, or HEAD itself when HEAD's workflow files decide the class (C4, C5, C6). It need not
+// be HEAD. It is null only when the class is unknown, and the unknown reason then says why; a live.json from before
+// the amendment has no such field, and the card names no commit.
 function ciNowCell(rec, x) {
   const cls = classCell(x.now, x.at_baseline);
-  if (x.now === 'unknown') return cls;
-  // No commit with settled push-triggered runs: the class was decided from HEAD's workflow files (C4, C5, C6).
-  if (x.now_commit === null) return SHA.test(String(rec.head?.sha ?? '')) ? `${cls} at ${commit(rec.repo, rec.head.sha)} (HEAD, from its workflow files)` : cls;
-  if (!SHA.test(String(x.now_commit))) return cls;
+  if (x.now === 'unknown' || !SHA.test(String(x.now_commit ?? ''))) return cls;
   return `${cls} at ${commit(rec.repo, x.now_commit)} (${x.now_commit === rec.head?.sha ? 'HEAD' : 'not HEAD'})`;
 }
 
-/** The note under the table when the CI class describes an earlier commit than HEAD; '' otherwise. */
+/** The note under the table when the CI class was read at an earlier commit than HEAD; '' otherwise. */
 function ciCommitNote(rec) {
   const x = rec.dims?.ci;
   if (!x || x.now === 'unknown' || !SHA.test(String(x.now_commit ?? '')) || x.now_commit === rec.head?.sha) return '';
-  return `<p style="${S.note};margin-bottom:6px">CI now describes ${commit(rec.repo, x.now_commit)}, the newest commit whose push-triggered test runs have all completed, not HEAD ${commit(rec.repo, rec.head?.sha)}.</p>`;
+  return `<p style="${S.note};margin-bottom:6px">CI now was read at ${commit(rec.repo, x.now_commit)}, an earlier commit than HEAD ${commit(rec.repo, rec.head?.sha)}, whose push-triggered test runs had not all settled.</p>`;
 }
 
 // Columns: the verdict's cell in force (`reference`: the master matrix, or the latest dated re-check's cells

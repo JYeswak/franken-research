@@ -105,35 +105,31 @@ const cardCases = [
   },
   {
     id: 'OUT-L3-ci-commit', clauses: ['FR-L.3'], level: 'MUST',
-    title: 'the CI class now names and links the commit it describes (dims.ci.now_commit), says whether that is HEAD and explains when it is not; a file-decided class (now_commit null) names HEAD; unknown names no commit',
+    title: 'the CI class now names and links the commit it was read at (dims.ci.now_commit), says whether that is HEAD, and explains an earlier commit; an unknown class names no commit',
     run(ctx) {
       const live = fixture(ctx, 'live-states.json');
       const checks = [];
       let notHead = 0;
-      let fromFiles = 0;
+      let unknownNull = 0;
       for (const rec of bySet(live)) {
         const html = renderCard(rec, live);
         const row = /<tr><th scope="row"[^>]*>CI[^<]*<\/th>([\s\S]*?)<\/tr>/.exec(html)?.[1] ?? '';
         const now = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].at(-2)?.[1] ?? '';
         const x = rec.dims.ci;
-        const note = /CI now describes/.test(textOf(html));
+        const note = /CI now was read at/.test(textOf(html));
         if (x.now === 'unknown') {
+          if (x.now_commit === null) unknownNull++;
           checks.push([!/ at </.test(now) && !note, `${rec.repo}: an unknown CI class names a commit`]);
-          continue;
-        }
-        if (x.now_commit === null) {
-          fromFiles++;
-          checks.push([now.includes(`/commit/${rec.head.sha}"><code>${rec.head.sha.slice(0, 7)}</code></a> (HEAD, from its workflow files)`) && !note, `${rec.repo}: a file-decided CI class does not name HEAD: ${JSON.stringify(textOf(now))}`]);
           continue;
         }
         const isHead = x.now_commit === rec.head.sha;
         if (!isHead) notHead++;
         checks.push([now.includes(`/commit/${x.now_commit}"><code>${x.now_commit.slice(0, 7)}</code></a> (${isHead ? 'HEAD' : 'not HEAD'})`), `${rec.repo}: Now cell ${JSON.stringify(textOf(now))} does not name ${x.now_commit.slice(0, 7)} as ${isHead ? 'HEAD' : 'not HEAD'}`]);
-        checks.push([note === !isHead, `${rec.repo}: the not-HEAD note is ${note ? 'present' : 'missing'}`]);
-        if (!isHead) checks.push([html.includes(`/commit/${rec.head.sha}"`) && textOf(html).includes(`not HEAD ${rec.head.sha.slice(0, 7)}`), `${rec.repo}: the note does not name HEAD`]);
+        checks.push([note === !isHead, `${rec.repo}: the earlier-commit note is ${note ? 'present' : 'missing'}`]);
+        if (!isHead) checks.push([html.includes(`/commit/${rec.head.sha}"`) && textOf(html).includes(`an earlier commit than HEAD ${rec.head.sha.slice(0, 7)}`), `${rec.repo}: the note does not name HEAD`]);
       }
-      checks.push([notHead >= 1, 'fixture has no CI class describing an earlier commit than HEAD']);
-      checks.push([fromFiles >= 1, 'fixture has no CI class decided from workflow files (now_commit null)']);
+      checks.push([notHead >= 1, 'fixture has no CI class read at an earlier commit than HEAD']);
+      checks.push([unknownNull >= 1, 'fixture has no unknown CI class with now_commit null']);
       return verdict(checks);
     },
   },
