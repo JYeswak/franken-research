@@ -19,6 +19,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as watch from '../watch.mjs';
+import { UNKNOWN_WORDS } from './card.mjs';
 
 const { mdText } = watch;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -80,8 +81,14 @@ function dueSection(live) {
   return section('Due for re-check', rows.length ? table(['Repo', 'Reason', 'Baseline'], rows) : ['Nothing is due.']);
 }
 
+/** The classifier's reason in plain words when it names a known FR-C.3 rule, followed by the reason as recorded. */
+function whyText(why) {
+  const rule = /FR-C\.3\/[a-z-]+/.exec(String(why ?? ''))?.[0];
+  return rule && Object.hasOwn(UNKNOWN_WORDS, rule) ? `${UNKNOWN_WORDS[rule]} (${mdText(why)})` : mdText(why);
+}
+
 function unknownSection(live) {
-  const rows = (live.unknowns ?? []).map((u) => [repoLink(u.repo), word(DIM_WORD, u.dim), mdText(u.why)]);
+  const rows = (live.unknowns ?? []).map((u) => [repoLink(u.repo), word(DIM_WORD, u.dim), whyText(u.why)]);
   return section('Unknown', rows.length ? table(['Repo', 'Dimension', 'Why'], rows) : ['The watch read every repository and dimension.']);
 }
 

@@ -104,6 +104,60 @@ const cardCases = [
     },
   },
   {
+    id: 'OUT-L3-ci-commit', clauses: ['FR-L.3'], level: 'MUST',
+    title: 'the CI class now names and links the commit it describes (dims.ci.now_commit), says whether that is HEAD and explains when it is not; a file-decided class (now_commit null) names HEAD; unknown names no commit',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const checks = [];
+      let notHead = 0;
+      let fromFiles = 0;
+      for (const rec of bySet(live)) {
+        const html = renderCard(rec, live);
+        const row = /<tr><th scope="row"[^>]*>CI[^<]*<\/th>([\s\S]*?)<\/tr>/.exec(html)?.[1] ?? '';
+        const now = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].at(-2)?.[1] ?? '';
+        const x = rec.dims.ci;
+        const note = /CI now describes/.test(textOf(html));
+        if (x.now === 'unknown') {
+          checks.push([!/ at </.test(now) && !note, `${rec.repo}: an unknown CI class names a commit`]);
+          continue;
+        }
+        if (x.now_commit === null) {
+          fromFiles++;
+          checks.push([now.includes(`/commit/${rec.head.sha}"><code>${rec.head.sha.slice(0, 7)}</code></a> (HEAD, from its workflow files)`) && !note, `${rec.repo}: a file-decided CI class does not name HEAD: ${JSON.stringify(textOf(now))}`]);
+          continue;
+        }
+        const isHead = x.now_commit === rec.head.sha;
+        if (!isHead) notHead++;
+        checks.push([now.includes(`/commit/${x.now_commit}"><code>${x.now_commit.slice(0, 7)}</code></a> (${isHead ? 'HEAD' : 'not HEAD'})`), `${rec.repo}: Now cell ${JSON.stringify(textOf(now))} does not name ${x.now_commit.slice(0, 7)} as ${isHead ? 'HEAD' : 'not HEAD'}`]);
+        checks.push([note === !isHead, `${rec.repo}: the not-HEAD note is ${note ? 'present' : 'missing'}`]);
+        if (!isHead) checks.push([html.includes(`/commit/${rec.head.sha}"`) && textOf(html).includes(`not HEAD ${rec.head.sha.slice(0, 7)}`), `${rec.repo}: the note does not name HEAD`]);
+      }
+      checks.push([notHead >= 1, 'fixture has no CI class describing an earlier commit than HEAD']);
+      checks.push([fromFiles >= 1, 'fixture has no CI class decided from workflow files (now_commit null)']);
+      return verdict(checks);
+    },
+  },
+  {
+    id: 'OUT-L3-state-matches-table', clauses: ['FR-L.3', 'FR-L.4'], level: 'MUST',
+    title: 'a current card with a class that moved but no open crossing does not say nothing moved; an unknown card says which class and why in words',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const term = clone(live.repos.find((r) => r.repo === 'frankenterm'));
+      term.dims.ci.now = 'C5';
+      term.pending = [{ id: 'frankenterm:ci:C6>C5', dim: 'ci', from: 'C6', to: 'C5', since: '2026-09-24', source: 'class', evidence: [], resolved_by: null }];
+      const moved = textOf(renderCard(term, live));
+      const still = textOf(renderCard(live.repos.find((r) => r.repo === 'frankenterm'), live));
+      const tts = textOf(renderCard(live.repos.find((r) => r.repo === 'franken_tts'), live));
+      const dash = renderDashboard(live, { snapshots: NO_SNAPSHOTS });
+      return verdict([
+        [!/no computed class has moved/.test(moved) && /no crossing is open: the move listed below was seen once/.test(moved), `moved current card says: ${moved.slice(0, 140)}`],
+        [/no computed class has moved since the pin/.test(still), 'an unmoved current card lost its sentence'],
+        [/could not read the CI class now: test runs are still in progress \(FR-C\.3\)/.test(tts), `unknown card says: ${tts.slice(0, 160)}`],
+        [dash.includes('| CI | a test run on HEAD is still in progress |'), 'dashboard unknown row lost its reason'],
+      ]);
+    },
+  },
+  {
     id: 'OUT-L3-no-js', clauses: ['FR-L.3'], level: 'MUST',
     title: 'the card is static HTML: no script, no event handler attribute, no noscript fallback needed',
     run(ctx) {
@@ -224,33 +278,50 @@ const l4Cases = [
 ];
 
 // ---------- FR-L.5: the region equals a fresh render; check mode; nothing outside touched ----------
+/** A brief as it was before any card: the region and the blank line after it removed. */
+function withoutRegion(html) {
+  const i = html.indexOf(OPEN);
+  if (i < 0) return html;
+  const j = html.indexOf(CLOSE) + CLOSE.length;
+  return html.slice(0, i) + html.slice(html.startsWith('\n\n', j) ? j + 2 : j);
+}
 function scratchSite(ctx, dir, live) {
   const site = join(dir, 'site');
   mkdirSync(join(site, 'briefs'), { recursive: true });
-  for (const r of bySet(live)) copyFileSync(join(ctx.root, r.brief), join(site, r.brief.replace(/^site\//, '')));
+  const bare = {};
+  for (const r of bySet(live)) {
+    bare[r.brief] = withoutRegion(readFileSync(join(ctx.root, r.brief), 'utf8'));
+    writeFileSync(join(site, r.brief.replace(/^site\//, '')), bare[r.brief]);
+  }
   const file = join(dir, 'live.json');
   writeFileSync(file, JSON.stringify(live));
-  return { site, file };
+  return { site, file, bare };
 }
 const l5Cases = [
   {
     id: 'OUT-L5-write-is-local', clauses: ['FR-L.5', 'FR-L.3'], level: 'MUST',
-    title: 'writing the card changes nothing outside the markers, places it before <main>, and a rewrite is a no-op',
+    title: 'the first write places the card just before <main> and changes nothing else; a rewrite is a no-op; re-rendering a stale region changes only the region',
     run: (ctx) => withScratch((dir) => {
       const live = fixture(ctx, 'live-states.json');
-      const { site } = scratchSite(ctx, dir, live);
-      const before = Object.fromEntries(bySet(live).map((r) => [r.brief, readFileSync(join(ctx.root, r.brief), 'utf8')]));
+      const { site, bare } = scratchSite(ctx, dir, live);
       const first = writeBriefs(site, live);
       const second = writeBriefs(site, live);
       const checks = [[first.length === bySet(live).length, `first run rewrote ${first.length} briefs`], [second.length === 0, `second run rewrote ${second.length} briefs`]];
       for (const r of bySet(live)) {
         const after = readFileSync(join(site, r.brief.replace(/^site\//, '')), 'utf8');
         const reg = regionOf(r.brief, after);
-        const outside = after.slice(0, reg.start) + after.slice(reg.end + 2);
-        checks.push([outside === before[r.brief], `${r.brief}: bytes outside the region changed`]);
+        checks.push([withoutRegion(after) === bare[r.brief], `${r.brief}: bytes outside the region changed`]);
         checks.push([after.slice(reg.end, reg.end + 2 + '<main id="main-content">'.length) === '\n\n<main id="main-content">', `${r.brief}: region not placed just before <main>`]);
         checks.push([after.indexOf('<div class="vocab"') < reg.start, `${r.brief}: region precedes the vocabulary block`]);
       }
+      const next = clone(live); next.checked_at = '2026-09-25T06:12:45Z';
+      const outside = (html) => { const g = regionOf('x', html); return [html.slice(0, g.start), html.slice(g.end)]; };
+      const rel = bySet(live)[0].brief.replace(/^site\//, '');
+      const stale = readFileSync(join(site, rel), 'utf8');
+      const third = writeBriefs(site, next);
+      const fresh = readFileSync(join(site, rel), 'utf8');
+      checks.push([third.length === bySet(live).length, `a newer live.json rewrote ${third.length} briefs`]);
+      checks.push([JSON.stringify(outside(fresh)) === JSON.stringify(outside(stale)) && fresh !== stale, `${rel}: re-rendering a stale region changed bytes outside it`]);
       return verdict(checks);
     }),
   },
@@ -634,7 +705,7 @@ function goldens(ctx, pairs) {
 const goldenCases = [
   {
     id: 'OUT-H3-cards', clauses: ['FR-H.3', 'FR-L.3'], level: 'MUST',
-    title: 'golden cards for four repositories in four states (changed, current with a resolved crossing, due, unknown) and one with hostile upstream strings',
+    title: 'golden cards for four repositories in four states (changed, current with a resolved crossing, due, unknown), one with hostile upstream strings, and one whose CI class describes a commit before HEAD',
     run(ctx) {
       const live = fixture(ctx, 'live-states.json');
       const card = (repo) => renderCard(live.repos.find((r) => r.repo === repo), live) + '\n';
@@ -644,6 +715,7 @@ const goldenCases = [
         ['outputs/card-frankensearch-due.html', card('frankensearch')],
         ['outputs/card-franken_tts-unknown.html', card('franken_tts')],
         ['outputs/card-frankenterm-escaping.html', card('frankenterm')],
+        ['outputs/card-franken_engine-untracked-ci-not-head.html', card('franken_engine')],
       ]);
     },
   },
@@ -654,6 +726,20 @@ const goldenCases = [
       return goldens(ctx, [
         ['outputs/dashboard-states.md', renderDashboard(fixture(ctx, 'live-states.json'), { snapshots: { status: 'ok', rows: [{ artifact: 'search/index.json', built: '2026-08-01' }] } })],
         ['outputs/dashboard-quiet.md', renderDashboard(fixture(ctx, 'live-quiet.json'), { snapshots: NO_SNAPSHOTS })],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-H3-core', clauses: ['FR-H.3', 'FR-L.3', 'FR-D.3'], level: 'MUST',
+    title: 'golden dashboard and cards rendered from FreshCore\'s live.json golden (its reference fixture, checked_at 2026-09-25T01:42:40Z)',
+    run(ctx) {
+      const live = JSON.parse(readFileSync(join(ctx.root, 'watch/freshness/goldens/core/live.json'), 'utf8'));
+      const card = (repo) => renderCard(live.repos.find((r) => r.repo === repo), live) + '\n';
+      return goldens(ctx, [
+        ['outputs/core-dashboard.md', renderDashboard(live, { snapshots: NO_SNAPSHOTS })],
+        ['outputs/core-card-frankengit-rechecked.html', card('frankengit')],
+        ['outputs/core-card-franken_node-pending.html', card('franken_node')],
+        ['outputs/core-card-asupersync-unknown.html', card('asupersync')],
       ]);
     },
   },

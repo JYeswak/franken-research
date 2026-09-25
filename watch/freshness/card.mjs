@@ -69,15 +69,45 @@ export const STATE = {
   unknown: { word: 'Unknown', colour: 'var(--muted)' },
 };
 
+// Plain words for the classifier's `unknown` rules (FR-C.3); an unlisted rule is shown as it is.
+export const UNKNOWN_WORDS = {
+  'FR-C.3/in-progress': 'test runs are still in progress',
+  'FR-C.3/young-head': 'HEAD is under 6 hours old and has no completed test run',
+  'FR-C.3/no-settled-commit': 'no recent commit has finished its push-triggered test runs',
+  'FR-C.3/api-gap': 'the GitHub API did not return the runs or workflow files needed',
+};
+/** "test runs are still in progress (FR-C.3)" for a rule id, or the escaped rule itself. */
+export const unknownWhy = (rule) => (Object.hasOwn(UNKNOWN_WORDS, rule) ? `${UNKNOWN_WORDS[rule]} (${rule.split('/')[0]})` : esc(rule ?? 'no reason recorded'));
+
+const movedDims = (rec) => DIMS.filter((d) => {
+  const x = rec.dims[d];
+  return x.now !== 'unknown' && x.at_baseline !== 'unknown' && x.now !== x.at_baseline;
+});
+
+/** Which class the watch could not read and why, from the per-point rules; '' when no class is unknown. */
+function unknownParts(rec) {
+  const parts = [];
+  for (const d of DIMS) {
+    const x = rec.dims[d];
+    if (x.at_pin === 'unknown') parts.push(`the ${DIM_WORD[d]} class at the pin: ${unknownWhy(x.rule_at_pin)}`);
+    if (rec.baseline?.source !== 'packet' && x.at_baseline === 'unknown') parts.push(`the ${DIM_WORD[d]} class at the re-check`);
+    if (x.now === 'unknown') parts.push(`the ${DIM_WORD[d]} class now: ${unknownWhy(x.rule_now)}`);
+  }
+  return parts.join('; ');
+}
+
 /** What follows the badge: what this state means for the verdict. "State: <badge> ..." reads as one sentence. */
 export function stateSentence(rec) {
   if (rec.state === 'changed') return `, meaning ${CHANGED_TEXT}.`;
-  if (rec.state === 'current') return ', meaning no computed class has moved since the pin.';
+  if (rec.state === 'current') {
+    const since = rec.baseline?.source === 'packet' ? 'pin' : 'dated re-check';
+    if (!movedDims(rec).length) return `, meaning no computed class has moved since the ${since}.`;
+    return `, meaning no crossing is open${rec.pending?.length ? ': the move listed below was seen once and opens only if the next daily check sees it too' : ''}.`;
+  }
   if (rec.state === 'due') return `: ${esc(rec.due?.reason ?? 'no reason recorded')}. The verdict stands until a dated re-check is filed.`;
   if (rec.state === 'unknown') {
-    const dims = DIMS.filter((d) => [rec.dims[d].at_pin, rec.dims[d].at_baseline, rec.dims[d].now].includes('unknown')).map((d) => DIM_WORD[d]);
-    const what = dims.length ? `the ${dims.join(', ')} class` : 'part of this repository';
-    return `, meaning the watch could not read ${what} (${esc(rec.state_reason ?? 'no reason recorded')}). That is not evidence of a change.`;
+    const what = unknownParts(rec) || `part of this repository (${esc(rec.state_reason ?? 'no reason recorded')})`;
+    return `, meaning the watch could not read ${what}. That is not evidence of a change.`;
   }
   throw new LiveError(`${rec.repo}: state ${JSON.stringify(rec.state)} is not current, changed, due or unknown`);
 }
@@ -135,6 +165,26 @@ function classCell(value, before) {
   return esc(value);
 }
 
+// FR-C.3: the CI class "now" describes dims.ci.now_commit, the newest default-branch commit whose push-triggered
+// test runs have all completed, which need not be HEAD; null means the class came from HEAD's workflow files, and
+// an absent field (a live.json from before the amendment) names no commit.
+// The cell names the commit and says whether it is HEAD.
+function ciNowCell(rec, x) {
+  const cls = classCell(x.now, x.at_baseline);
+  if (x.now === 'unknown') return cls;
+  // No commit with settled push-triggered runs: the class was decided from HEAD's workflow files (C4, C5, C6).
+  if (x.now_commit === null) return SHA.test(String(rec.head?.sha ?? '')) ? `${cls} at ${commit(rec.repo, rec.head.sha)} (HEAD, from its workflow files)` : cls;
+  if (!SHA.test(String(x.now_commit))) return cls;
+  return `${cls} at ${commit(rec.repo, x.now_commit)} (${x.now_commit === rec.head?.sha ? 'HEAD' : 'not HEAD'})`;
+}
+
+/** The note under the table when the CI class describes an earlier commit than HEAD; '' otherwise. */
+function ciCommitNote(rec) {
+  const x = rec.dims?.ci;
+  if (!x || x.now === 'unknown' || !SHA.test(String(x.now_commit ?? '')) || x.now_commit === rec.head?.sha) return '';
+  return `<p style="${S.note};margin-bottom:6px">CI now describes ${commit(rec.repo, x.now_commit)}, the newest commit whose push-triggered test runs have all completed, not HEAD ${commit(rec.repo, rec.head?.sha)}.</p>`;
+}
+
 // Columns: the verdict's cell in force (`reference`: the master matrix, or the latest dated re-check's cells
 // table), the class computed at the packet pin, at the re-check pin when there is one, and now. "Now" is
 // compared with the baseline (FR-T.1, FR-T.8), so "moved from" names the baseline class.
@@ -144,7 +194,8 @@ function classTable(rec) {
     const x = rec.dims?.[d];
     if (!x) throw new LiveError(`${rec.repo}: dims.${d} missing`);
     const name = `${DIM_WORD[d]}${x.tracked ? '' : ' (not tracked*)'}`;
-    const cells = [esc(x.reference), classCell(x.at_pin), ...(rechecked ? [classCell(x.at_baseline)] : []), classCell(x.now, x.at_baseline), evidence(x.evidence, DIM_WORD[d])];
+    const now = d === 'ci' ? ciNowCell(rec, x) : classCell(x.now, x.at_baseline);
+    const cells = [esc(x.reference), classCell(x.at_pin), ...(rechecked ? [classCell(x.at_baseline)] : []), now, evidence(x.evidence, DIM_WORD[d])];
     return `<tr><th scope="row" style="${S.td};text-align:left;font-weight:600">${name}</th>${cells.map((c) => `<td style="${S.td}">${c}</td>`).join('')}</tr>`;
   });
   const head = ['Class', 'Verdict', 'At pin', ...(rechecked ? ['At re-check'] : []), 'Now', 'Evidence'].map((h) => `<th scope="col" style="${S.th}">${h}</th>`).join('');
@@ -194,6 +245,7 @@ export function renderCard(rec, live) {
     fact('Repository', status(rec.existence)),
     '</dl>',
     classTable(rec),
+    ciCommitNote(rec),
     crossings(rec),
     untracked ? `<p style="${S.note};margin-bottom:6px">*Not tracked: the class computed at the baseline differs from the verdict's cell (${link(blob('watch/freshness/DISCREPANCIES.md'), 'recorded discrepancy')}), so a move in it is flagged by the watch's event rules instead.</p>` : '',
     `<p style="${S.note}">Computed facts only, from the GitHub API. Only a dated re-check changes a verdict. Data: ${link(blob('watch/live.json'), 'watch/live.json')}; rules: ${link(blob('watch/freshness/SPEC.md'), 'freshness contract')}.</p>`,
