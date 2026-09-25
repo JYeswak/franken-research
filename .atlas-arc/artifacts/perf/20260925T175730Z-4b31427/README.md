@@ -56,6 +56,7 @@ The metric caveat of ebac079 still applies. The primary metric stops at forced l
   - The query sets are the 1,165 probe queries, the 88 queries of the golden set as committed in ebac079, and all 4,206 keystroke prefixes of those 88.
   - The ebac079 file was pinned with `GOLDEN`, sha256 `4c3c6b21...2f0f22`. The working copy of `.atlas-arc/eval/golden.jsonl` had 30 uncommitted new queries from another session by then.
   - Every check is 0 changed, and the verdict is PASS. The sha256 of the top-10 ids for the 88 golden queries is the same for both engines: `6de1ac63...290d9`.
+- `golden-diff-c982b09-118.json` runs the same test on the golden set as grown in c982b09, in its privacy-corrected form (fixup 99a412e): 118 queries (G-001..G-088 unchanged, plus G-089..G-118), sha256 `131769ee...94a5b2ea`, and their 6,755 prefixes, on both shards. Result: 0 changed rows, PASS. Measured on 2026-09-25 with the code at 0a50cde. The file holds counts and hashes only, no query text.
 - The check fails on planted faults (`golden-diff-plants.txt`): a reversed tie order changed 2,358 query results, and a mathematically equal reassociation of the length norm changed 7,786.
 - `verify-golden-opt-vs-ebac079.json` runs the probe's own `verify-golden` against ebac079's golden top 10, with the optimised engine: PASS, 0 top-3 and 0 top-4..10 changes.
 - L3a renders the same text as `renderList`. This was checked in headless Chrome on 6 queries, including one with no results. It is not checked in the timing harness.

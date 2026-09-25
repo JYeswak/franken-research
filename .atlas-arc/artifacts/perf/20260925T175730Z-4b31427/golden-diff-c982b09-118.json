@@ -1,0 +1,120 @@
+{
+ "note": "engine-a-opt.mjs vs engine-a.mjs, top-10 rows (id, score bit-identical, title, kind, badge)",
+ "golden_file_sha256": "131769eee7dfec66512bff618a9e6d98b42641dca6141432ea794f0194a5b2ea",
+ "golden_queries": 118,
+ "results": [
+  {
+   "index": "a-core.json",
+   "set": "probe_queries",
+   "variant": "A+L1",
+   "queries": 1165,
+   "rows_compared": 10899,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-core.json",
+   "set": "probe_queries",
+   "variant": "A+L1+L2",
+   "queries": 1165,
+   "rows_compared": 10899,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-core.json",
+   "set": "relevance_golden_queries",
+   "variant": "A+L1",
+   "queries": 118,
+   "rows_compared": 1171,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-core.json",
+   "set": "relevance_golden_queries",
+   "variant": "A+L1+L2",
+   "queries": 118,
+   "rows_compared": 1171,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-core.json",
+   "set": "relevance_golden_prefixes",
+   "variant": "A+L1",
+   "queries": 6755,
+   "rows_compared": 66184,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-core.json",
+   "set": "relevance_golden_prefixes",
+   "variant": "A+L1+L2",
+   "queries": 6755,
+   "rows_compared": 66184,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-full.json",
+   "set": "probe_queries",
+   "variant": "A+L1",
+   "queries": 1165,
+   "rows_compared": 11426,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-full.json",
+   "set": "probe_queries",
+   "variant": "A+L1+L2",
+   "queries": 1165,
+   "rows_compared": 11426,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-full.json",
+   "set": "relevance_golden_queries",
+   "variant": "A+L1",
+   "queries": 118,
+   "rows_compared": 1174,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-full.json",
+   "set": "relevance_golden_queries",
+   "variant": "A+L1+L2",
+   "queries": 118,
+   "rows_compared": 1174,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-full.json",
+   "set": "relevance_golden_prefixes",
+   "variant": "A+L1",
+   "queries": 6755,
+   "rows_compared": 67053,
+   "queries_changed": 0,
+   "examples": []
+  },
+  {
+   "index": "a-full.json",
+   "set": "relevance_golden_prefixes",
+   "variant": "A+L1+L2",
+   "queries": 6755,
+   "rows_compared": 67053,
+   "queries_changed": 0,
+   "examples": []
+  }
+ ],
+ "verdict": "PASS",
+ "sha256_top10_ids_relevance_golden_full": {
+  "incumbent": "8c7ac33053f1fd9061d3f931b1d30d1193bfc02712dc5babc54d691b930de574",
+  "A+L1+L2": "8c7ac33053f1fd9061d3f931b1d30d1193bfc02712dc5babc54d691b930de574"
+ }
+}
