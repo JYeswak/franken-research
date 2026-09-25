@@ -14,7 +14,7 @@ import { spawnSync } from 'node:child_process';
 import { memoryIssues } from '../../watch.mjs';
 import { renderCard, applyCard, checkBriefs, regionOf, hrefOf, OPEN, CLOSE } from '../card.mjs';
 import { writeBriefs } from '../../../site/scripts/make-live.mjs';
-import { renderDashboard, dashboardText, syncDashboard, readSnapshots, DashboardError, duplicateComment, assertCommitted, main as dashMain, TITLE, MARKER, LIMIT } from '../dashboard.mjs';
+import { renderDashboard, dashboardText, syncDashboard, readSnapshots, DashboardError, duplicateComment, assertCommitted, headState, main as dashMain, TITLE, MARKER, LIMIT } from '../dashboard.mjs';
 import { readLedger, digestEntries, isoWeek } from '../digest.mjs';
 
 // ---------- helpers ----------
@@ -49,9 +49,19 @@ function specChangedText(ctx) {
 const STATE_WORDS = { current: 'Current', changed: 'Changed', due: 'Due for re-check', unknown: 'Unknown' };
 
 // An in-memory issues API (watch.mjs memoryIssues) that records every call.
-function recordingIssues(login = 'github-actions[bot]', { honourFilters = true } = {}) {
+// Built by repetition: a literal 40-hex string beside the word Sourcegraph is a gitleaks finding.
+const TIP = 'abcdef'.repeat(6) + 'abcd';
+// `repo` answers GET /repos/<repo> and /repos/<repo>/commits/<branch> (FR-D.5): { default_branch, tip }, or 'fail'.
+function recordingIssues(login = 'github-actions[bot]', { honourFilters = true, repo = { default_branch: 'main', tip: TIP } } = {}) {
   const mem = memoryIssues(login);
   const calls = [];
+  const repoRead = (path) => {
+    const m = /^\/repos\/JYeswak\/franken-research(?:\/commits\/([^/?]+))?$/.exec(path);
+    if (!m) return null;
+    if (repo === 'fail') throw new Error('GET ' + path + ': HTTP 502');
+    if (!m[1]) return { status: 200, body: { full_name: 'JYeswak/franken-research', default_branch: repo.default_branch } };
+    return decodeURIComponent(m[1]) === repo.default_branch ? { status: 200, body: { sha: repo.tip } } : { status: 200, body: { sha: '0'.repeat(40) } };
+  };
   // GET /issues honours GitHub's labels, creator and state filters, as the real API does (FR-D.6 listing).
   const filtered = (path, res) => {
     if (!honourFilters || !/\/issues\?/.test(path)) return res;
@@ -62,7 +72,7 @@ function recordingIssues(login = 'github-actions[bot]', { honourFilters = true }
       && (!q.get('state') || q.get('state') === 'all' || i.state === q.get('state'));
     return { ...res, body: res.body.filter(keep) };
   };
-  const api = { stats: {}, rest: async (method, path, payload) => { calls.push({ method, path: path.replace(/\?.*$/, ''), query: path.includes('?') ? path.slice(path.indexOf('?') + 1) : '', payload }); const res = await mem.api.rest(method, path, payload); return method === 'GET' ? filtered(path, res) : res; } };
+  const api = { stats: {}, rest: async (method, path, payload) => { calls.push({ method, path: path.replace(/\?.*$/, ''), query: path.includes('?') ? path.slice(path.indexOf('?') + 1) : '', payload }); if (method === 'GET') { const r = repoRead(path); if (r) return r; } const res = await mem.api.rest(method, path, payload); return method === 'GET' ? filtered(path, res) : res; } };
   const writes = () => calls.filter((c) => c.method !== 'GET');
   return { mem, api, calls, writes };
 }
@@ -438,6 +448,30 @@ function sections(body) {
 const tableRows = (text) => text.split('\n').filter((l) => l.startsWith('| ') && !l.startsWith('| Repo |') && !l.startsWith('| Snapshot |'));
 const D3_ORDER = ['Changed', 'Due for re-check', 'Unknown', 'New repositories flagged as candidates', 'Revisit triggers a machine cannot observe', 'Informational'];
 
+/** Runs dashboard.mjs main with a recording API; `local` is the checkout, `repo` what GitHub says (FR-D.5). */
+async function runDashCli(argv, { committed = () => {}, api, local = () => ({ head: TIP, branch: 'main' }), repo } = {}) {
+  const t = api ?? recordingIssues(BOT, repo === undefined ? {} : { repo });
+  const lines = [];
+  let asked = 0;
+  const code = await dashMain(argv, { committed, local, client: async () => { asked++; return { api: t.api, bot: BOT }; }, out: (l) => lines.push(l) });
+  const calls = t.calls ?? [];
+  return { code, lines, asked, writes: t.writes ? t.writes() : [], paths: calls.map((c) => c.path), listed: calls.filter((c) => c.method === 'GET' && c.path.endsWith('/issues')).length };
+}
+/** A scratch git repository whose commits are made with plumbing (write-tree, commit-tree, update-ref), so no hook runs. */
+function scratchRepo(repo) {
+  mkdirSync(repo, { recursive: true });
+  const git = (...a) => spawnSync('git', a, { cwd: repo, encoding: 'utf8' });
+  git('init', '-q');
+  const commit = (branch) => {
+    git('add', '-A');
+    const tree = git('write-tree').stdout.trim();
+    const sha = git('-c', 'user.name=t', '-c', 'user.email=noreply@example.com', 'commit-tree', tree, '-m', 'fixture').stdout.trim();
+    git('update-ref', `refs/heads/${branch}`, sha);
+    git('symbolic-ref', 'HEAD', `refs/heads/${branch}`);
+    return sha;
+  };
+  return { repo, git, commit };
+}
 const dashCases = [
   {
     id: 'OUT-D1-lifecycle', clauses: ['FR-D.1'], level: 'MUST',
@@ -690,24 +724,17 @@ const dashCases = [
       const live = fixture(ctx, 'live-states.json');
       const file = join(dir, 'live.json');
       writeFileSync(file, JSON.stringify(live));
-      const run = async (argv, { committed = () => {}, api } = {}) => {
-        const t = api ?? recordingIssues();
-        const lines = [];
-        let asked = 0;
-        const code = await dashMain(argv, { committed, client: async () => { asked++; return { api: t.api, bot: BOT }; }, out: (l) => lines.push(l) });
-        return { code, lines, asked, writes: t.writes ? t.writes() : [] };
-      };
+      const run = (argv, opts) => runDashCli(argv, opts);
       const dry = await run(['--sync', file, '--dry-run']);
       const real = await run(['--sync', file]);
-      const full = { api: { stats: {}, rest: async (m, p) => ({ status: 200, body: /\/issues\?/.test(p) ? Array.from({ length: 100 }, (_, k) => ({ number: k, title: 'x', labels: [], user: { login: BOT } })) : [] }) }, writes: () => [] };
-      const bounded = await run(['--sync', file], { api: full });
+      const full = { stats: {}, rest: async (m, p) => ({ status: 200, body: p === '/repos/JYeswak/franken-research' ? { default_branch: 'main' } : /\/commits\//.test(p) ? { sha: TIP } : /\/issues\?/.test(p) ? Array.from({ length: 100 }, (_, k) => ({ number: k, title: 'x', labels: [], user: { login: BOT } })) : [] }) };
+      const bounded = await run(['--sync', file], { api: { api: full, writes: () => [] } });
       const dirty = await run(['--sync', file], { committed: () => { throw new Error('live.json differs from HEAD'); } });
       const usage = await run(['--dry-run']);
-      // assertCommitted against a real repository
-      const repo = join(dir, 'repo');
-      mkdirSync(repo);
-      const git = (...a) => spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=noreply@example.com', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: repo, encoding: 'utf8' }).status;
-      git('init', '-q'); writeFileSync(join(repo, 'live.json'), '{}\n'); git('add', 'live.json'); git('commit', '-q', '-m', 'x');
+      // assertCommitted against a real repository (commits made with plumbing, which runs no hooks)
+      const { repo, commit } = scratchRepo(join(dir, 'repo'));
+      writeFileSync(join(repo, 'live.json'), '{}\n');
+      commit('main');
       const refuses = (f) => { try { assertCommitted(f, repo); return false; } catch { return true; } };
       const clean = !refuses(join(repo, 'live.json'));
       writeFileSync(join(repo, 'live.json'), '{"changed":1}\n');
@@ -722,6 +749,47 @@ const dashCases = [
         [dirty.code === 2 && dirty.asked === 0 && /^DASHBOARD_FAIL .*differs from HEAD/.test(dirty.lines[0] ?? ''), `uncommitted: exit ${dirty.code}, client asked ${dirty.asked} times`],
         [usage.code === 2 && usage.asked === 0 && /usage:/.test(usage.lines[0] ?? ''), `usage: exit ${usage.code}`],
         [clean && modified && untracked && outside, `assertCommitted: clean passes ${clean}, refuses modified ${modified}, untracked ${untracked}, outside the repo ${outside}`],
+      ]);
+    }),
+  },
+  {
+    id: 'OUT-D5-canonical', clauses: ['FR-D.5'], level: 'MUST',
+    title: 'the sync runs only when HEAD is the GitHub tip of the default branch, read at sync time: a detached HEAD elsewhere, a feature branch, a main that moved on and a failed API read each exit 2 before the issue is looked up; --dry-run reports the refusal and then the plan; main or a detached HEAD at the tip, and a default branch not called main, pass',
+    run: (ctx) => withScratch(async (dir) => {
+      const live = fixture(ctx, 'live-states.json');
+      const file = join(dir, 'live.json');
+      writeFileSync(file, JSON.stringify(live));
+      const OTHER = '12345678'.repeat(5);
+      const sync = (local, repo) => runDashCli(['--sync', file], { local: () => local, repo });
+      const onMain = await sync({ head: TIP, branch: 'main' });
+      const detachedTip = await sync({ head: TIP, branch: null });
+      const trunk = await sync({ head: TIP, branch: 'trunk' }, { default_branch: 'trunk', tip: TIP });
+      const detached = await sync({ head: OTHER, branch: null });
+      const feature = await sync({ head: TIP, branch: 'feature/x' });
+      const moved = await sync({ head: OTHER, branch: 'main' });
+      const failed = await sync({ head: TIP, branch: 'main' }, 'fail');
+      const dry = await runDashCli(['--sync', file, '--dry-run'], { local: () => ({ head: OTHER, branch: null }) });
+      const refusedBeforeLookup = (r) => r.code === 2 && r.listed === 0 && r.writes.length === 0;
+      // headState on a real repository: on main, detached, on a feature branch (plumbing only, no hooks run)
+      const { repo, git, commit } = scratchRepo(join(dir, 'repo'));
+      writeFileSync(join(repo, 'live.json'), '{}\n');
+      const c1 = commit('main');
+      const attached = headState(repo);
+      git('update-ref', '--no-deref', 'HEAD', c1);
+      const loose = headState(repo);
+      git('update-ref', 'refs/heads/feature/x', c1);
+      git('symbolic-ref', 'HEAD', 'refs/heads/feature/x');
+      const onFeature = headState(repo);
+      return verdict([
+        [onMain.code === 0 && /^DASHBOARD_OK /.test(onMain.lines[0] ?? ''), `main at the tip: exit ${onMain.code} ${JSON.stringify(onMain.lines)}`],
+        [detachedTip.code === 0, `detached at the tip: exit ${detachedTip.code} ${JSON.stringify(detachedTip.lines)}`],
+        [trunk.code === 0 && trunk.paths.includes('/repos/JYeswak/franken-research/commits/trunk'), `default branch trunk: exit ${trunk.code}, read ${JSON.stringify(trunk.paths.filter((p) => /commits/.test(p)))}`],
+        [refusedBeforeLookup(detached) && /HEAD is detached at 1234567, not at the GitHub tip abcdefa of main/.test(detached.lines[0] ?? ''), `detached elsewhere: exit ${detached.code}, listed ${detached.listed}, ${JSON.stringify(detached.lines[0])}`],
+        [refusedBeforeLookup(feature) && /on branch feature\/x, not main/.test(feature.lines[0] ?? ''), `feature branch: exit ${feature.code}, listed ${feature.listed}, ${JSON.stringify(feature.lines[0])}`],
+        [refusedBeforeLookup(moved) && /HEAD 1234567 is not the GitHub tip abcdefa of main: main has moved past it/.test(moved.lines[0] ?? ''), `main moved: exit ${moved.code}, listed ${moved.listed}, ${JSON.stringify(moved.lines[0])}`],
+        [refusedBeforeLookup(failed) && /cannot read the default-branch tip from GitHub .*HTTP 502/.test(failed.lines[0] ?? ''), `API read failed: exit ${failed.code}, listed ${failed.listed}, ${JSON.stringify(failed.lines[0])}`],
+        [dry.code === 2 && /^DASHBOARD_FAIL HEAD is detached/.test(dry.lines[0] ?? '') && /^DASHBOARD_PLAN action=created issue=none /.test(dry.lines[1] ?? '') && dry.lines[3] === renderDashboard(live) && dry.writes.length === 0, `dry run refused: exit ${dry.code} ${JSON.stringify(dry.lines.slice(0, 2))}`],
+        [attached.head === c1 && attached.branch === 'main' && loose.head === c1 && loose.branch === null && onFeature.branch === 'feature/x', `headState: ${JSON.stringify([attached, loose, onFeature])}`],
       ]);
     }),
   },

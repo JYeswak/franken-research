@@ -1062,7 +1062,7 @@
  {
   "id": "M-OUT-D5-failure-exits-zero",
   "file": "watch/freshness/dashboard.mjs",
-  "find": "    return input || e instanceof UsageError || e?.code === 2 ? 2 : 1;",
+  "find": "    return input || refused || e instanceof UsageError || e instanceof NotCanonical || e?.code === 2 ? 2 : 1;",
   "replace": "    return 0;",
   "clauses": [
    "FR-D.5"
@@ -1081,6 +1081,78 @@
   ],
   "must_fail": [
    "OUT-D5-cli"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-no-canonical-check",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "      await assertCanonical(api, here);",
+  "replace": "",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-feature-branch-accepted",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "  if (branch && branch !== def) throw new NotCanonical",
+  "replace": "  if (false) throw new NotCanonical",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-stale-head-accepted",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "  if (head !== tip) {",
+  "replace": "  if (false) {",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-read-failure-open",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    throw new NotCanonical(`cannot read the default-branch tip",
+  "replace": "    return { branch: def, tip: head };\n    throw new NotCanonical(`cannot read the default-branch tip",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-assumes-main",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "/commits/${encodeURIComponent(def)}",
+  "replace": "/commits/main",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
+  ]
+ },
+ {
+  "id": "M-OUT-D5-dry-run-refusal-exits-zero",
+  "file": "watch/freshness/dashboard.mjs",
+  "find": "    return refused ? 2 : 0;",
+  "replace": "    return 0;",
+  "clauses": [
+   "FR-D.5"
+  ],
+  "must_fail": [
+   "OUT-D5-canonical"
   ]
  }
 ]

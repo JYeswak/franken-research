@@ -4,11 +4,15 @@
 //   node watch/freshness/dashboard.mjs --sync watch/live.json --dry-run  print the planned action and the body
 //
 // The scheduled workflow runs --sync as its last step, after the gate chain and the push (FR-D.5), so the issue
-// is rendered only from a committed watch/live.json: a file that is untracked or differs from HEAD is refused.
+// is rendered only from a committed watch/live.json: a file that is untracked or differs from HEAD is refused, and
+// so is a checkout whose HEAD is not the tip of the default branch on GitHub, read from the API at sync time (a
+// feature branch, a detached HEAD elsewhere, a main that moved on, or a failed read). --dry-run reports the same
+// refusal, then prints the plan it would have carried out.
 // Token: GITHUB_TOKEN, else GH_TOKEN, else `gh auth token` (watch.mjs resolveToken); it is never printed.
 // Prints DASHBOARD_OK action=... issue=#N ignored=N closed_duplicates=N, or DASHBOARD_PLAN ... and the body
 // with --dry-run, or DASHBOARD_FAIL <reason>. Exit: 0 ok; 1 sync failed or refused by the FR-D.6 bound, and a
-// failed sync leaves the pushed files as they are; 2 usage, input, token or an uncommitted live.json.
+// failed sync leaves the pushed files as they are; 2 usage, input, token, an uncommitted live.json, or a checkout
+// that is not the default branch's GitHub tip.
 //
 // renderDashboard(live, { snapshots })   the issue body, a pure function of watch/live.json and the snapshot
 //                                        rows of ops/schedule.tsv (read from the repository when not given)
@@ -298,6 +302,44 @@ export function assertCommitted(file, root = ROOT) {
   if (git('diff', '--quiet', 'HEAD', '--', rel.split(sep).join('/')) !== 0) throw new UsageError(`${rel} differs from HEAD; the dashboard is rendered only from the committed file`);
 }
 
+/** The local checkout: the commit HEAD names, and the branch it is on (null when HEAD is detached). */
+export function headState(root = ROOT) {
+  const git = (...a) => spawnSync('git', a, { cwd: root, encoding: 'utf8' });
+  const head = git('rev-parse', '--verify', 'HEAD').stdout?.trim() ?? '';
+  if (!/^[0-9a-f]{40}$/.test(head)) throw new UsageError('cannot read HEAD of the checkout');
+  const b = git('symbolic-ref', '--quiet', '--short', 'HEAD');
+  return { head, branch: b.status === 0 ? b.stdout.trim() : null };
+}
+
+/** The checkout is not the canonical default-branch tip, or that tip could not be read: the sync must not run. */
+export class NotCanonical extends Error {}
+
+/**
+ * FR-D.5: resolves only when the checkout is the tip of the repository's default branch on GitHub, read now:
+ * not on another branch, and HEAD equal to the tip (a detached checkout at the tip passes). A failed or malformed
+ * API read refuses too (fail closed). Returns { branch, tip }.
+ */
+export async function assertCanonical(api, { head, branch }) {
+  let def;
+  let tip;
+  try {
+    def = (await api.rest('GET', `/repos/${ISSUE_REPO}`))?.body?.default_branch;
+    if (typeof def !== 'string' || !def) throw new Error('the repository record has no default_branch');
+    tip = (await api.rest('GET', `/repos/${ISSUE_REPO}/commits/${encodeURIComponent(def)}`))?.body?.sha;
+    if (!/^[0-9a-f]{40}$/.test(String(tip ?? ''))) throw new Error(`no commit sha for ${def}`);
+  } catch (e) {
+    throw new NotCanonical(`cannot read the default-branch tip from GitHub (${String(e?.message ?? e).split('\n')[0]}); refusing to sync`);
+  }
+  const s = (x) => x.slice(0, 7);
+  if (branch && branch !== def) throw new NotCanonical(`the checkout is on branch ${branch}, not ${def}; only ${def} at its GitHub tip ${s(tip)} may sync`);
+  if (head !== tip) {
+    throw new NotCanonical(branch
+      ? `HEAD ${s(head)} is not the GitHub tip ${s(tip)} of ${def}: ${def} has moved past it, or it is not pushed; refusing to sync`
+      : `HEAD is detached at ${s(head)}, not at the GitHub tip ${s(tip)} of ${def}; refusing to sync`);
+  }
+  return { branch: def, tip };
+}
+
 async function defaultClient() {
   let token;
   try { token = watch.resolveToken(); } catch (e) { throw new UsageError(e.message); }
@@ -307,20 +349,31 @@ async function defaultClient() {
 
 /**
  * The CLI, with its collaborators injectable for tests: `client()` gives { api, bot }, `committed(file)` throws
- * when the file is not committed, `out(line)` prints. Returns the exit code.
+ * when the file is not committed, `local()` gives the checkout's { head, branch }, `out(line)` prints. Returns the
+ * exit code. A checkout that is not the default branch's GitHub tip is refused with exit 2 before the issue is
+ * looked up; with --dry-run the refusal is printed first, then the plan it would have carried out, still exit 2.
  */
-export async function main(argv, { client = defaultClient, committed = assertCommitted, out = (l) => console.log(l) } = {}) {
+export async function main(argv, { client = defaultClient, committed = assertCommitted, local = headState, out = (l) => console.log(l) } = {}) {
   const k = argv.indexOf('--sync');
   const known = new Set(['--sync', '--dry-run']);
-  let input = true; // usage, the committed check and live.json come before any API call; their failures exit 2
+  let input = true; // usage, the committed check, live.json and HEAD come before any API call; they fail with exit 2
+  let refused = false;
   try {
     if (k < 0 || !argv[k + 1] || argv[k + 1].startsWith('--') || argv.some((a, j) => a.startsWith('--') && !known.has(a) && j !== k + 1)) throw new UsageError(USAGE);
     const file = resolve(argv[k + 1]);
     committed(file);
     const live = readLive(file);
     const dryRun = argv.includes('--dry-run');
-    input = false; // from here a failure is a failed sync (exit 1), except a missing token (UsageError, exit 2)
+    const here = local();
+    input = false; // from here a failure is a failed sync (exit 1), except a missing token or a refusal (exit 2)
     const { api, bot } = await client();
+    try {
+      await assertCanonical(api, here);
+    } catch (e) {
+      if (!(e instanceof NotCanonical) || !dryRun) throw e;
+      refused = true;
+      out(`DASHBOARD_FAIL ${e.message}`);
+    }
     const r = await syncDashboard(api, live, { bot, dryRun });
     const issue = r.number == null ? 'none' : `#${r.number}`;
     if (dryRun) {
@@ -328,10 +381,10 @@ export async function main(argv, { client = defaultClient, committed = assertCom
       out('');
       out(r.body);
     } else out(`DASHBOARD_OK action=${r.action} issue=${issue} ignored=${r.ignored.length} closed_duplicates=${r.closed.length}`);
-    return 0;
+    return refused ? 2 : 0;
   } catch (e) {
     out(`DASHBOARD_FAIL ${String(e?.message ?? e).split('\n')[0]}`);
-    return input || e instanceof UsageError || e?.code === 2 ? 2 : 1;
+    return input || refused || e instanceof UsageError || e instanceof NotCanonical || e?.code === 2 ? 2 : 1;
   }
 }
 
