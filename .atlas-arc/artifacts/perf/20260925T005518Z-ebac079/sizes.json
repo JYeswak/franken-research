@@ -1,0 +1,54 @@
+{
+ "meta": {
+  "build_ms": 28765,
+  "docs": {
+   "core": 933,
+   "full": 3855,
+   "i0": 44
+  },
+  "a_full_terms": 15033,
+  "a_full_postings": 178223
+ },
+ "sizes": {
+  "a-core.json": {
+   "raw": 553558,
+   "gzip": 131273,
+   "brotli": 104465
+  },
+  "a-full.json": {
+   "raw": 2586807,
+   "gzip": 609674,
+   "brotli": 455083
+  },
+  "a-full-qidx.json": {
+   "raw": 2767157,
+   "gzip": 658737,
+   "brotli": 496012
+  },
+  "c-core.json": {
+   "raw": 587815,
+   "gzip": 139274,
+   "brotli": 107396
+  },
+  "c-full.json": {
+   "raw": 2725005,
+   "gzip": 638745,
+   "brotli": 452517
+  },
+  "quotes.json": {
+   "raw": 503000,
+   "gzip": 158332,
+   "brotli": 127621
+  },
+  "i0.json": {
+   "raw": 4975,
+   "gzip": 777,
+   "brotli": 698
+  },
+  "i1.json": {
+   "raw": 613814,
+   "gzip": 100283,
+   "brotli": 63265
+  }
+ }
+}

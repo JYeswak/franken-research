@@ -1,0 +1,5 @@
+desktop A {"k2l":[1.6,5,16.3],"k2p95":10.2,"env":"ESCALATE 518.6","usable_p95":88.3,"full_p95":145.6,"heapMB":4.96,"lt":{"count":28,"over_50ms":26,"max_ms":185},"wt":[]}
+desktop B {"k2l":[2.3,9.5,44.8],"k2p95":15.6,"env":"ESCALATE 188.8","usable_p95":179.3,"full_p95":203.3,"heapMB":0.7,"lt":{"count":11,"over_50ms":11,"max_ms":158},"wt":[{"network":"applied","cpu":"unsupported: Emulation.setCPUThrottlingRate: Operation is only supported for pages, not workers"}]}
+desktop C {"k2l":[2.3,16.1,35.4],"k2p95":22.1,"env":"ESCALATE 218.6","usable_p95":99.6,"full_p95":326.4,"heapMB":9.96,"lt":{"count":115,"over_50ms":111,"max_ms":174},"wt":[]}
+desktop I1 {"k2l":[0.8,3,9.7],"k2p95":7,"env":"ESCALATE 218.5","usable_p95":86,"full_p95":86.2,"heapMB":0.83,"lt":{"count":7,"over_50ms":7,"max_ms":143},"wt":[]}
+desktop I0 {"k2l":[0.5,1.9,5.5],"k2p95":5.1,"env":"ESCALATE 164.7","usable_p95":83,"full_p95":83.1,"heapMB":0.03,"lt":{"count":1,"over_50ms":1,"max_ms":71},"wt":[]}

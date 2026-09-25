@@ -1,0 +1,28 @@
+{
+ "docs": 3855,
+ "core": 933,
+ "deep": 2922,
+ "quote_docs": 1497,
+ "quote_items": 3700,
+ "summary_cap": 280,
+ "by_kind": {
+  "practice/core": 136,
+  "readiness-gate/core": 23,
+  "technique/core": 14,
+  "failure-mode/core": 11,
+  "lesson/core": 55,
+  "checklist/core": 28,
+  "stack-verdict/core": 21,
+  "stack-practice/core": 132,
+  "port-technique/core": 59,
+  "gate-spec/core": 18,
+  "packet/core": 44,
+  "next-step/deep": 207,
+  "crate/deep": 1079,
+  "crate/core": 211,
+  "prescription/core": 140,
+  "crate-kind/core": 41,
+  "repo-profile/deep": 139,
+  "rigor-technique/deep": 1497
+ }
+}

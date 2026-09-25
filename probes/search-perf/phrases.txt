@@ -1,0 +1,41 @@
+# Build-intent phrases a visitor types (REQ-U1..U3). One per line; '#' lines ignored.
+# gen-queries.mjs expands each into every per-keystroke prefix plus seeded typo variants.
+rust cli with sqlite store
+stop agents claiming tests passed
+differential oracle
+mcp server
+property based testing
+fuzzing harness for a parser
+benchmark against the incumbent
+negative evidence ledger
+claim discipline gate
+cross platform release pipeline
+wasm build for the browser
+e-process anytime valid monitoring
+first committer wins mvcc
+tokenizer crate
+vector database
+bm25 lexical search
+conformance test suite
+golden file snapshot tests
+license rider openai anthropic
+bus factor
+beads dependency graph
+agent memory
+terminal ui framework
+structured output grammar
+checked arithmetic overflow
+deterministic replay of async runtime
+cancel correct structured concurrency
+reproducible builds pinned toolchain
+flaky test quarantine
+kahan summation floating point
+sqlite wal durability fsync
+json schema validation
+http client with retries
+crate on crates io for markdown
+reciprocal rank fusion
+quantization int8 kernel
+model checking tla
+miri undefined behavior
+supply chain audit cargo deny

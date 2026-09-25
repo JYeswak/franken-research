@@ -1,0 +1,1426 @@
+{
+ "note": "one typing pass per candidate; durations of renderer main-thread trace events (ms). Inclusive events nest (EventDispatch contains FunctionCall).",
+ "chrome_flags": [
+  "--disable-frame-rate-limit",
+  "--disable-gpu-vsync"
+ ],
+ "results": {
+  "A": {
+   "keystrokes": 1165,
+   "main_thread_events": {
+    "EventDispatch": {
+     "n": 8139,
+     "mean": 4.2202,
+     "sd": 9.4806,
+     "cv": 2.2465,
+     "mad": 0.062,
+     "p50": 0.063,
+     "p95": 16.781,
+     "p99": 51.971,
+     "p999": 89.625,
+     "max": 117.456,
+     "p999_conservative": false,
+     "total_ms": 34348.29
+    },
+    "FunctionCall": {
+     "n": 4731,
+     "mean": 2.2002,
+     "sd": 6.8835,
+     "cv": 3.1286,
+     "mad": 0.043,
+     "p50": 0.064,
+     "p95": 10.257,
+     "p99": 34.234,
+     "p999": 84.481,
+     "max": 140.668,
+     "p999_conservative": false,
+     "total_ms": 10409.02
+    },
+    "UpdateLayoutTree": {
+     "n": 1286,
+     "mean": 0.6975,
+     "sd": 2.5385,
+     "cv": 3.6394,
+     "mad": 0.025,
+     "p50": 0.155,
+     "p95": 3.378,
+     "p99": 8.672,
+     "p999": 31.738,
+     "max": 51.722,
+     "p999_conservative": false,
+     "total_ms": 897
+    },
+    "Layout": {
+     "n": 2409,
+     "mean": 1.701,
+     "sd": 4.5875,
+     "cv": 2.6969,
+     "mad": 0.221,
+     "p50": 0.334,
+     "p95": 5.952,
+     "p99": 23.56,
+     "p999": 51.373,
+     "max": 66.463,
+     "p999_conservative": false,
+     "total_ms": 4097.83
+    },
+    "PrePaint": {
+     "n": 1224,
+     "mean": 0.7884,
+     "sd": 4.6899,
+     "cv": 5.9488,
+     "mad": 0.029,
+     "p50": 0.154,
+     "p95": 3.267,
+     "p99": 10.413,
+     "p999": 60.031,
+     "max": 136.502,
+     "p999_conservative": false,
+     "total_ms": 964.96
+    },
+    "Paint": {
+     "n": 2418,
+     "mean": 1.3677,
+     "sd": 4.3356,
+     "cv": 3.1701,
+     "mad": 0.065,
+     "p50": 0.259,
+     "p95": 4.34,
+     "p99": 15.983,
+     "p999": 72.64,
+     "max": 81.521,
+     "p999_conservative": false,
+     "total_ms": 3306.99
+    },
+    "Layerize": {
+     "n": 1223,
+     "mean": 0.5157,
+     "sd": 1.6699,
+     "cv": 3.2383,
+     "mad": 0.016,
+     "p50": 0.117,
+     "p95": 3.186,
+     "p99": 6.07,
+     "p999": 22.239,
+     "max": 27.815,
+     "p999_conservative": false,
+     "total_ms": 630.65
+    },
+    "Commit": {
+     "n": 1224,
+     "mean": 7.0194,
+     "sd": 11.1444,
+     "cv": 1.5877,
+     "mad": 3.849,
+     "p50": 4.513,
+     "p95": 24.581,
+     "p99": 49.863,
+     "p999": 86.437,
+     "max": 214.99,
+     "p999_conservative": false,
+     "total_ms": 8591.7
+    },
+    "HitTest": {
+     "n": 115,
+     "mean": 0.0395,
+     "sd": 0.2793,
+     "cv": 7.0691,
+     "mad": 0.006,
+     "p50": 0.009,
+     "p95": 0.035,
+     "p99": 0.079,
+     "p999": 3.006,
+     "max": 3.006,
+     "p999_conservative": true,
+     "total_ms": 4.54
+    },
+    "MinorGC": {
+     "n": 41,
+     "mean": 4.2723,
+     "sd": 9.8404,
+     "cv": 2.3033,
+     "mad": 0.153,
+     "p50": 0.419,
+     "p95": 27.326,
+     "p99": 50.13,
+     "p999": 50.13,
+     "max": 50.13,
+     "p999_conservative": true,
+     "total_ms": 175.17
+    },
+    "MajorGC": {
+     "n": 15,
+     "mean": 10.8084,
+     "sd": 12.5718,
+     "cv": 1.1632,
+     "mad": 2.674,
+     "p50": 6.907,
+     "p95": 51.039,
+     "p99": 51.039,
+     "p999": 51.039,
+     "max": 51.039,
+     "p999_conservative": true,
+     "total_ms": 162.13
+    },
+    "V8.GC_SCAVENGER": {
+     "n": 41,
+     "mean": 3.7268,
+     "sd": 9.4562,
+     "cv": 2.5373,
+     "mad": 0.083,
+     "p50": 0.271,
+     "p95": 27.04,
+     "p99": 49.915,
+     "p999": 49.915,
+     "max": 49.915,
+     "p999_conservative": true,
+     "total_ms": 152.8
+    },
+    "V8.GC_MARK_COMPACTOR": {
+     "n": 15,
+     "mean": 10.7685,
+     "sd": 12.5705,
+     "cv": 1.1673,
+     "mad": 2.68,
+     "p50": 6.872,
+     "p95": 50.997,
+     "p99": 50.997,
+     "p999": 50.997,
+     "max": 50.997,
+     "p999_conservative": true,
+     "total_ms": 161.53
+    }
+   },
+   "top_main_thread_event_totals": [
+    {
+     "name": "EventDispatch",
+     "total_ms": 34348.29
+    },
+    {
+     "name": "RunTask",
+     "total_ms": 30809.93
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame",
+     "total_ms": 14075.44
+    },
+    {
+     "name": "Editor::HandleKeyboardEvent",
+     "total_ms": 12319.89
+    },
+    {
+     "name": "TypingCommand::InsertText",
+     "total_ms": 11964.21
+    },
+    {
+     "name": "FunctionCall",
+     "total_ms": 10409.02
+    },
+    {
+     "name": "Commit",
+     "total_ms": 8591.7
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame::commit",
+     "total_ms": 7329.33
+    },
+    {
+     "name": "LayerTreeHost::WaitForCommitCompletion",
+     "total_ms": 7192.47
+    },
+    {
+     "name": "Document::UpdateStyleAndLayout",
+     "total_ms": 6009.77
+    },
+    {
+     "name": "Blink.ForcedStyleAndLayout.UpdateTime",
+     "total_ms": 5726.73
+    },
+    {
+     "name": "LocalFrameView::UpdateStyleAndLayout",
+     "total_ms": 5522.55
+    },
+    {
+     "name": "Blink.Layout.UpdateTime",
+     "total_ms": 4273.09
+    },
+    {
+     "name": "LocalFrameView::layout",
+     "total_ms": 4184.93
+    },
+    {
+     "name": "Layout",
+     "total_ms": 4097.83
+    },
+    {
+     "name": "LocalFrameView::performLayout",
+     "total_ms": 4032.84
+    },
+    {
+     "name": "WebFrameWidgetImpl::UpdateLifecycle",
+     "total_ms": 3999.14
+    },
+    {
+     "name": "Paint",
+     "total_ms": 3306.99
+    },
+    {
+     "name": "LocalFrameView::RunPaintLifecyclePhase",
+     "total_ms": 2737.49
+    },
+    {
+     "name": "Blink.Paint.UpdateTime",
+     "total_ms": 2015.19
+    },
+    {
+     "name": "InlineNode::ShapeTextIncludingFirstLine",
+     "total_ms": 1611.76
+    },
+    {
+     "name": "PrePaint",
+     "total_ms": 964.96
+    },
+    {
+     "name": "Blink.Style.UpdateTime",
+     "total_ms": 947.63
+    },
+    {
+     "name": "UpdateLayoutTree",
+     "total_ms": 897
+    },
+    {
+     "name": "WebFrameWidgetImpl::BeginMainFrame",
+     "total_ms": 860.94
+    }
+   ]
+  },
+  "B": {
+   "keystrokes": 1165,
+   "main_thread_events": {
+    "EventDispatch": {
+     "n": 8116,
+     "mean": 0.5467,
+     "sd": 1.592,
+     "cv": 2.9117,
+     "mad": 0.05,
+     "p50": 0.052,
+     "p95": 3.17,
+     "p99": 5.309,
+     "p999": 16.259,
+     "max": 48.959,
+     "p999_conservative": false,
+     "total_ms": 4437.36
+    },
+    "FunctionCall": {
+     "n": 5829,
+     "mean": 0.184,
+     "sd": 1.0612,
+     "cv": 5.7682,
+     "mad": 0.019,
+     "p50": 0.051,
+     "p95": 0.382,
+     "p99": 3.143,
+     "p999": 9.039,
+     "max": 46.32,
+     "p999_conservative": false,
+     "total_ms": 1072.34
+    },
+    "UpdateLayoutTree": {
+     "n": 1286,
+     "mean": 0.5047,
+     "sd": 1.1267,
+     "cv": 2.2325,
+     "mad": 0.043,
+     "p50": 0.153,
+     "p95": 3.19,
+     "p99": 3.561,
+     "p999": 7.993,
+     "max": 23.105,
+     "p999_conservative": false,
+     "total_ms": 649.01
+    },
+    "Layout": {
+     "n": 2409,
+     "mean": 1.2374,
+     "sd": 2.1387,
+     "cv": 1.7284,
+     "mad": 0.21,
+     "p50": 0.306,
+     "p95": 4.444,
+     "p99": 8.295,
+     "p999": 30.524,
+     "max": 34.772,
+     "p999_conservative": false,
+     "total_ms": 2980.9
+    },
+    "PrePaint": {
+     "n": 2371,
+     "mean": 0.3729,
+     "sd": 0.9468,
+     "cv": 2.5389,
+     "mad": 0.032,
+     "p50": 0.099,
+     "p95": 2.909,
+     "p99": 3.799,
+     "p999": 9.825,
+     "max": 17.069,
+     "p999_conservative": false,
+     "total_ms": 884.22
+    },
+    "Paint": {
+     "n": 4716,
+     "mean": 0.6309,
+     "sd": 1.1771,
+     "cv": 1.8658,
+     "mad": 0.065,
+     "p50": 0.174,
+     "p95": 3.289,
+     "p99": 3.811,
+     "p999": 10.867,
+     "max": 20.965,
+     "p999_conservative": false,
+     "total_ms": 2975.15
+    },
+    "Layerize": {
+     "n": 2371,
+     "mean": 0.3194,
+     "sd": 1.8794,
+     "cv": 5.8841,
+     "mad": 0.016,
+     "p50": 0.072,
+     "p95": 2.057,
+     "p99": 3.243,
+     "p999": 11.006,
+     "max": 80.851,
+     "p999_conservative": false,
+     "total_ms": 757.29
+    },
+    "Commit": {
+     "n": 2371,
+     "mean": 2.4919,
+     "sd": 4.0277,
+     "cv": 1.6163,
+     "mad": 0.402,
+     "p50": 0.51,
+     "p95": 7.472,
+     "p99": 19.734,
+     "p999": 44.225,
+     "max": 50.204,
+     "p999_conservative": false,
+     "total_ms": 5908.3
+    },
+    "HitTest": {
+     "n": 66,
+     "mean": 0.0736,
+     "sd": 0.3887,
+     "cv": 5.2791,
+     "mad": 0.008,
+     "p50": 0.012,
+     "p95": 0.097,
+     "p99": 3.133,
+     "p999": 3.133,
+     "max": 3.133,
+     "p999_conservative": true,
+     "total_ms": 4.86
+    },
+    "MinorGC": {
+     "n": 6,
+     "mean": 2.7852,
+     "sd": 1.8082,
+     "cv": 0.6492,
+     "mad": 1.413,
+     "p50": 2.5,
+     "p95": 5.188,
+     "p99": 5.188,
+     "p999": 5.188,
+     "max": 5.188,
+     "p999_conservative": true,
+     "total_ms": 16.71
+    },
+    "MajorGC": {
+     "n": 17,
+     "mean": 6.2074,
+     "sd": 3.1795,
+     "cv": 0.5122,
+     "mad": 1.783,
+     "p50": 4.88,
+     "p95": 13.567,
+     "p99": 13.567,
+     "p999": 13.567,
+     "max": 13.567,
+     "p999_conservative": true,
+     "total_ms": 105.53
+    },
+    "V8.GC_SCAVENGER": {
+     "n": 6,
+     "mean": 2.7365,
+     "sd": 1.8036,
+     "cv": 0.6591,
+     "mad": 1.417,
+     "p50": 2.457,
+     "p95": 5.134,
+     "p99": 5.134,
+     "p999": 5.134,
+     "max": 5.134,
+     "p999_conservative": true,
+     "total_ms": 16.42
+    },
+    "V8.GC_MARK_COMPACTOR": {
+     "n": 17,
+     "mean": 6.1617,
+     "sd": 3.1645,
+     "cv": 0.5136,
+     "mad": 1.799,
+     "p50": 4.838,
+     "p95": 13.426,
+     "p99": 13.426,
+     "p999": 13.426,
+     "max": 13.426,
+     "p999_conservative": true,
+     "total_ms": 104.75
+    }
+   },
+   "top_main_thread_event_totals": [
+    {
+     "name": "RunTask",
+     "total_ms": 21058.58
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame",
+     "total_ms": 10906.76
+    },
+    {
+     "name": "Commit",
+     "total_ms": 5908.3
+    },
+    {
+     "name": "HandlePostMessage",
+     "total_ms": 4668.19
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame::commit",
+     "total_ms": 4631.51
+    },
+    {
+     "name": "LayerTreeHost::WaitForCommitCompletion",
+     "total_ms": 4507.17
+    },
+    {
+     "name": "EventDispatch",
+     "total_ms": 4437.36
+    },
+    {
+     "name": "Document::UpdateStyleAndLayout",
+     "total_ms": 4387.62
+    },
+    {
+     "name": "Blink.ForcedStyleAndLayout.UpdateTime",
+     "total_ms": 4186.12
+    },
+    {
+     "name": "WebFrameWidgetImpl::UpdateLifecycle",
+     "total_ms": 4082.28
+    },
+    {
+     "name": "LocalFrameView::UpdateStyleAndLayout",
+     "total_ms": 4016.54
+    },
+    {
+     "name": "Blink.Layout.UpdateTime",
+     "total_ms": 3069.25
+    },
+    {
+     "name": "LocalFrameView::layout",
+     "total_ms": 2989.94
+    },
+    {
+     "name": "Layout",
+     "total_ms": 2980.9
+    },
+    {
+     "name": "Paint",
+     "total_ms": 2975.15
+    },
+    {
+     "name": "LocalFrameView::performLayout",
+     "total_ms": 2905.97
+    },
+    {
+     "name": "LocalFrameView::RunPaintLifecyclePhase",
+     "total_ms": 2830.59
+    },
+    {
+     "name": "Blink.Paint.UpdateTime",
+     "total_ms": 1985.15
+    },
+    {
+     "name": "Editor::HandleKeyboardEvent",
+     "total_ms": 1973.04
+    },
+    {
+     "name": "TypingCommand::InsertText",
+     "total_ms": 1753.85
+    },
+    {
+     "name": "InlineNode::ShapeTextIncludingFirstLine",
+     "total_ms": 1296.94
+    },
+    {
+     "name": "FunctionCall",
+     "total_ms": 1072.34
+    },
+    {
+     "name": "PrePaint",
+     "total_ms": 884.22
+    },
+    {
+     "name": "LocalFrameView::pushPaintArtifactToCompositor",
+     "total_ms": 782.32
+    },
+    {
+     "name": "Blink.CompositingCommit.UpdateTime",
+     "total_ms": 769.21
+    }
+   ]
+  },
+  "C": {
+   "keystrokes": 1165,
+   "main_thread_events": {
+    "EventDispatch": {
+     "n": 8096,
+     "mean": 5.8996,
+     "sd": 13.7846,
+     "cv": 2.3365,
+     "mad": 0.052,
+     "p50": 0.053,
+     "p95": 30.522,
+     "p99": 70.469,
+     "p999": 125.173,
+     "max": 212.529,
+     "p999_conservative": false,
+     "total_ms": 47763.27
+    },
+    "FunctionCall": {
+     "n": 4727,
+     "mean": 3.2152,
+     "sd": 10.3232,
+     "cv": 3.2107,
+     "mad": 0.037,
+     "p50": 0.056,
+     "p95": 15.888,
+     "p99": 54.864,
+     "p999": 115.182,
+     "max": 165.28,
+     "p999_conservative": false,
+     "total_ms": 15198.4
+    },
+    "UpdateLayoutTree": {
+     "n": 1286,
+     "mean": 0.6479,
+     "sd": 2.4886,
+     "cv": 3.8411,
+     "mad": 0.046,
+     "p50": 0.149,
+     "p95": 3.267,
+     "p99": 3.967,
+     "p999": 39.056,
+     "max": 44.341,
+     "p999_conservative": false,
+     "total_ms": 833.18
+    },
+    "Layout": {
+     "n": 2409,
+     "mean": 1.1741,
+     "sd": 3.9416,
+     "cv": 3.357,
+     "mad": 0.157,
+     "p50": 0.236,
+     "p95": 3.992,
+     "p99": 6.455,
+     "p999": 33.982,
+     "max": 162.699,
+     "p999_conservative": false,
+     "total_ms": 2828.47
+    },
+    "PrePaint": {
+     "n": 1222,
+     "mean": 0.6408,
+     "sd": 2.0597,
+     "cv": 3.2141,
+     "mad": 0.051,
+     "p50": 0.148,
+     "p95": 3.26,
+     "p99": 3.605,
+     "p999": 30.632,
+     "max": 38.045,
+     "p999_conservative": false,
+     "total_ms": 783.11
+    },
+    "Paint": {
+     "n": 2420,
+     "mean": 0.9133,
+     "sd": 1.6806,
+     "cv": 1.84,
+     "mad": 0.092,
+     "p50": 0.24,
+     "p95": 3.438,
+     "p99": 4.484,
+     "p999": 21.606,
+     "max": 24.304,
+     "p999_conservative": false,
+     "total_ms": 2210.29
+    },
+    "Layerize": {
+     "n": 1221,
+     "mean": 0.3748,
+     "sd": 0.8854,
+     "cv": 2.3621,
+     "mad": 0.024,
+     "p50": 0.109,
+     "p95": 3.095,
+     "p99": 3.287,
+     "p999": 6.914,
+     "max": 12.406,
+     "p999_conservative": false,
+     "total_ms": 457.66
+    },
+    "Commit": {
+     "n": 1222,
+     "mean": 2.9432,
+     "sd": 5.1541,
+     "cv": 1.7512,
+     "mad": 1.462,
+     "p50": 1.665,
+     "p95": 9.588,
+     "p99": 25.654,
+     "p999": 42.931,
+     "max": 97.62,
+     "p999_conservative": false,
+     "total_ms": 3596.59
+    },
+    "HitTest": {
+     "n": 72,
+     "mean": 0.0147,
+     "sd": 0.0203,
+     "cv": 1.3846,
+     "mad": 0.004,
+     "p50": 0.006,
+     "p95": 0.037,
+     "p99": 0.121,
+     "p999": 0.121,
+     "max": 0.121,
+     "p999_conservative": true,
+     "total_ms": 1.06
+    },
+    "MinorGC": {
+     "n": 25,
+     "mean": 5.8216,
+     "sd": 5.0481,
+     "cv": 0.8671,
+     "mad": 1.506,
+     "p50": 4.886,
+     "p95": 12.684,
+     "p99": 26.233,
+     "p999": 26.233,
+     "max": 26.233,
+     "p999_conservative": true,
+     "total_ms": 145.54
+    },
+    "MajorGC": {
+     "n": 9,
+     "mean": 13.4063,
+     "sd": 3.3123,
+     "cv": 0.2471,
+     "mad": 1.492,
+     "p50": 14.314,
+     "p95": 19.614,
+     "p99": 19.614,
+     "p999": 19.614,
+     "max": 19.614,
+     "p999_conservative": true,
+     "total_ms": 120.66
+    },
+    "V8.GC_SCAVENGER": {
+     "n": 25,
+     "mean": 5.7208,
+     "sd": 5.0651,
+     "cv": 0.8854,
+     "mad": 1.536,
+     "p50": 4.69,
+     "p95": 12.618,
+     "p99": 26.194,
+     "p999": 26.194,
+     "max": 26.194,
+     "p999_conservative": true,
+     "total_ms": 143.02
+    },
+    "V8.GC_MARK_COMPACTOR": {
+     "n": 9,
+     "mean": 13.3551,
+     "sd": 3.321,
+     "cv": 0.2487,
+     "mad": 1.474,
+     "p50": 14.26,
+     "p95": 19.568,
+     "p99": 19.568,
+     "p999": 19.568,
+     "max": 19.568,
+     "p999_conservative": true,
+     "total_ms": 120.2
+    }
+   },
+   "top_main_thread_event_totals": [
+    {
+     "name": "EventDispatch",
+     "total_ms": 47763.27
+    },
+    {
+     "name": "RunTask",
+     "total_ms": 26504.01
+    },
+    {
+     "name": "Editor::HandleKeyboardEvent",
+     "total_ms": 16451.33
+    },
+    {
+     "name": "TypingCommand::InsertText",
+     "total_ms": 16185.7
+    },
+    {
+     "name": "FunctionCall",
+     "total_ms": 15198.4
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame",
+     "total_ms": 7504.24
+    },
+    {
+     "name": "Document::UpdateStyleAndLayout",
+     "total_ms": 4333.66
+    },
+    {
+     "name": "Blink.ForcedStyleAndLayout.UpdateTime",
+     "total_ms": 4141.85
+    },
+    {
+     "name": "LocalFrameView::UpdateStyleAndLayout",
+     "total_ms": 4010.27
+    },
+    {
+     "name": "Commit",
+     "total_ms": 3596.59
+    },
+    {
+     "name": "WebFrameWidgetImpl::UpdateLifecycle",
+     "total_ms": 2947.09
+    },
+    {
+     "name": "Blink.Layout.UpdateTime",
+     "total_ms": 2913.46
+    },
+    {
+     "name": "LocalFrameView::layout",
+     "total_ms": 2847.89
+    },
+    {
+     "name": "Layout",
+     "total_ms": 2828.47
+    },
+    {
+     "name": "LocalFrameView::performLayout",
+     "total_ms": 2772.67
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame::commit",
+     "total_ms": 2674.13
+    },
+    {
+     "name": "LayerTreeHost::WaitForCommitCompletion",
+     "total_ms": 2619.09
+    },
+    {
+     "name": "Paint",
+     "total_ms": 2210.29
+    },
+    {
+     "name": "LocalFrameView::RunPaintLifecyclePhase",
+     "total_ms": 1907.28
+    },
+    {
+     "name": "Blink.Paint.UpdateTime",
+     "total_ms": 1396.76
+    },
+    {
+     "name": "InlineNode::ShapeTextIncludingFirstLine",
+     "total_ms": 1255.59
+    },
+    {
+     "name": "Blink.Style.UpdateTime",
+     "total_ms": 840.59
+    },
+    {
+     "name": "UpdateLayoutTree",
+     "total_ms": 833.18
+    },
+    {
+     "name": "Document::updateStyle",
+     "total_ms": 787.44
+    },
+    {
+     "name": "PrePaint",
+     "total_ms": 783.11
+    }
+   ]
+  },
+  "I1": {
+   "keystrokes": 1165,
+   "main_thread_events": {
+    "EventDispatch": {
+     "n": 8070,
+     "mean": 1.5039,
+     "sd": 4.3065,
+     "cv": 2.8636,
+     "mad": 0.045,
+     "p50": 0.046,
+     "p95": 6.227,
+     "p99": 16.559,
+     "p999": 59.624,
+     "max": 71.121,
+     "p999_conservative": false,
+     "total_ms": 12136.58
+    },
+    "FunctionCall": {
+     "n": 4672,
+     "mean": 0.6961,
+     "sd": 2.7984,
+     "cv": 4.02,
+     "mad": 0.035,
+     "p50": 0.052,
+     "p95": 3.79,
+     "p99": 8.406,
+     "p999": 48.29,
+     "max": 66.904,
+     "p999_conservative": false,
+     "total_ms": 3252.24
+    },
+    "UpdateLayoutTree": {
+     "n": 571,
+     "mean": 0.3853,
+     "sd": 1.6932,
+     "cv": 4.3947,
+     "mad": 0.04,
+     "p50": 0.091,
+     "p95": 2.048,
+     "p99": 3.482,
+     "p999": 27.736,
+     "max": 27.736,
+     "p999_conservative": true,
+     "total_ms": 220
+    },
+    "Layout": {
+     "n": 1728,
+     "mean": 0.6905,
+     "sd": 2.5716,
+     "cv": 3.7242,
+     "mad": 0.039,
+     "p50": 0.119,
+     "p95": 3.388,
+     "p99": 5.869,
+     "p999": 44.188,
+     "max": 58.354,
+     "p999_conservative": false,
+     "total_ms": 1193.2
+    },
+    "PrePaint": {
+     "n": 1223,
+     "mean": 0.2765,
+     "sd": 0.8053,
+     "cv": 2.9122,
+     "mad": 0.018,
+     "p50": 0.066,
+     "p95": 2.01,
+     "p99": 3.247,
+     "p999": 3.696,
+     "max": 15.7,
+     "p999_conservative": false,
+     "total_ms": 338.19
+    },
+    "Paint": {
+     "n": 2422,
+     "mean": 0.492,
+     "sd": 1.4091,
+     "cv": 2.864,
+     "mad": 0.029,
+     "p50": 0.078,
+     "p95": 3.196,
+     "p99": 3.581,
+     "p999": 21.294,
+     "max": 25.734,
+     "p999_conservative": false,
+     "total_ms": 1191.58
+    },
+    "Layerize": {
+     "n": 1223,
+     "mean": 0.2885,
+     "sd": 0.8314,
+     "cv": 2.8814,
+     "mad": 0.016,
+     "p50": 0.061,
+     "p95": 2.328,
+     "p99": 3.221,
+     "p999": 9.446,
+     "max": 10.73,
+     "p999_conservative": false,
+     "total_ms": 352.88
+    },
+    "Commit": {
+     "n": 1223,
+     "mean": 2.5294,
+     "sd": 5.5787,
+     "cv": 2.2056,
+     "mad": 0.188,
+     "p50": 0.307,
+     "p95": 12.928,
+     "p99": 25.823,
+     "p999": 52.421,
+     "max": 84.847,
+     "p999_conservative": false,
+     "total_ms": 3093.42
+    },
+    "HitTest": {
+     "n": 44,
+     "mean": 0.0078,
+     "sd": 0.0067,
+     "cv": 0.8601,
+     "mad": 0.003,
+     "p50": 0.004,
+     "p95": 0.017,
+     "p99": 0.03,
+     "p999": 0.03,
+     "max": 0.03,
+     "p999_conservative": true,
+     "total_ms": 0.34
+    },
+    "MinorGC": {
+     "n": 9,
+     "mean": 2.3423,
+     "sd": 2.5345,
+     "cv": 1.082,
+     "mad": 1.743,
+     "p50": 2.203,
+     "p95": 8.179,
+     "p99": 8.179,
+     "p999": 8.179,
+     "max": 8.179,
+     "p999_conservative": true,
+     "total_ms": 21.08
+    },
+    "MajorGC": {
+     "n": 2,
+     "mean": 14.986,
+     "sd": 14.4731,
+     "cv": 0.9658,
+     "mad": 0,
+     "p50": 4.752,
+     "p95": 25.22,
+     "p99": 25.22,
+     "p999": 25.22,
+     "max": 25.22,
+     "p999_conservative": true,
+     "total_ms": 29.97
+    },
+    "V8.GC_SCAVENGER": {
+     "n": 9,
+     "mean": 2.2264,
+     "sd": 2.3366,
+     "cv": 1.0495,
+     "mad": 1.778,
+     "p50": 2.178,
+     "p95": 7.432,
+     "p99": 7.432,
+     "p999": 7.432,
+     "max": 7.432,
+     "p999_conservative": true,
+     "total_ms": 20.04
+    },
+    "V8.GC_MARK_COMPACTOR": {
+     "n": 2,
+     "mean": 14.9065,
+     "sd": 14.3903,
+     "cv": 0.9654,
+     "mad": 0,
+     "p50": 4.731,
+     "p95": 25.082,
+     "p99": 25.082,
+     "p999": 25.082,
+     "max": 25.082,
+     "p999_conservative": true,
+     "total_ms": 29.81
+    }
+   },
+   "top_main_thread_event_totals": [
+    {
+     "name": "RunTask",
+     "total_ms": 12906.81
+    },
+    {
+     "name": "EventDispatch",
+     "total_ms": 12136.58
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame",
+     "total_ms": 5730.41
+    },
+    {
+     "name": "Editor::HandleKeyboardEvent",
+     "total_ms": 4608.21
+    },
+    {
+     "name": "TypingCommand::InsertText",
+     "total_ms": 4393.14
+    },
+    {
+     "name": "FunctionCall",
+     "total_ms": 3252.24
+    },
+    {
+     "name": "Commit",
+     "total_ms": 3093.42
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame::commit",
+     "total_ms": 2635.64
+    },
+    {
+     "name": "LayerTreeHost::WaitForCommitCompletion",
+     "total_ms": 2533.5
+    },
+    {
+     "name": "Document::UpdateStyleAndLayout",
+     "total_ms": 2024.82
+    },
+    {
+     "name": "WebFrameWidgetImpl::UpdateLifecycle",
+     "total_ms": 1968.9
+    },
+    {
+     "name": "Blink.ForcedStyleAndLayout.UpdateTime",
+     "total_ms": 1860.88
+    },
+    {
+     "name": "LocalFrameView::UpdateStyleAndLayout",
+     "total_ms": 1684.3
+    },
+    {
+     "name": "LocalFrameView::RunPaintLifecyclePhase",
+     "total_ms": 1379.8
+    },
+    {
+     "name": "Blink.Layout.UpdateTime",
+     "total_ms": 1277.07
+    },
+    {
+     "name": "LocalFrameView::layout",
+     "total_ms": 1233.4
+    },
+    {
+     "name": "Layout",
+     "total_ms": 1193.2
+    },
+    {
+     "name": "Paint",
+     "total_ms": 1191.58
+    },
+    {
+     "name": "LocalFrameView::performLayout",
+     "total_ms": 1159.62
+    },
+    {
+     "name": "Blink.Paint.UpdateTime",
+     "total_ms": 985.83
+    },
+    {
+     "name": "FrameSelection::SetSelection",
+     "total_ms": 590.4
+    },
+    {
+     "name": "Editor::SyncSelection",
+     "total_ms": 432.92
+    },
+    {
+     "name": "AsyncTask Run",
+     "total_ms": 392.65
+    },
+    {
+     "name": "InlineNode::ShapeTextIncludingFirstLine",
+     "total_ms": 389.72
+    },
+    {
+     "name": "WebFrameWidgetImpl::BeginMainFrame",
+     "total_ms": 370.87
+    }
+   ]
+  },
+  "I0": {
+   "keystrokes": 1165,
+   "main_thread_events": {
+    "EventDispatch": {
+     "n": 8009,
+     "mean": 0.5881,
+     "sd": 1.3621,
+     "cv": 2.3163,
+     "mad": 0.047,
+     "p50": 0.048,
+     "p95": 3.518,
+     "p99": 5.277,
+     "p999": 14.805,
+     "max": 25.127,
+     "p999_conservative": false,
+     "total_ms": 4709.7
+    },
+    "FunctionCall": {
+     "n": 4660,
+     "mean": 0.2171,
+     "sd": 0.7545,
+     "cv": 3.4755,
+     "mad": 0.027,
+     "p50": 0.047,
+     "p95": 1.653,
+     "p99": 3.251,
+     "p999": 7.528,
+     "max": 21.663,
+     "p999_conservative": false,
+     "total_ms": 1011.66
+    },
+    "UpdateLayoutTree": {
+     "n": 1303,
+     "mean": 0.1181,
+     "sd": 0.4132,
+     "cv": 3.4981,
+     "mad": 0.011,
+     "p50": 0.036,
+     "p95": 0.136,
+     "p99": 2.471,
+     "p999": 3.359,
+     "max": 3.403,
+     "p999_conservative": false,
+     "total_ms": 153.9
+    },
+    "Layout": {
+     "n": 1389,
+     "mean": 0.287,
+     "sd": 0.6923,
+     "cv": 2.4125,
+     "mad": 0.028,
+     "p50": 0.108,
+     "p95": 1.792,
+     "p99": 3.227,
+     "p999": 4.356,
+     "max": 11.153,
+     "p999_conservative": false,
+     "total_ms": 398.63
+    },
+    "PrePaint": {
+     "n": 1224,
+     "mean": 0.2146,
+     "sd": 0.6007,
+     "cv": 2.7995,
+     "mad": 0.017,
+     "p50": 0.06,
+     "p95": 1.743,
+     "p99": 3.199,
+     "p999": 3.295,
+     "max": 3.391,
+     "p999_conservative": false,
+     "total_ms": 262.63
+    },
+    "Paint": {
+     "n": 2404,
+     "mean": 0.3088,
+     "sd": 1.0313,
+     "cv": 3.3395,
+     "mad": 0.02,
+     "p50": 0.063,
+     "p95": 2.577,
+     "p99": 3.239,
+     "p999": 3.441,
+     "max": 25.432,
+     "p999_conservative": false,
+     "total_ms": 742.39
+    },
+    "Layerize": {
+     "n": 1222,
+     "mean": 0.2665,
+     "sd": 0.6931,
+     "cv": 2.6011,
+     "mad": 0.016,
+     "p50": 0.059,
+     "p95": 2.288,
+     "p99": 3.196,
+     "p999": 3.35,
+     "max": 3.571,
+     "p999_conservative": false,
+     "total_ms": 325.62
+    },
+    "Commit": {
+     "n": 1224,
+     "mean": 1.1357,
+     "sd": 2.3516,
+     "cv": 2.0707,
+     "mad": 0.101,
+     "p50": 0.226,
+     "p95": 3.843,
+     "p99": 10.152,
+     "p999": 25.829,
+     "max": 37.349,
+     "p999_conservative": false,
+     "total_ms": 1390.05
+    },
+    "HitTest": {
+     "n": 26,
+     "mean": 0.0097,
+     "sd": 0.0103,
+     "cv": 1.0674,
+     "mad": 0.007,
+     "p50": 0.009,
+     "p95": 0.028,
+     "p99": 0.045,
+     "p999": 0.045,
+     "max": 0.045,
+     "p999_conservative": true,
+     "total_ms": 0.25
+    },
+    "MajorGC": {
+     "n": 5,
+     "mean": 8.7566,
+     "sd": 3.648,
+     "cv": 0.4166,
+     "mad": 2.43,
+     "p50": 9.753,
+     "p95": 12.183,
+     "p99": 12.183,
+     "p999": 12.183,
+     "max": 12.183,
+     "p999_conservative": true,
+     "total_ms": 43.78
+    },
+    "V8.GC_MARK_COMPACTOR": {
+     "n": 5,
+     "mean": 8.7044,
+     "sd": 3.645,
+     "cv": 0.4187,
+     "mad": 2.515,
+     "p50": 9.635,
+     "p95": 12.15,
+     "p99": 12.15,
+     "p999": 12.15,
+     "max": 12.15,
+     "p999_conservative": true,
+     "total_ms": 43.52
+    }
+   },
+   "top_main_thread_event_totals": [
+    {
+     "name": "RunTask",
+     "total_ms": 7561.34
+    },
+    {
+     "name": "EventDispatch",
+     "total_ms": 4709.7
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame",
+     "total_ms": 3377.78
+    },
+    {
+     "name": "Editor::HandleKeyboardEvent",
+     "total_ms": 2007.86
+    },
+    {
+     "name": "TypingCommand::InsertText",
+     "total_ms": 1772.45
+    },
+    {
+     "name": "WebFrameWidgetImpl::UpdateLifecycle",
+     "total_ms": 1463.67
+    },
+    {
+     "name": "Commit",
+     "total_ms": 1390.05
+    },
+    {
+     "name": "ProxyMain::BeginMainFrame::commit",
+     "total_ms": 1069.11
+    },
+    {
+     "name": "Document::UpdateStyleAndLayout",
+     "total_ms": 1018.71
+    },
+    {
+     "name": "FunctionCall",
+     "total_ms": 1011.66
+    },
+    {
+     "name": "LayerTreeHost::WaitForCommitCompletion",
+     "total_ms": 1002.37
+    },
+    {
+     "name": "LocalFrameView::RunPaintLifecyclePhase",
+     "total_ms": 980.93
+    },
+    {
+     "name": "Blink.ForcedStyleAndLayout.UpdateTime",
+     "total_ms": 878.14
+    },
+    {
+     "name": "LocalFrameView::UpdateStyleAndLayout",
+     "total_ms": 776.89
+    },
+    {
+     "name": "Paint",
+     "total_ms": 742.39
+    },
+    {
+     "name": "Blink.Paint.UpdateTime",
+     "total_ms": 605.34
+    },
+    {
+     "name": "Blink.Layout.UpdateTime",
+     "total_ms": 431.08
+    },
+    {
+     "name": "LocalFrameView::layout",
+     "total_ms": 406.91
+    },
+    {
+     "name": "Layout",
+     "total_ms": 398.63
+    },
+    {
+     "name": "LocalFrameView::performLayout",
+     "total_ms": 383.32
+    },
+    {
+     "name": "AsyncTask Run",
+     "total_ms": 351.34
+    },
+    {
+     "name": "LocalFrameView::pushPaintArtifactToCompositor",
+     "total_ms": 348.21
+    },
+    {
+     "name": "FrameSelection::SetSelection",
+     "total_ms": 340.39
+    },
+    {
+     "name": "Blink.CompositingCommit.UpdateTime",
+     "total_ms": 329.65
+    },
+    {
+     "name": "Layerize",
+     "total_ms": 325.62
+    }
+   ]
+  }
+ }
+}

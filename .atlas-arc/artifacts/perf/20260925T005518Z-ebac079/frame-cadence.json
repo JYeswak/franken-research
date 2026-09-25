@@ -1,0 +1,38 @@
+{
+ "note": "A trivial DOM change needs a median ~1 frame; tails here are headless frame scheduling on a loaded host, not page work.",
+ "results": {
+  "headless_default": {
+   "flags": [],
+   "raf_interval_ms": {
+    "n": 120,
+    "p50": 19.4,
+    "p95": 38.2,
+    "max": 48.3
+   },
+   "dom_change_to_next_frame_ms": {
+    "n": 100,
+    "p50": 0.4,
+    "p95": 17.7,
+    "max": 31.8
+   }
+  },
+  "headless_unlocked": {
+   "flags": [
+    "--disable-frame-rate-limit",
+    "--disable-gpu-vsync"
+   ],
+   "raf_interval_ms": {
+    "n": 120,
+    "p50": 81.7,
+    "p95": 83.3,
+    "max": 84.9
+   },
+   "dom_change_to_next_frame_ms": {
+    "n": 100,
+    "p50": 0.4,
+    "p95": 0.9,
+    "max": 68.2
+   }
+  }
+ }
+}

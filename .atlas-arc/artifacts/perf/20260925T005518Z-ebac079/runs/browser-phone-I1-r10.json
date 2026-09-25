@@ -1,0 +1,33 @@
+{
+ "candidate": "I1",
+ "profile": "phone",
+ "run": 10,
+ "metric": "key2layout",
+ "n": 1165,
+ "mean": 9.0735,
+ "sd": 12.6839,
+ "cv": 1.3979,
+ "mad": 2.3,
+ "p50": 5.4,
+ "p95": 29.5,
+ "p99": 73.1,
+ "p999": 117.6,
+ "max": 122.3,
+ "p999_conservative": false,
+ "p95_ms": 29.5,
+ "key2paint": {
+  "n": 1165,
+  "mean": 20.5732,
+  "sd": 23.4876,
+  "cv": 1.1417,
+  "mad": 6.1,
+  "p50": 12.4,
+  "p95": 68.2,
+  "p99": 124.7,
+  "p999": 202.3,
+  "max": 245.9,
+  "p999_conservative": false
+ },
+ "longtasks_typing": 30,
+ "longtask_max_ms": 244
+}

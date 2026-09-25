@@ -1,0 +1,33 @@
+{
+ "candidate": "B",
+ "profile": "desktop",
+ "run": 10,
+ "metric": "key2layout",
+ "n": 1165,
+ "mean": 3.7252,
+ "sd": 8.3763,
+ "cv": 2.2486,
+ "mad": 0.7,
+ "p50": 2.1,
+ "p95": 7.9,
+ "p99": 53.4,
+ "p999": 82.8,
+ "max": 85,
+ "p999_conservative": false,
+ "p95_ms": 7.9,
+ "key2paint": {
+  "n": 1165,
+  "mean": 5.149,
+  "sd": 10.0255,
+  "cv": 1.9471,
+  "mad": 1,
+  "p50": 2.9,
+  "p95": 13.1,
+  "p99": 73.9,
+  "p999": 87.2,
+  "max": 104.8,
+  "p999_conservative": false
+ },
+ "longtasks_typing": 0,
+ "longtask_max_ms": 0
+}

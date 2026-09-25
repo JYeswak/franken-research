@@ -1,0 +1,7 @@
+{
+ "nonempty_queries": 1148,
+ "identical_top3_order": 875,
+ "identical_top3_rate": 0.7622,
+ "mean_top3_overlap": 0.9559,
+ "mean_top10_overlap": 0.9751
+}

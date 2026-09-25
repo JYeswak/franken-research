@@ -1,0 +1,513 @@
+## node-A-core
+file                                      p95_ms
+runs/node-A-core-r01.json                     0.47
+runs/node-A-core-r02.json                     0.45
+runs/node-A-core-r03.json                     0.47
+runs/node-A-core-r04.json                     0.47
+runs/node-A-core-r05.json                     0.45
+runs/node-A-core-r06.json                     0.50
+runs/node-A-core-r07.json                     0.44
+runs/node-A-core-r08.json                     0.47
+runs/node-A-core-r09.json                     0.46
+runs/node-A-core-r10.json                     0.42
+runs/node-A-core-r11.json                     0.46
+runs/node-A-core-r12.json                     0.47
+runs/node-A-core-r13.json                     0.48
+runs/node-A-core-r14.json                     0.45
+runs/node-A-core-r15.json                     0.43
+runs/node-A-core-r16.json                     0.33
+runs/node-A-core-r17.json                     0.46
+runs/node-A-core-r18.json                     0.47
+runs/node-A-core-r19.json                     0.47
+runs/node-A-core-r20.json                     0.47
+
+Median p95: 0.46 ms
+Max drift:  28.6%
+Verdict: ESCALATE — p95 drift > 20%
+
+## node-A-full-qidx
+file                                      p95_ms
+runs/node-A-full-qidx-r01.json                2.47
+runs/node-A-full-qidx-r02.json                2.45
+runs/node-A-full-qidx-r03.json                2.48
+runs/node-A-full-qidx-r04.json                2.54
+runs/node-A-full-qidx-r05.json                2.37
+runs/node-A-full-qidx-r06.json                2.52
+runs/node-A-full-qidx-r07.json                2.55
+runs/node-A-full-qidx-r08.json                2.47
+runs/node-A-full-qidx-r09.json                2.41
+runs/node-A-full-qidx-r10.json                2.37
+runs/node-A-full-qidx-r11.json                2.51
+runs/node-A-full-qidx-r12.json                2.48
+runs/node-A-full-qidx-r13.json                2.75
+runs/node-A-full-qidx-r14.json                2.32
+runs/node-A-full-qidx-r15.json                2.27
+runs/node-A-full-qidx-r16.json                5.26
+runs/node-A-full-qidx-r17.json                2.37
+runs/node-A-full-qidx-r18.json                2.22
+runs/node-A-full-qidx-r19.json                2.65
+runs/node-A-full-qidx-r20.json                2.52
+
+Median p95: 2.47 ms
+Max drift:  112.9%
+Verdict: ESCALATE — p95 drift > 20%
+
+## node-A-full
+file                                      p95_ms
+runs/node-A-full-r01.json                     2.45
+runs/node-A-full-r02.json                     2.38
+runs/node-A-full-r03.json                     2.30
+runs/node-A-full-r04.json                     2.40
+runs/node-A-full-r05.json                     2.35
+runs/node-A-full-r06.json                     2.43
+runs/node-A-full-r07.json                     2.44
+runs/node-A-full-r08.json                     2.36
+runs/node-A-full-r09.json                     2.48
+runs/node-A-full-r10.json                     2.45
+runs/node-A-full-r11.json                     2.32
+runs/node-A-full-r12.json                     2.42
+runs/node-A-full-r13.json                     2.43
+runs/node-A-full-r14.json                     2.21
+runs/node-A-full-r15.json                     2.32
+runs/node-A-full-r16.json                     2.33
+runs/node-A-full-r17.json                     2.19
+runs/node-A-full-r18.json                     2.44
+runs/node-A-full-r19.json                     2.49
+runs/node-A-full-r20.json                     2.51
+
+Median p95: 2.41 ms
+Max drift:  9.0%
+Verdict: NOISE (within envelope)
+
+## node-B-full-worker
+file                                      p95_ms
+runs/node-B-full-worker-r01.json              2.60
+runs/node-B-full-worker-r02.json              2.56
+runs/node-B-full-worker-r03.json              2.40
+runs/node-B-full-worker-r04.json              2.37
+runs/node-B-full-worker-r05.json              2.95
+runs/node-B-full-worker-r06.json              2.63
+runs/node-B-full-worker-r07.json              2.72
+runs/node-B-full-worker-r08.json              2.44
+runs/node-B-full-worker-r09.json              3.00
+runs/node-B-full-worker-r10.json              2.50
+runs/node-B-full-worker-r11.json              2.86
+runs/node-B-full-worker-r12.json              2.85
+runs/node-B-full-worker-r13.json              4.23
+runs/node-B-full-worker-r14.json              2.28
+runs/node-B-full-worker-r15.json              2.71
+runs/node-B-full-worker-r16.json              2.43
+runs/node-B-full-worker-r17.json              2.56
+runs/node-B-full-worker-r18.json              3.49
+runs/node-B-full-worker-r19.json              2.92
+runs/node-B-full-worker-r20.json              6.91
+
+Median p95: 2.67 ms
+Max drift:  158.9%
+Verdict: ESCALATE — p95 drift > 20%
+
+## node-C-core
+file                                      p95_ms
+runs/node-C-core-r01.json                     2.64
+runs/node-C-core-r02.json                     2.52
+runs/node-C-core-r03.json                     2.64
+runs/node-C-core-r04.json                     3.07
+runs/node-C-core-r05.json                     3.53
+runs/node-C-core-r06.json                     2.99
+runs/node-C-core-r07.json                     2.61
+runs/node-C-core-r08.json                     2.85
+runs/node-C-core-r09.json                     3.11
+runs/node-C-core-r10.json                     2.57
+runs/node-C-core-r11.json                     3.36
+runs/node-C-core-r12.json                     2.56
+runs/node-C-core-r13.json                     3.31
+runs/node-C-core-r14.json                     3.01
+runs/node-C-core-r15.json                     2.41
+runs/node-C-core-r16.json                     2.62
+runs/node-C-core-r17.json                     4.21
+runs/node-C-core-r18.json                     3.51
+runs/node-C-core-r19.json                     3.38
+runs/node-C-core-r20.json                     2.59
+
+Median p95: 2.92 ms
+Max drift:  44.2%
+Verdict: ESCALATE — p95 drift > 20%
+
+## node-C-full-fuzzy
+file                                      p95_ms
+runs/node-C-full-fuzzy-r01.json              15.66
+runs/node-C-full-fuzzy-r02.json              15.17
+runs/node-C-full-fuzzy-r03.json              17.01
+runs/node-C-full-fuzzy-r04.json              18.52
+runs/node-C-full-fuzzy-r05.json              16.84
+runs/node-C-full-fuzzy-r06.json              16.64
+runs/node-C-full-fuzzy-r07.json              18.91
+runs/node-C-full-fuzzy-r08.json              17.86
+runs/node-C-full-fuzzy-r09.json              17.86
+runs/node-C-full-fuzzy-r10.json              17.47
+runs/node-C-full-fuzzy-r11.json              17.54
+runs/node-C-full-fuzzy-r12.json              19.29
+runs/node-C-full-fuzzy-r13.json              18.87
+runs/node-C-full-fuzzy-r14.json              14.08
+runs/node-C-full-fuzzy-r15.json              14.14
+runs/node-C-full-fuzzy-r16.json              20.92
+runs/node-C-full-fuzzy-r17.json              20.43
+runs/node-C-full-fuzzy-r18.json              17.31
+runs/node-C-full-fuzzy-r19.json              17.11
+runs/node-C-full-fuzzy-r20.json              20.49
+
+Median p95: 17.50 ms
+Max drift:  19.6%
+Verdict: INVESTIGATE — p95 drift > 10%
+
+## node-C-full
+file                                      p95_ms
+runs/node-C-full-r01.json                    15.39
+runs/node-C-full-r02.json                    14.09
+runs/node-C-full-r03.json                    17.21
+runs/node-C-full-r04.json                    16.67
+runs/node-C-full-r05.json                    14.27
+runs/node-C-full-r06.json                    17.14
+runs/node-C-full-r07.json                    17.70
+runs/node-C-full-r08.json                    15.97
+runs/node-C-full-r09.json                    16.45
+runs/node-C-full-r10.json                    15.61
+runs/node-C-full-r11.json                    16.66
+runs/node-C-full-r12.json                    18.32
+runs/node-C-full-r13.json                    17.19
+runs/node-C-full-r14.json                    19.62
+runs/node-C-full-r15.json                    14.14
+runs/node-C-full-r16.json                    13.83
+runs/node-C-full-r17.json                    13.93
+runs/node-C-full-r18.json                    15.43
+runs/node-C-full-r19.json                    17.29
+runs/node-C-full-r20.json                    14.00
+
+Median p95: 16.21 ms
+Max drift:  21.0%
+Verdict: ESCALATE — p95 drift > 20%
+
+## node-I0-44
+file                                      p95_ms
+runs/node-I0-44-r01.json                      0.00
+runs/node-I0-44-r02.json                      0.00
+runs/node-I0-44-r03.json                      0.00
+runs/node-I0-44-r04.json                      0.00
+runs/node-I0-44-r05.json                      0.00
+runs/node-I0-44-r06.json                      0.00
+runs/node-I0-44-r07.json                      0.00
+runs/node-I0-44-r08.json                      0.00
+runs/node-I0-44-r09.json                      0.00
+runs/node-I0-44-r10.json                      0.00
+runs/node-I0-44-r11.json                      0.00
+runs/node-I0-44-r12.json                      0.00
+runs/node-I0-44-r13.json                      0.00
+runs/node-I0-44-r14.json                      0.00
+runs/node-I0-44-r15.json                      0.00
+runs/node-I0-44-r16.json                      0.00
+runs/node-I0-44-r17.json                      0.00
+runs/node-I0-44-r18.json                      0.00
+runs/node-I0-44-r19.json                      0.00
+runs/node-I0-44-r20.json                      0.00
+
+Median p95: 0.00 ms
+Max drift:  28.0%
+Verdict: ESCALATE — p95 drift > 20%
+
+## node-I1-full
+file                                      p95_ms
+runs/node-I1-full-r01.json                    0.42
+runs/node-I1-full-r02.json                    0.39
+runs/node-I1-full-r03.json                    0.38
+runs/node-I1-full-r04.json                    0.34
+runs/node-I1-full-r05.json                    0.39
+runs/node-I1-full-r06.json                    0.40
+runs/node-I1-full-r07.json                    0.42
+runs/node-I1-full-r08.json                    0.36
+runs/node-I1-full-r09.json                    0.36
+runs/node-I1-full-r10.json                    0.38
+runs/node-I1-full-r11.json                    0.34
+runs/node-I1-full-r12.json                    0.38
+runs/node-I1-full-r13.json                    0.38
+runs/node-I1-full-r14.json                    0.35
+runs/node-I1-full-r15.json                    0.36
+runs/node-I1-full-r16.json                    0.39
+runs/node-I1-full-r17.json                    0.34
+runs/node-I1-full-r18.json                    0.39
+runs/node-I1-full-r19.json                    0.37
+runs/node-I1-full-r20.json                    0.42
+
+Median p95: 0.38 ms
+Max drift:  11.9%
+Verdict: INVESTIGATE — p95 drift > 10%
+
+## browser-desktop-A
+file                                      p95_ms
+runs/browser-desktop-A-r01.json               4.00
+runs/browser-desktop-A-r02.json               4.20
+runs/browser-desktop-A-r03.json               4.10
+runs/browser-desktop-A-r04.json               4.30
+runs/browser-desktop-A-r05.json               4.30
+runs/browser-desktop-A-r06.json               4.40
+runs/browser-desktop-A-r07.json               5.70
+runs/browser-desktop-A-r08.json               4.10
+runs/browser-desktop-A-r09.json               4.50
+runs/browser-desktop-A-r10.json               3.90
+runs/browser-desktop-A-r11.json               3.60
+runs/browser-desktop-A-r12.json               3.70
+runs/browser-desktop-A-r13.json               4.80
+runs/browser-desktop-A-r14.json               4.20
+runs/browser-desktop-A-r15.json               5.20
+runs/browser-desktop-A-r16.json               8.30
+runs/browser-desktop-A-r17.json               7.10
+runs/browser-desktop-A-r18.json              26.60
+runs/browser-desktop-A-r19.json               4.70
+runs/browser-desktop-A-r20.json               5.10
+
+Median p95: 4.35 ms
+Max drift:  511.5%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-desktop-B
+file                                      p95_ms
+runs/browser-desktop-B-r01.json               6.30
+runs/browser-desktop-B-r02.json               5.60
+runs/browser-desktop-B-r03.json               6.30
+runs/browser-desktop-B-r04.json               9.50
+runs/browser-desktop-B-r05.json              12.30
+runs/browser-desktop-B-r06.json               9.80
+runs/browser-desktop-B-r07.json               8.00
+runs/browser-desktop-B-r08.json               6.90
+runs/browser-desktop-B-r09.json               5.90
+runs/browser-desktop-B-r10.json               7.90
+runs/browser-desktop-B-r11.json               4.30
+runs/browser-desktop-B-r12.json               6.40
+runs/browser-desktop-B-r13.json               5.30
+runs/browser-desktop-B-r14.json              19.80
+runs/browser-desktop-B-r15.json              23.10
+runs/browser-desktop-B-r16.json               9.10
+runs/browser-desktop-B-r17.json              15.30
+runs/browser-desktop-B-r18.json               9.40
+runs/browser-desktop-B-r19.json               9.90
+runs/browser-desktop-B-r20.json              12.20
+
+Median p95: 8.55 ms
+Max drift:  170.2%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-desktop-C
+file                                      p95_ms
+runs/browser-desktop-C-r01.json              13.20
+runs/browser-desktop-C-r02.json              13.60
+runs/browser-desktop-C-r03.json              16.10
+runs/browser-desktop-C-r04.json              16.50
+runs/browser-desktop-C-r05.json              15.20
+runs/browser-desktop-C-r06.json              17.40
+runs/browser-desktop-C-r07.json              13.60
+runs/browser-desktop-C-r08.json              13.00
+runs/browser-desktop-C-r09.json              14.00
+runs/browser-desktop-C-r10.json              12.40
+runs/browser-desktop-C-r11.json              11.10
+runs/browser-desktop-C-r12.json              13.00
+runs/browser-desktop-C-r13.json              12.00
+runs/browser-desktop-C-r14.json              15.50
+runs/browser-desktop-C-r15.json              25.70
+runs/browser-desktop-C-r16.json              18.00
+runs/browser-desktop-C-r17.json              19.20
+runs/browser-desktop-C-r18.json              44.60
+runs/browser-desktop-C-r19.json              13.00
+runs/browser-desktop-C-r20.json              14.90
+
+Median p95: 14.45 ms
+Max drift:  208.7%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-desktop-I0
+file                                      p95_ms
+runs/browser-desktop-I0-r01.json              3.00
+runs/browser-desktop-I0-r02.json              1.30
+runs/browser-desktop-I0-r03.json              2.20
+runs/browser-desktop-I0-r04.json              1.50
+runs/browser-desktop-I0-r05.json              3.30
+runs/browser-desktop-I0-r06.json              2.00
+runs/browser-desktop-I0-r07.json              1.80
+runs/browser-desktop-I0-r08.json              1.30
+runs/browser-desktop-I0-r09.json              1.90
+runs/browser-desktop-I0-r10.json              1.00
+runs/browser-desktop-I0-r11.json              1.10
+runs/browser-desktop-I0-r12.json              1.10
+runs/browser-desktop-I0-r13.json              2.20
+runs/browser-desktop-I0-r14.json              1.30
+runs/browser-desktop-I0-r15.json              1.70
+runs/browser-desktop-I0-r16.json              2.40
+runs/browser-desktop-I0-r17.json              3.20
+runs/browser-desktop-I0-r18.json              4.50
+runs/browser-desktop-I0-r19.json              1.30
+runs/browser-desktop-I0-r20.json              1.60
+
+Median p95: 1.75 ms
+Max drift:  157.1%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-desktop-I1
+file                                      p95_ms
+runs/browser-desktop-I1-r01.json              2.70
+runs/browser-desktop-I1-r02.json              2.40
+runs/browser-desktop-I1-r03.json              2.80
+runs/browser-desktop-I1-r04.json              4.50
+runs/browser-desktop-I1-r05.json              3.00
+runs/browser-desktop-I1-r06.json              2.40
+runs/browser-desktop-I1-r07.json              3.20
+runs/browser-desktop-I1-r08.json              2.40
+runs/browser-desktop-I1-r09.json              2.00
+runs/browser-desktop-I1-r10.json              2.00
+runs/browser-desktop-I1-r11.json              2.00
+runs/browser-desktop-I1-r12.json              1.70
+runs/browser-desktop-I1-r13.json              2.90
+runs/browser-desktop-I1-r14.json              2.50
+runs/browser-desktop-I1-r15.json              3.40
+runs/browser-desktop-I1-r16.json              8.60
+runs/browser-desktop-I1-r17.json              6.50
+runs/browser-desktop-I1-r18.json              7.70
+runs/browser-desktop-I1-r19.json              4.00
+runs/browser-desktop-I1-r20.json              2.40
+
+Median p95: 2.75 ms
+Max drift:  212.7%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-phone-A
+file                                      p95_ms
+runs/browser-phone-A-r01.json                14.40
+runs/browser-phone-A-r02.json                19.70
+runs/browser-phone-A-r03.json                43.80
+runs/browser-phone-A-r04.json                18.80
+runs/browser-phone-A-r05.json                19.40
+runs/browser-phone-A-r06.json                31.30
+runs/browser-phone-A-r07.json                34.20
+runs/browser-phone-A-r08.json                90.20
+runs/browser-phone-A-r09.json                30.70
+runs/browser-phone-A-r10.json                44.70
+runs/browser-phone-A-r11.json                43.10
+runs/browser-phone-A-r12.json               106.20
+runs/browser-phone-A-r13.json               141.60
+runs/browser-phone-A-r14.json                98.30
+runs/browser-phone-A-r15.json                15.20
+runs/browser-phone-A-r16.json                17.70
+runs/browser-phone-A-r17.json                26.60
+runs/browser-phone-A-r18.json                41.90
+runs/browser-phone-A-r19.json                17.10
+runs/browser-phone-A-r20.json                20.50
+
+Median p95: 31.00 ms
+Max drift:  356.8%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-phone-B
+file                                      p95_ms
+runs/browser-phone-B-r01.json                17.20
+runs/browser-phone-B-r02.json                17.90
+runs/browser-phone-B-r03.json                41.50
+runs/browser-phone-B-r04.json                55.10
+runs/browser-phone-B-r05.json                18.10
+runs/browser-phone-B-r06.json                59.20
+runs/browser-phone-B-r07.json               164.50
+runs/browser-phone-B-r08.json               112.80
+runs/browser-phone-B-r09.json               135.90
+runs/browser-phone-B-r10.json                45.60
+runs/browser-phone-B-r11.json                82.20
+runs/browser-phone-B-r12.json               134.80
+runs/browser-phone-B-r13.json               100.80
+runs/browser-phone-B-r14.json                96.30
+runs/browser-phone-B-r15.json                15.20
+runs/browser-phone-B-r16.json               144.50
+runs/browser-phone-B-r17.json               120.50
+runs/browser-phone-B-r18.json                60.20
+runs/browser-phone-B-r19.json                31.10
+runs/browser-phone-B-r20.json               299.70
+
+Median p95: 71.20 ms
+Max drift:  320.9%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-phone-C
+file                                      p95_ms
+runs/browser-phone-C-r01.json                41.30
+runs/browser-phone-C-r02.json                62.70
+runs/browser-phone-C-r03.json                71.40
+runs/browser-phone-C-r04.json                74.00
+runs/browser-phone-C-r05.json                62.00
+runs/browser-phone-C-r06.json                59.60
+runs/browser-phone-C-r07.json               106.70
+runs/browser-phone-C-r08.json               139.50
+runs/browser-phone-C-r09.json               180.00
+runs/browser-phone-C-r10.json                85.90
+runs/browser-phone-C-r11.json                85.50
+runs/browser-phone-C-r12.json                85.90
+runs/browser-phone-C-r13.json               119.10
+runs/browser-phone-C-r14.json               131.30
+runs/browser-phone-C-r15.json                63.50
+runs/browser-phone-C-r16.json                65.00
+runs/browser-phone-C-r17.json                76.60
+runs/browser-phone-C-r18.json                76.90
+runs/browser-phone-C-r19.json                65.80
+runs/browser-phone-C-r20.json               107.80
+
+Median p95: 76.75 ms
+Max drift:  134.5%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-phone-I0
+file                                      p95_ms
+runs/browser-phone-I0-r01.json                5.50
+runs/browser-phone-I0-r02.json                5.40
+runs/browser-phone-I0-r03.json                6.00
+runs/browser-phone-I0-r04.json               26.30
+runs/browser-phone-I0-r05.json                5.60
+runs/browser-phone-I0-r06.json               20.90
+runs/browser-phone-I0-r07.json                7.10
+runs/browser-phone-I0-r08.json               57.50
+runs/browser-phone-I0-r09.json               71.50
+runs/browser-phone-I0-r10.json               21.70
+runs/browser-phone-I0-r11.json               12.70
+runs/browser-phone-I0-r12.json               10.20
+runs/browser-phone-I0-r13.json               29.60
+runs/browser-phone-I0-r14.json               36.10
+runs/browser-phone-I0-r15.json               23.00
+runs/browser-phone-I0-r16.json                3.90
+runs/browser-phone-I0-r17.json                7.10
+runs/browser-phone-I0-r18.json               22.50
+runs/browser-phone-I0-r19.json                8.30
+runs/browser-phone-I0-r20.json               14.00
+
+Median p95: 13.35 ms
+Max drift:  435.6%
+Verdict: ESCALATE — p95 drift > 20%
+
+## browser-phone-I1
+file                                      p95_ms
+runs/browser-phone-I1-r01.json               10.70
+runs/browser-phone-I1-r02.json                8.90
+runs/browser-phone-I1-r03.json               17.70
+runs/browser-phone-I1-r04.json               31.10
+runs/browser-phone-I1-r05.json               11.20
+runs/browser-phone-I1-r06.json               28.10
+runs/browser-phone-I1-r07.json               22.60
+runs/browser-phone-I1-r08.json               24.10
+runs/browser-phone-I1-r09.json               30.50
+runs/browser-phone-I1-r10.json               29.50
+runs/browser-phone-I1-r11.json               14.00
+runs/browser-phone-I1-r12.json               39.90
+runs/browser-phone-I1-r13.json               65.40
+runs/browser-phone-I1-r14.json               42.40
+runs/browser-phone-I1-r15.json                9.30
+runs/browser-phone-I1-r16.json               11.70
+runs/browser-phone-I1-r17.json               29.00
+runs/browser-phone-I1-r18.json               11.20
+runs/browser-phone-I1-r19.json               13.20
+runs/browser-phone-I1-r20.json              148.70
+
+Median p95: 23.35 ms
+Max drift:  536.8%
+Verdict: ESCALATE — p95 drift > 20%
+

@@ -1,0 +1,173 @@
+{
+ "note": "diagnostic passes, separate from the timing runs",
+ "chrome_flags": [
+  "--disable-frame-rate-limit",
+  "--disable-gpu-vsync"
+ ],
+ "results": {
+  "A": [
+   {
+    "pass": 1,
+    "loadavg_1m_start": 29.2,
+    "loadavg_1m_end": 31.1,
+    "longtasks": [
+     {
+      "start": 3282.9,
+      "dur": 93,
+      "q": "r",
+      "phase_ms": {
+       "inputDelay": 73.4,
+       "search": 18.2,
+       "render": 0.1,
+       "layout": 5.7,
+       "toFrame": 12.9
+      }
+     },
+     {
+      "start": 3663.2,
+      "dur": 84,
+      "q": "rust",
+      "phase_ms": {
+       "inputDelay": 54.4,
+       "search": 32.4,
+       "render": 0.2,
+       "layout": 3.8,
+       "toFrame": 55.3
+      }
+     },
+     {
+      "start": 3748.1,
+      "dur": 50,
+      "q": "rust",
+      "phase_ms": {
+       "inputDelay": 54.4,
+       "search": 32.4,
+       "render": 0.2,
+       "layout": 3.8,
+       "toFrame": 55.3
+      }
+     },
+     {
+      "start": 4827.6,
+      "dur": 57,
+      "q": "rust cli with sqlite s",
+      "phase_ms": {
+       "inputDelay": 24.7,
+       "search": 42.2,
+       "render": 0.2,
+       "layout": 7.1,
+       "toFrame": 14
+      }
+     },
+     {
+      "start": 5401.7,
+      "dur": 98,
+      "q": "stop ",
+      "phase_ms": {
+       "inputDelay": 5.5,
+       "search": 0.1,
+       "render": 0.1,
+       "layout": 10.5,
+       "toFrame": 98.6
+      }
+     },
+     {
+      "start": 5534.6,
+      "dur": 80,
+      "q": "stop a",
+      "phase_ms": {
+       "inputDelay": 5.3,
+       "search": 42.1,
+       "render": 0.2,
+       "layout": 37.1,
+       "toFrame": 44.7
+      }
+     },
+     {
+      "start": 6026.4,
+      "dur": 51,
+      "q": "stop agents cl",
+      "phase_ms": {
+       "inputDelay": 12.1,
+       "search": 4,
+       "render": 0.2,
+       "layout": 6.3,
+       "toFrame": 62.5
+      }
+     },
+     {
+      "start": 6300.3,
+      "dur": 50,
+      "q": "stop agents claim",
+      "phase_ms": {
+       "inputDelay": 4.6,
+       "search": 0.3,
+       "render": 3.3,
+       "layout": 7.2,
+       "toFrame": 68.1
+      }
+     },
+     {
+      "start": 7075.9,
+      "dur": 53,
+      "q": "stop agents claiming tests p",
+      "phase_ms": {
+       "inputDelay": 16.3,
+       "search": 4.3,
+       "render": 0.2,
+       "layout": 4,
+       "toFrame": 54.3
+      }
+     }
+    ]
+   },
+   {
+    "pass": 2,
+    "loadavg_1m_start": 31.1,
+    "loadavg_1m_end": 28.3,
+    "longtasks": [
+     {
+      "start": 14936.7,
+      "dur": 60,
+      "q": "supply chain audit cargo deny",
+      "phase_ms": {
+       "inputDelay": 8.2,
+       "search": 4.8,
+       "render": 4.3,
+       "layout": 0.8,
+       "toFrame": 62
+      }
+     }
+    ]
+   }
+  ],
+  "B": [
+   {
+    "pass": 1,
+    "loadavg_1m_start": 28.3,
+    "loadavg_1m_end": 27.6,
+    "longtasks": []
+   },
+   {
+    "pass": 2,
+    "loadavg_1m_start": 27.6,
+    "loadavg_1m_end": 25.6,
+    "longtasks": []
+   }
+  ],
+  "I0": [
+   {
+    "pass": 1,
+    "loadavg_1m_start": 25.6,
+    "loadavg_1m_end": 25.9,
+    "longtasks": []
+   },
+   {
+    "pass": 2,
+    "loadavg_1m_start": 25.9,
+    "loadavg_1m_end": 25.8,
+    "longtasks": []
+   }
+  ]
+ }
+}

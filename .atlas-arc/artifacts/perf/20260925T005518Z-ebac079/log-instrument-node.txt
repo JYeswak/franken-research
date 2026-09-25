@@ -1,0 +1,83 @@
+{
+ "spans": [
+  {
+   "span": "engineA.tokenize",
+   "cumulative_ms": 57.112,
+   "share": 0.004
+  },
+  {
+   "span": "engineA.lookup",
+   "cumulative_ms": 138.286,
+   "share": 0.0097
+  },
+  {
+   "span": "engineA.score",
+   "cumulative_ms": 5530.614,
+   "share": 0.3884
+  },
+  {
+   "span": "engineA.sort",
+   "cumulative_ms": 8491.747,
+   "share": 0.5963
+  },
+  {
+   "span": "engineA.materialize",
+   "cumulative_ms": 22.984,
+   "share": 0.0016
+  }
+ ],
+ "mean_candidates": 926.8557939914164,
+ "mean_expanded": 134.3390557939914,
+ "worst": [
+  {
+   "q": "e-poocess a",
+   "tokenize": 0.0017,
+   "lookup": 0.019,
+   "score": 7.0266,
+   "sort": 43.7526,
+   "materialize": 0.0095,
+   "expandedTerms": 887,
+   "candidates": 3320
+  },
+  {
+   "q": "bus fa",
+   "tokenize": 0.0026,
+   "lookup": 0.0051,
+   "score": 0.2064,
+   "sort": 33.5018,
+   "materialize": 0.0063,
+   "expandedTerms": 103,
+   "candidates": 1740
+  },
+  {
+   "q": "deterministic replay of",
+   "tokenize": 0.0156,
+   "lookup": 0.0111,
+   "score": 0.2326,
+   "sort": 33.0396,
+   "materialize": 0.0055,
+   "expandedTerms": 17,
+   "candidates": 1330
+  },
+  {
+   "q": "reciprocal ra",
+   "tokenize": 0.0025,
+   "lookup": 0.0044,
+   "score": 30.5993,
+   "sort": 0.8653,
+   "materialize": 0.0045,
+   "expandedTerms": 108,
+   "candidates": 921
+  },
+  {
+   "q": "crate on crattes io f",
+   "tokenize": 0.0024,
+   "lookup": 0.014,
+   "score": 26.8865,
+   "sort": 1.254,
+   "materialize": 0.0028,
+   "expandedTerms": 705,
+   "candidates": 3747
+  }
+ ]
+}

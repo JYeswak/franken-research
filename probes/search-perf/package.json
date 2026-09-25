@@ -1,0 +1,7 @@
+{
+  "name": "search-perf-probe",
+  "private": true,
+  "type": "module",
+  "description": "Measurement probe for the planned Franken Research search. No dependencies; run ./run.sh.",
+  "license": "MIT"
+}

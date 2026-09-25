@@ -1,0 +1,13 @@
+# Golden check (bench-node.mjs verify-golden): planted known-bad, then restored. 2026-09-25T01:11:43Z
+## 1. shipped engine vs golden
+{"verdict":"PASS","queries":1165,"top3_changed":0,"top4_10_changed":0,"examples":[]}
+rc=0
+## 2. planted: golden query #100 ('mcp sreve') top-1/top-2 swapped (/tmp copy)
+{"verdict":"FAIL","queries":1165,"top3_changed":1,"top4_10_changed":0,"examples":[{"q":"mcp sreve","want":["crate:dwarf_fortress_mcp/dfmcp-mcp","crate:mcp_agent_mail_rust/mcp-agent-mail","crate:mcp_agent_mail_rust/mcp-agent-mail-tools"],"got":["crate:mcp_agent_mail_rust/mcp-agent-mail","crate:dwarf_fortress_mcp/dfmcp-mcp","crate:mcp_agent_mail_rust/mcp-agent-mail-tools"]}]}
+rc=1
+## 3. planted: engine copy with PREFIX_WEIGHT 0.375 -> 0.9 (LIB=/tmp copy)
+{"verdict":"FAIL","queries":1165,"top3_changed":510,"top4_10_changed":193,"examples":[{"q":"r","want":["ra:tech-22","ra:tech-277","ra:tech-1338"],"got":["ra:tech-22","ra:tech-1338","ra:tech-1355"]},{"
+rc=1
+## 4. restored: shipped engine
+{"verdict":"PASS","queries":1165,"top3_changed":0,"top4_10_changed":0,"examples":[]}
+rc=0

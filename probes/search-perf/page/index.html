@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>search perf probe</title>
+<style>
+body{font:15px/1.4 system-ui,sans-serif;margin:16px;max-width:760px}
+input{font:inherit;width:100%;box-sizing:border-box;padding:8px}
+ol{padding-left:1.4em} li{margin:4px 0}
+.k{color:#555;font-size:12px}.b{font-size:12px;border:1px solid #999;border-radius:3px;padding:0 4px}
+.comb-opt{display:block;width:100%;text-align:left;background:none;border:0;padding:4px}
+.ometa{color:#555;font-size:12px;margin-left:8px}
+</style>
+<script>
+// Long-task observer registered before anything else runs (Long Tasks API, REQ-O2 "no task > 50 ms").
+// Entries arrive asynchronously, so phases are attributed by start time, not at delivery.
+window.__longtasks = [];
+window.__phases = [{ name: 'load', t: 0 }];
+window.__setPhase = (name) => window.__phases.push({ name, t: performance.now() });
+window.__longtasksIn = (name) => window.__longtasks.filter((e) => { let ph = 'load'; for (const p of window.__phases) if (p.t <= e.start) ph = p.name; return ph === name; });
+try { new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__longtasks.push({ start: e.startTime, dur: e.duration }); }).observe({ type: 'longtask', buffered: true }); } catch (e) { window.__longtaskError = String(e); }
+</script>
+</head><body>
+<label for="q">Search</label>
+<input id="q" type="search" autocomplete="off" spellcheck="false">
+<p id="msg" aria-live="polite"></p>
+<ol id="results"></ol>
+<div id="searchdrop" role="listbox" hidden></div>
+<script type="module" src="page/app.mjs"></script>
+</body></html>

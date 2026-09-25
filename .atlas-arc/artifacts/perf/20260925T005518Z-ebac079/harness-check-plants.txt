@@ -1,0 +1,8 @@
+# Harness query-identity check (typeAll): planted known-bad, then restored. 2026-09-25T03:10:56Z
+## 1. planted: queries.json with queries[5].q altered to 'rust cXX' (/tmp copy)
+  if (samples.length !== expect.length || mismatch >= 0) throw new Error(`typed ${samples.length} vs ${expect.length} queries; first mismatch at ${mismatch}: ${JSON.stringify(samples[mismatch]?.q)} vs ${JSON.stringify(expect[mismatch])}`);
+Error: typed 1165 vs 1165 queries; first mismatch at 5: "rust c" vs "rust cXX"
+rc=1
+## 2. restored: committed queries.json
+[longtasks desktop] I0 pass 1: 0 long tasks, load 21.6
+rc=0

@@ -1,0 +1,1814 @@
+[
+ {
+  "file": "cpu-browser-phone-A-load.cpuprofile",
+  "sampled_ms": 2822.67,
+  "idle_ms": 2444.37,
+  "busy_ms": 378.3,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 378.3,
+    "share_of_busy": 1
+   },
+   "(program)": {
+    "ms": 236.53,
+    "share_of_busy": 0.6253
+   },
+   "boot": {
+    "ms": 91.61,
+    "share_of_busy": 0.2422
+   },
+   "hydrate": {
+    "ms": 48.41,
+    "share_of_busy": 0.128
+   },
+   "(garbage collector)": {
+    "ms": 26.74,
+    "share_of_busy": 0.0707
+   },
+   "search": {
+    "ms": 5.75,
+    "share_of_busy": 0.0152
+   },
+   "accumulateScores": {
+    "ms": 3.41,
+    "share_of_busy": 0.009
+   },
+   "selectTopK": {
+    "ms": 0.22,
+    "share_of_busy": 0.0006
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 236.53,
+    "share_of_busy": 0.6253
+   },
+   {
+    "fn": "hydrate engine-a.mjs:19",
+    "self_ms": 48.41,
+    "share_of_busy": 0.128
+   },
+   {
+    "fn": "boot app.mjs:73",
+    "self_ms": 37.45,
+    "share_of_busy": 0.099
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 26.74,
+    "share_of_busy": 0.0707
+   },
+   {
+    "fn": "(anonymous) app.mjs:1",
+    "self_ms": 7.95,
+    "share_of_busy": 0.021
+   },
+   {
+    "fn": "setTimeout",
+    "self_ms": 6.84,
+    "share_of_busy": 0.0181
+   },
+   {
+    "fn": "accumulateScores engine-a.mjs:61",
+    "self_ms": 3.41,
+    "share_of_busy": 0.009
+   },
+   {
+    "fn": "f",
+    "self_ms": 3.34,
+    "share_of_busy": 0.0088
+   },
+   {
+    "fn": "(anonymous) app.mjs:39",
+    "self_ms": 3.31,
+    "share_of_busy": 0.0088
+   },
+   {
+    "fn": "search engine-a.mjs:99",
+    "self_ms": 1.61,
+    "share_of_busy": 0.0043
+   },
+   {
+    "fn": "(anonymous) tokenize.mjs:1",
+    "self_ms": 0.93,
+    "share_of_busy": 0.0025
+   },
+   {
+    "fn": "mark app.mjs:16",
+    "self_ms": 0.85,
+    "share_of_busy": 0.0022
+   },
+   {
+    "fn": "lastTokenIsPrefix tokenize.mjs:17",
+    "self_ms": 0.5,
+    "share_of_busy": 0.0013
+   },
+   {
+    "fn": "selectTopK engine-a.mjs:88",
+    "self_ms": 0.22,
+    "share_of_busy": 0.0006
+   },
+   {
+    "fn": "(anonymous)",
+    "self_ms": 0.19,
+    "share_of_busy": 0.0005
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-A-typing.cpuprofile",
+  "sampled_ms": 33722.73,
+  "idle_ms": 11973.1,
+  "busy_ms": 21749.64,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 21749.64,
+    "share_of_busy": 1
+   },
+   "(program)": {
+    "ms": 13353.48,
+    "share_of_busy": 0.614
+   },
+   "search": {
+    "ms": 2939.3,
+    "share_of_busy": 0.1351
+   },
+   "selectTopK": {
+    "ms": 1758.12,
+    "share_of_busy": 0.0808
+   },
+   "accumulateScores": {
+    "ms": 982.66,
+    "share_of_busy": 0.0452
+   },
+   "renderList": {
+    "ms": 643.62,
+    "share_of_busy": 0.0296
+   },
+   "(garbage collector)": {
+    "ms": 230.64,
+    "share_of_busy": 0.0106
+   },
+   "postMessage": {
+    "ms": 110.2,
+    "share_of_busy": 0.0051
+   },
+   "afterPaint": {
+    "ms": 42.53,
+    "share_of_busy": 0.002
+   },
+   "tokenizeQuery": {
+    "ms": 36.13,
+    "share_of_busy": 0.0017
+   },
+   "tokenize": {
+    "ms": 33.2,
+    "share_of_busy": 0.0015
+   },
+   "lookupTerms": {
+    "ms": 27.66,
+    "share_of_busy": 0.0013
+   },
+   "popcount": {
+    "ms": 22.27,
+    "share_of_busy": 0.001
+   },
+   "materialize": {
+    "ms": 16.88,
+    "share_of_busy": 0.0008
+   },
+   "lowerBound": {
+    "ms": 5.56,
+    "share_of_busy": 0.0003
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 13353.48,
+    "share_of_busy": 0.614
+   },
+   {
+    "fn": "(anonymous) app.mjs:133",
+    "self_ms": 3959,
+    "share_of_busy": 0.182
+   },
+   {
+    "fn": "accumulateScores engine-a.mjs:61",
+    "self_ms": 982.66,
+    "share_of_busy": 0.0452
+   },
+   {
+    "fn": "selectTopK engine-a.mjs:88",
+    "self_ms": 973.21,
+    "share_of_busy": 0.0447
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:90",
+    "self_ms": 639.38,
+    "share_of_busy": 0.0294
+   },
+   {
+    "fn": "renderList app.mjs:22",
+    "self_ms": 606.61,
+    "share_of_busy": 0.0279
+   },
+   {
+    "fn": "(anonymous)",
+    "self_ms": 239.79,
+    "share_of_busy": 0.011
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 230.64,
+    "share_of_busy": 0.0106
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:89",
+    "self_ms": 126.48,
+    "share_of_busy": 0.0058
+   },
+   {
+    "fn": "search engine-a.mjs:99",
+    "self_ms": 112.17,
+    "share_of_busy": 0.0052
+   },
+   {
+    "fn": "postMessage",
+    "self_ms": 110.2,
+    "share_of_busy": 0.0051
+   },
+   {
+    "fn": "(anonymous) app.mjs:41",
+    "self_ms": 78.81,
+    "share_of_busy": 0.0036
+   },
+   {
+    "fn": "MessageChannel",
+    "self_ms": 70.07,
+    "share_of_busy": 0.0032
+   },
+   {
+    "fn": "requestAnimationFrame",
+    "self_ms": 36.37,
+    "share_of_busy": 0.0017
+   },
+   {
+    "fn": "tokenize tokenize.mjs:7",
+    "self_ms": 33.2,
+    "share_of_busy": 0.0015
+   },
+   {
+    "fn": "esc app.mjs:21",
+    "self_ms": 32.63,
+    "share_of_busy": 0.0015
+   },
+   {
+    "fn": "ch.port1.onmessage app.mjs:44",
+    "self_ms": 23.29,
+    "share_of_busy": 0.0011
+   },
+   {
+    "fn": "popcount engine-a.mjs:85",
+    "self_ms": 22.27,
+    "share_of_busy": 0.001
+   },
+   {
+    "fn": "lookupTerms engine-a.mjs:43",
+    "self_ms": 22.1,
+    "share_of_busy": 0.001
+   },
+   {
+    "fn": "(anonymous) app.mjs:132",
+    "self_ms": 20.16,
+    "share_of_busy": 0.0009
+   },
+   {
+    "fn": "report app.mjs:17",
+    "self_ms": 18,
+    "share_of_busy": 0.0008
+   },
+   {
+    "fn": "now",
+    "self_ms": 13.23,
+    "share_of_busy": 0.0006
+   },
+   {
+    "fn": "materialize engine-a.mjs:95",
+    "self_ms": 10.77,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "afterPaint app.mjs:40",
+    "self_ms": 6.16,
+    "share_of_busy": 0.0003
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:96",
+    "self_ms": 6.12,
+    "share_of_busy": 0.0003
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-B-load.cpuprofile",
+  "sampled_ms": 3950.9,
+  "idle_ms": 3715.56,
+  "busy_ms": 235.34,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 235.34,
+    "share_of_busy": 1
+   },
+   "(program)": {
+    "ms": 194.13,
+    "share_of_busy": 0.8249
+   },
+   "boot": {
+    "ms": 22.79,
+    "share_of_busy": 0.0969
+   },
+   "workerCall": {
+    "ms": 5.62,
+    "share_of_busy": 0.0239
+   },
+   "fetchText": {
+    "ms": 4.18,
+    "share_of_busy": 0.0178
+   },
+   "(garbage collector)": {
+    "ms": 1.77,
+    "share_of_busy": 0.0075
+   },
+   "renderList": {
+    "ms": 0.81,
+    "share_of_busy": 0.0034
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 194.13,
+    "share_of_busy": 0.8249
+   },
+   {
+    "fn": "boot app.mjs:73",
+    "self_ms": 12.19,
+    "share_of_busy": 0.0518
+   },
+   {
+    "fn": "setTimeout",
+    "self_ms": 8.48,
+    "share_of_busy": 0.036
+   },
+   {
+    "fn": "(anonymous) app.mjs:66",
+    "self_ms": 5.62,
+    "share_of_busy": 0.0239
+   },
+   {
+    "fn": "(anonymous) app.mjs:1",
+    "self_ms": 4.54,
+    "share_of_busy": 0.0193
+   },
+   {
+    "fn": "fetch",
+    "self_ms": 4.18,
+    "share_of_busy": 0.0178
+   },
+   {
+    "fn": "(anonymous) index.js:1",
+    "self_ms": 2.72,
+    "share_of_busy": 0.0116
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 1.77,
+    "share_of_busy": 0.0075
+   },
+   {
+    "fn": "(anonymous)",
+    "self_ms": 0.89,
+    "share_of_busy": 0.0038
+   },
+   {
+    "fn": "renderList app.mjs:22",
+    "self_ms": 0.81,
+    "share_of_busy": 0.0034
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-B-typing-worker.cpuprofile",
+  "sampled_ms": 44712.53,
+  "idle_ms": 43770.86,
+  "busy_ms": 941.66,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 941.66,
+    "share_of_busy": 1
+   },
+   "search": {
+    "ms": 814.52,
+    "share_of_busy": 0.865
+   },
+   "selectTopK": {
+    "ms": 435.46,
+    "share_of_busy": 0.4624
+   },
+   "accumulateScores": {
+    "ms": 313.15,
+    "share_of_busy": 0.3326
+   },
+   "tokenizeQuery": {
+    "ms": 38.27,
+    "share_of_busy": 0.0406
+   },
+   "tokenize": {
+    "ms": 32.63,
+    "share_of_busy": 0.0346
+   },
+   "postMessage": {
+    "ms": 18.61,
+    "share_of_busy": 0.0198
+   },
+   "(program)": {
+    "ms": 16.52,
+    "share_of_busy": 0.0175
+   },
+   "(garbage collector)": {
+    "ms": 10.42,
+    "share_of_busy": 0.0111
+   },
+   "lookupTerms": {
+    "ms": 8.34,
+    "share_of_busy": 0.0089
+   },
+   "materialize": {
+    "ms": 5.6,
+    "share_of_busy": 0.0059
+   },
+   "popcount": {
+    "ms": 4.75,
+    "share_of_busy": 0.005
+   },
+   "lowerBound": {
+    "ms": 1.11,
+    "share_of_busy": 0.0012
+   }
+  },
+  "top_self": [
+   {
+    "fn": "accumulateScores engine-a.mjs:61",
+    "self_ms": 313.15,
+    "share_of_busy": 0.3326
+   },
+   {
+    "fn": "selectTopK engine-a.mjs:88",
+    "self_ms": 210.99,
+    "share_of_busy": 0.2241
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:90",
+    "self_ms": 178.45,
+    "share_of_busy": 0.1895
+   },
+   {
+    "fn": "self.onmessage worker.mjs:6",
+    "self_ms": 77.65,
+    "share_of_busy": 0.0825
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:89",
+    "self_ms": 44.01,
+    "share_of_busy": 0.0467
+   },
+   {
+    "fn": "tokenize tokenize.mjs:7",
+    "self_ms": 32.63,
+    "share_of_busy": 0.0346
+   },
+   {
+    "fn": "postMessage",
+    "self_ms": 18.61,
+    "share_of_busy": 0.0198
+   },
+   {
+    "fn": "(program)",
+    "self_ms": 16.52,
+    "share_of_busy": 0.0175
+   },
+   {
+    "fn": "search engine-a.mjs:99",
+    "self_ms": 13.7,
+    "share_of_busy": 0.0146
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 10.42,
+    "share_of_busy": 0.0111
+   },
+   {
+    "fn": "lookupTerms engine-a.mjs:43",
+    "self_ms": 7.23,
+    "share_of_busy": 0.0077
+   },
+   {
+    "fn": "tokenizeQuery engine-a.mjs:35",
+    "self_ms": 5.64,
+    "share_of_busy": 0.006
+   },
+   {
+    "fn": "popcount engine-a.mjs:85",
+    "self_ms": 4.75,
+    "share_of_busy": 0.005
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:96",
+    "self_ms": 4.7,
+    "share_of_busy": 0.005
+   },
+   {
+    "fn": "now",
+    "self_ms": 1.19,
+    "share_of_busy": 0.0013
+   },
+   {
+    "fn": "lowerBound engine-a.mjs:25",
+    "self_ms": 1.11,
+    "share_of_busy": 0.0012
+   },
+   {
+    "fn": "materialize engine-a.mjs:95",
+    "self_ms": 0.9,
+    "share_of_busy": 0.001
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-B-typing.cpuprofile",
+  "sampled_ms": 44700.43,
+  "idle_ms": 16449.12,
+  "busy_ms": 28251.31,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 28251.31,
+    "share_of_busy": 1
+   },
+   "(program)": {
+    "ms": 21159.77,
+    "share_of_busy": 0.749
+   },
+   "renderList": {
+    "ms": 805.71,
+    "share_of_busy": 0.0285
+   },
+   "(garbage collector)": {
+    "ms": 245.02,
+    "share_of_busy": 0.0087
+   },
+   "postMessage": {
+    "ms": 210.95,
+    "share_of_busy": 0.0075
+   },
+   "workerCall": {
+    "ms": 205.14,
+    "share_of_busy": 0.0073
+   },
+   "afterPaint": {
+    "ms": 74.96,
+    "share_of_busy": 0.0027
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 21159.77,
+    "share_of_busy": 0.749
+   },
+   {
+    "fn": "(anonymous) app.mjs:133",
+    "self_ms": 4944.48,
+    "share_of_busy": 0.175
+   },
+   {
+    "fn": "renderList app.mjs:22",
+    "self_ms": 786.58,
+    "share_of_busy": 0.0278
+   },
+   {
+    "fn": "(anonymous)",
+    "self_ms": 306.91,
+    "share_of_busy": 0.0109
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 245.02,
+    "share_of_busy": 0.0087
+   },
+   {
+    "fn": "postMessage",
+    "self_ms": 210.95,
+    "share_of_busy": 0.0075
+   },
+   {
+    "fn": "(anonymous) app.mjs:41",
+    "self_ms": 151.23,
+    "share_of_busy": 0.0054
+   },
+   {
+    "fn": "worker.onmessage app.mjs:80",
+    "self_ms": 119.42,
+    "share_of_busy": 0.0042
+   },
+   {
+    "fn": "requestAnimationFrame",
+    "self_ms": 61.52,
+    "share_of_busy": 0.0022
+   },
+   {
+    "fn": "report app.mjs:17",
+    "self_ms": 58.8,
+    "share_of_busy": 0.0021
+   },
+   {
+    "fn": "(anonymous) app.mjs:66",
+    "self_ms": 56.47,
+    "share_of_busy": 0.002
+   },
+   {
+    "fn": "ch.port1.onmessage app.mjs:44",
+    "self_ms": 43.62,
+    "share_of_busy": 0.0015
+   },
+   {
+    "fn": "MessageChannel",
+    "self_ms": 22.55,
+    "share_of_busy": 0.0008
+   },
+   {
+    "fn": "(anonymous) app.mjs:132",
+    "self_ms": 18.91,
+    "share_of_busy": 0.0007
+   },
+   {
+    "fn": "now",
+    "self_ms": 15.65,
+    "share_of_busy": 0.0006
+   },
+   {
+    "fn": "esc app.mjs:21",
+    "self_ms": 15.07,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "afterPaint app.mjs:40",
+    "self_ms": 13.45,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "workerCall app.mjs:65",
+    "self_ms": 4.71,
+    "share_of_busy": 0.0002
+   },
+   {
+    "fn": "(anonymous) app.mjs:23",
+    "self_ms": 4.06,
+    "share_of_busy": 0.0001
+   },
+   {
+    "fn": "window.__clear app.mjs:149",
+    "self_ms": 3.94,
+    "share_of_busy": 0.0001
+   },
+   {
+    "fn": "(anonymous) 127.0.0.1:52067:18",
+    "self_ms": 3.69,
+    "share_of_busy": 0.0001
+   },
+   {
+    "fn": "PerformanceObserver.observe.type 127.0.0.1:52067:19",
+    "self_ms": 2.84,
+    "share_of_busy": 0.0001
+   },
+   {
+    "fn": "focus",
+    "self_ms": 1.67,
+    "share_of_busy": 0.0001
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-C-load.cpuprofile",
+  "sampled_ms": 3095.09,
+  "idle_ms": 2515.21,
+  "busy_ms": 579.88,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 579.88,
+    "share_of_busy": 1
+   },
+   "boot": {
+    "ms": 282.5,
+    "share_of_busy": 0.4872
+   },
+   "loadJSON": {
+    "ms": 257.26,
+    "share_of_busy": 0.4437
+   },
+   "hydrate": {
+    "ms": 257.26,
+    "share_of_busy": 0.4437
+   },
+   "(program)": {
+    "ms": 197.14,
+    "share_of_busy": 0.34
+   },
+   "loadJS": {
+    "ms": 179.18,
+    "share_of_busy": 0.309
+   },
+   "objectToNumericMap": {
+    "ms": 91.57,
+    "share_of_busy": 0.1579
+   },
+   "(garbage collector)": {
+    "ms": 81.08,
+    "share_of_busy": 0.1398
+   },
+   "executeQuery": {
+    "ms": 11.04,
+    "share_of_busy": 0.019
+   },
+   "search": {
+    "ms": 11.04,
+    "share_of_busy": 0.019
+   },
+   "renderList": {
+    "ms": 4,
+    "share_of_busy": 0.0069
+   },
+   "executeQuerySpec": {
+    "ms": 2.68,
+    "share_of_busy": 0.0046
+   },
+   "termResults": {
+    "ms": 1.97,
+    "share_of_busy": 0.0034
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 197.14,
+    "share_of_busy": 0.34
+   },
+   {
+    "fn": "objectToNumericMap index.js:1981",
+    "self_ms": 91.57,
+    "share_of_busy": 0.1579
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 81.08,
+    "share_of_busy": 0.1398
+   },
+   {
+    "fn": "loadJSON index.js:1425",
+    "self_ms": 78.08,
+    "share_of_busy": 0.1347
+   },
+   {
+    "fn": "createPath index.js:468",
+    "self_ms": 66.41,
+    "share_of_busy": 0.1145
+   },
+   {
+    "fn": "loadJS index.js:1482",
+    "self_ms": 21.21,
+    "share_of_busy": 0.0366
+   },
+   {
+    "fn": "boot app.mjs:73",
+    "self_ms": 8.93,
+    "share_of_busy": 0.0154
+   },
+   {
+    "fn": "(anonymous) app.mjs:1",
+    "self_ms": 5.81,
+    "share_of_busy": 0.01
+   },
+   {
+    "fn": "setTimeout",
+    "self_ms": 5.14,
+    "share_of_busy": 0.0089
+   },
+   {
+    "fn": "executeQuery index.js:1555",
+    "self_ms": 4.73,
+    "share_of_busy": 0.0082
+   },
+   {
+    "fn": "f",
+    "self_ms": 4.68,
+    "share_of_busy": 0.0081
+   },
+   {
+    "fn": "renderList app.mjs:22",
+    "self_ms": 4,
+    "share_of_busy": 0.0069
+   },
+   {
+    "fn": "(anonymous) index.js:1571",
+    "self_ms": 3.63,
+    "share_of_busy": 0.0063
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:1",
+    "self_ms": 3.53,
+    "share_of_busy": 0.0061
+   },
+   {
+    "fn": "termResults index.js:1706",
+    "self_ms": 1.97,
+    "share_of_busy": 0.0034
+   },
+   {
+    "fn": "C app.mjs:71",
+    "self_ms": 1.27,
+    "share_of_busy": 0.0022
+   },
+   {
+    "fn": "executeQuerySpec index.js:1577",
+    "self_ms": 0.7,
+    "share_of_busy": 0.0012
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-C-typing.cpuprofile",
+  "sampled_ms": 30724.71,
+  "idle_ms": 5903.24,
+  "busy_ms": 24821.46,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 24821.46,
+    "share_of_busy": 1
+   },
+   "search": {
+    "ms": 10127.36,
+    "share_of_busy": 0.408
+   },
+   "(program)": {
+    "ms": 9815.55,
+    "share_of_busy": 0.3954
+   },
+   "executeQuery": {
+    "ms": 7483.7,
+    "share_of_busy": 0.3015
+   },
+   "executeQuerySpec": {
+    "ms": 6717.79,
+    "share_of_busy": 0.2706
+   },
+   "termResults": {
+    "ms": 4704.82,
+    "share_of_busy": 0.1895
+   },
+   "combineResults": {
+    "ms": 679.04,
+    "share_of_busy": 0.0274
+   },
+   "renderList": {
+    "ms": 631.63,
+    "share_of_busy": 0.0254
+   },
+   "(garbage collector)": {
+    "ms": 406.64,
+    "share_of_busy": 0.0164
+   },
+   "postMessage": {
+    "ms": 140.88,
+    "share_of_busy": 0.0057
+   },
+   "calcBM25Score": {
+    "ms": 69.91,
+    "share_of_busy": 0.0028
+   },
+   "tokenize": {
+    "ms": 49.06,
+    "share_of_busy": 0.002
+   },
+   "afterPaint": {
+    "ms": 28.53,
+    "share_of_busy": 0.0011
+   },
+   "atPrefix": {
+    "ms": 25.18,
+    "share_of_busy": 0.001
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 9815.55,
+    "share_of_busy": 0.3954
+   },
+   {
+    "fn": "termResults index.js:1706",
+    "self_ms": 3846.61,
+    "share_of_busy": 0.155
+   },
+   {
+    "fn": "(anonymous) app.mjs:133",
+    "self_ms": 3201.69,
+    "share_of_busy": 0.129
+   },
+   {
+    "fn": "search index.js:1279",
+    "self_ms": 1731.27,
+    "share_of_busy": 0.0697
+   },
+   {
+    "fn": "executeQuerySpec index.js:1577",
+    "self_ms": 1553,
+    "share_of_busy": 0.0626
+   },
+   {
+    "fn": "getOwnProperty index.js:1879",
+    "self_ms": 715.22,
+    "share_of_busy": 0.0288
+   },
+   {
+    "fn": "renderList app.mjs:22",
+    "self_ms": 595.9,
+    "share_of_busy": 0.024
+   },
+   {
+    "fn": "byScore index.js:1979",
+    "self_ms": 509.34,
+    "share_of_busy": 0.0205
+   },
+   {
+    "fn": "combinators index.js:1881",
+    "self_ms": 483.28,
+    "share_of_busy": 0.0195
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 406.64,
+    "share_of_busy": 0.0164
+   },
+   {
+    "fn": "search engine-c.mjs:28",
+    "self_ms": 355.86,
+    "share_of_busy": 0.0143
+   },
+   {
+    "fn": "(anonymous)",
+    "self_ms": 215.38,
+    "share_of_busy": 0.0087
+   },
+   {
+    "fn": "combineResults index.js:1646",
+    "self_ms": 186.9,
+    "share_of_busy": 0.0075
+   },
+   {
+    "fn": "postMessage",
+    "self_ms": 140.88,
+    "share_of_busy": 0.0057
+   },
+   {
+    "fn": "dive index.js:25",
+    "self_ms": 134.82,
+    "share_of_busy": 0.0054
+   },
+   {
+    "fn": "key index.js:49",
+    "self_ms": 132.71,
+    "share_of_busy": 0.0053
+   },
+   {
+    "fn": "assignUniqueTerm index.js:1967",
+    "self_ms": 78.83,
+    "share_of_busy": 0.0032
+   },
+   {
+    "fn": "(anonymous) app.mjs:41",
+    "self_ms": 77.21,
+    "share_of_busy": 0.0031
+   },
+   {
+    "fn": "calcBM25Score index.js:1919",
+    "self_ms": 69.91,
+    "share_of_busy": 0.0028
+   },
+   {
+    "fn": "executeQuery index.js:1555",
+    "self_ms": 51.17,
+    "share_of_busy": 0.0021
+   },
+   {
+    "fn": "(anonymous) index.js:1579",
+    "self_ms": 44.12,
+    "share_of_busy": 0.0018
+   },
+   {
+    "fn": "tokenize tokenize.mjs:7",
+    "self_ms": 43.38,
+    "share_of_busy": 0.0017
+   },
+   {
+    "fn": "lookup index.js:455",
+    "self_ms": 39.9,
+    "share_of_busy": 0.0016
+   },
+   {
+    "fn": "MessageChannel",
+    "self_ms": 35.7,
+    "share_of_busy": 0.0014
+   },
+   {
+    "fn": "ch.port1.onmessage app.mjs:44",
+    "self_ms": 34.62,
+    "share_of_busy": 0.0014
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-I1-load.cpuprofile",
+  "sampled_ms": 1440.51,
+  "idle_ms": 1263.48,
+  "busy_ms": 177.03,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 177.03,
+    "share_of_busy": 1
+   },
+   "(program)": {
+    "ms": 145.15,
+    "share_of_busy": 0.8199
+   },
+   "boot": {
+    "ms": 19.25,
+    "share_of_busy": 0.1087
+   },
+   "hydrate": {
+    "ms": 8.1,
+    "share_of_busy": 0.0457
+   },
+   "rankMatches": {
+    "ms": 7.87,
+    "share_of_busy": 0.0444
+   },
+   "search": {
+    "ms": 7.87,
+    "share_of_busy": 0.0444
+   },
+   "(garbage collector)": {
+    "ms": 5.04,
+    "share_of_busy": 0.0285
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 145.15,
+    "share_of_busy": 0.8199
+   },
+   {
+    "fn": "hydrate incumbent.mjs:6",
+    "self_ms": 8.1,
+    "share_of_busy": 0.0457
+   },
+   {
+    "fn": "rankMatches incumbent.mjs:11",
+    "self_ms": 7.87,
+    "share_of_busy": 0.0444
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 5.04,
+    "share_of_busy": 0.0285
+   },
+   {
+    "fn": "setTimeout",
+    "self_ms": 3.79,
+    "share_of_busy": 0.0214
+   },
+   {
+    "fn": "boot app.mjs:73",
+    "self_ms": 3.29,
+    "share_of_busy": 0.0186
+   },
+   {
+    "fn": "f",
+    "self_ms": 3.19,
+    "share_of_busy": 0.018
+   },
+   {
+    "fn": "(anonymous) app.mjs:1",
+    "self_ms": 0.61,
+    "share_of_busy": 0.0034
+   }
+  ]
+ },
+ {
+  "file": "cpu-browser-phone-I1-typing.cpuprofile",
+  "sampled_ms": 14976.99,
+  "idle_ms": 5600.09,
+  "busy_ms": 9376.9,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 9376.9,
+    "share_of_busy": 1
+   },
+   "(program)": {
+    "ms": 6561.56,
+    "share_of_busy": 0.6998
+   },
+   "search": {
+    "ms": 1276.09,
+    "share_of_busy": 0.1361
+   },
+   "rankMatches": {
+    "ms": 473.11,
+    "share_of_busy": 0.0505
+   },
+   "renderList": {
+    "ms": 178.33,
+    "share_of_busy": 0.019
+   },
+   "postMessage": {
+    "ms": 67.46,
+    "share_of_busy": 0.0072
+   },
+   "(garbage collector)": {
+    "ms": 48,
+    "share_of_busy": 0.0051
+   },
+   "afterPaint": {
+    "ms": 18.48,
+    "share_of_busy": 0.002
+   }
+  },
+  "top_self": [
+   {
+    "fn": "(program)",
+    "self_ms": 6561.56,
+    "share_of_busy": 0.6998
+   },
+   {
+    "fn": "(anonymous) app.mjs:133",
+    "self_ms": 863.69,
+    "share_of_busy": 0.0921
+   },
+   {
+    "fn": "search incumbent.mjs:26",
+    "self_ms": 802.98,
+    "share_of_busy": 0.0856
+   },
+   {
+    "fn": "rankMatches incumbent.mjs:11",
+    "self_ms": 461.61,
+    "share_of_busy": 0.0492
+   },
+   {
+    "fn": "(anonymous)",
+    "self_ms": 166.81,
+    "share_of_busy": 0.0178
+   },
+   {
+    "fn": "renderList app.mjs:22",
+    "self_ms": 161.37,
+    "share_of_busy": 0.0172
+   },
+   {
+    "fn": "postMessage",
+    "self_ms": 67.46,
+    "share_of_busy": 0.0072
+   },
+   {
+    "fn": "(anonymous) app.mjs:41",
+    "self_ms": 62.29,
+    "share_of_busy": 0.0066
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 48,
+    "share_of_busy": 0.0051
+   },
+   {
+    "fn": "MessageChannel",
+    "self_ms": 38.34,
+    "share_of_busy": 0.0041
+   },
+   {
+    "fn": "ch.port1.onmessage app.mjs:44",
+    "self_ms": 29.5,
+    "share_of_busy": 0.0031
+   },
+   {
+    "fn": "report app.mjs:17",
+    "self_ms": 24.47,
+    "share_of_busy": 0.0026
+   },
+   {
+    "fn": "now",
+    "self_ms": 21.07,
+    "share_of_busy": 0.0022
+   },
+   {
+    "fn": "esc app.mjs:21",
+    "self_ms": 16.96,
+    "share_of_busy": 0.0018
+   },
+   {
+    "fn": "requestAnimationFrame",
+    "self_ms": 16.62,
+    "share_of_busy": 0.0018
+   },
+   {
+    "fn": "(anonymous) incumbent.mjs:22",
+    "self_ms": 11.49,
+    "share_of_busy": 0.0012
+   },
+   {
+    "fn": "window.__clear app.mjs:149",
+    "self_ms": 8.35,
+    "share_of_busy": 0.0009
+   },
+   {
+    "fn": "(anonymous) app.mjs:132",
+    "self_ms": 6.73,
+    "share_of_busy": 0.0007
+   },
+   {
+    "fn": "focus",
+    "self_ms": 3.67,
+    "share_of_busy": 0.0004
+   },
+   {
+    "fn": "I1 app.mjs:71",
+    "self_ms": 2.08,
+    "share_of_busy": 0.0002
+   },
+   {
+    "fn": "afterPaint app.mjs:40",
+    "self_ms": 1.85,
+    "share_of_busy": 0.0002
+   }
+  ]
+ },
+ {
+  "file": "cpu-node-A-full.cpuprofile",
+  "sampled_ms": 5394.75,
+  "idle_ms": 0,
+  "busy_ms": 5394.75,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 5394.75,
+    "share_of_busy": 1
+   },
+   "search": {
+    "ms": 4968.45,
+    "share_of_busy": 0.921
+   },
+   "selectTopK": {
+    "ms": 2890.89,
+    "share_of_busy": 0.5359
+   },
+   "accumulateScores": {
+    "ms": 1936.76,
+    "share_of_busy": 0.359
+   },
+   "(garbage collector)": {
+    "ms": 270.21,
+    "share_of_busy": 0.0501
+   },
+   "tokenizeQuery": {
+    "ms": 44.66,
+    "share_of_busy": 0.0083
+   },
+   "tokenize": {
+    "ms": 33.29,
+    "share_of_busy": 0.0062
+   },
+   "hydrate": {
+    "ms": 13.21,
+    "share_of_busy": 0.0024
+   },
+   "lookupTerms": {
+    "ms": 12.54,
+    "share_of_busy": 0.0023
+   },
+   "materialize": {
+    "ms": 3.83,
+    "share_of_busy": 0.0007
+   },
+   "(program)": {
+    "ms": 1.96,
+    "share_of_busy": 0.0004
+   },
+   "stringify": {
+    "ms": 0.54,
+    "share_of_busy": 0.0001
+   }
+  },
+  "top_self": [
+   {
+    "fn": "accumulateScores engine-a.mjs:61",
+    "self_ms": 1936.76,
+    "share_of_busy": 0.359
+   },
+   {
+    "fn": "selectTopK engine-a.mjs:88",
+    "self_ms": 1667.34,
+    "share_of_busy": 0.3091
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:90",
+    "self_ms": 1052.28,
+    "share_of_busy": 0.1951
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 270.21,
+    "share_of_busy": 0.0501
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:89",
+    "self_ms": 171.28,
+    "share_of_busy": 0.0317
+   },
+   {
+    "fn": "compileForInternalLoader realm:385",
+    "self_ms": 57.83,
+    "share_of_busy": 0.0107
+   },
+   {
+    "fn": "search bench-node.mjs:27",
+    "self_ms": 37.67,
+    "share_of_busy": 0.007
+   },
+   {
+    "fn": "search engine-a.mjs:99",
+    "self_ms": 36.71,
+    "share_of_busy": 0.0068
+   },
+   {
+    "fn": "tokenize tokenize.mjs:7",
+    "self_ms": 28.17,
+    "share_of_busy": 0.0052
+   },
+   {
+    "fn": "cpuprof bench-node.mjs:129",
+    "self_ms": 26.58,
+    "share_of_busy": 0.0049
+   },
+   {
+    "fn": "hydrate engine-a.mjs:19",
+    "self_ms": 13.21,
+    "share_of_busy": 0.0024
+   },
+   {
+    "fn": "lookupTerms engine-a.mjs:43",
+    "self_ms": 12.54,
+    "share_of_busy": 0.0023
+   },
+   {
+    "fn": "(anonymous) bench-node.mjs:1",
+    "self_ms": 11.5,
+    "share_of_busy": 0.0021
+   },
+   {
+    "fn": "tokenizeQuery engine-a.mjs:35",
+    "self_ms": 11.37,
+    "share_of_busy": 0.0021
+   },
+   {
+    "fn": "readFileSync node:fs:433",
+    "self_ms": 6.17,
+    "share_of_busy": 0.0011
+   },
+   {
+    "fn": "compileSourceTextModule utils:344",
+    "self_ms": 4.29,
+    "share_of_busy": 0.0008
+   },
+   {
+    "fn": "RegExp: [\\u0300-\\u036f]",
+    "self_ms": 3.88,
+    "share_of_busy": 0.0007
+   },
+   {
+    "fn": "internalBinding realm:185",
+    "self_ms": 3.75,
+    "share_of_busy": 0.0007
+   },
+   {
+    "fn": "lastTokenIsPrefix tokenize.mjs:17",
+    "self_ms": 3,
+    "share_of_busy": 0.0006
+   },
+   {
+    "fn": "RegExp: [a-z0-9]$",
+    "self_ms": 2.92,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "(anonymous) engine-a.mjs:96",
+    "self_ms": 2.08,
+    "share_of_busy": 0.0004
+   },
+   {
+    "fn": "(program)",
+    "self_ms": 1.96,
+    "share_of_busy": 0.0004
+   },
+   {
+    "fn": "materialize engine-a.mjs:95",
+    "self_ms": 1.75,
+    "share_of_busy": 0.0003
+   },
+   {
+    "fn": "getFileProtocolModuleFormat get_format:111",
+    "self_ms": 1.54,
+    "share_of_busy": 0.0003
+   },
+   {
+    "fn": "RegExp: [^a-z0-9]+",
+    "self_ms": 1.25,
+    "share_of_busy": 0.0002
+   }
+  ]
+ },
+ {
+  "file": "cpu-node-C-full.cpuprofile",
+  "sampled_ms": 36749.04,
+  "idle_ms": 0.33,
+  "busy_ms": 36748.71,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 36748.71,
+    "share_of_busy": 1
+   },
+   "search": {
+    "ms": 32869.42,
+    "share_of_busy": 0.8944
+   },
+   "executeQuery": {
+    "ms": 25208.58,
+    "share_of_busy": 0.686
+   },
+   "executeQuerySpec": {
+    "ms": 22477.45,
+    "share_of_busy": 0.6117
+   },
+   "termResults": {
+    "ms": 15808.14,
+    "share_of_busy": 0.4302
+   },
+   "(garbage collector)": {
+    "ms": 3567.51,
+    "share_of_busy": 0.0971
+   },
+   "combineResults": {
+    "ms": 2147.51,
+    "share_of_busy": 0.0584
+   },
+   "calcBM25Score": {
+    "ms": 159.63,
+    "share_of_busy": 0.0043
+   },
+   "loadJSON": {
+    "ms": 133.67,
+    "share_of_busy": 0.0036
+   },
+   "hydrate": {
+    "ms": 133.67,
+    "share_of_busy": 0.0036
+   },
+   "loadJS": {
+    "ms": 85.83,
+    "share_of_busy": 0.0023
+   },
+   "tokenize": {
+    "ms": 58.87,
+    "share_of_busy": 0.0016
+   },
+   "objectToNumericMap": {
+    "ms": 51.25,
+    "share_of_busy": 0.0014
+   },
+   "atPrefix": {
+    "ms": 27.5,
+    "share_of_busy": 0.0007
+   },
+   "(program)": {
+    "ms": 11.83,
+    "share_of_busy": 0.0003
+   },
+   "parse": {
+    "ms": 0.71,
+    "share_of_busy": 0
+   },
+   "stringify": {
+    "ms": 0.58,
+    "share_of_busy": 0
+   }
+  },
+  "top_self": [
+   {
+    "fn": "termResults index.js:1706",
+    "self_ms": 13472.3,
+    "share_of_busy": 0.3666
+   },
+   {
+    "fn": "search index.js:1279",
+    "self_ms": 5782.61,
+    "share_of_busy": 0.1574
+   },
+   {
+    "fn": "executeQuerySpec index.js:1577",
+    "self_ms": 5656.86,
+    "share_of_busy": 0.1539
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 3567.51,
+    "share_of_busy": 0.0971
+   },
+   {
+    "fn": "getOwnProperty index.js:1879",
+    "self_ms": 2172.53,
+    "share_of_busy": 0.0591
+   },
+   {
+    "fn": "combinators index.js:1881",
+    "self_ms": 1865.3,
+    "share_of_busy": 0.0508
+   },
+   {
+    "fn": "search engine-c.mjs:28",
+    "self_ms": 1149.1,
+    "share_of_busy": 0.0313
+   },
+   {
+    "fn": "byScore index.js:1979",
+    "self_ms": 665.67,
+    "share_of_busy": 0.0181
+   },
+   {
+    "fn": "dive index.js:25",
+    "self_ms": 552.79,
+    "share_of_busy": 0.015
+   },
+   {
+    "fn": "executeQuery index.js:1555",
+    "self_ms": 525.49,
+    "share_of_busy": 0.0143
+   },
+   {
+    "fn": "combineResults index.js:1646",
+    "self_ms": 274.17,
+    "share_of_busy": 0.0075
+   },
+   {
+    "fn": "key index.js:49",
+    "self_ms": 245.96,
+    "share_of_busy": 0.0067
+   },
+   {
+    "fn": "calcBM25Score index.js:1919",
+    "self_ms": 156.88,
+    "share_of_busy": 0.0043
+   },
+   {
+    "fn": "lookup index.js:455",
+    "self_ms": 97.09,
+    "share_of_busy": 0.0026
+   },
+   {
+    "fn": "compileForInternalLoader realm:385",
+    "self_ms": 71.75,
+    "share_of_busy": 0.002
+   },
+   {
+    "fn": "objectToNumericMap index.js:1981",
+    "self_ms": 51.25,
+    "share_of_busy": 0.0014
+   },
+   {
+    "fn": "loadJSON index.js:1425",
+    "self_ms": 47.83,
+    "share_of_busy": 0.0013
+   },
+   {
+    "fn": "tokenize tokenize.mjs:7",
+    "self_ms": 46.71,
+    "share_of_busy": 0.0013
+   },
+   {
+    "fn": "backtrack index.js:37",
+    "self_ms": 43.95,
+    "share_of_busy": 0.0012
+   },
+   {
+    "fn": "(anonymous) index.js:1579",
+    "self_ms": 38.46,
+    "share_of_busy": 0.001
+   },
+   {
+    "fn": "(anonymous) bench-node.mjs:1",
+    "self_ms": 32.04,
+    "share_of_busy": 0.0009
+   },
+   {
+    "fn": "(anonymous) index.js:1571",
+    "self_ms": 22.41,
+    "share_of_busy": 0.0006
+   },
+   {
+    "fn": "loadJS index.js:1482",
+    "self_ms": 19.66,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "cpuprof bench-node.mjs:129",
+    "self_ms": 17.96,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "atPrefix index.js:215",
+    "self_ms": 16.34,
+    "share_of_busy": 0.0004
+   }
+  ]
+ },
+ {
+  "file": "cpu-node-I1-full.cpuprofile",
+  "sampled_ms": 2616.13,
+  "idle_ms": 0,
+  "busy_ms": 2616.13,
+  "inclusive_stage_ms": {
+   "(root)": {
+    "ms": 2616.13,
+    "share_of_busy": 1
+   },
+   "search": {
+    "ms": 2216.71,
+    "share_of_busy": 0.8473
+   },
+   "rankMatches": {
+    "ms": 1942.7,
+    "share_of_busy": 0.7426
+   },
+   "(garbage collector)": {
+    "ms": 100.33,
+    "share_of_busy": 0.0384
+   },
+   "hydrate": {
+    "ms": 44.75,
+    "share_of_busy": 0.0171
+   },
+   "(program)": {
+    "ms": 11.21,
+    "share_of_busy": 0.0043
+   },
+   "stringify": {
+    "ms": 0.54,
+    "share_of_busy": 0.0002
+   }
+  },
+  "top_self": [
+   {
+    "fn": "rankMatches incumbent.mjs:11",
+    "self_ms": 1914.65,
+    "share_of_busy": 0.7319
+   },
+   {
+    "fn": "search bench-node.mjs:33",
+    "self_ms": 204.42,
+    "share_of_busy": 0.0781
+   },
+   {
+    "fn": "compileForInternalLoader realm:385",
+    "self_ms": 103.04,
+    "share_of_busy": 0.0394
+   },
+   {
+    "fn": "(garbage collector)",
+    "self_ms": 100.33,
+    "share_of_busy": 0.0384
+   },
+   {
+    "fn": "search incumbent.mjs:26",
+    "self_ms": 69.59,
+    "share_of_busy": 0.0266
+   },
+   {
+    "fn": "cpuprof bench-node.mjs:129",
+    "self_ms": 53.71,
+    "share_of_busy": 0.0205
+   },
+   {
+    "fn": "hydrate incumbent.mjs:6",
+    "self_ms": 43.83,
+    "share_of_busy": 0.0168
+   },
+   {
+    "fn": "(anonymous) incumbent.mjs:22",
+    "self_ms": 28.04,
+    "share_of_busy": 0.0107
+   },
+   {
+    "fn": "(anonymous) error_serdes:1",
+    "self_ms": 18.42,
+    "share_of_busy": 0.007
+   },
+   {
+    "fn": "TracingChannel node:diagnostics_channel:284",
+    "self_ms": 13,
+    "share_of_busy": 0.005
+   },
+   {
+    "fn": "(program)",
+    "self_ms": 11.21,
+    "share_of_busy": 0.0043
+   },
+   {
+    "fn": "(anonymous) node:crypto:1",
+    "self_ms": 10.54,
+    "share_of_busy": 0.004
+   },
+   {
+    "fn": "(anonymous) bench-node.mjs:1",
+    "self_ms": 8.42,
+    "share_of_busy": 0.0032
+   },
+   {
+    "fn": "getESMFacade realm:348",
+    "self_ms": 7.13,
+    "share_of_busy": 0.0027
+   },
+   {
+    "fn": "compileSourceTextModule utils:344",
+    "self_ms": 3.42,
+    "share_of_busy": 0.0013
+   },
+   {
+    "fn": "readFileSync node:fs:433",
+    "self_ms": 2.08,
+    "share_of_busy": 0.0008
+   },
+   {
+    "fn": "(anonymous) node:1",
+    "self_ms": 1.38,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "wrappedFn errors:535",
+    "self_ms": 1.21,
+    "share_of_busy": 0.0005
+   },
+   {
+    "fn": "makeNodeErrorWithCode errors:428",
+    "self_ms": 1.08,
+    "share_of_busy": 0.0004
+   },
+   {
+    "fn": "_link module_job:161",
+    "self_ms": 1.08,
+    "share_of_busy": 0.0004
+   },
+   {
+    "fn": "(anonymous) incumbent.mjs:8",
+    "self_ms": 0.92,
+    "share_of_busy": 0.0004
+   },
+   {
+    "fn": "prepareExecution pre_execution:96",
+    "self_ms": 0.88,
+    "share_of_busy": 0.0003
+   },
+   {
+    "fn": "internalBinding realm:185",
+    "self_ms": 0.87,
+    "share_of_busy": 0.0003
+   },
+   {
+    "fn": "requireBuiltin realm:422",
+    "self_ms": 0.83,
+    "share_of_busy": 0.0003
+   },
+   {
+    "fn": "realpathSync node:fs:2715",
+    "self_ms": 0.83,
+    "share_of_busy": 0.0003
+   }
+  ]
+ }
+]

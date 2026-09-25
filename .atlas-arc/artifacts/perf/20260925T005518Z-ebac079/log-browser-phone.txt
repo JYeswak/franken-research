@@ -1,0 +1,5 @@
+phone A {"k2l":[8.5,55.8,118.5],"k2p95":101.8,"env":"ESCALATE 361.2","usable_p95":521.1,"full_p95":1383.8,"heapMB":4.96,"lt":{"count":1713,"over_50ms":1664,"max_ms":378},"wt":[]}
+phone B {"k2l":[13.5,110.8,208],"k2p95":156.4,"env":"ESCALATE 397.8","usable_p95":1559.6,"full_p95":2494.5,"heapMB":0.7,"lt":{"count":2161,"over_50ms":2091,"max_ms":455},"wt":[{"network":"unsupported: Network.emulateNetworkConditions: Not supported","cpu":"unsupported: Emulation.setCPUThrottlingRate: Operation is only supported for pages, not workers"}]}
+phone C {"k2l":[11.1,91.5,171.9],"k2p95":121,"env":"ESCALATE 135","usable_p95":853.4,"full_p95":2512.6,"heapMB":9.97,"lt":{"count":3294,"over_50ms":3206,"max_ms":909},"wt":[]}
+phone I1 {"k2l":[4.7,33,96.2],"k2p95":78.2,"env":"ESCALATE 558","usable_p95":626.5,"full_p95":626.6,"heapMB":0.83,"lt":{"count":1043,"over_50ms":1008,"max_ms":338},"wt":[]}
+phone I0 {"k2l":[3.1,21.1,62.6],"k2p95":63,"env":"ESCALATE 463","usable_p95":326.7,"full_p95":330,"heapMB":0.03,"lt":{"count":611,"over_50ms":597,"max_ms":265},"wt":[]}
