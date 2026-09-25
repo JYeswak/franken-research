@@ -109,6 +109,7 @@ A golden freezes an output that is too large to assert field by field: the dashb
 | `goldens/outputs/card-franken_tts-unknown.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
 | `goldens/outputs/card-frankenterm-escaping.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
 | `goldens/outputs/card-franken_engine-untracked-ci-not-head.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
+| `goldens/outputs/card-frankenfs-withdrawing.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
 | `goldens/outputs/core-card-frankengit-rechecked.html` | `renderCard` on `goldens/core/live.json`, `checked_at` 2026-09-25T02:08:40Z | Y | N | 3 | exact |
 | `goldens/outputs/core-card-franken_node-pending.html` | the same input and `checked_at` | Y | N | 3 | exact |
 | `goldens/outputs/core-card-asupersync-unknown.html` | the same input and `checked_at` | Y | N | 3 | exact |
