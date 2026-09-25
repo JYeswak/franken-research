@@ -186,7 +186,7 @@ export function renderCard(rec, live) {
     `<dl style="${S.facts}">`,
     verdictDate(rec),
     fact('Pinned commit', `${commit(rec.repo, rec.pin?.sha)} on ${day(rec.pin?.date)}`),
-    rec.baseline?.sha && rec.baseline.sha !== rec.pin?.sha ? fact('Baseline commit (dated re-check)', `${commit(rec.repo, rec.baseline.sha)} on ${day(rec.baseline.date)}`) : '',
+    rec.baseline?.sha && rec.baseline.sha !== rec.pin?.sha ? fact('Re-check pinned commit', commit(rec.repo, rec.baseline.sha)) : '',
     fact('Live, as of', `<time datetime="${esc(live.checked_at)}">${utc(live.checked_at)}</time>`),
     fact('Commits since the pin', link(compare, esc(rec.commits_since_pin ?? 'unknown'))),
     fact('Latest release', release(rec)),

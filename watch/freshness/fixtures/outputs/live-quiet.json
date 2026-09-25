@@ -18,7 +18,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "c7c5310e2d4f6a8b0c1d3e5f7a9b1c3d5e7f9a1b",
-        "date": "2026-09-24T00:00:00Z",
+        "date": "2026-09-24",
         "source": "updates/franken_code_browser-2026-09-24.md"
       },
       "pin": {
@@ -104,7 +104,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f",
-        "date": "2026-09-22T07:55:20Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {

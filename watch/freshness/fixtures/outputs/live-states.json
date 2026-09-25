@@ -18,7 +18,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "3f1c2d4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d",
-        "date": "2026-09-22T09:14:03Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {
@@ -114,7 +114,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "c7c5310e2d4f6a8b0c1d3e5f7a9b1c3d5e7f9a1b",
-        "date": "2026-09-24T00:00:00Z",
+        "date": "2026-09-24",
         "source": "updates/franken_code_browser-2026-09-24.md"
       },
       "pin": {
@@ -213,7 +213,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f",
-        "date": "2026-09-22T07:55:20Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {
@@ -297,7 +297,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c",
-        "date": "2026-09-22T10:10:10Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {
@@ -394,7 +394,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e",
-        "date": "2026-09-22T08:00:00Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {
@@ -489,7 +489,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a",
-        "date": "2026-06-20T12:00:00Z",
+        "date": "2026-06-20",
         "source": "packet"
       },
       "pin": {
@@ -586,7 +586,7 @@
       "set": "pinned",
       "baseline": {
         "sha": "8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c",
-        "date": "2026-09-22T06:30:00Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {
@@ -670,7 +670,7 @@
       "set": "cohort:2026-09",
       "baseline": {
         "sha": "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f",
-        "date": "2026-09-22T07:55:20Z",
+        "date": "2026-09-22",
         "source": "packet"
       },
       "pin": {
