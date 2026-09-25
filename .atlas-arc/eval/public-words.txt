@@ -1,0 +1,32 @@
+# Add a word only after reading the sentence it is in; a name of a machine, host, person or private project never goes here.
+# does not contain them (validate.mjs public-vocabulary check). One word per line: word<TAB>queries<TAB>why it is public.
+# Words a reviewer read and accepted as public in golden.jsonl free text, although the repository's published text
+aspects	G-112	an ordinary English or technical word
+asyncronous	G-069	a typo in the question as typed
+axioms	G-083	an ordinary English or technical word
+corect	G-069	a typo in the question as typed
+depdencies	G-112	a typo in the question as typed
+diferential	G-060	a typo in the question as typed
+espially	G-097	a typo in the question as typed
+esque	G-101	an ordinary English or technical word
+evidense	G-046	a typo in the question as typed
+factr	G-052	a typo in the question as typed
+frankensqllite	G-068	a typo in the question as typed
+frankenwhipser	G-090	a typo in the question as typed
+fussion	G-067	a typo in the question as typed
+inflating	G-070	an ordinary English or technical word
+intuitive	G-021	an ordinary English or technical word
+misnames	G-108	an ordinary English or technical word
+misspelled	G-046, G-052	an ordinary English or technical word
+negatve	G-046	a typo in the question as typed
+oslution	G-094	a typo in the question as typed
+peek	G-070	an ordinary English or technical word
+phasegate	G-070	the name of a public type in Jeffrey's frankensearch (PhaseGate), cited in a why line
+pinpoint	G-102	an ordinary English or technical word
+precomit	G-061	a typo in the question as typed
+quicker	G-049	an ordinary English or technical word
+rameworks	G-105	a typo in the question as typed
+reaper	G-034	an ordinary English or technical word
+resampling	G-086	an ordinary English or technical word
+tesing	G-060	a typo in the question as typed
+unkowns	G-112	a typo in the question as typed

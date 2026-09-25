@@ -1,17 +1,17 @@
 # IF-SOURCES: what v1 indexes (S02)
 
 Owner: S02. Scope set by DEC-003 and the charter's Constraints. Ids: IF-ID.md. Entry fields: IF-ENTRY.md.
-Measured 2026-09-24 on the M3 Ultra, franken-research at `cad7779` and again at `ebac079` (no source file read here changed between them), franken-harvest at `77d515b`, the rigor-atlas DB with sha256 `881cce40…`, and the intake crate table `atlas/eco2-crates.tsv` (sha256 `98d6715c…`). Each count below is the output of the command next to it; each command was run twice (N = 2), the second time by the extractor below, with identical results except the cohort file count, which grew by one packet a cohort author added in between.
+Measured 2026-09-24, franken-research at `cad7779` and again at `ebac079` (no source file read here changed between them), franken-harvest at `77d515b`, the rigor-atlas DB with sha256 `881cce40…`, and the intake crate table `atlas/eco2-crates.tsv` (sha256 `98d6715c…`). Each count below is the output of the command next to it; each command was run twice (N = 2), the second time by the extractor below, with identical results except the cohort file count, which grew by one packet a cohort author added in between.
 
 ## 1. How to reproduce every count
 
-Run from the franken-research root with these variables set:
+Run from the franken-research root with these variables set. `[LOCAL_SCRATCH]` and `[LOCAL_SOURCE_ROOT]` stand for the maintainer's working area and source checkout root (review 5b: no machine paths in this public repository); the scripts under `[LOCAL_SCRATCH]` are working tools kept outside the repository, and S04 moves the ones the build needs into `search/tools/`.
 
 ```sh
-A=~/.local/state/zeststream/scratch/control-plane/franken-lead/atlas
-FH=/Users/josh/Developer/franken-harvest
+A=[LOCAL_SCRATCH]/atlas
+FH=[LOCAL_SOURCE_ROOT]/franken-harvest
 FHREV=77d515bf0e7c5f399f3aca82c63423d257799223
-RA=/Users/josh/Developer/rigor-atlas/data/rigor.sqlite
+RA=[LOCAL_SOURCE_ROOT]/rigor-atlas/data/rigor.sqlite
 RACOPY="$A/contracts-work/rigor.sqlite"   # cp "$RA" "$RACOPY" first; the DB is only ever opened ?immutable=1
 ```
 
@@ -149,13 +149,14 @@ On the maintainer's machine:
 1. `git -C <franken-harvest> show <rev>:<file>.tsv` for the five catalogs at a clean, committed revision; record each sha256.
 2. Drop private rows (oracles `Z*` and `D14`) and the `replaces` column; replace each `quote` with `quote_sha256` = sha256 of the quote text, plus the hashes of its normalized 12-word shingles for HON-12.
 3. Write `search/snapshots/fh/<file>.tsv`, record the export sha256, and add `SNAPSHOTS.tsv` rows.
-4. In Actions, a check fetches each cited line from `raw.githubusercontent.com/Dicklesworthstone/<repo>/<revision>/<path>` and compares its hash with `quote_sha256`, giving each row fh's own state vocabulary (`CURRENT`, `STALE`, ...) for TIER-MAP.md. Only this step touches the network, and it only reads public files.
+4. In Actions, a check fetches each cited file from `raw.githubusercontent.com/Dicklesworthstone/<repo>/<revision>/<path>` and compares the cited lines with `quote_sha256`. It emits the raw vocabulary of `search/lib/quote-check.mjs` (`CURRENT`, `RELOCATED`, `STALE`, `NO_REVISION`, `EMPTY_QUOTE`), which is not fh's own vocabulary; it records the raw state and, for `RELOCATED`, `occurrences` and every `found_at` line range, in the snapshot row, and TIER-MAP.md §4.1 normalizes it before any rule reads it. A row with an empty quote is `EMPTY_QUOTE` before any substring test and normalizes to `PINNED_UNVERIFIED`. Only this step touches the network, and it only reads public files.
 
 ### 4.3 rigor-atlas snapshot (vendored)
 
 1. `cp rigor-atlas/data/rigor.sqlite <scratch>/rigor.sqlite`, then open the copy `?immutable=1` only (the CLI's `mode=ro` fails without a `-shm` file; intake-IntakeRigor2 §4).
 2. Export (proposed `search/tools/export-ra.py`, standard library only) the four tables with the columns IF-ENTRY needs, fork rows dropped, evidence as `{path, line, quote_sha256}` plus 12-word shingle hashes for HON-12, rows sorted by primary key or by `(repo, entity, h8)`, keys sorted, UTF-8, one trailing newline.
 3. Record the DB sha256, `meta.built_at`, the export sha256 and the row counts in `SNAPSHOTS.tsv`.
+4. Evidence check (TIER-MAP.md TM-RA-1 and TM-RA-10): the §4.2 step 4 check, run over every code evidence path of every `KNOW` technique at the technique's pinned commit, with the same raw vocabulary and the same §4.1 normalization. The raw state and found lines are written into the export row. A technique is TM-RA-1 only if at least one code path normalizes to `CURRENT` or `CURRENT+line_relocated`; the others are TM-RA-10. Implemented as `node search/tools/quote-check.mjs ra`; its first complete run (local mirror, 2026-09-25) is committed as `search/snapshots/ra-evidence-check.tsv`: 1,412 TM-RA-1, 0 TM-RA-10 (TIER-MAP §3).
 
 ## 5. Snapshot record format
 
@@ -194,7 +195,7 @@ The contracts refer to these by number.
 2. **The rider sentence.** Cards and prompts use one constant built from the charter's wording (IF-PROMPT.md §3). The charter makes any change to how the rider is described a maintainer decision; approve the constant as written.
 3. **Code inside rigor-atlas prose.** Some APPLY, RIGOR and KERNEL SHAPE fields embed short code expressions (intake-IntakeRigor2 §7). Drop those fields, or keep short expressions as our own notation?
 4. **When a cohort packet is indexable.** Cohort packets land `[pending]` until an independent review. Which file records that the review passed (for example a `cohorts/<yyyy-mm>/REVIEWED.tsv` row), so the generator indexes only reviewed packets?
-5. **UNK-008**, the crawler policy for the quotes shard. Until decided, quotes ship empty (DEC-P06).
+5. **UNK-008**, the crawler policy for the quotes shard: RESOLVED 2026-09-25 by the maintainer, `open` (DEC-011; DEC-008 rejected). `search/crawler-policy` is committed as `open`, quotes flow under DEC-009, and HON-15 fails the build if the policy file is absent.
 6. **Ungraded items** (DEC-P08): accept an explicit "ungraded" badge for the 104 practices and other untiered items, or schedule a grading bead?
 7. **Crate descriptions** (DEC-P11): quotes (lazy shard, our paraphrase in core) or metadata that may sit in core?
 8. **rigor-atlas techniques stay pointer-only** under DEC-003 even though DEC-009 now allows short quotes. Keep that?

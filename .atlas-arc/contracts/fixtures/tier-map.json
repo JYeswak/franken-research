@@ -1,0 +1,1115 @@
+{
+ "about": "Fixtures for TIER-MAP.md principles 4-6 and the §4.1 fh state normalization (review 5). Each fixture is a snapshot row (the input the generator maps) plus an entry: the named base with its JSON Patch applied. Every materialized entry validates against IF-ENTRY.schema.json (jsonschema 4.25.1, 2026-09-25), so a failure is attributable to the planted rule, not to the schema. Gate Q3 (sub-check HON-11) must fail every \"fail\" fixture with exactly its code (and for tm_unmapped_label, exactly its line) and pass every \"pass\" fixture. Gate Q3 is not built yet (GATES-PLAN.md); no validator runs these today.",
+ "bases": {
+  "ra-technique-TM-RA-1": {
+   "schema": "fr.search.entry/v1",
+   "id": "ra:technique:frankensqlite/mvcc/1df51efc",
+   "kind": "applied-technique",
+   "title": "Snapshot visibility as one unsigned comparison (frankensqlite, MVCC)",
+   "summary": "frankensqlite decides whether a page or cell version is visible to a snapshot with one branch-free comparison: commit sequence minus one, compared against the snapshot's high mark, so an uncommitted version (sequence 0) wraps to the maximum and is never visible. The same test runs at page and at cell granularity, so a small row write does not fork a whole page.",
+   "copy": {
+    "targets": [
+     {
+      "label": "Page-level visibility check",
+      "repo": "Dicklesworthstone/frankensqlite",
+      "path": "crates/fsqlite-mvcc/src/invariants.rs",
+      "lines": "203-219",
+      "commit": "29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75",
+      "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219"
+     },
+     {
+      "label": "Cell-level visibility check",
+      "repo": "Dicklesworthstone/frankensqlite",
+      "path": "crates/fsqlite-mvcc/src/cell_visibility.rs",
+      "lines": "260-283",
+      "commit": "29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75",
+      "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/cell_visibility.rs#L260-L283"
+     }
+    ]
+   },
+   "prompt": {
+    "template": "applied-technique/study@1",
+    "text": "Read how Jeffrey Emanuel's frankensqlite checks MVCC snapshot visibility with one unsigned comparison: https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219 (commit of 2026-09-02). If this project reads versioned records under snapshots, write our own version of that check and a property test that, for random commit sequences, exactly the committed versions at or below each snapshot are visible and an uncommitted version is visible to no snapshot. Its license is MIT with a rider that bars OpenAI, Anthropic, their affiliates, those acting for them, and ML training or evaluation use (https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/LICENSE); keep that notice with anything you copy."
+   },
+   "posture": "practice",
+   "evidence": {
+    "scheme": "rulebook-tier",
+    "tier": 1,
+    "label": "[Verified]",
+    "flavor": "[Code-verified]",
+    "confidence": "Medium",
+    "basis": "Checked at build: the cited lines are at crates/fsqlite-mvcc/src/invariants.rs:217-218 in Dicklesworthstone/frankensqlite@29e2f9f. Not checked: what they show is a rigor-atlas agent's reading (label KNOW), not re-graded by Franken Research (TIER-MAP TM-RA-1).",
+    "source": {
+     "repo": "Dicklesworthstone/frankensqlite",
+     "path": "crates/fsqlite-mvcc/src/invariants.rs",
+     "lines": "217-218",
+     "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L217-L218"
+    },
+    "mapped_from": {
+     "system": "rigor-atlas",
+     "label": "KNOW",
+     "rule": "TM-RA-1"
+    }
+   },
+   "license": {
+    "class": "MIT+rider",
+    "label": "MIT with the OpenAI/Anthropic rider",
+    "rider": true,
+    "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/LICENSE",
+    "checked": "2026-09-24"
+   },
+   "source_url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219",
+   "credit": {
+    "repos": [
+     {
+      "name": "Dicklesworthstone/frankensqlite",
+      "url": "https://github.com/Dicklesworthstone/frankensqlite"
+     }
+    ]
+   },
+   "provenance": {
+    "generator": "site/scripts/make-search.mjs@1.0.0",
+    "source": {
+     "name": "ra-snapshot",
+     "path": "rigor-atlas data/rigor.sqlite table techniques (to be vendored as search/snapshots/ra-curated.json)",
+     "sha256": "881cce40223af3079311f3390bfa851ff6b36aa792fcc225d45fd12ab91d366f"
+    },
+    "snapshot_date": "2026-09-02",
+    "pinned": {
+     "commit": "29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75",
+     "date": "2026-09-02"
+    }
+   },
+   "facets": {
+    "repo": "frankensqlite",
+    "entity": "mvcc",
+    "atlas_kind": "storage-kernel",
+    "language": "Rust"
+   }
+  },
+  "fh-technique-TM-FH-1": {
+   "schema": "fr.search.entry/v1",
+   "id": "fh:techniques:T1",
+   "kind": "technique",
+   "title": "SIMD vector kernels (franken-harvest technique T1)",
+   "summary": "Lane-wide arithmetic with architecture intrinsics or portable vector types. franken-harvest lists exemplars in Jeffrey Emanuel's code; the frankensearch one multiplies eight floats at a time with AVX2 in its vector index.",
+   "copy": {
+    "targets": [
+     {
+      "label": "AVX2 dot-product kernel",
+      "repo": "Dicklesworthstone/frankensearch",
+      "path": "crates/frankensearch-index/src/simd.rs",
+      "lines": "181",
+      "commit": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+      "url": "https://github.com/Dicklesworthstone/frankensearch/blob/2ab871398be6f6f0d9f2277cc19d48305f35d06c/crates/frankensearch-index/src/simd.rs#L181"
+     }
+    ]
+   },
+   "prompt": {
+    "template": "technique/study@1",
+    "text": "Read how Jeffrey Emanuel's frankensearch computes a dot product eight floats at a time: https://github.com/Dicklesworthstone/frankensearch/blob/2ab871398be6f6f0d9f2277cc19d48305f35d06c/crates/frankensearch-index/src/simd.rs#L181 . If this project has a hot numeric loop, write our own vector kernel with a scalar reference and a property test that the two agree. Its license is MIT with a rider that bars OpenAI, Anthropic, their affiliates, those acting for them, and ML training or evaluation use (https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/LICENSE); keep that notice with anything you copy."
+   },
+   "posture": "practice",
+   "evidence": {
+    "scheme": "rulebook-tier",
+    "tier": 1,
+    "label": "[Verified]",
+    "flavor": "[Code-verified]",
+    "confidence": "Medium",
+    "basis": "Checked at build: the quoted lines are at crates/frankensearch-index/src/simd.rs:181 in Dicklesworthstone/frankensearch@2ab8713. Not checked: that they are an example of fh:techniques:T1 is franken-harvest's judgment (TIER-MAP TM-FH-1).",
+    "source": {
+     "repo": "Dicklesworthstone/frankensearch",
+     "path": "crates/frankensearch-index/src/simd.rs",
+     "lines": "181",
+     "url": "https://github.com/Dicklesworthstone/frankensearch/blob/2ab871398be6f6f0d9f2277cc19d48305f35d06c/crates/frankensearch-index/src/simd.rs#L181"
+    },
+    "mapped_from": {
+     "system": "franken-harvest",
+     "label": "CURRENT",
+     "rule": "TM-FH-1"
+    }
+   },
+   "license": {
+    "class": "MIT+rider",
+    "label": "MIT with the OpenAI/Anthropic rider",
+    "rider": true,
+    "url": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/LICENSE",
+    "checked": "2026-09-24"
+   },
+   "source_url": "https://github.com/Dicklesworthstone/frankensearch/blob/2ab871398be6f6f0d9f2277cc19d48305f35d06c/crates/frankensearch-index/src/simd.rs#L181",
+   "credit": {
+    "repos": [
+     {
+      "name": "Dicklesworthstone/frankensearch",
+      "url": "https://github.com/Dicklesworthstone/frankensearch"
+     }
+    ]
+   },
+   "provenance": {
+    "generator": "site/scripts/make-search.mjs@1.0.0",
+    "source": {
+     "name": "fh-snapshot",
+     "path": "search/snapshots/fh/techniques.tsv (franken-harvest techniques.tsv at 77d515b)",
+     "sha256": "e062f428af50104b22ec49bc854f3c91f77bf7f2b3592d006bb6d0f08dcb6b09"
+    },
+    "snapshot_date": "2026-09-24",
+    "pinned": {
+     "commit": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+     "date": "2026-09-02"
+    }
+   },
+   "facets": {
+    "repo": "frankensearch",
+    "language": "Rust"
+   }
+  }
+ },
+ "fixtures": [
+  {
+   "id": "TMF-00",
+   "what": "clean control: KNOW, code evidence, evidence check CURRENT, templated basis",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "pass",
+    "rule": "TM-RA-1"
+   }
+  },
+  {
+   "id": "TMF-01",
+   "what": "unknown label on a technique",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "BLIND"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_UNMAPPED_LABEL",
+    "detector": "tm_unmapped_label",
+    "line": "FAIL Q3.HON-11.TM_UNMAPPED_LABEL detector=tm_unmapped_label reason=unknown system=rigor-atlas row=techniques:frankensqlite/mvcc/1df51efc label=\"BLIND\""
+   }
+  },
+  {
+   "id": "TMF-02",
+   "what": "empty label on a technique",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": ""
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_UNMAPPED_LABEL",
+    "detector": "tm_unmapped_label",
+    "line": "FAIL Q3.HON-11.TM_UNMAPPED_LABEL detector=tm_unmapped_label reason=empty system=rigor-atlas row=techniques:frankensqlite/mvcc/1df51efc label=\"\""
+   }
+  },
+  {
+   "id": "TMF-03",
+   "what": "mixed free-text label on a technique (TM-RA-7 handles this form on profiles only)",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW for the installer … INFER for the spec"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_UNMAPPED_LABEL",
+    "detector": "tm_unmapped_label",
+    "line": "FAIL Q3.HON-11.TM_UNMAPPED_LABEL detector=tm_unmapped_label reason=mixed system=rigor-atlas row=techniques:frankensqlite/mvcc/1df51efc label=\"KNOW for the installer … INFER for the spec\""
+   }
+  },
+  {
+   "id": "TMF-04",
+   "what": "case variant of a closed-set label",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "know"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_UNMAPPED_LABEL",
+    "detector": "tm_unmapped_label",
+    "line": "FAIL Q3.HON-11.TM_UNMAPPED_LABEL detector=tm_unmapped_label reason=unknown system=rigor-atlas row=techniques:frankensqlite/mvcc/1df51efc label=\"know\""
+   }
+  },
+  {
+   "id": "TMF-05",
+   "what": "Tier-1 basis whose checked clause claims more than presence",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "Checked at build: the cited code proves snapshot visibility is correct at crates/fsqlite-mvcc/src/invariants.rs:217-218 in Dicklesworthstone/frankensqlite@29e2f9f. Not checked: nothing further (TIER-MAP TM-RA-1)."
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_BASIS_OVERCLAIM"
+   }
+  },
+  {
+   "id": "TMF-06",
+   "what": "Tier-1 basis in free text (the pre-review IF-ENTRY example wording) instead of the TM-RA-1 template",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "rigor-atlas label KNOW: an atlas agent read the code at the pinned commit and five cited lines were checked mechanically at build. Franken Research has not re-graded the claim, so confidence is Medium, not High (TIER-MAP rule TM-RA-1)."
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_BASIS_TEMPLATE_MISMATCH"
+   }
+  },
+  {
+   "id": "TMF-07",
+   "what": "Tier-1 basis naming lines the check did not find",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "Checked at build: the cited lines are at crates/fsqlite-mvcc/src/invariants.rs:203-219 in Dicklesworthstone/frankensqlite@29e2f9f. Not checked: what they show is a rigor-atlas agent's reading (label KNOW), not re-graded by Franken Research (TIER-MAP TM-RA-1)."
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/source/lines",
+     "value": "203-219"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/source/url",
+     "value": "https://github.com/Dicklesworthstone/frankensqlite/blob/29e2f9f8a1428e4e48fc6e58cfdcb6e152ce0b75/crates/fsqlite-mvcc/src/invariants.rs#L203-L219"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_BASIS_ARTIFACT_MISMATCH"
+   }
+  },
+  {
+   "id": "TMF-08",
+   "what": "fh Tier-1 basis whose checked clause asserts the layer judgment",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "CURRENT"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "Checked at build: the quoted lines at crates/frankensearch-index/src/simd.rs:181 in Dicklesworthstone/frankensearch@2ab8713 are an example of fh:techniques:T1. Not checked: nothing (TIER-MAP TM-FH-1)."
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_BASIS_OVERCLAIM"
+   }
+  },
+  {
+   "id": "TMF-09",
+   "what": "KNOW with code evidence shipped as Tier 1 although the evidence check found STALE (must be TM-RA-10, Tier 5, Low)",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "STALE",
+     "found_lines": null
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-RA-10",
+     "tier": 5,
+     "label": "[Inference]",
+     "confidence": "Low"
+    }
+   }
+  },
+  {
+   "id": "TMF-10",
+   "what": "TM-RA-1 entry graded High (principle 3: Medium is the ceiling)",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/confidence",
+     "value": "High"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_CONFIDENCE_HIGH"
+   }
+  },
+  {
+   "id": "TMF-11",
+   "what": "ra entry with a tier but no mapped_from (principle 5)",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [
+    {
+     "op": "remove",
+     "path": "/evidence/mapped_from"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_MAPPED_FROM_MISSING"
+   }
+  },
+  {
+   "id": "TMR-02",
+   "what": "TM-RA-2: KNOW with docs-only evidence shipped as Tier 1",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "1-3",
+     "paths_are_docs_only": true
+    },
+    "label": "KNOW"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-RA-2",
+     "tier": 3,
+     "label": "[Maintainer claim]",
+     "confidence": "Medium"
+    }
+   }
+  },
+  {
+   "id": "TMR-03",
+   "what": "TM-RA-3: INFER shipped as Tier 1",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "INFER"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-RA-3",
+     "tier": 5,
+     "label": "[Inference]",
+     "confidence": "Low"
+    }
+   }
+  },
+  {
+   "id": "TMR-04",
+   "what": "TM-RA-4: GUESS with docs-only evidence shipped as Tier 1 (the IF-HONESTY HON-11 raptorq-fountain pattern)",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "1-3",
+     "paths_are_docs_only": true
+    },
+    "label": "GUESS"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-RA-4",
+     "tier": 3,
+     "label": "[Maintainer claim]",
+     "confidence": "Low"
+    }
+   }
+  },
+  {
+   "id": "TMR-05",
+   "what": "TM-RA-5: GUESS with code evidence shipped as Tier 1",
+   "base": "ra-technique-TM-RA-1",
+   "snapshot_row": {
+    "system": "rigor-atlas",
+    "table": "techniques",
+    "key": "frankensqlite/mvcc/1df51efc",
+    "evidence_paths": [
+     "crates/fsqlite-mvcc/src/invariants.rs:217-218"
+    ],
+    "evidence_check": {
+     "raw": "CURRENT",
+     "found_lines": "217-218"
+    },
+    "label": "GUESS"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-RA-5",
+     "tier": 5,
+     "label": "[Inference]",
+     "confidence": "Low"
+    }
+   }
+  },
+  {
+   "id": "FHN-01",
+   "what": "N2: CURRENT from our checker",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "CURRENT",
+    "emitted_by": "search/lib/quote-check.mjs"
+   },
+   "normalize": {
+    "normalized": "CURRENT",
+    "rule": "TM-FH-1",
+    "handling": "kept as copy target, Tier 1"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "pass",
+    "rule": "TM-FH-1"
+   }
+  },
+  {
+   "id": "FHN-02",
+   "what": "N4: RELOCATED once; shipping it as TM-FH-1 at the pinned line is the planted fault",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "RELOCATED",
+    "emitted_by": "search/lib/quote-check.mjs",
+    "occurrences": 1,
+    "found_at": [
+     "185-185"
+    ]
+   },
+   "normalize": {
+    "normalized": "CURRENT+line_relocated",
+    "rule": "TM-FH-2",
+    "handling": "kept, cited at the found line 185, basis keeps \"moved from 181\""
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "RELOCATED"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-2",
+     "lines": "185"
+    }
+   }
+  },
+  {
+   "id": "FHN-03",
+   "what": "N7: STALE shipped as an indexed Tier-1 exemplar",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "STALE",
+    "emitted_by": "search/lib/quote-check.mjs"
+   },
+   "normalize": {
+    "normalized": "STALE",
+    "rule": "TM-FH-4",
+    "handling": "exemplar dropped; entry not indexed if no exemplar is left"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "STALE"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-4",
+     "indexed": false
+    }
+   }
+  },
+  {
+   "id": "FHN-04",
+   "what": "N8: NO_REVISION kept as a Tier-5 link (must be dropped as CANNOT_DETERMINE)",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "NO_REVISION",
+    "emitted_by": "search/lib/quote-check.mjs"
+   },
+   "normalize": {
+    "normalized": "CANNOT_DETERMINE",
+    "rule": "TM-FH-5",
+    "handling": "dropped (fail closed)"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "NO_REVISION"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/rule",
+     "value": "TM-FH-3"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "A pinned franken-harvest citation that the build could not check; shown as a link only (TIER-MAP TM-FH-3)."
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/tier",
+     "value": 5
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/label",
+     "value": "[Inference]"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/confidence",
+     "value": "Low"
+    },
+    {
+     "op": "remove",
+     "path": "/evidence/flavor"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-5",
+     "indexed": false
+    }
+   }
+  },
+  {
+   "id": "FHN-05",
+   "what": "N1 (defensive): a legacy row where the checker reported CURRENT on an empty quote (the pre-review-5b checker did this: \"\" is a substring of every file) shipped as Tier 1",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": false,
+    "raw_state": "CURRENT",
+    "emitted_by": "pre-review-5b scratch checker"
+   },
+   "normalize": {
+    "normalized": "PINNED_UNVERIFIED",
+    "rule": "TM-FH-3",
+    "handling": "link only, Tier 5, Low"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-3",
+     "tier": 5
+    }
+   }
+  },
+  {
+   "id": "FHN-06",
+   "what": "N6: PINNED_UNVERIFIED from fh verifier, Tier 5 link",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": false,
+    "raw_state": "PINNED_UNVERIFIED",
+    "emitted_by": "franken-harvest verify.rs"
+   },
+   "normalize": {
+    "normalized": "PINNED_UNVERIFIED",
+    "rule": "TM-FH-3",
+    "handling": "link only, Tier 5, Low"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "PINNED_UNVERIFIED"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/rule",
+     "value": "TM-FH-3"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "A pinned franken-harvest citation with no quote to check; shown as a link only (TIER-MAP TM-FH-3)."
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/tier",
+     "value": 5
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/label",
+     "value": "[Inference]"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/confidence",
+     "value": "Low"
+    },
+    {
+     "op": "remove",
+     "path": "/evidence/flavor"
+    }
+   ],
+   "expect": {
+    "result": "pass",
+    "rule": "TM-FH-3"
+   }
+  },
+  {
+   "id": "FHN-07",
+   "what": "N9: CANNOT_DETERMINE from fh verifier shipped as Tier 1",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "CANNOT_DETERMINE",
+    "emitted_by": "franken-harvest verify.rs"
+   },
+   "normalize": {
+    "normalized": "CANNOT_DETERMINE",
+    "rule": "TM-FH-5",
+    "handling": "dropped (fail closed)"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "CANNOT_DETERMINE"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-5",
+     "indexed": false
+    }
+   }
+  },
+  {
+   "id": "FHN-08",
+   "what": "N3: CURRENT with line_relocated=true from fh verifier",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "CURRENT",
+    "emitted_by": "franken-harvest verify.rs",
+    "line_relocated": true,
+    "found_lines": "185"
+   },
+   "normalize": {
+    "normalized": "CURRENT+line_relocated",
+    "rule": "TM-FH-2",
+    "handling": "kept, cited at the relocated line"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/rule",
+     "value": "TM-FH-2"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/basis",
+     "value": "Checked at build: the quoted lines are at crates/frankensearch-index/src/simd.rs:185 in Dicklesworthstone/frankensearch@2ab8713, moved from 181. Not checked: that they are an example of fh:techniques:T1 is franken-harvest's judgment (TIER-MAP TM-FH-2)."
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/source/lines",
+     "value": "185"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/source/url",
+     "value": "https://github.com/Dicklesworthstone/frankensearch/blob/2ab871398be6f6f0d9f2277cc19d48305f35d06c/crates/frankensearch-index/src/simd.rs#L185"
+    }
+   ],
+   "expect": {
+    "result": "pass",
+    "rule": "TM-FH-2"
+   }
+  },
+  {
+   "id": "FHN-09",
+   "what": "N10: fh history state MOVED reaching the mapper",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "MOVED",
+    "emitted_by": "franken-harvest verify.rs"
+   },
+   "normalize": {
+    "normalized": null,
+    "rule": null,
+    "handling": "build fails"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.FH_STATE_UNMAPPED",
+    "detector": "tm_unmapped_label",
+    "line": "FAIL Q3.HON-11.FH_STATE_UNMAPPED detector=tm_unmapped_label reason=unknown system=franken-harvest row=techniques.tsv:T1 label=\"MOVED\""
+   }
+  },
+  {
+   "id": "FHN-10",
+   "what": "N10: lowercase current (no case folding)",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "current",
+    "emitted_by": "search/lib/quote-check.mjs"
+   },
+   "normalize": {
+    "normalized": null,
+    "rule": null,
+    "handling": "build fails"
+   },
+   "entry_patch": [],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.FH_STATE_UNMAPPED",
+    "detector": "tm_unmapped_label",
+    "line": "FAIL Q3.HON-11.FH_STATE_UNMAPPED detector=tm_unmapped_label reason=unknown system=franken-harvest row=techniques.tsv:T1 label=\"current\""
+   }
+  },
+  {
+   "id": "FHN-11",
+   "what": "N5: RELOCATED found at two places shipped as TM-FH-2",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": true,
+    "raw_state": "RELOCATED",
+    "emitted_by": "search/lib/quote-check.mjs",
+    "occurrences": 2,
+    "found_at": [
+     "185-185",
+     "240-240"
+    ]
+   },
+   "normalize": {
+    "normalized": "CANNOT_DETERMINE",
+    "rule": "TM-FH-5",
+    "handling": "dropped (fail closed)"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "RELOCATED"
+    },
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/rule",
+     "value": "TM-FH-2"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-5",
+     "indexed": false
+    }
+   }
+  },
+  {
+   "id": "FHN-12",
+   "what": "N1: EMPTY_QUOTE from the fixed checker shipped as Tier 1",
+   "base": "fh-technique-TM-FH-1",
+   "snapshot_row": {
+    "system": "franken-harvest",
+    "file": "techniques.tsv",
+    "key": "T1",
+    "revision": "2ab871398be6f6f0d9f2277cc19d48305f35d06c",
+    "path": "crates/frankensearch-index/src/simd.rs",
+    "line_start": 181,
+    "line_end": 181,
+    "quote_present": false,
+    "raw_state": "EMPTY_QUOTE",
+    "emitted_by": "search/lib/quote-check.mjs",
+    "occurrences": 0,
+    "found_at": []
+   },
+   "normalize": {
+    "normalized": "PINNED_UNVERIFIED",
+    "rule": "TM-FH-3",
+    "handling": "link only, Tier 5, Low"
+   },
+   "entry_patch": [
+    {
+     "op": "replace",
+     "path": "/evidence/mapped_from/label",
+     "value": "EMPTY_QUOTE"
+    }
+   ],
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-11.TM_RULE_MISMATCH",
+    "want": {
+     "rule": "TM-FH-3",
+     "tier": 5
+    }
+   }
+  }
+ ]
+}

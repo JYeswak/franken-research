@@ -1,0 +1,107 @@
+# Contract-to-gate matrix (review 5). One row per normative rule: where the rule is written (file:line, paths relative to .atlas-arc/contracts/ unless eval/),
+# the sub-check that enforces it, the fixtures that must trip it (or pass, where marked), the expected failure code, and the fixture status:
+# file:<path> = the fixture exists as data today; runs:<command> = a validator runs it today; described:<where> = the fixture is only described in plan text.
+# Gates Q1-Q7 are not built (GATES-PLAN.md); only eval/validate.mjs runs today. A rule with no row is not enforced; a bead that adds a rule adds its row.
+rule	written_at	rule_text	sub_check	fixtures	expected_failure	fixture_status
+ID-01	IF-ID.md:20	ids are ASCII, <=160 chars, allowed character set	Q1.ID	IF-ID §6 planted ids (fr:A1, fh:oracles:Z2, fh:oracles:D14, ra:technique:frankensqlite/mvcc, crate:xtask, fr:rp-001, fh:ledger:C31)	Q1.ID.GRAMMAR	described:IF-ID.md §6 (run by mint_ids.py, scratch, 2026-09-24)
+ID-02	IF-ID.md:76	one mint(source) function in search/lib/ids.mjs shared by generator, Q1 and the golden validator; id == mint(source row)	Q1.ID	IDF-00..IDF-07; GF-04, GF-05	Q1.ID.SOURCE_MISMATCH; eval exit 1 "does not point at this id's source item"	runs:node search/lib/ids.mjs --selftest (generator and Q1 not built; they must import this module); runs:node .atlas-arc/eval/validate.mjs --selftest
+ID-03	IF-ID.md:22	ids derive only from source keys, never from row order, rowid or build time	Q1.ID + Q2.FRESHNESS	IDF-04; Q2 fixture (1)	Q1.ID.SOURCE_MISMATCH; Q2.FRESHNESS.DIFF	file:contracts/fixtures/id-derivation.json; described:GATES-PLAN.md Q2
+ID-04	IF-ID.md:23	an id is never reused for a different item	Q6.ID	Q6 fixture (3) retired id reused	Q6.ID.RETIRED_REUSED	described:GATES-PLAN.md Q6
+ID-05	IF-ID.md:24	share links and the golden set use ids verbatim (percent-encoded in URLs)	Q5.RENDER	a shared link #id=crate%3Afrankenterm%2Ftabout~23ece5 must open that card	Q5.RENDER.SHARE_LINK_UNRESOLVED	described:this row
+ID-06	IF-ID.md:26	per-family grammar (§2) and validator regexes (§5)	Q1.ID	IDF-07; ID-01 planted ids	Q1.ID.GRAMMAR	runs:node search/lib/ids.mjs --selftest (generator and Q1 not built; they must import this module)
+ID-07	IF-ID.md:79	~<h6> exactly on members of repeated (repo, crate) pairs	Q1.ID	IDF-00 (pass), IDF-01, IDF-02; GF-02, GF-03	Q1.ID.NONCANONICAL_SUFFIX; Q1.ID.MISSING_REQUIRED_SUFFIX; eval exit 2 (unresolved)	runs:node search/lib/ids.mjs --selftest (generator and Q1 not built; they must import this module); runs:node .atlas-arc/eval/validate.mjs --selftest
+ID-08	IF-ID.md:58	slug rule; two items with one slug fail the build (no counters)	Q1.ID	two cross-pollination headings that slug alike	Q1.ID.COLLISION	described:this row
+ID-09	IF-ID.md:66	one id minted twice fails the build naming both sources	Q1.ID	two manifests minting one crate id	Q1.ID.COLLISION	described:this row
+ID-10	IF-ID.md:72	every disappeared id has a retirement row; new_id exists	Q6.ID	Q6 fixtures (1), (2)	Q6.ID.UNEXPLAINED_DISAPPEARANCE; Q6.ID.RETIREMENT_TARGET_MISSING	described:GATES-PLAN.md Q6
+ID-11	IF-ID.md:112	every id resolves to its source item	Q1.ID	fr:RP-999; GF-01	Q1.ID.UNRESOLVED; eval exit 2	described:GATES-PLAN.md Q1; runs:node .atlas-arc/eval/validate.mjs --selftest
+ID-12	IF-SHARD.md:16	every entry in exactly one of core and deep	Q1.SHARD	an id in both shards	Q1.SHARD.PLACEMENT	described:GATES-PLAN.md Q1
+EN-01	IF-ENTRY.md:76	every entry validates against IF-ENTRY.schema.json	Q1.SCHEMA	the 17 schema mutations	Q1.SCHEMA.INVALID	described:IF-ENTRY.md §5 (run by validate_examples.py, scratch, 2026-09-25: RESULT PASS)
+EN-02	IF-ENTRY.md:27	fr: entries carry an on-site url that resolves with its fragment	Q3.HON-03	url rigor/index.html#rp-999	Q3.HON-03.URL_UNRESOLVED	described:IF-HONESTY.md HON-03
+EN-03	IF-ENTRY.md:65	basis is 20-400 characters of our words	Q1.SCHEMA + Q3.HON-12	a basis pasting 12+ words of a manifest description	Q3.HON-12.SHINGLE_MATCH	described:IF-HONESTY.md HON-12
+EN-04	IF-ENTRY.md:71	Jeffrey's repositories pinned at a 40-hex commit; this repo at its release tag	Q3.HON-03	source_url ending /blob/main/Cargo.toml	Q3.HON-03.UNPINNED	described:IF-HONESTY.md HON-03
+SH-01	IF-SHARD.md:15	quotes only in the quotes shard	Q3.HON-09	a core entry carrying quote	Q3.HON-09.QUOTE_IN_CORE	described:IF-HONESTY.md HON-09
+SH-02	IF-SHARD.md:17	core <=150 KB brotli, all shards <=1.5 MB	Q5.BUDGET	Q5 fixture (2) core padded past 150 KB	Q5.BUDGET.CORE_BYTES; Q5.BUDGET.TOTAL_BYTES	described:GATES-PLAN.md Q5
+SH-03	IF-SHARD.md:18	each shard is one window.FR_SEARCH_<NAME> assignment	Q7.SHARD	Q7 fixture (3) fetch-style JSON shard	Q7.SHARD.SHAPE	described:GATES-PLAN.md Q7
+SH-04	IF-SHARD.md:48	all shards carry one build; core v stamps equal file hashes	Q7.SHARD	Q7 fixtures (1), (2)	Q7.SHARD.VERSION_STAMP; Q7.SHARD.BUILD_SKEW	described:GATES-PLAN.md Q7
+SH-05	IF-SHARD.md:63	format and entry_schema majors are the expected ones	Q7.SHARD	core with format major 2	Q7.SHARD.FORMAT_MAJOR	described:this row
+SH-06	IF-SHARD.md:69	the client never mixes two builds; unknown major shows the reload notice	Q5.RENDER	deep shard with another build loaded under core	Q5.RENDER.MIXED_BUILDS	described:this row
+SH-07	IF-SHARD.md:78	crawler policy committed (DEC-011: open) and obeyed	Q3.HON-15	CPF-00..CPF-09	see HON-15	file:contracts/fixtures/crawler-policy.json
+SO-01	IF-SOURCES.md:161	every SNAPSHOTS.tsv row names a file whose sha256 matches	Q2.SNAPSHOT	Q2 fixture (2) byte changed after the row	Q2.SNAPSHOT.HASH	described:GATES-PLAN.md Q2
+SO-02	GATES-PLAN.md:25	crate snapshot at most 8 days old	Q2.SNAPSHOT	Q2 fixture (3) snapshot 9 days old	Q2.SNAPSHOT.STALE	described:GATES-PLAN.md Q2
+SO-03	GATES-PLAN.md:23	committed shards equal a fresh build from committed sources	Q2.FRESHNESS	Q2 fixtures (1), (4)	Q2.FRESHNESS.DIFF	described:GATES-PLAN.md Q2
+SO-04	IF-SOURCES.md:143	crate collector handles forks, nameless manifests, repeated pairs, metadata-MIT in rider repos, foreign crates.io names	COLLECTOR.selftest	the five recorded-response cases	COLLECTOR.<case>	described:IF-SOURCES.md §4.1
+SO-05	IF-SOURCES.md:152	fh snapshot check records raw states; only normalized states reach the rules	Q3.HON-11	FHN-01..FHN-12; checker selftest (7 citations + unknown state)	Q3.HON-11.FH_STATE_UNMAPPED; Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json; runs:node search/tools/quote-check.mjs --selftest
+SO-06	IF-SOURCES.md:159	rigor-atlas KNOW code evidence checked at the pin; TM-RA-1 only when a path is CURRENT or CURRENT+line_relocated	Q3.HON-11	TMF-00 (pass), TMF-09; search/snapshots/ra-evidence-check.tsv (1,412 TM-RA-1, 0 TM-RA-10)	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json; runs:node search/tools/quote-check.mjs ra --mirror <dir> --db <file>
+SO-07	decisions-proposed.jsonl:12	v1 exclusions: forks, private oracles, doctrine ledger, replaces column, hypotheses, entities, nameless manifests	Q3.HON-10 + Q3.HON-16 + Q1.ID	fh:oracles:D14 entry; ra:technique:hnswlib-rs/... entry; fh:ledger:C31 id	Q3.HON-10.PRIVATE; Q3.HON-16.FORK; Q1.ID.GRAMMAR	described:IF-HONESTY.md HON-10, HON-16
+PR-01	IF-PROMPT.md:15	prompt.text is its template rendered from our fields; 24 templates	Q2.FRESHNESS + Q3.HON-04	a prompt edited by hand after generation	Q2.FRESHNESS.DIFF	described:this row
+PR-02	IF-PROMPT.md:9	slot values are our fields only	Q3.HON-12	a slot filled with 12+ words of a manifest description	Q3.HON-12.SHINGLE_MATCH	described:IF-HONESTY.md HON-12
+PR-03	IF-PROMPT.md:46	posture sentence fixed per posture; no adoption imperative against a verdict	Q3.HON-04 + Q3.HON-05	frankensearch crate with cargo add; asupersync crate with posture use	Q3.HON-04.IMPERATIVE; Q3.HON-05.POSTURE	described:IF-HONESTY.md HON-04, HON-05
+PR-04	IF-PROMPT.md:50	one license sentence per class; the rider described one way	Q3.HON-06 + Q3.HON-08	rider quote without flag; "You may not use this code if you use Claude."	Q3.HON-06.RIDER_FLAG; Q3.HON-08.RIDER_WORDING	described:IF-HONESTY.md HON-06, HON-08
+PR-05	IF-PROMPT.md:71	quotes: cited CURRENT lines only, <=6 lines/480 chars, exact, licensed, notice, quotes shard only	Q3.HON-07 + Q3.HON-09	quote from an all-rights-reserved repo; 7-line quote; quote differing from its hash	Q3.HON-07.*; Q3.HON-09.QUOTE_IN_CORE	described:IF-HONESTY.md HON-07, HON-09
+PR-06	IF-PROMPT.md:79	crawler policy open (DEC-011)	Q3.HON-15	CPF-00..CPF-09	see HON-15	file:contracts/fixtures/crawler-policy.json
+HON-01	IF-HONESTY.md:11	Every result shows its trust level	Q3.HON-01	tier 2 labelled [Verified]	Q3.HON-01.TRUST_LEVEL	described:IF-HONESTY.md HON-01
+HON-02	IF-HONESTY.md:13	Every result shows its license, read from the repo LICENSE	Q3.HON-02	crate:charmed_rust/charmed-bubbletea with license MIT in a MIT+rider repo	Q3.HON-02.LICENSE_CLASS	described:IF-HONESTY.md HON-02
+HON-03	IF-HONESTY.md:15	Every result links its source at a pin	Q3.HON-03	source_url on /blob/main/; url rigor/index.html#rp-999	Q3.HON-03.UNPINNED; Q3.HON-03.URL_UNRESOLVED	described:IF-HONESTY.md HON-03
+HON-04	IF-HONESTY.md:17	No adoption imperative against a verdict	Q3.HON-04	crate with cargo add under a do-not-depend verdict	Q3.HON-04.IMPERATIVE	described:IF-HONESTY.md HON-04
+HON-05	IF-HONESTY.md:19	Postures come from cited verdicts	Q3.HON-05	asupersync crate (ring Pilot) with posture use	Q3.HON-05.POSTURE	described:IF-HONESTY.md HON-05
+HON-06	IF-HONESTY.md:21	Rider quotes carry the flag and the notice	Q3.HON-06	asupersync Cargo.toml quote with rider_flag false	Q3.HON-06.RIDER_FLAG	described:IF-HONESTY.md HON-06
+HON-07	IF-HONESTY.md:23	No quotes without a grant, and quotes stay short and exact	Q3.HON-07	quote from mechanism_interferometry_causality; 7-line quote; one-character hash mismatch	Q3.HON-07.NO_GRANT; Q3.HON-07.TOO_LONG; Q3.HON-07.NOT_EXACT	described:IF-HONESTY.md HON-07
+HON-08	IF-HONESTY.md:25	The rider is described one way, and never as barring ordinary users	Q3.HON-08	prompt "You may not use this code if you use Claude."	Q3.HON-08.RIDER_WORDING	described:IF-HONESTY.md HON-08
+HON-09	IF-HONESTY.md:27	Quotes live only in the quotes shard	Q3.HON-09	core entry carrying quote	Q3.HON-09.QUOTE_IN_CORE	described:IF-HONESTY.md HON-09
+HON-10	IF-HONESTY.md:29	Nothing private	Q3.HON-10	fh:oracles:D14 entry; replaces text naming franken-harvest	Q3.HON-10.PRIVATE	described:IF-HONESTY.md HON-10
+HON-11	IF-HONESTY.md:31	fh and rigor-atlas tiers follow TIER-MAP (detector, normalization, rule, basis template)	Q3.HON-11	raptorq-fountain known-bad; TMF-00..TMF-11, TMR-02..TMR-05, FHN-01..FHN-12	Q3.HON-11.TM_UNMAPPED_LABEL; FH_STATE_UNMAPPED; TM_RULE_MISMATCH; TM_BASIS_TEMPLATE_MISMATCH; TM_BASIS_OVERCLAIM; TM_BASIS_ARTIFACT_MISMATCH; TM_CONFIDENCE_HIGH; TM_MAPPED_FROM_MISSING	file:contracts/fixtures/tier-map.json
+HON-12	IF-HONESTY.md:33	Summaries and prompts are our words	Q3.HON-12	crate summary pasting a 12+ word description	Q3.HON-12.SHINGLE_MATCH	described:IF-HONESTY.md HON-12
+HON-13	IF-HONESTY.md:35	Credit	Q3.HON-13	ra technique crediting only JYeswak/franken-research	Q3.HON-13.CREDIT	described:IF-HONESTY.md HON-13
+HON-14	IF-HONESTY.md:37	Pins show their age	Q3.HON-14	crate entry without pinned	Q3.HON-14.PIN_AGE	described:IF-HONESTY.md HON-14
+HON-15	IF-HONESTY.md:39	crawler policy file committed (open, DEC-011), fail closed when absent, shards and robots.txt obey the state	Q3.HON-15	CPF-00 (pass), CPF-01, CPF-02, CPF-03, CPF-04 (pass), CPF-05, CPF-06, CPF-07 (pass), CPF-08, CPF-09	Q3.HON-15.POLICY_MISSING; POLICY_UNKNOWN; QUOTES_WHILE_PENDING; CRAWLER_RULE_UNDER_OPEN; MISSING_CRAWLER_GROUP; SITE_BLOCKED	file:contracts/fixtures/crawler-policy.json
+HON-16	IF-HONESTY.md:41	One id per repo verdict; forks are not Jeffrey's work	Q3.HON-16	ra:technique:hnswlib-rs/... entry	Q3.HON-16.FORK	described:IF-HONESTY.md HON-16
+HON-17	IF-HONESTY.md:43	crates.io links only for owner-verified names	Q3.HON-17	crate:meta_skill/ms linking crates.io/crates/ms	Q3.HON-17.CRATES_IO_OWNER	described:IF-HONESTY.md HON-17
+TM-P1	TIER-MAP.md:16	never upgrade: take the weaker tier	Q3.HON-11	TMF-09, TMR-02..TMR-05	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-P2	TIER-MAP.md:17	tier follows the evidence the row cites	Q3.HON-11	TMR-02, TMR-04	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-P3	TIER-MAP.md:18	no ra or fh claim graded High	Q3.HON-11	TMF-10	Q3.HON-11.TM_CONFIDENCE_HIGH	file:contracts/fixtures/tier-map.json
+TM-P4	TIER-MAP.md:19	unknown, empty or mixed labels and unknown raw states fail via tm_unmapped_label	Q3.HON-11	TMF-01, TMF-02, TMF-03, TMF-04, FHN-09, FHN-10	Q3.HON-11.TM_UNMAPPED_LABEL; Q3.HON-11.FH_STATE_UNMAPPED (exact line with detector=tm_unmapped_label)	file:contracts/fixtures/tier-map.json
+TM-P5	TIER-MAP.md:20	every mapped entry records mapped_from {system, label, rule}	Q3.HON-11	TMF-11	Q3.HON-11.TM_MAPPED_FROM_MISSING	file:contracts/fixtures/tier-map.json
+TM-P6	TIER-MAP.md:21	Tier-1 basis equals its rule template: checked clause (presence at the pin) separate from the unchecked interpretation	Q3.HON-11	TMF-05, TMF-06, TMF-07, TMF-08	Q3.HON-11.TM_BASIS_OVERCLAIM; TM_BASIS_TEMPLATE_MISMATCH; TM_BASIS_ARTIFACT_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-RA-1	TIER-MAP.md:34	rigor-atlas rule TM-RA-1	Q3.HON-11	TMF-00 (pass), TMF-09	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-RA-2	TIER-MAP.md:35	rigor-atlas rule TM-RA-2	Q3.HON-11	TMR-02	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-RA-3	TIER-MAP.md:36	rigor-atlas rule TM-RA-3	Q3.HON-11	TMR-03	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-RA-4	TIER-MAP.md:37	rigor-atlas rule TM-RA-4	Q3.HON-11	TMR-04	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-RA-5	TIER-MAP.md:38	rigor-atlas rule TM-RA-5	Q3.HON-11	TMR-05	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-RA-6	TIER-MAP.md:39	rigor-atlas rule TM-RA-6	Q3.HON-11	prescription entry with the advice graded Tier 1	Q3.HON-11.TM_RULE_MISMATCH	described:this row
+TM-RA-7	TIER-MAP.md:40	rigor-atlas rule TM-RA-7	Q3.HON-11	profile with a mixed invariant label graded Medium	Q3.HON-11.TM_RULE_MISMATCH	described:this row
+TM-RA-8	TIER-MAP.md:41	rigor-atlas rule TM-RA-8	Q3.HON-11	ra:kind entry given a tier	Q3.HON-11.TM_RULE_MISMATCH	described:this row
+TM-RA-9	TIER-MAP.md:42	rigor-atlas rule TM-RA-9	Q1.ID	an ra:hypothesis id minted in v1	Q1.ID.GRAMMAR	described:this row
+TM-RA-10	TIER-MAP.md:43	rigor-atlas rule TM-RA-10	Q3.HON-11	TMF-09	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-FH-1	TIER-MAP.md:55	franken-harvest rule TM-FH-1	Q3.HON-11	FHN-01 (pass)	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-FH-2	TIER-MAP.md:56	franken-harvest rule TM-FH-2	Q3.HON-11	FHN-02, FHN-08 (pass)	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-FH-3	TIER-MAP.md:57	franken-harvest rule TM-FH-3	Q3.HON-11	FHN-05, FHN-06 (pass)	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-FH-4	TIER-MAP.md:58	franken-harvest rule TM-FH-4	Q3.HON-11	FHN-03	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-FH-5	TIER-MAP.md:59	franken-harvest rule TM-FH-5	Q3.HON-11	FHN-04, FHN-07, FHN-11	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-FH-6	TIER-MAP.md:60	franken-harvest rule TM-FH-6	Q3.HON-11	fh:oracles:D14 entry	Q3.HON-10.PRIVATE; Q1.ID.GRAMMAR	described:IF-HONESTY.md HON-10
+TM-FH-7	TIER-MAP.md:61	franken-harvest rule TM-FH-7	Q3.HON-11	runbook step given a tier	Q3.HON-11.TM_RULE_MISMATCH	described:this row
+TM-FH-8	TIER-MAP.md:62	franken-harvest rule TM-FH-8	Q1.ID	fh:ledger:C31 id	Q1.ID.GRAMMAR	described:IF-ID.md §6
+TM-N1	TIER-MAP.md:70	raw fh state normalization row N1	Q3.HON-11	FHN-12, FHN-05; checker selftest cases "empty quote", "whitespace quote"	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json; runs:node search/tools/quote-check.mjs --selftest
+TM-N2	TIER-MAP.md:71	raw fh state normalization row N2	Q3.HON-11	FHN-01	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-N3	TIER-MAP.md:72	raw fh state normalization row N3	Q3.HON-11	FHN-08	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-N4	TIER-MAP.md:73	raw fh state normalization row N4	Q3.HON-11	FHN-02	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json; runs:node search/tools/quote-check.mjs --selftest
+TM-N5	TIER-MAP.md:74	raw fh state normalization row N5	Q3.HON-11	FHN-11; checker selftest case "relocated twice"	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json; runs:node search/tools/quote-check.mjs --selftest
+TM-N6	TIER-MAP.md:75	raw fh state normalization row N6	Q3.HON-11	FHN-06	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-N7	TIER-MAP.md:76	raw fh state normalization row N7	Q3.HON-11	FHN-03	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-N8	TIER-MAP.md:77	raw fh state normalization row N8	Q3.HON-11	FHN-04	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json; runs:node search/tools/quote-check.mjs --selftest
+TM-N9	TIER-MAP.md:78	raw fh state normalization row N9	Q3.HON-11	FHN-07	Q3.HON-11.TM_RULE_MISMATCH	file:contracts/fixtures/tier-map.json
+TM-N10	TIER-MAP.md:79	raw fh state normalization row N10	Q3.HON-11	FHN-09, FHN-10	Q3.HON-11.FH_STATE_UNMAPPED	file:contracts/fixtures/tier-map.json
+GP-01	GATES-PLAN.md:9	every gate fails on an empty scan set	Q1..Q7	each gate run over an empty index	Q<n>.EMPTY_SCAN	described:this row
+GP-02	GATES-PLAN.md:10	every gate runs its selftest first and fails if a fixture does not fail as planted	Q1..Q7 + eval	all fixtures in this matrix; GF-01..GF-13 today	SELFTEST_FAILED	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-01	eval/README.md:164	every expected and must_not id resolves	eval.validate	GF-01, GF-02, GF-03	exit 2 listing the id	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-02	eval/README.md:168	every where points at its own id's source item	eval.validate	GF-04, GF-05	exit 1 "does not point at this id's source item"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-03	eval/README.md:168	relevance is not checked by any validator (boundary): validate.mjs checks shape and source, not relevance	independent review	IDF-05, GF-06 (both must pass)	exit 0 (boundary)	file:contracts/fixtures/id-derivation.json; runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-04	eval/README.md:54	real queries carry an opaque maintainer-session reference and {source, date, verbatim[, redacted]}, or a paraphrase note	eval.validate	GF-07, GF-08	exit 1 "needs provenance" / "provenance.verbatim is empty"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-05	eval/README.md:3	at least 40 real (session-origin) queries	eval.validate coverage	GF-13 (committed file)	exit 1 "coverage: real (session-origin) queries >= 40"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-06	eval/README.md:98	every negative-control family has a must_not control; controls need must_not	eval.validate	GF-09, GF-10, GF-13	exit 1 "has no must_not" / "unknown control family" / "coverage: negative control"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-07	eval/README.md:78	leakage.tsv covers every query as worded now; scores split leaky/independent	eval.validate	GF-11	exit 1 "row is stale"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-08	eval/README.md:124	REQ-O1 scoring: 80% top-3 on kept real queries, honesty-hit and must-not rejection rates, split reporting	Q4.RELEVANCE	Q4 fixtures (1)-(3)	Q4.RELEVANCE.BELOW_FLOOR; Q4.RELEVANCE.MUST_NOT_IN_TOP3	described:GATES-PLAN.md Q4
+GS-09	eval/README.md:62	golden privacy: every scalar field of every record scanned (paths, session files, machine/host incl. spelling variants and hashed private words, emails, non-Jeffrey handles, private-workflow phrases); fields outside the record schema fail	eval.validate	GF-14..GF-20, GF-23, GF-25, GF-28; GF-13 (committed file)	exit 1 "privacy: <qid> <field>: <class>"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-10	eval/README.md:63	structured golden fields are closed: honest_answer and provenance.redacted enums, origin and date grammars, where in one of four full public forms	eval.validate	GF-22, GF-24	exit 1 "honest_answer must be one of" / "provenance.redacted must be" / "where is not one of the public where forms"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-11	eval/README.md:64	free-text golden fields use only words from the published repository text or the reviewed public-words.txt	eval.validate	GF-21	exit 1 "word not in the public vocabulary"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-12	eval/README.md:65	every committed file under .atlas-arc/eval and search/ passes the pattern scan; leakage.tsv carries only the fixed public header	eval.validate (full run)	GF-26, GF-27; GF-13 (committed tree)	exit 1 "privacy: artifact <file>:<line>" / "leakage header"	runs:node .atlas-arc/eval/validate.mjs --selftest
+GS-13	eval/README.md:189	REQ-O1 is not claimed until the independent relevance review scores a built engine and the maintainer confirms it	independent review (not built)	none: a review step, not a fixture	no REQ-O1 claim	described:eval/README.md "Evidence level and what was not run"

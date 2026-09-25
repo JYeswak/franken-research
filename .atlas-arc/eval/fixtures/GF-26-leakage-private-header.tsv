@@ -1,0 +1,7 @@
+# Leakage audit of golden.jsonl: each query against every text it cites, for expected and must_not ids alike:
+# the id title, the "why" line, and the cited source (repo file lines where..where+6, the pinned crate manifest,
+# the fh catalog row with its quote at the pinned revision, the rigor-atlas row). leaky = a shared run of >= 3 consecutive words
+# holding >= 2 content words, or >= 50% of the query's content words in the cited text; else independent.
+# written 2000-01-01 by validate.mjs --write-leakage from a local mirror (--mirror), an example checkout (--fh-repo) and a DB copy (--ra-db sha256=0000000000000000)
+qid	query_sha12	class	longest_shared_run	content_overlap	sources_read	sources_missing	shared_words	shared_run
+G-001	9ac169766053	independent	0	0.00	1	-	-	-

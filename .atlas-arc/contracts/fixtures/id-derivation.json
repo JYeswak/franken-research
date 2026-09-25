@@ -1,0 +1,141 @@
+{
+ "about": "Gate Q1 fixtures for IF-ID.md §4 \"One derivation function\" (reviews 5 and 5b). Each fixture is a source row in the shape search/lib/ids.mjs mint() takes, a claimed id, and the expected check() result. `node search/lib/ids.mjs --selftest` runs all of them today; the S04 generator and gate Q1 are not built, and must import the same module. IDF-01..IDF-05 also exist as golden-file fixtures (eval/fixtures GF-02..GF-06) run by validate.mjs --selftest.",
+ "fixtures": [
+  {
+   "id": "IDF-00",
+   "what": "clean control: a repeated pair carries the suffix from its own manifest path",
+   "source": {
+    "family": "crate",
+    "repo": "frankenterm",
+    "name": "tabout",
+    "manifest": "frankenterm/tabout/Cargo.toml",
+    "repeated_pair": true
+   },
+   "claimed_id": "crate:frankenterm/tabout~23ece5",
+   "expect": {
+    "result": "pass",
+    "minted": "crate:frankenterm/tabout~23ece5"
+   }
+  },
+  {
+   "id": "IDF-01",
+   "what": "suffix on a crate whose (repo, name) pair is not repeated",
+   "source": {
+    "family": "crate",
+    "repo": "asupersync",
+    "name": "asupersync",
+    "manifest": "Cargo.toml",
+    "repeated_pair": false
+   },
+   "claimed_id": "crate:asupersync/asupersync~2e9d96",
+   "expect": {
+    "result": "fail",
+    "code": "Q1.ID.NONCANONICAL_SUFFIX",
+    "minted": "crate:asupersync/asupersync"
+   },
+   "runnable_now": "eval GF-02 (validate.mjs exit 2: not in the minted crate list)"
+  },
+  {
+   "id": "IDF-02",
+   "what": "repeated (repo, name) pair minted without its suffix",
+   "source": {
+    "family": "crate",
+    "repo": "frankenterm",
+    "name": "tabout",
+    "manifest": "frankenterm/tabout/Cargo.toml",
+    "repeated_pair": true
+   },
+   "claimed_id": "crate:frankenterm/tabout",
+   "expect": {
+    "result": "fail",
+    "code": "Q1.ID.MISSING_REQUIRED_SUFFIX",
+    "minted": "crate:frankenterm/tabout~23ece5"
+   },
+   "runnable_now": "eval GF-03 (validate.mjs exit 2)"
+  },
+  {
+   "id": "IDF-03",
+   "what": "valid id whose suffix hashes the sibling manifest (frankenterm/tabout/tabout/Cargo.toml -> 600f20) on this manifest's entry",
+   "source": {
+    "family": "crate",
+    "repo": "frankenterm",
+    "name": "tabout",
+    "manifest": "frankenterm/tabout/Cargo.toml",
+    "repeated_pair": true
+   },
+   "claimed_id": "crate:frankenterm/tabout~600f20",
+   "expect": {
+    "result": "fail",
+    "code": "Q1.ID.SOURCE_MISMATCH",
+    "minted": "crate:frankenterm/tabout~23ece5"
+   },
+   "runnable_now": "eval GF-04 (validate.mjs exit 1, where/id disagreement)"
+  },
+  {
+   "id": "IDF-04",
+   "what": "valid id of a different item on this item's source row (the review-5 fr:RP-001 mutation)",
+   "source": {
+    "family": "fr-practice",
+    "id": "RP-084",
+    "file": "stack/rigor-practices.tsv",
+    "line": 85
+   },
+   "claimed_id": "fr:RP-001",
+   "expect": {
+    "result": "fail",
+    "code": "Q1.ID.SOURCE_MISMATCH",
+    "minted": "fr:RP-084"
+   },
+   "runnable_now": "eval GF-05 (validate.mjs exit 1)"
+  },
+  {
+   "id": "IDF-05",
+   "what": "boundary: a valid, self-consistent id that answers the wrong question passes Q1 and the golden validator",
+   "source": {
+    "family": "fr-practice",
+    "id": "RP-001",
+    "file": "stack/rigor-practices.tsv",
+    "line": 2
+   },
+   "claimed_id": "fr:RP-001",
+   "expect": {
+    "result": "pass",
+    "minted": "fr:RP-001",
+    "note": "relevance is not a Q1 property; the golden set's independent review owns it"
+   },
+   "runnable_now": "eval GF-06 (validate.mjs exit 0)"
+  },
+  {
+   "id": "IDF-06",
+   "what": "ra technique h8 computed on the unstripped text (trailing newline); fixture text is synthetic, not rigor-atlas prose",
+   "source": {
+    "family": "ra-technique",
+    "repo": "frankensqlite",
+    "entity": "mvcc",
+    "technique": "Fixture technique text for IDF-06, not rigor-atlas prose.\n"
+   },
+   "claimed_id": "ra:technique:frankensqlite/mvcc/1f5655b6",
+   "expect": {
+    "result": "fail",
+    "code": "Q1.ID.SOURCE_MISMATCH",
+    "minted": "ra:technique:frankensqlite/mvcc/40c46f24"
+   }
+  },
+  {
+   "id": "IDF-07",
+   "what": "ra technique entity containing \":\" minted verbatim instead of mapped to \".\"; fixture text is synthetic",
+   "source": {
+    "family": "ra-technique",
+    "repo": "frankensearch",
+    "entity": "ranking:rrf",
+    "technique": "Fixture technique text for IDF-07, not rigor-atlas prose."
+   },
+   "claimed_id": "ra:technique:frankensearch/ranking:rrf/fdfd3f46",
+   "expect": {
+    "result": "fail",
+    "code": "Q1.ID.GRAMMAR",
+    "minted": "ra:technique:frankensearch/ranking.rrf/fdfd3f46"
+   }
+  }
+ ]
+}

@@ -1,0 +1,120 @@
+{
+ "about": "Gate Q3 sub-check HON-15 fixtures (IF-HONESTY.md, DEC-011). Each fixture is a whole world: the content of search/crawler-policy (null = the file is absent), the number of quotes in the quotes shard, and site/robots.txt. The committed state is CPF-00. Q3 is not built yet; no validator runs these today.",
+ "crawler_groups": [
+  "GPTBot",
+  "ClaudeBot",
+  "anthropic-ai",
+  "Google-Extended",
+  "CCBot"
+ ],
+ "fixtures": [
+  {
+   "id": "CPF-00",
+   "what": "committed state per DEC-011: open, quotes present, robots.txt with no crawler-specific group",
+   "policy_file": "open\n",
+   "quotes": 3,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n",
+   "expect": {
+    "result": "pass"
+   }
+  },
+  {
+   "id": "CPF-01",
+   "what": "policy file missing",
+   "policy_file": null,
+   "quotes": 0,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.POLICY_MISSING"
+   }
+  },
+  {
+   "id": "CPF-02",
+   "what": "policy file empty",
+   "policy_file": "",
+   "quotes": 0,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.POLICY_MISSING"
+   }
+  },
+  {
+   "id": "CPF-03",
+   "what": "unknown policy state",
+   "policy_file": "closed\n",
+   "quotes": 0,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.POLICY_UNKNOWN"
+   }
+  },
+  {
+   "id": "CPF-04",
+   "what": "pending with zero quotes (DEC-P06 default)",
+   "policy_file": "pending\n",
+   "quotes": 0,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n",
+   "expect": {
+    "result": "pass"
+   }
+  },
+  {
+   "id": "CPF-05",
+   "what": "pending with one quote shipped",
+   "policy_file": "pending\n",
+   "quotes": 1,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.QUOTES_WHILE_PENDING"
+   }
+  },
+  {
+   "id": "CPF-06",
+   "what": "open, but robots.txt still disallows the quotes shard for GPTBot",
+   "policy_file": "open\n",
+   "quotes": 3,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n\nUser-agent: GPTBot\nDisallow: /assets/search-quotes.js\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.CRAWLER_RULE_UNDER_OPEN"
+   }
+  },
+  {
+   "id": "CPF-07",
+   "what": "block-ai-lab-quotes with all five groups disallowing only the quotes shard",
+   "policy_file": "block-ai-lab-quotes\n",
+   "quotes": 3,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n\nUser-agent: GPTBot\nDisallow: /assets/search-quotes.js\n\nUser-agent: ClaudeBot\nDisallow: /assets/search-quotes.js\n\nUser-agent: anthropic-ai\nDisallow: /assets/search-quotes.js\n\nUser-agent: Google-Extended\nDisallow: /assets/search-quotes.js\n\nUser-agent: CCBot\nDisallow: /assets/search-quotes.js\n",
+   "expect": {
+    "result": "pass"
+   }
+  },
+  {
+   "id": "CPF-08",
+   "what": "block-ai-lab-quotes with the CCBot group missing",
+   "policy_file": "block-ai-lab-quotes\n",
+   "quotes": 3,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n\nUser-agent: GPTBot\nDisallow: /assets/search-quotes.js\n\nUser-agent: ClaudeBot\nDisallow: /assets/search-quotes.js\n\nUser-agent: anthropic-ai\nDisallow: /assets/search-quotes.js\n\nUser-agent: Google-Extended\nDisallow: /assets/search-quotes.js\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.MISSING_CRAWLER_GROUP",
+    "detail": "CCBot"
+   }
+  },
+  {
+   "id": "CPF-09",
+   "what": "block-ai-lab-quotes where a crawler group disallows the whole site",
+   "policy_file": "block-ai-lab-quotes\n",
+   "quotes": 3,
+   "robots_txt": "User-agent: *\nAllow: /\n\nSitemap: https://fr.zeststream.ai/sitemap.xml\n\nUser-agent: GPTBot\nDisallow: /assets/search-quotes.js\n\nUser-agent: ClaudeBot\nDisallow: /assets/search-quotes.js\n\nUser-agent: anthropic-ai\nDisallow: /assets/search-quotes.js\n\nUser-agent: Google-Extended\nDisallow: /assets/search-quotes.js\n\nUser-agent: CCBot\nDisallow: /\n",
+   "expect": {
+    "result": "fail",
+    "code": "Q3.HON-15.SITE_BLOCKED"
+   }
+  }
+ ]
+}

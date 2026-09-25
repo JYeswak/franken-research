@@ -1,0 +1,1 @@
+{"qid": "G-001", "query": "How do I stop my agents claiming tests passed when they did not?", "user": "U2", "origin": "charter", "origin_note": "fixture", "expected": [{"id": "fr:RP-001", "why": "the review-5 mutation: a valid id swapped in, where left on RP-084", "where": "stack/rigor-practices.tsv:85"}], "difficulty": "intent"}

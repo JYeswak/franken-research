@@ -1,0 +1,124 @@
+# Leakage audit of golden.jsonl: each query against every text it cites, for expected and must_not ids alike:
+# the id title, the "why" line, and the cited source (repo file lines where..where+6, the pinned crate manifest,
+# the fh catalog row with its quote at the pinned revision, the rigor-atlas row). leaky = a shared run of >= 3 consecutive words
+# holding >= 2 content words, or >= 50% of the query's content words in the cited text; else independent.
+# written 2026-09-25 by .atlas-arc/eval/validate.mjs --write-leakage (leakage format 2)
+qid	query_sha12	class	longest_shared_run	content_overlap	sources_read	sources_missing	shared_words	shared_run
+G-001	4b7a17a8c0fd	leaky	0	1.00	4	-	want,build,rust,cli,sqlite,store,copy,tell,agent	-
+G-002	9ac169766053	leaky	0	0.57	5	-	agent,test,passed,they	-
+G-003	f3dc7b8683bb	leaky	0	0.67	2	-	rust,crate,search,use	-
+G-004	3ed0e6b1fce9	leaky	3	0.57	2	-	sqlite,rust,drop,replacement	drop in replacement
+G-005	5d1a4dd8dc27	leaky	0	0.60	1	-	async,tokio,asupersync	-
+G-006	52b69edf00f0	leaky	0	0.75	2	-	use,franken,tts,whisper,crate,audio	-
+G-007	919780b55a97	leaky	0	0.75	1	-	panda,dataframe,rust	-
+G-008	224e40f1d7dc	leaky	0	1.00	1	-	use,frankenterm,daily,terminal	-
+G-009	5cd244f65c6e	leaky	0	0.57	2	-	bead,page,dashboard,triage	-
+G-010	051e38c5ac62	leaky	0	0.50	1	-	nlp,built,around,model	-
+G-011	c4d6bb1067b7	leaky	3	1.00	1	-	copy,code,franken,native,capsule	franken native capsule
+G-012	00e86998461e	independent	0	0.43	2	-	computer,use,agent	-
+G-013	501352bc9b3f	leaky	0	0.57	3	-	rust,crate,coding,agent	-
+G-014	7b5cbb060ea2	independent	0	0.38	2	-	ai,agent,rm	-
+G-015	ff3998a2d39d	leaky	0	0.71	3	-	issue,tracker,agent,git,repo	-
+G-016	8fb3f2729d94	leaky	0	0.67	2	-	search,old,session,transcript	-
+G-017	7805d25b17d1	leaky	3	1.00	3	-	terminal,ui,framework,rust,elm,architecture	the elm architecture
+G-018	6e5f5c60fd6a	leaky	0	0.71	1	-	python,rich,style,output,rust	-
+G-019	1b4cabcaa5e5	independent	0	0.33	2	-	json,toon	-
+G-020	2ce0a443f102	leaky	4	1.00	2	-	local,first,memory,coding,agent	memory for coding agents
+G-021	75fec705a49b	leaky	0	1.00	2	-	type,safe,sql,orm,rust,sqlmodel	-
+G-022	1d38921e768e	leaky	0	0.63	4	-	rust,cli,mcp,server,tool	-
+G-023	fb38e81e8dd1	leaky	0	0.71	1	-	record,replay,async,concurrency,bug	-
+G-024	fb72bdc2bfd6	leaky	0	0.80	2	-	speech,without,python,gpu	-
+G-025	d8376bfb88d6	leaky	4	1.00	3	-	async,runtime,rust,built,tokio	async runtime for rust
+G-026	3a9077e60b40	leaky	3	1.00	2	-	markdown,html,renderer,dependencie	markdown to html
+G-027	3bc393482565	leaky	4	1.00	2	-	blake3,content,hash,crate	blake3 content hash crate
+G-028	0e1f11efc223	leaky	0	1.00	2	-	networkx,graph,algorithm,rust	-
+G-029	e612bce24e94	independent	0	0.29	2	-	crate,parser	-
+G-030	6006070437f2	independent	0	0.33	2	-	rust,build	-
+G-031	d7348cf51b84	leaky	0	0.57	3	-	bead,closed,without,evidence	-
+G-032	c92a5e9fffec	leaky	0	0.57	4	-	task,graph,before,agent	-
+G-033	13f000f15832	leaky	0	0.83	2	-	git,hook,every,repo,agent	-
+G-034	4903940cd5e9	leaky	0	0.71	3	-	agent,keep,cargo,target,dir	-
+G-035	a49b16f4fc2c	leaky	0	0.80	4	-	check,against,reference,implementation	-
+G-036	91723636f9a3	independent	0	0.44	4	-	check,green,without,rigor	-
+G-037	c5ce50d43009	leaky	0	0.57	3	-	evidence,has,re,expire	-
+G-038	a43dd4782f20	independent	0	0.00	4	-	-	-
+G-039	b242c064b9af	leaky	0	0.75	2	-	lease,lock,agent,cannot,same,thing	-
+G-040	c35e0da8518f	leaky	0	0.67	1	-	vector,database	-
+G-041	a9a13d108fb0	independent	0	0.17	1	-	code	-
+G-042	900cf6b784fd	independent	0	0.40	2	-	model,json	-
+G-043	7beb99f6f896	leaky	0	0.50	2	-	long,agent,crash	-
+G-044	020cb77b7ec9	leaky	0	0.60	2	-	llm,judge,model	-
+G-045	228dc1d626f7	leaky	3	1.00	4	-	negative,evidence,ledger	negative evidence ledger
+G-046	c9624ca874d7	independent	0	0.33	4	-	ledger	-
+G-047	a9c04867fc04	leaky	4	1.00	3	-	claim,proof,registry	claim to proof registry
+G-048	0787b5a99291	leaky	4	1.00	1	-	pin,github,action,commit,sha	actions to commit shas
+G-049	b72aee687e5a	independent	0	0.14	4	-	different	-
+G-050	2dc8f6c0dd31	leaky	0	1.00	3	-	benchmark,number,self,comparison	-
+G-051	cfaa5b9b64c1	leaky	4	0.67	3	-	agent,check,land,change	to land a change
+G-052	3251b14e2485	leaky	0	0.50	1	-	bus	-
+G-053	a4f708d0de5c	leaky	3	0.80	1	-	openai,anthropic,rider,license	openai anthropic rider
+G-054	aab44dc37180	independent	0	0.40	3	-	doc,code	-
+G-055	0f4d775ecfb3	leaky	0	0.75	2	-	ci,green,commit	-
+G-056	7e8faa00cb9e	leaky	0	0.67	2	-	agent,code,anyone,review	-
+G-057	321dac5337f1	leaky	7	1.00	3	-	proces,porn,machinery,work,instead	about the work instead of the work
+G-058	8d557542f797	leaky	0	0.83	2	-	hand,typed,number,go,stale	-
+G-059	6f3d65d45b35	leaky	3	0.86	2	-	fail,build,banned,crate,dependency,tree	the dependency tree
+G-060	f963c8a9a638	leaky	0	0.50	3	-	against,oracle	-
+G-061	531396210cba	leaky	0	0.75	2	-	hook,honesty,canary	-
+G-062	0d0d2a762cc5	leaky	4	1.00	3	-	write,down,project,will,refuse	what the project will
+G-063	0e646ccb25d2	leaky	0	1.00	1	-	kill,project	-
+G-064	62de3d5f7751	leaky	3	1.00	2	-	end,session,checklist,land,plane	end of session
+G-065	2006b91b15f4	leaky	4	0.80	3	-	evidence,tier,every,sentence	evidence tier on every
+G-066	a27e55517a58	leaky	0	0.86	3	-	have,several,model,plan,before,build	-
+G-067	dabd01cbbb1a	leaky	0	0.80	3	-	reciprocal,rank,k,60	-
+G-068	cfc4867484ca	leaky	0	0.75	3	-	mvcc,concurrent,writer	-
+G-069	105d29fbf552	leaky	0	0.50	3	-	runtime,cancel	-
+G-070	4ed21d52ad4d	leaky	0	0.63	3	-	test,time,without,false,alarm	-
+G-071	87b11f764af3	leaky	3	0.75	2	-	crash,commit,fsync,file,directory,order	fsync the file
+G-072	d4e15c77699c	leaky	3	1.00	2	-	first,committer,win,snapshot,isolation	first committer wins
+G-073	169f4c177785	leaky	0	0.50	2	-	float,deciding,yes	-
+G-074	ad3ad4d0f8bb	leaky	3	0.80	2	-	search,engine,crate,prove	a search engine
+G-075	6dbfacef49d2	leaky	0	0.75	2	-	bm25,exactly,tantivy	-
+G-076	9f1ca547697c	independent	0	0.40	1	-	false,sharing	-
+G-077	a03efdbbd6b2	leaky	0	0.50	1	-	reader,mutex	-
+G-078	2fca9d9b144d	leaky	0	0.50	2	-	simd,kernel	-
+G-079	2f8dc129ae04	leaky	0	0.50	2	-	redi,against	-
+G-080	1a1b06820dc4	leaky	0	0.60	2	-	commonmark,spec,markdown	-
+G-081	a8815b3f2cd9	leaky	0	0.75	2	-	panda,parity,oracle	-
+G-082	8fb70015f150	leaky	0	0.80	3	-	performance,budget,checked,code	-
+G-083	cf0c6332fb3e	leaky	0	0.86	3	-	machine,checked,proof,ci,lean,axiom	-
+G-084	5dabf69773a2	leaky	6	1.00	4	-	test,prove,they,fail	tests that prove they can fail
+G-085	a04aca552b5c	leaky	0	0.67	1	-	rigor,plain,cli,tool	-
+G-086	30feca3f7f09	leaky	0	1.00	1	-	bootstrap,confidence,interval,regenerate,identically	-
+G-087	dcde72aec524	leaky	0	1.00	1	-	snapshot,visibility,check,single,comparison	-
+G-088	300bcbe21ac7	leaky	0	0.71	3	-	claim,tooling,demote,them,automatically	-
+G-089	1f83741cf8d5	leaky	3	1.00	4	-	franken,agent,detection	franken agent detection
+G-090	deb9018ad2f1	independent	0	0.00	2	-	-	-
+G-091	d368754bd896	leaky	0	0.50	2	-	frankenterm,wezterm	-
+G-092	26f8e6891638	independent	0	0.43	2	-	jeff,wezterm,code	-
+G-093	b3b5ba7bfa95	leaky	0	0.50	3	-	tokio,runtime,frankentui	-
+G-094	2e506853f648	independent	0	0.20	3	-	rust,charmed	-
+G-095	87238bd01ca7	leaky	0	0.75	3	-	set,machine,rch,target,rust,build	-
+G-096	d0729eb2f1b3	leaky	0	0.50	3	-	rch,build,system	-
+G-097	c62c513d600f	independent	0	0.31	4	-	gate,after,franken,check,script	-
+G-098	a37c70e24054	independent	0	0.33	3	-	make,install,use	-
+G-099	9966ea837453	independent	0	0.38	2	-	new,frankenmermaid,parsing	-
+G-100	91ff7c0aabe1	leaky	3	0.88	3	-	other,jeff,guard,exist,acros,entire,stack	across the entire
+G-101	34506058903e	leaky	0	0.64	2	-	build,dcg,tool,open,source,similar,jeffrey	-
+G-102	bd7eccf29111	leaky	0	0.78	2	-	need,update,dcg,command,instead,wide,matche	-
+G-103	842bcc1754ac	independent	0	0.30	3	-	frankentui,thing,native	-
+G-104	a35a0c783483	independent	0	0.14	2	-	asupersync	-
+G-105	5e1dc57bb50c	independent	0	0.47	4	-	native,frankensuite,byte,build,python,other,language	-
+G-106	1bac163a2a01	leaky	0	0.75	3	-	franken,whisper,ocr,tts,crate,level	-
+G-107	7599fd383bae	independent	0	0.20	5	-	website,franken	-
+G-108	31e1982329d5	leaky	0	0.50	1	-	franken	-
+G-109	98f3a845fd97	independent	0	0.33	4	-	planning	-
+G-110	d19a518e6b1c	independent	0	0.18	2	-	scratch,agent	-
+G-111	706496ff8382	independent	0	0.45	3	-	20,thing,every,cli,tool	-
+G-112	28f0573843ac	independent	0	0.18	4	-	bead,missing	-
+G-113	7e2b88d4383b	leaky	0	0.50	2	-	cas,need	-
+G-114	75e93125da32	leaky	0	0.80	3	-	other,dicklesworthstone,binarie,live,use,drive,bead,frankenmermaid,frankenmarkdown,ast,else,missing	-
+G-115	6bd871570709	independent	0	0.33	1	-	ubs,language,doc	-
+G-116	9034cc693216	independent	0	0.38	5	-	bead,graph,proces	-
+G-117	7e755090dcd8	independent	0	0.40	4	-	franken,suite	-
+G-118	14e65a185790	independent	0	0.17	2	-	engine	-

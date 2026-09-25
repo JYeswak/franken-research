@@ -181,7 +181,7 @@
       "label": "[Verified]",
       "flavor": "[Code-verified]",
       "confidence": "Medium",
-      "basis": "rigor-atlas label KNOW: an atlas agent read the code at the pinned commit and five cited lines were checked mechanically at build. Franken Research has not re-graded the claim, so confidence is Medium, not High (TIER-MAP rule TM-RA-1).",
+      "basis": "Checked at build: the cited lines are at crates/fsqlite-mvcc/src/invariants.rs:217-218 in Dicklesworthstone/frankensqlite@29e2f9f. Not checked: what they show is a rigor-atlas agent's reading (label KNOW), not re-graded by Franken Research (TIER-MAP TM-RA-1).",
       "source": {
         "repo": "Dicklesworthstone/frankensqlite",
         "path": "crates/fsqlite-mvcc/src/invariants.rs",

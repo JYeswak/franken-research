@@ -1,0 +1,327 @@
+{
+ "about": "Planted known-bad golden files for validate.mjs --selftest (gate W pattern). Each must exit as stated; GF-06 is the documented boundary: a valid, self-consistent but irrelevant id passes, because relevance is the independent review's job. GF-02..GF-06 are the IF-ID Q1 derivation fixtures IDF-01..IDF-05 (contracts/fixtures/id-derivation.json) in golden-file form. GF-14..GF-19 (review 5b) plant private detail in query, origin, origin_note and provenance; each must fail with its privacy class. GF-20..GF-28 (review 5c) cover the three evasion families (machine-name variants, workflow clauses, private text in why, honest_answer and redaction labels), a field outside the schema, and committed-artifact metadata (a leakage header with generation provenance, a planted file with a path and a machine name). Fixtures marked planted_private carry synthetic private-looking values on purpose; the committed-artifact scan skips exactly those files, and the selftest proves each one fails.",
+ "fixtures": [
+  {
+   "id": "GF-01",
+   "what": "unresolved fr:RP-999 (review-5 mutation 1)",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-01-unresolved-id.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 2,
+   "expect_text": "fr:RP-999"
+  },
+  {
+   "id": "GF-02",
+   "what": "IDF-01 crate suffix on a non-repeated pair",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-02-crate-unnecessary-suffix.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 2,
+   "expect_text": "crate:asupersync/asupersync~2e9d96"
+  },
+  {
+   "id": "GF-03",
+   "what": "IDF-02 repeated pair without its suffix",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-03-crate-missing-suffix.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 2,
+   "expect_text": "crate:frankenterm/tabout"
+  },
+  {
+   "id": "GF-04",
+   "what": "IDF-03 suffix derived from the sibling manifest",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-04-crate-suffix-from-other-manifest.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "does not point at this id's source item"
+  },
+  {
+   "id": "GF-05",
+   "what": "IDF-04 valid id, where of another item (review-5 mutation 2)",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-05-valid-id-wrong-source.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "its source is stack/rigor-practices.tsv:2"
+  },
+  {
+   "id": "GF-06",
+   "what": "IDF-05 boundary: valid, self-consistent, irrelevant id passes",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-06-valid-consistent-irrelevant.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "id": "GF-07",
+   "what": "real query without provenance or paraphrase note",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-07-session-without-provenance.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "needs provenance"
+  },
+  {
+   "id": "GF-08",
+   "what": "provenance with an empty verbatim question",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-08-empty-verbatim.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "provenance.verbatim is empty"
+  },
+  {
+   "id": "GF-09",
+   "what": "negative-control family named but no must_not id",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-09-controls-without-must-not.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "has no must_not"
+  },
+  {
+   "id": "GF-10",
+   "what": "unknown negative-control family",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-10-unknown-control-family.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "unknown control family"
+  },
+  {
+   "id": "GF-11",
+   "what": "leakage row stale after the query changed",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-11-stale-leakage-row.jsonl",
+    "--no-coverage",
+    "--leakage",
+    "{fixtures}/GF-11-stale-leakage.tsv"
+   ],
+   "expect_exit": 1,
+   "expect_text": "row is stale"
+  },
+  {
+   "id": "GF-12",
+   "what": "clean single record passes",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-12-clean.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "id": "GF-14",
+   "what": "privacy: local home path in the query and verbatim",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-14-privacy-local-path.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 query: local path",
+   "planted_private": true
+  },
+  {
+   "id": "GF-15",
+   "what": "privacy: machine name in the query",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-15-privacy-machine-name.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 query: machine or host",
+   "planted_private": true
+  },
+  {
+   "id": "GF-16",
+   "what": "privacy: email in origin_note",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-16-privacy-email.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 origin_note: email",
+   "planted_private": true
+  },
+  {
+   "id": "GF-17",
+   "what": "privacy: a session-file name used as origin",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-17-privacy-session-file-origin.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 origin: session file name",
+   "planted_private": true
+  },
+  {
+   "id": "GF-18",
+   "what": "privacy: another person's handle in the query",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-18-privacy-person-handle.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 query: person handle",
+   "planted_private": true
+  },
+  {
+   "id": "GF-19",
+   "what": "privacy: a session locator smuggled into provenance",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-19-privacy-session-locator.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 provenance.locator: session file name",
+   "planted_private": true
+  },
+  {
+   "id": "GF-20",
+   "what": "privacy, review 5c family 1: machine-name spelling variants in expected[].why",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-20-privacy-machine-in-why.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 expected[0].why: machine or host",
+   "planted_private": true
+  },
+  {
+   "id": "GF-21",
+   "what": "privacy, review 5c family 3: an unknown server name in expected[].why (no pattern matches; the public-vocabulary check does)",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-21-privacy-server-name-in-why.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 expected[0].why: word not in the public vocabulary",
+   "planted_private": true
+  },
+  {
+   "id": "GF-22",
+   "what": "privacy, review 5c family 3: free text in honest_answer (an enum)",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-22-privacy-honest-answer-free-text.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "G-001: honest_answer must be one of",
+   "planted_private": true
+  },
+  {
+   "id": "GF-23",
+   "what": "privacy, review 5c family 1: a Mac model spelled as one word and a private-network host in origin_note",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-23-privacy-machine-in-origin-note.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 origin_note: machine or host",
+   "planted_private": true
+  },
+  {
+   "id": "GF-24",
+   "what": "privacy, review 5c family 3: machine text in a provenance.redacted label (an enum)",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-24-privacy-free-text-redaction-label.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "G-001: provenance.redacted must be a non-empty list of the fixed labels",
+   "planted_private": true
+  },
+  {
+   "id": "GF-25",
+   "what": "privacy, review 5c family 2: a private workflow clause in a real query",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-25-privacy-workflow-clause.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 query: private workflow",
+   "planted_private": true
+  },
+  {
+   "id": "GF-26",
+   "what": "committed artifact: leakage.tsv with generation provenance in its header",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-12-clean.jsonl",
+    "--no-coverage",
+    "--leakage",
+    "{fixtures}/GF-26-leakage-private-header.tsv"
+   ],
+   "expect_exit": 1,
+   "expect_text": "leakage header",
+   "planted_private": true
+  },
+  {
+   "id": "GF-27",
+   "what": "committed artifact: a local path and a machine name in a file under .atlas-arc/eval",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-12-clean.jsonl",
+    "--no-coverage",
+    "--artifact-files",
+    "{fixtures}/GF-27-artifact-leak.md"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: artifact",
+   "planted_private": true
+  },
+  {
+   "id": "GF-28",
+   "what": "privacy: a field outside the public record schema",
+   "args": [
+    "--golden",
+    "{fixtures}/GF-28-privacy-field-outside-schema.jsonl",
+    "--no-coverage"
+   ],
+   "expect_exit": 1,
+   "expect_text": "privacy: G-001 expected[0].note: field outside the public record schema",
+   "planted_private": true
+  },
+  {
+   "id": "GF-13",
+   "what": "the committed golden set passes with full coverage and leakage checks",
+   "args": [],
+   "expect_exit": 0
+  }
+ ]
+}

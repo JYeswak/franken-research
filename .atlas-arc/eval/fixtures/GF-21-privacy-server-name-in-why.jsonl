@@ -1,0 +1,1 @@
+{"qid":"G-001","query":"How do I stop my agents claiming tests passed when they did not?","user":"U2","origin":"charter","origin_note":"fixture","expected":[{"id":"fr:RP-084","why":"an absent oracle or unrun gate fails instead of passing silently (first seen on zorbex-build1)","where":"stack/rigor-practices.tsv:85"}],"difficulty":"intent"}

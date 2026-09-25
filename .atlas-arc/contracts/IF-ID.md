@@ -73,6 +73,14 @@ Repo names are used verbatim (case, `.`, `_`, `-` preserved): `fr:verdict-beads-
 4. **Pins are not part of the id.** A crate or fh row moving to a new commit keeps its id; the commit lives in `source_url` and `provenance`.
 5. A cohort repo re-assessed in a later cohort keeps `fr:cohort-<repo>`, which always points at the newest landed packet. A repo that moves from a cohort into the main set becomes `fr:verdict-<repo>` and its cohort id is retired to it. One repo never holds both ids at once (gate Q3 rule HON-16).
 
+**One derivation function (added after review 5; built after review 5b).** A regex match and membership in an id list prove an id is well-formed and exists, not that it is this entry's id. So the §2 rules live in one module, `search/lib/ids.mjs`: `mint(source_row) -> id`, `mintCrates(rows)` for the suffix rule over a whole crate snapshot, `loadGrammar()` for the §5 block, and `check(claimed, source_row)` for the comparison below. It exists and runs today: `node search/lib/ids.mjs --selftest` runs IDF-00 to IDF-07 (8 of 8 as specified on 2026-09-25; removing the `trim()` in the ra rule or the `:` to `.` mapping each makes it fail), and `.atlas-arc/eval/validate.mjs` imports it for every `fr:` resolver and re-mints all 1,289 crate ids of its reference list (all equal). The S04 generator and gate Q1 do not exist yet; they must import this module and keep no copy. Q1 then checks, for every entry:
+
+1. `mint(entry's source row) == entry.id`, where the source row is the one the entry's `evidence.source` / `provenance.source` names (`Q1.ID.SOURCE_MISMATCH`). This catches a valid id of a different item on this item's row (the review-5 `fr:RP-001` mutation), a crate suffix hashed from the sibling manifest, and an ra `h8` hashed from unstripped text.
+2. Suffix canonicity over the whole minted set: a `~<h6>` suffix appears exactly on the members of repeated `(repo, crate)` pairs in the crate snapshot (`Q1.ID.NONCANONICAL_SUFFIX` for a suffix on a unique pair, `Q1.ID.MISSING_REQUIRED_SUFFIX` for a repeated pair without one).
+3. The §5 grammar (`Q1.ID.GRAMMAR`).
+
+Fixtures IDF-00 to IDF-07 in `fixtures/id-derivation.json` (IDF-06 and IDF-07 use synthetic technique text, not rigor-atlas prose). IDF-01 to IDF-05 also exist as golden-file fixtures that `node .atlas-arc/eval/validate.mjs --selftest` runs (GF-02 to GF-06): the golden validator resolves crate ids against the minted crate list and requires every `where` to point at its own id's source item, which catches IDF-01 to IDF-04. IDF-05 is the boundary both checks share: a valid id cited at its own source passes even when it does not answer the query. Relevance is not a property an id check can see; for the golden set it belongs to the independent review (eval/README.md, "Independence rule").
+
 ## 5. Validator regexes
 
 One regex per family. An id is valid when it matches exactly one of these. GoldenSet's validator and gate Q1 read this list; keep it in this form (a fenced block, one `family<TAB>regex` per line).
@@ -101,11 +109,11 @@ crate	^crate:[A-Za-z0-9._-]+/[A-Za-z0-9_-]+(?:~[0-9a-f]{6})?$
 
 The `fh-oracles` regex admits D1..D13 only, so a private oracle row cannot validate even if a generator bug lets it through. `fr-lesson` and `fr-tech` overlap in character set only, not prefix; no id can match two families.
 
-A regex match is necessary, not sufficient: gate Q1 also requires every id in the index to resolve to its source (the RP row exists, the heading exists, the manifest exists in the crate snapshot), and gate Q6 requires the retirement rule above.
+A regex match is necessary, not sufficient: gate Q1 also requires every id in the index to resolve to its source (the RP row exists, the heading exists, the manifest exists in the crate snapshot), to equal `mint` of that source (§4, "One derivation function"), and gate Q6 requires the retirement rule above.
 
 ## 6. Proof run (2026-09-24)
 
-`python3 ~/.local/state/zeststream/scratch/control-plane/franken-lead/atlas/contracts-work/mint_ids.py` mints every v1 id from the real sources with the rules above (fh at `77d515b`, the rigor-atlas DB copy with sha256 `881cce40…`, `atlas/eco2-crates.tsv`), reads the regex block from this file, and exits 1 on a duplicate or an id that matches zero or two families. Output: 3,474 ids, 3,474 unique, 0 invalid, exit 0; per family exactly the counts in §2. Seven planted known-bad ids are all rejected: `fr:A1`, `fh:oracles:Z2`, `fh:oracles:D14`, `ra:technique:frankensqlite/mvcc`, `crate:xtask`, `fr:rp-001`, `fh:ledger:C31`.
+`python3 [LOCAL_SCRATCH]/atlas/contracts-work/mint_ids.py` mints every v1 id from the real sources with the rules above (fh at `77d515b`, the rigor-atlas DB copy with sha256 `881cce40…`, `atlas/eco2-crates.tsv`), reads the regex block from this file, and exits 1 on a duplicate or an id that matches zero or two families. Output: 3,474 ids, 3,474 unique, 0 invalid, exit 0; per family exactly the counts in §2. Seven planted known-bad ids are all rejected: `fr:A1`, `fh:oracles:Z2`, `fh:oracles:D14`, `ra:technique:frankensqlite/mvcc`, `crate:xtask`, `fr:rp-001`, `fh:ledger:C31`.
 
 The first run failed on one id, `crate:ultrasearch/`: the intake's crate table counts `ultrasearch/Cargo.toml`, a `[package.metadata.wix]` file with no `[package] name`, as a crate. The intake's 1,290 is therefore 1,289 crates. The crate collector (IF-SOURCES.md) must skip manifests without a package name, and the correction goes to the lead as a defect against intake-IntakeEco2 §1a.
 

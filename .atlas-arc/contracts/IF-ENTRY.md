@@ -76,7 +76,7 @@ Which scheme each source uses: IF-SOURCES.md §2. How rigor-atlas and fh labels 
 ## 5. Validation (run 2026-09-24)
 
 ```
-$ python3 ~/.local/state/zeststream/scratch/control-plane/franken-lead/atlas/contracts-work/validate_examples.py
+$ python3 [LOCAL_SCRATCH]/atlas/contracts-work/validate_examples.py
 example fr:RP-009: VALID
 example crate:asupersync/asupersync: VALID
 example ra:technique:frankensqlite/mvcc/1df51efc: VALID
