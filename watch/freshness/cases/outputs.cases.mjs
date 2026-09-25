@@ -706,7 +706,7 @@ const dashCases = [
       // assertCommitted against a real repository
       const repo = join(dir, 'repo');
       mkdirSync(repo);
-      const git = (...a) => spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.com', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: repo, encoding: 'utf8' }).status;
+      const git = (...a) => spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=noreply@example.com', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: repo, encoding: 'utf8' }).status;
       git('init', '-q'); writeFileSync(join(repo, 'live.json'), '{}\n'); git('add', 'live.json'); git('commit', '-q', '-m', 'x');
       const refuses = (f) => { try { assertCommitted(f, repo); return false; } catch { return true; } };
       const clean = !refuses(join(repo, 'live.json'));
