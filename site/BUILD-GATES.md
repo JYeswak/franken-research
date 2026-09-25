@@ -431,6 +431,9 @@ variable (`NODE_OPTIONS`, `NODE_PATH`, `LD_*`, `DYLD_*`, `BUN_*`),
 `$GITHUB_ENV`, `$GITHUB_PATH` or `${{ }}` expression in run text, sets no env
 variable but `GITHUB_TOKEN` and that only on the push and the sync, and
 applies, guards, pushes and syncs in that order with no push after the sync;
+every `publish` run body equals, byte for byte after trailing newlines, the
+reviewed text for its step name in `PUBLISH_RUNS` in `ops/write-job.mjs`, and
+no publish step runs text under any other name;
 and those three scripts, with everything they import, use only Node built-ins
 and repository files. `ops/take-build-output.mjs` also refuses, before
 writing anything, a destination whose path in the checkout holds a symlink or
@@ -451,7 +454,10 @@ boundary: the job that runs dependency code holds a read-only token, and the
 job that holds the write token runs only three dependency-free scripts. A new
 kind of workflow change, such as a new action, a new step in `publish` or a
 new way to pass data between jobs, needs a new rule and a planted case that
-shows the rule fails without it.
+shows the rule fails without it. The `publish` run bodies are pinned exactly
+(review 3e), so any change to a `publish` step, even an extra `echo`, fails W3
+until `PUBLISH_RUNS` in `ops/write-job.mjs` is changed in the same commit;
+that commit is where the change gets its review.
 **Why:** the freshness work replaces per-event issues with computed classes,
 a card on every brief, and one dashboard issue, all written by a scheduled
 job nobody reads first. The contract says what must hold; this gate proves

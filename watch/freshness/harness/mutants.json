@@ -1166,5 +1166,53 @@
   "must_fail": [
    "OUT-D5-canonical"
   ]
+ },
+ {
+  "id": "M-O6-run-body-not-wired",
+  "file": "ops/write-job.mjs",
+  "find": "...runBodyProblems(steps, where), ",
+  "replace": "",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-write-job"
+  ]
+ },
+ {
+  "id": "M-O6-run-body-prefix",
+  "file": "ops/write-job.mjs",
+  "find": "if (got === want) return;",
+  "replace": "if (got.startsWith(want)) return;",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-write-job"
+  ]
+ },
+ {
+  "id": "M-O6-run-body-trim",
+  "file": "ops/write-job.mjs",
+  "find": "String(run).replace(/\\n+$/, '')",
+  "replace": "String(run).trim()",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-write-job"
+  ]
+ },
+ {
+  "id": "M-O6-run-body-unknown-name",
+  "file": "ops/write-job.mjs",
+  "find": "if (!Object.hasOwn(reviewed, name)) {",
+  "replace": "if (!(name in reviewed)) {",
+  "clauses": [
+   "FR-O.6"
+  ],
+  "must_fail": [
+   "HAR-O6-write-job"
+  ]
  }
 ]

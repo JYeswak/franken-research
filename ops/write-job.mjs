@@ -32,6 +32,10 @@
 //     follows the sync (FR-D.5);
 //   - a script in PUBLISH_SCRIPTS, or any file it imports, imports anything but a Node built-in or a
 //     repository file, or imports through a non-literal import() or require().
+//   - a `run` body in `publish` differs, byte for byte after trailing newlines, from the reviewed text for
+//     its step name in PUBLISH_RUNS, a publish step runs text under a name PUBLISH_RUNS does not hold, or
+//     a PUBLISH_RUNS step is missing or repeated. A step allowed the token by its role is thereby also
+//     held to its reviewed content (review 3e).
 // These are a closed list of structural rules. The job boundary is the control; a new kind of workflow
 // change needs a new rule here (site/BUILD-GATES.md, gate W3, "Limits").
 // A token is any expression naming `github.token`, `github['token']`, `secrets.GITHUB_TOKEN` or
@@ -54,6 +58,71 @@ export const SYNC = 'node watch/freshness/dashboard.mjs --sync watch/live.json';
 export const PUBLISH_SCRIPTS = ['ops/take-build-output.mjs', 'ops/briefs-guard.mjs', 'watch/freshness/dashboard.mjs'];
 // The only actions the publish job may use.
 export const PUBLISH_ACTIONS = ['actions/checkout@', 'actions/setup-node@', 'actions/download-artifact@'];
+
+// The reviewed run text of every publish step, by step name, one array element per line (SPEC.md FR-O.6
+// after review 3e). The publish job holds the write token, so each body is pinned exactly: an extra
+// `echo` fails like an extra `curl`. Changing any publish run body, or adding a publish step with a run,
+// needs a matching change here in the same commit, and that commit is the review. Comment lines count:
+// GitHub expands `${{ }}` inside them too.
+export const PUBLISH_RUNS = {
+  'Apply the generated files and commit them': [
+    '# Copies only the generated paths; anything else in the artifact fails the run.',
+    'node ops/take-build-output.mjs "$RUNNER_TEMP/watch-output"',
+    'git add watch/ site/feed.xml site/briefs/',
+    'if git diff --cached --quiet -- watch/ site/feed.xml site/briefs/; then',
+    '  echo "watch/, feed and cards unchanged; nothing to commit"',
+    '  echo "committed=false" >> "$GITHUB_OUTPUT"',
+    '  exit 0',
+    'fi',
+    '# Briefs may change only inside their live:card regions (SPEC.md FR-L.5).',
+    'node ops/briefs-guard.mjs',
+    'day="$(jq -r \'.checked_at[0:10]\' watch/state.json)"',
+    'n="$(jq \'.material | length\' "watch/changes/${day}.json")"',
+    'git -c user.name=\'github-actions[bot]\' \\',
+    '    -c user.email=\'41898282+github-actions[bot]@users.noreply.github.com\' \\',
+    '    commit -m "watch: ${day} census (${n} material) [live]" -- watch/ site/feed.xml site/briefs/',
+    'echo "committed=true" >> "$GITHUB_OUTPUT"',
+  ],
+  Push: [
+    '# The token authenticates this one command and is never written to',
+    '# .git/config. A plain push: if main moved during the run, this fails.',
+    'auth="$(printf \'x-access-token:%s\' "$GITHUB_TOKEN" | base64 -w0)"',
+    'git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth}" \\',
+    '    push origin "HEAD:${GITHUB_REF_NAME}"',
+  ],
+  'Sync the dashboard issue from the committed watch/live.json': [
+    'node watch/freshness/dashboard.mjs --sync watch/live.json',
+  ],
+};
+
+// A run body with its trailing newlines removed, the only normalisation the comparison makes.
+const bodyOf = (run) => String(run).replace(/\n+$/, '');
+
+// Problems with the publish run bodies against PUBLISH_RUNS: an unreviewed name, a body that differs
+// (named with its first differing line), and a reviewed step that is missing or repeated.
+export function runBodyProblems(steps, where, reviewed = PUBLISH_RUNS) {
+  const out = [];
+  const seen = new Map();
+  steps.forEach((step, i) => {
+    if (step?.run === undefined) return;
+    const name = String(step.name ?? '');
+    const at = `${where} step ${i + 1}${name ? ` (${name})` : ''}`;
+    if (!Object.hasOwn(reviewed, name)) { out.push(`${at}: runs text under a name PUBLISH_RUNS does not hold; add the reviewed body to ops/write-job.mjs`); return; }
+    seen.set(name, (seen.get(name) ?? 0) + 1);
+    const want = reviewed[name].join('\n'), got = bodyOf(step.run);
+    if (got === want) return;
+    const w = want.split('\n'), g = got.split('\n');
+    let n = 0;
+    while (n < Math.max(w.length, g.length) && w[n] === g[n]) n++;
+    out.push(`${at}: run body differs from the reviewed text at line ${n + 1}: reviewed ${JSON.stringify(w[n] ?? '<end>')}, found ${JSON.stringify(g[n] ?? '<end>')}`);
+  });
+  for (const name of Object.keys(reviewed)) {
+    const count = seen.get(name) ?? 0;
+    if (count === 0) out.push(`${where}: has no step named ${JSON.stringify(name)} running the reviewed body`);
+    if (count > 1) out.push(`${where}: runs the reviewed step ${JSON.stringify(name)} ${count} times`);
+  }
+  return out;
+}
 
 export const TOKEN = /\bgithub\s*\.\s*token\b|\bgithub\s*\[\s*(['"])token\1\s*\]|\bsecrets\s*\.\s*github_token\b|\bsecrets\s*\[\s*(['"])github_token\2\s*\]/i;
 // Any secret, and the one secret the build job may name.
@@ -173,7 +242,7 @@ export function publishProblems(job, where) {
     if (src && !role) out.push(`${at}: receives the token (${src}) but is not the push or sync step`);
     if (CONFIG_WRITE.test(run)) out.push(`${at}: writes a credential into the Git config`);
   });
-  return [...out, ...orderProblems(steps, where)];
+  return [...out, ...runBodyProblems(steps, where), ...orderProblems(steps, where)];
 }
 
 // FR-D.5 within publish: apply, briefs guard, push, sync, in that order, the sync with the token, and no
