@@ -124,13 +124,13 @@ A golden freezes an output that is too large to assert field by field: the dashb
 | `goldens/outputs/card-frankenterm-escaping.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
 | `goldens/outputs/card-franken_engine-untracked-ci-not-head.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
 | `goldens/outputs/card-frankenfs-withdrawing.html` | the same fixture and `checked_at` | Y | N | 2 | exact |
-| `goldens/outputs/core-card-frankengit-rechecked.html` | `renderCard` on `goldens/core/live.json`, `checked_at` 2026-09-25T02:08:40Z | Y | N | 3 | exact |
+| `goldens/outputs/core-card-frankengit-rechecked.html` | `renderCard` on `goldens/core/live.json`, `checked_at` 2026-09-25T04:02:38Z | Y | N | 3 | exact |
 | `goldens/outputs/core-card-franken_node-pending.html` | the same input and `checked_at` | Y | N | 3 | exact |
 | `goldens/outputs/core-card-asupersync-unknown.html` | the same input and `checked_at` | Y | N | 3 | exact |
-| `goldens/outputs/core-card-franken_engine-ci-earlier-commit.html` | the same input and `checked_at` | Y | N | 3 | exact |
+| `goldens/outputs/core-card-franken_lean-ci-earlier-commit.html` | the same input and `checked_at` | Y | N | 3 | exact |
 | `goldens/outputs/dashboard-states.md` | `renderDashboard` on `fixtures/outputs/live-states.json` with one snapshot row built 2026-08-01, `checked_at` 2026-09-24T06:12:45Z | Y | N | 3 | exact |
 | `goldens/outputs/dashboard-quiet.md` | `renderDashboard` on `fixtures/outputs/live-quiet.json`, no snapshots, `checked_at` 2026-10-01T06:00:00Z | Y | N | 3 | exact |
-| `goldens/outputs/core-dashboard.md` | `renderDashboard` on `goldens/core/live.json`, `checked_at` 2026-09-25T02:08:40Z | Y | N | 3 | exact |
+| `goldens/outputs/core-dashboard.md` | `renderDashboard` on `goldens/core/live.json`, `checked_at` 2026-09-25T04:02:38Z | Y | N | 3 | exact |
 | `goldens/outputs/digest-entries.xml` | the digest `<entry>` blocks of `make-feed.mjs --crossings fixtures/outputs/crossings.jsonl`, dated from ledger days 2026-09-24 and 2026-10-08; no clock read | Y | N | 2 | exact |
 
 Volatility is how often an intended code change is expected to touch the golden, not how often upstream data changes: the inputs are fixtures, so upstream never changes a golden. The `core-*` goldens render from `goldens/core/live.json`, so a change to the classifier that moves that golden moves them too; that is why they are rated 3.
