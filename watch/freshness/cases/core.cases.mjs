@@ -359,6 +359,16 @@ const C7 = [
     const accepted = rejects.filter((y) => { try { parseYaml(y); return true; } catch { return false; } });
     return accepted.length ? { pass: false, detail: `accepted ${JSON.stringify(accepted)}` } : true;
   } },
+  { id: 'CORE-C7-yaml-block-scalar-hash', clauses: ['FR-C.7'], level: 'SHOULD', title: 'inside a block scalar a line starting with # is content (GitHub runs it and expands ${{ }} in it); outside, and less indented than the scalar, it stays a comment (expected values from PyYAML safe_load)', run(ctx) {
+    const got = [
+      parseYaml('a:\n  run: |\n    # keep ?\n    echo hi\n'),
+      parseYaml('a:\n  run: |\n    echo hi\n    # ${{ github.token }}\n  # outer\n  b: x\n'),
+      parseYaml('a:\n  run: |\n    one\n      # deeper\n    two\n'),
+    ];
+    const want = [{ a: { run: '# keep ?\necho hi\n' } }, { a: { run: 'echo hi\n# ${{ github.token }}\n', b: 'x' } }, { a: { run: 'one\n  # deeper\ntwo\n' } }];
+    const bad = got.map((g, i) => [i, JSON.stringify(g), JSON.stringify(want[i])]).filter(([, g, w]) => g !== w);
+    return bad.length ? { pass: false, detail: bad.map(([i, g, w]) => `#${i}: ${g} want ${w}`).join('; ') } : true;
+  } },
 ];
 
 // ---------------------------------------------------------------- FR-H.1: differential fidelity, one case per repository x dimension

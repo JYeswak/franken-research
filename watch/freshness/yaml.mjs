@@ -34,7 +34,10 @@ function lex(text) {
     const src = raw[n];
     const lead = src.match(/^[ \t]*/)[0];
     const body = src.slice(lead.length);
-    if (body === '' || body.startsWith('#')) { lines.push({ n: n + 1, blank: true, src }); continue; }
+    // A `#` line is a comment to the block structure, but inside a block scalar it is content
+    // (blockScalar reads `comment`, `indent` and `text`).
+    if (body === '') { lines.push({ n: n + 1, blank: true, src }); continue; }
+    if (body.startsWith('#')) { lines.push({ n: n + 1, blank: true, comment: true, indent: lead.length, text: body, src }); continue; }
     if (/^(---|\.\.\.)(\s|$)/.test(src)) {
       if (src.startsWith('---')) { docs++; if (docs > 1 || seenContent) fail(n + 1, 'expected a single document'); }
       else if (raw.slice(n + 1).some((l) => l.trim() && !l.trim().startsWith('#'))) fail(n + 1, 'expected a single document');
@@ -240,7 +243,7 @@ class Parser {
     let bodyIndent = null;
     while (this.i < this.lines.length) {
       const l = this.lines[this.i];
-      if (l.blank) { body.push(''); this.i++; continue; }
+      if (l.blank && !(l.comment && l.indent > ind && l.indent >= (bodyIndent ?? 0))) { body.push(''); this.i++; continue; }
       if (l.indent <= ind) break;
       bodyIndent ??= l.indent;
       if (l.indent < bodyIndent) break;

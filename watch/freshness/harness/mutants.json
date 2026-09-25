@@ -271,6 +271,18 @@
   ]
  },
  {
+  "id": "M-C7-block-scalar-hash-dropped",
+  "file": "watch/freshness/yaml.mjs",
+  "find": "if (l.blank && !(l.comment && l.indent > ind && l.indent >= (bodyIndent ?? 0)))",
+  "replace": "if (l.blank)",
+  "clauses": [
+   "FR-C.7"
+  ],
+  "must_fail": [
+   "CORE-C7-yaml-block-scalar-hash"
+  ]
+ },
+ {
   "id": "M-T2-always-tracked",
   "file": "watch/freshness/triggers.mjs",
   "find": "  const tracked = base.value !== 'unknown' && base.value === reference;",
