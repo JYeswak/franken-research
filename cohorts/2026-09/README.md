@@ -30,8 +30,8 @@ Every packet so far was written by a Claude Opus 5.5 agent session. Each is revi
 | [readme_smoke_wt-pages](readme_smoke_wt-pages-screening.md) (screening note) | Claude | GPT-6-Luna | [reviews/luna-review-1.md](reviews/luna-review-1.md) | Accept with corrections | Corrections applied |
 | [beads_bend](beads_bend-assessment.md) | Claude | GPT-6-Luna | [reviews/luna-review-1.md](reviews/luna-review-1.md) | Accept with corrections | Corrections applied |
 | [annus-mirabilis.com](annus-mirabilis.com-assessment.md) | Claude | GPT-6-Luna | [reviews/luna-review-1.md](reviews/luna-review-1.md) | Accept with corrections | Corrections applied |
-| [toon_bend](toon_bend-assessment.md) | Claude | none yet | none | none | Awaiting review |
-| [dwarf_fortress_mcp](dwarf_fortress_mcp-assessment.md) | Claude | none yet | none | none | Awaiting review |
-| [skillranker](skillranker-assessment.md) | Claude | none yet | none | none | Awaiting review |
+| [toon_bend](toon_bend-assessment.md) | Claude | GPT-6-Luna | [reviews/luna-review-2.md](reviews/luna-review-2.md) | Accept with corrections | Corrections applied |
+| [dwarf_fortress_mcp](dwarf_fortress_mcp-assessment.md) | Claude | GPT-6-Luna | [reviews/luna-review-2.md](reviews/luna-review-2.md) | Accept with corrections | Corrections applied |
+| [skillranker](skillranker-assessment.md) | Claude | GPT-6-Luna | [reviews/luna-review-2.md](reviews/luna-review-2.md) | Accept with corrections | Corrections applied |
 
 toon_bend's predicate-2 line was changed from "PASS with a note" to a recorded failure, to match the reviewed beads_bend correction. Nothing else in that packet has been reviewed.

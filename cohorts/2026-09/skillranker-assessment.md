@@ -182,18 +182,20 @@ What it bars: OpenAI, Anthropic, their affiliates, and anyone acting for them; a
 
 **Contribution policy:** outside contributions are refused ("I do not accept outside contributions for any of my projects ... I'll have Claude or Codex review submissions via `gh` and independently decide whether and how to address them"; README:2022) [Maintainer claim, High]. 0 pull requests to date [API-observed, High].
 
-**Velocity versus review depth.** 848 commits in 8 days: 151, 114, 206, 148, 103, 53, 25, 48 per day from 2026-09-17 to 2026-09-24 [Git-observed, High]. `scripts/prepush_gates.sh` opens by recording that in one day `main` was pushed red on compilation, twice on `cargo fmt --check` and once on clippy, and that "four of five gates plus a green claim looks exactly like five of five" [Maintainer claim, High]. Review happens through agents and private gates, not public CI.
+**Velocity versus review depth.** 848 commits in 8 days: 151, 114, 206, 148, 103, 53, 25, 48 per day from 2026-09-17 to 2026-09-24 [Git-observed, High]. `scripts/prepush_gates.sh` opens by recording that in one day `main` was pushed red on compilation, twice on `cargo fmt --check` and once on clippy, and that "four of five gates plus a green claim looks exactly like five of five" [Maintainer claim, High]. Review happens through agents and private gates, not public CI [Inference, Medium].
 
 ## 4.9 NODUS factsheet
 
 | Criterion | Score | Justification |
 |---|---|---|
-| Technology readiness | **TRL 5** | Full pipeline runs live on real sessions (maintainer smoke; 247-call external cohort); no quality, harm or operational qualification; P4 still open |
-| Strategic relevance | **3/5** | Skill libraries of several hundred entries are real (552 eligible in #6), but the harness vendor already does in-turn selection |
-| Impact potential | **2/5** | Advisory, one qualified harness, one vendor, and an unmeasured effect on outcomes |
-| Implementation feasibility | **3/5** | The code exists and runs; what remains is data (relevance labels, cohorts) and a release, plus the single-vendor dependency |
-| Time to mainstream | **2/5** | No release; provider in early access; P7 rollout gates open |
-| Collaboration potential | **2/5** | Refuses merges and bars two labs, but acts on outside bug reports within days with regression tests |
+| Technology readiness | **TRL 5** [Inference, Medium] | Full pipeline runs live on real sessions (maintainer smoke; 247-call external cohort); no quality, harm or operational qualification; P4 still open |
+| Strategic relevance | **3/5** [Inference, Medium] | Skill libraries of several hundred entries are real (552 eligible in #6), but the harness vendor already does in-turn selection |
+| Impact potential | **2/5** [Inference, Medium] | Advisory, one qualified harness, one vendor, and an unmeasured effect on outcomes |
+| Implementation feasibility | **3/5** [Inference, Medium] | The code exists and runs; what remains is data (relevance labels, cohorts) and a release, plus the single-vendor dependency |
+| Time to mainstream | **2/5** [Inference, Medium] | No release; provider in early access; P7 rollout gates open |
+| Collaboration potential | **2/5** [Inference, Medium] | Refuses merges and bars two labs, but acts on outside bug reports within days with regression tests |
+
+The TRL and the five subscores are analyst judgments. The Rulebook gives score ranges and ring rules, not mechanically defined stages, so these values are not measurements.
 
 **Ring: Explore-with-a-ceiling.** Pilot requires a release artifact plus a bounded real workload fit; there is no release (R1) and no quality evidence. The ring stands on technical merit as substantive but unproven; the rider caps mainstream adoption regardless, and the single-vendor inference dependency is a second ceiling [Inference, Medium].
 
@@ -236,7 +238,7 @@ What it bars: OpenAI, Anthropic, their affiliates, and anyone acting for them; a
 
 5. **The governance path.** One maintainer with an agent swarm, no outside merges, private gates, DSR-only release. If velocity decays, the first things to break are the vendor contract (alias and API changes during early access) and the checked-in governance records, which are already drifting (matrix, orphan file). A credible path runs through public gate logs, a release, and a second maintainer or provider.
 
-6. **The license as strategy.** The rider excludes OpenAI, Anthropic, their affiliates and anyone acting for them, and names benchmarking, testing and evaluation-harness use. The only harness `sr` supports is Anthropic's Claude Code, so Anthropic cannot test the tool against its own product; Claude Code users are not barred. The same repository records 234 commits co-authored by Claude models. The exclusion does not touch TypeSafe, the vendor the tool depends on.
+6. **The license as strategy.** The rider excludes OpenAI, Anthropic, their affiliates and anyone acting for them, and names benchmarking, testing and evaluation-harness use. The only harness `sr` supports is Anthropic's Claude Code, so Anthropic cannot test the tool against its own product [Inference, Medium]; Claude Code users are not barred. The same repository records 234 commits co-authored by Claude models. The exclusion does not touch TypeSafe, the vendor the tool depends on.
 
 7. **Agent-era fit.** A developer on Claude Code with several hundred skills who already pays for Jev and wants a cheap, auditable pre-turn suggestion with a quiet failure mode. For that user to pick `sr` over the harness's own selection: a release, measured relevance above the agent's own choice, fallback under 5% at the default deadline, and visibility of symlinked skills matching the harness.
 
