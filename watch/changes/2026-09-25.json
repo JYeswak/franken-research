@@ -119,6 +119,27 @@
   "material": [
     {
       "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.0.5 -> 07ef0af, published 2026-09-25T08:19:01Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_snowflake/releases/tag/v0.0.5",
+        "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/releases/tags/v0.0.5",
+        "https://github.com/Dicklesworthstone/franken_snowflake/commit/07ef0af15261eb5557e89caa7112af0c275cad23"
+      ],
+      "ident": "v0.0.5",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_snowflake",
+      "summary": "New GitHub release v0.0.5.",
+      "title": "[watch] franken_snowflake: release v0.0.5",
+      "value": "07ef0af15261eb5557e89caa7112af0c275cad23"
+    },
+    {
+      "affects": [
         "CI"
       ],
       "after": "0 files at 8cf75cc",
@@ -174,6 +195,26 @@
       "summary": "New tag frankensearch-quill-v0.3.3 (no GitHub release for it at this check).",
       "title": "[watch] frankensearch: tag frankensearch-quill-v0.3.3",
       "value": "5e272ac3d42e6c89dee9a1768531cc9bd750fbe5"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag frankensearch-quill-v0.3.4 -> 5651e2c (2026-09-25T07:12:18Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/frankensearch-quill-v0.3.4",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/frankensearch-quill-v0.3.4"
+      ],
+      "ident": "frankensearch-quill-v0.3.4",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag frankensearch-quill-v0.3.4 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag frankensearch-quill-v0.3.4",
+      "value": "5651e2c6ad959086aaf2f175b3ba3270a71f0b83"
     }
   ],
   "since": "2026-09-24T21:25:36Z"
