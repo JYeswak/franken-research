@@ -33,7 +33,7 @@ Requirement levels follow RFC 2119. Every MUST clause needs at least one harness
 - C1: at least one such run concluded `success`, and none concluded `failure`, `timed_out` or `startup_failure`. A run that concluded `cancelled`, `skipped` or `neutral` gives no verdict.
 - C3: test workflows trigger on push or pull request, but no completed run with a verdict exists on the point's commit.
 
-**FR-C.3** (MUST) A run still in progress, or an API gap, never reads as C3. For `now`, the file rules (C6 by packet statement, C5, and C4) read HEAD's workflow files. The run rules (C6 by self-hosted runs, C2, C1, and C3) read the CI point: the newest default-branch commit, dated on or after the baseline commit, whose push-triggered test runs have all completed. The CI point is found in one page of the default branch's runs from the Actions API. HEAD is the CI point when it qualifies. When a run rule applies but no listed commit qualifies, CI is `unknown`. `live.json` records `dims.ci.now_commit`: HEAD when a file rule decided, the CI point when a run rule decided, and null when unknown. The card shows it.
+**FR-C.3** (MUST) A run still in progress, or an API gap, never reads as C3. For `now`, the file rules (C6 by packet statement, C5, and C4) read HEAD's workflow files. The run rules (C6 by self-hosted runs, C2, C1, and C3) read the CI point. The CI point is the newest default-branch commit, dated on or after the baseline commit, that has at least one push-triggered test run and whose push-triggered test runs have all completed. A commit with no such run does not qualify. The CI point is found in one page of the default branch's runs from the Actions API. HEAD is the CI point when it qualifies. When a run rule applies but no listed commit qualifies, CI is `unknown`. `live.json` records `dims.ci.now_commit`: HEAD when a file rule decided, the CI point when a run rule decided, and null when unknown. The card shows it.
 
 **FR-C.4** (MUST) Release class at a point with commit date D. Consider only tags dated on or before D, using the tag's own date or, failing that, its target commit's date. A non-draft release counts only if its tag is considered. The release's publish date is not used, because a release can be published minutes after the commit it tags.
 - R1: none.
@@ -54,7 +54,7 @@ Requirement levels follow RFC 2119. Every MUST clause needs at least one harness
 
 **FR-T.1** (MUST) For each repository and each dimension in {ci, rel, license}, `at_pin = classify(facts, pin)` and `now = classify(facts, now)`. A class crossing is `now != at_pin` when both are known.
 
-**FR-T.2** (MUST) If `at_pin` differs from the matrix value, the dimension is `untracked` for that repository, and the difference must have a `DISCREPANCIES.md` entry. An untracked dimension raises no class crossings. Its changes are flagged by the event rules of `watch/README.md` instead, labelled `source: event-fallback`.
+**FR-T.2** (MUST) If `at_pin` differs from the matrix value, the dimension is `untracked` for that repository, and the difference must have a `DISCREPANCIES.md` entry. An untracked dimension raises a crossing, labelled `source: event-fallback`, only when both of these hold: an event rule of `watch/README.md` fires for it, and its computed class at the baseline differs from its computed class now. FR-T.4 applies to untracked dimensions too, so an event that changes no computed class stays informational.
 
 **FR-T.3** (MUST) These always raise a crossing with `source: existence`: archived or unarchived, deleted or made private, and a pin that is no longer an ancestor of HEAD.
 
@@ -70,7 +70,7 @@ Requirement levels follow RFC 2119. Every MUST clause needs at least one harness
 
 **FR-T.9** (SHOULD) A verdict is `due` for a delta re-check when it has an open crossing, or when 90 days have passed since its baseline date.
 
-**FR-T.10** (MUST) An open crossing whose computed class returns to its baseline value, and stays there for two consecutive daily observations, is closed as `withdrawn`: the class moved and then moved back, so nothing needs a re-check. A dated re-check is still the only way to *resolve* a crossing (FR-T.8). A crossing that is withdrawn and later moves again opens as a new crossing, with a new `since` date. `existence` crossings are never withdrawn.
+**FR-T.10** (MUST) An open crossing with `source: class`, whose computed class returns to its baseline value and stays there for two consecutive daily observations, is closed as `withdrawn`: the class moved and then moved back, so nothing needs a re-check. A dated re-check is still the only way to *resolve* a crossing (FR-T.8). A crossing that is withdrawn and later moves again opens as a new crossing, with a new `since` date. Crossings from any other source (`existence`, `event-fallback`, `revisit`) are never withdrawn.
 
 ## FR-L: live data and live card
 
@@ -86,7 +86,7 @@ Requirement levels follow RFC 2119. Every MUST clause needs at least one harness
 
 ## FR-D: dashboard issue
 
-**FR-D.1** (MUST) The scheduled run keeps exactly one dashboard issue, titled `[watch] Freshness dashboard` and labelled `watch` and `dashboard`. It edits the body in place, and only when the rendered body changed.
+**FR-D.1** (MUST) The scheduled run keeps exactly one trusted dashboard issue, titled `[watch] Freshness dashboard` and labelled `watch` and `dashboard`. It edits the body in place, and only when the rendered body changed. If more than one trusted dashboard exists, the oldest is canonical. Each newer trusted one is closed, with a comment linking the canonical issue, and the run reports it. An issue that is not trusted is never changed.
 
 **FR-D.2** (MUST) Trust rules match `watch/README.md`. The issue counts only if the token's own identity authored it, it carries the labels, and it has the marker `<!-- watch-dashboard: v1 -->`. A same-title issue from anyone else is never edited. It is reported as ignored, and a new trusted issue is created. A closed trusted dashboard is reopened, because it is a living document, not a finding.
 
@@ -102,11 +102,15 @@ Upstream text is Markdown-escaped with the existing `mdText`.
 
 **FR-D.4** (MUST) The run opens no per-event issues for assessed repositories. The `--issues` path for them is retired. New-repository candidates are listed on the dashboard. Issue text stays under GitHub's 65,536-character limit and ends with a link to `live.json` if it has to be cut.
 
+**FR-D.5** (MUST) The dashboard is synced only after the run's generated files have passed the gate chain and been pushed. It is rendered from the committed `watch/live.json`. A failed gate or push leaves the issue unchanged. A failed sync is reported and does not undo the pushed files.
+
+**FR-D.6** (MUST) Finding the dashboard is bounded. The run lists issues by the `dashboard` label and the token's own identity as creator, with every state included, and reads at most 3 pages of 100. If the listing is incomplete or hits that bound, the sync fails closed: it creates nothing and edits nothing.
+
 ## FR-G: weekly digest
 
 **FR-G.1** (MUST) `site/feed.xml` carries at most one watch digest entry per ISO week, dated the last day of that week that had data. It lists the crossings opened, resolved and withdrawn that week. A week with none of these gets no entry. Informational events never produce feed entries.
 
-**FR-G.2** (MUST) The digest is built only from committed files: the append-only crossing ledger `watch/crossings.jsonl`, with one line per crossing opened or resolved, and `updates/`. The feed stays byte-identical on reruns, as gate M requires today.
+**FR-G.2** (MUST) The digest is built only from committed files: the append-only crossing ledger `watch/crossings.jsonl`, with one line per crossing opened, resolved or withdrawn, and `updates/`. The feed stays byte-identical on reruns, as gate M requires today.
 
 **FR-G.3** (MUST) `watch/crossings.jsonl` is append-only. Each `--apply` that opens, resolves or withdraws a crossing appends one line per event, with fixed key order: `{date, event: opened|resolved|withdrawn, id, repo, dim, from, to, source, evidence, resolved_by}`. For `withdrawn`, `resolved_by` is null. A run whose output does not start with the previous committed file, byte for byte, fails.
 
@@ -128,6 +132,8 @@ So a new generated artifact that no scheduled job refreshes cannot land.
 **FR-O.4** (SHOULD) The deploy job's smoke step warns when `watch/live.json` `checked_at` is more than 36 hours old, which means a missed daily run. The dashboard shows the time of the last run.
 
 **FR-O.5** (SHOULD) Vendored snapshots listed in `ops/schedule.tsv` carry their build date. The dashboard shows each snapshot's age, and a snapshot more than 30 days old is due for a rebuild.
+
+**FR-O.6** (MUST) The job that writes (the watch: it pushes commits and syncs the dashboard) runs only on `refs/heads/main`, whether it was triggered by the schedule or dispatched by hand. Its checkout does not persist credentials. The token reaches only the steps that need it: the watch's GitHub API reads, the push, and the dashboard sync. No install, build or gate step runs with a write-capable token in its environment or in the Git config.
 
 ## FR-H: harness and measurement
 
@@ -174,3 +180,4 @@ The report gives precision and recall on this set, and names its size.
 | 2026-09-25 | FR-C.3 | `now` for CI is the newest default-branch commit whose push-triggered test runs have all completed, not HEAD. CI is unknown only when no listed commit qualifies, and `dims.ci.now_commit` records which commit was used. | First live run: 13 of 44 repositories had CI `unknown`, all at HEAD, because runs were in progress or HEAD was under 6 hours old. The most active repositories would never get a CI class under the old rule. |
 | 2026-09-25 | FR-C.3 | Two guards. File rules read HEAD's workflow files; run rules read the CI point. A CI point dated before the baseline commit is never used. | FreshCore, fixture recorded 02:04 UTC: the newest settled commit was HEAD for 9 repositories, an older commit for 27, and none for 8. frankengit's was 870c1cc, from before its 2026-09-22 workflow removal. Without the guards it read C3 against a C5 baseline, and franken_markdown, franken_whisper and franken_snowflake took classes from old commits' files. |
 | 2026-09-25 | FR-T.10 (new), FR-G.1, FR-G.3 | A crossing whose class returns to its baseline and stays there for two observations is withdrawn; the ledger and the digest gain a `withdrawn` event. | Live run 2026-09-25T02:10Z: all 5 pending crossings were CI flips on active repositories (franken_node C2 to C1, franken_threed and frankenscipy C1 to C2, franken_remote C3 to C2, franken_snowflake C3 to C5). Before this change, a flip that held two days opened a crossing that stayed on the dashboard until someone wrote a re-check, even after CI went green again. That is the kind of stale report this contract exists to remove. |
+| 2026-09-25 | FR-T.2, FR-T.10, FR-C.3, FR-D.1, FR-D.5 (new), FR-D.6 (new), FR-G.2, FR-O.6 (new) | The event fallback needs a class change (FR-T.4 wins). Only class crossings are withdrawn. A commit with no push-triggered test run is never the CI point. There is exactly one trusted dashboard, and newer trusted duplicates are closed. The sync runs after the gates and the push, from committed data. Finding the dashboard is bounded and fails closed. The ledger description includes withdrawn. The write job is main-only and runs without persisted credentials. | Independent review 3 (GPT-6-Luna, 2026-09-25, NEEDS FIXES), findings P2 x5 and P3 x4. The review reproduced an R3-to-R3 fallback crossing, a withdraw-then-reopen cycle on an event-fallback crossing, a surviving mid-line truncation mutant, and a checkout that persists a write token during install and gates. |
