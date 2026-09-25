@@ -27,6 +27,7 @@ None.
 
 - Events that moved no computed class: 0 today, 0 since the pins.
 - Crossings seen once, not yet open: 0.
+- Open crossings whose class is back at its baseline, withdrawn if the next daily check agrees: 0.
 - Repository states: 2 current, 0 changed, 0 due, 0 unknown.
 
 ## Vendored snapshots

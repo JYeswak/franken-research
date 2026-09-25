@@ -544,7 +544,7 @@ const dashCases = [
         const row = changedRows.find((l) => l.includes(`](https://github.com/Dicklesworthstone/${r.repo})`) && l.includes(` ${c.from} | ${c.to} `));
         checks.push([Boolean(row), `${c.id}: no row`]);
         if (row) {
-          for (const u of c.evidence) checks.push([row.includes(`(${u})`), `${c.id}: evidence ${u} missing`]);
+          for (const u of c.evidence) checks.push([row.includes(`(${hrefOf(u)})`), `${c.id}: evidence ${u} missing`]);
           checks.push([row.includes('updates/METHOD.md') && row.includes(r.packet), `${c.id}: no re-check link`]);
         }
       }
@@ -661,7 +661,7 @@ const ledgerLine = (o) => JSON.stringify({ date: o.date, event: o.event, id: o.i
 const digestCases = [
   {
     id: 'OUT-G1-weeks', clauses: ['FR-G.1'], level: 'MUST',
-    title: 'one entry per ISO week with a crossing opened or resolved, dated the last day with data, listing every event of the week; a quiet week gets none',
+    title: 'one entry per ISO week with a crossing opened, resolved or withdrawn, dated the last day with data, listing every event of the week; a quiet week gets none',
     run(ctx) {
       const events = readLedger(join(ctx.root, LEDGER_FX), ctx.root);
       const entries = digestEntries(events);
@@ -671,14 +671,54 @@ const digestCases = [
         ['2026-09-28', '2026-W40'], ['2026-12-31', '2026-W53'], ['2027-01-03', '2026-W53'], ['2027-01-04', '2027-W01'],
       ];
       return verdict([
-        [entries.map((e) => e.id.split('/').pop()).join() === '2026-W41,2026-W39', `weeks ${entries.map((e) => e.id).join()}`],
-        [w39?.date === '2026-09-24' && entries[0].date === '2026-10-08', 'an entry is not dated its week\'s last day with data'],
+        [entries.map((e) => e.id.split('/').pop()).join() === '2026-W42,2026-W41,2026-W39', `weeks ${entries.map((e) => e.id).join()}`],
+        [w39?.date === '2026-09-24' && entries[1].date === '2026-10-08', 'an entry is not dated its week\'s last day with data'],
         [/2 crossings opened, 1 resolved/.test(w39?.title ?? ''), `W39 title ${w39?.title}`],
         [['franken_code_browser Release R1 \u2192 R3 (2026-09-23', 'frankengit CI C3 \u2192 C5 (2026-09-24', 'by updates/franken_code_browser-2026-09-24.md'].every((s) => w39?.summary.includes(s)), 'W39 does not list every event'],
         [digestEntries([]).length === 0, 'an empty ledger made an entry'],
         ...weeks.map(([d, w]) => [isoWeek(d).label === w, `${d} is ${isoWeek(d).label}, want ${w}`]),
       ]);
     },
+  },
+  {
+    id: 'OUT-L3-withdrawing', clauses: ['FR-L.3', 'FR-D.3'], level: 'MUST',
+    title: 'an open crossing whose class is back at its baseline (pending phase withdrawing) is listed once on the card, saying when it came back and that it closes as withdrawn only if the next check agrees; the dashboard counts it apart from moves seen once',
+    run(ctx) {
+      const live = fixture(ctx, 'live-states.json');
+      const fs = live.repos.find((r) => r.repo === 'frankenfs');
+      const text = textOf(renderCard(fs, live));
+      const body = renderDashboard(live, { snapshots: NO_SNAPSHOTS });
+      const opening = live.repos.flatMap((r) => r.pending).filter((p) => p.phase === 'opening').length;
+      return verdict([
+        [fs?.pending?.[0]?.phase === 'withdrawing' && fs.crossings[0]?.id === fs.pending[0].id, 'fixture has no withdrawing crossing'],
+        [(text.match(/CI: C2 → C1, since 2026-09-20/g) ?? []).length === 1, 'the withdrawing crossing is not listed exactly once'],
+        [text.includes('back at C2 since 2026-09-24, it closes as withdrawn if the next daily check sees that too'), `card says: ${text.slice(text.indexOf('What the watch flagged'), text.indexOf('What the watch flagged') + 200)}`],
+        [!/seen once/.test(text), 'the withdrawing entry is worded as a move seen once'],
+        [body.includes(`- Crossings seen once, not yet open: ${opening}.`) && body.includes('- Open crossings whose class is back at its baseline, withdrawn if the next daily check agrees: 1.'), 'dashboard does not count withdrawing apart from opening'],
+        [/\| \[frankenfs\]\([^)]*\) \| CI \| C2 \| C1 \|/.test(body), 'a withdrawing crossing left the Changed section before it closed'],
+      ]);
+    },
+  },
+  {
+    id: 'OUT-G1-withdrawn', clauses: ['FR-G.1'], level: 'MUST',
+    title: 'a week whose only event is a withdrawal gets an entry that words it as a return to the baseline class; a withdrawal of an existence crossing, or one naming a re-check, is refused',
+    run: (ctx) => withScratch((dir) => {
+      const entries = digestEntries(readLedger(join(ctx.root, LEDGER_FX), ctx.root));
+      const w42 = entries.find((e) => e.id.endsWith('/2026-W42'));
+      const tryLine = (o) => { const f = join(dir, `${o.date}-${o.event}.jsonl`); writeFileSync(f, `${o.line}\n`); try { readLedger(f, ctx.root); return null; } catch (e) { return e.message; } };
+      const existence = tryLine({ date: '2026-10-14', event: 'withdrawn', line: ledgerLine({ date: '2026-10-14', event: 'withdrawn' }).replace('"source":"class"', '"source":"existence"') });
+      const named = tryLine({ date: '2026-10-15', event: 'withdrawn', line: ledgerLine({ date: '2026-10-15', event: 'withdrawn', resolved_by: 'updates/franken_code_browser-2026-09-24.md' }) });
+      const alone = digestEntries([JSON.parse(ledgerLine({ date: '2026-11-04', event: 'withdrawn' }))]);
+      return verdict([
+        [Boolean(w42), 'the withdrawal-only week 2026-W42 has no entry'],
+        [w42?.date === '2026-10-14', `W42 dated ${w42?.date}`],
+        [w42?.title === 'Watch digest 2026-W42: 0 crossings opened, 0 resolved, 1 withdrawn', `W42 title ${w42?.title}`],
+        [/^Withdrawn: frankensearch License returned to Rider after moving to other:Copyright/.test(w42?.summary ?? '') && !/Opened:|Resolved:/.test(w42?.summary ?? ''), `W42 summary ${w42?.summary?.slice(0, 120)}`],
+        [alone.length === 1 && alone[0].summary.startsWith('Withdrawn: frankengit CI returned to C1 after moving to C2 (2026-11-04).'), 'a lone withdrawal is not worded as a return to its baseline class'],
+        [/never withdrawn/.test(existence ?? ''), `an existence withdrawal was accepted: ${existence}`],
+        [/withdrawn event needs resolved_by null/.test(named ?? ''), `a withdrawal naming a re-check was accepted: ${named}`],
+      ]);
+    }),
   },
   {
     id: 'OUT-G1-feed', clauses: ['FR-G.1', 'FR-G.2'], level: 'MUST',
@@ -695,9 +735,9 @@ const digestCases = [
       return verdict([
         [r.status === 0, `make-feed exited ${r.status}: ${r.stderr.trim()}`],
         [check.status === 0 && /^FEED_OK/m.test(check.stdout), `feed check: ${check.stdout.trim()}`],
-        [blocks.length === 2 && xml.indexOf('digest/2026-W41') < xml.indexOf('digest/2026-W39'), `${blocks.length} digest entries or wrong order`],
+        [blocks.length === 3 && xml.indexOf('digest/2026-W42') < xml.indexOf('digest/2026-W41') && xml.indexOf('digest/2026-W41') < xml.indexOf('digest/2026-W39'), `${blocks.length} digest entries or wrong order`],
         [xml.includes('other:Copyright (c) 2026 &lt;Jeffrey&gt; &amp; &quot;friends&quot;') && !xml.includes('<Jeffrey>'), 'upstream text not XML-escaped'],
-        [refused.status !== 0 && /neither opened nor resolved/.test(refused.stderr), 'an informational ledger line was accepted'],
+        [refused.status !== 0 && /is not opened, resolved, withdrawn/.test(refused.stderr), 'an informational ledger line was accepted'],
         [quiet.r.status === 0 && digestBlocks(quiet.xml).length === 0, 'an empty ledger produced a digest entry (watch/changes/ holds informational events; they must not reach the feed)'],
       ]);
     }),
@@ -752,6 +792,7 @@ const goldenCases = [
         ['outputs/card-franken_tts-unknown.html', card('franken_tts')],
         ['outputs/card-frankenterm-escaping.html', card('frankenterm')],
         ['outputs/card-franken_engine-untracked-ci-not-head.html', card('franken_engine')],
+        ['outputs/card-frankenfs-withdrawing.html', card('frankenfs')],
       ]);
     },
   },

@@ -109,11 +109,13 @@ function revisitSection(live) {
 
 function informationalSection(live) {
   const t = live.totals ?? {};
-  const pending = live.repos.reduce((s, r) => s + (r.pending ?? []).length, 0);
+  const pending = live.repos.flatMap((r) => r.pending ?? []);
+  const back = pending.filter((p) => p.phase === 'withdrawing').length;
   const inf = live.informational ?? {};
   return section('Informational', [
     `- Events that moved no computed class: ${Number(inf.events_today ?? 0)} today, ${Number(inf.events_since_pin ?? 0)} since the pins.`,
-    `- Crossings seen once, not yet open: ${pending}.`,
+    `- Crossings seen once, not yet open: ${pending.length - back}.`,
+    `- Open crossings whose class is back at its baseline, withdrawn if the next daily check agrees: ${back}.`,
     `- Repository states: ${Number(t.current ?? 0)} current, ${Number(t.changed ?? 0)} changed, ${Number(t.due ?? 0)} due, ${Number(t.unknown ?? 0)} unknown.`,
   ]);
 }

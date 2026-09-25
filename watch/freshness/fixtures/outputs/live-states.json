@@ -2,11 +2,11 @@
   "schema": "fr.watch.live/v1",
   "checked_at": "2026-09-24T06:12:45Z",
   "totals": {
-    "repos": 8,
-    "pinned": 7,
+    "repos": 9,
+    "pinned": 8,
     "cohort": 1,
     "current": 3,
-    "changed": 3,
+    "changed": 4,
     "due": 1,
     "unknown": 1
   },
@@ -103,6 +103,116 @@
       },
       "state": "changed",
       "state_reason": "open crossing frankengit:ci:C3>C5",
+      "due": {
+        "due": true,
+        "reason": "open crossing"
+      }
+    },
+    {
+      "repo": "frankenfs",
+      "packet": "packets/frankenfs-assessment.md",
+      "brief": "site/briefs/frankenfs.html",
+      "set": "pinned",
+      "baseline": {
+        "sha": "5f4e3d2c1b0a99887766554433221100ffeeddcc",
+        "date": "2026-09-22",
+        "source": "packet"
+      },
+      "pin": {
+        "sha": "5f4e3d2c1b0a99887766554433221100ffeeddcc",
+        "date": "2026-09-22T08:30:00Z"
+      },
+      "head": {
+        "sha": "1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e5",
+        "date": "2026-09-24T04:00:00Z"
+      },
+      "commits_since_pin": 41,
+      "latest_release": null,
+      "existence": {
+        "found": true,
+        "archived": false,
+        "pin_reachable": true
+      },
+      "dims": {
+        "ci": {
+          "matrix": "C2",
+          "reference": "C2",
+          "at_pin": "C2",
+          "at_baseline": "C2",
+          "now": "C2",
+          "now_commit": "1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e5",
+          "tracked": true,
+          "rule_at_pin": "FR-C.2/C2",
+          "rule_now": "FR-C.2/C2",
+          "evidence": [
+            "https://api.github.com/repos/Dicklesworthstone/frankenfs/actions/runs?head_sha=1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e5"
+          ]
+        },
+        "rel": {
+          "matrix": "R1",
+          "reference": "R1",
+          "at_pin": "R1",
+          "at_baseline": "R1",
+          "now": "R1",
+          "tracked": true,
+          "rule_at_pin": "FR-C.4/R1",
+          "rule_now": "FR-C.4/R1",
+          "evidence": [
+            "https://api.github.com/repos/Dicklesworthstone/frankenfs/releases"
+          ]
+        },
+        "license": {
+          "matrix": "Rider",
+          "reference": "Rider",
+          "at_pin": "Rider",
+          "at_baseline": "Rider",
+          "now": "Rider",
+          "tracked": true,
+          "rule_at_pin": "FR-C.5/Rider",
+          "rule_now": "FR-C.5/Rider",
+          "evidence": [
+            "https://github.com/Dicklesworthstone/frankenfs/blob/1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e5/LICENSE"
+          ]
+        }
+      },
+      "crossings": [
+        {
+          "id": "frankenfs:ci:C2>C1",
+          "dim": "ci",
+          "from": "C2",
+          "to": "C1",
+          "since": "2026-09-20",
+          "source": "class",
+          "evidence": [
+            "https://api.github.com/repos/Dicklesworthstone/frankenfs/actions/runs?head_sha=1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e5"
+          ],
+          "resolved_by": null
+        }
+      ],
+      "pending": [
+        {
+          "id": "frankenfs:ci:C2>C1",
+          "dim": "ci",
+          "from": "C2",
+          "to": "C1",
+          "since": "2026-09-24",
+          "source": "class",
+          "evidence": [
+            "https://api.github.com/repos/Dicklesworthstone/frankenfs/actions/runs?head_sha=1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e5"
+          ],
+          "resolved_by": null,
+          "phase": "withdrawing"
+        }
+      ],
+      "revisit": {
+        "machine": 1,
+        "human": 2,
+        "fired": [
+          "ci.class"
+        ]
+      },
+      "state": "changed",
+      "state_reason": "open crossing frankenfs:ci:C2>C1",
       "due": {
         "due": true,
         "reason": "open crossing"
@@ -570,7 +680,8 @@
           "evidence": [
             "https://github.com/Dicklesworthstone/frankensearch/blob/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b/LICENSE"
           ],
-          "resolved_by": null
+          "resolved_by": null,
+          "phase": "opening"
         }
       ],
       "revisit": {

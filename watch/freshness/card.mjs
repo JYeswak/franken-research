@@ -117,7 +117,7 @@ export function stateSentence(rec) {
   if (rec.state === 'current') {
     const since = rec.baseline?.source === 'packet' ? 'pin' : 'dated re-check';
     if (!movedDims(rec).length) return `, meaning no computed class has moved since the ${since}.`;
-    return `, meaning no crossing is open${rec.pending?.length ? ': the move listed below was seen once and opens only if the next daily check sees it too' : ''}.`;
+    return `, meaning no crossing is open${opening(rec).length ? ': the move listed below was seen once and opens only if the next daily check sees it too' : ''}.`;
   }
   if (rec.state === 'due') return `: ${esc(rec.due?.reason ?? 'no reason recorded')}. The verdict stands until a dated re-check is filed.`;
   if (rec.state === 'unknown') {
@@ -220,16 +220,25 @@ function classTable(rec) {
 // Vocabulary lookup that never reaches Object.prototype ("constructor" is a legal upstream string).
 const word = (map, k) => (Object.hasOwn(map, k) ? map[k] : esc(k));
 
-function crossingItem(c, pending) {
+// Pending entries carry `phase` (FR-T.6, FR-T.10): `opening` is a move seen once; `withdrawing` is an open crossing
+// whose class has been back at its baseline since `since`. An entry without a phase (an older live.json) is opening.
+const opening = (rec) => (rec.pending ?? []).filter((p) => p.phase !== 'withdrawing');
+const withdrawing = (rec, id) => (rec.pending ?? []).find((p) => p.phase === 'withdrawing' && p.id === id) ?? null;
+
+function crossingItem(c, { pending = false, back = null } = {}) {
   const dim = word(DIM_WORD, c.dim);
   const move = `${dim}: ${esc(c.from)} &rarr; ${esc(c.to)}, since ${esc(day(c.since))}`;
   const done = c.resolved_by ? `; resolved by ${link(blob(String(c.resolved_by)), 'a dated re-check')}` : '';
   const seen = pending ? '; seen once, it opens only if the next daily check sees it too' : '';
-  return `<li>${move} (${word(SOURCE_WORD, c.source)}${done}${seen}). Evidence: ${evidence(c.evidence, dim)}</li>`;
+  const returning = back ? `; back at ${esc(c.from)} since ${esc(day(back.since))}, it closes as withdrawn if the next daily check sees that too` : '';
+  return `<li>${move} (${word(SOURCE_WORD, c.source)}${done}${seen}${returning}). Evidence: ${evidence(c.evidence, dim)}</li>`;
 }
 
 function crossings(rec) {
-  const items = [...(rec.crossings ?? []).map((c) => crossingItem(c, false)), ...(rec.pending ?? []).map((c) => crossingItem(c, true))];
+  const items = [
+    ...(rec.crossings ?? []).map((c) => crossingItem(c, { back: withdrawing(rec, c.id) })),
+    ...opening(rec).map((c) => crossingItem(c, { pending: true })),
+  ];
   if (!items.length) return '';
   return `<p style="${S.dt};margin:0">What the watch flagged</p><ul style="${S.list}">${items.join('')}</ul>`;
 }
