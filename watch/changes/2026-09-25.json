@@ -1,0 +1,180 @@
+{
+  "baseline": false,
+  "date": "2026-09-25",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "24 files at 737500f",
+      "before": "23 files at 80edb18",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_engine/tree/737500fce8d11491efcae3c752cb91223d2c62bf/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_engine/compare/80edb182373085cf08e55974b9d3fe7089c133d6...737500fce8d11491efcae3c752cb91223d2c62bf",
+        "https://github.com/Dicklesworthstone/franken_engine/actions"
+      ],
+      "ident": "74dfba246a2a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_engine",
+      "summary": "The .github/workflows file set changed: +collection-runtime.yml.",
+      "title": "[watch] franken_engine: workflows +1 -0 (24 now)",
+      "value": "74dfba246a2a"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "101 files at 0466f42",
+      "before": "100 files at e9d38ef",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/0466f4240d0364bbb4736086c75e6d5e8c93c21f/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/e9d38efdab154399754730b71f04a0c38e46ea67...0466f4240d0364bbb4736086c75e6d5e8c93c21f",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "2d1ce4e64661",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +product-gate.yml.",
+      "title": "[watch] franken_lean: workflows +1 -0 (101 now)",
+      "value": "2d1ce4e64661"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "101 files at 3cada0d",
+      "before": "98 files at acaf83b",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/3cada0dea267a9ab4efcfc8667277e1ba344ed2b/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/acaf83b39ca913e6158c936bfb80ecb50be105ee...3cada0dea267a9ab4efcfc8667277e1ba344ed2b",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "c9ddb9ad43ad",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +mixed-camera-wasm.yml, +native-graph-lifecycles.yml, +native-surface-lifecycle.yml.",
+      "title": "[watch] franken_manim: workflows +3 -0 (101 now)",
+      "value": "c9ddb9ad43ad"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "53 files at e810150",
+      "before": "51 files at 89b7fcd",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_node/tree/e810150d8d84d09350b01d6feb16d0098268f81c/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_node/compare/89b7fcded459fce42ff87367ada2ee61482dda6a...e810150d8d84d09350b01d6feb16d0098268f81c",
+        "https://github.com/Dicklesworthstone/franken_node/actions"
+      ],
+      "ident": "ae409d49c85f",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_node",
+      "summary": "The .github/workflows file set changed: +verifier-sdk-standalone.yml, +workflow-lint.yml.",
+      "title": "[watch] franken_node: workflows +2 -0 (53 now)",
+      "value": "ae409d49c85f"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "13 files at a417309",
+      "before": "12 files at de87fb0",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/a417309e11059c87b2dd9ef0e1a526c3cb8134eb/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/de87fb0abb305baa7acc48cd4ac6f0efd7b16e28...a417309e11059c87b2dd9ef0e1a526c3cb8134eb",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "b9cb0936afa6",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +native-global-scope.yml.",
+      "title": "[watch] frankenlibc: workflows +1 -0 (13 now)",
+      "value": "b9cb0936afa6"
+    },
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1386583841",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1386583841",
+        "https://github.com/Dicklesworthstone/opentui"
+      ],
+      "ident": "1386583841",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "opentui",
+      "summary": "New public repository Dicklesworthstone/opentui (TypeScript, fork, created 2026-09-25; description: \"OpenTUI is a library to build terminal user interfaces (TUI)\"). Informational: a fork.",
+      "title": "[watch] opentui: new public repo",
+      "value": "1386583841"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "0 files at 8cf75cc",
+      "before": "1 files at ea5a367",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_snowflake/tree/8cf75ccfc1dca1f00f18e811a639328adc4e78e9/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_snowflake/compare/ea5a367e502891ea5fbd85828d04831eeccf0b7f...8cf75ccfc1dca1f00f18e811a639328adc4e78e9",
+        "https://github.com/Dicklesworthstone/franken_snowflake/actions"
+      ],
+      "ident": "4f53cda18c2b",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_snowflake",
+      "summary": "The .github/workflows file set changed: -ci.yml.",
+      "title": "[watch] franken_snowflake: workflows +0 -1 (0 now)",
+      "value": "4f53cda18c2b"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "7 files at 7ac3992",
+      "before": "8 files at de2abef",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengit/tree/7ac39925f36dbd60e094e8f12698f656849333f8/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankengit/compare/de2abef98881789b6f9e4c44ae577e6efb997a2c...7ac39925f36dbd60e094e8f12698f656849333f8",
+        "https://github.com/Dicklesworthstone/frankengit/actions"
+      ],
+      "ident": "33ddba28c937",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankengit",
+      "summary": "The .github/workflows file set changed: -gpt56pro-apply-format-20260904.yml.",
+      "title": "[watch] frankengit: workflows +0 -1 (7 now)",
+      "value": "33ddba28c937"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag frankensearch-quill-v0.3.3 -> 5e272ac (2026-09-25T00:51:13Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/frankensearch-quill-v0.3.3",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/frankensearch-quill-v0.3.3"
+      ],
+      "ident": "frankensearch-quill-v0.3.3",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag frankensearch-quill-v0.3.3 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag frankensearch-quill-v0.3.3",
+      "value": "5e272ac3d42e6c89dee9a1768531cc9bd750fbe5"
+    }
+  ],
+  "since": "2026-09-24T21:25:36Z"
+}
