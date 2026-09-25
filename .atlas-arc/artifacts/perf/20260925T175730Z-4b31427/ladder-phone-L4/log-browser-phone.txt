@@ -1,0 +1,15 @@
+[phone] run 0/10 done at 62 s
+[phone] run 1/10 done at 138 s
+[phone] run 2/10 done at 207 s
+[phone] run 3/10 done at 265 s
+[phone] run 4/10 done at 321 s
+[phone] run 5/10 done at 387 s
+[phone] run 6/10 done at 447 s
+[phone] run 7/10 done at 506 s
+[phone] run 8/10 done at 565 s
+[phone] run 9/10 done at 637 s
+[phone] run 10/10 done at 714 s
+phone A {"k2l":[6.6,15.8,21.3],"k2p95":24.1,"env":"INVESTIGATE 15.5","usable_p95":423,"full_p95":1228.4,"heapMB":4.96,"lt":{"count":6,"over_50ms":5,"max_ms":130},"wt":[]}
+phone AL3 {"k2l":[3.5,8,11.2],"k2p95":16.6,"env":"INVESTIGATE 16.7","usable_p95":394.6,"full_p95":1207.5,"heapMB":4.3,"lt":{"count":2,"over_50ms":2,"max_ms":69},"wt":[]}
+phone AL5 {"k2l":[3.5,8.5,12.9],"k2p95":17.8,"env":"ESCALATE 40","usable_p95":406.8,"full_p95":1196.5,"heapMB":4.34,"lt":{"count":4,"over_50ms":4,"max_ms":73},"wt":[]}
+phone I0 {"k2l":[2.5,5.2,8.5],"k2p95":12.5,"env":"ESCALATE 30.6","usable_p95":272.4,"full_p95":272.5,"heapMB":0.03,"lt":{"count":2,"over_50ms":2,"max_ms":87},"wt":[]}

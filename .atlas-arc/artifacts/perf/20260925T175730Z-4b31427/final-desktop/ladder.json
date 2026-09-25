@@ -1,0 +1,146 @@
+{
+ "profile": "desktop",
+ "rule": "keep a lever iff pooled key2layout p95 < incumbent AND per-run p95 lower in a majority of paired runs",
+ "rungs": {
+  "A": {
+   "key2layout": {
+    "n": 11650,
+    "mean": 1.6251,
+    "sd": 1.2075,
+    "cv": 0.743,
+    "mad": 0.6,
+    "p50": 1.5,
+    "p95": 3.7,
+    "p99": 5,
+    "p999": 10,
+    "max": 43.7,
+    "p999_conservative": false
+   },
+   "key2paint_p95": 5.5,
+   "components_p95": {
+    "inputDelay": 1.2,
+    "search": 2,
+    "render": 0.2,
+    "layout": 0.9,
+    "toFrame": 2.1
+   },
+   "per_run_p95": [
+    3.9,
+    4.6,
+    3.5,
+    3.4,
+    3.5,
+    3.8,
+    3.4,
+    3.5,
+    3.7,
+    3.7
+   ],
+   "longtasks_typing": {
+    "count": 0,
+    "over_50ms": 0,
+    "max_ms": 0
+   },
+   "usable_after_dcl_p95": 86.7,
+   "full_ready_after_dcl_p95": 168.2
+  },
+  "AL3": {
+   "key2layout": {
+    "n": 11650,
+    "mean": 0.8281,
+    "sd": 0.7422,
+    "cv": 0.8963,
+    "mad": 0.4,
+    "p50": 0.7,
+    "p95": 1.8,
+    "p99": 3,
+    "p999": 7.4,
+    "max": 34.7,
+    "p999_conservative": false
+   },
+   "key2paint_p95": 3.5,
+   "components_p95": {
+    "inputDelay": 1,
+    "search": 0.3,
+    "render": 0.1,
+    "layout": 0.6,
+    "toFrame": 1.8
+   },
+   "per_run_p95": [
+    2.5,
+    1.6,
+    1.5,
+    1.6,
+    2.1,
+    1.6,
+    1.7,
+    1.7,
+    1.9,
+    1.8
+   ],
+   "longtasks_typing": {
+    "count": 0,
+    "over_50ms": 0,
+    "max_ms": 0
+   },
+   "usable_after_dcl_p95": 85.9,
+   "full_ready_after_dcl_p95": 128.9
+  }
+ },
+ "verdicts": [
+  {
+   "rung": "AL3",
+   "vs": "A",
+   "p95": [
+    3.7,
+    1.8
+   ],
+   "delta_ms": -1.9,
+   "paired_run_wins": "10/10",
+   "verdict": "KEEP"
+  }
+ ],
+ "best": "AL3",
+ "sentinel_I0": {
+  "key2layout": {
+   "n": 11650,
+   "mean": 0.5003,
+   "sd": 0.6806,
+   "cv": 1.3603,
+   "mad": 0.2,
+   "p50": 0.4,
+   "p95": 1,
+   "p99": 2,
+   "p999": 6.8,
+   "max": 34.9,
+   "p999_conservative": false
+  },
+  "key2paint_p95": 2.3,
+  "components_p95": {
+   "inputDelay": 0.9,
+   "search": 0.1,
+   "render": 0.1,
+   "layout": 0.1,
+   "toFrame": 1.2
+  },
+  "per_run_p95": [
+   1.3,
+   1.1,
+   1.1,
+   1,
+   0.9,
+   1,
+   0.8,
+   1,
+   1.2,
+   1.1
+  ],
+  "longtasks_typing": {
+   "count": 0,
+   "over_50ms": 0,
+   "max_ms": 0
+  },
+  "usable_after_dcl_p95": 83.8,
+  "full_ready_after_dcl_p95": 83.9
+ }
+}

@@ -8,6 +8,11 @@ ol{padding-left:1.4em} li{margin:4px 0}
 .k{color:#555;font-size:12px}.b{font-size:12px;border:1px solid #999;border-radius:3px;padding:0 4px}
 .comb-opt{display:block;width:100%;text-align:left;background:none;border:0;padding:4px}
 .ometa{color:#555;font-size:12px;margin-left:8px}
+/* L3b (optimisation ladder, app.mjs): the results list is its own layout and paint root with a
+   fixed row height, so a keystroke's relayout stays inside the list. Row clipping would cut the
+   outside list numbers, so they are drawn inside the row. */
+.l3b #results{contain:strict;height:22em;margin:0;padding-left:0;list-style-position:inside}
+.l3b #results li{height:1.4em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;contain:size layout}
 </style>
 <script>
 // Long-task observer registered before anything else runs (Long Tasks API, REQ-O2 "no task > 50 ms").

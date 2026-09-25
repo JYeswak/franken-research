@@ -1,0 +1,33 @@
+{
+ "candidate": "AL4",
+ "profile": "phone",
+ "run": 7,
+ "metric": "key2layout",
+ "n": 1165,
+ "mean": 4.7197,
+ "sd": 2.651,
+ "cv": 0.5617,
+ "mad": 1.6,
+ "p50": 4.3,
+ "p95": 9.3,
+ "p99": 14,
+ "p999": 19.5,
+ "max": 28.1,
+ "p999_conservative": false,
+ "p95_ms": 9.3,
+ "key2paint": {
+  "n": 1165,
+  "mean": 10.5615,
+  "sd": 7.0964,
+  "cv": 0.6719,
+  "mad": 2.8,
+  "p50": 9.5,
+  "p95": 18.9,
+  "p99": 40.6,
+  "p999": 84.6,
+  "max": 85.2,
+  "p999_conservative": false
+ },
+ "longtasks_typing": 1,
+ "longtask_max_ms": 72
+}

@@ -1,0 +1,485 @@
+{
+ "note": "post-hoc; see header of probes/search-perf/contention.mjs",
+ "factor": 2,
+ "results": {
+  "desktop": {},
+  "phone": {
+   "A": {
+    "criterion": "pass inputDelay p95 <= 2 x min per-pass inputDelay p95 (4.30 ms)",
+    "quiet_runs": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ],
+    "quiet_count": 10,
+    "runs": 10,
+    "per_run_inputDelay_p95": [
+     5.4,
+     5.7,
+     4.9,
+     5,
+     4.9,
+     4.9,
+     5,
+     4.3,
+     5.6,
+     5
+    ],
+    "key2layout_quiet": {
+     "n": 11650,
+     "mean": 7.4221,
+     "sd": 4.4484,
+     "cv": 0.5993,
+     "mad": 2.3,
+     "p50": 6.6,
+     "p95": 15.8,
+     "p99": 21.3,
+     "p999": 38.6,
+     "max": 106.8,
+     "p999_conservative": false
+    },
+    "work_quiet": {
+     "n": 11650,
+     "mean": 4.7088,
+     "sd": 3.6805,
+     "cv": 0.7816,
+     "mad": 1.9,
+     "p50": 3.9,
+     "p95": 12.3,
+     "p99": 17.1,
+     "p999": 25.8,
+     "max": 59.9,
+     "p999_conservative": false
+    },
+    "inputDelay_quiet": {
+     "n": 11650,
+     "mean": 2.7133,
+     "sd": 1.8826,
+     "cv": 0.6938,
+     "mad": 0.8,
+     "p50": 2.5,
+     "p95": 5.1,
+     "p99": 8.3,
+     "p999": 16.1,
+     "max": 61.8,
+     "p999_conservative": false
+    },
+    "key2layout_all": {
+     "n": 11650,
+     "mean": 7.4221,
+     "sd": 4.4484,
+     "cv": 0.5993,
+     "mad": 2.3,
+     "p50": 6.6,
+     "p95": 15.8,
+     "p99": 21.3,
+     "p999": 38.6,
+     "max": 106.8,
+     "p999_conservative": false
+    },
+    "components_quiet": {
+     "inputDelay": {
+      "mean": 2.7133,
+      "p50": 2.5,
+      "p95": 5.1,
+      "p99": 8.3,
+      "sum_ms": 31610.1
+     },
+     "search": {
+      "mean": 1.8307,
+      "p50": 0.2,
+      "p95": 8,
+      "p99": 12.5,
+      "sum_ms": 21328
+     },
+     "render": {
+      "mean": 0.4675,
+      "p50": 0.1,
+      "p95": 2.6,
+      "p99": 3.2,
+      "sum_ms": 5446.5
+     },
+     "layout": {
+      "mean": 2.4105,
+      "p50": 2.4,
+      "p95": 5.5,
+      "p99": 7.1,
+      "sum_ms": 28082.5
+     },
+     "toFrame": {
+      "mean": 5.9273,
+      "p50": 5,
+      "p95": 9.9,
+      "p99": 27.7,
+      "sum_ms": 69053.1
+     },
+     "workerSearch": null
+    }
+   },
+   "I0": {
+    "criterion": "pass inputDelay p95 <= 2 x min per-pass inputDelay p95 (3.90 ms)",
+    "quiet_runs": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ],
+    "quiet_count": 10,
+    "runs": 10,
+    "per_run_inputDelay_p95": [
+     4.6,
+     5.4,
+     4.2,
+     4.1,
+     4.6,
+     4,
+     4,
+     3.9,
+     4.9,
+     5.8
+    ],
+    "key2layout_quiet": {
+     "n": 11650,
+     "mean": 2.7049,
+     "sd": 1.7853,
+     "cv": 0.66,
+     "mad": 0.9,
+     "p50": 2.5,
+     "p95": 5.2,
+     "p99": 8.5,
+     "p999": 18.6,
+     "max": 37.5,
+     "p999_conservative": false
+    },
+    "work_quiet": {
+     "n": 11650,
+     "mean": 0.2746,
+     "sd": 0.8431,
+     "cv": 3.07,
+     "mad": 0.1,
+     "p50": 0.1,
+     "p95": 1.9,
+     "p99": 3.4,
+     "p999": 8.3,
+     "max": 31.1,
+     "p999_conservative": false
+    },
+    "inputDelay_quiet": {
+     "n": 11650,
+     "mean": 2.4303,
+     "sd": 1.5308,
+     "cv": 0.6299,
+     "mad": 0.8,
+     "p50": 2.3,
+     "p95": 4.7,
+     "p99": 6.9,
+     "p999": 16.2,
+     "max": 35.2,
+     "p999_conservative": false
+    },
+    "key2layout_all": {
+     "n": 11650,
+     "mean": 2.7049,
+     "sd": 1.7853,
+     "cv": 0.66,
+     "mad": 0.9,
+     "p50": 2.5,
+     "p95": 5.2,
+     "p99": 8.5,
+     "p999": 18.6,
+     "max": 37.5,
+     "p999_conservative": false
+    },
+    "components_quiet": {
+     "inputDelay": {
+      "mean": 2.4303,
+      "p50": 2.3,
+      "p95": 4.7,
+      "p99": 6.9,
+      "sum_ms": 28313.3
+     },
+     "search": {
+      "mean": 0.0441,
+      "p50": 0,
+      "p95": 0.1,
+      "p99": 1.5,
+      "sum_ms": 513.6
+     },
+     "render": {
+      "mean": 0.0727,
+      "p50": 0,
+      "p95": 0.1,
+      "p99": 2,
+      "sum_ms": 846.9
+     },
+     "layout": {
+      "mean": 0.1578,
+      "p50": 0,
+      "p95": 1,
+      "p99": 2.9,
+      "sum_ms": 1838.8
+     },
+     "toFrame": {
+      "mean": 4.0415,
+      "p50": 3,
+      "p95": 8.2,
+      "p99": 40.9,
+      "sum_ms": 47083.7
+     },
+     "workerSearch": null
+    }
+   },
+   "AL3": {
+    "criterion": "pass inputDelay p95 <= 2 x min per-pass inputDelay p95 (4.40 ms)",
+    "quiet_runs": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ],
+    "quiet_count": 10,
+    "runs": 10,
+    "per_run_inputDelay_p95": [
+     4.6,
+     4.5,
+     4.6,
+     4.4,
+     4.7,
+     4.4,
+     4.7,
+     5.3,
+     4.7,
+     4.6
+    ],
+    "key2layout_quiet": {
+     "n": 11650,
+     "mean": 3.995,
+     "sd": 2.3862,
+     "cv": 0.5973,
+     "mad": 1.3,
+     "p50": 3.5,
+     "p95": 8,
+     "p99": 11.2,
+     "p999": 20.8,
+     "max": 52.3,
+     "p999_conservative": false
+    },
+    "work_quiet": {
+     "n": 11650,
+     "mean": 1.4686,
+     "sd": 1.7531,
+     "cv": 1.1937,
+     "mad": 0.5,
+     "p50": 0.5,
+     "p95": 4.6,
+     "p99": 6.5,
+     "p999": 9.8,
+     "max": 48.8,
+     "p999_conservative": false
+    },
+    "inputDelay_quiet": {
+     "n": 11650,
+     "mean": 2.5264,
+     "sd": 1.4952,
+     "cv": 0.5918,
+     "mad": 0.8,
+     "p50": 2.4,
+     "p95": 4.7,
+     "p99": 7,
+     "p999": 15.8,
+     "max": 45.9,
+     "p999_conservative": false
+    },
+    "key2layout_all": {
+     "n": 11650,
+     "mean": 3.995,
+     "sd": 2.3862,
+     "cv": 0.5973,
+     "mad": 1.3,
+     "p50": 3.5,
+     "p95": 8,
+     "p99": 11.2,
+     "p999": 20.8,
+     "max": 52.3,
+     "p999_conservative": false
+    },
+    "components_quiet": {
+     "inputDelay": {
+      "mean": 2.5264,
+      "p50": 2.4,
+      "p95": 4.7,
+      "p99": 7,
+      "sum_ms": 29432.4
+     },
+     "search": {
+      "mean": 0.3545,
+      "p50": 0.1,
+      "p95": 2.2,
+      "p99": 3.3,
+      "sum_ms": 4129.6
+     },
+     "render": {
+      "mean": 0.1231,
+      "p50": 0,
+      "p95": 0.7,
+      "p99": 2.4,
+      "sum_ms": 1434.5
+     },
+     "layout": {
+      "mean": 0.991,
+      "p50": 0.2,
+      "p95": 3.7,
+      "p99": 5.1,
+      "sum_ms": 11545.3
+     },
+     "toFrame": {
+      "mean": 5.4452,
+      "p50": 4.1,
+      "p95": 9.2,
+      "p99": 55.2,
+      "sum_ms": 63436.9
+     },
+     "workerSearch": null
+    }
+   },
+   "AL5": {
+    "criterion": "pass inputDelay p95 <= 2 x min per-pass inputDelay p95 (4.20 ms)",
+    "quiet_runs": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ],
+    "quiet_count": 10,
+    "runs": 10,
+    "per_run_inputDelay_p95": [
+     7.1,
+     4.6,
+     4.3,
+     4.3,
+     4.9,
+     4.8,
+     4.2,
+     4.5,
+     4.8,
+     6.2
+    ],
+    "key2layout_quiet": {
+     "n": 11650,
+     "mean": 4.1634,
+     "sd": 3.1381,
+     "cv": 0.7537,
+     "mad": 1.3,
+     "p50": 3.5,
+     "p95": 8.5,
+     "p99": 12.9,
+     "p999": 31.4,
+     "max": 139.2,
+     "p999_conservative": false
+    },
+    "work_quiet": {
+     "n": 11650,
+     "mean": 1.4998,
+     "sd": 1.8361,
+     "cv": 1.2242,
+     "mad": 0.5,
+     "p50": 0.5,
+     "p95": 4.7,
+     "p99": 7,
+     "p999": 17.3,
+     "max": 27.6,
+     "p999_conservative": false
+    },
+    "inputDelay_quiet": {
+     "n": 11650,
+     "mean": 2.6636,
+     "sd": 2.3776,
+     "cv": 0.8926,
+     "mad": 0.8,
+     "p50": 2.5,
+     "p95": 5,
+     "p99": 8,
+     "p999": 23,
+     "max": 132.3,
+     "p999_conservative": false
+    },
+    "key2layout_all": {
+     "n": 11650,
+     "mean": 4.1634,
+     "sd": 3.1381,
+     "cv": 0.7537,
+     "mad": 1.3,
+     "p50": 3.5,
+     "p95": 8.5,
+     "p99": 12.9,
+     "p999": 31.4,
+     "max": 139.2,
+     "p999_conservative": false
+    },
+    "components_quiet": {
+     "inputDelay": {
+      "mean": 2.6636,
+      "p50": 2.5,
+      "p95": 5,
+      "p99": 8,
+      "sum_ms": 31031.2
+     },
+     "search": {
+      "mean": 0.3668,
+      "p50": 0.1,
+      "p95": 2.3,
+      "p99": 3.4,
+      "sum_ms": 4273.5
+     },
+     "render": {
+      "mean": 0.1298,
+      "p50": 0,
+      "p95": 0.8,
+      "p99": 2.4,
+      "sum_ms": 1512.3
+     },
+     "layout": {
+      "mean": 1.0032,
+      "p50": 0.2,
+      "p95": 3.8,
+      "p99": 5.3,
+      "sum_ms": 11687
+     },
+     "toFrame": {
+      "mean": 5.5683,
+      "p50": 4.2,
+      "p95": 10.3,
+      "p99": 50.1,
+      "sum_ms": 64871
+     },
+     "workerSearch": null
+    }
+   }
+  }
+ }
+}

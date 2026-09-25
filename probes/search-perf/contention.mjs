@@ -14,9 +14,11 @@ const FACTOR = 2;
 const res = {};
 for (const prof of ['desktop', 'phone']) {
   res[prof] = {};
-  for (const c of ['A', 'B', 'C', 'I1', 'I0']) {
+  // Every candidate with a baseline file in OUT (the probe's A B C I1 I0, and the optimisation ladder AL1..).
+  const rank = (c) => { const i = ['A', 'B', 'C', 'I1', 'I0'].indexOf(c); return i < 0 ? 99 : i; };
+  const cands = fs.readdirSync(OUT).map((f) => new RegExp(`^baseline-browser-${prof}-(.+)\\.json$`).exec(f)).filter(Boolean).map((m) => m[1]).sort((a, b) => rank(a) - rank(b) || (a < b ? -1 : 1));
+  for (const c of cands) {
     const f = path.join(OUT, `baseline-browser-${prof}-${c}.json`);
-    if (!fs.existsSync(f)) continue;
     const b = JSON.parse(fs.readFileSync(f, 'utf8'));
     // raw columns: inputDelay, search, render, layout, toFrame, workerSearch
     const runs = b.raw_ms_by_run.map((run, i) => {

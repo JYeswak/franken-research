@@ -1,0 +1,13 @@
+[phone] run 0/10 done at 43 s
+[phone] run 1/10 done at 84 s
+[phone] run 2/10 done at 118 s
+[phone] run 3/10 done at 151 s
+[phone] run 4/10 done at 179 s
+[phone] run 5/10 done at 212 s
+[phone] run 6/10 done at 242 s
+[phone] run 7/10 done at 276 s
+[phone] run 8/10 done at 310 s
+[phone] run 9/10 done at 341 s
+[phone] run 10/10 done at 374 s
+phone A {"k2l":[6.4,15.2,21.6],"k2p95":24.2,"env":"INVESTIGATE 18.8","usable_p95":402.4,"full_p95":1202.1,"heapMB":4.96,"lt":{"count":31,"over_50ms":31,"max_ms":103},"wt":[]}
+phone I0 {"k2l":[2.5,5.3,8.5],"k2p95":12,"env":"INVESTIGATE 13.5","usable_p95":282.4,"full_p95":282.4,"heapMB":0.03,"lt":{"count":13,"over_50ms":13,"max_ms":100},"wt":[]}

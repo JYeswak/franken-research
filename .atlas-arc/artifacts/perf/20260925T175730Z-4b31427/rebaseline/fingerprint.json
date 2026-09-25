@@ -1,0 +1,34 @@
+{
+ "run_id": "20260925T175730Z-4b31427",
+ "captured_at_utc": "2026-09-25T17:57:43.989Z",
+ "git_sha": "4b314272d8e93bdd07d664757db1bb255937f90c",
+ "git_dirty_paths": 1,
+ "host_class": "a 32-core arm64 desktop; phone results use CDP 4x CPU throttle and Fast 4G",
+ "os_family": "darwin",
+ "toolchain": {
+  "node": "v22.23.3",
+  "v8": "12.4.254.21-node.57",
+  "chrome": "Chrome 154.0.8037.57"
+ },
+ "build_profile": {
+  "name": "JS JIT (no build step)",
+  "node_flags": "none for timing; --cpu-prof for sampler runs; --expose-gc for heap child",
+  "chrome": "headless=new, --disable-frame-rate-limit --disable-gpu-vsync",
+  "brotli": "zlib q11",
+  "minisearch": "7.2.0 vendored"
+ },
+ "load_at_capture": {
+  "loadavg_1_5_15": [
+   8.37,
+   9.51,
+   10.09
+  ]
+ },
+ "workload_isolation": {
+  "bare": true,
+  "note": "shared workstation: other agent sessions were running during the probe (see load average); no CPU pinning"
+ },
+ "tuning_applied": "none",
+ "cache_state": "warm file cache; HTTP cache disabled in Chrome (Network.setCacheDisabled) so each page load pays the fetch",
+ "note": "host details removed for publication (2026-09-25); this file lists the host class only"
+}

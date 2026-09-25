@@ -1,0 +1,15 @@
+golden-diff (bench-node.mjs golden-diff) against two planted faults in lib/engine-a-opt.mjs, each restored afterwards.
+Output of each planted run went to a scratch dir; golden-diff.json in this directory is the clean run.
+
+plant 1: tie order reversed in offer() (D[i - 1] > doc  ->  D[i - 1] < doc)
+  verdict FAIL, exit 1, 2358 changed query results
+  a-core probe_queries 264/1165 (both variants), relevance_golden_queries 7/88, relevance_golden_prefixes 491/4206
+  a-full probe_queries 157/1165, relevance_golden_queries 6/88, relevance_golden_prefixes 254/4206
+
+plant 2: kNorm reassociated, mathematically equal: k * (1 - b + b * len / avg)  ->  k - k * b + k * b * len / avg
+  verdict FAIL, exit 1, 7786 changed query results (A+L1 unaffected, 0 everywhere; A+L1+L2 changed)
+  a-core probe_queries 792/1165, relevance_golden_queries 62/88, relevance_golden_prefixes 3039/4206
+  a-full probe_queries 759/1165, relevance_golden_queries 66/88, relevance_golden_prefixes 3068/4206
+  (most of these are score-only differences in the last bits: the check compares scores with Object.is)
+
+restored: verdict PASS, 0 changed (golden-diff.json)

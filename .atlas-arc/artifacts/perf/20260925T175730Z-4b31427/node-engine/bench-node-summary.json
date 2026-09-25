@@ -1,0 +1,187 @@
+{
+ "run_order": [
+  [
+   "AL2-full",
+   "A-full",
+   "AL1-full"
+  ],
+  [
+   "A-full",
+   "AL2-full",
+   "AL1-full"
+  ],
+  [
+   "AL1-full",
+   "AL2-full",
+   "A-full"
+  ],
+  [
+   "A-full",
+   "AL1-full",
+   "AL2-full"
+  ],
+  [
+   "AL1-full",
+   "AL2-full",
+   "A-full"
+  ],
+  [
+   "AL2-full",
+   "AL1-full",
+   "A-full"
+  ],
+  [
+   "AL2-full",
+   "AL1-full",
+   "A-full"
+  ],
+  [
+   "AL2-full",
+   "AL1-full",
+   "A-full"
+  ],
+  [
+   "AL1-full",
+   "AL2-full",
+   "A-full"
+  ],
+  [
+   "AL1-full",
+   "AL2-full",
+   "A-full"
+  ],
+  [
+   "A-full",
+   "AL2-full",
+   "AL1-full"
+  ],
+  [
+   "AL2-full",
+   "AL1-full",
+   "A-full"
+  ],
+  [
+   "A-full",
+   "AL2-full",
+   "AL1-full"
+  ],
+  [
+   "A-full",
+   "AL1-full",
+   "AL2-full"
+  ],
+  [
+   "A-full",
+   "AL2-full",
+   "AL1-full"
+  ],
+  [
+   "AL1-full",
+   "A-full",
+   "AL2-full"
+  ],
+  [
+   "AL1-full",
+   "AL2-full",
+   "A-full"
+  ],
+  [
+   "AL2-full",
+   "A-full",
+   "AL1-full"
+  ],
+  [
+   "AL2-full",
+   "AL1-full",
+   "A-full"
+  ],
+  [
+   "AL2-full",
+   "A-full",
+   "AL1-full"
+  ]
+ ],
+ "results": {
+  "A-full": {
+   "candidate": "A-full",
+   "index_file": "a-full.json",
+   "unit": "ms",
+   "queries": 1165,
+   "runs": 20,
+   "warmup_runs": 3,
+   "n": 23300,
+   "mean": 0.6037,
+   "sd": 1.5128,
+   "cv": 2.5056,
+   "mad": 0.1161,
+   "p50": 0.1331,
+   "p95": 2.5716,
+   "p99": 4.2707,
+   "p999": 14.2334,
+   "max": 96.7617,
+   "p999_conservative": false,
+   "envelope": {
+    "runs": 20,
+    "median_p95": 2.5489,
+    "min": 2.4011,
+    "max": 2.9574,
+    "max_drift_pct": 16,
+    "verdict": "INVESTIGATE"
+   }
+  },
+  "AL1-full": {
+   "candidate": "AL1-full",
+   "index_file": "a-full.json",
+   "unit": "ms",
+   "queries": 1165,
+   "runs": 20,
+   "warmup_runs": 3,
+   "n": 23300,
+   "mean": 0.262,
+   "sd": 0.9388,
+   "cv": 3.5828,
+   "mad": 0.0387,
+   "p50": 0.0483,
+   "p95": 1.2758,
+   "p99": 2.2425,
+   "p999": 8.664,
+   "max": 77.8833,
+   "p999_conservative": false,
+   "envelope": {
+    "runs": 20,
+    "median_p95": 1.217,
+    "min": 1.1362,
+    "max": 1.429,
+    "max_drift_pct": 17.4,
+    "verdict": "INVESTIGATE"
+   }
+  },
+  "AL2-full": {
+   "candidate": "AL2-full",
+   "index_file": "a-full.json",
+   "unit": "ms",
+   "queries": 1165,
+   "runs": 20,
+   "warmup_runs": 3,
+   "n": 23300,
+   "mean": 0.0689,
+   "sd": 0.1574,
+   "cv": 2.2836,
+   "mad": 0.0091,
+   "p50": 0.013,
+   "p95": 0.3692,
+   "p99": 0.5208,
+   "p999": 1.774,
+   "max": 5.878,
+   "p999_conservative": false,
+   "envelope": {
+    "runs": 20,
+    "median_p95": 0.349,
+    "min": 0.24,
+    "max": 0.4789,
+    "max_drift_pct": 37.2,
+    "verdict": "ESCALATE"
+   }
+  }
+ }
+}

@@ -1,0 +1,18 @@
+[phone] run 0/10 done at 121 s
+[phone] run 1/10 done at 248 s
+[phone] run 2/10 done at 352 s
+[phone] run 3/10 done at 457 s
+[phone] run 4/10 done at 562 s
+[phone] run 5/10 done at 696 s
+[phone] run 6/10 done at 832 s
+[phone] run 7/10 done at 958 s
+[phone] run 8/10 done at 1087 s
+[phone] run 9/10 done at 1208 s
+[phone] run 10/10 done at 1333 s
+phone A {"k2l":[6.9,16.4,22.6],"k2p95":25.3,"env":"INVESTIGATE 19.4","usable_p95":416.1,"full_p95":1212.1,"heapMB":4.96,"lt":{"count":13,"over_50ms":12,"max_ms":256},"wt":[]}
+phone AL1 {"k2l":[6.1,12.9,21.4],"k2p95":22.6,"env":"ESCALATE 86.2","usable_p95":427.3,"full_p95":1206.6,"heapMB":4.29,"lt":{"count":17,"over_50ms":17,"max_ms":83},"wt":[]}
+phone AL2 {"k2l":[5.2,10.4,14.1],"k2p95":19.2,"env":"ESCALATE 23.5","usable_p95":501.9,"full_p95":1385.4,"heapMB":4.29,"lt":{"count":1,"over_50ms":1,"max_ms":55},"wt":[]}
+phone AL3 {"k2l":[3.6,8,11.2],"k2p95":16.4,"env":"INVESTIGATE 19.8","usable_p95":406.5,"full_p95":1187.1,"heapMB":4.3,"lt":{"count":3,"over_50ms":3,"max_ms":95},"wt":[]}
+phone AL4 {"k2l":[3.8,8.6,12.1],"k2p95":17.3,"env":"INVESTIGATE 10.6","usable_p95":470.4,"full_p95":1245.3,"heapMB":4.3,"lt":{"count":3,"over_50ms":3,"max_ms":72},"wt":[]}
+phone AL5 {"k2l":[3.5,8.4,11.8],"k2p95":16.9,"env":"INVESTIGATE 17.7","usable_p95":408.4,"full_p95":1218.7,"heapMB":4.34,"lt":{"count":5,"over_50ms":5,"max_ms":115},"wt":[]}
+phone I0 {"k2l":[2.5,5.1,8.1],"k2p95":12.1,"env":"ESCALATE 30.6","usable_p95":279,"full_p95":279,"heapMB":0.03,"lt":{"count":3,"over_50ms":3,"max_ms":61},"wt":[]}

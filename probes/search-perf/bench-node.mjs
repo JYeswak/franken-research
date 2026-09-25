@@ -11,6 +11,7 @@ import { execFileSync } from 'node:child_process';
 import { Worker } from 'node:worker_threads';
 import { fileURLToPath } from 'node:url';
 import * as A from './lib/engine-a.mjs';
+import * as AO from './lib/engine-a-opt.mjs';
 import * as C from './lib/engine-c.mjs';
 import * as I from './lib/incumbent.mjs';
 import { summarize, envelope, mulberry32, shuffle } from './lib/stats.mjs';
@@ -26,6 +27,8 @@ const WARMUP = 3, RUNS = Number(process.env.RUNS || 20);
 // Candidate table: hydrate from the serialized index text, then a sync or async search fn.
 const CANDS = {
   'A-full': { file: 'a-full.json', hydrate: A.hydrate, search: (x, q) => A.search(x, q) },
+  'AL1-full': { file: 'a-full.json', hydrate: A.hydrate, search: (x, q) => AO.searchL1(x, q) }, // A + L1
+  'AL2-full': { file: 'a-full.json', hydrate: A.hydrate, search: (x, q) => AO.search(x, q) }, // A + L1 + L2
   'A-core': { file: 'a-core.json', hydrate: A.hydrate, search: (x, q) => A.search(x, q) },
   'A-full-qidx': { file: 'a-full-qidx.json', hydrate: A.hydrate, search: (x, q) => A.search(x, q) },
   'C-full': { file: 'c-full.json', hydrate: C.hydrate, search: (x, q) => C.search(x, q) },
@@ -51,6 +54,9 @@ async function makeWorker(text) {
 }
 
 async function baseline() {
+  // CANDS (optional, comma list) narrows the candidate table; golden output needs A-full and C-full.
+  const only = process.env.CANDS ? process.env.CANDS.split(',') : null;
+  if (only) for (const k of Object.keys(CANDS)) if (!only.includes(k)) delete CANDS[k];
   const loaded = {};
   for (const [name, c] of Object.entries(CANDS)) {
     const text = readData(c.file);
@@ -86,6 +92,7 @@ async function baseline() {
   }
   for (const x of Object.values(loaded)) if (x && x.w) await x.w.terminate();
   write('bench-node-summary.json', { run_order: order, results });
+  if (only) { console.log(JSON.stringify(Object.fromEntries(Object.entries(results).map(([k, v]) => [k, { p50: v.p50, p95: v.p95, p99: v.p99, p999: v.p999, max: v.max, env: v.envelope.verdict + ' ' + v.envelope.max_drift_pct + '%' }])), null, 1)); return; }
   // Golden output: top-10 ids per query for A-full and C-full, and their agreement.
   const golden = {};
   for (const name of ['A-full', 'C-full']) golden[name] = queries.map((q) => CANDS[name].search(loaded[name], q).map((r) => r.id));
@@ -225,6 +232,44 @@ async function verifyGolden() {
   process.exitCode = top3 === 0 ? 0 : 1;
 }
 
+// Isomorphism check for engine-a-opt.mjs against the incumbent engine-a.mjs: every row (id and
+// score, compared bit for bit) of the top 10, for (1) every probe query and (2) every query of the
+// relevance golden set and every keystroke prefix of it, on the core and the full index. Exit 1 on
+// any difference. Output: golden-diff.json in OUT. GOLDEN (optional) points at a golden.jsonl other
+// than the working copy, e.g. `git show ebac079:.atlas-arc/eval/golden.jsonl` (the 88-query set).
+function goldenDiff() {
+  const goldenFile = process.env.GOLDEN ? path.resolve(process.env.GOLDEN) : path.join(HERE, '../../.atlas-arc/eval/golden.jsonl');
+  const goldenText = fs.readFileSync(goldenFile, 'utf8');
+  const golden = goldenText.trim().split('\n').map((l) => JSON.parse(l));
+  const prefixes = [];
+  for (const g of golden) for (let i = 1; i <= g.query.length; i++) prefixes.push(g.query.slice(0, i));
+  const sets = { probe_queries: queries, relevance_golden_queries: golden.map((g) => g.query), relevance_golden_prefixes: prefixes };
+  const variants = { 'A+L1': AO.searchL1, 'A+L1+L2': AO.search };
+  const same = (a, b) => a.length === b.length && a.every((r, i) => r.id === b[i].id && Object.is(r.score, b[i].score) && r.title === b[i].title && r.kind === b[i].kind && r.badge === b[i].badge);
+  const out = { note: 'engine-a-opt.mjs vs engine-a.mjs, top-10 rows (id, score bit-identical, title, kind, badge)', golden_file_sha256: crypto.createHash('sha256').update(goldenText).digest('hex'), golden_queries: golden.length, results: [] };
+  let bad = 0;
+  for (const file of ['a-core.json', 'a-full.json']) {
+    const idx = A.hydrate(readData(file));
+    for (const [setName, qs] of Object.entries(sets)) {
+      const want = qs.map((q) => A.search(idx, q));
+      for (const [vName, fn] of Object.entries(variants)) {
+        let changed = 0, rows = 0;
+        const examples = [];
+        qs.forEach((q, i) => { const got = fn(idx, q); rows += want[i].length; if (!same(got, want[i])) { changed++; if (examples.length < 3) examples.push({ q, want: want[i].slice(0, 3).map((r) => r.id), got: got.slice(0, 3).map((r) => r.id) }); } });
+        bad += changed;
+        out.results.push({ index: file, set: setName, variant: vName, queries: qs.length, rows_compared: rows, queries_changed: changed, examples });
+      }
+    }
+  }
+  out.verdict = bad === 0 ? 'PASS' : 'FAIL';
+  const sha = (x) => crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+  const idxFull = A.hydrate(readData('a-full.json'));
+  out.sha256_top10_ids_relevance_golden_full = { incumbent: sha(sets.relevance_golden_queries.map((q) => A.search(idxFull, q).map((r) => r.id))), 'A+L1+L2': sha(sets.relevance_golden_queries.map((q) => AO.search(idxFull, q).map((r) => r.id))) };
+  write('golden-diff.json', out);
+  console.log(JSON.stringify({ verdict: out.verdict, changed: bad, checks: out.results.map((r) => `${r.index} ${r.set} ${r.variant}: ${r.queries_changed}/${r.queries}`) }, null, 1));
+  process.exitCode = bad === 0 ? 0 : 1;
+}
+
 if (mode === 'baseline') await baseline();
 else if (mode === 'instrument') instrument();
 else if (mode === 'cpuprof') cpuprof();
@@ -232,4 +277,5 @@ else if (mode === 'hydrate-child') hydrateChild();
 else if (mode === 'hydrate') hydrateAll();
 else if (mode === 'scale') await scale();
 else if (mode === 'verify-golden') await verifyGolden();
+else if (mode === 'golden-diff') goldenDiff();
 else throw new Error('unknown mode ' + mode);
