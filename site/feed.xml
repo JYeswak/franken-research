@@ -5,9 +5,25 @@
   <id>tag:fr.zeststream.ai,2026:feed</id>
   <link rel="self" type="application/atom+xml" href="https://fr.zeststream.ai/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/"/>
-  <updated>2026-09-25T00:00:00Z</updated>
+  <updated>2026-09-26T00:00:00Z</updated>
   <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
   <icon>https://fr.zeststream.ai/favicon.svg</icon>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:digest/2026-W39</id>
+    <title>Watch digest 2026-W39: 4 crossings opened, 0 resolved, 0 withdrawn</title>
+    <updated>2026-09-26T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/plain" href="https://github.com/JYeswak/franken-research/blob/main/watch/crossings.jsonl"/>
+    <summary type="text">Opened: franken_agent_detection CI C2 → C1 (2026-09-26, class); franken_remote CI C3 → C2 (2026-09-26, class); franken_snowflake CI C3 → C5 (2026-09-26, class); franken_threed CI C1 → C2 (2026-09-26, class). A crossing is a computed class, or the repository itself, moving since the pin. It is a flag, not a verdict: only a dated re-check changes a verdict. Source: watch/crossings.jsonl.</summary>
+  </entry>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:census/2026-09-26</id>
+    <title>Daily census: 37 of 44 moved since the pin</title>
+    <updated>2026-09-26T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-09-26.tsv"/>
+    <summary type="text">37 of the 44 assessed repositories have commits after their pinned commit (4912 commits in all). 7 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-09-26.tsv.</summary>
+  </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:census/2026-09-25</id>
     <title>Daily census: 35 of 44 moved since the pin</title>

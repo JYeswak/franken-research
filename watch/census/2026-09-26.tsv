@@ -1,0 +1,47 @@
+# Franken Research daily watch census, 2026-09-26 (UTC). GitHub API only; written by watch/watch.mjs --apply. Do not edit by hand.
+# Pins come from packets/*-assessment.md and are never edited. material_since_pin flags events that could move a master-matrix cell (release or tag dated after the pin, LICENSE text or SPDX, workflow file set, archived, renamed, deleted, pin no longer an ancestor of HEAD). Commits alone never do. Triage follows updates/METHOD.md.
+repo	pin	head	head_date	commits_since_pin	releases_since_pin	license_spdx	license_changed_since_pin	workflows_count	workflows_changed_since_pin	archived	material_since_pin
+asupersync	768595203e194573bb713158b5963f55861dfe2d	e753409d55d8779dcfd245e351ed63d5f5ca6e0f	2026-09-26T08:20:09Z	190	none	NOASSERTION	no	12	no	no	no
+beads-for-frankentui	e1a842f6a1e37f9c5f9648634652163219aa461e	2c6fe856601bd680c16b409bc045efdc3b08c1ab	2026-09-24T22:10:15Z	7	none	none	no	1	no	no	no
+beads_for_franken_engine	50e2709a59becd2cf33071f0aa031c5447635c04	50e2709a59becd2cf33071f0aa031c5447635c04	2026-03-09T00:20:12Z	0	none	none	no	1	no	no	no
+franken_agent_detection	026f60b28784ca77c5b8e47e3dba9b22d154b4d9	c06d1cb14e0edb1cd82f1c58021d86b6beacd2de	2026-09-25T18:44:57Z	2	v0.3.1	MIT	no	5	no	no	yes: release v0.3.1 (2026-09-25, c06d1cb)
+franken_alignment	d05cb8c8dcbf1e5057b9ba208ad3921e8107a487	6bada085f162dba1a18b836adcc721ac44a566b2	2026-09-26T05:41:04Z	59	none	NOASSERTION	no	0	no	no	no
+franken_code_browser	cc8330d18b8da7b4ebd3571458fd51ef5d9d0a3e	fd21cbd02d53c9013dcda8f4f9f271ede5b39540	2026-09-26T05:51:56Z	51	v0.1.0	NOASSERTION	no	0	no	no	yes: release v0.1.0 (2026-09-23, c7c5310)
+franken_drone_geometry_reconstruction	90892e931cd7c8d0de179ccdc36569790ccc4030	90892e931cd7c8d0de179ccdc36569790ccc4030	2026-09-04T15:50:57Z	0	none	NOASSERTION	no	1	no	no	no
+franken_engine	bff9a4da7059717335926b4bacdbb03d96408a7f	fcb7b3877bd44021f32b383191f8b1bd4abfea1a	2026-09-26T08:17:22Z	139	none	NOASSERTION	no	24	+1 -0	no	no
+franken_lean	e91da19970591cf5c0ed0c113b475d748577291c	355b2ebe21783e795ea3605bd3823f239624f280	2026-09-26T07:00:18Z	171	none	NOASSERTION	no	101	+11 -0	no	no
+franken_manim	d3a8090e6950a440876f5eb389b6b9fbb5f910d4	d0026d0c89056bcacb32e6f11387111cd95dae56	2026-09-26T08:03:37Z	288	none	NOASSERTION	no	103	+16 -0	no	no
+franken_markdown	88a6a99ed1ebc48c7910c28213005d8b35963079	f0c4fcc9917f168e150d98c6db3e8f85619d52b5	2026-09-26T05:56:40Z	81	none	NOASSERTION	no	1	no	no	no
+franken_markdown_website	c9574d3b101a3bb820c25de6b95a1a7ffe25166a	c9574d3b101a3bb820c25de6b95a1a7ffe25166a	2026-09-22T04:29:52Z	0	none	NOASSERTION	no	0	no	no	no
+franken_native_capsule	7af57e2c43d42e77eff569b133b263c4e2a858f9	7af57e2c43d42e77eff569b133b263c4e2a858f9	2026-08-20T20:16:33Z	0	none	none	no	0	no	no	no
+franken_networkx	841a711634c1c38c51c6f344598e1fc7ec273dd4	8df778361b0eb6534853300bdb7daece9c9c39a0	2026-09-26T11:24:50Z	144	none	NOASSERTION	no	4	no	no	no
+franken_nlp	30373ca0c7911784dd04865636eaf82f2f2dfab8	869731f938c56cdf39c0bc63a436d1eaff0dd599	2026-09-26T05:57:34Z	14	none	NOASSERTION	no	1	no	no	no
+franken_node	08447a0aa5ed016d5ff9abb5aa0d44e9f5061dc4	ac8deece22ced42e23bb3ccc351250c052c6e399	2026-09-26T08:14:47Z	100	none	NOASSERTION	no	53	+2 -0	no	no
+franken_numpy	7de9ba73281017127e144671df1c2f4e4276f078	72db52b6d56c74f4f5183b4bee0ad3359ad846c3	2026-09-26T10:12:35Z	206	none	NOASSERTION	no	10	no	no	no
+franken_ocr	5847deef58de77150889990dfefa2e70c0bb8678	f70a526004f94376e5826ddec42338a62cd36db7	2026-09-22T17:22:46Z	1	none	NOASSERTION	no	0	no	no	no
+franken_overlap	063182c85d3f3679ef0923a3ce780e8443c9d388	063182c85d3f3679ef0923a3ce780e8443c9d388	2026-09-04T05:34:15Z	0	none	NOASSERTION	no	0	no	no	no
+franken_remote	fdeb7a2ec079136e4d47a24138ce18d74b30d105	620b8305ce4631f6245b05dbe907b16a8a084857	2026-09-26T07:11:43Z	182	none	NOASSERTION	no	36	no	no	no
+franken_snowflake	e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86	1e703fc2d92578e93ac50e574fa75d66e293de83	2026-09-26T07:19:46Z	93	v0.0.5	NOASSERTION	no	0	+0 -1	no	yes: release v0.0.5 (2026-09-25, 07ef0af); workflows +0 -1 (0 now)
+franken_surveillance_system	3dcc111c67979a0225edbc8f5ff30343aec33388	70c7894e1343d871429f804cf7e332e53a9c7d0d	2026-09-26T10:40:08Z	838	none	NOASSERTION	no	2	no	no	no
+franken_threed	72dcaa1adbad6b3d552a071cc7db31a16ee4ba9d	05e13c6cbc5754a4dd64e6465ccb5976f11e24df	2026-09-26T05:52:10Z	60	none	NOASSERTION	no	1	no	no	no
+franken_tts	eafdf4540da7343dbd28d61b9930e8b7bfcaf0d1	eafdf4540da7343dbd28d61b9930e8b7bfcaf0d1	2026-09-20T00:12:08Z	0	none	NOASSERTION	no	0	no	no	no
+franken_whisper	408b7e790a7bda4cc6e47bd4b66db8bec0418658	4be4c4b35a070f89b1a6c1c1190e587e3bccc8d0	2026-09-25T18:08:49Z	1	none	NOASSERTION	no	0	no	no	no
+frankenfs	49acf5d5a9b7d48d7d459e28bb5a32e8546900b6	3955084a234f8094587729a52358d1fbae131106	2026-09-26T07:06:53Z	127	none	NOASSERTION	no	6	+2 -0	no	no
+frankengit	894585a35e23d31bb462de24c6691124054d9c9e	d163ca481d41b2cee3ff5e532f862b96714ea517	2026-09-26T05:50:57Z	249	none	NOASSERTION	no	7	+0 -71	no	yes: workflows +0 -71 (7 now)
+frankengraphdb	f077badcc4c6e201942e3b10cd20d09354afdc79	945296c0596f3a56e44f1018e40db680f2f67698	2026-09-26T07:24:04Z	283	none	NOASSERTION	no	2	no	no	no
+frankenjax	3e22ef6c0ba2effaeca4295cf1d4af9695c2eabe	be8e83c300aec2462c702dff9d1f9b2152cdc293	2026-09-22T17:22:55Z	1	none	NOASSERTION	no	0	no	no	no
+frankenlibc	36e5be9448c8c26eed16f421672775aae048f936	751e48e538f698925a51f7129a6e62d6cce8d581	2026-09-26T11:11:19Z	234	none	NOASSERTION	no	13	+11 -0	no	no
+frankenmermaid	5e153c1154f18e54d04c3569e5c350804faae14e	b17a48bbef0aee7ff8f138f64a199df0f218c093	2026-09-26T05:48:55Z	24	none	NOASSERTION	no	0	no	no	no
+frankenpandas	ebe79a3b4ae0470402ea76f9547ae93093360b37	0cab19acfd201186f8fa566fd189ed40dc776d2f	2026-09-26T08:14:33Z	212	none	NOASSERTION	no	7	no	no	no
+frankenredis	f78f64e4eea5d0ae7848d917e40aafaef1d60ce6	13a175ff361269450018047b01e5b3a297f78e2b	2026-09-22T19:19:20Z	2	none	NOASSERTION	no	2	no	no	no
+frankenscipy	2fce54d56ee9af37ea8876a5248ce8aa0f882a22	d298b8e98041baa2eb43b11fc793d67ed9554f70	2026-09-26T11:26:55Z	116	none	NOASSERTION	no	3	no	no	no
+frankensearch	c4b5e48e5851050675b2260fb72d096404d32608	034804969b40be1f97f535640e0bf6e698108984	2026-09-26T06:17:29Z	279	tag:frankensearch-quill-v0.3.2,tag:frankensearch-quill-v0.3.3,tag:frankensearch-quill-v0.3.4	NOASSERTION	no	8	no	no	yes: tag frankensearch-quill-v0.3.2 (2026-09-24, 73a656e); tag frankensearch-quill-v0.3.3 (2026-09-25, 5e272ac); tag frankensearch-quill-v0.3.4 (2026-09-25, 5651e2c)
+frankensim	4b004dcd3efa502ef5de84cf2ed118ccdeafde02	466f7ebad8df0d2bd4f698c41a73a8e5fa734f02	2026-09-26T06:29:33Z	254	none	NOASSERTION	no	6	+3 -0	no	no
+frankensim_website	e179bafc123eb45bcd040b5a16a098b0125e4629	e179bafc123eb45bcd040b5a16a098b0125e4629	2026-08-21T18:46:44Z	0	none	none	no	0	no	no	no
+frankensqlite	315bc0f17279b42c160f203e0d0ad53e3fa0d158	627de2a567ecc06bc580b36b2f6b1d032329a418	2026-09-26T08:58:43Z	122	tag:fsqlite-pager-v0.4.5	NOASSERTION	no	9	no	no	yes: tag fsqlite-pager-v0.4.5 (2026-09-25, 6843bf7)
+frankensqlite_website	d21491fb6b4f157c0144d7b1272c8f090ffacd2a	361cdb7a68d64878dbb1f971a7362fe0599f7638	2026-09-22T17:22:59Z	1	none	none	no	0	no	no	no
+frankensympy	55d176b8625a2ad8d4fc995bd076e0f582098d2f	4e8a799e7b1f2969c288702591516954b68953e8	2026-09-22T20:35:13Z	13	none	NOASSERTION	no	2	no	no	no
+frankenterm	ce183cd1f7dd074ce187e279f6b99442256040d8	a5a195d6da737d011374f016e5f1c0941f714fc4	2026-09-26T09:12:51Z	282	tag:v0.15.8,tag:v0.15.9,tag:v0.15.11,tag:v0.15.12	NOASSERTION	no	0	no	no	yes: tag v0.15.8 (2026-09-22, the pin itself); tag v0.15.9 (2026-09-22, 062e292); tag v0.15.11 (2026-09-22, 755ecd3); tag v0.15.12 (2026-09-22, 2a2907a)
+frankentorch	91cda6541a4402caff217f014e0535429dade9ac	e037b03d159109461e33f9579a326f6103d734a6	2026-09-22T17:23:06Z	1	none	NOASSERTION	no	2	no	no	no
+frankentui	979d26c259c3ade3b3ab8b80254662f266c97dd3	3433e3b44964f14ce0c34809cbbcdf009c96df84	2026-09-24T21:37:42Z	75	none	NOASSERTION	no	4	no	no	no
+frankentui_website	6057a6760b377ad4acf53e00668cf2924e585dfb	d3d0e7deb8a7bfca90c7704e495657da06856604	2026-09-24T17:08:26Z	10	none	NOASSERTION	no	0	no	no	no

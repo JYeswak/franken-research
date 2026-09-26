@@ -1,0 +1,88 @@
+{
+  "baseline": false,
+  "date": "2026-09-26",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "103 files at d0026d0",
+      "before": "101 files at 3981d93",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/d0026d0c89056bcacb32e6f11387111cd95dae56/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/3981d93c04eb00e1025522d99d2d667e1d25f539...d0026d0c89056bcacb32e6f11387111cd95dae56",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "c9a546b1f7e2",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +python-scene-bundle-export.yml, +scene-bundle-export.yml.",
+      "title": "[watch] franken_manim: workflows +2 -0 (103 now)",
+      "value": "c9a546b1f7e2"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "6 files at 466f7eb",
+      "before": "5 files at 5254181",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/466f7ebad8df0d2bd4f698c41a73a8e5fa734f02/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/5254181bf41479ab1d0ab1b7d3dc1b7392480d1e...466f7ebad8df0d2bd4f698c41a73a8e5fa734f02",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "60c5be4e4948",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +adaptive-time.yml.",
+      "title": "[watch] frankensim: workflows +1 -0 (6 now)",
+      "value": "60c5be4e4948"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.1 -> c06d1cb, published 2026-09-25T19:49:02Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/releases/tag/v0.3.1",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/releases/tags/v0.3.1",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/commit/c06d1cb14e0edb1cd82f1c58021d86b6beacd2de"
+      ],
+      "ident": "v0.3.1",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New GitHub release v0.3.1.",
+      "title": "[watch] franken_agent_detection: release v0.3.1",
+      "value": "c06d1cb14e0edb1cd82f1c58021d86b6beacd2de"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fsqlite-pager-v0.4.5 -> 6843bf7 (2026-09-25T20:47:18Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/fsqlite-pager-v0.4.5",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/git/ref/tags/fsqlite-pager-v0.4.5"
+      ],
+      "ident": "fsqlite-pager-v0.4.5",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New tag fsqlite-pager-v0.4.5 (no GitHub release for it at this check).",
+      "title": "[watch] frankensqlite: tag fsqlite-pager-v0.4.5",
+      "value": "6843bf75e0cad08c06362a75a61679b6910ec42e"
+    }
+  ],
+  "since": "2026-09-25T11:29:44Z"
+}
