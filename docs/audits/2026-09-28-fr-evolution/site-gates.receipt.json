@@ -1,0 +1,9 @@
+{
+  "command": [
+    "bash",
+    "site/scripts/verify-site.sh"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 15.944007218000479,
+  "scope": "Actual local gate chain; no Bun or Chrome installed. Not a CI run."
+}

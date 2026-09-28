@@ -1,0 +1,9 @@
+{
+  "command": [
+    "bash",
+    "site/scripts/verify-site.sh"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 16.21792557900153,
+  "scope": "Local gate chain after fetching full history. Chromium and Bun absent; not CI."
+}

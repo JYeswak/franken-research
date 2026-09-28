@@ -1,0 +1,196 @@
+{
+  "scope": "Synthetic boundary observations only; not research quality or production exploit frequency.",
+  "base_commit": "112215ddda638d7610097f3f70c8c35a050b40a4",
+  "execution_head": "112215ddda638d7610097f3f70c8c35a050b40a4",
+  "results": [
+    {
+      "id": "positive-control",
+      "scope": "A matching nonempty synthetic proof should pass structural checks.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS  fixture -> proof.txt\ncheck-claim-discipline: 1 passed, 0 failed, 0 skipped (1 enforced, 1 actually checked, 0 pattern-unmatched).\n",
+      "stderr": ""
+    },
+    {
+      "id": "missing-proof-control",
+      "scope": "An enforced row with no proof should fail.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh"
+      ],
+      "exit_code": 1,
+      "stdout": "FAIL  fixture: proof artifact missing or empty: proof.txt\ncheck-claim-discipline: 0 passed, 1 failed, 0 skipped (1 enforced, 1 actually checked, 0 pattern-unmatched).\n",
+      "stderr": ""
+    },
+    {
+      "id": "negative-proof-containing-pass",
+      "scope": "Substring existence does not establish a passing execution result.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS  fixture -> proof.txt\ncheck-claim-discipline: 1 passed, 0 failed, 0 skipped (1 enforced, 1 actually checked, 0 pattern-unmatched).\n",
+      "stderr": ""
+    },
+    {
+      "id": "unregistered-readme-claim",
+      "scope": "One registered row does not provide coverage of every public claim.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS  fixture -> proof.txt\ncheck-claim-discipline: 1 passed, 0 failed, 0 skipped (1 enforced, 1 actually checked, 0 pattern-unmatched).\n",
+      "stderr": ""
+    },
+    {
+      "id": "absent-registry-default",
+      "scope": "This is the no-argument invocation used by kit CI.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "check-claim-discipline: registries/claims.tsv not found; nothing to check.\n",
+      "stderr": ""
+    },
+    {
+      "id": "absent-registry-explicit",
+      "scope": "Explicit-path missing registry control.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh",
+        "registries/claims.tsv"
+      ],
+      "exit_code": 1,
+      "stdout": "FAIL: claims file registries/claims.tsv not found. Fix the path, or create it from templates/claims.tsv.\n",
+      "stderr": ""
+    },
+    {
+      "id": "absent-registry-hook",
+      "scope": "Installed hook skips the real registry check when the registry is absent.",
+      "command": [
+        "sh",
+        ".git/hooks/pre-commit"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "pre-commit: canary self-test ok (gate rejects overclaims).\n"
+    },
+    {
+      "id": "staged-negative-control",
+      "scope": "Both worktree and staged proof are negative: hook should reject.",
+      "command": [
+        "sh",
+        ".git/hooks/pre-commit"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "pre-commit: canary self-test ok (gate rejects overclaims).\nFAIL  fixture: proof proof.txt lacks expected text: PASS\ncheck-claim-discipline: 0 passed, 1 failed, 0 skipped (1 enforced, 1 actually checked, 0 pattern-unmatched).\npre-commit: claim discipline FAILED \u2014 fix the claims or the proofs before committing.\n"
+    },
+    {
+      "id": "staged-negative-worktree-positive",
+      "scope": "Hook observes worktree proof while the index still contains negative proof.",
+      "command": [
+        "sh",
+        ".git/hooks/pre-commit"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "pre-commit: canary self-test ok (gate rejects overclaims).\n"
+    },
+    {
+      "id": "staged-proof-inspection",
+      "scope": "Shows exactly the staged bytes; no commit is made.",
+      "command": [
+        "git",
+        "show",
+        ":proof.txt"
+      ],
+      "exit_code": 0,
+      "stdout": "FAIL: synthetic staged proof does not support the claim.\n",
+      "stderr": ""
+    },
+    {
+      "id": "explicitly-unsigned-non-plan",
+      "scope": "Known heuristic limit: structural completion is not authorization or semantic readiness.",
+      "command": [
+        "sh",
+        "scripts/check-readiness.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "READY: all 12 planning-packet sections present with substance.\n",
+      "stderr": ""
+    },
+    {
+      "id": "bad-ledger-hook",
+      "scope": "Local hook should reject the weasel retry predicate.",
+      "command": [
+        "sh",
+        ".git/hooks/pre-commit"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "pre-commit: canary self-test ok (gate rejects overclaims).\npre-commit: staged NEGATIVE_EVIDENCE.md row(s) with missing or weasel retry predicates:\nBAD: ## 2026-09-28 \u2014 REJECT: fixture\npre-commit: every row needs a real, testable retry predicate \u2014 never 'later', 'TBD', 'n/a'.\n"
+    },
+    {
+      "id": "bad-ledger-ci-readiness",
+      "scope": "Replay first kit CI shell gate locally, not a GitHub Actions run.",
+      "command": [
+        "sh",
+        "scripts/check-readiness.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "READY: all 12 planning-packet sections present with substance.\n",
+      "stderr": ""
+    },
+    {
+      "id": "bad-ledger-ci-claims",
+      "scope": "Replay second kit CI shell gate locally; neither CI gate examines ledger.",
+      "command": [
+        "sh",
+        "scripts/check-claim-discipline.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS  fixture -> proof.txt\ncheck-claim-discipline: 1 passed, 0 failed, 0 skipped (1 enforced, 1 actually checked, 0 pattern-unmatched).\n",
+      "stderr": ""
+    }
+  ],
+  "bead_seed": {
+    "rows": 28,
+    "with_dependencies": 0
+  },
+  "revisit_rows": 299,
+  "revisit_detectors": {
+    "human": 233,
+    "license.text": 21,
+    "ci.class": 15,
+    "dependency.edge": 2,
+    "release.first": 6,
+    "contributors.second_human": 22
+  },
+  "revisit_observed_detector_rows": 44,
+  "probe_sha256": "ea8016db137352bb403c8f74d47bf5008989c1c8cc4ffde3dfa845252c2739dc",
+  "tested_files_sha256": {
+    "starter-kit/scripts/check-claim-discipline.sh": "f3c27debe4cf131d615b990a367c852154886115a1d37c3221a6f4e3c7697e1a",
+    "starter-kit/scripts/check-readiness.sh": "0ec4c8b4d3acaf94675232e9b5f2bfaa1da9dbbf5ea9908d3fdcd2f10b059b9b",
+    "starter-kit/scripts/hooks/pre-commit": "8d1b2db6e89e8f88dc486f29b64277eaf412dc93df7c5ec05efe40bfc8e128bb",
+    "starter-kit/scripts/init.sh": "ca1b57b05206a073be8850f7c828c8217b095c017e385b88877e14916beca932",
+    "starter-kit/scripts/checklist2beads.awk": "90fe6d685beff7fdf037aac04b7d3ed9feba36964552bea8d762953542990f75",
+    "starter-kit/CHECKLIST.md": "c827a09b099d03cd794ff3accc12a98ccd42a3633cfef4b195175a115a1722d7",
+    "watch/freshness/revisit.tsv": "f96604327594d033d16c83fec4f616ee1252bd68f71df035f8374471bcc189e4",
+    "watch/freshness/triggers.mjs": "87d2bbecbbbd9f35f4e645b680530390190b3932edff02657b4bc480f38661f6",
+    "starter-kit/templates/agents.md": "f8de5144db1fdb7ac235cc7f2a44791b370268442e2ed39f232bf51c5b6ba537",
+    "starter-kit/templates/bead-schema.md": "343e490f464c3af7f4a4c2043d8fc079d7b11182c1abc6f62e480a99ca68faad",
+    "starter-kit/templates/claims.tsv": "d103cba8cf2429daeb962f9f3635396d140ab1538a295f5ef92acb2a45cf9605",
+    "starter-kit/templates/definition-of-done.md": "fd4a7f3befcf76925ca872eb0b3b5d1865a8836ff2dcfadca8ec804e004b0175",
+    "starter-kit/templates/demotion-rules.md": "ba77c0e22eb6893896030ac6794ef78014af17f9e4ed605c522104a5322616ed",
+    "starter-kit/templates/kit-gates.yml": "6b251e64121bfc562488a16c7e5f1efc496db84e66d1bef0e677b8dc5486c70c",
+    "starter-kit/templates/negative-evidence-entry.md": "de6ab061d8e95239d4dcdfc0d89bdd44c177ee6bdbb92367c981ddec201da8ec",
+    "starter-kit/templates/planning-packet.md": "45a94ded803b848ac432ac60e5e6b620261032275ab02802e57d2f7a7d2658e0"
+  }
+}
