@@ -8,7 +8,7 @@
 #     franken_markdown only warned here and left the row unchecked; the kit
 #     fails instead (2026-09-24), because a warning left the gate green while
 #     an enforced claim went unverified. A claim the README no longer makes
-#     is not forced: set that row to enforce=no, or delete it.
+#     is not forced: set enforce=no and mark notes retired; retain the claim id.
 #   - proof_path must exist and be non-empty, and expected_substr (if set)
 #     must appear inside the proof artifact.
 # Rows with enforce=no are skipped and counted, as before.
@@ -18,23 +18,28 @@
 # discipline (CHECKLIST.md B6). With no README yet, that state is a warning.
 # Also exit 1 when a claims file passed as an argument does not exist: a
 # hook or CI step pointing at a wrong path must not pass silently. With no
-# argument and no registries/claims.tsv, there is nothing to check (exit 0).
+# argument, a missing registry also fails closed.
 # Paths in claims.tsv are relative to the repository root; absolute paths are
-# honored as-is.
+# rejected to keep proofs portable and snapshot-bound.
 set -u
 
 CLAIMS="${1:-registries/claims.tsv}"
 README_F="${2:-README.md}"
-ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+ROOT=${KIT_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}
 
-if [ ! -f "$CLAIMS" ]; then
-  if [ $# -ge 1 ]; then
-    echo "FAIL: claims file $CLAIMS not found. Fix the path, or create it from templates/claims.tsv."
-    exit 1
-  fi
-  echo "check-claim-discipline: $CLAIMS not found; nothing to check."
-  exit 0
+if [ ! -f "$CLAIMS" ] || [ -L "$CLAIMS" ]; then
+  echo "FAIL: claims registry missing or symlink: $CLAIMS"
+  exit 1
 fi
+
+# Check parent components too; a registry or README may not borrow external bytes.
+for checked_path in "$CLAIMS" "$README_F"; do
+  part="$checked_path"
+  while [ "$part" != . ] && [ "$part" != / ]; do
+    [ ! -L "$part" ] || { echo "FAIL: symlink path: $checked_path"; exit 1; }
+    part=$(dirname "$part")
+  done
+done
 
 # Rows are split on tabs with awk, one field at a time. Tab is IFS whitespace,
 # so IFS=<tab> read would collapse empty columns; the earlier workaround (read
@@ -67,14 +72,24 @@ while IFS= read -r line || [ -n "$line" ]; do
     fi
   fi
   checked=$((checked + 1))
-  # Proof paths are relative to the repo root; absolute paths are honored
-  # as-is (an absolute path that silently resolved under $ROOT used to
-  # false-FAIL — now it resolves to itself).
+  # Portable proof artifacts must stay within this snapshot. Reject traversal
+  # and symlinks so a staged claim cannot borrow unstaged/external bytes.
   case "$proof" in
-    /*) p="$proof" ;;
-    *)  p="$ROOT/$proof" ;;
+    /*|..|../*|*/../*|*/..)
+      echo "FAIL  $label: proof must be repository-relative without traversal: $proof"
+      fail=$((fail + 1)); continue ;;
   esac
-  if [ -z "$proof" ] || [ ! -s "$p" ]; then
+  p="$ROOT/$proof"
+  part="$p"; linked=0
+  while [ "$part" != "$ROOT" ] && [ "$part" != / ]; do
+    [ ! -L "$part" ] || linked=1
+    part=$(dirname "$part")
+  done
+  if [ "$linked" -ne 0 ]; then
+    echo "FAIL  $label: proof path contains a symlink: $proof"
+    fail=$((fail + 1)); continue
+  fi
+  if [ -z "$proof" ] || [ ! -f "$p" ] || [ ! -s "$p" ]; then
     echo "FAIL  $label: proof artifact missing or empty: ${proof:-<none>}"
     fail=$((fail + 1))
     continue

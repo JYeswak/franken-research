@@ -1,0 +1,67 @@
+{
+  "exit_code": 0,
+  "observed_at": "2026-09-28T20:46:58.796536+00:00",
+  "input_sha256": {
+    "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+    "docs/evidence/fr-evolution/decisions.json": "39f91881cbb49dfce08165bff6479e29f9c8fcf3c8e8fc8ba2eec070967d084a",
+    "docs/evidence/fr-evolution/dogfood.py": "2bad4ee260942ffe0b5039e28e683132c80594d0f4c83e02d3fd0878b1f4155a"
+  },
+  "scope": "Actual transfer and synthetic source-change exercise; no comparative time or research-quality result.",
+  "steps": [
+    {
+      "command": [
+        "python3",
+        "<checkout>/scripts/check-decisions.py",
+        "<checkout>/docs/evidence/fr-evolution/decisions.json",
+        "--export",
+        "<handoff>"
+      ],
+      "exit_code": 0,
+      "stdout": "gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Review implementation and full site gate receipt before merge.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "<handoff>/scripts/check-decisions.py",
+        "<handoff>/decisions.json",
+        "--root",
+        "<handoff>"
+      ],
+      "exit_code": 0,
+      "stdout": "gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Review implementation and full site gate receipt before merge.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "<handoff>/scripts/check-decisions.py",
+        "<handoff>/decisions.json",
+        "--root",
+        "<handoff>"
+      ],
+      "exit_code": 1,
+      "stdout": "gate-repair | combine | REVIEW | maintainer | next: Review implementation and full site gate receipt before merge.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {\"kit-tests\": [\"starter-kit/scripts/check-ledger.sh\"]}, \"unsupported_current_labels\": [\"kit-repairs\"], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "<handoff>/scripts/check-decisions.py",
+        "<handoff>/decisions.json",
+        "--root",
+        "<handoff>",
+        "--refresh"
+      ],
+      "exit_code": 0,
+      "stdout": "gate-repair | combine | REVIEW | maintainer | next: Review implementation and full site gate receipt before merge.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {\"kit-tests\": [\"starter-kit/scripts/check-ledger.sh\"]}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+      "stderr": ""
+    }
+  ],
+  "after_change": {
+    "kit-repairs": "review_required",
+    "portable-records": "supported",
+    "net-benefit": "provisional"
+  },
+  "effect": "Only the affected supported claim required review; no automatic re-promotion."
+}

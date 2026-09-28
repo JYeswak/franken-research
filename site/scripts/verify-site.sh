@@ -1414,6 +1414,14 @@ else
   pass "T llms.txt matches a fresh render and every link resolves ($T_N; $T_LINKS site links resolved by the gate)"
 fi
 
+# ============ U: installed kit and maintained decision records ============
+echo "== U  kit and decision regressions =="
+if (cd "$REPO_ROOT" && python3 starter-kit/tests/test_gates.py && python3 scripts/test_decisions.py && python3 scripts/check-decisions.py docs/evidence/fr-evolution/decisions.json && diff -qr starter-kit site/starter-kit); then
+  pass "U kit regression controls, decision identities and shipped copies"
+else
+  fail "U kit regression controls, decision identities and shipped copies"
+fi
+
 # ============ summary ============
 echo "----------------------------------------"
 echo "gates passed: $PASS   failed: $FAIL"

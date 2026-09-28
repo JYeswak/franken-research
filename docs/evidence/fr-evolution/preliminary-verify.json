@@ -1,0 +1,12 @@
+{
+  "command": [
+    "bun",
+    "run",
+    "verify"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 98.13024859500001,
+  "browser": "Chromium 153.0.8010.0",
+  "bun": "1.4.2",
+  "scope": "actual local gate chain; not hosted CI"
+}

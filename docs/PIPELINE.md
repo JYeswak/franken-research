@@ -31,8 +31,8 @@ flowchart TD
 
 1. **An issue is opened.** A reader uses one of the forms in `.github/ISSUE_TEMPLATE/` (see
    [CONTRIBUTING.md](../CONTRIBUTING.md)); each form sets one label. The daily watch
-   ([watch/README.md](../watch/README.md)) opens one issue per new material event, labelled `watch`
-   plus the event type. The weekly discovery sweep opens one rollup issue a week, labelled
+   ([watch/README.md](../watch/README.md)) updates one trusted freshness dashboard, as specified by the
+   [canonical freshness runbook](../watch/freshness/README.md); per-event issues are retired. The weekly discovery sweep opens one rollup issue a week, labelled
    `candidate` and `discovery`.
 2. **Auto-ack.** [triage.yml](../.github/workflows/triage.yml) posts one comment on a reader issue:
    who reviews it, what the possible outcomes are, and a link here. It reads only the issue number

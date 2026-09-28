@@ -4,6 +4,8 @@ Corrections to published findings are recorded here with the date, the issue, an
 
 ## Unreleased
 
+- 2026-09-28: starter-kit claim checks fail on missing registries and validate staged proof bytes; a shared ledger validator runs locally and in kit CI. Readiness now reports structural completeness. Retired claim IDs are retained, and checklist seeds no longer imply an encoded dependency graph. Added bounded decision-review records and dogfood receipts; no comparative research advantage claimed. Audit and implementation proposed by Codex at the owner's request; see `docs/evidence/fr-evolution/`.
+
 The daily watch now flags a verdict only when a computed class moves, instead of opening one issue per event. On its first day, 2026-09-24, it opened twelve issues (#1 to #12), and only #5 led to a correction. The new behaviour is specified in [`watch/freshness/SPEC.md`](watch/freshness/SPEC.md) and tested against it by gate W3.
 
 ### Added
