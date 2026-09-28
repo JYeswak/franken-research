@@ -1,0 +1,138 @@
+{
+  "scope": "Files opened or queried; some large files inspected in relevant sections, not every line. Tested input byte identities are separately recorded in PROBE_RESULTS.json.",
+  "base_commit": "112215ddda638d7610097f3f70c8c35a050b40a4",
+  "environment": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "git": "git version 2.51.1",
+    "bun": "not installed",
+    "chromium": "not installed"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "f31bf76d68f817387ee22419f6dde603dadadc516041f5b95d937d2d24bbe974"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "76de03c5da5d66029bf522a7dd4cdcfc2fcfb412714eab6a9d56d403a58e0bb9"
+    },
+    {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a"
+    },
+    {
+      "path": "package.json",
+      "sha256": "25924f7a60c9d16845992abe7680c96c8523460c10d2ad6959e7a38ab03d327e"
+    },
+    {
+      "path": "starter-kit/README.md",
+      "sha256": "4605b6f16f57767808d6b56af192217ed075047b4814395e54bb4fc3f022c76e"
+    },
+    {
+      "path": "starter-kit/CHECKLIST.md",
+      "sha256": "c827a09b099d03cd794ff3accc12a98ccd42a3633cfef4b195175a115a1722d7"
+    },
+    {
+      "path": "starter-kit/scripts/init.sh",
+      "sha256": "ca1b57b05206a073be8850f7c828c8217b095c017e385b88877e14916beca932"
+    },
+    {
+      "path": "starter-kit/scripts/check-readiness.sh",
+      "sha256": "0ec4c8b4d3acaf94675232e9b5f2bfaa1da9dbbf5ea9908d3fdcd2f10b059b9b"
+    },
+    {
+      "path": "starter-kit/scripts/check-claim-discipline.sh",
+      "sha256": "f3c27debe4cf131d615b990a367c852154886115a1d37c3221a6f4e3c7697e1a"
+    },
+    {
+      "path": "starter-kit/scripts/hooks/pre-commit",
+      "sha256": "8d1b2db6e89e8f88dc486f29b64277eaf412dc93df7c5ec05efe40bfc8e128bb"
+    },
+    {
+      "path": "starter-kit/scripts/checklist2beads.awk",
+      "sha256": "90fe6d685beff7fdf037aac04b7d3ed9feba36964552bea8d762953542990f75"
+    },
+    {
+      "path": "starter-kit/templates/claims.tsv",
+      "sha256": "d103cba8cf2429daeb962f9f3635396d140ab1538a295f5ef92acb2a45cf9605"
+    },
+    {
+      "path": "starter-kit/templates/demotion-rules.md",
+      "sha256": "ba77c0e22eb6893896030ac6794ef78014af17f9e4ed605c522104a5322616ed"
+    },
+    {
+      "path": "starter-kit/templates/agents.md",
+      "sha256": "f8de5144db1fdb7ac235cc7f2a44791b370268442e2ed39f232bf51c5b6ba537"
+    },
+    {
+      "path": "starter-kit/templates/planning-packet.md",
+      "sha256": "45a94ded803b848ac432ac60e5e6b620261032275ab02802e57d2f7a7d2658e0"
+    },
+    {
+      "path": "starter-kit/templates/kit-gates.yml",
+      "sha256": "6b251e64121bfc562488a16c7e5f1efc496db84e66d1bef0e677b8dc5486c70c"
+    },
+    {
+      "path": "stack/METHOD.md",
+      "sha256": "d297ff77f1aa8f26f1dc71210a18d440fce584a5e4c540e43d29c1cc379cc4e8"
+    },
+    {
+      "path": "stack/reviews/method-v1-stress-test.md",
+      "sha256": "258bbb9073a1ee9d7bc0aad523c8f70951a749254c15d8b4e9969c5bd986ef62"
+    },
+    {
+      "path": "updates/METHOD.md",
+      "sha256": "bc3642e27dc6505fffd6faf40900d34b1ec09566d6ab1911fa2532b5e48c62fd"
+    },
+    {
+      "path": "docs/PIPELINE.md",
+      "sha256": "097df0f4a0580acc58b4c706c63c129bc3e7a2619a8e1f5abcc470a20d628a98"
+    },
+    {
+      "path": "watch/freshness/README.md",
+      "sha256": "bf833fbc0e6e42a1e6185e4d0d92d07fa87c4c8446d7d22ee59514c7eb34785d"
+    },
+    {
+      "path": "watch/freshness/SPEC.md",
+      "sha256": "b1fab75ab1eef34d7e75f711037484e2dfb17e64008659620b95cf9f8ed1c973"
+    },
+    {
+      "path": "watch/freshness/REPORT.md",
+      "sha256": "778bf8990bbc36661583c4aba45cc76353601b09c8019d49ac57dab535ccefd9"
+    },
+    {
+      "path": "watch/freshness/DISCREPANCIES.md",
+      "sha256": "9588402077865d84c6efe697ddb41520038eb983f9dc638d10e2500d75b62734"
+    },
+    {
+      "path": "watch/freshness/revisit.tsv",
+      "sha256": "f96604327594d033d16c83fec4f616ee1252bd68f71df035f8374471bcc189e4"
+    },
+    {
+      "path": "watch/freshness/revisit.mjs",
+      "sha256": "49cfd34922505baadf7cf24b6f5222d9b0e75e2d30d1c75918a0a658c8994745"
+    },
+    {
+      "path": "watch/freshness/triggers.mjs",
+      "sha256": "87d2bbecbbbd9f35f4e645b680530390190b3932edff02657b4bc480f38661f6"
+    },
+    {
+      "path": "watch/discovery/README.md",
+      "sha256": "6a84d8627ca0d3d74cb15b3476d9a52cfa33b0a73ad02257aded215ecdca4e39"
+    },
+    {
+      "path": "candidates/README.md",
+      "sha256": "9486dd6a97d0a5f688e40bba895de0e24cf4af831307673cb4d7fd49699e7a85"
+    },
+    {
+      "path": "site/scripts/verify-site.sh",
+      "sha256": "68952fae66c728829d324f13e85e64b11123faa9cef3914b3a17755f8e45a1b2"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "sha256": "9742b3d3c4a1499c402b86f87255485481e0bd8b05b91e443ca5ae3246331e32"
+    }
+  ]
+}
