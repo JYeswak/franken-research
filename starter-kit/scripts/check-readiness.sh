@@ -5,7 +5,7 @@
 # => packet status NOT_READY").
 # Usage: ./scripts/check-readiness.sh [path/to/packet.md]
 #        KIT_MIN_LINES=3 ./scripts/check-readiness.sh   # override substance floor
-# Exit 0: READY. Exit 1: NOT READY (lists every missing/incomplete section).
+# Exit 0: STRUCTURALLY COMPLETE (not authorization). Exit 1: NOT READY (lists every missing/incomplete section).
 # A pristine (unfilled) template is NOT READY by design: blockquote guidance
 # lines never count as content, so only real prose satisfies a section.
 #
@@ -182,7 +182,7 @@ done
 IFS="$OLDIFS"
 
 if [ "$fail" -eq 0 ]; then
-  echo "READY: all 12 planning-packet sections present with substance."
+  echo "STRUCTURALLY COMPLETE: required sections and vocabulary present; semantic review and owner execution authorization are separate."
   exit 0
 fi
 printf 'NOT READY: %s is missing/incomplete in:\n' "$PACKET"

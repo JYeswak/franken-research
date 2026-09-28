@@ -45,23 +45,15 @@ owner, and only the first one is automatic:
    HEAD, a new `franken*` or Rust repository) and does not judge them. Workflow files added to a
    set that already had some are counted in the census but not flagged: on their own they cannot
    move the CI cell.
-2. **Issue.** For each flagged event that is new since the previous run it opens one issue,
-   `[watch] <repo>: <change>`, labelled `watch` plus the event type, with before and after, API
-   evidence, and the pinned matrix values the event may affect. It never reopens a closed issue; a
-   changed value becomes a comment. At most 20 per run, the rest in one rollup issue.
-3. **Triage.** An analyst decides whether the event could move a cell. If not, the issue is closed
-   with a one-line reason. The 2026-09-24 movement census is a worked example: eight repositories
-   had an event of these kinds (six workflow-file sets, one set of new tags, one first release), and
-   two were judged able to move a cell (the release, and a workflow set cut from 78 files to 8).
-   Under the rule in step 1, only those two and the new tags would have been flagged; the other
-   five issues were workflow additions and were closed with that reason on the same day.
+2. **Dashboard.** The current watch updates one trusted freshness dashboard after its files pass gates and are pushed. Per-event issue creation is retired. The canonical mechanics and trust rules are in [watch/freshness/README.md](../watch/freshness/README.md) and its SPEC; keep those rules there rather than duplicating them here.
+3. **Triage.** An analyst records whether the dashboard evidence could move a cell and why. The dashboard remains open; it is a living queue, not a per-event finding. The dated movement census remains a historical example, not the current issue algorithm.
 4. **Dated re-check.** If it could, the analyst writes `<repo>-YYYY-MM-DD.md` here under rules 3 to
    6, pinned to the new commit. The packet and the published counts stay as they are.
 5. **Independent review.** A separate agent session, not the author, reviews the re-check before it
    lands, as the stack verdicts are reviewed.
 6. **Rigor harvest.** Any practice the re-check finds that is not yet in
    [`stack/rigor-practices.tsv`](../stack/rigor-practices.tsv) is added there with its quote.
-7. **Close.** The issue is closed with links to the re-check, the review, and any rigor row.
+7. **Record the outcome.** Link the re-check, review and any rigor row. The watch resolves crossings from dated rechecks according to its contract; do not close the living dashboard as if it were a per-event issue.
 
 Files here:
 

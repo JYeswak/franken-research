@@ -1,0 +1,20 @@
+{
+  "command": [
+    "bun",
+    "run",
+    "verify"
+  ],
+  "exit_code": 0,
+  "observed_at": "2026-09-28T20:46:40.482320+00:00",
+  "elapsed_seconds": 97.50394312199933,
+  "browser": "Chromium 153.0.8010.0",
+  "bun": "1.4.2",
+  "input_hashes": {
+    "site/scripts/verify-site.sh": "e46d053b4622b9a1f332c684bcbab8a2b006008e66e1317d95ea11b6e3eabaf2",
+    "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+    "scripts/test_decisions.py": "25f3689874a81f286b9e1c14a19b7f552a03813028b774fcd1cac4a52f81e529",
+    "starter-kit/tests/test_gates.py": "0ea2e8993092e716b429ba4671cc7a7fa65ab298cf20c7862a3b2c71bf8704ea"
+  },
+  "inputs_unchanged": true,
+  "scope": "actual local gate chain; not hosted CI"
+}

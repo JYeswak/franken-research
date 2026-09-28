@@ -135,7 +135,7 @@ Done criteria as the bead's acceptance criteria.
 - **What:** The beads graph is the plan of record; documents explain why, beads say what is being done and whether it closed.
 - **Why:** Prose plans drift from reality silently; a graph with open/closed states cannot drift without showing it.
 - **Done criteria:** .beads/issues.jsonl is non-empty and current; no parallel prose tracker exists.
-- **Verified by:** inspection; init.sh seeds the graph from this checklist.
+- **Verified by:** inspection; init.sh seeds a checklist with empty dependencies. Encode and review phase dependencies in the adopted tracker before dispatch.
 - **Origin:** frankensearch docs/plans/quill-distillation ("The beads graph ... is the executable form; this document is the rationale of record"); Gate 1 (38/44).
 - **Class:** DAY-1 PROCEDURAL
 

@@ -75,15 +75,45 @@
     font-weight:700;font-size:13px;padding:9px 16px;border-radius:0 0 10px 0;text-decoration:none}
   .skip:focus{left:0}
 </style>
+<!-- shell:head -->
+<link rel="stylesheet" href="../assets/shell.css?v=0323daf6e7">
+<link rel="alternate" type="application/atom+xml" title="Franken Research" href="https://fr.zeststream.ai/feed.xml">
+<!-- /shell:head -->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
 
-<nav class="back">
-  <a href="../index.html">Front door</a>
-  <a href="../method/index.html">Claim-governance method</a>
+<!-- shell:nav -->
+<nav class="shell-nav" aria-label="Site">
+<a class="shell-brand" href="../index.html">Franken Research</a>
+<ul class="shell-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../starter-kit/index.html" aria-current="page">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
+<details class="shell-menu">
+<summary>Menu</summary>
+<ul class="shell-menu-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../starter-kit/index.html" aria-current="page">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
+</details>
+<script>(function () {
+  var m = document.currentScript.parentNode.querySelector('.shell-menu');
+  if (!m) return;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); }
+  });
+  document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+})();</script>
 </nav>
+<!-- /shell:nav -->
 
 <header id="main">
   <h1>Starter kit</h1>
@@ -136,7 +166,7 @@
     </li>
     <li><b>Machine-check the planning packet</b> once filled:
       <pre class="cmd"><span class="k">./scripts/check-readiness.sh</span></pre>
-      Exit 0 means READY. A pristine template reports NOT READY by design:
+      Exit 0 means structurally complete, not execution authorization. A pristine template reports NOT READY by design:
       guidance lines never count as content, so only real prose satisfies a section.
     </li>
     <li><b>Make the first commit.</b> The hook self-tests with a canary false claim
@@ -180,7 +210,7 @@
     </tr>
     <tr>
       <td class="path"><a href="scripts/check-readiness.sh">scripts/check-readiness.sh</a></td>
-      <td class="what">Machine-checks the planning packet for section presence, substance signals, and required vocabulary. Missing field means NOT READY; exit 0 is READY.</td>
+      <td class="what">Machine-checks the planning packet for section presence, substance signals, and required vocabulary. Missing field means NOT READY; exit 0 checks structure only.</td>
     </tr>
     <tr>
       <td class="path"><a href="scripts/check-claim-discipline.sh">scripts/check-claim-discipline.sh</a></td>
@@ -213,7 +243,7 @@
     </tr>
     <tr>
       <td class="path"><a href="templates/kit-gates.yml">templates/kit-gates.yml</a></td>
-      <td class="what">CI workflow template that re-runs the readiness and claim-discipline gates on every push; the backstop --no-verify cannot reach. Includes commented toolchain steps to fill per language.</td>
+      <td class="what">CI workflow template that re-runs the readiness, claim-discipline and ledger gates on every push; the backstop --no-verify cannot reach. Includes commented toolchain steps to fill per language.</td>
     </tr>
     <tr>
       <td class="path"><a href="templates/negative-evidence-entry.md">templates/negative-evidence-entry.md</a></td>
@@ -232,6 +262,7 @@
 
 <section class="card">
   <h2>Design principles</h2>
+  <p>The seeded beads are a checklist without dependency edges. Encode phase dependencies before dispatch. The installed hook checks staged files; CI uses the same claim and ledger validators. Proof text matching does not establish semantic truth.</p>
   <p><b>Executable beats prose.</b> The beads graph is the plan; documents are the rationale of record.</p>
   <p><b>Mechanical where cheap, doctrine where judgment lives.</b> Four checklist items are enforced by scripts; the rest are conventions with named verifiers. The kit never pretends a script exists where the suite only had a habit.</p>
   <p><b>Local gates are advisory; CI is the backstop.</b> <span class="path">git commit --no-verify</span> bypasses the pre-commit hook by git's design. The kit names the hatch instead of hiding it (CHECKLIST.md B5).</p>
@@ -244,5 +275,42 @@
 </footer>
 
 </div>
+<!-- shell:footer -->
+<div class="shell-foot">
+<div class="shell-grid">
+<nav class="shell-dir" aria-label="All pages">
+<p class="shell-h">All pages</p>
+<ul>
+<li><a href="../index.html">Map</a></li>
+<li><a href="../index.html#tableview">Verdict table</a></li>
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../techniques/index.html">Techniques</a></li>
+<li><a href="../failure-modes/index.html">Failure modes</a></li>
+<li><a href="../lessons/index.html">Lessons</a></li>
+<li><a href="../reproduce/index.html">Reproduce a verdict</a></li>
+<li><a href="../starter-kit/index.html" aria-current="page">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../rigor/index.html">Rigor practices</a></li>
+<li><a href="../beyond/index.html">Beyond FrankenSuite</a></li>
+<li><a href="../study/independent-100/index.html">Independent 100 study</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+<li><a href="../self/index.html">Graded by our own method</a></li>
+</ul>
+</nav>
+<div class="shell-side">
+<p class="shell-h">Help fix it</p>
+<ul class="shell-acts">
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=idea.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fstarter-kit%2F">Suggest a fix or an idea</a></li>
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=site-bug.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fstarter-kit%2F">Report a site problem</a></li>
+</ul>
+<p class="shell-note">Each opens a GitHub issue form with this page&rsquo;s address filled in. You need a GitHub account.</p>
+<p class="shell-follow">Follow updates: <a href="../feed.xml">Atom feed</a> <span aria-hidden="true">&middot;</span> <a href="../follow/index.html">Follow</a></p>
+</div>
+</div>
+<p class="shell-who">Made by Joshua Nowak (ZestStream) with AI coding agents. Not affiliated with or funded by Jeffrey Emanuel; Joshua uses his public tools and is a paying subscriber to jeffreys-skills.md.</p>
+<p class="shell-src"><a href="https://github.com/JYeswak/franken-research">Source on GitHub</a> <span aria-hidden="true">&middot;</span> <a href="https://github.com/JYeswak/franken-research/blob/main/LICENSE">MIT licensed</a></p>
+</div>
+<!-- /shell:footer -->
 </body>
 </html>

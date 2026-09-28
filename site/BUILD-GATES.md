@@ -1027,3 +1027,11 @@ proposed-study sentence under the earlier ruling. On clones of the tree, 38
 planted faults failed as expected (the 35 above plus a withheld site cited in a
 non-pseudonymous record, a withheld site named as bare text in a deep dive, and
 a handle-named site linked in an X read), and the pass case still passed.
+
+## U — Kit and decision regression checks
+
+Runs the installed starter-kit positive/negative fixtures, decision identity and
+transfer tests, validates the dogfood decision record, and compares shipped kit
+files with their canonical copies. It catches missing registries, local/CI ledger
+drift, staged/worktree proof mismatches, stale supported labels and restricted-byte
+export mistakes. It does not certify semantic truth or comparative research value.

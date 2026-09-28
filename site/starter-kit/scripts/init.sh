@@ -7,7 +7,7 @@
 # honesty pre-commit hook, and the CI backstop workflow. POSIX sh only;
 # no dependencies beyond sh, awk, grep, sed, cp, mkdir, chmod, date, cat,
 # printf (git optional but strongly recommended, beads CLI optional).
-# Safe to re-run: existing files are never overwritten.
+# Re-run preserves working files; the live Git hook is reinstalled from the tracked copy.
 set -eu
 
 KIT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
@@ -60,7 +60,7 @@ for d in docs/planning docs/evidence docs scripts .beads .githooks registries te
 done
 
 # 2. The executable part of the kit
-for s in check-readiness.sh check-claim-discipline.sh; do
+for s in check-readiness.sh check-claim-discipline.sh check-ledger.sh; do
   copy_new "scripts/$s" "scripts/$s"
   chmod +x "$TARGET/scripts/$s"
 done
@@ -180,7 +180,7 @@ Close a bead only with a `close_reason` that cites evidence
 (commit, receipt, ledger row) — "closure on cited evidence", not prose.
 
 Rules that apply whether or not a beads CLI is installed:
-- The beads graph is the executable form of the plan; prose documents are
+- This seed is a checklist with no dependency edges; encode and review phase dependencies before dispatch. Prose documents are
   the rationale of record. (frankensearch)
 - A bead whose acceptance criteria can be satisfied by believing it is not
   a bead. (frankentui: "A step you can satisfy by believing you did it
@@ -214,7 +214,7 @@ say "     claim before it checks anything real."
 say "  9. When Phase A is green, sign the packet and start Phase B."
 say "  10. Read docs/REFERENCES.md to see where every mechanism came from."
 say ""
-say "CI backstop: .github/workflows/kit-gates.yml re-runs the readiness and"
+say "CI backstop: .github/workflows/kit-gates.yml re-runs the readiness, ledger and"
 say "claim-discipline gates on every push — that is the gate 'git commit"
 say "--no-verify' cannot bypass. Fill in the commented toolchain steps per"
 say "your language (fmt/lint/test/build)."

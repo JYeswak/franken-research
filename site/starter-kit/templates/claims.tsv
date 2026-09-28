@@ -11,7 +11,7 @@
 # check and is named. The kit tightened this on 2026-09-24: franken_markdown
 # only warned and left the row unchecked, which kept the gate green while an
 # enforced claim went unverified. A claim the README no longer makes is not
-# forced: set that row to enforce=no, or delete it.
+# forced: set enforce=no and mark notes retired; retain the claim id.
 # Set enforce=yes once the proof exists. Verify with scripts/check-claim-discipline.sh.
 # The pre-commit hook self-tests the checker with a canary false claim.
 label	readme_pattern	capability_key	expected_substr	proof_path	enforce	notes
