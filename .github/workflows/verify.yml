@@ -81,6 +81,11 @@ jobs:
       - name: Local incremental verification guard tests
         run: python3 -B scripts/test_verify_incremental.py
 
+      - name: Browser loading positive and negative controls
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: python3 -B scripts/test-render-loading.py
+
       - name: Gate chain (A..J)
         env:
           # ubuntu-latest ships Google Chrome here (runner image sets CHROME_BIN

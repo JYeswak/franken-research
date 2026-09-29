@@ -695,8 +695,28 @@ for (const page of PAGES) {
     consoleEvents = [];
     await send('Emulation.setDeviceMetricsOverride', {
       width: vp[0], height: vp[1], deviceScaleFactor: 1, mobile: vp[0] < 500 });
-    await send('Page.navigate', { url: `file://${SITE}${page}` });
-    await sleep(3000); // let load + timers/animations settle
+    const targetUrl = `file://${SITE}${page}`;
+    const navigation = await send('Page.navigate', { url: targetUrl });
+    if (navigation.error || navigation.result?.errorText) {
+      errors.push(`${page}: navigation failed: ${JSON.stringify(navigation.error || navigation.result.errorText)}`);
+      continue;
+    }
+    // A fixed delay sampled partially parsed HTML on a hosted runner (PR19,
+    // run36609034471). Wait for this document and its styles; do not navigate
+    // again or discard console errors. A bad/missing page still fails below.
+    const deadline = Date.now() + 20000;
+    let ready = false;
+    while (Date.now() < deadline) {
+      const loaded = await send('Runtime.evaluate', { returnByValue: true, expression: `(() =>
+        location.href === ${JSON.stringify(targetUrl)} && document.readyState === 'complete' &&
+        [...document.querySelectorAll('link[rel="stylesheet"]')].every(l => {
+          try { return !!l.sheet && l.sheet.cssRules.length > 0; } catch { return false; }
+        }))()` });
+      if (loaded.result?.result?.value === true) { ready = true; break; }
+      await sleep(100);
+    }
+    if (!ready) errors.push(`${page}: document/styles did not finish loading within 20 seconds`);
+    await sleep(3000); // preserve the existing post-load timer/animation observation
     const ev = await send('Runtime.evaluate', { returnByValue: true, expression: `(() => ({
       overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       blank: document.body ? document.body.innerText.trim().length : 0,

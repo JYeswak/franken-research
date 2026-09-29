@@ -40,8 +40,10 @@ and deployment are still required to demonstrate runtime recovery.
 
 ## Evidence still required
 
-The hosted sandbox-control workflow tests a positive and deliberately failing
-synthetic candidate without inference credentials. Its Actions result, and a
+The hosted sandbox-control workflow passed both positive and deliberately failing
+synthetic candidate controls without inference credentials in [run 36609092406](https://github.com/JYeswak/franken-research/actions/runs/36609092406).
+Downloaded actual results and logs are preserved verbatim in `hosted-controls/`;
+its provenance file identifies the tested commit and original artifact. Its Actions result, and a
 separate authenticated coding-worker run, are different receipts. Local compilation
 and unit checks prove neither hosted outcome. The coding worker requires a configured
 engine credential; this environment could not inspect that repository setting.
@@ -50,3 +52,12 @@ No comparative learning/application trial has run. Measure fresh consumer tasks
 at matched correctness, coverage and rights, including setup, review, transfer
 and maintenance effort. Three entry points, more files or faster internal tests
 must not be multiplied into a claim about user VALUE.
+
+A parallel verify run on the same first PR commit exposed a render-timing defect:
+[run 36609034471](https://github.com/JYeswak/franken-research/actions/runs/36609034471)
+sampled a partially parsed Apply page (77 body characters and an unloaded stylesheet).
+A five-second stylesheet interception reproduced the exact failure locally. The
+gate now awaits document/style readiness before keeping its original three-second
+observation and every existing assertion. `scripts/test-render-loading.py` tests
+that delayed CSS passes and permanently failed CSS still fails; verify CI runs it.
+The passing parallel run was not used to dismiss the failing observation.
