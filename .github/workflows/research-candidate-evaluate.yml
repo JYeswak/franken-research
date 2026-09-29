@@ -1,0 +1,68 @@
+name: Evaluate research candidate
+on:
+  workflow_run:
+    workflows: [Daily research candidate]
+    types: [completed]
+    branches: [main]
+permissions: {}
+concurrency:
+  group: research-candidate-evaluation-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+jobs:
+  resolve:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    outputs:
+      found: ${{ steps.resolve.outputs.found }}
+      sha: ${{ steps.resolve.outputs.sha }}
+      base: ${{ steps.resolve.outputs.base }}
+      number: ${{ steps.resolve.outputs.number }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Resolve exact candidate without executing it
+        id: resolve
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RESEARCH_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: python3 -B ops/research-agent-resolve.py
+  evaluate:
+    needs: resolve
+    if: needs.resolve.outputs.found == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch exact public candidate objects
+        env:
+          CANDIDATE_SHA: ${{ needs.resolve.outputs.sha }}
+          BASE_SHA: ${{ needs.resolve.outputs.base }}
+        run: |
+          [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ && "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          git -c core.hooksPath=/dev/null fetch --no-tags origin "$CANDIDATE_SHA" "$BASE_SHA"
+      - name: Reproduce in a network-disabled container
+        env:
+          CANDIDATE_SHA: ${{ needs.resolve.outputs.sha }}
+          BASE_SHA: ${{ needs.resolve.outputs.base }}
+        run: python3 -B ops/research-agent-evaluate.py --base "$BASE_SHA" --sha "$CANDIDATE_SHA" --output "$RUNNER_TEMP/candidate-result"
+      - name: Retain actual execution including failures
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: candidate-evaluation-${{ needs.resolve.outputs.sha }}
+          path: ${{ runner.temp }}/candidate-result/
+          if-no-files-found: error
+          retention-days: 14

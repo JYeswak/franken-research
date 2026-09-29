@@ -1035,3 +1035,9 @@ transfer tests, validates the dogfood decision record, and compares shipped kit
 files with their canonical copies. It catches missing registries, local/CI ledger
 drift, staged/worktree proof mismatches, stale supported labels and restricted-byte
 export mistakes. It does not certify semantic truth or comparative research value.
+
+Gate U also rebuilds the Apply page, catalog, ZIP and manifests byte-for-byte;
+runs a downloaded-kit lifecycle after deleting the source, rejects unlisted or
+unsafe archive paths, and checks that an upstream observation cannot reapprove
+code. Gate I renders Apply and the kit at phone and desktop widths. The daily
+watch publishes these generated outputs through the existing isolated copier.

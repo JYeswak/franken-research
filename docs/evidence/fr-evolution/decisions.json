@@ -4,8 +4,8 @@
     {
       "id": "kit-tests",
       "kind": "execution",
-      "artifact": "docs/evidence/applied-research/kit-revalidation.json",
-      "sha256": "e9a683034b054be23777867ec029047fd3f6df7406bb505c7e5680e6916da0b1",
+      "artifact": "docs/evidence/living-research/kit-revalidation.json",
+      "sha256": "874add7704057e9f0d9f97fa4300fe58bb8f0ef81d3eb9ddd8dba827ca09366a",
       "inputs": {
         "starter-kit/scripts/check-ledger.sh": "62a345183be10cc35c0e191ee3dfcf4f172b20279f5cbe3a0408a44c6ef46970",
         "starter-kit/scripts/init.sh": "abb6559a0de61fec1a69f816008f65ce90dc79e6c36853db8e6a240e29cd441b",
@@ -27,9 +27,17 @@
         "scripts/test_review_decisions.py": "57c6b6b7d2d3877430ee19dd0f07b9c6fba3693ae34dab2cd65b0f714b9545a6",
         "starter-kit/scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
         "starter-kit/scripts/review-decisions.py": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92",
-        "site/scripts/verify-site.sh": "185d8daa8831dd984b8fa95e9e220b53b0fbf45b7f3fa903f8206df55d79d849"
+        "site/scripts/verify-site.sh": "52d6ac9c717413c021fe4dee8a4810bf95b68c609f7f969d4e62d27006e50ccd",
+        "scripts/build-learning.py": "1ef84674e68289b66023517c1ae93b24860891af8e77d114d164e1e59da0af74",
+        "scripts/test_learning.py": "f982a2e0b622cc0ffb7fdd4c0cd6009ca24f8baa335aabb3aac58c29ab52d460",
+        "scripts/test_learning_example.py": "e5a795504ac7682b97d58b689b634405b63151e99f195ed941cd5c2551a8796d",
+        "research/recipes.json": "fe7773dbdb715a6da4c598011acc5d30eb53de7f50a6ead441427c242655dc82",
+        "research/kit-public-files.txt": "c92571f2eae1d803ec657691d9a2e681d39ef68251e65aee8e2e72832a759090",
+        "starter-kit/examples/decision-cycle/run.py": "ea9c5850319c0b5ab3a2604443f2a6d05dbf1ef6a8a1bdffb2281d87d198ce80",
+        "starter-kit/examples/decision-cycle/README.md": "55f1baa35a883c889e9adaa985d0e4256a8f91ba99eda533a4bc506a1b2e2eb8",
+        "starter-kit/examples/decision-cycle/probe.py": "31fe83241cee3f7b7690fcde5037c40331d90b85b3ed638646af5cfff428555e"
       },
-      "scope": "Executed 21 installed-kit, 13 decision, 9 review tests and shipped-copy comparison. Synthetic fixtures, not whole-gate or research outcome proof.",
+      "scope": "Executed 21 installed-kit, 13 decision, 9 review, 3 example and 7 downloaded-kit tests, generator check and mirror comparison. Synthetic fixtures; not semantic research quality.",
       "visibility": "public"
     },
     {

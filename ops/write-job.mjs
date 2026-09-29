@@ -56,6 +56,7 @@ import { join, dirname, resolve, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseYaml } from '../watch/freshness/yaml.mjs';
 import { PATH_SETS } from './take-build-output.mjs';
+import { RESEARCH_WORKFLOW, researchAgentProblems } from './research-agent-policy.mjs';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const WORKFLOWS = '.github/workflows';
@@ -95,8 +96,8 @@ export const POLICIES = {
           'Apply the generated files and commit them': [
             '# Copies only the generated paths; anything else in the artifact fails the run.',
             'node ops/take-build-output.mjs watch "$RUNNER_TEMP/watch-output"',
-            'git add watch/ site/feed.xml site/briefs/',
-            'if git diff --cached --quiet -- watch/ site/feed.xml site/briefs/; then',
+            'git add watch/ site/feed.xml site/briefs/ site/apply/ site/downloads/',
+            'if git diff --cached --quiet -- watch/ site/feed.xml site/briefs/ site/apply/ site/downloads/; then',
             '  echo "watch/, feed and cards unchanged; nothing to commit"',
             '  echo "committed=false" >> "$GITHUB_OUTPUT"',
             '  exit 0',
@@ -107,7 +108,7 @@ export const POLICIES = {
             'n="$(jq \'.material | length\' "watch/changes/${day}.json")"',
             'git -c user.name=\'github-actions[bot]\' \\',
             '    -c user.email=\'41898282+github-actions[bot]@users.noreply.github.com\' \\',
-            '    commit -m "watch: ${day} census (${n} material) [live]" -- watch/ site/feed.xml site/briefs/',
+            '    commit -m "watch: ${day} census (${n} material) [live]" -- watch/ site/feed.xml site/briefs/ site/apply/ site/downloads/',
             'echo "committed=true" >> "$GITHUB_OUTPUT"',
           ],
           Push: PUSH_RUN,
@@ -624,7 +625,15 @@ export function checkWorkflows(root = ROOT) {
   const dir = join(root, WORKFLOWS);
   const files = readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).sort().map((f) => `${WORKFLOWS}/${f}`);
   const problems = [];
-  for (const file of files) problems.push(...writeJobProblems(parseYaml(readFileSync(join(root, file), 'utf8')), file));
+  for (const file of files) {
+    const text = readFileSync(join(root, file), 'utf8');
+    const parsed = parseYaml(text);
+    // One byte-bound, independently reviewed upstream runtime; no other workflow
+    // gains an exception from its name, suffix or gh-aw metadata header.
+    problems.push(...(file === RESEARCH_WORKFLOW
+      ? researchAgentProblems(root, text, parsed)
+      : writeJobProblems(parsed, file)));
+  }
   for (const file of Object.keys(POLICIES)) if (!files.includes(file)) problems.push(`${file}: has a POLICIES entry but no workflow file`);
   const deps = dependencyProblems(root);
   const writeJobs = Object.values(POLICIES).reduce((n, p) => n + Object.keys(p.write).length, 0);

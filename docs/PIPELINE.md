@@ -78,12 +78,14 @@ flowchart TD
 | Daily watch, its issues and census commit | `watch.yml` (bot, `GITHUB_TOKEN`) | Yes |
 | Weekly discovery rollup and its commit | `discover.yml` (bot, `GITHUB_TOKEN`) | Yes |
 | Acknowledgement comment | `triage.yml` (bot) | Yes |
+| Runnable candidate proposal | [Bounded cloud coding worker](../ops/research-agent.md), then exact-commit evaluator | Scheduled with configured engine credential; draft only |
 | Triage decision | Analyst agent proposes, maintainer decides | No |
 | Re-check, fix, or new packet | Analyst agent | No |
 | Independent review | A separate agent session, never the author | No |
 | Merge, CHANGELOG credit | Maintainer | No |
 | Gates, deploy, smoke test | `deploy.yml` (bot, Cloudflare token) | Yes |
-| Updates page and feed | Rebuilt in the commit that adds their inputs; published by `deploy.yml` | Build by hand, publish automatic |
+| Updates page and feed | Rebuilt with their inputs; daily watch regenerates the feed | Daily census automatic; authored re-checks reviewed |
+| Apply page, recipe catalog, downloadable kit and hashes | `scripts/build-learning.py` inside daily watch | Yes, from reviewed code and public-file list; no automatic claim promotion |
 
 ## Where each artifact lives
 
@@ -129,3 +131,33 @@ stays green.
 
 To rotate the token, create a new one the same way, run step 3 again, and delete the old token in
 the dashboard.
+
+## From observation to something a user can run
+
+`watch.yml` also runs after main-branch changes to its pipeline or canonical kit.
+This gives a merged repair a new collection attempt; a local passing test is not
+a successful hosted observation. A failed watch leaves the last published
+observation intact. `/apply/` shows its actual timestamp and warns after 36 hours.
+
+`python3 scripts/build-learning.py` deterministically rebuilds `/apply/`, its
+JSON catalog, `/downloads/fr-starter-kit.zip`, and `/downloads/manifest.json`.
+The same full gates run before the isolated publisher accepts those four exact
+paths. The archive contains only files listed in `research/kit-public-files.txt`,
+the first-party license, recipes and sanitized upstream status fields. New files
+need explicit review in that list; no recursive evidence-directory export exists.
+The inner manifest lists every other archive member. The outer manifest hashes
+the complete ZIP. A code revision excludes daily signals, so a newer observation
+cannot pretend to revalidate a technique.
+
+To promote a working candidate, review its exact code, source licenses, comparator
+results and limitations; add only approved first-party or properly licensed code
+to the kit and list; add a scoped recipe and a regression test. Rebuild and run
+`bun run verify`. After merge, the next successful watch packages and deploys
+those accepted bytes. Model output alone cannot add a recipe or a kit member.
+
+Try the delivered artifact itself: extract the ZIP, enter `fr-starter-kit/`, and
+run `python3 examples/decision-cycle/run.py /path/to/new-example`. It executes a
+real probe, invalidates its input, demotes stale support and exports a handoff.
+Move the handoff elsewhere and run its bundled checkers. Exit zero can still
+mean review is required. This is a portable exercise, not proof of a 100x benefit
+on research or on the recipient's AI project.

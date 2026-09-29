@@ -12,3 +12,7 @@ watch/crossings.jsonl	node watch/watch.mjs --apply	.github/workflows/watch.yml	d
 site/briefs/*.html (live:card regions)	node site/scripts/make-live.mjs	.github/workflows/watch.yml	daily	W3	-
 site/feed.xml (weekly digest entries)	node site/scripts/make-feed.mjs	.github/workflows/watch.yml	daily	M	-
 watch/freshness/REPORT.md	node watch/freshness/harness/run.mjs --report	.github/workflows/watch.yml	daily	W3	-
+site/apply/index.html	python3 scripts/build-learning.py	.github/workflows/watch.yml	daily	U	-
+site/downloads/fr-starter-kit.zip	python3 scripts/build-learning.py	.github/workflows/watch.yml	daily	U	-
+site/apply/catalog.json	python3 scripts/build-learning.py	.github/workflows/watch.yml	daily	U	-
+site/downloads/manifest.json	python3 scripts/build-learning.py	.github/workflows/watch.yml	daily	U	-

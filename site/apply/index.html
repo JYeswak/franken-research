@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apply the research — Franken Research</title><meta name="description" content="Download runnable research tools, try a complete evidence cycle, and inspect changes awaiting investigation.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0f1319;color:#ece7da;font:16px/1.6 system-ui,sans-serif;padding:20px}.wrap{max-width:1040px;margin:auto}a{color:#ffbd59}h1{font-size:clamp(28px,5vw,46px);line-height:1.15}h2{font-size:22px}.eyebrow{color:#9aa3b2;text-transform:uppercase;letter-spacing:.12em;font-size:12px}.lede{font-size:19px;max-width:750px}.card{padding:24px;border:1px solid #303b4e;border-radius:14px;background:#151b25;margin:24px 0}pre{background:#0b0e13;padding:16px;border-radius:8px;overflow:auto;font-size:13px}.files,small{font-size:13px}.files,code{overflow-wrap:anywhere}.download{display:inline-block;background:#ffbd59;color:#101820;padding:12px 20px;border-radius:8px;font-weight:700}.skip{position:absolute;left:-9999px}.skip:focus{left:0}details{margin-top:18px}@media(max-width:500px){body{padding:14px}.card{padding:16px}}
+</style><!-- shell:head -->
+<link rel="stylesheet" href="../assets/shell.css?v=0323daf6e7">
+<link rel="alternate" type="application/atom+xml" title="Franken Research" href="https://fr.zeststream.ai/feed.xml">
+<!-- /shell:head -->
+</head><body><a class="skip" href="#main">Skip to content</a><div class="wrap"><!-- shell:nav -->
+<nav class="shell-nav" aria-label="Site">
+<a class="shell-brand" href="../index.html">Franken Research</a>
+<ul class="shell-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../apply/index.html" aria-current="page">Apply</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
+<details class="shell-menu">
+<summary>Menu</summary>
+<ul class="shell-menu-links">
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../apply/index.html" aria-current="page">Apply</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+</ul>
+</details>
+<script>(function () {
+  var m = document.currentScript.parentNode.querySelector('.shell-menu');
+  if (!m) return;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); }
+  });
+  document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+})();</script>
+</nav>
+<!-- /shell:nav -->
+<main id="main"><p class="eyebrow">Learn → run → inspect → adapt</p><h1>Put the research to work.</h1>
+<p class="lede">Start with tools you can run in your own project. Inspect what they actually check, then decide what to adopt.</p>
+<p><a class="download" href="../downloads/fr-starter-kit.zip" download>Download the runnable kit</a> &nbsp; <a href="../downloads/manifest.json">Hashes and file manifest</a></p>
+<p><small>Code revision <code>1c32229d7fec2f9f</code> · 3 worked entry points · MIT first-party code.
+No third-party source snapshots or private experiment logs are bundled.</small></p>
+<p>Extract the ZIP and start in <code>fr-starter-kit/</code>. Compare its SHA-256 with the manifest before running it.
+For existing projects, review and copy selected files; reinstalling is not an upgrade procedure.</p>
+<section class="card" id="planning-gates"><h2>Give an AI project gates that can actually fail</h2>
+<p>Catch an incomplete plan and unsupported evidence labels before work is signed off.</p><p><b>Requires:</b> POSIX shell utilities; Git recommended. Use a new project directory.</p>
+<pre><code>sh scripts/init.sh ../my-new-project
+cd ../my-new-project
+sh scripts/check-readiness.sh</code></pre><p><b>Expected:</b> A pristine project reports NOT READY (exit 1). Complete and review the packet before expecting success.</p>
+<p><b>Limits:</b> Structural completeness is not execution authorization. The installer is not an upgrade command; it reinstalls the live hook.</p><p class="files"><a href="../starter-kit/scripts/init.sh">scripts/init.sh</a> · <a href="../starter-kit/scripts/check-readiness.sh">scripts/check-readiness.sh</a> · <a href="../starter-kit/CHECKLIST.md">CHECKLIST.md</a></p>
+<details><summary>Reproduce the repository check</summary><pre><code>python3 starter-kit/tests/test_gates.py</code></pre>
+<p>Commands above start in the extracted kit. This check starts in an FR checkout.
+The manifest identifies the exact shipped bytes; test success does not certify the meaning of a research claim.</p></details></section><section class="card" id="decision-cycle"><h2>Run, invalidate and transfer an evidence-backed decision</h2>
+<p>Learn how to stop an old experiment result silently supporting changed code.</p><p><b>Requires:</b> Python 3.9+, POSIX shell utilities. Give the exercise a destination that does not exist.</p>
+<pre><code>python3 examples/decision-cycle/run.py ../decision-exercise</code></pre><p><b>Expected:</b> A real local execution receipt, a stale-input failure, a demoted claim, and a standalone public transfer. See the exercise README for generated paths.</p>
+<p><b>Limits:</b> This deliberately small exercise teaches identity checking; it does not prove research quality or a speedup on your workload.</p><p class="files"><a href="../starter-kit/examples/decision-cycle/run.py">examples/decision-cycle/run.py</a> · <a href="../starter-kit/examples/decision-cycle/probe.py">examples/decision-cycle/probe.py</a> · <a href="../starter-kit/examples/decision-cycle/README.md">examples/decision-cycle/README.md</a> · <a href="../starter-kit/scripts/check-decisions.py">scripts/check-decisions.py</a> · <a href="../starter-kit/scripts/review-decisions.py">scripts/review-decisions.py</a></p>
+<details><summary>Reproduce the repository check</summary><pre><code>python3 scripts/test_learning_example.py</code></pre>
+<p>Commands above start in the extracted kit. This check starts in an FR checkout.
+The manifest identifies the exact shipped bytes; test success does not certify the meaning of a research claim.</p></details></section><section class="card" id="resume-decisions"><h2>Resume the decisions that need attention</h2>
+<p>Hand an agent the specific next check and the evidence that made it necessary.</p><p><b>Requires:</b> Python 3.9+ and your own maintained version-1 decision record; paths are relative to your project root.</p>
+<pre><code>python3 scripts/review-decisions.py path/to/decisions.json --root /path/to/project --json
+python3 scripts/check-decisions.py path/to/decisions.json --root /path/to/project --refresh</code></pre><p><b>Expected:</b> A ranked review queue; refresh demotes stale labels and never promotes claims.</p>
+<p><b>Limits:</b> A zero exit can still mean REVIEW or defer. Read the state. Metadata must already be safe to share; export is not a rights classifier.</p><p class="files"><a href="../starter-kit/scripts/check-decisions.py">scripts/check-decisions.py</a> · <a href="../starter-kit/scripts/review-decisions.py">scripts/review-decisions.py</a> · <a href="../starter-kit/DECISIONS.md">DECISIONS.md</a></p>
+<details><summary>Reproduce the repository check</summary><pre><code>python3 scripts/test_review_decisions.py</code></pre>
+<p>Commands above start in the extracted kit. This check starts in an FR checkout.
+The manifest identifies the exact shipped bytes; test success does not certify the meaning of a research claim.</p></details></section>
+<section class="card"><h2>What needs investigation next?</h2>
+<p>Last upstream observation: <time id="observed" datetime="2026-09-26T11:27:15Z">2026-09-26T11:27:15Z</time>.
+<strong id="age">Check the observation time before relying on freshness.</strong></p>
+<p>This queue changes with the daily watch. Changed or unknown upstream facts do not approve a new technique or rewrite an assessment at its recorded commit.</p><ul><li><a href="../briefs/asupersync.html">asupersync</a> — unknown: unknown: ci now (FR-C.3/no-settled-commit)</li><li><a href="../briefs/franken_agent_detection.html">franken_agent_detection</a> — changed: open crossing franken_agent_detection:ci:C2&gt;C1</li><li><a href="../briefs/franken_remote.html">franken_remote</a> — changed: open crossing franken_remote:ci:C3&gt;C2</li><li><a href="../briefs/franken_snowflake.html">franken_snowflake</a> — changed: open crossing franken_snowflake:ci:C3&gt;C5</li><li><a href="../briefs/franken_threed.html">franken_threed</a> — changed: open crossing franken_threed:ci:C1&gt;C2</li><li><a href="../briefs/frankenpandas.html">frankenpandas</a> — unknown: unknown: ci now (FR-C.3/no-settled-commit)</li><li><a href="../briefs/frankensqlite.html">frankensqlite</a> — unknown: unknown: ci now (FR-C.3/no-settled-commit)</li><li><a href="../briefs/frankentui.html">frankentui</a> — unknown: unknown: ci now (FR-C.3/no-settled-commit)</li></ul>
+<p><a href="https://github.com/JYeswak/franken-research/actions/workflows/watch.yml">Daily collection runs</a> ·
+<a href="https://github.com/JYeswak/franken-research/pulls?q=is%3Apr+%22%5Bresearch-candidate%5D%22">Runnable cloud candidates and review</a></p>
+<p>Candidate generation needs a configured coding-engine credential. A draft candidate is unaccepted code; independent tests and review precede promotion into this kit.
+Raw candidates are never added to this download automatically.</p></section>
+<section class="card"><h2>What counts as better?</h2><p>Measure a fresh user task: correct application, missed or false claims, transfer failures, and total setup, review and maintenance effort.
+These tools have bounded regression checks. A 100× improvement in research value has not been demonstrated.</p>
+<p><a href="catalog.json">Machine-readable recipes and queue</a> · <a href="../starter-kit/index.html">Complete kit instructions</a></p></section>
+</main></div><script>
+(function(){var t=Date.parse(document.getElementById('observed').dateTime);var h=(Date.now()-t)/3600000;
+document.getElementById('age').textContent=Number.isFinite(h)?(h>36?'STALE — latest collection is over 36 hours old.':h<0?'Observation time is ahead of this device clock.':'Observed within the last 36 hours; this is not a quality verdict.'):'Unknown observation time.';})();
+</script><!-- shell:footer -->
+<div class="shell-foot">
+<div class="shell-grid">
+<nav class="shell-dir" aria-label="All pages">
+<p class="shell-h">All pages</p>
+<ul>
+<li><a href="../index.html">Map</a></li>
+<li><a href="../index.html#tableview">Verdict table</a></li>
+<li><a href="../method/index.html">Method</a></li>
+<li><a href="../apply/index.html" aria-current="page">Apply</a></li>
+<li><a href="../techniques/index.html">Techniques</a></li>
+<li><a href="../failure-modes/index.html">Failure modes</a></li>
+<li><a href="../lessons/index.html">Lessons</a></li>
+<li><a href="../reproduce/index.html">Reproduce a verdict</a></li>
+<li><a href="../starter-kit/index.html">Starter kit</a></li>
+<li><a href="../stack/index.html">Agent stack</a></li>
+<li><a href="../rigor/index.html">Rigor practices</a></li>
+<li><a href="../beyond/index.html">Beyond FrankenSuite</a></li>
+<li><a href="../study/independent-100/index.html">Independent 100 study</a></li>
+<li><a href="../updates/index.html">Updates</a></li>
+<li><a href="../follow/index.html">Follow</a></li>
+<li><a href="../self/index.html">Graded by our own method</a></li>
+</ul>
+</nav>
+<div class="shell-side">
+<p class="shell-h">Help fix it</p>
+<ul class="shell-acts">
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=idea.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fapply%2F">Suggest a fix or an idea</a></li>
+<li><a href="https://github.com/JYeswak/franken-research/issues/new?template=site-bug.yml&amp;page=https%3A%2F%2Ffr.zeststream.ai%2Fapply%2F">Report a site problem</a></li>
+</ul>
+<p class="shell-note">Each opens a GitHub issue form with this page&rsquo;s address filled in. You need a GitHub account.</p>
+<p class="shell-follow">Follow updates: <a href="../feed.xml">Atom feed</a> <span aria-hidden="true">&middot;</span> <a href="../follow/index.html">Follow</a></p>
+</div>
+</div>
+<p class="shell-who">Made by Joshua Nowak (ZestStream) with AI coding agents. Not affiliated with or funded by Jeffrey Emanuel; Joshua uses his public tools and is a paying subscriber to jeffreys-skills.md.</p>
+<p class="shell-src"><a href="https://github.com/JYeswak/franken-research">Source on GitHub</a> <span aria-hidden="true">&middot;</span> <a href="https://github.com/JYeswak/franken-research/blob/main/LICENSE">MIT licensed</a></p>
+</div>
+<!-- /shell:footer -->
+</body></html>

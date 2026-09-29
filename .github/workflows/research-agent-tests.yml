@@ -1,0 +1,29 @@
+name: Research agent sandbox controls
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Resolver and sandbox contract tests
+        run: python3 -B ops/test_research_agent.py
+      - name: Actual container positive and negative controls
+        run: python3 -B ops/research-agent-smoke.py "$RUNNER_TEMP/research-agent-controls"
+      - name: Retain hosted control output
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: research-agent-sandbox-controls
+          path: ${{ runner.temp }}/research-agent-controls/
+          if-no-files-found: error
+          retention-days: 14
