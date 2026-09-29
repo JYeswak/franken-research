@@ -1,0 +1,120 @@
+{
+  "reviewer": "restore_acquisition independent reviewer (not candidate investigation author)",
+  "reviewed_at_utc": "2026-09-29",
+  "verdict": "PASS_WITH_LIMITS",
+  "scope": "Source-backed OpenResearch deferral decision and applied-research README measurement claims; not production or product acceptance",
+  "file_hashes": [
+    {
+      "path": "docs/evidence/applied-research/README.md",
+      "sha256": "98db89496cf3c0bda17c572bcf6c53f8f7ba89f23935a767991ec7031511dfa8",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/OPENRESEARCH-DECISION.md",
+      "sha256": "ec6d7d9537cd0951e83093c7f53aecfd33803cb5ee4a82a6d77e5ce1aae5e49c",
+      "bytes": 9879
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/TRIAL-PREDECLARED.md",
+      "sha256": "ea4dc41b4b7d5d12656a6814dd1111b49d408105437c5d659df0e9e3c85c9453",
+      "bytes": 2326
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/source-manifest.json",
+      "sha256": "9ce8ef8988a7b578fa4a38c525ac99dbda63cb07561799cea5f2e4611d40e39a",
+      "bytes": 1768
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/snapshot-probe.py",
+      "sha256": "5a5a479a951d0aa4cd97de5936fdac6b720d33d8acd956d0108218478ad3d70a",
+      "bytes": 2632
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/snapshot-results.json",
+      "sha256": "e8b389c98214b868ed65bf6b4419e4a338c04fd7f1942f0a02b2832c7d25be43",
+      "bytes": 1813
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/retrieval-results.json",
+      "sha256": "6988de1111b477637cf9eda7604577c7cd87947bb14faf0d03f75863310c5765",
+      "bytes": 498
+    },
+    {
+      "path": "docs/evidence/applied-research/openresearch/UPSTREAM-LICENSE",
+      "sha256": "c84f7f49136436f347d86e71adb0a6bc132f0b5a3817d84bf572edee71bf33e7",
+      "bytes": 1065
+    }
+  ],
+  "upstream_commit": "7cc3251d91eca4e98b5e4edd7d4b85f5decb2902",
+  "source_verification": {
+    "manifest_files_verified": 11,
+    "all_match_sha256_size_and_git_show_at_pin": true,
+    "inspected_paths": [
+      "LICENSE",
+      "Cargo.toml",
+      "src/compute.rs",
+      "src/local/localrun.rs",
+      "src/commands/paper.rs",
+      "src/commands/discover.rs",
+      "src/client.rs",
+      "src/local/harness/codex.rs",
+      "src/local/opencode.rs",
+      "docs/local-models.md",
+      ".github/workflows/ci.yml"
+    ]
+  },
+  "independent_execution": {
+    "command": "python3 snapshot-probe.py (byte-identical temporary copy, sibling openresearch-inspect symlink to retained pinned clone)",
+    "exit_code": 0,
+    "result": {
+      "upstream_pin": "7cc3251d91eca4e98b5e4edd7d4b85f5decb2902",
+      "upstream_template": "set -eo pipefail; mkdir -p repo; tar -xf {} -C repo; cd repo; {}",
+      "scope": "git archive + exact shell template; Rust product not executed",
+      "elapsed_seconds": 0.1229,
+      "cases": [
+        {
+          "case": "positive_committed_snapshot",
+          "revision": "8f4e08ce9f5c670b371e55fc9747b901ad71650c",
+          "sha256": "0de94aa8cac959c16bcd89609994b72019610b84052e0f82db6d4fe3faa5cc6c",
+          "archive_members": [
+            "data.txt",
+            "evaluate.py"
+          ],
+          "exit_code": 0,
+          "stdout": "5\n",
+          "stderr": ""
+        },
+        {
+          "case": "counterexample_export_ignore",
+          "revision": "8f4e08ce9f5c670b371e55fc9747b901ad71650c",
+          "sha256": "abda0548f46c72394cb485754cbc5fda726401ac81d88dadabf092c49e9095c2",
+          "archive_members": [
+            "evaluate.py"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/tmp/orx-snapshot-probe-2vjxc0rf/counterexample_export_ignore/repo/evaluate.py\", line 2, in <module>\n    print(sum(int(x) for x in Path('data.txt').read_text().split()))\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'data.txt'\n"
+        }
+      ]
+    },
+    "checked_in_results_unchanged": true
+  },
+  "findings": [
+    "Pinned source supports git archive revision input, SHA256-addressed retained archive, from_run digest check, exact shell template and current-machine environment boundary.",
+    "Independent primitive reproduction succeeds with committed 2+3 despite dirty worktree and fails after local export-ignore removes data.txt from archive of same commit. This supports archive-identity limit, not a product defect claim.",
+    "Paper source confirms overview by default, abs for full, fallback on 404 only, and non-success propagation. Recorded 403 results support zero accepted acquisitions in that screen, not global endpoint quality or invalid-ID behavior.",
+    "Existing agent harness and local-model documentation support treating this as agent/workspace/compute tooling; absence of demonstrated recurring accepted FR outcomes is correctly phrased as not established.",
+    "README explicitly separates accepted outcomes per total human hour from machine execution, excludes missing baseline and reuse benefit, and invents no measured multiplier. Its 0.1 percent cap is an idealized fixed-output residual-work bound, not an observation.",
+    "Defer installation is a reasonable bounded operational decision. It does not demonstrate comparative research quality or that OpenResearch cannot be useful for multi-branch experiments."
+  ],
+  "limits": [
+    "Did not rerun network retrieval; 403 timings and errors are retained author execution observations, not independently re-observed live here.",
+    "Retained predeclaration text states before execution; file contents alone do not independently prove chronology.",
+    "Did not build compiled orx, run upstream suite, invoke model/provider, inspect all product paths or establish absence of all scheduling capabilities.",
+    "Prepared GPTR pilot status was treated as explicitly attributed prior work, not independently revalidated in this candidate review.",
+    "No measured human baseline, accepted owner outcome, blinded quality comparison, second-project reuse or productivity ratio. Owner acceptance remains separate.",
+    "Probe requires pinned clone beside script as documented; reviewer supplied that layout in a temporary directory without changing checked-in results."
+  ],
+  "blocking_findings": [],
+  "final_scope_note": "README status line changed only from implementation/review in progress to pointing at validation.json and separate review files. Compared reconstruction to previous reviewed hash; review scope and findings unchanged. No probe rerun."
+}

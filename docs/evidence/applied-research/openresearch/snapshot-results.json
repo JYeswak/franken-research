@@ -1,0 +1,31 @@
+{
+  "upstream_pin": "7cc3251d91eca4e98b5e4edd7d4b85f5decb2902",
+  "upstream_template": "set -eo pipefail; mkdir -p repo; tar -xf {} -C repo; cd repo; {}",
+  "scope": "git archive + exact shell template; Rust product not executed",
+  "elapsed_seconds": 0.1175,
+  "cases": [
+    {
+      "case": "positive_committed_snapshot",
+      "revision": "34b87af8a1e3b07e0300c27697b13e329dd6d556",
+      "sha256": "1066e8ea00a3c062cdef125c0d31372b6e201903caafe9cacb22a23c0f1ab09c",
+      "archive_members": [
+        "data.txt",
+        "evaluate.py"
+      ],
+      "exit_code": 0,
+      "stdout": "5\n",
+      "stderr": ""
+    },
+    {
+      "case": "counterexample_export_ignore",
+      "revision": "34b87af8a1e3b07e0300c27697b13e329dd6d556",
+      "sha256": "8347a97d94b22940c49d17843ed4488aae41fdad3585f1399f254f80eb5a9487",
+      "archive_members": [
+        "evaluate.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/orx-snapshot-probe-ritzwnul/counterexample_export_ignore/repo/evaluate.py\", line 2, in <module>\n    print(sum(int(x) for x in Path('data.txt').read_text().split()))\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'data.txt'\n"
+    }
+  ]
+}

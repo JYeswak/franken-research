@@ -1,0 +1,198 @@
+{
+  "reviewed_at": "2026-09-29T05:28:08.809798+00:00",
+  "reviewer": "independent applied_candidate agent",
+  "verdict": "PASS for bounded historical CI evidence packet; no blocking code findings",
+  "files": [
+    {
+      "path": "scripts/ci-evidence-packet.mjs",
+      "sha256": "caa4ae79b9cf94dffcd3e08e5c89256ca0ab6cd7b2bd3d8b24068921e7592a6e"
+    },
+    {
+      "path": "scripts/test-ci-evidence-packet.mjs",
+      "sha256": "20e469a522210ebe61fc9d945aac0f79c5890b599e4b1163a9fb87e543f5afbd"
+    },
+    {
+      "path": "watch/freshness/facts.mjs",
+      "sha256": "29916a33b54f6abb266052bedfdf5960d171952e8b4ae497860a281315e7b251"
+    },
+    {
+      "path": "watch/freshness/classify.mjs",
+      "sha256": "7a25a7cfcf82a200af7cb1245509d0756d4ccad8f6ca1639d1eec6f4d2178963"
+    },
+    {
+      "path": "watch/freshness/fixtures/core/reference.json",
+      "sha256": "c52b0b88b7a62d97d04234469d7e83403de6ec133499fc5ff94e6b38f5a405ce"
+    },
+    {
+      "path": "watch/freshness/fixtures/core/blobs.json.gz",
+      "sha256": "dd982c39f83493d02fbbe1e352f598b76871f2a1fce8f0819caa44cedb267b1f"
+    },
+    {
+      "path": "updates/frankengit-2026-09-24.md",
+      "sha256": "41f1b091c189962ce83a87f4dd42b0d7f1cb1ba307193235d66e31f5a02f82b2"
+    },
+    {
+      "path": "site/scripts/verify-site.sh",
+      "sha256": "185d8daa8831dd984b8fa95e9e220b53b0fbf45b7f3fa903f8206df55d79d849"
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "node",
+        "--test",
+        "scripts/test-ci-evidence-packet.mjs"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2714 real historical source reproduces independently reviewed frankengit CI finding (32.167636ms)\n\u2714 missing or tampered source is rejected before any finding (53.555942ms)\n\u2714 missing point and incomplete recorded runs are rejected (42.143519ms)\n\u2714 HEAD and later state cannot silently replace historical evidence (40.297793ms)\n\u2139 tests 4\n\u2139 suites 0\n\u2139 pass 4\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 344.436387\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ci-evidence-packet.mjs",
+        "--repo",
+        "frankengit",
+        "--point",
+        "recheck",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "557a8f32d038db1eb5f015c0520f1faf5760bdc0d81bcfaa315bd76144ecc0f3",
+      "stderr": "{\"scope\":\"single offline component execution, not human productivity or a speedup ratio\",\"elapsed_ms\":101.307239,\"network_requests\":0,\"paid_api_requests\":0}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "site/scripts/verify-site.sh"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "independent_source_comparison": {
+    "method": "Read all eight embedded target source workflows, compare addendum at updates/frankengit-2026-09-24.md; independently parse all 86 workflow source texts with PyYAML BaseLoader",
+    "parser_version": "6.0.3",
+    "results": {
+      "baseline": {
+        "total": 78,
+        "parse_error_count": 9,
+        "parse_error_paths": [
+          ".github/workflows/gpt56pro-agent-context-hardening.yml",
+          ".github/workflows/gpt56pro-agent-context-sequence.yml",
+          ".github/workflows/gpt56pro-agent-next-work.yml",
+          ".github/workflows/gpt56pro-asb8-env-profile.yml",
+          ".github/workflows/gpt56pro-asb8-mainline-sequence.yml",
+          ".github/workflows/gpt56pro-asb8-phase-reset.yml",
+          ".github/workflows/gpt56pro-mainline-reconcile.yml",
+          ".github/workflows/gpt56pro-nodeconfig-doc-fix.yml",
+          ".github/workflows/gpt56pro-publish-bv-agent-contract.yml"
+        ],
+        "target_events": null,
+        "runs_count": 18
+      },
+      "target": {
+        "total": 8,
+        "parse_error_count": 0,
+        "parse_error_paths": [],
+        "target_events": {
+          ".github/workflows/docs-integrity.yml": {
+            "workflow_dispatch": ""
+          },
+          ".github/workflows/exact-patch.yml": {
+            "workflow_dispatch": ""
+          },
+          ".github/workflows/gpt56pro-apply-format-20260904.yml": {
+            "push": {
+              "branches": [
+                "tooling/gpt56pro-apply-format-20260904"
+              ]
+            }
+          },
+          ".github/workflows/index-maintenance.yml": {
+            "workflow_dispatch": ""
+          },
+          ".github/workflows/review-protection-activation-verify.yml": {
+            "workflow_dispatch": ""
+          },
+          ".github/workflows/source-snapshot.yml": {
+            "workflow_dispatch": ""
+          },
+          ".github/workflows/source-symbols.yml": {
+            "workflow_dispatch": ""
+          },
+          ".github/workflows/symbol-index.yml": {
+            "workflow_dispatch": ""
+          }
+        },
+        "runs_count": 0
+      }
+    },
+    "matches": [
+      "Exact baseline and recheck SHAs agree with historical addendum",
+      "78 baseline files, nine invalid YAML files; 8 target files, all parse",
+      "Seven target dispatch-only verification adapters; eighth is one-shot guarded patch/push on non-default branch",
+      "No target workflow triggers default branch push or PR",
+      "18 baseline recorded path-named failure runs, zero target recorded runs",
+      "CI C3 to C5 agrees with independent historical addendum"
+    ],
+    "source_limits": [
+      "No historical jobs or run logs in fixture; path-named runs do not independently prove zero jobs",
+      "Fixture hash checks establish blob identity, not trusted API fact or tree membership authenticity",
+      "No fresh upstream retrieval or current decision recheck performed"
+    ]
+  },
+  "code_review": [
+    "Source blobs verified before summarization; missing/tampered blobs and incomplete/malformed run entries rejected",
+    "pointMap excludes recording ci/HEAD substitution; pin/now/ci reserved",
+    "Disabled states newer than target or undated rejected; baseline classifier separately dates states",
+    "No production freshness state, ledger, source packet, or crossing modified",
+    "CLI uses existing classification rather than duplicating rules; JSON preserves workflow bytes and runs for review",
+    "W3 gate now invokes packet tests and fails W3 on nonzero status; existing W3 checks remain intact; bash -n passed. Error output enters existing filtered diagnostic stream."
+  ],
+  "measurement_limits": [
+    "One successful historical replay is bounded functional reuse, not a new discovery or demonstrated transfer gain",
+    "Command wall time excludes human setup/review and is not accepted outcomes per total human hour",
+    "No 10x, 100x, or 1000x result is supported"
+  ],
+  "findings": [],
+  "evidence_rebind_review": {
+    "reviewed_at": "2026-09-29T05:32:20.135610+00:00",
+    "verdict": "PASS for re-executed synthetic regression evidence identities",
+    "files": [
+      {
+        "path": "docs/evidence/applied-research/kit-revalidation.json",
+        "sha256": "e9a683034b054be23777867ec029047fd3f6df7406bb505c7e5680e6916da0b1"
+      },
+      {
+        "path": "docs/evidence/fr-evolution/decisions.json",
+        "sha256": "527253881981ab5bb96a26b6949c71a9586776cf67af4ad1b7cda56f95909b1a"
+      }
+    ],
+    "checks": [
+      {
+        "command": [
+          "python",
+          "scripts/check-decisions.py",
+          "docs/evidence/fr-evolution/decisions.json",
+          "--root",
+          "."
+        ],
+        "exit_code": 0,
+        "stdout": "gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+        "stderr": ""
+      }
+    ],
+    "findings": [
+      "Receipt records successful 21 installed-kit, 13 decision and 9 review tests plus mirror diff",
+      "All 21 declared input hashes match current files; evidence entry inputs and receipt inputs identical; artifact digest matches",
+      "Only kit-tests evidence entry differs from HEAD decisions JSON; claims, decisions and other evidence unchanged",
+      "Rebound scope explicitly excludes whole-gate success and research outcomes"
+    ],
+    "limits": [
+      "Reviewer inspected root execution receipt and reran identity/schema checker; did not separately repeat 43 tests",
+      "No whole-gate, research-quality, accepted-outcomes/human-hour or speedup claim"
+    ]
+  }
+}

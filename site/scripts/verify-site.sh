@@ -1263,6 +1263,10 @@ W3J_OUT="$(node "$REPO_ROOT/ops/write-job.mjs" 2>&1)"; W3J_RC=$?
 if [ $W3J_RC -ne 0 ] || ! printf '%s\n' "$W3J_OUT" | grep -q '^WRITE_JOB_OK'; then
   W3_OK=0; W3_DETAIL="${W3_DETAIL}write-job check exit $W3J_RC; "
 fi
+W3P_OUT="$(node --test "$REPO_ROOT/scripts/test-ci-evidence-packet.mjs" 2>&1)"; W3P_RC=$?
+if [ $W3P_RC -ne 0 ]; then
+  W3_OK=0; W3_DETAIL="${W3_DETAIL}CI evidence packet tests exit $W3P_RC; "
+fi
 W3L_OUT=""
 if [ -f "$SITE_DIR/scripts/make-live.mjs" ]; then
   W3L_OUT="$(node "$SITE_DIR/scripts/make-live.mjs" --check 2>&1)"; W3L_RC=$?
@@ -1277,7 +1281,7 @@ if [ $W3_OK -eq 1 ]; then
   pass "W3 freshness harness ($W3_N cases in ${W3_S:-?} s, REPORT.md fresh, $W3_MK of $W3_MT mutants killed, $W3_SR schedule rows, write job guarded, $W3_LB brief cards)"
 else
   fail "W3 freshness harness" "$W3_DETAIL"
-  printf '%s\n' "$W3_OUT" "$W3S_OUT" "$W3J_OUT" "$W3L_OUT" |
+  printf '%s\n' "$W3_OUT" "$W3S_OUT" "$W3J_OUT" "$W3P_OUT" "$W3L_OUT" |
     grep -E '"verdict":"FAIL"|^REPORT_STALE|^HARNESS ERROR|^NO CASES|^SCHEDULE_BAD|^WRITE_JOB_(BAD|ERROR)|^LIVE_BAD|^  ' |
     head -40 | sed 's/^/      /'
 fi
