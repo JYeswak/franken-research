@@ -21,7 +21,8 @@
 // Token: GITHUB_TOKEN or GH_TOKEN, else `gh auth token`. The token is never printed.
 // Node 22 built-ins only.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
@@ -763,25 +764,26 @@ export function renderLatest(snap, changes) {
 
 // fresh: { liveText, ledgerText, prevLedger } from freshnessStep. The ledger is written only when it
 // starts with the previous one byte for byte (FR-G.3); live.json only under its size budget (FR-L.2).
-function writeOutputs(snap, diff, fresh) {
+function writeOutputs(snap, diff, fresh, root = ROOT) {
+  const watchDir = join(root, 'watch');
   const day = snap.checked_at.slice(0, 10);
   assertLedgerPrefix(fresh.prevLedger, fresh.ledgerText);
   if (Buffer.byteLength(fresh.liveText) >= MAX_BYTES) throw usageError(`watch/live.json would be ${Buffer.byteLength(fresh.liveText)} bytes; FR-L.2 allows under ${MAX_BYTES}`);
   const files = {
-    [join(WATCH_DIR, 'state.json')]: toJson(snap),
-    [join(WATCH_DIR, 'census', `${day}.tsv`)]: renderCensus(snap),
-    [join(WATCH_DIR, 'live.json')]: fresh.liveText,
-    [join(WATCH_DIR, 'crossings.jsonl')]: fresh.ledgerText,
+    [join(watchDir, 'state.json')]: toJson(snap),
+    [join(watchDir, 'census', `${day}.tsv`)]: renderCensus(snap),
+    [join(watchDir, 'live.json')]: fresh.liveText,
+    [join(watchDir, 'crossings.jsonl')]: fresh.ledgerText,
   };
-  const changesFile = join(WATCH_DIR, 'changes', `${day}.json`);
+  const changesFile = join(watchDir, 'changes', `${day}.json`);
   const existing = existsSync(changesFile) ? JSON.parse(readFileSync(changesFile, 'utf8')) : null;
   const changes = renderChanges(snap, diff, existing);
   files[changesFile] = toJson(changes);
-  files[join(WATCH_DIR, 'latest.json')] = renderLatest(snap, changes);
+  files[join(watchDir, 'latest.json')] = renderLatest(snap, changes);
   for (const f of Object.keys(files)) mkdirSync(dirname(f), { recursive: true });
   for (const [f, body] of Object.entries(files)) writeFileSync(`${f}.tmp`, body);
   for (const f of Object.keys(files)) renameSync(`${f}.tmp`, f);
-  return { files: Object.keys(files).map((f) => f.slice(ROOT.length + 1)), material: changes.material.length };
+  return { files: Object.keys(files).map((f) => f.slice(root.length + 1)), material: changes.material.length };
 }
 
 // ---------------------------------------------------------------- issue text helpers
@@ -850,7 +852,7 @@ async function freshnessStep(api, snap, diff, watched, prev, root = ROOT) {
     .map((d) => ({ repo: d.name, created_at: d.created_at, reasons: candidateReasons(d) }));
   const recs = Object.values(snap.assessed);
   const out = computeFreshness({
-    records: got.records, summaries: got.cache.summaries, watched, ...inputs, candidates, checkedAt: snap.checked_at,
+    records: got.records, summaries: got.cache.summaries, watched, ...inputs, ledgerText: inputs.prevLedger, candidates, checkedAt: snap.checked_at,
     informational: { events_today: diff.material.length + diff.informational.length, events_since_pin: recs.reduce((s, r) => s + materialSincePin(r).length, 0) },
   });
   return { live: out.live, liveText: renderLiveJson(out.live), ledgerText: out.ledgerText, prevLedger: inputs.prevLedger, events: out.events, blobsFetched: got.fetched.blobs };
@@ -989,6 +991,30 @@ async function selftest() {
   const cases = [];
   const test = (name, fn) => cases.push({ name, fn });
   const expect = (cond, msg) => { if (!cond) throw new Error(msg); };
+
+  test('freshness caller preserves the committed ledger and rejects a tampered prefix', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'fr-watch-fresh-'));
+    try {
+      const freshDir = join(root, 'watch', 'freshness');
+      mkdirSync(freshDir, { recursive: true });
+      for (const file of ['private-ci.tsv', 'revisit.tsv']) writeFileSync(join(freshDir, file), readFileSync(join(WATCH_DIR, 'freshness', file)));
+      const ledger = readFileSync(join(WATCH_DIR, 'crossings.jsonl'), 'utf8');
+      expect(ledger.length > 0, 'regression requires a nonempty persisted ledger');
+      writeFileSync(join(root, 'watch', 'crossings.jsonl'), ledger);
+      // Empty observations isolate the real readFreshInputs -> freshnessStep -> computeFreshness handoff.
+      // Any unexpected network acquisition fails the test; this is not a live watch run.
+      const api = { graphql: async () => { throw new Error('unexpected GraphQL'); }, rest: async () => { throw new Error('unexpected REST'); } };
+      const snap = { assessed: {}, discovery: [], checked_at: '2026-09-29T00:00:00Z' };
+      const diff = { material: [], informational: [] };
+      const fresh = await freshnessStep(api, snap, diff, [], null, root);
+      expect(fresh.prevLedger === ledger && fresh.ledgerText === ledger, 'actual caller lost or changed the committed ledger');
+      assertLedgerPrefix(ledger, fresh.ledgerText);
+      let refused = false;
+      try { writeOutputs(snap, diff, { ...fresh, ledgerText: '' }, root); }
+      catch (e) { refused = /new ledger does not start with the previous committed ledger/.test(e.message); }
+      expect(refused, 'writeOutputs accepted a tampered ledger prefix');
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
 
   test('packets: exactly 44 assessed repos, each with one 40-hex pin', () => {
     const p = parsePackets(PACKETS_DIR);

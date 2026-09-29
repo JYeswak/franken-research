@@ -1,0 +1,1734 @@
+{
+  "retrieved_at": "2026-09-29T05:24:47.426Z",
+  "source_url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86?recursive=1",
+  "response": {
+    "sha": "e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86",
+    "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86",
+    "tree": [
+      {
+        "path": ".beads",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "025920c548f0dfbdd840a2f22c5a7f312db0b331",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/025920c548f0dfbdd840a2f22c5a7f312db0b331"
+      },
+      {
+        "path": ".beads/.gitignore",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9a2b8a0546a7bb936792631adde249054e3666ed",
+        "size": 922,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/9a2b8a0546a7bb936792631adde249054e3666ed"
+      },
+      {
+        "path": ".beads/.manifest.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "eaa05718a14b39c33d6d3e35ca3716d1abdbf6fb",
+        "size": 974,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/eaa05718a14b39c33d6d3e35ca3716d1abdbf6fb"
+      },
+      {
+        "path": ".beads/config.yaml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "84788d03a90841c5a8bb9d7d872f52822790853c",
+        "size": 95,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/84788d03a90841c5a8bb9d7d872f52822790853c"
+      },
+      {
+        "path": ".beads/issues.jsonl",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4ad410c23e07b92ceeff98a66b1cda4707e9ef49",
+        "size": 323693,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/4ad410c23e07b92ceeff98a66b1cda4707e9ef49"
+      },
+      {
+        "path": ".beads/metadata.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c787975e1ff5b452ae3e29c250bf7fcf77f64789",
+        "size": 62,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c787975e1ff5b452ae3e29c250bf7fcf77f64789"
+      },
+      {
+        "path": ".cargo",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "f5c9bb20ee6bcc1e798add6978bfce417afe58e8",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/f5c9bb20ee6bcc1e798add6978bfce417afe58e8"
+      },
+      {
+        "path": ".cargo/config.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5080d7f30bc89326cf04fa0e48ee839cde7327d2",
+        "size": 109,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/5080d7f30bc89326cf04fa0e48ee839cde7327d2"
+      },
+      {
+        "path": ".gitattributes",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f0c2c08b5f23fef539ad50a05e99e30c8f4b5dd9",
+        "size": 795,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f0c2c08b5f23fef539ad50a05e99e30c8f4b5dd9"
+      },
+      {
+        "path": ".github",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "fb1e639bb06a15fb78a8d6a5d0f5987f7e6c385d",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/fb1e639bb06a15fb78a8d6a5d0f5987f7e6c385d"
+      },
+      {
+        "path": ".github/workflows",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "fe8ee21917ac46860a2c87b56893ca8bd561a7a6",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/fe8ee21917ac46860a2c87b56893ca8bd561a7a6"
+      },
+      {
+        "path": ".github/workflows/ci.yml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "0f6a91704cb5b215d0757b6e7e0f2f03489bc79e",
+        "size": 4243,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/0f6a91704cb5b215d0757b6e7e0f2f03489bc79e"
+      },
+      {
+        "path": ".gitignore",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a7fa0731ec7d9b6e9db1751a0ed4c66ab5109f87",
+        "size": 2885,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a7fa0731ec7d9b6e9db1751a0ed4c66ab5109f87"
+      },
+      {
+        "path": "AGENTS.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8bb4058aedeb3fa3a28f6bdf48a1c83dd509ddbe",
+        "size": 13126,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8bb4058aedeb3fa3a28f6bdf48a1c83dd509ddbe"
+      },
+      {
+        "path": "CHANGELOG.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "286346ebbad7513d78ab6fddb6a0415cf54eff8a",
+        "size": 52288,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/286346ebbad7513d78ab6fddb6a0415cf54eff8a"
+      },
+      {
+        "path": "Cargo.lock",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c486334635d98dcd54da9cff74d08a1f75bb8d3e",
+        "size": 151695,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c486334635d98dcd54da9cff74d08a1f75bb8d3e"
+      },
+      {
+        "path": "Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e69e6007694863f96f366a3597c81cf8ad153e48",
+        "size": 3370,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e69e6007694863f96f366a3597c81cf8ad153e48"
+      },
+      {
+        "path": "LICENSE",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3d414da6ff83defe084707be6030866e8a7fb794",
+        "size": 3939,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/3d414da6ff83defe084707be6030866e8a7fb794"
+      },
+      {
+        "path": "README.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "eacead5d747dd92fa3741e3cbf379998ab6b1280",
+        "size": 50029,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/eacead5d747dd92fa3741e3cbf379998ab6b1280"
+      },
+      {
+        "path": "UPGRADE_LOG.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c33465ebf26baa7aae9047938cc872229f3f03ec",
+        "size": 2189,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c33465ebf26baa7aae9047938cc872229f3f03ec"
+      },
+      {
+        "path": "clippy.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "dce12cae9f9cf9a53883d851ef7fdd6dc50b9153",
+        "size": 997,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/dce12cae9f9cf9a53883d851ef7fdd6dc50b9153"
+      },
+      {
+        "path": "crates",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "a7d748c6731c3ec3f7a0b453ae494adf14a0dbbb",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/a7d748c6731c3ec3f7a0b453ae494adf14a0dbbb"
+      },
+      {
+        "path": "crates/franken-snowflake-auth",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "9d839bc0cad276ad62695817ad68da48c9508cec",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/9d839bc0cad276ad62695817ad68da48c9508cec"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d5f86390a72213c5b817d04260a05ba86b53ee7b",
+        "size": 780,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d5f86390a72213c5b817d04260a05ba86b53ee7b"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/build.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "12b02c4dc17ec05fdee499f38043c5fad0b95314",
+        "size": 26555,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/12b02c4dc17ec05fdee499f38043c5fad0b95314"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "a49c03318389ce9193e9b04d5da55e896f449407",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/a49c03318389ce9193e9b04d5da55e896f449407"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "39fc8cd9ec30a43be15275f13308092f6f2ae50b",
+        "size": 84390,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/39fc8cd9ec30a43be15275f13308092f6f2ae50b"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/src/redaction_policy.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d598f864d7f1fe527149010a9c951d04aa73fce0",
+        "size": 1845,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d598f864d7f1fe527149010a9c951d04aa73fce0"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/src/workload_identity.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9c4cc880d51f2bcf1c8a90565d7270f2487af9eb",
+        "size": 24772,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/9c4cc880d51f2bcf1c8a90565d7270f2487af9eb"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/tests",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "f73d8e98a3391b1e10614efe483fffc24ca47d70",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/f73d8e98a3391b1e10614efe483fffc24ca47d70"
+      },
+      {
+        "path": "crates/franken-snowflake-auth/tests/oidc_workload_identity.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "bff6f04a08a4a25a41816b286a176d1348733b9c",
+        "size": 17833,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/bff6f04a08a4a25a41816b286a176d1348733b9c"
+      },
+      {
+        "path": "crates/franken-snowflake-cache",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "87adf056eab4e014b3bc761f5201b050e6b8d972",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/87adf056eab4e014b3bc761f5201b050e6b8d972"
+      },
+      {
+        "path": "crates/franken-snowflake-cache/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8c1bd7631893d3336726f13f7c549e487623a966",
+        "size": 1165,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8c1bd7631893d3336726f13f7c549e487623a966"
+      },
+      {
+        "path": "crates/franken-snowflake-cache/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "1186aed7ddc04a99cfeb636879e3cafba1aa4aac",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/1186aed7ddc04a99cfeb636879e3cafba1aa4aac"
+      },
+      {
+        "path": "crates/franken-snowflake-cache/src/file_cache.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9db029fad861be2660685a65bf7388677c0de65d",
+        "size": 20841,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/9db029fad861be2660685a65bf7388677c0de65d"
+      },
+      {
+        "path": "crates/franken-snowflake-cache/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d943bd1f486d9e54811c4d7cb6580b9b60a6b523",
+        "size": 107018,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d943bd1f486d9e54811c4d7cb6580b9b60a6b523"
+      },
+      {
+        "path": "crates/franken-snowflake-cache/src/paths.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "cf4f6d0a1ea1a8f07ccfe1ed581e9bc1ab8b7668",
+        "size": 6032,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/cf4f6d0a1ea1a8f07ccfe1ed581e9bc1ab8b7668"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "abfaa26cb955705f1ce48d521756b01d033ca47e",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/abfaa26cb955705f1ce48d521756b01d033ca47e"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5ac98b2d9949778a5d93b12f726d4f0bd24219e6",
+        "size": 835,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/5ac98b2d9949778a5d93b12f726d4f0bd24219e6"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "c392fec4d5370170a4cbcc82a325088fc750a0f8",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/c392fec4d5370170a4cbcc82a325088fc750a0f8"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/diff.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ffc6eb697792d8e4f90db0c26ec7777b77317771",
+        "size": 22884,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/ffc6eb697792d8e4f90db0c26ec7777b77317771"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/discovery.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "aed566ec9b6fecd2487b88ee3863768bfac7d1e1",
+        "size": 43937,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/aed566ec9b6fecd2487b88ee3863768bfac7d1e1"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "0f8df3aa70257a41401ea164e29f8ac1b16b2aa8",
+        "size": 2234,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/0f8df3aa70257a41401ea164e29f8ac1b16b2aa8"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/model.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f0ae762fffa684f2669391aad3404150ef87bf42",
+        "size": 21224,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f0ae762fffa684f2669391aad3404150ef87bf42"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/operator.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "98a144b4a2ec4f2c46f908d5d35a46d231061883",
+        "size": 12833,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/98a144b4a2ec4f2c46f908d5d35a46d231061883"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/planner.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "eb320fbce2ae6b80ba0fdd4b6fdb40edf320186f",
+        "size": 55930,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/eb320fbce2ae6b80ba0fdd4b6fdb40edf320186f"
+      },
+      {
+        "path": "crates/franken-snowflake-catalog/src/predicate.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3887e62acc5d2272ef4917672fbb9a8285722472",
+        "size": 12243,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/3887e62acc5d2272ef4917672fbb9a8285722472"
+      },
+      {
+        "path": "crates/franken-snowflake-cli",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "e7bc9208ccf88f1f866a9e3d918b32be935837ab",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/e7bc9208ccf88f1f866a9e3d918b32be935837ab"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "bbec605e4a423dd81fd1739cb0f090c98bbce0d3",
+        "size": 4035,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/bbec605e4a423dd81fd1739cb0f090c98bbce0d3"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "79a7b386b05c9c15cbb928ae92677d473c9f816c",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/79a7b386b05c9c15cbb928ae92677d473c9f816c"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/bin",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "df22f2dab9f76f2c590172654747d010b93a5a7e",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/df22f2dab9f76f2c590172654747d010b93a5a7e"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/bin/fsnow.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "944a8bc8bce23dd58b5e16c278f87dc4ac2f639d",
+        "size": 247,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/944a8bc8bce23dd58b5e16c278f87dc4ac2f639d"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/catalog_surface.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8d024d743c7d5bcf7ac56f3b11323ef97c22ee95",
+        "size": 56945,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8d024d743c7d5bcf7ac56f3b11323ef97c22ee95"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/dataset_mode.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e32c9bb2d5b351409bdb59797a21b1b29501deb0",
+        "size": 14329,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e32c9bb2d5b351409bdb59797a21b1b29501deb0"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/health.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ecc1fae1019f20c259cdcc585e9e1a6a762b7146",
+        "size": 27718,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/ecc1fae1019f20c259cdcc585e9e1a6a762b7146"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "7a99b19be6c0e2757a0442758d5a18c8f03ae2d4",
+        "size": 261537,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/7a99b19be6c0e2757a0442758d5a18c8f03ae2d4"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/live.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d5300c0018e0688b5f09bc58e6088bdf972e1f65",
+        "size": 123760,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d5300c0018e0688b5f09bc58e6088bdf972e1f65"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/local_store.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "94c48b4332752f02164db436485cb55e8081adbe",
+        "size": 15742,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/94c48b4332752f02164db436485cb55e8081adbe"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/main.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "fe81fd2c10f2cb20d28020325927cc894411de06",
+        "size": 308,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/fe81fd2c10f2cb20d28020325927cc894411de06"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/mcp_surface.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "681f9d4b4dcd70d0c867fdad1cd4c82a00957fbc",
+        "size": 575,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/681f9d4b4dcd70d0c867fdad1cd4c82a00957fbc"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/src/tui_surface.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "21bf23adf63d5db1ffcd791ab3fe740d36b40f17",
+        "size": 16968,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/21bf23adf63d5db1ffcd791ab3fe740d36b40f17"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/tests",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "209ae7d6ce4b5bee5532c524dc6e82b1c2b3dabd",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/209ae7d6ce4b5bee5532c524dc6e82b1c2b3dabd"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/tests/cli_e2e.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "eeb374a655201b09c83f90d0453efb88d257500c",
+        "size": 25031,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/eeb374a655201b09c83f90d0453efb88d257500c"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/tests/cli_live_proof.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ebfb91aec253390daddc7dc79af226aecabbfd1f",
+        "size": 11649,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/ebfb91aec253390daddc7dc79af226aecabbfd1f"
+      },
+      {
+        "path": "crates/franken-snowflake-cli/tests/mcp_stdio.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "75635f6cb36c681fa6ce900abc444b8dd31e2dd4",
+        "size": 8569,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/75635f6cb36c681fa6ce900abc444b8dd31e2dd4"
+      },
+      {
+        "path": "crates/franken-snowflake-core",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "9f531938607551327500956a49d703f11d9ca2a0",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/9f531938607551327500956a49d703f11d9ca2a0"
+      },
+      {
+        "path": "crates/franken-snowflake-core/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3f44b527d98cbb45ddb5a6cabf45a118f2b9e840",
+        "size": 542,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/3f44b527d98cbb45ddb5a6cabf45a118f2b9e840"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "506bc69b8becca42dd1bedf532e7e425d828a1d2",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/506bc69b8becca42dd1bedf532e7e425d828a1d2"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/adapter.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d2ce7bd9b6d3f164ba0db06d9e917533cc2abc20",
+        "size": 37089,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d2ce7bd9b6d3f164ba0db06d9e917533cc2abc20"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/budget.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "58bba4885888f30b143bbf81ea154938f06c9050",
+        "size": 2703,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/58bba4885888f30b143bbf81ea154938f06c9050"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/cancel.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a185ef349a645b082b3f6f651581cc67e7262fc0",
+        "size": 7632,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a185ef349a645b082b3f6f651581cc67e7262fc0"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/capabilities.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5fbc59c8c5c2d5fb4c2f75429277588ce17b01fe",
+        "size": 2576,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/5fbc59c8c5c2d5fb4c2f75429277588ce17b01fe"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/envelope.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a1539df39ad1443b4ffe0baf06d0ca9da08a7477",
+        "size": 12630,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a1539df39ad1443b4ffe0baf06d0ca9da08a7477"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/error.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f70534da509a182bba0b46e08a1da14d00cb5128",
+        "size": 24864,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f70534da509a182bba0b46e08a1da14d00cb5128"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/exit.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "127e7e4c3ade18b794be2b5eb89d04c822092951",
+        "size": 2974,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/127e7e4c3ade18b794be2b5eb89d04c822092951"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/guardrails.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d2bba69f10853e1aa9de3971a472003ce3a49357",
+        "size": 30240,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d2bba69f10853e1aa9de3971a472003ce3a49357"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/ids.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f7e60300d8bf46513e6e406f494c2f32d714e2f7",
+        "size": 4578,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f7e60300d8bf46513e6e406f494c2f32d714e2f7"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b614f410371da55839c6e64790bc6aef4774cdae",
+        "size": 4568,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/b614f410371da55839c6e64790bc6aef4774cdae"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/outcome.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "73f448d193de1f053a5afc49bc49bb91929ac71b",
+        "size": 9261,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/73f448d193de1f053a5afc49bc49bb91929ac71b"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/redact.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "21ba7d8fae1ca5a0d983c0a99bae75b2282557e7",
+        "size": 11956,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/21ba7d8fae1ca5a0d983c0a99bae75b2282557e7"
+      },
+      {
+        "path": "crates/franken-snowflake-core/src/write_intent.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f3d485a2da6991e9b3292e7988d4824bbaa38d6e",
+        "size": 39987,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f3d485a2da6991e9b3292e7988d4824bbaa38d6e"
+      },
+      {
+        "path": "crates/franken-snowflake-export",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "b2980125c36bde443d2a40492f2aa25247e1b5dc",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/b2980125c36bde443d2a40492f2aa25247e1b5dc"
+      },
+      {
+        "path": "crates/franken-snowflake-export/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "0b0fc25f9ea1226dfafed0bd59ca027b8ce3e81b",
+        "size": 1160,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/0b0fc25f9ea1226dfafed0bd59ca027b8ce3e81b"
+      },
+      {
+        "path": "crates/franken-snowflake-export/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "8dce7b1680d94625d860b1cb8c995ee16842b074",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/8dce7b1680d94625d860b1cb8c995ee16842b074"
+      },
+      {
+        "path": "crates/franken-snowflake-export/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e408f27e38ab40d7bb98e4ee59ddda732cc4042b",
+        "size": 63304,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e408f27e38ab40d7bb98e4ee59ddda732cc4042b"
+      },
+      {
+        "path": "crates/franken-snowflake-export/src/parquet.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "412f055234eb976d68db17d8f23d8eb7aaeb5416",
+        "size": 71759,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/412f055234eb976d68db17d8f23d8eb7aaeb5416"
+      },
+      {
+        "path": "crates/franken-snowflake-export/tests",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "edcad23c16827854ad6443ced829525f5bc7f725",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/edcad23c16827854ad6443ced829525f5bc7f725"
+      },
+      {
+        "path": "crates/franken-snowflake-export/tests/parquet_conformance.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e30b615d94a09ee7757e71038f3a4d99f9bec10d",
+        "size": 12443,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e30b615d94a09ee7757e71038f3a4d99f9bec10d"
+      },
+      {
+        "path": "crates/franken-snowflake-frame",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "6dafe7496fc9e2720fc22518aeb26b84bf690d72",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/6dafe7496fc9e2720fc22518aeb26b84bf690d72"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f802266967783ddfcbe591f4c7a70d07fa3d9f75",
+        "size": 654,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f802266967783ddfcbe591f4c7a70d07fa3d9f75"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "141d077af43104e706fb04a8b9ba30a2567b2e8e",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/141d077af43104e706fb04a8b9ba30a2567b2e8e"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5c09e746beab4fcec84004844ddd3a6e6a68d336",
+        "size": 40991,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/5c09e746beab4fcec84004844ddd3a6e6a68d336"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/src/zero_copy_decoder.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9cea12ac18af85f389f316735ee8d80e636b4b39",
+        "size": 47159,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/9cea12ac18af85f389f316735ee8d80e636b4b39"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/tests",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "d296d859888e1a7bd8e9af310c5f6a90a1132e9b",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/d296d859888e1a7bd8e9af310c5f6a90a1132e9b"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/tests/jsonv2_golden.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "df84956f7377dd472ecfcd03ea90e41ca53195c8",
+        "size": 11468,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/df84956f7377dd472ecfcd03ea90e41ca53195c8"
+      },
+      {
+        "path": "crates/franken-snowflake-frame/tests/zero_copy_parity.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "579dae528537a51c398b0f1395f350befc9d67ef",
+        "size": 14157,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/579dae528537a51c398b0f1395f350befc9d67ef"
+      },
+      {
+        "path": "crates/franken-snowflake-graph",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "e254336a9a53cfa890c3380ae93a34151054d6f6",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/e254336a9a53cfa890c3380ae93a34151054d6f6"
+      },
+      {
+        "path": "crates/franken-snowflake-graph/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e0e5dbda71d72ba014115bb717c2f76f871224a2",
+        "size": 691,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e0e5dbda71d72ba014115bb717c2f76f871224a2"
+      },
+      {
+        "path": "crates/franken-snowflake-graph/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "ae56679ba413eb0354111f896fca3e1a4eed1c77",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/ae56679ba413eb0354111f896fca3e1a4eed1c77"
+      },
+      {
+        "path": "crates/franken-snowflake-graph/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "354fa2985e9bce40c1154aaa0cd315041e36e638",
+        "size": 45251,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/354fa2985e9bce40c1154aaa0cd315041e36e638"
+      },
+      {
+        "path": "crates/franken-snowflake-http",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "6faeed3dcbec01363505bfeda4d94b1cf5aa8029",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/6faeed3dcbec01363505bfeda4d94b1cf5aa8029"
+      },
+      {
+        "path": "crates/franken-snowflake-http/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "51bdd55fa303b908f743317e98a2ebe955111a31",
+        "size": 740,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/51bdd55fa303b908f743317e98a2ebe955111a31"
+      },
+      {
+        "path": "crates/franken-snowflake-http/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "f61cb36f7f2ab0eecda48116fc4d8419fd13699d",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/f61cb36f7f2ab0eecda48116fc4d8419fd13699d"
+      },
+      {
+        "path": "crates/franken-snowflake-http/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "658d3166a67e90fe91d7719f0f1db093117d6d84",
+        "size": 124694,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/658d3166a67e90fe91d7719f0f1db093117d6d84"
+      },
+      {
+        "path": "crates/franken-snowflake-mcp",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "0b80108fd0db45da64b3c23af8a060ef83f18e14",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/0b80108fd0db45da64b3c23af8a060ef83f18e14"
+      },
+      {
+        "path": "crates/franken-snowflake-mcp/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c5811a505123629ee10f0fe0524bf3b75b456a48",
+        "size": 683,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c5811a505123629ee10f0fe0524bf3b75b456a48"
+      },
+      {
+        "path": "crates/franken-snowflake-mcp/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "33d1055120ca82c857e9a4811d59637d44d843c4",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/33d1055120ca82c857e9a4811d59637d44d843c4"
+      },
+      {
+        "path": "crates/franken-snowflake-mcp/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f8e5dc2101336aff63fbdd1205dd82f4d3a2042b",
+        "size": 60011,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f8e5dc2101336aff63fbdd1205dd82f4d3a2042b"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "82b7f5941bf851f78570fc4b91b3e79de8d79b41",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/82b7f5941bf851f78570fc4b91b3e79de8d79b41"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c4d478bb3c0503fa9e6b6384ba501746ab2941cd",
+        "size": 1425,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c4d478bb3c0503fa9e6b6384ba501746ab2941cd"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "8600dc36cf82305feefd69eceb1efcfc023b13a9",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/8600dc36cf82305feefd69eceb1efcfc023b13a9"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/driver.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "90ade85e5cfe36e4760180e97a9d1dde63894b01",
+        "size": 85426,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/90ade85e5cfe36e4760180e97a9d1dde63894b01"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "dec5e9a0a1934c4ffffbf3cff041d993c9876411",
+        "size": 3790,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/dec5e9a0a1934c4ffffbf3cff041d993c9876411"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/lifecycle.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c9eaf00537b116dce7d0b991738a9735dc90ce80",
+        "size": 41303,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c9eaf00537b116dce7d0b991738a9735dc90ce80"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/request.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "7807d246c457198ba4c6c1d7f4d0a65f15da644e",
+        "size": 10537,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/7807d246c457198ba4c6c1d7f4d0a65f15da644e"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/response.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "695125838c9863e7ff62fac9b483f8b0d6d81b91",
+        "size": 17936,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/695125838c9863e7ff62fac9b483f8b0d6d81b91"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/status.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c612eaf870347e45f56300b0568133d1b78ec058",
+        "size": 5248,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c612eaf870347e45f56300b0568133d1b78ec058"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/src/wire.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d4f6ae9283265560127d2fac42780ed11af74943",
+        "size": 18094,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d4f6ae9283265560127d2fac42780ed11af74943"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "cc976f2a6d79faf28692b8410d8d442b39f8d87a",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/cc976f2a6d79faf28692b8410d8d442b39f8d87a"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "553d6cb506398fa2ec5eb37ecf484ed73ff75ec2",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/553d6cb506398fa2ec5eb37ecf484ed73ff75ec2"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/cancel_response.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "50326e7439847febe3b63f5595e23dd6ce91e673",
+        "size": 133,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/50326e7439847febe3b63f5595e23dd6ce91e673"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/jsonv2_codec_cells.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f3b258edbb093049a3191f77e33f3b2912d5d0e5",
+        "size": 2080,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f3b258edbb093049a3191f77e33f3b2912d5d0e5"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/jsonv2_codec_cells.source.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4560b9cbdd102bae6382a65fbfcdae4c18bdd2b5",
+        "size": 1415,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/4560b9cbdd102bae6382a65fbfcdae4c18bdd2b5"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/resp_200_multi_statement.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6a61a6cf43de005b9e21395ba953b43417fabccf",
+        "size": 304,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/6a61a6cf43de005b9e21395ba953b43417fabccf"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/resp_200_resultset_multi_partition.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b110e0f4b3057656926640abfbbfbd5ff07b0ff1",
+        "size": 728,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/b110e0f4b3057656926640abfbbfbd5ff07b0ff1"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/resp_200_resultset_single_partition.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8c6e2ccf2b93e7076d6055a7a32e5e6d996b10c3",
+        "size": 862,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8c6e2ccf2b93e7076d6055a7a32e5e6d996b10c3"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/resp_202_running.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "98f908f2eb201fc5f67762ff9181125449444a5a",
+        "size": 242,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/98f908f2eb201fc5f67762ff9181125449444a5a"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/resp_408_statement_timeout.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6b5ab64ee6a838cc6d4e53af8cda258acd67a7eb",
+        "size": 181,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/6b5ab64ee6a838cc6d4e53af8cda258acd67a7eb"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/resp_422_failure.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f64b93df3b7693e9d7f8f4a4ce965a93f719c291",
+        "size": 181,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f64b93df3b7693e9d7f8f4a4ce965a93f719c291"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/submit_select_request.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "980658d596345c5b33ca5a56b01374967a423bca",
+        "size": 364,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/980658d596345c5b33ca5a56b01374967a423bca"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/fixtures/submit_with_bindings_request.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "280cc02744e4dc844d3e6cfa466c084d93a15858",
+        "size": 305,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/280cc02744e4dc844d3e6cfa466c084d93a15858"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/golden.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c927e7116958d3b1f3c5dc48bb9012defb36d256",
+        "size": 8723,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c927e7116958d3b1f3c5dc48bb9012defb36d256"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/lifecycle.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "1f7e470f1fc5f7f6bc281f4f21037637357b3935",
+        "size": 8446,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/1f7e470f1fc5f7f6bc281f4f21037637357b3935"
+      },
+      {
+        "path": "crates/franken-snowflake-sqlapi/tests/live_proof.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6bba184acdf823727d75675a5c16ccaee318e40d",
+        "size": 30855,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/6bba184acdf823727d75675a5c16ccaee318e40d"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "14834da8e67bdc29b918e0cb8ec178446440221f",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/14834da8e67bdc29b918e0cb8ec178446440221f"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b28c60ca13f795e39f1a3df37fff7a188f02a2cd",
+        "size": 1154,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/b28c60ca13f795e39f1a3df37fff7a188f02a2cd"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "fbfc22be1b95be63c567a2ab755aa148e7d0e628",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/fbfc22be1b95be63c567a2ab755aa148e7d0e628"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/golden",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "a8b7d1c8d4515bd82db13a9c684e8a03ec4b89e1",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/a8b7d1c8d4515bd82db13a9c684e8a03ec4b89e1"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/golden/default_protocol_replay.golden.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3313e51cab87eb12a87327ecdc0f7efe03dd6266",
+        "size": 9862,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/3313e51cab87eb12a87327ecdc0f7efe03dd6266"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/golden/sample_run.golden.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3b64b34fb730168129c28ab8efbf23b933c5ee1b",
+        "size": 346,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/3b64b34fb730168129c28ab8efbf23b933c5ee1b"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/packets",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "746c541a0ec676ef803719be7cf283b3f6a47c54",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/746c541a0ec676ef803719be7cf283b3f6a47c54"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/packets/partition_1.json.gz",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e434adb8c3059ff8ec5a560dc0f07aedbb484558",
+        "size": 55,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e434adb8c3059ff8ec5a560dc0f07aedbb484558"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "553d6cb506398fa2ec5eb37ecf484ed73ff75ec2",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/553d6cb506398fa2ec5eb37ecf484ed73ff75ec2"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/cancel_response.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "50326e7439847febe3b63f5595e23dd6ce91e673",
+        "size": 133,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/50326e7439847febe3b63f5595e23dd6ce91e673"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/jsonv2_codec_cells.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f3b258edbb093049a3191f77e33f3b2912d5d0e5",
+        "size": 2080,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f3b258edbb093049a3191f77e33f3b2912d5d0e5"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/jsonv2_codec_cells.source.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4560b9cbdd102bae6382a65fbfcdae4c18bdd2b5",
+        "size": 1415,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/4560b9cbdd102bae6382a65fbfcdae4c18bdd2b5"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/resp_200_multi_statement.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6a61a6cf43de005b9e21395ba953b43417fabccf",
+        "size": 304,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/6a61a6cf43de005b9e21395ba953b43417fabccf"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/resp_200_resultset_multi_partition.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b110e0f4b3057656926640abfbbfbd5ff07b0ff1",
+        "size": 728,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/b110e0f4b3057656926640abfbbfbd5ff07b0ff1"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/resp_200_resultset_single_partition.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8c6e2ccf2b93e7076d6055a7a32e5e6d996b10c3",
+        "size": 862,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8c6e2ccf2b93e7076d6055a7a32e5e6d996b10c3"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/resp_202_running.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "98f908f2eb201fc5f67762ff9181125449444a5a",
+        "size": 242,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/98f908f2eb201fc5f67762ff9181125449444a5a"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/resp_408_statement_timeout.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6b5ab64ee6a838cc6d4e53af8cda258acd67a7eb",
+        "size": 181,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/6b5ab64ee6a838cc6d4e53af8cda258acd67a7eb"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/resp_422_failure.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f64b93df3b7693e9d7f8f4a4ce965a93f719c291",
+        "size": 181,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f64b93df3b7693e9d7f8f4a4ce965a93f719c291"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/submit_select_request.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "980658d596345c5b33ca5a56b01374967a423bca",
+        "size": 364,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/980658d596345c5b33ca5a56b01374967a423bca"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/fixtures/sqlapi/submit_with_bindings_request.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "280cc02744e4dc844d3e6cfa466c084d93a15858",
+        "size": 305,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/280cc02744e4dc844d3e6cfa466c084d93a15858"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "336bffc54ba6f41318f4103a50dfa014eac91040",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/336bffc54ba6f41318f4103a50dfa014eac91040"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/e2e.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "38b40301af01f0a3b601c4f6d69c9caf297db0e5",
+        "size": 18206,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/38b40301af01f0a3b601c4f6d69c9caf297db0e5"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "ecb774d9532af2be12810daa8f75e4babadaca42",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/ecb774d9532af2be12810daa8f75e4babadaca42"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness/canary.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c911519a535e9f7947941c3c6bb64859675adcf4",
+        "size": 15130,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c911519a535e9f7947941c3c6bb64859675adcf4"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness/clock.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a13988600f8da3cd6b7c26298daee86f3c9d888d",
+        "size": 12415,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a13988600f8da3cd6b7c26298daee86f3c9d888d"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness/golden.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f4ce89fd2a5c03cb0e34ba43abfd00054d9c24da",
+        "size": 33847,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f4ce89fd2a5c03cb0e34ba43abfd00054d9c24da"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness/logger.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "7025cd60d6925d8d0eddf3a9e7f819a85a1f429d",
+        "size": 16982,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/7025cd60d6925d8d0eddf3a9e7f819a85a1f429d"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness/mod.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c2d1f787884c1ea177b3372197666b939071b368",
+        "size": 2223,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c2d1f787884c1ea177b3372197666b939071b368"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/harness/paths.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c65bab7104defa76da8c6746d4b4cbd4de9f0dee",
+        "size": 6967,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c65bab7104defa76da8c6746d4b4cbd4de9f0dee"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6a9e8725ddd508ae06bbaf5f2eb80d503c7450af",
+        "size": 3266,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/6a9e8725ddd508ae06bbaf5f2eb80d503c7450af"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/mock",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "cf9d7153410858341628cedb6fee1b15363e9a17",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/cf9d7153410858341628cedb6fee1b15363e9a17"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/mock/http.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "531519809580f9ea6bfc8ad0d3e40a13c18041f5",
+        "size": 11533,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/531519809580f9ea6bfc8ad0d3e40a13c18041f5"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/mock/mod.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "367e204581a65390c88cea26f8c5142b864f1eff",
+        "size": 3746,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/367e204581a65390c88cea26f8c5142b864f1eff"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/mock/scenarios.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "0d5e07fa3e481d99999bc08d4cc6d36b620d6011",
+        "size": 9457,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/0d5e07fa3e481d99999bc08d4cc6d36b620d6011"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/mock/server.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c619d075d0297433f76d10424a3d4f46bed5b3c1",
+        "size": 13915,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c619d075d0297433f76d10424a3d4f46bed5b3c1"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/race.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e61d4a0992c1f1ff847280c8ad4ff78e06656b42",
+        "size": 61066,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e61d4a0992c1f1ff847280c8ad4ff78e06656b42"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/src/replay.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "835c6805ab5588335addda42e7b1559a1db0a3da",
+        "size": 11990,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/835c6805ab5588335addda42e7b1559a1db0a3da"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/tests",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "4596b12cd189c44744fd3f63ec6355ded74e0e84",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/4596b12cd189c44744fd3f63ec6355ded74e0e84"
+      },
+      {
+        "path": "crates/franken-snowflake-testkit/tests/e2e_harness.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "60e59d200bf354e79a23800fb8a5138719e7c68e",
+        "size": 1234,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/60e59d200bf354e79a23800fb8a5138719e7c68e"
+      },
+      {
+        "path": "crates/franken-snowflake-text-indexing",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "9e7e95ad83c014721905f8520102878ff0b5c390",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/9e7e95ad83c014721905f8520102878ff0b5c390"
+      },
+      {
+        "path": "crates/franken-snowflake-text-indexing/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5d81656a0eb3f22cb363639b3760961cc3e5060b",
+        "size": 830,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/5d81656a0eb3f22cb363639b3760961cc3e5060b"
+      },
+      {
+        "path": "crates/franken-snowflake-text-indexing/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "25f179341d40cb65bcb637a6471a2ef1eace754d",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/25f179341d40cb65bcb637a6471a2ef1eace754d"
+      },
+      {
+        "path": "crates/franken-snowflake-text-indexing/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "532e164d97057b5e69d5bb92e567688a774ac665",
+        "size": 28121,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/532e164d97057b5e69d5bb92e567688a774ac665"
+      },
+      {
+        "path": "crates/franken-snowflake-tui",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "174f57bb8b493f503f54bc4927138e02109f9a16",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/174f57bb8b493f503f54bc4927138e02109f9a16"
+      },
+      {
+        "path": "crates/franken-snowflake-tui/Cargo.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c8fc4132a150c0a66f9d7ec901456ebccd21be83",
+        "size": 768,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c8fc4132a150c0a66f9d7ec901456ebccd21be83"
+      },
+      {
+        "path": "crates/franken-snowflake-tui/src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "a3c68242551cd3deb5a1be16b89a0b4bc4a574f8",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/a3c68242551cd3deb5a1be16b89a0b4bc4a574f8"
+      },
+      {
+        "path": "crates/franken-snowflake-tui/src/lib.rs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e7890cf01a3e570d86ffed6dd58d14b2746a4f87",
+        "size": 52861,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e7890cf01a3e570d86ffed6dd58d14b2746a4f87"
+      },
+      {
+        "path": "docs",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "93cee0668d4ac2e8bf360342ee9dd75611352994",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/93cee0668d4ac2e8bf360342ee9dd75611352994"
+      },
+      {
+        "path": "docs/RELEASE.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "243a22297989504b1d79ce580f3101acf47415e4",
+        "size": 16379,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/243a22297989504b1d79ce580f3101acf47415e4"
+      },
+      {
+        "path": "docs/agent_cli_contract.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9569087fad30ac00bb8f7f7a58000ee589105f40",
+        "size": 7903,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/9569087fad30ac00bb8f7f7a58000ee589105f40"
+      },
+      {
+        "path": "docs/asupersync_leverage.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "52e2ee7811536a448b8a9fd2ce330bc4f493241a",
+        "size": 6623,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/52e2ee7811536a448b8a9fd2ce330bc4f493241a"
+      },
+      {
+        "path": "docs/cache_repository_design.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e622523f837999c3cfd17608fb834480e67e4745",
+        "size": 18309,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e622523f837999c3cfd17608fb834480e67e4745"
+      },
+      {
+        "path": "docs/catalog_graph_design.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "64e0ff1030ed924b9be6532996713303dd211770",
+        "size": 9404,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/64e0ff1030ed924b9be6532996713303dd211770"
+      },
+      {
+        "path": "docs/dataset_manifest_contract.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e7906aa2c5bf2226a151707f8ac20d29704d73f4",
+        "size": 11191,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/e7906aa2c5bf2226a151707f8ac20d29704d73f4"
+      },
+      {
+        "path": "docs/dependency_admissibility.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "205e51de1f16a44a138125ae200022293f79b0bb",
+        "size": 3035,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/205e51de1f16a44a138125ae200022293f79b0bb"
+      },
+      {
+        "path": "docs/downstream_integration_contract.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b3e5d12dd2cf2e281884ab0eff1461db36ce1fb0",
+        "size": 1853,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/b3e5d12dd2cf2e281884ab0eff1461db36ce1fb0"
+      },
+      {
+        "path": "docs/live_proof.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "cdb2e714df32c4596c413af783c0c507bd96423f",
+        "size": 6870,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/cdb2e714df32c4596c413af783c0c507bd96423f"
+      },
+      {
+        "path": "docs/planning",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "ca8f696749eee9340457ae1f9b255228a15fab40",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/ca8f696749eee9340457ae1f9b255228a15fab40"
+      },
+      {
+        "path": "docs/planning/COMPREHENSIVE_BACKGROUND_RESEARCH_FOR_CREATING_THE_FSNOW_CC_SKILL.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ef903861679edc9ba70fd34ebda940d408f4720d",
+        "size": 6527,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/ef903861679edc9ba70fd34ebda940d408f4720d"
+      },
+      {
+        "path": "docs/planning/COMPREHENSIVE_PLAN_FOR_FRANKEN_SNOWFLAKE.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "edf7c70681474c535b72cf57ef8a5175e751f5ce",
+        "size": 64836,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/edf7c70681474c535b72cf57ef8a5175e751f5ce"
+      },
+      {
+        "path": "docs/proof_lanes.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8e9aed2b53b5dbb0aec59db41c75b3a586574674",
+        "size": 13713,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8e9aed2b53b5dbb0aec59db41c75b3a586574674"
+      },
+      {
+        "path": "docs/protocol",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "db85d95817730685d1dd45bd8f976ed03fef9c51",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/db85d95817730685d1dd45bd8f976ed03fef9c51"
+      },
+      {
+        "path": "docs/protocol/README.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "60378ebed9b23853778038afaa0aca444f12b923",
+        "size": 919,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/60378ebed9b23853778038afaa0aca444f12b923"
+      },
+      {
+        "path": "docs/protocol/schema_draft.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b5beb6198bc36c81e0e52f805d270b094cd2946f",
+        "size": 10851,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/b5beb6198bc36c81e0e52f805d270b094cd2946f"
+      },
+      {
+        "path": "docs/security_model.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "89bc6eb134a112beb7ac263d86d4bb79f49ab163",
+        "size": 9991,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/89bc6eb134a112beb7ac263d86d4bb79f49ab163"
+      },
+      {
+        "path": "docs/text_indexing_frankensearch_design.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "96878c5d6b6cfd6580a191bba98d8d34a48233bf",
+        "size": 6906,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/96878c5d6b6cfd6580a191bba98d8d34a48233bf"
+      },
+      {
+        "path": "docs/transport_design.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ee21ce083adabbaae62d16fce70c13c4cac920e3",
+        "size": 15775,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/ee21ce083adabbaae62d16fce70c13c4cac920e3"
+      },
+      {
+        "path": "docs/write_intent_ladder.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "25fe18e5563b96957d8d47054a4c5afd5372422e",
+        "size": 6655,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/25fe18e5563b96957d8d47054a4c5afd5372422e"
+      },
+      {
+        "path": "franken_snowflake_illustration.webp",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3aad9bdbd2bbd88c0d77dc97f5a24f1bca4a8f96",
+        "size": 348982,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/3aad9bdbd2bbd88c0d77dc97f5a24f1bca4a8f96"
+      },
+      {
+        "path": "fsnow-golden-teeth",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "4493ef6c3219376f55a097312e3c2e1d003651ba",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/4493ef6c3219376f55a097312e3c2e1d003651ba"
+      },
+      {
+        "path": "fsnow-golden-teeth/jsonv2-wire-golden.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a9135ff6412fbffdffccdaa124d4f56dffb37610",
+        "size": 255,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a9135ff6412fbffdffccdaa124d4f56dffb37610"
+      },
+      {
+        "path": "gh_og_share_image.jpg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a83d21394ec1a6fa3f2b8fc10ece81439a585314",
+        "size": 447541,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a83d21394ec1a6fa3f2b8fc10ece81439a585314"
+      },
+      {
+        "path": "install.ps1",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f6e416d447036e86de3cf5f4d1e4a4a2a0010ea6",
+        "size": 26616,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f6e416d447036e86de3cf5f4d1e4a4a2a0010ea6"
+      },
+      {
+        "path": "install.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "c5acfe9155ea87838c010c9e08d1312be534ea6d",
+        "size": 34271,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/c5acfe9155ea87838c010c9e08d1312be534ea6d"
+      },
+      {
+        "path": "rust-toolchain.toml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "16a2bbc3b0c59ca64193b4d55f98582a43d93ed2",
+        "size": 98,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/16a2bbc3b0c59ca64193b4d55f98582a43d93ed2"
+      },
+      {
+        "path": "scripts",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "57e3ceb8e6ea1c9bbc420eeb157ab100ca448e5f",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/57e3ceb8e6ea1c9bbc420eeb157ab100ca448e5f"
+      },
+      {
+        "path": "scripts/capture-jsonv2-golden.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "30cccdb44f5350417f668d4627981322bbe35d67",
+        "size": 6081,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/30cccdb44f5350417f668d4627981322bbe35d67"
+      },
+      {
+        "path": "scripts/check-asupersync-single-version.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "d53a6e5433fac0565dfbf954b788b5d238e25d6d",
+        "size": 1501,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/d53a6e5433fac0565dfbf954b788b5d238e25d6d"
+      },
+      {
+        "path": "scripts/check-dependency-admissibility.py",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "bbad4b90eb8592b243a2f47d48bbe37fc3a212eb",
+        "size": 21180,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/bbad4b90eb8592b243a2f47d48bbe37fc3a212eb"
+      },
+      {
+        "path": "scripts/check-feature-lanes.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "29f42120f92ca97e87841c28df230670bb41c555",
+        "size": 3822,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/29f42120f92ca97e87841c28df230670bb41c555"
+      },
+      {
+        "path": "scripts/check-golden-lf.py",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "9f926877e341999d1ba8b0aa6d53195511de4e36",
+        "size": 2102,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/9f926877e341999d1ba8b0aa6d53195511de4e36"
+      },
+      {
+        "path": "scripts/check-install-sh-ui.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "dc57e05a4b07e08096063ca19682cfe7c60d877d",
+        "size": 5862,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/dc57e05a4b07e08096063ca19682cfe7c60d877d"
+      },
+      {
+        "path": "scripts/cross-build-windows-arm64.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "68d63f0e6466d0277677f4c26ce40507b84cf960",
+        "size": 2250,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/68d63f0e6466d0277677f4c26ce40507b84cf960"
+      },
+      {
+        "path": "scripts/e2e",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "01fe299c99502fc55daa37171983da4e559cbf2e",
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/trees/01fe299c99502fc55daa37171983da4e559cbf2e"
+      },
+      {
+        "path": "scripts/e2e/mock-harness.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "a8770dcd27dd5098bea07009a641c9bf7bfe7e0d",
+        "size": 353,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a8770dcd27dd5098bea07009a641c9bf7bfe7e0d"
+      },
+      {
+        "path": "scripts/live-proof-cli.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "8af6b9a5cc368730daeb4e6dcbc701e2ab4f40ca",
+        "size": 12698,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/8af6b9a5cc368730daeb4e6dcbc701e2ab4f40ca"
+      },
+      {
+        "path": "scripts/live-proof.sh",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "f916ce1da477226c7385659383393c71866ee02e",
+        "size": 272,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/f916ce1da477226c7385659383393c71866ee02e"
+      },
+      {
+        "path": "scripts/publish-crates.py",
+        "mode": "100755",
+        "type": "blob",
+        "sha": "a8d2323651cef0723cc1f47556d09e40c83f6df3",
+        "size": 5930,
+        "url": "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/git/blobs/a8d2323651cef0723cc1f47556d09e40c83f6df3"
+      }
+    ],
+    "truncated": false
+  }
+}

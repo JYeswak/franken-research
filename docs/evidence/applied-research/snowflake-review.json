@@ -1,0 +1,111 @@
+{
+  "reviewed_at": "2026-09-29T05:28:59.547411+00:00",
+  "reviewer": "independent applied_candidate agent",
+  "verdict": "PASS for retained-source CI-only crossing cause; not a complete recheck",
+  "files": [
+    {
+      "path": "docs/evidence/applied-research/snowflake/FINDING.md",
+      "sha256": "7b3739d147092327f4852890925c009f694c24d9cfd9a12c832882ce22d5c1f8"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/ci-finding.json",
+      "sha256": "1d0835e8632577da104dc3c635f15d2687894a4bedbd1828fedb6b11186b3a4d"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/head-runs.json",
+      "sha256": "7f470428c02c42b864316da6b05bbb61951629e033d17a11c106a99fcfb6d34b"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/metadata.json",
+      "sha256": "7e74832d4e3ce2433334c1239cdb669ccbe78195ff560e83ecc2c41eb42e2ae9"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/pin-runs.json",
+      "sha256": "f2ee9458f045bd8894f4d10759c2a7680b1f780dcbd927bd02bf1685d8b728b6"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/snowHead-tree.json",
+      "sha256": "3c708cf2555005bbe52a1aa644b189dc11c133140d6fb63d6e61493c2d64c83a"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/snowPin-tree.json",
+      "sha256": "324d2e8c4e6ff3011861c3e3a9c27d46aa3433289953b6345a81284975948189"
+    },
+    {
+      "path": "docs/evidence/applied-research/snowflake/verify-ci.mjs",
+      "sha256": "3140d3d1f8316ff1baca236eb6c6bb9b7f8eb4304d8ef819969fb516ef74f2c0"
+    },
+    {
+      "path": "watch/freshness/classify.mjs",
+      "sha256": "7a25a7cfcf82a200af7cb1245509d0756d4ccad8f6ca1639d1eec6f4d2178963"
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "node",
+        "docs/evidence/applied-research/snowflake/verify-ci.mjs"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"scope\":\"complete tree membership only; baseline classification needs independently obtained workflow source\",\"baseline_workflows\":[\".github/workflows/ci.yml\"],\"target_workflows\":[],\"verdict\":\"workflow files removed\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "docs/evidence/applied-research/snowflake/verify-ci.mjs",
+        "<non-published inspected baseline workflow source>"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"baseline\": {\n    \"value\": \"C3\",\n    \"rule\": \"FR-C.2/C3\",\n    \"tier\": \"[External, High]\",\n    \"evidence\": [\n      \"https://github.com/Dicklesworthstone/franken_snowflake/tree/e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86/.github/workflows\",\n      \"https://api.github.com/repos/Dicklesworthstone/franken_snowflake/actions/runs?head_sha=e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86\"\n    ]\n  },\n  \"head\": {\n    \"value\": \"C5\",\n    \"rule\": \"FR-C.2/C5-deleted\",\n    \"tier\": \"[Code-verified, High]\",\n    \"evidence\": [\n      \"https://github.com/Dicklesworthstone/franken_snowflake/tree/1e703fc2d92578e93ac50e574fa75d66e293de83/.github/workflows\",\n      \"https://api.github.com/repos/Dicklesworthstone/franken_snowflake/actions/runs?head_sha=1e703fc2d92578e93ac50e574fa75d66e293de83\"\n    ]\n  },\n  \"baseline_workflow_summary\": {\n    \"ok\": true,\n    \"kind\": \"test\",\n    \"push\": {\n      \"branches\": [\n        \"main\"\n      ]\n    },\n    \"pull_request\": {},\n    \"events\": [\n      \"pull_request\",\n      \"push\",\n      \"workflow_dispatch\"\n    ],\n    \"self_hosted\": false\n  },\n  \"triggers_default\": true,\n  \"pin_workflow_git_blob_sha\": \"0f6a91704cb5b215d0757b6e7e0f2f03489bc79e\",\n  \"pin_tree_entries\": 222,\n  \"head_tree_entries\": 241,\n  \"pin_workflows\": [\n    \".github/workflows/ci.yml\"\n  ],\n  \"head_workflows\": [],\n  \"scope\": \"CI only at the two named commits; no upstream code executed; no complete assessment, resolution, private CI or product quality claim\"\n}\n",
+      "stderr": ""
+    }
+  ],
+  "source_checks": [
+    "Read baseline workflow: actual cargo test workspace/feature lanes, push main, pull_request, workflow_dispatch; independent PyYAML parse agrees",
+    "Baseline workflow bytes agree with non-published original source wrapper and Git blob SHA-1",
+    "Both retained recursive trees are untruncated; baseline one workflow, examined head no .github entries",
+    "Both retained exact-commit run responses have total_count 0 and empty workflow_runs",
+    "Classifier C5-deleted precedence verified directly; removal conclusion is based on tree files, not empty run listing"
+  ],
+  "counts": {
+    "pin_tree": 222,
+    "head_tree": 241,
+    "head_github_entries": 0
+  },
+  "limits": [
+    "Review trusts provenance of separately retrieved API wrappers; reviewer did not refetch upstream",
+    "No historical enabled/disabled-state evidence; baseline C3 uses classifier unknown-state behavior",
+    "Current default branch metadata is used; not independent historical default-branch evidence",
+    "Retained run listing cannot rule out deleted runs or private CI",
+    "No upstream product code/test execution, full maturity decision, ledger resolution, current-tip claim or productivity ratio",
+    "Published bundle reproduces workflow tree removal without external bytes. Full baseline C3/source classification requires an independently obtained baseline workflow file. It is not an all-source offline bundle."
+  ],
+  "findings": [],
+  "metadata_sanitization_review": {
+    "reviewed_at": "2026-09-29T05:32:20.135610+00:00",
+    "verdict": "PASS",
+    "finding": "Unused SSH transport URL omitted with explicit omitted_fields provenance note. Classifier consumes only default_branch from metadata, unchanged in meaning; no scan allowlist altered.",
+    "metadata_sha256": "7e74832d4e3ce2433334c1239cdb669ccbe78195ff560e83ecc2c41eb42e2ae9",
+    "classifier_replay_exit_code": 0,
+    "classifier_output_unchanged": true
+  },
+  "private_inspected_source": {
+    "description": "Original decoded baseline workflow inspected earlier and reused for optional source-backed verifier run; not included in public bundle",
+    "git_blob_sha1": "0f6a91704cb5b215d0757b6e7e0f2f03489bc79e",
+    "sha256": "a5cb7551dd67be9ae86a87f018e94883e133bbdbd0c8e7afe232fa709c347c27",
+    "bytes": 4243
+  },
+  "publication_boundary_review": {
+    "reviewed_at": "2026-09-29T05:34:19.191524+00:00",
+    "verdict": "PASS after FINDING command clarified",
+    "removed_public_files": [
+      "pin-ci.yml",
+      "pin-ci-source.json"
+    ],
+    "default_mode": "read-only complete-tree workflow-removal check",
+    "optional_mode": "read-only source-hash-verified full classifier check",
+    "receipt_unchanged": true,
+    "license_scope": "Publication choice based on author-inspected restrictive rider; reviewer makes no legal permission conclusion"
+  }
+}

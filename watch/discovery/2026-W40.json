@@ -1,0 +1,489 @@
+{
+  "week": "2026-W40",
+  "checked_on": "2026-09-28",
+  "query": "language:Rust pushed:>=2026-08-29 created:>=2026-04-01 stars:>=25 fork:false",
+  "rule": "candidates/README.md",
+  "search": {
+    "total_count": 1815,
+    "fetched": 300,
+    "incomplete_results": false
+  },
+  "excluded": {
+    "owner": 1,
+    "fork": 0,
+    "archived": 0,
+    "assessed": 0,
+    "already_candidate": 0
+  },
+  "checked": 40,
+  "no_signal": 10,
+  "candidates": [
+    {
+      "repo": "akitaonrails/ai-memory",
+      "url": "https://github.com/akitaonrails/ai-memory",
+      "stars": 8513,
+      "pushed_at": "2026-09-28T05:22:53Z",
+      "created_at": "2026-05-21T23:23:51Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 16,
+        "readme_statement": true
+      },
+      "signal_count": 4,
+      "score": 4.393
+    },
+    {
+      "repo": "alphaXiv/OpenResearch",
+      "url": "https://github.com/alphaXiv/OpenResearch",
+      "stars": 5884,
+      "pushed_at": "2026-09-28T06:11:44Z",
+      "created_at": "2026-06-07T01:51:39Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 17,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.377
+    },
+    {
+      "repo": "tokio-rs/topcoat",
+      "url": "https://github.com/tokio-rs/topcoat",
+      "stars": 5627,
+      "pushed_at": "2026-09-28T12:26:31Z",
+      "created_at": "2026-04-03T14:27:27Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.375
+    },
+    {
+      "repo": "kvcache-ai/AgentENV",
+      "url": "https://github.com/kvcache-ai/AgentENV",
+      "stars": 3560,
+      "pushed_at": "2026-09-28T10:53:15Z",
+      "created_at": "2026-07-23T02:48:07Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 2,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.355
+    },
+    {
+      "repo": "BigPizzaV3/CodexPlusPlus",
+      "url": "https://github.com/BigPizzaV3/CodexPlusPlus",
+      "stars": 31638,
+      "pushed_at": "2026-09-28T12:20:17Z",
+      "created_at": "2026-05-06T09:32:49Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 7,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.45
+    },
+    {
+      "repo": "AprilNEA/OpenLogi",
+      "url": "https://github.com/AprilNEA/OpenLogi",
+      "stars": 22395,
+      "pushed_at": "2026-09-28T07:15:53Z",
+      "created_at": "2026-05-24T10:10:36Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.435
+    },
+    {
+      "repo": "pollen-robotics/microduck",
+      "url": "https://github.com/pollen-robotics/microduck",
+      "stars": 8909,
+      "pushed_at": "2026-09-23T13:11:59Z",
+      "created_at": "2026-07-29T07:52:16Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.395
+    },
+    {
+      "repo": "nubjs/nub",
+      "url": "https://github.com/nubjs/nub",
+      "stars": 4351,
+      "pushed_at": "2026-09-28T05:17:06Z",
+      "created_at": "2026-06-03T18:36:21Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.364
+    },
+    {
+      "repo": "NVIDIA-NeMo/Switchyard",
+      "url": "https://github.com/NVIDIA-NeMo/Switchyard",
+      "stars": 3236,
+      "pushed_at": "2026-09-27T18:15:38Z",
+      "created_at": "2026-05-19T19:06:33Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.351
+    },
+    {
+      "repo": "leookun/cursor-byok",
+      "url": "https://github.com/leookun/cursor-byok",
+      "stars": 3097,
+      "pushed_at": "2026-09-28T11:07:00Z",
+      "created_at": "2026-04-12T09:50:23Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 5,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.349
+    },
+    {
+      "repo": "h4ckf0r0day/obscura",
+      "url": "https://github.com/h4ckf0r0day/obscura",
+      "stars": 28106,
+      "pushed_at": "2026-09-27T23:01:12Z",
+      "created_at": "2026-04-13T10:31:41Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.445
+    },
+    {
+      "repo": "pacifio/atlas",
+      "url": "https://github.com/pacifio/atlas",
+      "stars": 8174,
+      "pushed_at": "2026-09-28T05:23:51Z",
+      "created_at": "2026-05-14T16:48:52Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 25,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.391
+    },
+    {
+      "repo": "deeplethe/utopia",
+      "url": "https://github.com/deeplethe/utopia",
+      "stars": 7960,
+      "pushed_at": "2026-09-28T10:47:46Z",
+      "created_at": "2026-08-07T19:33:17Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 22,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.39
+    },
+    {
+      "repo": "QuipNetwork/quip-validator",
+      "url": "https://github.com/QuipNetwork/quip-validator",
+      "stars": 5636,
+      "pushed_at": "2026-09-26T18:46:05Z",
+      "created_at": "2026-04-02T13:12:31Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.375
+    },
+    {
+      "repo": "QuipNetwork/quip-node-manager",
+      "url": "https://github.com/QuipNetwork/quip-node-manager",
+      "stars": 5491,
+      "pushed_at": "2026-09-21T04:56:50Z",
+      "created_at": "2026-04-02T13:03:34Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.374
+    },
+    {
+      "repo": "magnitudedev/magnitude",
+      "url": "https://github.com/magnitudedev/magnitude",
+      "stars": 5327,
+      "pushed_at": "2026-09-28T08:25:12Z",
+      "created_at": "2026-06-12T09:06:26Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.373
+    },
+    {
+      "repo": "Achilng/floral-notepaper",
+      "url": "https://github.com/Achilng/floral-notepaper",
+      "stars": 5323,
+      "pushed_at": "2026-09-11T00:26:08Z",
+      "created_at": "2026-04-26T13:07:10Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.373
+    },
+    {
+      "repo": "malisper/pgrust",
+      "url": "https://github.com/malisper/pgrust",
+      "stars": 5179,
+      "pushed_at": "2026-09-18T01:29:17Z",
+      "created_at": "2026-04-20T03:35:59Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.371
+    },
+    {
+      "repo": "withcoral/coral",
+      "url": "https://github.com/withcoral/coral",
+      "stars": 4943,
+      "pushed_at": "2026-09-11T07:06:33Z",
+      "created_at": "2026-04-03T20:56:07Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.369
+    },
+    {
+      "repo": "crmne/spotifast",
+      "url": "https://github.com/crmne/spotifast",
+      "stars": 4705,
+      "pushed_at": "2026-09-28T10:56:14Z",
+      "created_at": "2026-08-27T12:46:32Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.367
+    },
+    {
+      "repo": "jub0t/Concat",
+      "url": "https://github.com/jub0t/Concat",
+      "stars": 3821,
+      "pushed_at": "2026-09-28T12:36:05Z",
+      "created_at": "2026-08-25T18:34:47Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 13,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.358
+    },
+    {
+      "repo": "Open-Less/openless",
+      "url": "https://github.com/Open-Less/openless",
+      "stars": 3661,
+      "pushed_at": "2026-09-27T17:28:26Z",
+      "created_at": "2026-04-27T07:25:49Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 4,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.356
+    },
+    {
+      "repo": "therealaleph/MasterHttpRelayVPN-RUST",
+      "url": "https://github.com/therealaleph/MasterHttpRelayVPN-RUST",
+      "stars": 3590,
+      "pushed_at": "2026-09-01T18:37:20Z",
+      "created_at": "2026-04-21T14:46:31Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": true
+      },
+      "signal_count": 1,
+      "score": 1.356
+    },
+    {
+      "repo": "harry0703/MangoDisk",
+      "url": "https://github.com/harry0703/MangoDisk",
+      "stars": 3422,
+      "pushed_at": "2026-09-28T06:26:36Z",
+      "created_at": "2026-08-01T03:00:29Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.353
+    },
+    {
+      "repo": "microsoft/tgrep",
+      "url": "https://github.com/microsoft/tgrep",
+      "stars": 3374,
+      "pushed_at": "2026-09-26T15:45:06Z",
+      "created_at": "2026-04-03T15:50:37Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 26,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.353
+    },
+    {
+      "repo": "zerx-lab/FluxDown",
+      "url": "https://github.com/zerx-lab/FluxDown",
+      "stars": 3244,
+      "pushed_at": "2026-09-28T11:33:00Z",
+      "created_at": "2026-07-03T01:00:17Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.351
+    },
+    {
+      "repo": "deeplethe/forkd",
+      "url": "https://github.com/deeplethe/forkd",
+      "stars": 2911,
+      "pushed_at": "2026-09-14T05:07:27Z",
+      "created_at": "2026-05-11T17:42:24Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 7,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.346
+    },
+    {
+      "repo": "openlake-project/openlake",
+      "url": "https://github.com/openlake-project/openlake",
+      "stars": 2657,
+      "pushed_at": "2026-09-24T15:00:40Z",
+      "created_at": "2026-04-27T04:07:33Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.342
+    },
+    {
+      "repo": "tobi/walgit",
+      "url": "https://github.com/tobi/walgit",
+      "stars": 2591,
+      "pushed_at": "2026-09-13T02:39:31Z",
+      "created_at": "2026-08-23T22:28:01Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.341
+    },
+    {
+      "repo": "Kuddev/pebrel",
+      "url": "https://github.com/Kuddev/pebrel",
+      "stars": 2538,
+      "pushed_at": "2026-09-28T11:10:07Z",
+      "created_at": "2026-07-05T12:17:36Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.34
+    }
+  ],
+  "listed": [
+    "akitaonrails/ai-memory",
+    "alphaXiv/OpenResearch",
+    "tokio-rs/topcoat",
+    "kvcache-ai/AgentENV",
+    "BigPizzaV3/CodexPlusPlus",
+    "AprilNEA/OpenLogi",
+    "pollen-robotics/microduck",
+    "nubjs/nub",
+    "NVIDIA-NeMo/Switchyard",
+    "leookun/cursor-byok",
+    "h4ckf0r0day/obscura",
+    "pacifio/atlas",
+    "deeplethe/utopia",
+    "QuipNetwork/quip-validator",
+    "QuipNetwork/quip-node-manager"
+  ]
+}

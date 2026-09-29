@@ -1,0 +1,76 @@
+{
+  "reviewed_at": "2026-09-29T05:26:24.584199+00:00",
+  "reviewer": "independent applied_candidate agent",
+  "baseline": "77e67cd39c02780682c2924e02ef4c9ef2bb14e1",
+  "verdict": "PASS: no blocking findings in reviewed acquisition diff",
+  "scope": "Three acquisition implementation/regression files against origin/main; current REPORT and unchanged publisher/ledger dependencies",
+  "files": [
+    {
+      "path": "watch/watch.mjs",
+      "sha256": "a10173e2ddfc6862256ba1dcf97d280b7854475b617657fc9670ac5c325591e8",
+      "changed_from_origin_main": true
+    },
+    {
+      "path": ".github/workflows/discover.yml",
+      "sha256": "efc6293ee5f28e72abc18572e49b5ece65621dc145001e9388da5b836aa656a2",
+      "changed_from_origin_main": true
+    },
+    {
+      "path": "watch/freshness/cases/harness.cases.mjs",
+      "sha256": "045840af2f72e052139cb3227a4516f885a5f61fe8c4ac7bdc01110f90fb7c19",
+      "changed_from_origin_main": true
+    },
+    {
+      "path": "watch/freshness/REPORT.md",
+      "sha256": "778bf8990bbc36661583c4aba45cc76353601b09c8019d49ac57dab535ccefd9",
+      "changed_from_origin_main": false
+    },
+    {
+      "path": "ops/take-build-output.mjs",
+      "sha256": "4b92ec0cf9f8ff1aae719a88f393773641759b882f828494e32e12f3ab6f1174",
+      "changed_from_origin_main": false
+    },
+    {
+      "path": "watch/freshness/live.mjs",
+      "sha256": "1b8c95f807a1bf395a8c57bc37dbbf4590e2685f0ac32bd5ccefef1b3d1cba49",
+      "changed_from_origin_main": false
+    }
+  ],
+  "findings": [],
+  "reasoning": [
+    "readFreshInputs returns prevLedger; computeFreshness accepts ledgerText; explicit mapping fixes dropped ledger without altering assertLedgerPrefix",
+    "writeOutputs optional root defaults to original ROOT, supports isolated negative test and preserves pre-write prefix/size checks",
+    "Discovery download adds watch/discovery below runner.temp/discover-output, restoring the archive-stripped prefix without changing PATH_SETS or copying into checkout before validation",
+    "New HAR-O6 case follows actual workflow path and tests positive flat payload plus unexpected-script rejection with destination bytes unchanged",
+    "No permissions, action pins, dependency gates or publisher allowlists were weakened",
+    "REPORT presently byte-identical to origin/main; no regenerated-report claim made"
+  ],
+  "checks": [
+    {
+      "command": [
+        "node",
+        "watch/watch.mjs",
+        "--selftest"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS  freshness caller preserves the committed ledger and rejects a tampered prefix\nPASS  packets: exactly 44 assessed repos, each with one 40-hex pin\nPASS  first run is a baseline with nothing material since the previous state\nPASS  new release is material\nPASS  LICENSE blob change with the same SPDX is material\nPASS  workflow removal is material\nPASS  workflow additions to a set that already had files are informational, daily and since the pin\nPASS  one workflow removal is material, daily and since the pin, even with additions\nPASS  workflows appearing where there were none is material, daily and since the pin\nPASS  commits-only change is not material\nPASS  rename (same id, new name) is a rename, not delete plus new\nPASS  rename is followed by REST redirect when no id is recorded yet\nPASS  pin 404 is pin_unreachable\nPASS  new franken or Rust repo is a candidate; anything else is informational\nPASS  new-repo candidates: _bend ports and port-like descriptions are flagged with the clause named; forks, archived, and plain repos are not\nPASS  nothing else is material\nPASS  upstream tag names with table and comment syntax reach the changes file intact\nPASS  outputs are deterministic regardless of API node order\nPASS  latest.json counts match the census rendered from the same state\nCASES 19\nFAILED 0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "watch/freshness/harness/run.mjs",
+        "--only",
+        "HAR-O6"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"id\":\"HAR-O6-write-job\",\"clauses\":[\"FR-O.6\"],\"level\":\"MUST\",\"verdict\":\"PASS\",\"detail\":\"\",\"title\":\"two jobs: build is read-only and main-only, publish alone writes, installs nothing, runs no build or gate and only listed scripts, and neither checkout persists credentials\"}\n{\"id\":\"HAR-O6-all-workflows\",\"clauses\":[\"FR-O.6\"],\"level\":\"MUST\",\"verdict\":\"PASS\",\"detail\":\"\",\"title\":\"every workflow: a job that runs dependency code holds only read or none, and every job holding a write permission (watch, discover, triage) follows its write-job policy\"}\n{\"id\":\"HAR-O6-publish-deps\",\"clauses\":[\"FR-O.6\"],\"level\":\"MUST\",\"verdict\":\"PASS\",\"detail\":\"\",\"title\":\"every script the publish job runs imports only Node built-ins and repository files, all the way down\"}\n{\"id\":\"HAR-O6-artifact\",\"clauses\":[\"FR-O.6\"],\"level\":\"MUST\",\"verdict\":\"PASS\",\"detail\":\"\",\"title\":\"the publish job copies in only generated paths from the artifact, and nothing at all when the artifact holds anything else\"}\n\n| Section | MUST | SHOULD | MAY | Covered | Pass | XFAIL only | Uncovered MUST |\n|---|---:|---:|---:|---:|---:|---:|---|\n| FR-C | 6 | 1 | 0 | 0 | 0 | 0 | FR-C.1, FR-C.2, FR-C.3, FR-C.4, FR-C.5, FR-C.6 |\n| FR-T | 7 | 3 | 0 | 0 | 0 | 0 | FR-T.1, FR-T.2, FR-T.3, FR-T.4, FR-T.5, FR-T.8, FR-T.10 |\n| FR-L | 5 | 0 | 0 | 0 | 0 | 0 | FR-L.1, FR-L.2, FR-L.3, FR-L.4, FR-L.5 |\n| FR-D | 6 | 0 | 0 | 0 | 0 | 0 | FR-D.1, FR-D.2, FR-D.3, FR-D.4, FR-D.5, FR-D.6 |\n| FR-G | 3 | 0 | 0 | 0 | 0 | 0 | FR-G.1, FR-G.2, FR-G.3 |\n| FR-O | 4 | 2 | 0 | 1 | 1 | 0 | FR-O.1, FR-O.2, FR-O.3 |\n| FR-H | 7 | 1 | 0 | 0 | 0 | 0 | FR-H.1, FR-H.2, FR-H.3, FR-H.4, FR-H.6, FR-H.7, FR-H.8 |\n\nCASES 4\nPASS 4\nXFAIL 0\nFAILED 0\nUNCOVERED_MUST not-enforced\nSECONDS 0.27\n",
+      "stderr": ""
+    }
+  ],
+  "limits": [
+    "Local boundary checks are not a live scheduled watch/discovery run",
+    "No daily analytical learning or accepted-outcomes-per-human-hour improvement established",
+    "No implementation edits or bead closures by reviewer"
+  ]
+}

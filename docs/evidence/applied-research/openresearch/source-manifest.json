@@ -1,0 +1,60 @@
+{
+  "commit": "7cc3251d91eca4e98b5e4edd7d4b85f5decb2902",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "c84f7f49136436f347d86e71adb0a6bc132f0b5a3817d84bf572edee71bf33e7",
+      "bytes": 1065
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "725081459b9b71d00169eaa2739623713f3527652d2050ca835deab4ab69aabf",
+      "bytes": 5704
+    },
+    {
+      "path": "src/compute.rs",
+      "sha256": "c5922e669fa858fa93aabe76ec9891de6c7767cfe3c13752274562c043b7d121",
+      "bytes": 33641
+    },
+    {
+      "path": "src/local/localrun.rs",
+      "sha256": "14987ea15b9d9fa07fabe22072b48a126a1e0e3a4800a6581e3d40c6270ee709",
+      "bytes": 6128
+    },
+    {
+      "path": "src/commands/paper.rs",
+      "sha256": "a05d5d83666adf955dea2b25ddd12904c1c3a8673674d8c7c356a5fdcdd807fd",
+      "bytes": 21772
+    },
+    {
+      "path": "src/commands/discover.rs",
+      "sha256": "7cc9e2b6aecd5079d32db3b0b88590522c419f67e217b3a7b79bfb31f480b58f",
+      "bytes": 4385
+    },
+    {
+      "path": "src/client.rs",
+      "sha256": "db84caf765756e4c12c5c8b1dd8505a22c89e25d8777063d6f073ca9c742d931",
+      "bytes": 84564
+    },
+    {
+      "path": "src/local/harness/codex.rs",
+      "sha256": "ca084c1aed0da56a33fcf21cdbc7975c42d3116ae078ad2151573769ef5010e5",
+      "bytes": 247247
+    },
+    {
+      "path": "src/local/opencode.rs",
+      "sha256": "d12e29702820c48e1822e549894dabe1296b2f570e3ecaa52b3bc579268084f4",
+      "bytes": 38123
+    },
+    {
+      "path": "docs/local-models.md",
+      "sha256": "2bfb3ec4600e21df0a6165ab974a7fb0c42ae2685841b4a373d839ce2461ebcf",
+      "bytes": 4594
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "ea72fc6f92ea2dc5e5e08322829963d959c212663a048fefb6631c3d54626033",
+      "bytes": 9422
+    }
+  ]
+}

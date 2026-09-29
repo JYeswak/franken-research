@@ -756,6 +756,29 @@ const rest = [
           c.expect(ok ? r.problems.length === 0 : r.problems.some((x) => /not a generated path of this set/.test(x)), `discover set, ${extra}: ${ok ? 'refused' : 'accepted'} (${r.problems.join(' | ')})`);
         });
       }
+      // upload-artifact strips the prefix before the wildcard: the recovered W40 ZIP
+      // held a flat 2026-W40.json. Derive the extraction directory from the real workflow.
+      const workflow = parseYaml(readFileSync(join(ctx.root, '.github/workflows/discover.yml'), 'utf8'));
+      const download = workflow.jobs.publish.steps.find((step) => String(step.uses ?? '').startsWith('actions/download-artifact@'));
+      const downloadPath = String(download.with.path);
+      const tempPrefix = '${{ runner.temp }}/';
+      c.expect(downloadPath.startsWith(tempPrefix), 'discovery artifact is not downloaded outside the checkout');
+      for (const extra of [false, true]) {
+        withTmp((dir) => {
+          const art = join(dir, 'discover-output'), repo = join(dir, 'repo');
+          const extracted = join(dir, downloadPath.slice(tempPrefix.length));
+          const week = 'watch/discovery/2026-W40.json';
+          const payload = '{"candidates":[]}\n'; // synthetic content; recovered artifact shape only
+          put(extracted, '2026-W40.json', payload);
+          put(repo, week, 'old\n');
+          if (extra) put(extracted, 'unexpected.mjs', 'throw new Error("must never run");\n');
+          const r = takeBuildOutput(art, repo, PATH_SETS.discover);
+          c.expect(extra ? r.problems.some((x) => /unexpected\.mjs: not a generated path/.test(x)) : r.problems.length === 0 && r.files.length === 1,
+            `flat discovery download ${extra ? 'with script was accepted' : 'was refused'}: ${r.problems.join(' | ')}`);
+          c.expect(readFileSync(join(repo, week), 'utf8') === (extra ? 'old\n' : payload), 'discovery handoff copied wrong bytes or wrote despite rejection');
+          c.expect(!existsSync(join(repo, 'watch/discovery/unexpected.mjs')), 'artifact script reached checkout');
+        });
+      }
       const cli = (args) => spawnSync(process.execPath, [join(ctx.root, 'ops/take-build-output.mjs'), ...args], { encoding: 'utf8' }).status;
       withTmp((dir) => {
         c.expect(cli(['nosuchset', dir]) === 2 && cli([dir]) === 2, 'an unknown or missing path set is not a usage error');
