@@ -4,11 +4,11 @@
     {
       "id": "kit-tests",
       "kind": "execution",
-      "artifact": "docs/evidence/fr-evolution/kit-tests.json",
-      "sha256": "af5c4c007bbb3712d9759f750e592aa48bb7e43d688c66aebdd271729d4015ed",
+      "artifact": "docs/evidence/decision-review-validation.json",
+      "sha256": "10b85bcae40a3d512546cc0e4a7198a24ef184ddc4c26dc82a1b8bbbae043328",
       "inputs": {
         "starter-kit/scripts/check-ledger.sh": "62a345183be10cc35c0e191ee3dfcf4f172b20279f5cbe3a0408a44c6ef46970",
-        "starter-kit/scripts/init.sh": "e719b06a527825e6ec9579b162cb8ee8d0442afb5cb43bbd4fd44542399c1337",
+        "starter-kit/scripts/init.sh": "abb6559a0de61fec1a69f816008f65ce90dc79e6c36853db8e6a240e29cd441b",
         "starter-kit/scripts/checklist2beads.awk": "90fe6d685beff7fdf037aac04b7d3ed9feba36964552bea8d762953542990f75",
         "starter-kit/scripts/check-readiness.sh": "6ddf062666ececd4e3b8db8da74c0eef348db7536150ab8ef34187f466b5cbae",
         "starter-kit/scripts/check-claim-discipline.sh": "e21b8e101d8fd70d9c294fa995b4542f8fbb03c0ed6298b0b4460f45d84585db",
@@ -21,9 +21,15 @@
         "starter-kit/templates/demotion-rules.md": "ba77c0e22eb6893896030ac6794ef78014af17f9e4ed605c522104a5322616ed",
         "starter-kit/templates/agents.md": "f8de5144db1fdb7ac235cc7f2a44791b370268442e2ed39f232bf51c5b6ba537",
         "starter-kit/templates/kit-gates.yml": "6854ceb8d3167ac7eb0ab993fc37214f35d757c601d6adbc0dfe165d563c1ce8",
-        "starter-kit/tests/test_gates.py": "0ea2e8993092e716b429ba4671cc7a7fa65ab298cf20c7862a3b2c71bf8704ea"
+        "starter-kit/tests/test_gates.py": "5ee5674696b3d8b23181d5b7743c4ae1c82cc222e48a290807c89a9089fc3d28",
+        "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+        "scripts/review-decisions.py": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92",
+        "scripts/test_review_decisions.py": "57c6b6b7d2d3877430ee19dd0f07b9c6fba3693ae34dab2cd65b0f714b9545a6",
+        "starter-kit/scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+        "starter-kit/scripts/review-decisions.py": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92",
+        "site/scripts/verify-site.sh": "112c087e57e381af0f4f0f5b67f5adebaf65f46d71f84ba3c39ad6bf91e3a985"
       },
-      "scope": "Actual local development checks; fixtures synthetic; no comparative research performance claim.",
+      "scope": "Full local gate run including 21 installed-kit, 13 existing decision, 9 review CLI tests. Synthetic fixtures; no comparative research result.",
       "visibility": "public"
     },
     {
@@ -55,7 +61,7 @@
     {
       "id": "kit-repairs",
       "text": "Installed synthetic regression cases for missing registries, staged proofs and shared ledger checks pass.",
-      "status": "review_required",
+      "status": "supported",
       "evidence": [
         "kit-tests"
       ],
@@ -88,7 +94,7 @@
       "question": "Adopt the bounded starter-kit corrections?",
       "owner": "maintainer",
       "priority": 0,
-      "next_check": "Review implementation and full site gate receipt before merge.",
+      "next_check": "Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.",
       "alternatives": [
         "retain current kit",
         "adopt corrected kit"
