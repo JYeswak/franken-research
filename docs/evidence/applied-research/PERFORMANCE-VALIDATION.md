@@ -1,0 +1,80 @@
+# Publication validation — 2026-09-29
+
+Actual full command: `bash scripts/verify-local.sh --hash blake3 --cache <private-outside-path> --full`.
+Exit0; stable pre/post inputs; 26 gates passed and zero failed.
+
+After that run, the only edits were Beads closure, this receipt, and clarifying
+that existing notes mean notes present in the certified snapshot. Final privacy,
+decision identity, guard tests and diff checks cover those publication edits;
+this is not a claim that all26 gates were rerun after the wording changes.
+
+Full command wall seconds: 97.373973.
+
+Captured output (workspace prefix redacted):
+
+```text
+Franken Research site gates — <workspace>/franken-research/site
+----------------------------------------
+== A  packet/rulebook byte integrity ==
+PASS  A packet/rulebook byte-identical (44 packets + RULEBOOK)
+== A2 method-page claim citations ==
+PASS  A2 method citations resolve (12 claim rows)
+== B  render-time statistics ==
+PASS  B stats computed at render time (153 data-stat slots checked)
+== C  definitions on first use ==
+PASS  C key terms defined on first use
+== D  brief/packet pairing ==
+PASS  D brief/packet 1:1 pairing (44 briefs)
+== E  internal links ==
+PASS  E internal links resolve (7390 links)
+== F  method artifacts ==
+PASS  F method artifacts + local assets exist
+== G  keyboard + fallbacks ==
+PASS  G keyboard operability + fallbacks
+== H  slop scan ==
+PASS  H slop scan
+        note method/index.html: superlative? 'best': "t is a rationalization, not a claim. (The suite's best coverage audits found registries capture only 2.0"
+        note lessons/index.html: filler? 'honestly': 'ipped_not_proven  gate turns "we cannot honestly claim this yet" into a machine-readable'
+        note techniques/index.html: filler? 'honestly': 'rified, High]. Runs that cannot execute honestly emit a typed skip event instead of sile'
+        note rigor/index.html: filler? 'honestly': 'nation.md:71   Runs that cannot execute honestly emit a typed skip event instead of sile'
+        note stack/quantization.html: filler? 'honestly': 'p faster; int4 remains aspirational and honestly labeled, though a wasm-int4 browser art'
+        note stack/quantization.html: filler? 'honestly': 'nt.md:86   int4 support | Aspirational (honestly labeled) ;  packets/franken_ocr-assessm'
+        note stack/workflow-orchestrators.html: filler? 'honestly': 'estrators.md:42   Thin evidence, stated honestly ;  ecosystem/pickup/_evidence/workflow-'
+        note study/independent-100/alltheyud.html: superlative? 'best': "es' (Little, Brown, 2025-09-16), a New York Times best-seller  [Reported:  en.wikipedia.org/wiki/If_Anyo"
+== I  headless render ==
+PASS  I headless render (12x2 page-views, zero console errors, zero overflow)
+== J  deleted paths ==
+PASS  J no deleted-path references
+== K  agent stack evidence ==
+PASS  K1 verdict files complete and independently reviewed (files=21/21 cites=853 rows=136 licenses=101 adopted=106)
+PASS  K2 quoted citations resolve (files=21/21 cites=853 rows=136 licenses=101 adopted=106)
+PASS  K3 rigor practices sources and proofs (files=21/21 cites=853 rows=136 licenses=101 adopted=106)
+PASS  K4 generated pages match their sources (23 pages byte-identical to a fresh run)
+PASS  K5 adopted incumbents have a checked license, named when not permissive (files=21/21 cites=853 rows=136 licenses=101 adopted=106)
+== L  no personal email addresses ==
+PASS  L no personal email addresses (1695 tracked text files)
+== W  watch selftest ==
+PASS  W watch selftest (19 cases on recorded fixtures)
+== W2 discovery selftest ==
+PASS  W2 discovery selftest (16 cases on recorded fixtures)
+== W3 freshness harness ==
+PASS  W3 freshness harness (288 cases in 10.18 s, REPORT.md fresh, 105 of 105 mutants killed, 5 schedule rows, write job guarded, 44 brief cards)
+== M  feed + OPML ==
+PASS  M feed + OPML fresh and well-formed (9 entries, 89 OPML feeds; node parser)
+== S  shared shell ==
+PASS  S shared shell matches its render on every page (183 pages, 548 regions, 197 asset stamps)
+== V  verdict strip ==
+PASS  V verdict strip matches its render and data.js on every brief (44 briefs)
+== N  Independent 100 study ==
+PASS  N Independent 100 study matches its sources (105 pages: 99 people, index, 5 deep dives; schema and scan clean)
+== T  llms.txt ==
+PASS  T llms.txt matches a fresh render and every link resolves (132 links, 7 sections; 132 site links resolved by the gate)
+== U  kit and decision regressions ==
+gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.
+decision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.
+{"stale_or_unavailable_evidence": {}, "unsupported_current_labels": [], "scope": "identity/structure only, not semantic verification"}
+PASS  U kit regression controls, decision identities and shipped copies
+----------------------------------------
+gates passed: 26   failed: 0
+ALL GATES PASS
+```

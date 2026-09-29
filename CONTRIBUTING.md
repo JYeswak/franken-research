@@ -52,6 +52,13 @@ bun run build:map
 
 Files under `packets/`, `site/packets/`, `RULEBOOK.md`, and `site/RULEBOOK.md` are evidence. Changes to them go through the correction process above, and gate A requires the site copies to stay byte-identical to the root copies.
 
+For repeated **local Beads edits or new research notes only**, an optional
+[input-bound reuse command](probes/applied-performance/README.md) can reuse a
+successful full result while freshly checking affected inputs. Start with
+`bash scripts/verify-local.sh --cache /outside/repo/private-cache.json --full`.
+This is an explicitly minimal local environment; keep PATH and CHROME_PATH
+consistent. Other edits require full verification. Release/CI still runs all gates.
+
 ## Commit subjects
 
 Every commit subject ends with the level of verification behind it, in brackets:
