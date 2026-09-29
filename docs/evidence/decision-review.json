@@ -1,0 +1,103 @@
+{
+  "observed_at": "2026-09-29T03:41:56.853016+00:00",
+  "commit": "1159bcaece65e6ab6cd75e5172fb69cf4efb6dc4",
+  "exit_code": 0,
+  "scope": "Real FR records exported and read by freshly installed tool outside original checkout; same host, no research quality or comparative effort claim.",
+  "inputs": {
+    "scripts/review-decisions.py": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92",
+    "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+    "starter-kit/scripts/init.sh": "abb6559a0de61fec1a69f816008f65ce90dc79e6c36853db8e6a240e29cd441b",
+    "docs/evidence/fr-evolution/decisions.json": "25904d2262ae30c5aadeb85b23d088a215c5ccad214ca85fb12823b8fc87df8d"
+  },
+  "steps": [
+    {
+      "command": [
+        "sh",
+        "<checkout>/starter-kit/scripts/init.sh",
+        "<temporary>/project"
+      ],
+      "exit_code": 0,
+      "stdout": "starter-kit: initializing in <temporary>/project\n  git init (the pre-commit honesty gate needs a repo; KIT_NO_GIT=1 to skip)\n  hook installed live in .git/hooks/pre-commit (tracked source of truth: .githooks/pre-commit)\n  created docs/evidence/NEGATIVE_EVIDENCE.md\n  no beads CLI found; using the JSONL fallback (.beads/issues.jsonl is the database).\n  seeded 28 checklist beads in .beads/issues.jsonl\n\nDone. The one rule: a step you can satisfy by believing you did it is not a step.\n\nNext steps:\n  1. Fill docs/planning/packet.md (working copy of templates/planning-packet.md).\n     templates/ holds READ-ONLY reference copies \u2014 always edit the installed\n     working copy (docs/planning/packet.md, registries/claims.tsv), never the template.\n  2. Run ./scripts/check-readiness.sh \u2014 it reports NOT READY until every section is filled.\n     Each packet section's guidance names the vocabulary the checker requires.\n  3. Build your first proofs, then register every public claim in registries/claims.tsv\n     (set enforce=yes once the proof exists; readme_pattern must match README prose exactly).\n  4. Write the README LAST: the claim gate blocks any non-empty README until at least\n     one claim is enforced with a real proof (CHECKLIST.md B6).\n  5. Record falsified hypotheses in docs/evidence/NEGATIVE_EVIDENCE.md as you work.\n  6. Review AGENTS.md (the 12 forbidden patterns) and docs/definition-of-done.md \u2014\n     both installed for you; tailor them but keep the patterns verbatim.\n  7. Work Phase A of docs/CHECKLIST.md; close the seeded beads with cited evidence.\n     (JSONL fallback: set \"status\":\"closed\", \"closed_at\":\"<UTC>\",\n      \"close_reason\":\"<evidence citation>\" on the bead's line in .beads/issues.jsonl.)\n  8. Make your first commit \u2014 the pre-commit hook self-tests with a canary false\n     claim before it checks anything real.\n  9. When Phase A is green, sign the packet and start Phase B.\n  10. Read docs/REFERENCES.md to see where every mechanism came from.\n  Optional recurring research: docs/DECISIONS.md explains the Python 3.9+\n  review queue. No record is required by the shell gates.\n\nCI backstop: .github/workflows/kit-gates.yml re-runs the readiness, ledger and\nclaim-discipline gates on every push \u2014 that is the gate 'git commit\n--no-verify' cannot bypass. Fill in the commented toolchain steps per\nyour language (fmt/lint/test/build).\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "<checkout>/scripts/check-decisions.py",
+        "<checkout>/docs/evidence/fr-evolution/decisions.json",
+        "--export",
+        "<temporary>/bundle"
+      ],
+      "exit_code": 0,
+      "stdout": "gate-repair | combine | REVIEW | maintainer | next: Review implementation and full site gate receipt before merge.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {\"kit-tests\": [\"starter-kit/scripts/init.sh\", \"starter-kit/tests/test_gates.py\"]}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "<temporary>/project/scripts/review-decisions.py",
+        "<temporary>/bundle/decisions.json",
+        "--root",
+        "<temporary>/bundle",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"scope\": \"Identity and declared dependency review; not semantic verification or automatic dispatch.\",\n  \"decisions\": [\n    {\n      \"id\": \"gate-repair\",\n      \"question\": \"Adopt the bounded starter-kit corrections?\",\n      \"owner\": \"maintainer\",\n      \"priority\": 0,\n      \"disposition\": \"combine\",\n      \"next_check\": \"Review implementation and full site gate receipt before merge.\",\n      \"alternatives\": [\n        \"retain current kit\",\n        \"adopt corrected kit\"\n      ],\n      \"state\": \"review\",\n      \"affected_claims\": [\n        \"kit-repairs\"\n      ],\n      \"causes\": [\n        {\n          \"claim\": \"kit-repairs\",\n          \"status\": \"review_required\"\n        },\n        {\n          \"claim\": \"kit-repairs\",\n          \"evidence\": \"kit-tests\",\n          \"scope\": \"Actual local development checks; fixtures synthetic; no comparative research performance claim.\",\n          \"changes\": [\n            \"starter-kit/scripts/init.sh\",\n            \"starter-kit/tests/test_gates.py\"\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"decision-workflow\",\n      \"question\": \"Invest in the portable decision workflow or a separate wr product?\",\n      \"owner\": \"maintainer\",\n      \"priority\": 1,\n      \"disposition\": \"defer\",\n      \"next_check\": \"Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\",\n      \"alternatives\": [\n        \"FR documents alone\",\n        \"FR with optional decision records\",\n        \"separate wr\"\n      ],\n      \"state\": \"review\",\n      \"affected_claims\": [\n        \"net-benefit\"\n      ],\n      \"causes\": [\n        {\n          \"claim\": \"net-benefit\",\n          \"status\": \"provisional\"\n        }\n      ]\n    }\n  ],\n  \"unsupported_current_labels\": []\n}\n",
+      "stderr": ""
+    }
+  ],
+  "post_review": {
+    "record_sha256": "5b4e21ce837d0993fb4b1f3c01d3822576989f14c519853d7d415d9b6f624561",
+    "scope": "After fresh test receipt and separate code review, resolved kit decision omitted; synthetic source change queues it again. No speedup claim.",
+    "steps": [
+      {
+        "command": [
+          "sh",
+          "<checkout>/starter-kit/scripts/init.sh",
+          "<temporary>/installed"
+        ],
+        "exit_code": 0,
+        "stdout": "starter-kit: initializing in <temporary>/installed\n  git init (the pre-commit honesty gate needs a repo; KIT_NO_GIT=1 to skip)\n  hook installed live in .git/hooks/pre-commit (tracked source of truth: .githooks/pre-commit)\n  created docs/evidence/NEGATIVE_EVIDENCE.md\n  no beads CLI found; using the JSONL fallback (.beads/issues.jsonl is the database).\n  seeded 28 checklist beads in .beads/issues.jsonl\n\nDone. The one rule: a step you can satisfy by believing you did it is not a step.\n\nNext steps:\n  1. Fill docs/planning/packet.md (working copy of templates/planning-packet.md).\n     templates/ holds READ-ONLY reference copies \u2014 always edit the installed\n     working copy (docs/planning/packet.md, registries/claims.tsv), never the template.\n  2. Run ./scripts/check-readiness.sh \u2014 it reports NOT READY until every section is filled.\n     Each packet section's guidance names the vocabulary the checker requires.\n  3. Build your first proofs, then register every public claim in registries/claims.tsv\n     (set enforce=yes once the proof exists; readme_pattern must match README prose exactly).\n  4. Write the README LAST: the claim gate blocks any non-empty README until at least\n     one claim is enforced with a real proof (CHECKLIST.md B6).\n  5. Record falsified hypotheses in docs/evidence/NEGATIVE_EVIDENCE.md as you work.\n  6. Review AGENTS.md (the 12 forbidden patterns) and docs/definition-of-done.md \u2014\n     both installed for you; tailor them but keep the patterns verbatim.\n  7. Work Phase A of docs/CHECKLIST.md; close the seeded beads with cited evidence.\n     (JSONL fallback: set \"status\":\"closed\", \"closed_at\":\"<UTC>\",\n      \"close_reason\":\"<evidence citation>\" on the bead's line in .beads/issues.jsonl.)\n  8. Make your first commit \u2014 the pre-commit hook self-tests with a canary false\n     claim before it checks anything real.\n  9. When Phase A is green, sign the packet and start Phase B.\n  10. Read docs/REFERENCES.md to see where every mechanism came from.\n  Optional recurring research: docs/DECISIONS.md explains the Python 3.9+\n  review queue. No record is required by the shell gates.\n\nCI backstop: .github/workflows/kit-gates.yml re-runs the readiness, ledger and\nclaim-discipline gates on every push \u2014 that is the gate 'git commit\n--no-verify' cannot bypass. Fill in the commented toolchain steps per\nyour language (fmt/lint/test/build).\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "python3",
+          "<checkout>/scripts/check-decisions.py",
+          "<checkout>/docs/evidence/fr-evolution/decisions.json",
+          "--export",
+          "<temporary>/handoff"
+        ],
+        "exit_code": 0,
+        "stdout": "gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "python3",
+          "<temporary>/installed/scripts/review-decisions.py",
+          "<temporary>/handoff/decisions.json",
+          "--root",
+          "<temporary>/handoff",
+          "--json"
+        ],
+        "exit_code": 0,
+        "stdout": "{\n  \"scope\": \"Identity and declared dependency review; not semantic verification or automatic dispatch.\",\n  \"decisions\": [\n    {\n      \"id\": \"decision-workflow\",\n      \"question\": \"Invest in the portable decision workflow or a separate wr product?\",\n      \"owner\": \"maintainer\",\n      \"priority\": 1,\n      \"disposition\": \"defer\",\n      \"next_check\": \"Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\",\n      \"alternatives\": [\n        \"FR documents alone\",\n        \"FR with optional decision records\",\n        \"separate wr\"\n      ],\n      \"state\": \"review\",\n      \"affected_claims\": [\n        \"net-benefit\"\n      ],\n      \"causes\": [\n        {\n          \"claim\": \"net-benefit\",\n          \"status\": \"provisional\"\n        }\n      ]\n    }\n  ],\n  \"unsupported_current_labels\": []\n}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "python3",
+          "<temporary>/installed/scripts/review-decisions.py",
+          "<temporary>/handoff/decisions.json",
+          "--root",
+          "<temporary>/handoff",
+          "--json"
+        ],
+        "exit_code": 1,
+        "stdout": "{\n  \"scope\": \"Identity and declared dependency review; not semantic verification or automatic dispatch.\",\n  \"decisions\": [\n    {\n      \"id\": \"gate-repair\",\n      \"question\": \"Adopt the bounded starter-kit corrections?\",\n      \"owner\": \"maintainer\",\n      \"priority\": 0,\n      \"disposition\": \"combine\",\n      \"next_check\": \"Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\",\n      \"alternatives\": [\n        \"retain current kit\",\n        \"adopt corrected kit\"\n      ],\n      \"state\": \"review\",\n      \"affected_claims\": [\n        \"kit-repairs\"\n      ],\n      \"causes\": [\n        {\n          \"claim\": \"kit-repairs\",\n          \"evidence\": \"kit-tests\",\n          \"scope\": \"Full local gate run including 21 installed-kit, 13 existing decision, 9 review CLI tests. Synthetic fixtures; no comparative research result.\",\n          \"changes\": [\n            \"starter-kit/scripts/check-ledger.sh\"\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"decision-workflow\",\n      \"question\": \"Invest in the portable decision workflow or a separate wr product?\",\n      \"owner\": \"maintainer\",\n      \"priority\": 1,\n      \"disposition\": \"defer\",\n      \"next_check\": \"Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\",\n      \"alternatives\": [\n        \"FR documents alone\",\n        \"FR with optional decision records\",\n        \"separate wr\"\n      ],\n      \"state\": \"review\",\n      \"affected_claims\": [\n        \"net-benefit\"\n      ],\n      \"causes\": [\n        {\n          \"claim\": \"net-benefit\",\n          \"status\": \"provisional\"\n        }\n      ]\n    }\n  ],\n  \"unsupported_current_labels\": [\n    \"kit-repairs\"\n  ]\n}\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

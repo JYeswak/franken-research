@@ -7,6 +7,21 @@ This is an optional file-based workflow, not a new research product or truth sco
 
 The repository dogfoods it in `docs/evidence/fr-evolution/decisions.json`.
 
+Start with the read-only, actionable review queue:
+
+```sh
+python3 scripts/review-decisions.py docs/evidence/fr-evolution/decisions.json
+python3 scripts/review-decisions.py docs/evidence/fr-evolution/decisions.json --json
+```
+
+Current decisions are omitted by default (`--all` includes them). Each queued
+decision shows its owner, authored priority, next check, affected claims and
+transitive evidence/status causes. A deferred decision stays visible even with
+current identities. No model calls, automatic dispatch or changes to records occur.
+JSON is a single object on stdout; exit codes match the checker below. The starter
+kit now installs both commands and [usage instructions](../starter-kit/DECISIONS.md)
+into new projects; existing working files are preserved, not silently upgraded.
+
 ```sh
 python3 scripts/check-decisions.py docs/evidence/fr-evolution/decisions.json
 python3 scripts/check-decisions.py docs/evidence/fr-evolution/decisions.json --refresh
@@ -44,6 +59,7 @@ Development checks:
 
 ```sh
 python3 scripts/test_decisions.py
+python3 scripts/test_review_decisions.py
 python3 docs/evidence/fr-evolution/dogfood.py
 ```
 
