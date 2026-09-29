@@ -10,6 +10,11 @@ Plain Markdown and POSIX shell. Zero dependencies on the FrankenSuite or on
 any of its repositories. Everything traces to observed evidence —
 see `REFERENCES.md` for the mechanism-by-mechanism map.
 
+For recurring research, the installer also includes optional Python 3.9+ decision
+review commands. They show which decisions need attention and why, using existing
+evidence records. See [DECISIONS.md](DECISIONS.md). Python is not needed by the
+installer or shell gates; no model provider, database, or record is required.
+
 ## The two-phase model
 
 **Phase A — Planning: is the plan execution-ready?** Before agents are set

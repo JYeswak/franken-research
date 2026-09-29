@@ -55,7 +55,7 @@
     {
       "id": "kit-repairs",
       "text": "Installed synthetic regression cases for missing registries, staged proofs and shared ledger checks pass.",
-      "status": "supported",
+      "status": "review_required",
       "evidence": [
         "kit-tests"
       ],

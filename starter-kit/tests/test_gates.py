@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Regression checks for actual installed kit paths; fixtures are synthetic."""
-import pathlib, subprocess, tempfile, unittest, os
+import pathlib, subprocess, tempfile, unittest, os, json, hashlib, sys
 KIT=pathlib.Path(__file__).resolve().parents[1]
 class Gates(unittest.TestCase):
  def setUp(self):
@@ -62,4 +62,25 @@ class Gates(unittest.TestCase):
   self.assertIn('sh scripts/check-ledger.sh docs/evidence/NEGATIVE_EVIDENCE.md',s)
   self.assertIn('sh scripts/check-claim-discipline.sh registries/claims.tsv README.md',s)
  def test_empty_packet_fails(self):self.call(['sh','scripts/check-readiness.sh'],1)
+ def test_decision_commands_match_canonical(self):
+  for name in ('check-decisions.py','review-decisions.py'):
+   self.assertEqual((self.root/'scripts'/name).read_bytes(),(KIT.parent/'scripts'/name).read_bytes())
+ def test_installed_review_from_unrelated_directory(self):
+  self.put('input.txt','synthetic input')
+  self.put('receipt.json','{"exit_code":0}')
+  h=lambda p:hashlib.sha256((self.root/p).read_bytes()).hexdigest()
+  record={'version':1,'evidence':[{'id':'e','kind':'execution','artifact':'receipt.json','sha256':h('receipt.json'),'inputs':{'input.txt':h('input.txt')},'scope':'synthetic installed CLI exercise','visibility':'public'}],'claims':[{'id':'c','text':'fixture','status':'supported','evidence':['e']}],'decisions':[{'id':'d','question':'fixture?','owner':'test','priority':0,'next_check':'inspect input','alternatives':['keep','change'],'disposition':'combine','claims':['c']}]}
+  self.put('decisions.json',json.dumps(record))
+  cmd=[sys.executable,str(self.root/'scripts/review-decisions.py'),str(self.root/'decisions.json'),'--json']
+  # Default root must follow installed script, not cwd or originating checkout.
+  with tempfile.TemporaryDirectory() as elsewhere:
+   p=subprocess.run(cmd,cwd=elsewhere,capture_output=True,text=True)
+   self.assertEqual(p.returncode,0,p.stdout+p.stderr);self.assertEqual(json.loads(p.stdout)['decisions'],[])
+   self.put('input.txt','synthetic change')
+   p=subprocess.run(cmd,cwd=elsewhere,capture_output=True,text=True)
+   self.assertEqual(p.returncode,1,p.stdout+p.stderr);self.assertEqual(json.loads(p.stdout)['decisions'][0]['causes'][0]['changes'],['input.txt'])
+ def test_reinstall_preserves_decision_work(self):
+  self.put('scripts/review-decisions.py','# user customization\n');self.put('docs/DECISIONS.md','user notes\n');self.put('decisions.json','user record\n')
+  self.call(['sh',str(KIT/'scripts/init.sh'),str(self.root)],0)
+  for name,expected in [('scripts/review-decisions.py','# user customization\n'),('docs/DECISIONS.md','user notes\n'),('decisions.json','user record\n')]:self.assertEqual((self.root/name).read_text(),expected)
 if __name__=='__main__':unittest.main()

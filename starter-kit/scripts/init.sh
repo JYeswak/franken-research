@@ -64,6 +64,12 @@ for s in check-readiness.sh check-claim-discipline.sh check-ledger.sh; do
   copy_new "scripts/$s" "scripts/$s"
   chmod +x "$TARGET/scripts/$s"
 done
+# Optional maintained decisions: installed without executing Python or creating
+# empty records. Existing user-owned scripts/docs remain untouched on re-run.
+for s in check-decisions.py review-decisions.py; do
+  copy_new "scripts/$s" "scripts/$s"
+done
+copy_new DECISIONS.md docs/DECISIONS.md
 
 # 3. Pre-commit honesty hook: tracked copy + live install.
 #    (franken_whisper: the hook lives in the repo; frankensearch/frankenscipy:
@@ -213,6 +219,8 @@ say "  8. Make your first commit — the pre-commit hook self-tests with a canar
 say "     claim before it checks anything real."
 say "  9. When Phase A is green, sign the packet and start Phase B."
 say "  10. Read docs/REFERENCES.md to see where every mechanism came from."
+say "  Optional recurring research: docs/DECISIONS.md explains the Python 3.9+"
+say "  review queue. No record is required by the shell gates."
 say ""
 say "CI backstop: .github/workflows/kit-gates.yml re-runs the readiness, ledger and"
 say "claim-discipline gates on every push — that is the gate 'git commit"
