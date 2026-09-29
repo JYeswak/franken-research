@@ -1,0 +1,712 @@
+{
+  "performance-verdict.json": {
+    "scope": "Independent aggregation of parent-captured process-level receipts; reviewer did not execute the paired timings",
+    "controls": [
+      {
+        "exit_code": 0,
+        "wall_seconds": 99.66864181000074,
+        "cpu_seconds": 66.67737699999999
+      },
+      {
+        "exit_code": 0,
+        "wall_seconds": 98.74206735299958,
+        "cpu_seconds": 64.587387
+      }
+    ],
+    "warm_samples": 10,
+    "wall_seconds": {
+      "baseline_median": 99.20535458150016,
+      "reuse_median": 0.6906666920003772,
+      "ratio": 143.63709113316554,
+      "conservative_ratio_fastest_full_over_slowest_reuse": 133.99293225969188,
+      "passes_100x_median": true,
+      "setup": 99.31088130999979,
+      "one_actual_check_including_setup_ratio": 0.9920381890439928,
+      "hypothetical_steady_cost_100x_cumulative_n": 330
+    },
+    "cpu_seconds": {
+      "baseline_median": 65.632382,
+      "reuse_median": 0.6939459999999968,
+      "ratio": 94.57851475475081,
+      "conservative_ratio_fastest_full_over_slowest_reuse": 87.49781483688915,
+      "passes_100x_median": false,
+      "setup": 64.86895,
+      "one_actual_check_including_setup_ratio": 1.001059837259172,
+      "hypothetical_steady_cost_100x_cumulative_n": null
+    },
+    "limits": [
+      "One local validation workload, not research outcome or model tokens",
+      "Timing repetitions are not ten required work outcomes",
+      "Cumulative benefit excludes development and review because those are unmeasured",
+      "Independent full-gate semantic coverage retained by conservative reuse dependency analysis; no fresh all-gate execution claimed"
+    ]
+  },
+  "blake-performance-verdict.json": {
+    "candidate_commit": "080262921f4c5aeb3069f29e8936be36c774b7c4",
+    "candidate_sha256": "db1a2497c4c2e213f69bfc539c4aa19a1feaca622f1a94e79fd4ca3d60695461",
+    "scope": "Independent aggregation of parent-captured BLAKE3 process-level receipts, not independent trial execution",
+    "controls": [
+      {
+        "exit_code": 0,
+        "wall_seconds": 98.35919730399928,
+        "cpu_seconds": 61.17482499999999
+      },
+      {
+        "exit_code": 0,
+        "wall_seconds": 98.93429029500021,
+        "cpu_seconds": 63.94710399999997
+      }
+    ],
+    "warm_samples": 10,
+    "wall_seconds": {
+      "baseline_median": 98.64674379949975,
+      "reuse_median": 0.4508863825003573,
+      "ratio": 218.78403879146111,
+      "conservative_ratio": 196.8889646374556,
+      "passes_100x_conservative": true,
+      "setup": 98.78170924000005,
+      "one_actual_check_including_setup_ratio": 0.9940961755628226,
+      "hypothetical_steady_cost_100x_cumulative_n": 185
+    },
+    "cpu_seconds": {
+      "baseline_median": 62.56096449999998,
+      "reuse_median": 0.4535664999999991,
+      "ratio": 137.93118429160907,
+      "conservative_ratio": 121.72495751801712,
+      "passes_100x_conservative": true,
+      "setup": 62.701342999999994,
+      "one_actual_check_including_setup_ratio": 0.9905954263144022,
+      "hypothetical_steady_cost_100x_cumulative_n": 365
+    },
+    "limitations": [
+      "One local-validation workload, two resource dimensions; not multiple research areas",
+      "No measured human-time/model-token/adoption-quality benefit",
+      "Timing repetitions are not ten actual needed outcomes",
+      "Dependency installation/development/review are not in setup figure",
+      "Hypothetical cumulative count not realized benefit; assumes steady workload/cost"
+    ]
+  },
+  "baseline-measurements.json": {
+    "jobs": [
+      [
+        "franken_code_browser",
+        "recheck"
+      ],
+      [
+        "franken_lean",
+        "issue2"
+      ],
+      [
+        "franken_manim",
+        "issue3"
+      ],
+      [
+        "frankenfs",
+        "issue4"
+      ],
+      [
+        "frankengit",
+        "recheck"
+      ],
+      [
+        "frankenlibc",
+        "issue6"
+      ],
+      [
+        "frankensim",
+        "issue7"
+      ]
+    ],
+    "cold_cli": [
+      829.084594,
+      844.189645,
+      770.397005,
+      792.900352,
+      845.943355,
+      819.554239,
+      832.825063,
+      835.03166,
+      904.679288,
+      935.500851,
+      802.02061,
+      1003.382427,
+      929.113706,
+      855.030189,
+      836.777669
+    ],
+    "single_load_existing_exports": [
+      201.669308,
+      216.152134,
+      217.418293,
+      201.856533,
+      206.736712,
+      199.427396,
+      194.314787,
+      246.794379,
+      232.749564,
+      221.206594,
+      214.364616,
+      268.37727,
+      203.381929,
+      200.050855,
+      203.201898
+    ],
+    "medians_ms": {
+      "cold_cli": 836.777669,
+      "single_load_existing_exports": 206.736712
+    }
+  },
+  "blake-invalidation-results.json": {
+    "scope": "synthetic independent invalidation probes, not runtime performance or owner acceptance",
+    "candidate_sha256": "db1a2497c4c2e213f69bfc539c4aa19a1feaca622f1a94e79fd4ca3d60695461",
+    "backend": "blake3",
+    "cases": [
+      {
+        "label": "new flat research note",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "existing research note changed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "executable research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "nested new research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/nested/fresh.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/nested/fresh.md"
+      },
+      {
+        "label": "new symlink research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "removed existing research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "untracked ignored dependency added",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "node_modules/dep/index.js"
+        ],
+        "reason": "outside narrow metadata allowance: node_modules/dep/index.js"
+      },
+      {
+        "label": "tool environment change",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "environment/toolchain/Git object set changed"
+      },
+      {
+        "label": "git object removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "Git objects removed or changed"
+      },
+      {
+        "label": "git object added",
+        "pass_": true,
+        "eligible": true,
+        "delta": [],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "tracked input removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "tracked path removed"
+      },
+      {
+        "label": "bead edit",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "newly tracked byte-identical bead",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      }
+    ]
+  },
+  "final-blake-invalidation.json": {
+    "scope": "synthetic independent invalidation probes, not runtime performance or owner acceptance",
+    "candidate_sha256": "cd0813cf2178e9a891424f9acfbcb9f27499da845ca2e08c28cb9cd7868c39be",
+    "backend": "blake3",
+    "cases": [
+      {
+        "label": "new flat research note",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "existing research note changed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "executable research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "nested new research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/nested/fresh.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/nested/fresh.md"
+      },
+      {
+        "label": "new symlink research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "removed existing research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "untracked ignored dependency added",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "node_modules/dep/index.js"
+        ],
+        "reason": "outside narrow metadata allowance: node_modules/dep/index.js"
+      },
+      {
+        "label": "tool environment change",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "environment/toolchain/Git object set changed"
+      },
+      {
+        "label": "git object removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "Git objects removed or changed"
+      },
+      {
+        "label": "git object added",
+        "pass_": true,
+        "eligible": true,
+        "delta": [],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "tracked input removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "tracked path removed"
+      },
+      {
+        "label": "bead edit",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "newly tracked byte-identical bead",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      }
+    ]
+  },
+  "transfer-refusal.json": {
+    "scope": "independent transfer refusal using actual successful setup cache",
+    "pass": true,
+    "error": "cache belongs to another checkout",
+    "candidate_sha256": "db1a2497c4c2e213f69bfc539c4aa19a1feaca622f1a94e79fd4ca3d60695461"
+  },
+  "hidden-input-results.json": {
+    "candidate_sha256": "cd0813cf2178e9a891424f9acfbcb9f27499da845ca2e08c28cb9cd7868c39be",
+    "scope": "isolated synthetic negatives; no production mutations",
+    "checks": [
+      {
+        "name": "effective replacement refs invalidate",
+        "pass": true
+      },
+      {
+        "name": "private FIFO rejects before read",
+        "pass": true
+      },
+      {
+        "name": "symlink cache rejects",
+        "pass": true
+      }
+    ]
+  },
+  "invalidation-results.json": {
+    "scope": "synthetic independent invalidation probes, not runtime performance or owner acceptance",
+    "candidate_sha256": "876f85515526571a496f0178f8e71733c443de686c9417753bc9f6fd6190b615",
+    "cases": [
+      {
+        "label": "new flat research note",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "existing research note changed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "executable research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "nested new research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/nested/fresh.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/nested/fresh.md"
+      },
+      {
+        "label": "new symlink research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "removed existing research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "untracked ignored dependency added",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "node_modules/dep/index.js"
+        ],
+        "reason": "outside narrow metadata allowance: node_modules/dep/index.js"
+      },
+      {
+        "label": "tool environment change",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "environment/toolchain/Git object set changed"
+      },
+      {
+        "label": "git object removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "Git objects removed or changed"
+      },
+      {
+        "label": "git object added",
+        "pass_": true,
+        "eligible": true,
+        "delta": [],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "tracked input removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "tracked path removed"
+      },
+      {
+        "label": "bead edit",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "newly tracked byte-identical bead",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      }
+    ]
+  },
+  "final-sha-invalidation.json": {
+    "scope": "synthetic independent invalidation probes, not runtime performance or owner acceptance",
+    "candidate_sha256": "cd0813cf2178e9a891424f9acfbcb9f27499da845ca2e08c28cb9cd7868c39be",
+    "backend": "sha256",
+    "cases": [
+      {
+        "label": "new flat research note",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "existing research note changed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "executable research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "nested new research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/nested/fresh.md"
+        ],
+        "reason": "outside narrow metadata allowance: docs/evidence/applied-research/nested/fresh.md"
+      },
+      {
+        "label": "new symlink research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/fresh.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/fresh.md"
+      },
+      {
+        "label": "removed existing research note",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "docs/evidence/applied-research/old.md"
+        ],
+        "reason": "non-regular/removed/mode-changed path: docs/evidence/applied-research/old.md"
+      },
+      {
+        "label": "untracked ignored dependency added",
+        "pass_": true,
+        "eligible": false,
+        "delta": [
+          "node_modules/dep/index.js"
+        ],
+        "reason": "outside narrow metadata allowance: node_modules/dep/index.js"
+      },
+      {
+        "label": "tool environment change",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "environment/toolchain/Git object set changed"
+      },
+      {
+        "label": "git object removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "Git objects removed or changed"
+      },
+      {
+        "label": "git object added",
+        "pass_": true,
+        "eligible": true,
+        "delta": [],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "tracked input removed",
+        "pass_": true,
+        "eligible": false,
+        "delta": [],
+        "reason": "tracked path removed"
+      },
+      {
+        "label": "bead edit",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      },
+      {
+        "label": "newly tracked byte-identical bead",
+        "pass_": true,
+        "eligible": true,
+        "delta": [
+          ".beads/issues.jsonl"
+        ],
+        "reason": "unchanged code/data; eligible metadata changes only"
+      }
+    ]
+  },
+  "final-performance-verdict.json": {
+    "candidate_commit": "eb58549",
+    "scope": "Independent aggregation of parent-captured final stable-wrapper paired trial",
+    "files_sha256": {
+      "scripts/verify-incremental.py": "cd0813cf2178e9a891424f9acfbcb9f27499da845ca2e08c28cb9cd7868c39be",
+      "scripts/verify-local.sh": "67adc14be25ba13298c38ad8011a29a6f241e633cdb1633a7e4725442f4c99fe",
+      "probes/applied-performance/run.py": "cbd795023a809fd2973eb1b33f693f110a06083a2824689a0654f12867b82963"
+    },
+    "controls": [
+      {
+        "exit_code": 0,
+        "wall_seconds": 95.96288618300059,
+        "cpu_seconds": 55.091389
+      },
+      {
+        "exit_code": 0,
+        "wall_seconds": 96.69849274700027,
+        "cpu_seconds": 59.12481800000002
+      }
+    ],
+    "warm_samples": 10,
+    "wall_seconds": {
+      "baseline_median": 96.33068946500043,
+      "reuse_median": 0.45634923399984473,
+      "ratio": 211.08984586360282,
+      "conservative_ratio": 192.27184861916882,
+      "passes_100x_conservative": true,
+      "setup": 96.80221861099926,
+      "one_actual_check_including_setup_ratio": 0.9904596746532662,
+      "hypothetical_steady_cost_100x_cumulative_n": 191
+    },
+    "cpu_seconds": {
+      "baseline_median": 57.10810350000001,
+      "reuse_median": 0.4587265000000045,
+      "ratio": 124.49270643836677,
+      "conservative_ratio": 109.97624261636592,
+      "passes_100x_conservative": true,
+      "setup": 57.725258,
+      "one_actual_check_including_setup_ratio": 0.9815089837994855,
+      "hypothetical_steady_cost_100x_cumulative_n": 514
+    },
+    "limitations": [
+      "One local-validation workload, two resource dimensions; not multiple research areas",
+      "No measured human-time/model-token/adoption-quality benefit",
+      "Timing repetitions are not ten actual needed outcomes",
+      "Dependency installation/development/review are not in setup figure",
+      "Hypothetical cumulative count not realized benefit; assumes steady workload/cost"
+    ]
+  },
+  "independent-stable-wrapper-receipt.json": {
+    "scope": "independent fresh-launch wrapper execution, no trial-loop inherited environment",
+    "command": [
+      "bash",
+      "scripts/verify-local.sh",
+      "--hash",
+      "blake3",
+      "--cache",
+      "<workspace>/fr-performance/stable-final-trial/private-cache.json",
+      "--explain"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.4883464359991194,
+    "cpu_seconds": 0.49111099999999996,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/LAUNCH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"e5d50b16090a12607467a65de151b4be125b14bf31ffa1908dc9b6a3bfef36ff\", \"wall_seconds\": 0.43971479599986196, \"cpu_seconds\": 0.4427959999999999}\n",
+    "stderr": ""
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "reuse-10": {
+    "label": "reuse-10",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6924477290003779,
+    "cpu_seconds": 0.6961910000000024,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6523733909998555, \"cpu_seconds\": 0.656387}\n",
+    "stderr": ""
+  },
+  "full-1": {
+    "label": "full-1",
+    "command": [
+      "bun",
+      "run",
+      "verify"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 99.66864181000074,
+    "cpu_seconds": 66.67737699999999,
+    "stdout": "Franken Research site gates \u2014 <workspace>/franken-research/site\n----------------------------------------\n== A  packet/rulebook byte integrity ==\nPASS  A packet/rulebook byte-identical (44 packets + RULEBOOK)\n== A2 method-page claim citations ==\nPASS  A2 method citations resolve (12 claim rows)\n== B  render-time statistics ==\nPASS  B stats computed at render time (153 data-stat slots checked)\n== C  definitions on first use ==\nPASS  C key terms defined on first use\n== D  brief/packet pairing ==\nPASS  D brief/packet 1:1 pairing (44 briefs)\n== E  internal links ==\nPASS  E internal links resolve (7390 links)\n== F  method artifacts ==\nPASS  F method artifacts + local assets exist\n== G  keyboard + fallbacks ==\nPASS  G keyboard operability + fallbacks\n== H  slop scan ==\nPASS  H slop scan\n        note method/index.html: superlative? 'best': \"t is a rationalization, not a claim. (The suite's best coverage audits found registries capture only 2.0\"\n        note lessons/index.html: filler? 'honestly': 'ipped_not_proven  gate turns \"we cannot honestly claim this yet\" into a machine-readable'\n        note techniques/index.html: filler? 'honestly': 'rified, High]. Runs that cannot execute honestly emit a typed skip event instead of sile'\n        note rigor/index.html: filler? 'honestly': 'nation.md:71   Runs that cannot execute honestly emit a typed skip event instead of sile'\n        note stack/quantization.html: filler? 'honestly': 'p faster; int4 remains aspirational and honestly labeled, though a wasm-int4 browser art'\n        note stack/quantization.html: filler? 'honestly': 'nt.md:86   int4 support | Aspirational (honestly labeled) ;  packets/franken_ocr-assessm'\n        note stack/workflow-orchestrators.html: filler? 'honestly': 'estrators.md:42   Thin evidence, stated honestly ;  ecosystem/pickup/_evidence/workflow-'\n        note study/independent-100/alltheyud.html: superlative? 'best': \"es' (Little, Brown, 2025-09-16), a New York Times best-seller  [Reported:  en.wikipedia.org/wiki/If_Anyo\"\n== I  headless render ==\nPASS  I headless render (12x2 page-views, zero console errors, zero overflow)\n== J  deleted paths ==\nPASS  J no deleted-path references\n== K  agent stack evidence ==\nPASS  K1 verdict files complete and independently reviewed (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\nPASS  K2 quoted citations resolve (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\nPASS  K3 rigor practices sources and proofs (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\nPASS  K4 generated pages match their sources (23 pages byte-identical to a fresh run)\nPASS  K5 adopted incumbents have a checked license, named when not permissive (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\n== L  no personal email addresses ==\nPASS  L no personal email addresses (1684 tracked text files)\n== W  watch selftest ==\nPASS  W watch selftest (19 cases on recorded fixtures)\n== W2 discovery selftest ==\nPASS  W2 discovery selftest (16 cases on recorded fixtures)\n== W3 freshness harness ==\nPASS  W3 freshness harness (288 cases in 12.60 s, REPORT.md fresh, 105 of 105 mutants killed, 5 schedule rows, write job guarded, 44 brief cards)\n== M  feed + OPML ==\nPASS  M feed + OPML fresh and well-formed (9 entries, 89 OPML feeds; node parser)\n== S  shared shell ==\nPASS  S shared shell matches its render on every page (183 pages, 548 regions, 197 asset stamps)\n== V  verdict strip ==\nPASS  V verdict strip matches its render and data.js on every brief (44 briefs)\n== N  Independent 100 study ==\nPASS  N Independent 100 study matches its sources (105 pages: 99 people, index, 5 deep dives; schema and scan clean)\n== T  llms.txt ==\nPASS  T llms.txt matches a fresh render and every link resolves (132 links, 7 sections; 132 site links resolved by the gate)\n== U  kit and decision regressions ==\ngate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\nPASS  U kit regression controls, decision identities and shipped copies\n----------------------------------------\ngates passed: 26   failed: 0\nALL GATES PASS\n",
+    "stderr": "$ bash site/scripts/verify-site.sh\n.....................\n----------------------------------------------------------------------\nRan 21 tests in 4.152s\n\nOK\n.............\n----------------------------------------------------------------------\nRan 13 tests in 0.015s\n\nOK\n.........\n----------------------------------------------------------------------\nRan 9 tests in 0.342s\n\nOK\n"
+  },
+  "reuse-08": {
+    "label": "reuse-08",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6995108179999079,
+    "cpu_seconds": 0.6993199999999824,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6531880729999102, \"cpu_seconds\": 0.6559659999999999}\n",
+    "stderr": ""
+  },
+  "reuse-09": {
+    "label": "reuse-09",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.7369199679997109,
+    "cpu_seconds": 0.736732000000007,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6881237550005608, \"cpu_seconds\": 0.6883269999999999}\n",
+    "stderr": ""
+  },
+  "full-2": {
+    "label": "full-2",
+    "command": [
+      "bun",
+      "run",
+      "verify"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 98.74206735299958,
+    "cpu_seconds": 64.587387,
+    "stdout": "Franken Research site gates \u2014 <workspace>/franken-research/site\n----------------------------------------\n== A  packet/rulebook byte integrity ==\nPASS  A packet/rulebook byte-identical (44 packets + RULEBOOK)\n== A2 method-page claim citations ==\nPASS  A2 method citations resolve (12 claim rows)\n== B  render-time statistics ==\nPASS  B stats computed at render time (153 data-stat slots checked)\n== C  definitions on first use ==\nPASS  C key terms defined on first use\n== D  brief/packet pairing ==\nPASS  D brief/packet 1:1 pairing (44 briefs)\n== E  internal links ==\nPASS  E internal links resolve (7390 links)\n== F  method artifacts ==\nPASS  F method artifacts + local assets exist\n== G  keyboard + fallbacks ==\nPASS  G keyboard operability + fallbacks\n== H  slop scan ==\nPASS  H slop scan\n        note method/index.html: superlative? 'best': \"t is a rationalization, not a claim. (The suite's best coverage audits found registries capture only 2.0\"\n        note lessons/index.html: filler? 'honestly': 'ipped_not_proven  gate turns \"we cannot honestly claim this yet\" into a machine-readable'\n        note techniques/index.html: filler? 'honestly': 'rified, High]. Runs that cannot execute honestly emit a typed skip event instead of sile'\n        note rigor/index.html: filler? 'honestly': 'nation.md:71   Runs that cannot execute honestly emit a typed skip event instead of sile'\n        note stack/quantization.html: filler? 'honestly': 'p faster; int4 remains aspirational and honestly labeled, though a wasm-int4 browser art'\n        note stack/quantization.html: filler? 'honestly': 'nt.md:86   int4 support | Aspirational (honestly labeled) ;  packets/franken_ocr-assessm'\n        note stack/workflow-orchestrators.html: filler? 'honestly': 'estrators.md:42   Thin evidence, stated honestly ;  ecosystem/pickup/_evidence/workflow-'\n        note study/independent-100/alltheyud.html: superlative? 'best': \"es' (Little, Brown, 2025-09-16), a New York Times best-seller  [Reported:  en.wikipedia.org/wiki/If_Anyo\"\n== I  headless render ==\nPASS  I headless render (12x2 page-views, zero console errors, zero overflow)\n== J  deleted paths ==\nPASS  J no deleted-path references\n== K  agent stack evidence ==\nPASS  K1 verdict files complete and independently reviewed (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\nPASS  K2 quoted citations resolve (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\nPASS  K3 rigor practices sources and proofs (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\nPASS  K4 generated pages match their sources (23 pages byte-identical to a fresh run)\nPASS  K5 adopted incumbents have a checked license, named when not permissive (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\n== L  no personal email addresses ==\nPASS  L no personal email addresses (1684 tracked text files)\n== W  watch selftest ==\nPASS  W watch selftest (19 cases on recorded fixtures)\n== W2 discovery selftest ==\nPASS  W2 discovery selftest (16 cases on recorded fixtures)\n== W3 freshness harness ==\nPASS  W3 freshness harness (288 cases in 11.72 s, REPORT.md fresh, 105 of 105 mutants killed, 5 schedule rows, write job guarded, 44 brief cards)\n== M  feed + OPML ==\nPASS  M feed + OPML fresh and well-formed (9 entries, 89 OPML feeds; node parser)\n== S  shared shell ==\nPASS  S shared shell matches its render on every page (183 pages, 548 regions, 197 asset stamps)\n== V  verdict strip ==\nPASS  V verdict strip matches its render and data.js on every brief (44 briefs)\n== N  Independent 100 study ==\nPASS  N Independent 100 study matches its sources (105 pages: 99 people, index, 5 deep dives; schema and scan clean)\n== T  llms.txt ==\nPASS  T llms.txt matches a fresh render and every link resolves (132 links, 7 sections; 132 site links resolved by the gate)\n== U  kit and decision regressions ==\ngate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\n{\"stale_or_unavailable_evidence\": {}, \"unsupported_current_labels\": [], \"scope\": \"identity/structure only, not semantic verification\"}\nPASS  U kit regression controls, decision identities and shipped copies\n----------------------------------------\ngates passed: 26   failed: 0\nALL GATES PASS\n",
+    "stderr": "$ bash site/scripts/verify-site.sh\n.....................\n----------------------------------------------------------------------\nRan 21 tests in 4.002s\n\nOK\n.............\n----------------------------------------------------------------------\nRan 13 tests in 0.014s\n\nOK\n.........\n----------------------------------------------------------------------\nRan 9 tests in 0.359s\n\nOK\n"
+  },
+  "reuse-04": {
+    "label": "reuse-04",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6553061699996761,
+    "cpu_seconds": 0.6575510000000051,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6181561510002211, \"cpu_seconds\": 0.620714}\n",
+    "stderr": ""
+  },
+  "reuse-01": {
+    "label": "reuse-01",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6888856550003766,
+    "cpu_seconds": 0.6917009999999912,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6282767800003057, \"cpu_seconds\": 0.6314639999999999}\n",
+    "stderr": ""
+  },
+  "reuse-07": {
+    "label": "reuse-07",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.7352999730001102,
+    "cpu_seconds": 0.7381600000000219,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6882431340000039, \"cpu_seconds\": 0.6916559999999999}\n",
+    "stderr": ""
+  },
+  "summary": {
+    "scope": "repeated local metadata validation, not human/research productivity",
+    "note_sha256": "de541587a1786066be5e4117349325179c2fe438cd64675bc5ef6f1642aa96c8",
+    "setup": {
+      "wall_seconds": 99.31088130999979,
+      "cpu_seconds": 64.86895
+    },
+    "samples": {
+      "full-1": {
+        "wall_seconds": 99.66864181000074,
+        "cpu_seconds": 66.67737699999999,
+        "exit_code": 0
+      },
+      "reuse-01": {
+        "wall_seconds": 0.6888856550003766,
+        "cpu_seconds": 0.6917009999999912,
+        "exit_code": 0
+      },
+      "reuse-02": {
+        "wall_seconds": 0.6608192620005866,
+        "cpu_seconds": 0.6632560000000076,
+        "exit_code": 0
+      },
+      "reuse-03": {
+        "wall_seconds": 0.6455731650003145,
+        "cpu_seconds": 0.6477379999999826,
+        "exit_code": 0
+      },
+      "reuse-04": {
+        "wall_seconds": 0.6553061699996761,
+        "cpu_seconds": 0.6575510000000051,
+        "exit_code": 0
+      },
+      "reuse-05": {
+        "wall_seconds": 0.6870210910001333,
+        "cpu_seconds": 0.6897840000000066,
+        "exit_code": 0
+      },
+      "reuse-06": {
+        "wall_seconds": 0.723063755000112,
+        "cpu_seconds": 0.7269599999999983,
+        "exit_code": 0
+      },
+      "reuse-07": {
+        "wall_seconds": 0.7352999730001102,
+        "cpu_seconds": 0.7381600000000219,
+        "exit_code": 0
+      },
+      "reuse-08": {
+        "wall_seconds": 0.6995108179999079,
+        "cpu_seconds": 0.6993199999999824,
+        "exit_code": 0
+      },
+      "reuse-09": {
+        "wall_seconds": 0.7369199679997109,
+        "cpu_seconds": 0.736732000000007,
+        "exit_code": 0
+      },
+      "reuse-10": {
+        "wall_seconds": 0.6924477290003779,
+        "cpu_seconds": 0.6961910000000024,
+        "exit_code": 0
+      },
+      "full-2": {
+        "wall_seconds": 98.74206735299958,
+        "cpu_seconds": 64.587387,
+        "exit_code": 0
+      }
+    },
+    "metrics": {
+      "wall_seconds": {
+        "full_median": 99.20535458150016,
+        "reuse_median": 0.6906666920003772,
+        "median_ratio": 143.63709113316554,
+        "conservative_ratio": 133.99293225969188,
+        "warm_100x_pass": true,
+        "amortized_ratio_at_10_uses_including_setup": 9.338228824938616
+      },
+      "cpu_seconds": {
+        "full_median": 65.632382,
+        "reuse_median": 0.6939459999999968,
+        "median_ratio": 94.57851475475081,
+        "conservative_ratio": 87.49781483688915,
+        "warm_100x_pass": false,
+        "amortized_ratio_at_10_uses_including_setup": 9.138920092324947
+      }
+    }
+  },
+  "reuse-05": {
+    "label": "reuse-05",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6870210910001333,
+    "cpu_seconds": 0.6897840000000066,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6482690039993031, \"cpu_seconds\": 0.6513429999999999}\n",
+    "stderr": ""
+  },
+  "reuse-02": {
+    "label": "reuse-02",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6608192620005866,
+    "cpu_seconds": 0.6632560000000076,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6218929440001375, \"cpu_seconds\": 0.6246759999999999}\n",
+    "stderr": ""
+  },
+  "reuse-06": {
+    "label": "reuse-06",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.723063755000112,
+    "cpu_seconds": 0.7269599999999983,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.6793747430001531, \"cpu_seconds\": 0.6835410000000001}\n",
+    "stderr": ""
+  },
+  "reuse-03": {
+    "label": "reuse-03",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6455731650003145,
+    "cpu_seconds": 0.6477379999999826,
+    "stdout": "{\"mode\": \"reused_full_result_with_fresh_metadata_checks\", \"scope\": \"local validation only; full release/CI command unchanged\", \"changed\": [\"docs/evidence/applied-research/EVIDENCE-PATH-DECISION.md\"], \"fresh\": {\"privacy_findings\": [], \"decision_exit_code\": 0, \"decision_stdout\": \"gate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\n\", \"decision_stderr\": \"\", \"ok\": true}, \"prior_full_result_sha256\": \"21c9bd30a64b5b973198cee7cc605e8b9ac7e4aca311f229d217a0eae3c5ca2f\", \"wall_seconds\": 0.606469518999802, \"cpu_seconds\": 0.608892}\n",
+    "stderr": ""
+  },
+  "setup": {
+    "label": "setup",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/verify-incremental.py",
+      "--cache",
+      "<workspace>/fr-performance/final-trial/private-cache.json",
+      "--full"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 99.31088130999979,
+    "cpu_seconds": 64.86895,
+    "stdout": "{\"mode\": \"full\", \"reason\": \"explicit full verification or unsafe reuse environment\", \"stable\": true, \"full\": {\"exit_code\": 0, \"stdout\": \"Franken Research site gates \\u2014 <workspace>/franken-research/site\\n----------------------------------------\\n== A  packet/rulebook byte integrity ==\\nPASS  A packet/rulebook byte-identical (44 packets + RULEBOOK)\\n== A2 method-page claim citations ==\\nPASS  A2 method citations resolve (12 claim rows)\\n== B  render-time statistics ==\\nPASS  B stats computed at render time (153 data-stat slots checked)\\n== C  definitions on first use ==\\nPASS  C key terms defined on first use\\n== D  brief/packet pairing ==\\nPASS  D brief/packet 1:1 pairing (44 briefs)\\n== E  internal links ==\\nPASS  E internal links resolve (7390 links)\\n== F  method artifacts ==\\nPASS  F method artifacts + local assets exist\\n== G  keyboard + fallbacks ==\\nPASS  G keyboard operability + fallbacks\\n== H  slop scan ==\\nPASS  H slop scan\\n        note method/index.html: superlative? 'best': \\\"t is a rationalization, not a claim. (The suite's best coverage audits found registries capture only 2.0\\\"\\n        note lessons/index.html: filler? 'honestly': 'ipped_not_proven  gate turns \\\"we cannot honestly claim this yet\\\" into a machine-readable'\\n        note techniques/index.html: filler? 'honestly': 'rified, High]. Runs that cannot execute honestly emit a typed skip event instead of sile'\\n        note rigor/index.html: filler? 'honestly': 'nation.md:71   Runs that cannot execute honestly emit a typed skip event instead of sile'\\n        note stack/quantization.html: filler? 'honestly': 'p faster; int4 remains aspirational and honestly labeled, though a wasm-int4 browser art'\\n        note stack/quantization.html: filler? 'honestly': 'nt.md:86   int4 support | Aspirational (honestly labeled) ;  packets/franken_ocr-assessm'\\n        note stack/workflow-orchestrators.html: filler? 'honestly': 'estrators.md:42   Thin evidence, stated honestly ;  ecosystem/pickup/_evidence/workflow-'\\n        note study/independent-100/alltheyud.html: superlative? 'best': \\\"es' (Little, Brown, 2025-09-16), a New York Times best-seller  [Reported:  en.wikipedia.org/wiki/If_Anyo\\\"\\n== I  headless render ==\\nPASS  I headless render (12x2 page-views, zero console errors, zero overflow)\\n== J  deleted paths ==\\nPASS  J no deleted-path references\\n== K  agent stack evidence ==\\nPASS  K1 verdict files complete and independently reviewed (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\\nPASS  K2 quoted citations resolve (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\\nPASS  K3 rigor practices sources and proofs (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\\nPASS  K4 generated pages match their sources (23 pages byte-identical to a fresh run)\\nPASS  K5 adopted incumbents have a checked license, named when not permissive (files=21/21 cites=853 rows=136 licenses=101 adopted=106)\\n== L  no personal email addresses ==\\nPASS  L no personal email addresses (1683 tracked text files)\\n== W  watch selftest ==\\nPASS  W watch selftest (19 cases on recorded fixtures)\\n== W2 discovery selftest ==\\nPASS  W2 discovery selftest (16 cases on recorded fixtures)\\n== W3 freshness harness ==\\nPASS  W3 freshness harness (288 cases in 11.68 s, REPORT.md fresh, 105 of 105 mutants killed, 5 schedule rows, write job guarded, 44 brief cards)\\n== M  feed + OPML ==\\nPASS  M feed + OPML fresh and well-formed (9 entries, 89 OPML feeds; node parser)\\n== S  shared shell ==\\nPASS  S shared shell matches its render on every page (183 pages, 548 regions, 197 asset stamps)\\n== V  verdict strip ==\\nPASS  V verdict strip matches its render and data.js on every brief (44 briefs)\\n== N  Independent 100 study ==\\nPASS  N Independent 100 study matches its sources (105 pages: 99 people, index, 5 deep dives; schema and scan clean)\\n== T  llms.txt ==\\nPASS  T llms.txt matches a fresh render and every link resolves (132 links, 7 sections; 132 site links resolved by the gate)\\n== U  kit and decision regressions ==\\ngate-repair | combine | CURRENT IDENTITIES | maintainer | next: Re-run installed-kit tests when their declared inputs change; inspect new failures before relying on this regression claim.\\ndecision-workflow | defer | REVIEW | maintainer | next: Run fresh paired review/handoff tasks with approved effort cap; no speedup is established.\\n{\\\"stale_or_unavailable_evidence\\\": {}, \\\"unsupported_current_labels\\\": [], \\\"scope\\\": \\\"identity/structure only, not semantic verification\\\"}\\nPASS  U kit regression controls, decision identities and shipped copies\\n----------------------------------------\\ngates passed: 26   failed: 0\\nALL GATES PASS\\n\", \"stderr\": \"$ bash site/scripts/verify-site.sh\\n.....................\\n----------------------------------------------------------------------\\nRan 21 tests in 3.851s\\n\\nOK\\n.............\\n----------------------------------------------------------------------\\nRan 13 tests in 0.013s\\n\\nOK\\n.........\\n----------------------------------------------------------------------\\nRan 9 tests in 0.317s\\n\\nOK\\n\"}, \"wall_seconds\": 99.26614614399932, \"cpu_seconds\": 64.824702}\n",
+    "stderr": ""
+  }
+}

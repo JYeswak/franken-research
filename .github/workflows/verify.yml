@@ -78,6 +78,9 @@ jobs:
           bun run build:map
           git diff --exit-code site/assets/app.bundle.js
 
+      - name: Local incremental verification guard tests
+        run: python3 -B scripts/test_verify_incremental.py
+
       - name: Gate chain (A..J)
         env:
           # ubuntu-latest ships Google Chrome here (runner image sets CHROME_BIN
