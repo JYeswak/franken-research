@@ -3,12 +3,12 @@
     "asupersync": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 190,
+      "commits_since_pin": 400,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "e753409d55d8779dcfd245e351ed63d5f5ca6e0f",
-      "head_date": "2026-09-26T08:20:09Z",
+      "head": "235236300aaf49f15d3602a33112d52b75def012",
+      "head_date": "2026-09-30T10:52:58Z",
       "id": 1135442827,
       "license_changed_since_pin": false,
       "license_files": [
@@ -395,12 +395,12 @@
     "franken_agent_detection": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2,
+      "commits_since_pin": 7,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "c06d1cb14e0edb1cd82f1c58021d86b6beacd2de",
-      "head_date": "2026-09-25T18:44:57Z",
+      "head": "f3c00b742756692567539037c48745dfc3e87f5a",
+      "head_date": "2026-09-28T05:46:59Z",
       "id": 1158875990,
       "license_changed_since_pin": false,
       "license_files": [
@@ -512,6 +512,13 @@
           "prerelease": false,
           "published_at": "2026-09-25T19:49:02Z",
           "target": "c06d1cb14e0edb1cd82f1c58021d86b6beacd2de"
+        },
+        "v0.3.3": {
+          "assets": 0,
+          "created_at": "2026-09-28T05:47:10Z",
+          "prerelease": false,
+          "published_at": "2026-09-28T05:47:16Z",
+          "target": "f3c00b742756692567539037c48745dfc3e87f5a"
         }
       },
       "repo": "franken_agent_detection",
@@ -521,6 +528,18 @@
           "kind": "release",
           "name": "v0.3.1",
           "target": "c06d1cb14e0edb1cd82f1c58021d86b6beacd2de"
+        },
+        {
+          "date": "2026-09-26T20:39:37Z",
+          "kind": "tag",
+          "name": "v0.3.2",
+          "target": "05498522415c0d6c23b949c44912350c3ab36c90"
+        },
+        {
+          "date": "2026-09-28T05:47:16Z",
+          "kind": "release",
+          "name": "v0.3.3",
+          "target": "f3c00b742756692567539037c48745dfc3e87f5a"
         }
       ],
       "tags": {
@@ -587,6 +606,14 @@
         "v0.3.1": {
           "date": "2026-09-25T18:44:57Z",
           "target": "c06d1cb14e0edb1cd82f1c58021d86b6beacd2de"
+        },
+        "v0.3.2": {
+          "date": "2026-09-26T20:39:37Z",
+          "target": "05498522415c0d6c23b949c44912350c3ab36c90"
+        },
+        "v0.3.3": {
+          "date": "2026-09-28T05:47:10Z",
+          "target": "f3c00b742756692567539037c48745dfc3e87f5a"
         }
       },
       "workflows": [
@@ -602,12 +629,12 @@
     "franken_alignment": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 59,
+      "commits_since_pin": 126,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "6bada085f162dba1a18b836adcc721ac44a566b2",
-      "head_date": "2026-09-26T05:41:04Z",
+      "head": "f6f30cf45772cb5f7805d8633f594dde627c5c86",
+      "head_date": "2026-09-29T19:34:27Z",
       "id": 1359645474,
       "license_changed_since_pin": false,
       "license_files": [
@@ -639,12 +666,12 @@
     "franken_code_browser": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 51,
+      "commits_since_pin": 58,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "fd21cbd02d53c9013dcda8f4f9f271ede5b39540",
-      "head_date": "2026-09-26T05:51:56Z",
+      "head": "8962a395aefa6eea2ae45058a36f313f0683273c",
+      "head_date": "2026-09-28T23:12:12Z",
       "id": 1367629743,
       "license_changed_since_pin": false,
       "license_files": [
@@ -735,12 +762,12 @@
     "franken_engine": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 139,
+      "commits_since_pin": 296,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "fcb7b3877bd44021f32b383191f8b1bd4abfea1a",
-      "head_date": "2026-09-26T08:17:22Z",
+      "head": "dd7d8784c1392778956148495ccb0f4fc7d3d0a0",
+      "head_date": "2026-09-30T10:58:01Z",
       "id": 1161313144,
       "license_changed_since_pin": false,
       "license_files": [
@@ -812,12 +839,12 @@
     "franken_lean": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 171,
+      "commits_since_pin": 320,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "355b2ebe21783e795ea3605bd3823f239624f280",
-      "head_date": "2026-09-26T07:00:18Z",
+      "head": "4f39483b8c6f2b106e39cb9f4172d486fb6d2581",
+      "head_date": "2026-09-30T09:20:38Z",
       "id": 1307841640,
       "license_changed_since_pin": false,
       "license_files": [
@@ -858,6 +885,7 @@
         "fln-field-defaults-reconcile.yml",
         "fln-frontier-tools-selfhosted.yml",
         "fln-heterogeneous-landing.yml",
+        "fln-if-let-transfer.yml",
         "fln-index-refinement-landing.yml",
         "fln-kernel-membership.yml",
         "fln-lambda-landing.yml",
@@ -887,12 +915,15 @@
         "fln-native-do-landing.yml",
         "fln-native-elimination-landing.yml",
         "fln-native-equality-decisions-landing.yml",
+        "fln-native-if-transfer.yml",
         "fln-native-instance-landing.yml",
         "fln-native-logic-landing.yml",
         "fln-native-mutual-source.yml",
         "fln-native-simp-only.yml",
         "fln-native-source-snapshot.yml",
         "fln-native-toolchain-snapshot.yml",
+        "fln-offline-native-workspace.yml",
+        "fln-option-equality-integration.yml",
         "fln-parameterized-recursion-landing.yml",
         "fln-pempty-frontier-selfhosted.yml",
         "fln-projection-delta-landing.yml",
@@ -913,10 +944,13 @@
         "fln-source-rewriting.yml",
         "fln-source-simp-all-landing.yml",
         "fln-source-workbench.yml",
+        "fln-tail-source-landing.yml",
+        "fln-try-catch-transfer.yml",
         "fln-unifier-integration.yml",
         "fln-unifier-scope.yml",
         "mandated-mutants.yml",
         "marrow-sanitizers.yml",
+        "native-checker-frontier.yml",
         "native-collection-runtime.yml",
         "native-collections.yml",
         "native-dependent-programs.yml",
@@ -946,6 +980,13 @@
         "windows-functional.yml"
       ],
       "workflows_added_since_pin": [
+        "fln-if-let-transfer.yml",
+        "fln-native-if-transfer.yml",
+        "fln-offline-native-workspace.yml",
+        "fln-option-equality-integration.yml",
+        "fln-tail-source-landing.yml",
+        "fln-try-catch-transfer.yml",
+        "native-checker-frontier.yml",
         "native-dependent-programs.yml",
         "native-empty-runtime.yml",
         "native-indexed-runtime.yml",
@@ -963,12 +1004,12 @@
     "franken_manim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 288,
+      "commits_since_pin": 469,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d0026d0c89056bcacb32e6f11387111cd95dae56",
-      "head_date": "2026-09-26T08:03:37Z",
+      "head": "28d9dbc55d37265072fdefdb3985b55eb755801b",
+      "head_date": "2026-09-30T02:10:11Z",
       "id": 1306217133,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1071,6 +1112,7 @@
         "implement-rng-reservations.yml",
         "implement-surface-grid-alignment.yml",
         "land-host-scene-editing.yml",
+        "land-modern-tex-families.yml",
         "live-clock-portal.yml",
         "live-clock.yml",
         "live-numeric-tex.yml",
@@ -1091,6 +1133,7 @@
         "native-method-transforms.yml",
         "native-parameter-motion.yml",
         "native-render.yml",
+        "native-scene-updates.yml",
         "native-studio-live.yml",
         "native-studio.yml",
         "native-subset-reveals.yml",
@@ -1145,6 +1188,7 @@
         "upgrade-canonical-branch-policy.yml"
       ],
       "workflows_added_since_pin": [
+        "land-modern-tex-families.yml",
         "live-raster.yml",
         "mixed-camera-wasm.yml",
         "native-frame-pipeline.yml",
@@ -1152,6 +1196,7 @@
         "native-graph-sampling.yml",
         "native-markdown.yml",
         "native-render.yml",
+        "native-scene-updates.yml",
         "native-surface-admission.yml",
         "native-surface-lifecycle.yml",
         "native-tables.yml",
@@ -1167,12 +1212,12 @@
     "franken_markdown": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 81,
+      "commits_since_pin": 118,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "f0c4fcc9917f168e150d98c6db3e8f85619d52b5",
-      "head_date": "2026-09-26T05:56:40Z",
+      "head": "b109bb946e3ad7830ec3855b0129b5a3762199d0",
+      "head_date": "2026-09-28T23:29:15Z",
       "id": 1281851258,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1408,12 +1453,12 @@
     "franken_networkx": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 144,
+      "commits_since_pin": 255,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "8df778361b0eb6534853300bdb7daece9c9c39a0",
-      "head_date": "2026-09-26T11:24:50Z",
+      "head": "47850b683d6cf8e746804ccd2437e9430002b1c8",
+      "head_date": "2026-09-29T19:06:12Z",
       "id": 1157430632,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1490,12 +1535,12 @@
     "franken_nlp": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 14,
+      "commits_since_pin": 39,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "869731f938c56cdf39c0bc63a436d1eaff0dd599",
-      "head_date": "2026-09-26T05:57:34Z",
+      "head": "8f8ae35dfc787346adc58a068a0e512c1418db74",
+      "head_date": "2026-09-29T00:02:22Z",
       "id": 1317838147,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1529,12 +1574,12 @@
     "franken_node": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 100,
+      "commits_since_pin": 142,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ac8deece22ced42e23bb3ccc351250c052c6e399",
-      "head_date": "2026-09-26T08:14:47Z",
+      "head": "abf03819cd8a61cf838592be2fdea94f8edbb7d1",
+      "head_date": "2026-09-29T21:36:43Z",
       "id": 1161313216,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1636,12 +1681,12 @@
     "franken_numpy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 206,
+      "commits_since_pin": 333,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "72db52b6d56c74f4f5183b4bee0ad3359ad846c3",
-      "head_date": "2026-09-26T10:12:35Z",
+      "head": "de7e53de5a578d48ba9ba867b8274749980066f6",
+      "head_date": "2026-09-29T20:16:54Z",
       "id": 1157432826,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1708,12 +1753,12 @@
     "franken_ocr": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1,
+      "commits_since_pin": 11,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "f70a526004f94376e5826ddec42338a62cd36db7",
-      "head_date": "2026-09-22T17:22:46Z",
+      "head": "045e65702fcd3c78187919903103b925e29b31dd",
+      "head_date": "2026-09-28T20:28:08Z",
       "id": 1279749812,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1867,10 +1912,24 @@
           "prerelease": false,
           "published_at": "2026-08-23T03:39:33Z",
           "target": "1f7f6698e3513554331e2d83e213db4822e13caf"
+        },
+        "v0.9.1": {
+          "assets": 12,
+          "created_at": "2026-09-28T21:30:48Z",
+          "prerelease": false,
+          "published_at": "2026-09-29T02:55:23Z",
+          "target": "045e65702fcd3c78187919903103b925e29b31dd"
         }
       },
       "repo": "franken_ocr",
-      "since_pin": [],
+      "since_pin": [
+        {
+          "date": "2026-09-29T02:55:23Z",
+          "kind": "release",
+          "name": "v0.9.1",
+          "target": "045e65702fcd3c78187919903103b925e29b31dd"
+        }
+      ],
       "tags": {
         "models-got-ocr2-v1": {
           "date": "2026-07-01T05:13:26Z",
@@ -1951,6 +2010,10 @@
         "v0.9.0": {
           "date": "2026-08-23T01:03:09Z",
           "target": "1f7f6698e3513554331e2d83e213db4822e13caf"
+        },
+        "v0.9.1": {
+          "date": "2026-09-28T21:30:48Z",
+          "target": "045e65702fcd3c78187919903103b925e29b31dd"
         }
       },
       "workflows": [],
@@ -1997,12 +2060,12 @@
     "franken_remote": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 182,
+      "commits_since_pin": 261,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "620b8305ce4631f6245b05dbe907b16a8a084857",
-      "head_date": "2026-09-26T07:11:43Z",
+      "head": "f6edbe1efa6e880c8e6508bfd12d2ef19e80d06d",
+      "head_date": "2026-09-29T19:51:44Z",
       "id": 1360842907,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2071,12 +2134,12 @@
     "franken_snowflake": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 93,
+      "commits_since_pin": 111,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "1e703fc2d92578e93ac50e574fa75d66e293de83",
-      "head_date": "2026-09-26T07:19:46Z",
+      "head": "4617d7d9b59a834391c9ba1c4654b8e5ab57d382",
+      "head_date": "2026-09-29T02:46:37Z",
       "id": 1279720977,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2178,12 +2241,12 @@
     "franken_surveillance_system": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 838,
+      "commits_since_pin": 1072,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "70c7894e1343d871429f804cf7e332e53a9c7d0d",
-      "head_date": "2026-09-26T10:40:08Z",
+      "head": "e2361ba17dca4a3a33572bc3bbc7d58c013d6e58",
+      "head_date": "2026-09-29T19:25:27Z",
       "id": 1352817606,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2218,12 +2281,12 @@
     "franken_threed": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 60,
+      "commits_since_pin": 69,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "05e13c6cbc5754a4dd64e6465ccb5976f11e24df",
-      "head_date": "2026-09-26T05:52:10Z",
+      "head": "7bf2ef005999a70433acfa1becdd63e911cd36c4",
+      "head_date": "2026-09-27T16:46:47Z",
       "id": 1362884098,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2655,12 +2718,12 @@
     "frankenfs": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 127,
+      "commits_since_pin": 136,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "3955084a234f8094587729a52358d1fbae131106",
-      "head_date": "2026-09-26T07:06:53Z",
+      "head": "a061501defbafd3feda9b0ebab3342b83c5e3f03",
+      "head_date": "2026-09-29T00:30:37Z",
       "id": 1154130483,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2715,12 +2778,12 @@
     "frankengit": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 249,
+      "commits_since_pin": 352,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d163ca481d41b2cee3ff5e532f862b96714ea517",
-      "head_date": "2026-09-26T05:50:57Z",
+      "head": "5831c80a193d4f73efd9bef50d5ecc33f45d6a64",
+      "head_date": "2026-09-29T20:56:47Z",
       "id": 1340123236,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2749,12 +2812,15 @@
         "docs-integrity.yml",
         "exact-patch.yml",
         "index-maintenance.yml",
+        "pull-request-checks.yml",
         "review-protection-activation-verify.yml",
         "source-snapshot.yml",
         "source-symbols.yml",
         "symbol-index.yml"
       ],
-      "workflows_added_since_pin": [],
+      "workflows_added_since_pin": [
+        "pull-request-checks.yml"
+      ],
       "workflows_removed_since_pin": [
         "core-integration-session.yml",
         "event-feed-session.yml",
@@ -2832,12 +2898,12 @@
     "frankengraphdb": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 283,
+      "commits_since_pin": 433,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "945296c0596f3a56e44f1018e40db680f2f67698",
-      "head_date": "2026-09-26T07:24:04Z",
+      "head": "5d444cf3b5a2aaff75565a8c7fc88110f2aa7764",
+      "head_date": "2026-09-30T07:15:40Z",
       "id": 1301293102,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2909,12 +2975,12 @@
     "frankenlibc": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 234,
+      "commits_since_pin": 318,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "751e48e538f698925a51f7129a6e62d6cce8d581",
-      "head_date": "2026-09-26T11:11:19Z",
+      "head": "8eb8c7c8917a8f446a4cabcfe6f2f4fe7559933c",
+      "head_date": "2026-09-29T05:57:03Z",
       "id": 1153199323,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2972,12 +3038,12 @@
     "frankenmermaid": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 24,
+      "commits_since_pin": 32,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "b17a48bbef0aee7ff8f138f64a199df0f218c093",
-      "head_date": "2026-09-26T05:48:55Z",
+      "head": "0a938d765e4c0df0dcf60dbf6e61ea72a8c80a34",
+      "head_date": "2026-09-27T03:16:49Z",
       "id": 1155643809,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3022,12 +3088,12 @@
     "frankenpandas": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 212,
+      "commits_since_pin": 491,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "0cab19acfd201186f8fa566fd189ed40dc776d2f",
-      "head_date": "2026-09-26T08:14:33Z",
+      "head": "37084f94f58b5972a0ef9cbf4418e139d74180ed",
+      "head_date": "2026-09-30T11:07:53Z",
       "id": 1157440729,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3955,12 +4021,12 @@
     "frankenscipy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 116,
+      "commits_since_pin": 294,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d298b8e98041baa2eb43b11fc793d67ed9554f70",
-      "head_date": "2026-09-26T11:26:55Z",
+      "head": "9cfe39eecbf6cd20f185015c2fd01b447bf5fdc2",
+      "head_date": "2026-09-29T19:23:15Z",
       "id": 1157509554,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4020,12 +4086,12 @@
     "frankensearch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 279,
+      "commits_since_pin": 356,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "034804969b40be1f97f535640e0bf6e698108984",
-      "head_date": "2026-09-26T06:17:29Z",
+      "head": "bfe308208595e28ca1c0e0edf07e0e5643b7b323",
+      "head_date": "2026-09-29T23:43:31Z",
       "id": 1157453895,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4403,12 +4469,12 @@
     "frankensim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 254,
+      "commits_since_pin": 461,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "466f7ebad8df0d2bd4f698c41a73a8e5fa734f02",
-      "head_date": "2026-09-26T06:29:33Z",
+      "head": "c4e6ba9505b40354c703321ea90be44f54a272a9",
+      "head_date": "2026-09-29T22:42:34Z",
       "id": 1290489583,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4434,17 +4500,27 @@
       "since_pin": [],
       "tags": {},
       "workflows": [
+        "activate-cooling-publication.yml",
         "adaptive-time.yml",
+        "native-adjoint.yml",
+        "partitioned-coupling.yml",
         "percussion-physics.yml",
         "piano-physics.yml",
         "thermal-bounds.yml",
         "topology-optimization.yml",
-        "uncertainty-propagation.yml"
+        "uncertainty-propagation.yml",
+        "variational-assimilation.yml",
+        "weak-constraint.yml"
       ],
       "workflows_added_since_pin": [
+        "activate-cooling-publication.yml",
         "adaptive-time.yml",
+        "native-adjoint.yml",
+        "partitioned-coupling.yml",
         "thermal-bounds.yml",
-        "uncertainty-propagation.yml"
+        "uncertainty-propagation.yml",
+        "variational-assimilation.yml",
+        "weak-constraint.yml"
       ],
       "workflows_removed_since_pin": []
     },
@@ -4478,12 +4554,12 @@
     "frankensqlite": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 122,
+      "commits_since_pin": 222,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "627de2a567ecc06bc580b36b2f6b1d032329a418",
-      "head_date": "2026-09-26T08:58:43Z",
+      "head": "b3d36c13175a4f9e230fb71d571844c923f654af",
+      "head_date": "2026-09-30T10:41:56Z",
       "id": 1151908597,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4651,6 +4727,20 @@
           "prerelease": false,
           "published_at": "2026-09-17T14:55:24Z",
           "target": "9d3d98778a372aba95d76d05c5c974ac0238c96a"
+        },
+        "v0.4.6": {
+          "assets": 31,
+          "created_at": "2026-09-27T23:17:34Z",
+          "prerelease": false,
+          "published_at": "2026-09-28T00:08:56Z",
+          "target": "7a28b76dd9c9c747a2b2524db527da9a3e3b583d"
+        },
+        "v0.4.7": {
+          "assets": 31,
+          "created_at": "2026-09-29T18:23:08Z",
+          "prerelease": false,
+          "published_at": "2026-09-29T18:53:13Z",
+          "target": "347c965adc94e6e704e2f349f23178b9e85b18f7"
         }
       },
       "repo": "frankensqlite",
@@ -4660,6 +4750,24 @@
           "kind": "tag",
           "name": "fsqlite-pager-v0.4.5",
           "target": "6843bf75e0cad08c06362a75a61679b6910ec42e"
+        },
+        {
+          "date": "2026-09-28T00:08:56Z",
+          "kind": "release",
+          "name": "v0.4.6",
+          "target": "7a28b76dd9c9c747a2b2524db527da9a3e3b583d"
+        },
+        {
+          "date": "2026-09-29T00:39:04Z",
+          "kind": "tag",
+          "name": "jsm-v0.3.25-fsqlite-snapshot",
+          "target": "b743e7603129bb21041e29da511d0c208af3e335"
+        },
+        {
+          "date": "2026-09-29T18:53:13Z",
+          "kind": "release",
+          "name": "v0.4.7",
+          "target": "347c965adc94e6e704e2f349f23178b9e85b18f7"
         }
       ],
       "tags": {
@@ -4710,6 +4818,10 @@
         "jsm-v0.3.20-fsqlite-snapshot": {
           "date": "2026-09-02T07:08:50Z",
           "target": "067d50163da7844cef51439945a1a9fba6e03589"
+        },
+        "jsm-v0.3.25-fsqlite-snapshot": {
+          "date": "2026-09-29T00:39:04Z",
+          "target": "b743e7603129bb21041e29da511d0c208af3e335"
         },
         "v0.1.10": {
           "date": "2026-06-13T00:08:56Z",
@@ -4846,6 +4958,14 @@
         "v0.4.4": {
           "date": "2026-09-17T13:16:53Z",
           "target": "9d3d98778a372aba95d76d05c5c974ac0238c96a"
+        },
+        "v0.4.6": {
+          "date": "2026-09-27T23:17:34Z",
+          "target": "7a28b76dd9c9c747a2b2524db527da9a3e3b583d"
+        },
+        "v0.4.7": {
+          "date": "2026-09-29T18:23:08Z",
+          "target": "347c965adc94e6e704e2f349f23178b9e85b18f7"
         }
       },
       "workflows": [
@@ -4932,12 +5052,12 @@
     "frankenterm": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 282,
+      "commits_since_pin": 390,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a5a195d6da737d011374f016e5f1c0941f714fc4",
-      "head_date": "2026-09-26T09:12:51Z",
+      "head": "1a95aea5b5e1422a29aeed2633db59d400032e31",
+      "head_date": "2026-09-30T00:09:11Z",
       "id": 1137047020,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6063,12 +6183,12 @@
     "frankentorch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1,
+      "commits_since_pin": 3,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "e037b03d159109461e33f9579a326f6103d734a6",
-      "head_date": "2026-09-22T17:23:06Z",
+      "head": "02abeae1339c78fcb6a27102b1edc12e30fc2b67",
+      "head_date": "2026-09-27T03:23:19Z",
       "id": 1157429978,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6103,12 +6223,12 @@
     "frankentui": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 75,
+      "commits_since_pin": 86,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "3433e3b44964f14ce0c34809cbbcdf009c96df84",
-      "head_date": "2026-09-24T21:37:42Z",
+      "head": "c72e82ad602b7d130334ad33af9ae6f6216dbe2d",
+      "head_date": "2026-09-28T21:59:17Z",
       "id": 1146846864,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6278,7 +6398,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-09-26T11:27:15Z",
+  "checked_at": "2026-09-30T11:29:48Z",
   "discovery": [
     {
       "archived": false,
@@ -6298,7 +6418,7 @@
       "id": 1155882142,
       "language": "Python",
       "name": "Dicklesworthstone",
-      "pushed_at": "2026-09-26T09:42:34Z"
+      "pushed_at": "2026-09-30T09:42:55Z"
     },
     {
       "archived": false,
@@ -6368,7 +6488,7 @@
       "id": 1119883856,
       "language": "Shell",
       "name": "agentic_coding_flywheel_setup",
-      "pushed_at": "2026-09-26T02:45:57Z"
+      "pushed_at": "2026-09-28T19:15:28Z"
     },
     {
       "archived": false,
@@ -6378,7 +6498,7 @@
       "id": 1370613700,
       "language": "TypeScript",
       "name": "annus-mirabilis.com",
-      "pushed_at": "2026-09-26T10:49:32Z"
+      "pushed_at": "2026-09-29T18:45:31Z"
     },
     {
       "archived": false,
@@ -6398,7 +6518,7 @@
       "id": 1142089553,
       "language": "Python",
       "name": "ascii_art_mini_transformer",
-      "pushed_at": "2026-09-22T17:20:01Z"
+      "pushed_at": "2026-09-28T04:03:24Z"
     },
     {
       "archived": false,
@@ -6408,7 +6528,7 @@
       "id": 1333421030,
       "language": "TypeScript",
       "name": "asimposium.org",
-      "pushed_at": "2026-09-26T05:20:35Z"
+      "pushed_at": "2026-09-29T19:28:10Z"
     },
     {
       "archived": false,
@@ -6418,7 +6538,7 @@
       "id": 1135442827,
       "language": "Rust",
       "name": "asupersync",
-      "pushed_at": "2026-09-26T08:20:17Z"
+      "pushed_at": "2026-09-30T10:53:06Z"
     },
     {
       "archived": false,
@@ -6488,7 +6608,7 @@
       "id": 1133129841,
       "language": "Shell",
       "name": "automated_plan_reviser_pro",
-      "pushed_at": "2026-09-25T01:47:22Z"
+      "pushed_at": "2026-09-29T15:26:18Z"
     },
     {
       "archived": false,
@@ -6548,7 +6668,7 @@
       "id": 1378544264,
       "language": "Shell",
       "name": "beads_bend",
-      "pushed_at": "2026-09-26T05:28:47Z"
+      "pushed_at": "2026-09-28T00:43:35Z"
     },
     {
       "archived": false,
@@ -6598,7 +6718,7 @@
       "id": 1137022621,
       "language": "Rust",
       "name": "beads_rust",
-      "pushed_at": "2026-09-25T23:56:45Z"
+      "pushed_at": "2026-09-29T20:34:58Z"
     },
     {
       "archived": false,
@@ -6608,7 +6728,7 @@
       "id": 1104804402,
       "language": "Go",
       "name": "beads_viewer",
-      "pushed_at": "2026-09-24T22:09:48Z"
+      "pushed_at": "2026-09-29T17:30:39Z"
     },
     {
       "archived": false,
@@ -6678,7 +6798,7 @@
       "id": 1239473418,
       "language": "Rust",
       "name": "bun",
-      "pushed_at": "2026-09-15T21:44:45Z"
+      "pushed_at": "2026-09-28T19:43:34Z"
     },
     {
       "archived": false,
@@ -6708,7 +6828,7 @@
       "id": 1111896892,
       "language": "TypeScript",
       "name": "cass_memory_system",
-      "pushed_at": "2026-09-26T00:08:06Z"
+      "pushed_at": "2026-09-28T19:16:13Z"
     },
     {
       "archived": false,
@@ -6738,7 +6858,7 @@
       "id": 1137261908,
       "language": "Rust",
       "name": "charmed_rust",
-      "pushed_at": "2026-09-22T17:20:53Z"
+      "pushed_at": "2026-09-28T20:17:25Z"
     },
     {
       "archived": false,
@@ -6798,7 +6918,7 @@
       "id": 1118006238,
       "language": "Go",
       "name": "coding_agent_account_manager",
-      "pushed_at": "2026-09-24T02:51:46Z"
+      "pushed_at": "2026-09-29T15:07:07Z"
     },
     {
       "archived": false,
@@ -6808,7 +6928,7 @@
       "id": 1100945668,
       "language": "Rust",
       "name": "coding_agent_session_search",
-      "pushed_at": "2026-09-26T08:30:22Z"
+      "pushed_at": "2026-09-29T21:48:29Z"
     },
     {
       "archived": false,
@@ -6868,7 +6988,7 @@
       "id": 1130004860,
       "language": "Rust",
       "name": "destructive_command_guard",
-      "pushed_at": "2026-09-26T02:02:03Z"
+      "pushed_at": "2026-09-29T15:25:37Z"
     },
     {
       "archived": false,
@@ -6878,7 +6998,7 @@
       "id": 1146170115,
       "language": "Shell",
       "name": "doodlestein_self_releaser",
-      "pushed_at": "2026-09-26T03:37:17Z"
+      "pushed_at": "2026-09-28T23:35:58Z"
     },
     {
       "archived": false,
@@ -6888,7 +7008,7 @@
       "id": 1350973046,
       "language": "Rust",
       "name": "dwarf_fortress_mcp",
-      "pushed_at": "2026-09-26T06:28:01Z"
+      "pushed_at": "2026-09-28T22:58:50Z"
     },
     {
       "archived": false,
@@ -6928,7 +7048,7 @@
       "id": 1224408143,
       "language": "Rust",
       "name": "eidetic_engine_cli",
-      "pushed_at": "2026-09-26T11:11:15Z"
+      "pushed_at": "2026-09-29T19:29:26Z"
     },
     {
       "archived": false,
@@ -6978,7 +7098,7 @@
       "id": 1137083276,
       "language": "Rust",
       "name": "fastmcp_rust",
-      "pushed_at": "2026-09-26T10:13:56Z"
+      "pushed_at": "2026-09-29T19:28:47Z"
     },
     {
       "archived": false,
@@ -7028,7 +7148,7 @@
       "id": 1158875990,
       "language": "Rust",
       "name": "franken_agent_detection",
-      "pushed_at": "2026-09-25T19:49:01Z"
+      "pushed_at": "2026-09-28T05:47:13Z"
     },
     {
       "archived": false,
@@ -7038,7 +7158,7 @@
       "id": 1359645474,
       "language": "Rust",
       "name": "franken_alignment",
-      "pushed_at": "2026-09-26T05:41:22Z"
+      "pushed_at": "2026-09-29T19:34:32Z"
     },
     {
       "archived": false,
@@ -7048,7 +7168,7 @@
       "id": 1367629743,
       "language": "Rust",
       "name": "franken_code_browser",
-      "pushed_at": "2026-09-26T05:52:02Z"
+      "pushed_at": "2026-09-28T23:45:37Z"
     },
     {
       "archived": false,
@@ -7068,7 +7188,7 @@
       "id": 1161313144,
       "language": "Rust",
       "name": "franken_engine",
-      "pushed_at": "2026-09-26T08:17:26Z"
+      "pushed_at": "2026-09-30T10:58:20Z"
     },
     {
       "archived": false,
@@ -7078,7 +7198,7 @@
       "id": 1307841640,
       "language": "Rust",
       "name": "franken_lean",
-      "pushed_at": "2026-09-26T07:00:21Z"
+      "pushed_at": "2026-09-30T09:20:42Z"
     },
     {
       "archived": false,
@@ -7088,7 +7208,7 @@
       "id": 1306217133,
       "language": "Rust",
       "name": "franken_manim",
-      "pushed_at": "2026-09-26T09:26:06Z"
+      "pushed_at": "2026-09-30T02:10:25Z"
     },
     {
       "archived": false,
@@ -7098,7 +7218,7 @@
       "id": 1281851258,
       "language": "HTML",
       "name": "franken_markdown",
-      "pushed_at": "2026-09-26T05:56:51Z"
+      "pushed_at": "2026-09-28T23:36:50Z"
     },
     {
       "archived": false,
@@ -7128,7 +7248,7 @@
       "id": 1157430632,
       "language": "Python",
       "name": "franken_networkx",
-      "pushed_at": "2026-09-26T11:24:53Z"
+      "pushed_at": "2026-09-29T19:06:15Z"
     },
     {
       "archived": false,
@@ -7138,7 +7258,7 @@
       "id": 1317838147,
       "language": "Rust",
       "name": "franken_nlp",
-      "pushed_at": "2026-09-26T05:59:31Z"
+      "pushed_at": "2026-09-29T00:30:24Z"
     },
     {
       "archived": false,
@@ -7148,7 +7268,7 @@
       "id": 1161313216,
       "language": "Rust",
       "name": "franken_node",
-      "pushed_at": "2026-09-26T08:14:50Z"
+      "pushed_at": "2026-09-29T21:36:47Z"
     },
     {
       "archived": false,
@@ -7158,7 +7278,7 @@
       "id": 1157432826,
       "language": "Rust",
       "name": "franken_numpy",
-      "pushed_at": "2026-09-26T10:12:49Z"
+      "pushed_at": "2026-09-29T20:35:16Z"
     },
     {
       "archived": false,
@@ -7168,7 +7288,7 @@
       "id": 1279749812,
       "language": "Rust",
       "name": "franken_ocr",
-      "pushed_at": "2026-09-22T17:22:49Z"
+      "pushed_at": "2026-09-29T02:55:15Z"
     },
     {
       "archived": false,
@@ -7188,7 +7308,7 @@
       "id": 1360842907,
       "language": "Rust",
       "name": "franken_remote",
-      "pushed_at": "2026-09-26T07:11:45Z"
+      "pushed_at": "2026-09-29T19:51:45Z"
     },
     {
       "archived": false,
@@ -7198,7 +7318,7 @@
       "id": 1279720977,
       "language": "Rust",
       "name": "franken_snowflake",
-      "pushed_at": "2026-09-26T07:19:48Z"
+      "pushed_at": "2026-09-29T02:46:55Z"
     },
     {
       "archived": false,
@@ -7208,7 +7328,7 @@
       "id": 1352817606,
       "language": "Rust",
       "name": "franken_surveillance_system",
-      "pushed_at": "2026-09-26T11:26:57Z"
+      "pushed_at": "2026-09-29T19:25:39Z"
     },
     {
       "archived": false,
@@ -7218,7 +7338,7 @@
       "id": 1362884098,
       "language": "JavaScript",
       "name": "franken_threed",
-      "pushed_at": "2026-09-26T05:52:22Z"
+      "pushed_at": "2026-09-27T18:06:00Z"
     },
     {
       "archived": false,
@@ -7248,7 +7368,7 @@
       "id": 1154130483,
       "language": "Rust",
       "name": "frankenfs",
-      "pushed_at": "2026-09-26T07:06:57Z"
+      "pushed_at": "2026-09-29T00:30:41Z"
     },
     {
       "archived": false,
@@ -7258,7 +7378,7 @@
       "id": 1340123236,
       "language": "Rust",
       "name": "frankengit",
-      "pushed_at": "2026-09-26T05:52:21Z"
+      "pushed_at": "2026-09-29T20:56:51Z"
     },
     {
       "archived": false,
@@ -7268,7 +7388,7 @@
       "id": 1301293102,
       "language": "Rust",
       "name": "frankengraphdb",
-      "pushed_at": "2026-09-26T07:24:06Z"
+      "pushed_at": "2026-09-30T07:15:44Z"
     },
     {
       "archived": false,
@@ -7288,7 +7408,7 @@
       "id": 1153199323,
       "language": "Rust",
       "name": "frankenlibc",
-      "pushed_at": "2026-09-26T11:11:24Z"
+      "pushed_at": "2026-09-29T05:57:07Z"
     },
     {
       "archived": false,
@@ -7298,7 +7418,7 @@
       "id": 1155643809,
       "language": "HTML",
       "name": "frankenmermaid",
-      "pushed_at": "2026-09-26T05:54:29Z"
+      "pushed_at": "2026-09-27T03:20:11Z"
     },
     {
       "archived": false,
@@ -7308,7 +7428,7 @@
       "id": 1157440729,
       "language": "Rust",
       "name": "frankenpandas",
-      "pushed_at": "2026-09-26T08:14:36Z"
+      "pushed_at": "2026-09-30T11:07:56Z"
     },
     {
       "archived": false,
@@ -7328,7 +7448,7 @@
       "id": 1157509554,
       "language": "Rust",
       "name": "frankenscipy",
-      "pushed_at": "2026-09-26T11:26:58Z"
+      "pushed_at": "2026-09-29T19:23:19Z"
     },
     {
       "archived": false,
@@ -7338,7 +7458,7 @@
       "id": 1157453895,
       "language": "Rust",
       "name": "frankensearch",
-      "pushed_at": "2026-09-26T06:17:35Z"
+      "pushed_at": "2026-09-29T23:43:37Z"
     },
     {
       "archived": false,
@@ -7348,7 +7468,7 @@
       "id": 1290489583,
       "language": "Rust",
       "name": "frankensim",
-      "pushed_at": "2026-09-26T06:29:33Z"
+      "pushed_at": "2026-09-29T22:42:38Z"
     },
     {
       "archived": false,
@@ -7368,7 +7488,7 @@
       "id": 1151908597,
       "language": "Rust",
       "name": "frankensqlite",
-      "pushed_at": "2026-09-26T08:58:48Z"
+      "pushed_at": "2026-09-30T10:42:04Z"
     },
     {
       "archived": false,
@@ -7398,7 +7518,7 @@
       "id": 1137047020,
       "language": "Rust",
       "name": "frankenterm",
-      "pushed_at": "2026-09-26T10:50:14Z"
+      "pushed_at": "2026-09-30T00:09:17Z"
     },
     {
       "archived": false,
@@ -7408,7 +7528,7 @@
       "id": 1157429978,
       "language": "Rust",
       "name": "frankentorch",
-      "pushed_at": "2026-09-22T17:23:09Z"
+      "pushed_at": "2026-09-27T03:23:43Z"
     },
     {
       "archived": false,
@@ -7418,7 +7538,7 @@
       "id": 1146846864,
       "language": "Rust",
       "name": "frankentui",
-      "pushed_at": "2026-09-24T21:37:50Z"
+      "pushed_at": "2026-09-28T21:59:33Z"
     },
     {
       "archived": false,
@@ -7528,7 +7648,7 @@
       "id": 1312539431,
       "language": "Rust",
       "name": "hnswlib-rs",
-      "pushed_at": "2026-09-04T02:30:36Z"
+      "pushed_at": "2026-09-27T02:53:04Z"
     },
     {
       "archived": false,
@@ -7548,7 +7668,7 @@
       "id": 1233234656,
       "language": "Ruby",
       "name": "homebrew-sbh",
-      "pushed_at": "2026-09-26T05:57:04Z"
+      "pushed_at": "2026-09-29T20:19:02Z"
     },
     {
       "archived": false,
@@ -7558,7 +7678,7 @@
       "id": 1113976259,
       "language": "Shell",
       "name": "homebrew-tap",
-      "pushed_at": "2026-09-26T03:00:24Z"
+      "pushed_at": "2026-09-29T21:19:03Z"
     },
     {
       "archived": false,
@@ -7588,7 +7708,7 @@
       "id": 949709375,
       "language": "TypeScript",
       "name": "jazz_chord_progression_editor_html",
-      "pushed_at": "2026-09-26T05:33:40Z"
+      "pushed_at": "2026-09-29T02:28:45Z"
     },
     {
       "archived": false,
@@ -7598,7 +7718,7 @@
       "id": 1101616050,
       "language": "TypeScript",
       "name": "jeffrey_emanuel_personal_site",
-      "pushed_at": "2026-09-22T17:23:45Z"
+      "pushed_at": "2026-09-27T16:14:51Z"
     },
     {
       "archived": false,
@@ -7748,7 +7868,7 @@
       "id": 1081623471,
       "language": "Python",
       "name": "mcp_agent_mail",
-      "pushed_at": "2026-09-22T17:24:18Z"
+      "pushed_at": "2026-09-29T11:33:50Z"
     },
     {
       "archived": false,
@@ -7758,7 +7878,7 @@
       "id": 1150296802,
       "language": "Rust",
       "name": "mcp_agent_mail_rust",
-      "pushed_at": "2026-09-26T05:07:07Z"
+      "pushed_at": "2026-09-29T02:48:16Z"
     },
     {
       "archived": false,
@@ -7788,7 +7908,7 @@
       "id": 1133846056,
       "language": "Rust",
       "name": "meta_skill",
-      "pushed_at": "2026-09-26T05:08:11Z"
+      "pushed_at": "2026-09-26T22:28:51Z"
     },
     {
       "archived": false,
@@ -7818,7 +7938,7 @@
       "id": 1118589950,
       "language": "HTML",
       "name": "misc_coding_agent_tips_and_scripts",
-      "pushed_at": "2026-09-15T20:28:01Z"
+      "pushed_at": "2026-09-29T18:46:47Z"
     },
     {
       "archived": false,
@@ -7878,7 +7998,7 @@
       "id": 1113577240,
       "language": "Go",
       "name": "ntm",
-      "pushed_at": "2026-09-25T21:12:26Z"
+      "pushed_at": "2026-09-29T09:54:47Z"
     },
     {
       "archived": false,
@@ -7918,7 +8038,7 @@
       "id": 1111397595,
       "language": "TypeScript",
       "name": "phage_explorer",
-      "pushed_at": "2026-09-26T05:56:44Z"
+      "pushed_at": "2026-09-29T19:28:49Z"
     },
     {
       "archived": false,
@@ -7928,7 +8048,7 @@
       "id": 1148330949,
       "language": "Rust",
       "name": "pi_agent_rust",
-      "pushed_at": "2026-09-26T06:02:14Z"
+      "pushed_at": "2026-09-29T19:28:43Z"
     },
     {
       "archived": false,
@@ -7978,7 +8098,7 @@
       "id": 1134675465,
       "language": "Rust",
       "name": "process_triage",
-      "pushed_at": "2026-09-26T04:16:14Z"
+      "pushed_at": "2026-09-29T09:19:49Z"
     },
     {
       "archived": false,
@@ -8028,7 +8148,7 @@
       "id": 1135510028,
       "language": "Rust",
       "name": "remote_compilation_helper",
-      "pushed_at": "2026-09-26T05:36:47Z"
+      "pushed_at": "2026-09-29T21:35:57Z"
     },
     {
       "archived": false,
@@ -8038,7 +8158,7 @@
       "id": 1127417455,
       "language": "Shell",
       "name": "repo_updater",
-      "pushed_at": "2026-09-25T01:10:43Z"
+      "pushed_at": "2026-09-29T08:05:53Z"
     },
     {
       "archived": false,
@@ -8078,7 +8198,7 @@
       "id": 1080612965,
       "language": "Rust",
       "name": "rust_scriptbots",
-      "pushed_at": "2026-09-26T05:47:07Z"
+      "pushed_at": "2026-09-29T19:10:39Z"
     },
     {
       "archived": false,
@@ -8118,7 +8238,7 @@
       "id": 1113976280,
       "language": "Shell",
       "name": "scoop-bucket",
-      "pushed_at": "2026-09-26T03:00:25Z"
+      "pushed_at": "2026-09-29T20:35:17Z"
     },
     {
       "archived": false,
@@ -8128,7 +8248,7 @@
       "id": 1374059973,
       "language": "Rust",
       "name": "skillranker",
-      "pushed_at": "2026-09-26T05:46:01Z"
+      "pushed_at": "2026-09-29T18:48:56Z"
     },
     {
       "archived": false,
@@ -8178,7 +8298,7 @@
       "id": 1139471738,
       "language": "Rust",
       "name": "sqlmodel_rust",
-      "pushed_at": "2026-09-22T17:25:51Z"
+      "pushed_at": "2026-09-28T19:43:13Z"
     },
     {
       "archived": false,
@@ -8188,7 +8308,7 @@
       "id": 1158080555,
       "language": "Rust",
       "name": "storage_ballast_helper",
-      "pushed_at": "2026-09-26T05:39:31Z"
+      "pushed_at": "2026-09-29T19:58:09Z"
     },
     {
       "archived": false,
@@ -8278,7 +8398,7 @@
       "id": 1378545560,
       "language": "Python",
       "name": "toon_bend",
-      "pushed_at": "2026-09-26T09:57:47Z"
+      "pushed_at": "2026-09-28T00:43:33Z"
     },
     {
       "archived": false,
@@ -8288,7 +8408,7 @@
       "id": 1137823150,
       "language": "Rust",
       "name": "toon_rust",
-      "pushed_at": "2026-09-22T17:26:00Z"
+      "pushed_at": "2026-09-28T19:50:09Z"
     },
     {
       "archived": false,
@@ -8308,7 +8428,7 @@
       "id": 1097502375,
       "language": "Python",
       "name": "ultimate_bug_scanner",
-      "pushed_at": "2026-09-26T06:07:08Z"
+      "pushed_at": "2026-09-29T19:59:13Z"
     },
     {
       "archived": false,
@@ -8318,7 +8438,7 @@
       "id": 962698126,
       "language": "Python",
       "name": "ultimate_mcp_client",
-      "pushed_at": "2026-09-22T17:26:06Z"
+      "pushed_at": "2026-09-27T22:25:24Z"
     },
     {
       "archived": false,
@@ -8328,7 +8448,7 @@
       "id": 954422697,
       "language": "Python",
       "name": "ultimate_mcp_server",
-      "pushed_at": "2026-09-22T17:26:09Z"
+      "pushed_at": "2026-09-27T22:24:01Z"
     },
     {
       "archived": false,
@@ -8368,7 +8488,7 @@
       "id": 1143689825,
       "language": "Rust",
       "name": "vibe_cockpit",
-      "pushed_at": "2026-09-22T17:26:15Z"
+      "pushed_at": "2026-09-26T22:00:01Z"
     },
     {
       "archived": false,
@@ -9489,18 +9609,6 @@
         },
         "self_hosted": false
       },
-      "089ac89328656a54c3e5624a9217e648c5b361ad": {
-        "events": [
-          "pull_request",
-          "schedule",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {},
-        "push": null,
-        "self_hosted": false
-      },
       "08a616a4c3bb1e3ec92b12f2d3e685d362a56581": {
         "events": [
           "push",
@@ -9540,21 +9648,6 @@
         "ok": true,
         "pull_request": null,
         "push": null,
-        "self_hosted": false
-      },
-      "08c3395f37cfda8267b0219084a854c469d3e046": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
         "self_hosted": false
       },
       "09728e88bfb6e5304d81cea3fe340a409ea99026": {
@@ -9720,6 +9813,17 @@
         },
         "self_hosted": false
       },
+      "0d440c0e110aa527730b2db56f2238cf83838888": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "0d4e451bab0ad1fd94b065a37a32002f8d84df9b": {
         "events": [
           "push",
@@ -9809,21 +9913,6 @@
         "ok": true,
         "pull_request": null,
         "push": null,
-        "self_hosted": false
-      },
-      "0ef54a721e52cd4d96b5c8eb94a5d09bc4be12e1": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
         "self_hosted": false
       },
       "0f6a91704cb5b215d0757b6e7e0f2f03489bc79e": {
@@ -9977,21 +10066,6 @@
         },
         "self_hosted": false
       },
-      "15cb9d63dae7e84475310a048fc2bbf9e648e481": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "160daf69d7b130815e4272dbba6e5c9ac7768bd8": {
         "events": [
           "push",
@@ -10101,21 +10175,6 @@
         },
         "self_hosted": false
       },
-      "181be7024734434db88cddc70e09fe3354cb83be": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "1862e39b186dc2e3a98822c86ca2ee1ae39afcc3": {
         "events": [
           "push"
@@ -10151,6 +10210,20 @@
           "workflow_dispatch"
         ],
         "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "192c78cc838be755721d22ce4a457556161d486f": {
+        "events": [
+          "push"
+        ],
+        "kind": "other",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -10320,6 +10393,21 @@
         },
         "self_hosted": false
       },
+      "1d82a2f55896c3535d2c85ca1ded582d3c4402e9": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "1e9dac56298f4416a9cce54e3f8df29b26022c91": {
         "events": [
           "workflow_dispatch"
@@ -10361,22 +10449,6 @@
         "push": {
           "branches": [
             "tooling/gpt56pro-asb8-diagnostic"
-          ]
-        },
-        "self_hosted": false
-      },
-      "1f9fecc3200cf28cd11f9519ec257c6dc923e349": {
-        "events": [
-          "pull_request",
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {},
-        "push": {
-          "branches": [
-            "main"
           ]
         },
         "self_hosted": false
@@ -10583,6 +10655,17 @@
         },
         "self_hosted": false
       },
+      "28e011b96bdc8ef1c4336209706cc83739f5290f": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "29af5023f29f948a9937a5dfa89ccd92f96986cb": {
         "events": [
           "push",
@@ -10610,6 +10693,17 @@
             "tooling/initial-cli-finish-896dfd6a"
           ]
         },
+        "self_hosted": false
+      },
+      "2a747d7b49b1523d763ed550a6d8cc820ef56f34": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
         "self_hosted": false
       },
       "2b0050bd6552e44e53b809d921be6546f756aa3b": {
@@ -10675,21 +10769,6 @@
         },
         "self_hosted": false
       },
-      "2cc56e09c56f71ab265e95f9dc8aa67e40ac944d": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "2f084a1e667384736a00b549c3a8a866fd7c9f9b": {
         "events": [
           "push"
@@ -10741,6 +10820,36 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "2f69aade8c4c2bb81b144d46fb2831de3a3f31be": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
+      },
+      "2fa31195c89c4a87cdea2d1f53363bb181af861b": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {},
         "push": {
           "branches": [
             "main"
@@ -10808,6 +10917,21 @@
         },
         "self_hosted": false
       },
+      "326f42bb1a78495d6bcd1c4077cf1c5f98bdaf76": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "33101b1da29665dbb692fb102bcae0f47d95dc03": {
         "events": [
           "workflow_dispatch"
@@ -10858,6 +10982,21 @@
         "push": null,
         "self_hosted": false
       },
+      "346154e47198a889107d052d5e5c6d8cde35babf": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "3546207535ed3d17e97d49deb90db61f56c79362": {
         "events": [
           "pull_request",
@@ -10889,6 +11028,20 @@
           ]
         },
         "self_hosted": false
+      },
+      "3607c3879638951c2456a64c9a990295486ca218": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
       },
       "365397c1a891c1cac908d8bdb87643c0caa0a1cc": {
         "events": [
@@ -10935,6 +11088,21 @@
           "workflow_dispatch"
         ],
         "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "37d4ed0bf47d8bbd801e4da2e888aebf7101607b": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -11025,6 +11193,25 @@
         },
         "self_hosted": false
       },
+      "3a74b1c2553ff6c4b5d8798026a0969717a73934": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "3a7a7e8d8644ebce29607196fddcf650db843387": {
         "events": [
           "push"
@@ -11040,6 +11227,21 @@
         "self_hosted": false
       },
       "3ae5a439aa652f37a3e25809d7d7704d57b1f32c": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "3ae66a0cf085c0154b00ec52926d1c9da7cc1cc0": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -11090,21 +11292,6 @@
       "3c33f34c4d6f5eeb9ea6a57bdb1456655b8ae05b": {
         "error": "line 44: while scanning a simple key: could not find expected ':'",
         "ok": false
-      },
-      "3c48fac23ca86b0fe8934549e7988e06b317b343": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
       },
       "3ceb1b1d7a5997d8e240a576c6599886683cabd8": {
         "events": [
@@ -11191,6 +11378,25 @@
         },
         "self_hosted": false
       },
+      "3de3de930749acaa2628b47999955fc9d408deb7": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "3e23b403cf1254836f634ef068234d421ab9d582": {
         "events": [
           "pull_request"
@@ -11241,6 +11447,21 @@
           "workflow_dispatch"
         ],
         "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "416a1fc8702b2873bf5b044862a8d145e1e920d3": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -11462,6 +11683,21 @@
         },
         "self_hosted": false
       },
+      "45bbe100b1f4cf80ff68881cc6457176099364d0": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "tags": [
+            "v*"
+          ]
+        },
+        "self_hosted": false
+      },
       "45c2caf21c2f4c53de0a083d3bcfca87739b1aec": {
         "events": [
           "push"
@@ -11507,6 +11743,17 @@
         },
         "self_hosted": false
       },
+      "4678bcd01af08d60b364d77faf97324354dfa811": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "46ca48b60745d398341c1fded397d6e466d8cbef": {
         "events": [
           "push",
@@ -11531,6 +11778,25 @@
         "kind": "test",
         "ok": true,
         "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "4779373c01bd02adb06e44be6912ae8b61ee6d50": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
         "push": {
           "branches": [
             "main"
@@ -11749,21 +12015,6 @@
         "push": null,
         "self_hosted": false
       },
-      "4be26d2c2b87640c7b2ad851e09811e03b3977aa": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "4be403af3cb535ac2953ccf6250884b0a479f9cc": {
         "events": [
           "push"
@@ -11855,6 +12106,18 @@
         },
         "self_hosted": false
       },
+      "4f23ca8390ff437dba6431529a01ef12ec258737": {
+        "events": [
+          "pull_request",
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {},
+        "push": null,
+        "self_hosted": false
+      },
       "4f27ec84e3f184fa3d96de10023ff5d33768ca6f": {
         "events": [
           "push"
@@ -11884,6 +12147,17 @@
         },
         "self_hosted": false
       },
+      "4fef9e8497607a845d8326c10592c44284d61818": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "506b2ec7c258febf78bf92dea7b135305bbfd492": {
         "events": [
           "workflow_dispatch"
@@ -11892,6 +12166,22 @@
         "ok": true,
         "pull_request": null,
         "push": null,
+        "self_hosted": false
+      },
+      "50cbfc146d6598aa478e2830032e6d18c0c60f56": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
         "self_hosted": false
       },
       "51151ae3973a922d099737f2520cee5f4421442a": {
@@ -11907,6 +12197,21 @@
             "main"
           ]
         },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "539877ee3c2674501c879bd8f0e085a1f46ec0d7": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
         "push": {
           "branches": [
             "main"
@@ -11964,7 +12269,7 @@
         },
         "self_hosted": false
       },
-      "5641782cb974817ab524c20e91e9db93f851834b": {
+      "56ce7e9d61cbcd998e6108ae88e62a8e7e2b73f1": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -12217,6 +12522,20 @@
         },
         "self_hosted": false
       },
+      "5f4045bbdf6745bbeae7c84034e749598afcdfc4": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "5f6eadaa8aaefc2f803f6228c4582de109441981": {
         "events": [
           "push",
@@ -12248,6 +12567,47 @@
         "self_hosted": false
       },
       "60e0878b7eb567bf193c91a4a20b68b77f635b87": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "60edade7e919eccbb2eee3fc1bfe95be43d49b25": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
+      "61e4c8c2c94a68ec146e98f18b645e4fb8d91195": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "621c2ea5f1b5180f61bd76acf4c439c39d923784": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -12322,6 +12682,34 @@
         },
         "self_hosted": false
       },
+      "66f9e9df46cbc5ae4828793063f1b722410bab42": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "672cd9abc7bb0fdac526f082bf0273cca865a5ac": {
+        "events": [
+          "push"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "675b9789a0ca0f8c1ad60579eda89f9f98054980": {
         "events": [
           "push",
@@ -12351,26 +12739,6 @@
           ]
         },
         "self_hosted": false
-      },
-      "697a1ea4e678c952c10204cd6f68d3e37be892e1": {
-        "packages": [
-          "fss-cli",
-          "fss-codec-h264",
-          "fss-codec-h265",
-          "fss-codec-mjpeg",
-          "fss-container",
-          "fss-core",
-          "fss-geometry",
-          "fss-graph-algorithms",
-          "fss-ledger",
-          "fss-model-ir",
-          "fss-object",
-          "fss-packet",
-          "fss-publication",
-          "fss-reference",
-          "fss-tensor",
-          "fss-twin"
-        ]
       },
       "69bb2a4082590be85e4767cf7ff75ec1007b7f1a": {
         "events": [
@@ -12534,6 +12902,21 @@
         },
         "self_hosted": false
       },
+      "6c4a620a9c2dba17b68e364b5f0259fad14f1ac5": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "6cffe036969cf23a2531cf5d2ca2bd3fe7faa59d": {
         "events": [
           "push",
@@ -12559,36 +12942,6 @@
         "push": {
           "branches": [
             "tooling/issue-integration-20260912"
-          ]
-        },
-        "self_hosted": false
-      },
-      "6d4f25b52cc324d87f11d52b469efc37e204b0ef": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "6da025e9c2d45ecc7e5ac481a3bf47e710aed34a": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
           ]
         },
         "self_hosted": false
@@ -12642,6 +12995,17 @@
             "main"
           ]
         },
+        "self_hosted": false
+      },
+      "6e89d27359c70bc1c5b30b45fca8218b5ffddd9c": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
         "self_hosted": false
       },
       "6ed88afbd10d0bda0ecb4ef93c615a3fbd64b8d6": {
@@ -12714,6 +13078,28 @@
         },
         "self_hosted": false
       },
+      "6fcc8df0f5e533d5dc908e4c5ecc46e1a26ddf92": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
+      "705baa621be47aaec710cfcb2abb2234ca50ef2c": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "70886829a05eb4902a636bd59d1754624d42ec08": {
         "events": [
           "pull_request",
@@ -12745,10 +13131,39 @@
         },
         "self_hosted": false
       },
+      "70f2290b019d52fc6198a084f8f32f413192c9bf": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
+      },
       "7131bac905b06f7d60e07b75d19ca891244b32f5": {
         "events": [
           "push",
           "workflow_run"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "7148c7b6ab4ba2de979c4189434823659c4cf5ef": {
+        "events": [
+          "push",
+          "workflow_dispatch"
         ],
         "kind": "test",
         "ok": true,
@@ -12775,21 +13190,6 @@
         "push": null,
         "self_hosted": false
       },
-      "72bb5ada549c4213e7e176c99bb6fc39dd47c2e5": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "72d7d59385cf40e61463e0cf60eec01945a7effc": {
         "events": [
           "schedule",
@@ -12802,36 +13202,6 @@
         "self_hosted": false
       },
       "738a4bc5c37544aed92dd13cbb3e072140e56c90": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "738b336aec0509a78b08b966b7edc37d201eb123": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "73ef42d54a6caa6e2d512bc574f4e2dd4ee4372d": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -13002,26 +13372,6 @@
       "7aea5b8b63db9113504f04230adc10fb8cb3754f": {
         "error": "line 43: expected a single document",
         "ok": false
-      },
-      "7b3c855b0538abe098a0fa660e69921d2164617f": {
-        "events": [
-          "pull_request",
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
       },
       "7b52d660ad8c85eb95746126a6c7c0045c6b1208": {
         "events": [
@@ -13425,22 +13775,18 @@
         "push": null,
         "self_hosted": false
       },
-      "8486a4f89eab30866f633ad178545c3838b1648d": {
+      "848242f630ecf0bc07e07140bd45d0862438e827": {
         "events": [
-          "push",
+          "schedule",
           "workflow_dispatch"
         ],
         "kind": "test",
         "ok": true,
         "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
+        "push": null,
         "self_hosted": false
       },
-      "84fdc8d41ce1a46602bd1dd505b690202809644d": {
+      "8486a4f89eab30866f633ad178545c3838b1648d": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -13507,21 +13853,6 @@
           "workflow_dispatch"
         ],
         "kind": "other",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "867b6ab9e6f29b9e303d0d002aa20495922bbc49": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -13615,27 +13946,6 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "8898ee9d35678d695c126a281f0ee576cd3fc84a": {
-        "events": [
-          "pull_request",
-          "push",
-          "schedule",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
         "push": {
           "branches": [
             "main"
@@ -13929,21 +14239,6 @@
         "error": "line 54: while scanning a simple key: could not find expected ':'",
         "ok": false
       },
-      "92d357530f8c4c285902650da0453a0f3c66e8b5": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "92d5f680f3aba0d6690fcc1ea8769270c452ae79": {
         "events": [
           "pull_request",
@@ -14164,6 +14459,17 @@
             "main"
           ]
         },
+        "self_hosted": false
+      },
+      "97d8866402c23f52910854f2af1cd4a1d72ede17": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
         "self_hosted": false
       },
       "9867de8fabd2e2e2cb5fbd9aefe461114fcf3a55": {
@@ -14471,6 +14777,17 @@
         },
         "self_hosted": false
       },
+      "a1a60bf4fa0f5ac1a28a2ebe27ab0e8d796725e1": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "a2d45d6aaf15916ffbfe39e11de067bc61eff6e9": {
         "events": [
           "workflow_dispatch"
@@ -14505,21 +14822,6 @@
         "kind": "test",
         "ok": true,
         "pull_request": {},
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "a32436cd088cd5cdfdcba5c9786e227af3139511": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
         "push": {
           "branches": [
             "main"
@@ -14577,6 +14879,21 @@
         "self_hosted": false
       },
       "a40bd9789568317bd9f37649c10f469c3c14f682": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "a487cd503d1944a2beb400ff987fe7d2e0eccf9e": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -14764,6 +15081,17 @@
         },
         "self_hosted": false
       },
+      "abb3d63edd0290938bae94e79815eb66aa3af376": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "ac657e1ef4ca186b4a21f1a8b7b88b4ea860f747": {
         "events": [
           "push"
@@ -14808,6 +15136,21 @@
         },
         "self_hosted": false
       },
+      "acd2d5033a896ee301f5e9baabb4d7af5bcc05df": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "ad00277d5698827f3653c1b0bef486c4103a35c3": {
         "events": [
           "pull_request",
@@ -14820,6 +15163,20 @@
         "self_hosted": false
       },
       "ad58223530e249e5b0d8cf93667de6b6f296d6df": {
+        "events": [
+          "push"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "ad6cb75daf7154b30919295b55742f4ffb4cf74b": {
         "events": [
           "push"
         ],
@@ -15034,6 +15391,17 @@
         },
         "self_hosted": false
       },
+      "b228b318a0dfbb9e2c10f44ebb740f3265acdb4a": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "b24a59e22d14191ec910a8e6a9315f867cdb08ee": {
         "events": [
           "push"
@@ -15041,6 +15409,26 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "b28ba1ecf1d05d12f2bb607961b72c5a627e7d3a": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
         "push": {
           "branches": [
             "main"
@@ -15196,21 +15584,6 @@
         "self_hosted": false
       },
       "b630a86cc8eddd4c725eda316ed995496760fb27": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "b6b987d0173b3909826eb8532557f8c81f5d00b3": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -15384,6 +15757,20 @@
           ]
         },
         "self_hosted": false
+      },
+      "ba70754fae0b2bc2883d329b9b32d60a52e72b08": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
       },
       "ba8e70988e465e58db8187216f873ac308a78077": {
         "events": [
@@ -15593,6 +15980,22 @@
         },
         "self_hosted": false
       },
+      "c036064d532e015a039536dc25badf4bb1066e95": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "c073625f80bdadf053c7c68d45050139ef82d070": {
         "events": [
           "push",
@@ -15661,6 +16064,21 @@
         },
         "self_hosted": false
       },
+      "c148f3f361469c151cfb9beb757b368d847be57b": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "c14fccc44036f08f191223dd517b48081ee287c2": {
         "events": [
           "push",
@@ -15701,6 +16119,17 @@
         },
         "self_hosted": false
       },
+      "c2b77d5dff0bb37dc24a16fbf1598ca63ef5a1ad": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "c3573d4a8046587adf8120e0d07bf1bc716a16ac": {
         "events": [
           "pull_request",
@@ -15717,6 +16146,26 @@
           ]
         },
         "self_hosted": false
+      },
+      "c37ea14e79347696f81ab56655b9219f5abbfc90": {
+        "packages": [
+          "fss-cli",
+          "fss-codec-h264",
+          "fss-codec-h265",
+          "fss-codec-mjpeg",
+          "fss-container",
+          "fss-core",
+          "fss-geometry",
+          "fss-graph-algorithms",
+          "fss-ledger",
+          "fss-model-ir",
+          "fss-object",
+          "fss-packet",
+          "fss-publication",
+          "fss-reference",
+          "fss-tensor",
+          "fss-twin"
+        ]
       },
       "c4184070d2d0a078a0f1df5acdcfe7adcd612b7c": {
         "events": [
@@ -15779,6 +16228,17 @@
         },
         "self_hosted": false
       },
+      "c49a4891f6c5f5bd275868c2ad36f527a9bb3b9a": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "c49fbbccefe56408574b3c9594acc8a272221fd4": {
         "events": [
           "push"
@@ -15801,21 +16261,6 @@
         "ok": true,
         "pull_request": {},
         "push": null,
-        "self_hosted": false
-      },
-      "c52871c283f1fd8a3ecd2d0c4e4651c0b26c4c0f": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
         "self_hosted": false
       },
       "c52a78db441cc5860fc71b98c606d32e8a02084d": {
@@ -15858,6 +16303,27 @@
         "push": {
           "tags": [
             "v1.2.*"
+          ]
+        },
+        "self_hosted": false
+      },
+      "c683c26bdc7f9f645f175c394f93865ab192661e": {
+        "events": [
+          "pull_request",
+          "push",
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
           ]
         },
         "self_hosted": false
@@ -16046,6 +16512,17 @@
         },
         "self_hosted": false
       },
+      "cbfe64ebc00ea98644eea9a08c2520435f8e493b": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "cc0346c4d00ea669f3d8a883fb65a6334572d66c": {
         "events": [
           "workflow_dispatch"
@@ -16059,6 +16536,35 @@
       "cc0e119e189d03f3bcde7740d80460174a8ee197": {
         "error": "line 76: while scanning a simple key: could not find expected ':'",
         "ok": false
+      },
+      "cc16e94353a551d6755413731baefd5d32f64352": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "cc2c5859e1bddfe3bcf1ef6111e47999e86bcbd2": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
       },
       "cc8776969e7c037534432647aa6724a60b712b7c": {
         "events": [
@@ -16548,6 +17054,21 @@
         },
         "self_hosted": false
       },
+      "dc75495f066c89b289e5da9a900ab970bf8743a7": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
+      },
       "dca1e2198c4455bb0d345cb52e9dcee1493df1ae": {
         "events": [
           "push",
@@ -16650,21 +17171,6 @@
         },
         "self_hosted": false
       },
-      "de2aa0ba12a28f0fd2550ec00235826609b9d028": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "de5a6525ddafbf4cbd9ec007892e30b210e796c8": {
         "events": [
           "pull_request",
@@ -16677,6 +17183,21 @@
         "push": {
           "branches": [
             "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "de7cdfc0e6fda5df2b3409401de2f63cc8a9f69d": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "tags": [
+            "v*"
           ]
         },
         "self_hosted": false
@@ -16786,12 +17307,12 @@
         },
         "self_hosted": false
       },
-      "e20856062cbdbf41743182bb78e7c0913f1cd9f0": {
+      "e2c848be43a303a61da2bbcfc63b0513d7c73de1": {
         "events": [
           "push",
           "workflow_dispatch"
         ],
-        "kind": "test",
+        "kind": "other",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -16827,21 +17348,6 @@
         "push": {
           "branches": [
             "tooling/gpt56pro-asb8-diagnostic"
-          ]
-        },
-        "self_hosted": false
-      },
-      "e4a5287b70595843b7e3fbeccadd7c3795a16781": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
           ]
         },
         "self_hosted": false
@@ -16984,25 +17490,6 @@
         "push": null,
         "self_hosted": false
       },
-      "e85466ce6fcc9021a4bf28f300bcebeeb5349dbb": {
-        "events": [
-          "pull_request",
-          "push"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "e920fefdd7fa2552421184917d111bd4fd781f5d": {
         "events": [
           "push"
@@ -17035,6 +17522,17 @@
             "main"
           ]
         },
+        "self_hosted": false
+      },
+      "e98dbdd76183f3fe1e2fde13cedf19f686dad1fe": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
         "self_hosted": false
       },
       "e990ab1d2f9a007ec80a1ed872f3f43816febae7": {
@@ -17083,19 +17581,15 @@
         },
         "self_hosted": false
       },
-      "eadee67209c8441b686b7bb586959cac602a5717": {
+      "eb2b92d282540e3dfe4dbf18c400b88eb0ad080a": {
         "events": [
-          "push",
+          "schedule",
           "workflow_dispatch"
         ],
         "kind": "test",
         "ok": true,
         "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
+        "push": null,
         "self_hosted": false
       },
       "eb3eb5787e193d8f5dda57ce36acafec597466ce": {
@@ -17170,6 +17664,16 @@
         },
         "self_hosted": false
       },
+      "ecd9e5bc4baf6504b0e3069e9fbce3cd800d022f": {
+        "events": [
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "ed683371ac9758f2799963d25446620ab7dfc7ab": {
         "events": [
           "push"
@@ -17192,6 +17696,21 @@
         "ok": true,
         "pull_request": null,
         "push": null,
+        "self_hosted": false
+      },
+      "ee2ea21c26e85145056c0f4051a07f9f788baa62": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
         "self_hosted": false
       },
       "ef50d9be23884cf93548d01cbc5e4fc7760bc048": {
@@ -17222,6 +17741,31 @@
             "main"
           ]
         },
+        "self_hosted": false
+      },
+      "f064546ff8fbd5d63994b9360013e1d3f7f7b597": {
+        "events": [
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
+      },
+      "f1a53a6f8480a5529b7a60f3394afa18fa5096f8": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
         "self_hosted": false
       },
       "f25c44c1dec4bb7f330dc721aa9a5692dd9828b2": {
@@ -17260,6 +17804,17 @@
         "self_hosted": false
       },
       "f301130a50ca8f8a849010dd1fc899d4cf70d2aa": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
+      "f3509c18b118255b3d6f63e84f1bb992441d9795": {
         "events": [
           "schedule",
           "workflow_dispatch"
@@ -17363,6 +17918,21 @@
         "self_hosted": false
       },
       "f87ebd84546dd5a82c306bd8c9a110cf9a6189fc": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "f8d06747c74ab4d787880e5a59cc1eea9b003b3e": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -17559,6 +18129,32 @@
         "push": null,
         "self_hosted": false
       },
+      "fe8cbc9d17a93b6bffc3c3196726cadb665e1381": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
+      "ff1e166dfb7150f4bd1db5e4b61fae9ba7283b63": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "ff48b67bd8a1d57b759d8f5e80b4f354ae13b084": {
         "events": [
           "push"
@@ -17607,6 +18203,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-09-25T11:29:44Z",
+  "previous_checked_at": "2026-09-26T11:27:15Z",
   "schema": 1
 }

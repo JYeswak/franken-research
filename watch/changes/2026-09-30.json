@@ -1,0 +1,209 @@
+{
+  "baseline": false,
+  "date": "2026-09-30",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "108 files at 4f39483",
+      "before": "101 files at 355b2eb",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/4f39483b8c6f2b106e39cb9f4172d486fb6d2581/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/355b2ebe21783e795ea3605bd3823f239624f280...4f39483b8c6f2b106e39cb9f4172d486fb6d2581",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "6627b8363329",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +fln-if-let-transfer.yml, +fln-native-if-transfer.yml, +fln-offline-native-workspace.yml, +fln-option-equality-integration.yml, +fln-tail-source-landing.yml, +fln-try-catch-transfer.yml, +native-checker-frontier.yml.",
+      "title": "[watch] franken_lean: workflows +7 -0 (108 now)",
+      "value": "6627b8363329"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "105 files at 28d9dbc",
+      "before": "103 files at d0026d0",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/28d9dbc55d37265072fdefdb3985b55eb755801b/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/d0026d0c89056bcacb32e6f11387111cd95dae56...28d9dbc55d37265072fdefdb3985b55eb755801b",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "e40917870b46",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +land-modern-tex-families.yml, +native-scene-updates.yml.",
+      "title": "[watch] franken_manim: workflows +2 -0 (105 now)",
+      "value": "e40917870b46"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "8 files at 5831c80",
+      "before": "7 files at d163ca4",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengit/tree/5831c80a193d4f73efd9bef50d5ecc33f45d6a64/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankengit/compare/d163ca481d41b2cee3ff5e532f862b96714ea517...5831c80a193d4f73efd9bef50d5ecc33f45d6a64",
+        "https://github.com/Dicklesworthstone/frankengit/actions"
+      ],
+      "ident": "6fd6d44d58bd",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankengit",
+      "summary": "The .github/workflows file set changed: +pull-request-checks.yml.",
+      "title": "[watch] frankengit: workflows +1 -0 (8 now)",
+      "value": "6fd6d44d58bd"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "11 files at c4e6ba9",
+      "before": "6 files at 466f7eb",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/c4e6ba9505b40354c703321ea90be44f54a272a9/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/466f7ebad8df0d2bd4f698c41a73a8e5fa734f02...c4e6ba9505b40354c703321ea90be44f54a272a9",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "a52c1533b937",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +activate-cooling-publication.yml, +native-adjoint.yml, +partitioned-coupling.yml, +variational-assimilation.yml, +weak-constraint.yml.",
+      "title": "[watch] frankensim: workflows +5 -0 (11 now)",
+      "value": "a52c1533b937"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.3 -> f3c00b7, published 2026-09-28T05:47:16Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/releases/tag/v0.3.3",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/releases/tags/v0.3.3",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/commit/f3c00b742756692567539037c48745dfc3e87f5a"
+      ],
+      "ident": "v0.3.3",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New GitHub release v0.3.3.",
+      "title": "[watch] franken_agent_detection: release v0.3.3",
+      "value": "f3c00b742756692567539037c48745dfc3e87f5a"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.3.2 -> 0549852 (2026-09-26T20:39:37Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/v0.3.2",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/git/ref/tags/v0.3.2"
+      ],
+      "ident": "v0.3.2",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New tag v0.3.2 (no GitHub release for it at this check).",
+      "title": "[watch] franken_agent_detection: tag v0.3.2",
+      "value": "05498522415c0d6c23b949c44912350c3ab36c90"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.9.1 -> 045e657, published 2026-09-29T02:55:23Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_ocr/releases/tag/v0.9.1",
+        "https://api.github.com/repos/Dicklesworthstone/franken_ocr/releases/tags/v0.9.1",
+        "https://github.com/Dicklesworthstone/franken_ocr/commit/045e65702fcd3c78187919903103b925e29b31dd"
+      ],
+      "ident": "v0.9.1",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_ocr",
+      "summary": "New GitHub release v0.9.1.",
+      "title": "[watch] franken_ocr: release v0.9.1",
+      "value": "045e65702fcd3c78187919903103b925e29b31dd"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.6 -> 7a28b76, published 2026-09-28T00:08:56Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/releases/tag/v0.4.6",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/releases/tags/v0.4.6",
+        "https://github.com/Dicklesworthstone/frankensqlite/commit/7a28b76dd9c9c747a2b2524db527da9a3e3b583d"
+      ],
+      "ident": "v0.4.6",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New GitHub release v0.4.6.",
+      "title": "[watch] frankensqlite: release v0.4.6",
+      "value": "7a28b76dd9c9c747a2b2524db527da9a3e3b583d"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.7 -> 347c965, published 2026-09-29T18:53:13Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/releases/tag/v0.4.7",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/releases/tags/v0.4.7",
+        "https://github.com/Dicklesworthstone/frankensqlite/commit/347c965adc94e6e704e2f349f23178b9e85b18f7"
+      ],
+      "ident": "v0.4.7",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New GitHub release v0.4.7.",
+      "title": "[watch] frankensqlite: release v0.4.7",
+      "value": "347c965adc94e6e704e2f349f23178b9e85b18f7"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag jsm-v0.3.25-fsqlite-snapshot -> b743e76 (2026-09-29T00:39:04Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/jsm-v0.3.25-fsqlite-snapshot",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/git/ref/tags/jsm-v0.3.25-fsqlite-snapshot"
+      ],
+      "ident": "jsm-v0.3.25-fsqlite-snapshot",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New tag jsm-v0.3.25-fsqlite-snapshot (no GitHub release for it at this check).",
+      "title": "[watch] frankensqlite: tag jsm-v0.3.25-fsqlite-snapshot",
+      "value": "b743e7603129bb21041e29da511d0c208af3e335"
+    }
+  ],
+  "since": "2026-09-26T11:27:15Z"
+}
