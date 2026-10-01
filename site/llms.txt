@@ -12,8 +12,9 @@ Source: https://github.com/JYeswak/franken-research
 
 ## Pages
 
-- [Map](https://fr.zeststream.ai/): Jeffrey Emanuel's FrankenSuite is 44 repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.
+- [Map](https://fr.zeststream.ai/): Runnable research tools for AI projects: try an evidence cycle, inspect results and limitations, and download a transferable kit. Explore dated source assessments separately.
 - [Method](https://fr.zeststream.ai/method/): How Franken Research governs claims: the 12-section Rulebook packet, five evidence tiers, confidence labels, and the method behind all 44 assessments.
+- [Apply](https://fr.zeststream.ai/apply/): Download runnable research tools, try a complete evidence cycle, and inspect changes awaiting investigation.
 - [Techniques](https://fr.zeststream.ai/techniques/): Fourteen claim-governance and measurement techniques observed across the 44 assessed FrankenSuite repos, each with origin, candidate adopters, expected payoff, and a falsification experiment.
 - [Failure modes](https://fr.zeststream.ai/failure-modes/): Eleven failure patterns that recurred across the 44 assessed FrankenSuite repos, with exact counts and named instances.
 - [Lessons](https://fr.zeststream.ai/lessons/): Every brief's 'What it teaches' section, indexed by topic: claim discipline, benchmarks, CI and gates, velocity, licensing, drift, negative evidence, and independent verification.

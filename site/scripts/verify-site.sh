@@ -19,7 +19,7 @@ CANON="${CANON:-$(cd "$SITE_DIR/.." && pwd)}"
 # scripts/make-study.mjs (Gate N proves it matches its sources).
 # follow/index.html is hand-written; the feed and OPML it links are generated (Gate M).
 SITE_PAGES="index.html method/index.html failure-modes/index.html lessons/index.html
-techniques/index.html reproduce/index.html starter-kit/index.html self/index.html
+techniques/index.html reproduce/index.html starter-kit/index.html apply/index.html self/index.html
 stack/index.html rigor/index.html beyond/index.html updates/index.html follow/index.html"
 for _p in "$SITE_DIR"/stack/*.html; do
   case "$_p" in */stack/index.html|*'/stack/*.html') ;; *) SITE_PAGES="$SITE_PAGES stack/${_p##*/}" ;; esac
@@ -616,7 +616,7 @@ if (!CHROME) { console.log('RENDER_BAD'); console.log('  no Chromium found; set 
 const SLUG = (fs.existsSync(SITE + '/stack') ? fs.readdirSync(SITE + '/stack') : [])
   .filter((f) => f !== 'index.html' && f.endsWith('.html')).sort()[0];
 if (!SLUG) { console.log('RENDER_BAD'); console.log('  no generated stack/<slug>.html to render'); process.exit(1); }
-const PAGES = ['/index.html', '/method/index.html', '/briefs/asupersync.html', '/lessons/index.html', '/self/index.html',
+const PAGES = ['/index.html', '/apply/index.html', '/starter-kit/index.html', '/method/index.html', '/briefs/asupersync.html', '/lessons/index.html', '/self/index.html',
   '/stack/index.html', '/stack/' + SLUG, '/rigor/index.html', '/beyond/index.html', '/updates/index.html', '/follow/index.html',
   '/study/independent-100/index.html'];
 const VIEWPORTS = [[1440, 900], [390, 844]];
@@ -695,8 +695,28 @@ for (const page of PAGES) {
     consoleEvents = [];
     await send('Emulation.setDeviceMetricsOverride', {
       width: vp[0], height: vp[1], deviceScaleFactor: 1, mobile: vp[0] < 500 });
-    await send('Page.navigate', { url: `file://${SITE}${page}` });
-    await sleep(3000); // let load + timers/animations settle
+    const targetUrl = `file://${SITE}${page}`;
+    const navigation = await send('Page.navigate', { url: targetUrl });
+    if (navigation.error || navigation.result?.errorText) {
+      errors.push(`${page}: navigation failed: ${JSON.stringify(navigation.error || navigation.result.errorText)}`);
+      continue;
+    }
+    // A fixed delay sampled partially parsed HTML on a hosted runner (PR19,
+    // run36609034471). Wait for this document and its styles; do not navigate
+    // again or discard console errors. A bad/missing page still fails below.
+    const deadline = Date.now() + 20000;
+    let ready = false;
+    while (Date.now() < deadline) {
+      const loaded = await send('Runtime.evaluate', { returnByValue: true, expression: `(() =>
+        location.href === ${JSON.stringify(targetUrl)} && document.readyState === 'complete' &&
+        [...document.querySelectorAll('link[rel="stylesheet"]')].every(l => {
+          try { return !!l.sheet && l.sheet.cssRules.length > 0; } catch { return false; }
+        }))()` });
+      if (loaded.result?.result?.value === true) { ready = true; break; }
+      await sleep(100);
+    }
+    if (!ready) errors.push(`${page}: document/styles did not finish loading within 20 seconds`);
+    await sleep(3000); // preserve the existing post-load timer/animation observation
     const ev = await send('Runtime.evaluate', { returnByValue: true, expression: `(() => ({
       overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       blank: document.body ? document.body.innerText.trim().length : 0,
@@ -1420,7 +1440,7 @@ fi
 
 # ============ U: installed kit and maintained decision records ============
 echo "== U  kit and decision regressions =="
-if (cd "$REPO_ROOT" && python3 starter-kit/tests/test_gates.py && python3 scripts/test_decisions.py && python3 scripts/test_review_decisions.py && python3 scripts/check-decisions.py docs/evidence/fr-evolution/decisions.json && diff -qr starter-kit site/starter-kit); then
+if (cd "$REPO_ROOT" && python3 starter-kit/tests/test_gates.py && python3 scripts/test_decisions.py && python3 scripts/test_review_decisions.py && python3 scripts/test_learning_example.py && python3 scripts/test_learning.py && python3 -B ops/test_research_agent.py && python3 scripts/build-learning.py --check && python3 scripts/check-decisions.py docs/evidence/fr-evolution/decisions.json && diff -qr starter-kit site/starter-kit); then
   pass "U kit regression controls, decision identities and shipped copies"
 else
   fail "U kit regression controls, decision identities and shipped copies"

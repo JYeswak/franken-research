@@ -1,5 +1,9 @@
 # Franken Research
 
+[Apply the research](https://fr.zeststream.ai/apply/) offers task-oriented commands,
+limits, and a downloadable kit with per-file hashes. The daily watch rebuilds its
+unresolved investigation queue; accepted tools ship together after review.
+
 An independent, evidence-tiered assessment of 44 repositories from Jeffrey Emanuel's FrankenSuite, extended to 21 parts of the wider agent stack: what to adopt, what to copy, and when building from scratch is justified. Published as a static site you can read online or offline.
 
 **Live site: https://fr.zeststream.ai**
@@ -12,7 +16,16 @@ Made by Joshua Nowak ([ZestStream](https://zeststream.ai)) with AI coding agents
 
 Each repository was cloned at a single commit (the "pin"), read against one written protocol ([RULEBOOK.md](RULEBOOK.md)), and written up as a packet in which every substantive claim carries an evidence tier (Verified, CI-observed, Maintainer claim, External, Inference) and a confidence grade. The packets were then synthesized into suite-wide counts, and the site turns both into a map, one brief per repository, and a handful of practitioner pages.
 
-## What we found
+## What you can apply
+
+Download the kit, execute its worked decision cycle in a fresh directory, inspect
+the stale-input rejection, and move the resulting public handoff into another
+project. The [Apply page](https://fr.zeststream.ai/apply/) gives commands,
+prerequisites and limits. Cloud candidates must deliver runnable code and undergo
+separate execution and review before inclusion. Adoption is earned per technique;
+more assessed repositories do not establish more user value.
+
+## Dated source assessment: September 22, 2026
 
 All numbers below are counted from the packets and stated in [synthesis/00-overview.md](synthesis/00-overview.md) (assessment date 2026-09-22).
 

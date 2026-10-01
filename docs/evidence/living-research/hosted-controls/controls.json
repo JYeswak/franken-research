@@ -1,0 +1,17 @@
+{
+  "scope": "Hosted synthetic sandbox controls; not an agent research run or user-value result.",
+  "controls": [
+    {
+      "control": "positive",
+      "passed": true,
+      "exit_code": 0,
+      "candidate_sha": "92a431b367cd286dcf7d7462b7ad73ced526b872"
+    },
+    {
+      "control": "negative",
+      "passed": true,
+      "exit_code": 1,
+      "candidate_sha": "3350def56ac76851905c0c4ca4cade23a1d561e5"
+    }
+  ]
+}

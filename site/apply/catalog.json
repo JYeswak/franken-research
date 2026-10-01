@@ -1,0 +1,120 @@
+{
+  "archive_bytes": 143669,
+  "archive_sha256": "b47f51e787ce32b1b42984cf8c07df3312b4af7550ebfd6f5e074c78d49a3d14",
+  "code_revision": "1c32229d7fec2f9f1d274c5cf92294efa7ad6c2e76248f085f761e280c170b96",
+  "recipes": [
+    {
+      "command": "sh scripts/init.sh ../my-new-project\ncd ../my-new-project\nsh scripts/check-readiness.sh",
+      "expect": "A pristine project reports NOT READY (exit 1). Complete and review the packet before expecting success.",
+      "file_sha256": {
+        "CHECKLIST.md": "2ce82a744878ecf497c2bfc9d5242764660b8b08b9a97ca0bea82a73c1d83496",
+        "scripts/check-readiness.sh": "6ddf062666ececd4e3b8db8da74c0eef348db7536150ab8ef34187f466b5cbae",
+        "scripts/init.sh": "abb6559a0de61fec1a69f816008f65ce90dc79e6c36853db8e6a240e29cd441b"
+      },
+      "files": [
+        "scripts/init.sh",
+        "scripts/check-readiness.sh",
+        "CHECKLIST.md"
+      ],
+      "id": "planning-gates",
+      "limit": "Structural completeness is not execution authorization. The installer is not an upgrade command; it reinstalls the live hook.",
+      "need": "Catch an incomplete plan and unsupported evidence labels before work is signed off.",
+      "requires": "POSIX shell utilities; Git recommended. Use a new project directory.",
+      "test": "python3 starter-kit/tests/test_gates.py",
+      "title": "Give an AI project gates that can actually fail"
+    },
+    {
+      "command": "python3 examples/decision-cycle/run.py ../decision-exercise",
+      "expect": "A real local execution receipt, a stale-input failure, a demoted claim, and a standalone public transfer. See the exercise README for generated paths.",
+      "file_sha256": {
+        "examples/decision-cycle/README.md": "55f1baa35a883c889e9adaa985d0e4256a8f91ba99eda533a4bc506a1b2e2eb8",
+        "examples/decision-cycle/probe.py": "31fe83241cee3f7b7690fcde5037c40331d90b85b3ed638646af5cfff428555e",
+        "examples/decision-cycle/run.py": "ea9c5850319c0b5ab3a2604443f2a6d05dbf1ef6a8a1bdffb2281d87d198ce80",
+        "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+        "scripts/review-decisions.py": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92"
+      },
+      "files": [
+        "examples/decision-cycle/run.py",
+        "examples/decision-cycle/probe.py",
+        "examples/decision-cycle/README.md",
+        "scripts/check-decisions.py",
+        "scripts/review-decisions.py"
+      ],
+      "id": "decision-cycle",
+      "limit": "This deliberately small exercise teaches identity checking; it does not prove research quality or a speedup on your workload.",
+      "need": "Learn how to stop an old experiment result silently supporting changed code.",
+      "requires": "Python 3.9+, POSIX shell utilities. Give the exercise a destination that does not exist.",
+      "test": "python3 scripts/test_learning_example.py",
+      "title": "Run, invalidate and transfer an evidence-backed decision"
+    },
+    {
+      "command": "python3 scripts/review-decisions.py path/to/decisions.json --root /path/to/project --json\npython3 scripts/check-decisions.py path/to/decisions.json --root /path/to/project --refresh",
+      "expect": "A ranked review queue; refresh demotes stale labels and never promotes claims.",
+      "file_sha256": {
+        "DECISIONS.md": "b109ac7650e400da4c55d6e86179bc6908c460b3e9bc8f9090fd6b4602527d16",
+        "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
+        "scripts/review-decisions.py": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92"
+      },
+      "files": [
+        "scripts/check-decisions.py",
+        "scripts/review-decisions.py",
+        "DECISIONS.md"
+      ],
+      "id": "resume-decisions",
+      "limit": "A zero exit can still mean REVIEW or defer. Read the state. Metadata must already be safe to share; export is not a rights classifier.",
+      "need": "Hand an agent the specific next check and the evidence that made it necessary.",
+      "requires": "Python 3.9+ and your own maintained version-1 decision record; paths are relative to your project root.",
+      "test": "python3 scripts/test_review_decisions.py",
+      "title": "Resume the decisions that need attention"
+    }
+  ],
+  "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
+  "signals": {
+    "checked_at": "2026-09-26T11:27:15Z",
+    "queue": [
+      {
+        "repo": "asupersync",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+      },
+      {
+        "repo": "franken_agent_detection",
+        "state": "changed",
+        "state_reason": "open crossing franken_agent_detection:ci:C2>C1"
+      },
+      {
+        "repo": "franken_remote",
+        "state": "changed",
+        "state_reason": "open crossing franken_remote:ci:C3>C2"
+      },
+      {
+        "repo": "franken_snowflake",
+        "state": "changed",
+        "state_reason": "open crossing franken_snowflake:ci:C3>C5"
+      },
+      {
+        "repo": "franken_threed",
+        "state": "changed",
+        "state_reason": "open crossing franken_threed:ci:C1>C2"
+      },
+      {
+        "repo": "frankenpandas",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+      },
+      {
+        "repo": "frankensqlite",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+      },
+      {
+        "repo": "frankentui",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+      }
+    ],
+    "scope": "Unresolved upstream signals, not adopted techniques.",
+    "source_sha256": "977b0f5538de6dba7f45852a69bb671edcc8a37d98b27dd760831bbc280f5dda"
+  },
+  "version": 1
+}

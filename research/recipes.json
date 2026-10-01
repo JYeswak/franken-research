@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
+  "recipes": [
+    {
+      "id": "planning-gates",
+      "title": "Give an AI project gates that can actually fail",
+      "need": "Catch an incomplete plan and unsupported evidence labels before work is signed off.",
+      "requires": "POSIX shell utilities; Git recommended. Use a new project directory.",
+      "command": "sh scripts/init.sh ../my-new-project\ncd ../my-new-project\nsh scripts/check-readiness.sh",
+      "expect": "A pristine project reports NOT READY (exit 1). Complete and review the packet before expecting success.",
+      "limit": "Structural completeness is not execution authorization. The installer is not an upgrade command; it reinstalls the live hook.",
+      "files": ["scripts/init.sh", "scripts/check-readiness.sh", "CHECKLIST.md"],
+      "test": "python3 starter-kit/tests/test_gates.py"
+    },
+    {
+      "id": "decision-cycle",
+      "title": "Run, invalidate and transfer an evidence-backed decision",
+      "need": "Learn how to stop an old experiment result silently supporting changed code.",
+      "requires": "Python 3.9+, POSIX shell utilities. Give the exercise a destination that does not exist.",
+      "command": "python3 examples/decision-cycle/run.py ../decision-exercise",
+      "expect": "A real local execution receipt, a stale-input failure, a demoted claim, and a standalone public transfer. See the exercise README for generated paths.",
+      "limit": "This deliberately small exercise teaches identity checking; it does not prove research quality or a speedup on your workload.",
+      "files": ["examples/decision-cycle/run.py", "examples/decision-cycle/probe.py", "examples/decision-cycle/README.md", "scripts/check-decisions.py", "scripts/review-decisions.py"],
+      "test": "python3 scripts/test_learning_example.py"
+    },
+    {
+      "id": "resume-decisions",
+      "title": "Resume the decisions that need attention",
+      "need": "Hand an agent the specific next check and the evidence that made it necessary.",
+      "requires": "Python 3.9+ and your own maintained version-1 decision record; paths are relative to your project root.",
+      "command": "python3 scripts/review-decisions.py path/to/decisions.json --root /path/to/project --json\npython3 scripts/check-decisions.py path/to/decisions.json --root /path/to/project --refresh",
+      "expect": "A ranked review queue; refresh demotes stale labels and never promotes claims.",
+      "limit": "A zero exit can still mean REVIEW or defer. Read the state. Metadata must already be safe to share; export is not a rights classifier.",
+      "files": ["scripts/check-decisions.py", "scripts/review-decisions.py", "DECISIONS.md"],
+      "test": "python3 scripts/test_review_decisions.py"
+    }
+  ]
+}

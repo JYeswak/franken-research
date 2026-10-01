@@ -1,0 +1,104 @@
+{
+  "candidate_sha": "92a431b367cd286dcf7d7462b7ad73ced526b872",
+  "base_sha": "bbf108278327b776f6738a5dbbf0b507b5e498d8",
+  "image": "ghcr.io/github/gh-aw-firewall/agent:0.28.23@sha256:2c78aaba1c108e130e2d6d01e4f2cca334ea04c53e6f258913ac34173fe7e3b2",
+  "evaluator_sha256": "d71cb8f3bde9b64ca4e9201bd826dd89c951179e3e8e7f86756e847e5551627d",
+  "resolver_sha256": "2a82fb69c8902986e6f2bf89e44b387fbf4b529fbde0829ca13239bbe4544fbd",
+  "scope": "Independent execution of author-authored candidate tests; no semantic acceptance or VALUE multiplier.",
+  "promoted": false,
+  "checks": [
+    {
+      "output_limit_reached": false,
+      "label": "input-baseline",
+      "command": [
+        "python3",
+        "-B",
+        "baseline.py",
+        "fixtures/input.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.2818279210000014,
+      "stdout_sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "output_limit_reached": false,
+      "label": "input-candidate",
+      "command": [
+        "python3",
+        "-B",
+        "candidate.py",
+        "fixtures/input.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.1818937959999971,
+      "stdout_sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "output_limit_reached": false,
+      "label": "transfer-baseline",
+      "command": [
+        "python3",
+        "-B",
+        "baseline.py",
+        "fixtures/transfer.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.18183974099999034,
+      "stdout_sha256": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "output_limit_reached": false,
+      "label": "transfer-candidate",
+      "command": [
+        "python3",
+        "-B",
+        "candidate.py",
+        "fixtures/transfer.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.18174622300000465,
+      "stdout_sha256": "7ee29791fc17e986b97128845622b077fb45e349fdb80523fac9dba879b4ad60",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "output_limit_reached": false,
+      "label": "author-tests",
+      "command": [
+        "python3",
+        "-B",
+        "test.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.18168695300001048,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "output_limit_reached": false,
+      "label": "fresh-container-tests",
+      "command": [
+        "python3",
+        "-B",
+        "test.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.18135428099999729,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "status": "execution_reproduced",
+  "candidate": "probes/daily-candidates/case",
+  "inputs": {
+    "baseline.py": "da8b3eb7ad5698c6a4d9fdefe5bb595ba1278964c71cfff560d94493484bf57c",
+    "candidate.py": "da8b3eb7ad5698c6a4d9fdefe5bb595ba1278964c71cfff560d94493484bf57c",
+    "execution.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "fixtures/input.json": "20a8ba6993fe3cb82b1a5cfa364c3f88a5138a084426fdb44c044daa0e447955",
+    "fixtures/transfer.json": "12e9b3255b69be038b0c0b531b8242a9f6e777b73418c602be138e1f8c65d442",
+    "recipe.md": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "test.py": "eadf070dd2d7341e474bb2c32df94c38a060ab50b4bc9da4afe5ec6cd4cb4166"
+  }
+}

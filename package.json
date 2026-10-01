@@ -11,7 +11,8 @@
     "build:shell": "node site/scripts/shell.mjs && node site/scripts/make-llms.mjs",
     "freshness": "node watch/freshness/harness/run.mjs",
     "verify": "bash site/scripts/verify-site.sh",
-    "watch": "node watch/watch.mjs"
+    "watch": "node watch/watch.mjs",
+    "build:learning": "python3 scripts/build-learning.py"
   },
   "devDependencies": {
     "esbuild": "0.28.2"

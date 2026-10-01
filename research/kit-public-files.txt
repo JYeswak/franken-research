@@ -1,0 +1,24 @@
+# Explicitly reviewed public kit members; no directory globs. Root LICENSE is added separately.
+CHECKLIST.md
+DECISIONS.md
+README.md
+REFERENCES.md
+examples/decision-cycle/README.md
+examples/decision-cycle/probe.py
+examples/decision-cycle/run.py
+scripts/check-claim-discipline.sh
+scripts/check-decisions.py
+scripts/check-ledger.sh
+scripts/check-readiness.sh
+scripts/checklist2beads.awk
+scripts/hooks/pre-commit
+scripts/init.sh
+scripts/review-decisions.py
+templates/agents.md
+templates/bead-schema.md
+templates/claims.tsv
+templates/definition-of-done.md
+templates/demotion-rules.md
+templates/kit-gates.yml
+templates/negative-evidence-entry.md
+templates/planning-packet.md

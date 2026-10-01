@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/candidate/test.py", line 2, in <module>
+    assert subprocess.check_output([sys.executable,"candidate.py","fixtures/input.json"]).strip()==b"999"
+AssertionError

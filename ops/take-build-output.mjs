@@ -6,7 +6,7 @@
 // The build job runs dependency code with a read-only token and uploads the files the run generated
 // (PATH_SETS below, one list per workflow). The publish job, which holds the write token, downloads that artifact to a directory
 // outside the checkout and runs this script, which copies each file into the checkout only when its path
-// matches one of the named set's patterns. Anything else in the artifact (a script, a workflow, a path outside the
+// matches one of the named set's patterns. Anything else in the artifact (a loose script, a workflow, a path outside the
 // repository, a symlink) fails the run and nothing is copied: the artifact must never be able to replace
 // code the publish job then runs with the write token, such as ops/briefs-guard.mjs or
 // watch/freshness/dashboard.mjs. The destination side is checked too: every existing component of each
@@ -25,7 +25,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The generated files of each workflow that hands an artifact to a write job, as its build job's upload step
-// lists them (ops/write-job.mjs checks the two agree). No set may name a code file.
+// lists them (ops/write-job.mjs checks the two agree). No set may replace executable publisher code.
+// The exact downloadable ZIP path contains public kit code but is never unpacked or executed here.
 export const PATH_SETS = {
   // .github/workflows/watch.yml: watch/watch.mjs --apply, make-live.mjs, make-feed.mjs, run.mjs --report.
   watch: [
@@ -38,6 +39,10 @@ export const PATH_SETS = {
     'watch/freshness/REPORT.md',
     'site/feed.xml',
     'site/briefs/*.html',
+    'site/apply/index.html',
+    'site/apply/catalog.json',
+    'site/downloads/fr-starter-kit.zip',
+    'site/downloads/manifest.json',
   ],
   // .github/workflows/discover.yml: watch/discover.mjs --apply writes only watch/discovery/<ISO-week>.json
   // (writeResult); its build job regenerates nothing else.

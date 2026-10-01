@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "verdict": "approved_static_scope",
+  "reviewer": "independent cloud_security_review agent",
+  "reviewed_at": "2026-09-29T17:57:12.785966+00:00",
+  "scope": "Narrow static re-review of strongest-baseline instruction addition and regenerated body-hash metadata. Prior unchanged security review findings and runtime limitations retained.",
+  "file_hashes": {
+    ".github/workflows/research-candidate.md": "301de58d55a2ddacaadc4e8d19d9002d91152dc7990e8c3f20b973285eaed1ab",
+    ".github/workflows/research-candidate.lock.yml": "87f264b921b516ac903ffe08a5ba58e1d2980ff486b7d6fb365c0e9ffcef1def",
+    ".github/workflows/research-candidate-evaluate.yml": "da9fecdf3026fec201c40dbace4614c2fc7a90e38e1e077a38a7ad09e07a63a1",
+    ".github/workflows/research-agent-tests.yml": "0c39186cd08f89d1bfbd61ad5dcdef37a4a0ed5f7c2733f66b10a0924de28dcf",
+    "ops/research-agent-harden.py": "af94e9fd912430780b2cc6975db786baba3659bc0f52bd7dae1a1aa0c850c0f6",
+    "ops/research-agent-resolve.py": "2a82fb69c8902986e6f2bf89e44b387fbf4b529fbde0829ca13239bbe4544fbd",
+    "ops/research-agent-evaluate.py": "d71cb8f3bde9b64ca4e9201bd826dd89c951179e3e8e7f86756e847e5551627d",
+    "ops/research-agent-smoke.py": "6aa32b057efd31fe2cd67ca55669319aa4041adc5a791344986d74466bd1cc5c",
+    "ops/research-agent-policy.mjs": "966b539c07a35f7847220f3b7f76f08d430b104d930622a2ec50d2b0ebf81b4d",
+    "ops/test_research_agent.py": "f2ef0f181fecb4416e4405979acb82f526453b54171a9b4f9b2f98fc6bd5942f"
+  },
+  "findings": [
+    {
+      "issue": "Hardener regex originally crossed job boundaries and removed engine and safety jobs.",
+      "status": "fixed; bounded step replacement preserves six-job topology."
+    },
+    {
+      "issue": "Generated defaults persisted credentials and inherited unused telemetry/magic secrets.",
+      "status": "fixed; explicit public API-only publication path and nonsecret Git identity retained."
+    },
+    {
+      "issue": "Evaluator initially allowed unlimited host output and could leave a timed-out daemon container.",
+      "status": "fixed; host file-size limit, output-limit failure, named-container forced cleanup."
+    },
+    {
+      "issue": "Run URL substring allowed run3 to match run30 and future PR attribution.",
+      "status": "fixed; exact URL boundary and run timestamp window."
+    },
+    {
+      "issue": "Execution evidence lacked evaluator identity; pending review could be admitted.",
+      "status": "fixed; evaluator/resolver hashes and required matching completed review receipt."
+    },
+    {
+      "issue": "Prompt did not explicitly reject weak baseline comparators or corpus-preference bias.",
+      "status": "Instruction gap addressed. Independent outcome review still required; this is not a machine-enforced fairness test."
+    }
+  ],
+  "executed_checks": {
+    "repository_security_tests": "9 passed",
+    "independent_path_and_git_tree_probes": "11 passed",
+    "host_output_cap_probe": "10 MiB attempted; 2 MiB captured; failure125; cleanup invoked using fake Docker CLI",
+    "policy_mutation_probes": "7 passed on final receipt-bound checker; includes altered and missing receipt rejection"
+  },
+  "limitations": [
+    "Docker is unavailable in reviewer environment. Hosted positive and planted-failure controls must pass before claiming runtime isolation/execution works.",
+    "Authenticated gh-aw engine execution and draft PR publication have not run in this review. Public normal-file signed API path is source-confirmed; unsupported Git push fallback may fail closed.",
+    "Author-authored tests establish reproducible execution only, not semantic truth, blinded transfer, research quality, human effort, or 100x VALUE.",
+    "Compiler+hardener byte-identical reconstruction was reported by implementer; reviewer did not independently rerun compiler.",
+    "Review receipt is git-controlled audit evidence, not a cryptographic independent identity attestation. Repository writers remain trusted to govern policy changes."
+  ],
+  "upstream_source": {
+    "repository": "github/gh-aw-actions",
+    "commit": "924af5fdc64061cfbf66fb584c8b07e2ac230c60",
+    "compiler": "v0.89.21"
+  },
+  "promotion_authorized": false,
+  "prior_review_sha256": "238f7a10d0f93a85fd4a13bbce8a4b018cbeb39d82b2fa57f2f5dd1fb347d83e",
+  "rereview": {
+    "changed_files": [
+      ".github/workflows/research-candidate.md",
+      ".github/workflows/research-candidate.lock.yml"
+    ],
+    "source_change": "Requires strongest practical same-task baseline with source or algorithm justification, wider-ecosystem comparison, no FrankenSuite preference or weak comparator, and noop/defer when fair comparison cannot fit bounded execution.",
+    "lock_change": "Only compiler metadata body_hash changed; all executable YAML lines byte-identical to prior reviewed lock.",
+    "other_admitted_files": "All eight remaining admitted files byte-identical to prior reviewed hashes.",
+    "decision": "Approved static scope unchanged. Baseline fairness remains a semantic review obligation; prompt text does not prove an agent complied or establish measured value."
+  }
+}

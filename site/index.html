@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- STAT: title/meta counts are the suite total from assets/data.js (FRANKEN_DATA.repos.length); head text cannot hold data-stat slots -->
-<title>Franken Research: 44 AI-built projects, every claim checked</title>
-<meta name="description" content="Jeffrey Emanuel's FrankenSuite is 44 repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.">
+<title>Franken Research: research you can put to work</title>
+<meta name="description" content="Runnable research tools for AI projects: try an evidence cycle, inspect results and limitations, and download a transferable kit. Explore dated source assessments separately.">
 <link rel="canonical" href="https://fr.zeststream.ai/">
 <meta property="og:site_name" content="Franken Research">
-<meta property="og:title" content="44 AI-built projects. Every claim checked.">
-<meta property="og:description" content="An independent, evidence-tiered assessment of Jeffrey Emanuel's FrankenSuite: what runs, what is only promised, and what nobody can verify yet. Tour the 3D verdict map.">
+<meta property="og:title" content="Franken Research: research you can put to work">
+<meta property="og:description" content="Learn a technique, run its checks, and adapt it to your AI project. Download the public kit and inspect the evidence behind its limits.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fr.zeststream.ai/">
 <meta property="og:image" content="https://fr.zeststream.ai/og-image.png">
@@ -457,17 +457,22 @@ window.addEventListener('error', function(e){
 
 <header id="intro">
   <button id="introtoggle" type="button" aria-expanded="true" aria-controls="introbody">Hide intro</button>
-  <p class="eyebrow">Franken Research &middot; independent assessment &middot; Sep 2026</p>
-  <h1><span class="brand">FR &middot; </span><span data-stat="total">44</span> AI-built projects. <span class="h1b">Every claim checked.</span></h1>
+  <p class="eyebrow">Franken Research &middot; learn, test, apply</p>
+  <h1><span class="brand">FR &middot; </span>Research you can <span class="h1b">put to work.</span></h1>
   <div id="introbody">
-    <p class="lede"><span id="framesentence">Jeffrey Emanuel&rsquo;s FrankenSuite is <span data-stat="total">44</span> ambitious repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.</span> The <span data-stat="ringPilot">3</span> worth a bounded trial on real work sit on the amber ring near the center.</p>
+    <p class="lede">Try a runnable research technique, inspect its results and limits, and carry it into your own AI project. Start with an evidence cycle that catches changed inputs and transfers the decision for review.</p>
     <div id="ctas">
-      <button id="explorecta" class="cta primary" type="button">Explore the map</button>
+      <a class="cta primary" href="apply/index.html">Apply a technique</a>
+      <button id="explorecta" class="cta" type="button">Explore the map</button>
       <a id="tablecta" class="cta" href="#tableview">See all <span data-stat="total">44</span> verdicts</a>
-      <a class="cta" href="starter-kit/index.html">Use the method on your repo</a>
+      <a class="cta" href="downloads/fr-starter-kit.zip" download>Download the runnable kit</a>
     </div>
     <p class="trust"><a href="./self/index.html">Made by Joshua Nowak (ZestStream), independent of the maintainer.</a></p>
-    <p class="busline" id="live-watch" data-compact data-moved-href="./updates/index.html">Watched daily by a GitHub Action: <a href="./updates/index.html">what changed</a>, <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">open issues</a>.</p>
+    <p class="busline" id="live-watch" data-compact data-moved-href="./updates/index.html">Daily collection status: <a href="./updates/index.html">what changed</a>, <a href="https://github.com/JYeswak/franken-research/issues?q=is%3Aissue+is%3Aopen+label%3Awatch">open issues</a>.</p>
+    <p class="busline">Judge this system by successful applications and reproduced results. An upstream repository count or build status is not a measure of what you can achieve.</p>
+    <details id="assessment-context">
+      <summary>Source assessment: September 22, 2026 — scope and risks</summary>
+    <p class="lede"><span id="framesentence">Jeffrey Emanuel&rsquo;s FrankenSuite is <span data-stat="total">44</span> ambitious repos written mostly by AI coding agents. We froze each one at a single commit, read the code, and graded every claim: what runs, what is only promised, and what nobody can verify yet.</span> The <span data-stat="ringPilot">3</span> worth a bounded trial on real work sit on the amber ring near the center.</p>
     <div id="stats">
       <p class="finding grn"><span class="big"><span data-stat="greenCount">2</span> of <span data-stat="total">44</span></span>
         show CI (continuous integration) passing at the commit we pinned (the single assessed commit). Of the other <span data-stat="notGreen">42</span>, <span data-stat="ciC2">11</span> fail there and the rest have CI disabled, missing, private, or silent.</p>
@@ -477,6 +482,8 @@ window.addEventListener('error', function(e){
         carry an AI-lab license rider: a clause that bars OpenAI and Anthropic from any use, even testing and benchmarking.</p>
     </div>
     <p class="busline">All <span data-stat="total">44</span> have a bus factor of 1 (one maintainer, no backup): the number of people who can leave before a project stalls. Ours is 1 too.</p>
+      <p class="busline">These counts describe public CI evidence at the assessed commits. They are historical source-selection context, not a product reliability score or an adoption recommendation. <a href="https://github.com/JYeswak/franken-research/blob/main/synthesis/ci-requirements.md">See all CI categories</a>.</p>
+    </details>
     <details id="morepages">
       <summary>More pages</summary>
 <!-- shell:dir -->
@@ -484,6 +491,7 @@ window.addEventListener('error', function(e){
 <li><a href="index.html" aria-current="page">Map</a></li>
 <li><a href="index.html#tableview">Verdict table</a></li>
 <li><a href="method/index.html">Method</a></li>
+<li><a href="apply/index.html">Apply</a></li>
 <li><a href="techniques/index.html">Techniques</a></li>
 <li><a href="failure-modes/index.html">Failure modes</a></li>
 <li><a href="lessons/index.html">Lessons</a></li>

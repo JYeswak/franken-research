@@ -43,6 +43,7 @@ export const PAGES = [
   { key: 'map', label: 'Map', file: 'index.html' },
   { key: 'table', label: 'Verdict table', file: 'index.html', hash: 'tableview' },
   { key: 'method', label: 'Method', file: 'method/index.html' },
+  { key: 'apply', label: 'Apply', file: 'apply/index.html' },
   { key: 'techniques', label: 'Techniques', file: 'techniques/index.html' },
   { key: 'failure-modes', label: 'Failure modes', file: 'failure-modes/index.html' },
   { key: 'lessons', label: 'Lessons', file: 'lessons/index.html' },
@@ -57,7 +58,7 @@ export const PAGES = [
   { key: 'self', label: 'Graded by our own method', file: 'self/index.html' },
 ];
 // The nav's short list, after the brand link. Every other page is one click away in the footer directory.
-export const PRIMARY = ['method', 'starter-kit', 'stack', 'updates', 'follow'];
+export const PRIMARY = ['method', 'apply', 'starter-kit', 'updates', 'follow'];
 export const BRAND = 'Franken Research';
 
 // Issue forms (.github/ISSUE_TEMPLATE/<form>) and the field ids each prefilled link sets.
