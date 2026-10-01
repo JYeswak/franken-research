@@ -1,0 +1,65 @@
+{
+  "baseline": false,
+  "date": "2026-10-01",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "107 files at 45f9302",
+      "before": "105 files at 28d9dbc",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/45f93020bc8821033697f39db6fdbd2912e7cbee/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/28d9dbc55d37265072fdefdb3985b55eb755801b...45f93020bc8821033697f39db6fdbd2912e7cbee",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "d5c99e850468",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +land-saved-controls.yml, +position-contract.yml.",
+      "title": "[watch] franken_manim: workflows +2 -0 (107 now)",
+      "value": "d5c99e850468"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "54 files at a7c41e5",
+      "before": "53 files at abf0381",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_node/tree/a7c41e5ce75ac7107be4a32fe4a3c1908b93b748/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_node/compare/abf03819cd8a61cf838592be2fdea94f8edbb7d1...a7c41e5ce75ac7107be4a32fe4a3c1908b93b748",
+        "https://github.com/Dicklesworthstone/franken_node/actions"
+      ],
+      "ident": "ec6107b2846d",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_node",
+      "summary": "The .github/workflows file set changed: +reachability-gate.yml.",
+      "title": "[watch] franken_node: workflows +1 -0 (54 now)",
+      "value": "ec6107b2846d"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "7 files at db53737",
+      "before": "6 files at a061501",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenfs/tree/db53737d7a71da253fc3a4fcc593b504bc3a0b6e/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenfs/compare/a061501defbafd3feda9b0ebab3342b83c5e3f03...db53737d7a71da253fc3a4fcc593b504bc3a0b6e",
+        "https://github.com/Dicklesworthstone/frankenfs/actions"
+      ],
+      "ident": "099fcb0e3d80",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenfs",
+      "summary": "The .github/workflows file set changed: +xfstests.yml.",
+      "title": "[watch] frankenfs: workflows +1 -0 (7 now)",
+      "value": "099fcb0e3d80"
+    }
+  ],
+  "material": [],
+  "since": "2026-09-30T11:29:48Z"
+}
