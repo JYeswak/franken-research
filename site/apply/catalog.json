@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 144198,
-  "archive_sha256": "dfcf30f006127755f32ec833d67bd26322cbf96b071ed79f4f866b135e818200",
+  "archive_bytes": 143921,
+  "archive_sha256": "ab0e970eef0015b9d6491a2255eef2bf1d8bdf0ecd7d9c76c90e25e9ea5e7eb8",
   "code_revision": "1c32229d7fec2f9f1d274c5cf92294efa7ad6c2e76248f085f761e280c170b96",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-10-01T11:30:47Z",
+    "checked_at": "2026-10-02T11:31:01Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -81,16 +81,6 @@
         "repo": "franken_agent_detection",
         "state": "changed",
         "state_reason": "open crossing franken_agent_detection:ci:C2>C1"
-      },
-      {
-        "repo": "franken_lean",
-        "state": "unknown",
-        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
-      },
-      {
-        "repo": "franken_node",
-        "state": "changed",
-        "state_reason": "open crossing franken_node:ci:C2>C1"
       },
       {
         "repo": "franken_remote",
@@ -108,9 +98,9 @@
         "state_reason": "open crossing franken_threed:ci:C1>C2"
       },
       {
-        "repo": "frankenlibc",
-        "state": "unknown",
-        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+        "repo": "frankenfs",
+        "state": "changed",
+        "state_reason": "open crossing frankenfs:ci:C2>C1"
       },
       {
         "repo": "frankenpandas",
@@ -134,7 +124,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "3fc870e00dadd967ddbb9ab268144543ffdb87709967afa2397d719fc5634cf7"
+    "source_sha256": "5b784344fdd6f32d98871c9927590d564d7da8a5af00b5c06d923038a63991e9"
   },
   "version": 1
 }

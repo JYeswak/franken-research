@@ -1,0 +1,28 @@
+{
+  "baseline": false,
+  "date": "2026-10-02",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.4.8 -> 0f33d15 (2026-10-02T07:05:32Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/v0.4.8",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/git/ref/tags/v0.4.8"
+      ],
+      "ident": "v0.4.8",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New tag v0.4.8 (no GitHub release for it at this check).",
+      "title": "[watch] frankensqlite: tag v0.4.8",
+      "value": "0f33d153b584fb61fe580131ae9e8c24a8a0d63e"
+    }
+  ],
+  "since": "2026-10-01T11:30:47Z"
+}
