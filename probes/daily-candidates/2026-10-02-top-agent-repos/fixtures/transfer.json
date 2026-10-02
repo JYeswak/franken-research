@@ -1,0 +1,70 @@
+{
+  "candidates": [
+    {
+      "repo": "alpha/rocket",
+      "stars": 800,
+      "score": 9.85,
+      "signals": { "ci": true, "security": true, "docs": true, "benchmarks": true }
+    },
+    {
+      "repo": "beta/serde",
+      "stars": 750,
+      "score": 9.70,
+      "signals": { "ci": true, "security": false }
+    },
+    {
+      "repo": "gamma/tokio",
+      "stars": 720,
+      "score": 9.65,
+      "signals": { "ci": true, "security": true, "docs": true }
+    },
+    {
+      "repo": "delta/actix",
+      "stars": 500,
+      "score": 9.50,
+      "signals": { "ci": false, "security": true }
+    },
+    {
+      "repo": "epsilon/warp",
+      "stars": 480,
+      "score": 9.45,
+      "signals": {}
+    },
+    {
+      "repo": "zeta/hyper",
+      "stars": 470,
+      "score": 9.40,
+      "signals": { "ci": true }
+    },
+    {
+      "repo": "eta/rayon",
+      "stars": 460,
+      "score": 9.35,
+      "signals": { "ci": true, "security": true, "unknown": "maybe" }
+    },
+    {
+      "repo": "theta/clap",
+      "stars": 450,
+      "score": 9.30,
+      "signals": { "ci": true, "security": true }
+    },
+    {
+      "repo": "iota/nom",
+      "stars": 440,
+      "score": 9.25,
+      "signals": { "ci": false }
+    },
+    {
+      "repo": "kappa/regex",
+      "stars": 430,
+      "score": 9.20,
+      "signals": { "ci": true, "docs": true }
+    },
+    {
+      "repo": "lambda/pulldown-cmark",
+      "stars": 420,
+      "score": 9.15,
+      "signals": { "ci": true }
+    }
+  ]
+}
