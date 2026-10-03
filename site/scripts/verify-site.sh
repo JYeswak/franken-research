@@ -1468,6 +1468,35 @@ else
   printf '%s\n' "$GP_OUT" | head -20 | sed 's/^/      /'
 fi
 
+# ============ Gate FX: self-verification fixtures (bead fr-tww) ============
+# scripts/fixtures.py runs the three golden-fixture surfaces inside a
+# 300s budget; gates U and GP already cover two of them above, so this
+# gate runs the surface they miss (nightly candidate shape, whose
+# committed candidates must re-execute to their recorded
+# execution.json hashes) plus the runner's own tests. Agents cite
+# `python3 scripts/fixtures.py` output in bead closures; see
+# docs/fixtures.md.
+echo "== FX self-verification fixtures =="
+FX_OK=1; FX_DETAIL=""
+FX_T_OUT="$(python3 "$REPO_ROOT/scripts/test_candidate_shape.py" 2>&1)"; FX_T_RC=$?
+if [ $FX_T_RC -ne 0 ]; then
+  FX_OK=0; FX_DETAIL="candidate-shape tests exit $FX_T_RC; "
+fi
+FX_R_OUT="$(python3 "$REPO_ROOT/scripts/test_fixtures.py" 2>&1)"; FX_R_RC=$?
+if [ $FX_R_RC -ne 0 ]; then
+  FX_OK=0; FX_DETAIL="${FX_DETAIL}fixtures-runner tests exit $FX_R_RC; "
+fi
+FX_OUT="$(python3 "$REPO_ROOT/scripts/candidate-shape.py" --root "$CANON" verify 2>&1)"; FX_RC=$?
+if [ $FX_RC -ne 0 ]; then
+  FX_OK=0; FX_DETAIL="${FX_DETAIL}candidate-shape exit $FX_RC; "
+fi
+if [ $FX_OK -eq 1 ]; then
+  pass "FX candidate-shape fixtures re-derive recorded nightly evidence"
+else
+  fail "FX self-verification fixtures" "$FX_DETAIL"
+  printf '%s\n' "$FX_OUT" | head -20 | sed 's/^/      /'
+fi
+
 # ============ Gate CV: citation verifier (bead fr-brn) ============
 # scripts/citation-verifier.py re-derives every checkable number a packet cites
 # (packet/RULEBOOK/claim-set hashes, claim counts, numbering, status ratios,
