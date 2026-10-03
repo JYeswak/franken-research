@@ -1446,6 +1446,29 @@ else
   fail "U kit regression controls, decision identities and shipped copies"
 fi
 
+# ============ Gate CV: citation verifier (bead fr-brn) ============
+# scripts/citation-verifier.py re-derives every checkable number a packet cites
+# (packet/RULEBOOK/claim-set hashes, claim counts, numbering, status ratios,
+# labelled pins) from the pinned in-repo sources and fails on any mismatch.
+# Its unit tests include planted false citations, which must be flagged.
+echo "== CV citation verifier =="
+CV_OK=1; CV_DETAIL=""
+CV_T_OUT="$(python3 "$REPO_ROOT/scripts/test_citation_verifier.py" 2>&1)"; CV_T_RC=$?
+if [ $CV_T_RC -ne 0 ]; then
+  CV_OK=0; CV_DETAIL="citation-verifier tests exit $CV_T_RC; "
+fi
+CV_OUT="$(python3 "$REPO_ROOT/scripts/citation-verifier.py" --root "$CANON" verify 2>&1)"; CV_RC=$?
+CV_N="$(printf '%s\n' "$CV_OUT" | sed -n 's/^verify: \([0-9][0-9]*\)\/\([0-9][0-9]*\) packets pass.*/\1\/\2/p')"
+if [ $CV_RC -ne 0 ] || [ -z "$CV_N" ]; then
+  CV_OK=0; CV_DETAIL="${CV_DETAIL}citation-verifier exit $CV_RC; "
+fi
+if [ $CV_OK -eq 1 ]; then
+  pass "CV citation verifier re-derives cited numbers ($CV_N packets)"
+else
+  fail "CV citation verifier" "$CV_DETAIL"
+  printf '%s\n' "$CV_OUT" | grep 'verdict=FAIL' | head -20 | sed 's/^/      /'
+fi
+
 # ============ summary ============
 echo "----------------------------------------"
 echo "gates passed: $PASS   failed: $FAIL"

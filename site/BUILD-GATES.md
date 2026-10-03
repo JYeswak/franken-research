@@ -746,6 +746,29 @@ checked against them.
 listed files; it does not fetch the live URL. The 99 person pages of the
 Independent 100 study are not listed one by one; the study index links them.
 
+## Gate CV — citation verifier (bead fr-brn)
+
+**What:** `scripts/citation-verifier.py verify` re-derives every checkable
+number a packet cites from the pinned in-repo sources — packet bytes
+(sha256, byte/line counts), the header pin, `RULEBOOK.md` (sha256 and
+version), and the claim-inventory table (row count and hash, numbering,
+status tally and shares) — and compares each against the packet text and
+its committed receipt (`scripts/packet-receipts.py`, bead fr-1pq). Prose
+citations tied to the inventory (`claim inventory … N claims`, `N of M
+claims`, `P% of claims`), labelled pinned-commit occurrences, pin-relative
+blob/commit URLs and labelled packet/RULEBOOK/claim-set hashes are checked
+the same way. The gate first runs `scripts/test_citation_verifier.py`,
+whose planted false citations (a wrong pinned commit, a 999-claim count,
+a tampered receipt) must be flagged. Numbers with no in-repo pinned source
+are logged UNVERIFIABLE — listed in the per-number derivation log, never
+silently passed — and do not block; every FAIL blocks.
+**Why:** model-written numbers are untrusted text (the 2026-10-02 dry run
+fabricated sequential sha256s); a packet may not ship numbers nobody
+recomputed. Sample evidence: `docs/evidence/citation-verification-2026-10-03.md`.
+**Accepted:** external quantities (download/star counts, other-commit
+URLs) cannot be recomputed offline and are surfaced as UNVERIFIABLE rather
+than verified.
+
 ## Accepted limitations (all gates)
 
 - Raw packet/Rulebook `.md` files have no navigation by design.
