@@ -1,0 +1,65 @@
+{
+  "generated_by": "franken-nightly sandbox-run.sh (harness, not the model)",
+  "isolation": "seatbelt-no-network",
+  "sandbox_profile": "(version 1) (deny network*) (allow default)",
+  "sandbox_profile_sha256": "368e6a7538a6a8c02955f962fd41f40089580b1813f56f322501844dbcc4cfbb",
+  "network_probe": {
+    "attempted": "1.1.1.1:443 TCP connect",
+    "result": "denied",
+    "detail": "Traceback (most recent call last):   File \"<string>\", line 1, in <module>     import socket; s=socket.create_connection((\"1.1.1.1\", 443), timeout=5); s.send(b\"x\"); print(\"CONNECTED\")                      ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   File \"/opt/homebrew/Cellar/python@3.14/3"
+  },
+  "python": "Python 3.14.5",
+  "uname": "Darwin Joshs-Mac-Studio.local 25.5.0 Darwin Kernel Version 25.5.0: Tue Jun  9 22:26:15 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T6031 arm64",
+  "inputs_sha256": "a5c1dddd0d07426e065b15cc971ec742a386cdb213673418c40c79aa93b6269f",
+  "runs": [
+    {
+      "name": "baseline/input",
+      "argv": [
+        "baseline.py",
+        "fixtures/input.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 135,
+      "output_sha256": "3d87182d1d043e597c908df859984a71370c741f5b255bdb3488728978285890"
+    },
+    {
+      "name": "candidate/input",
+      "argv": [
+        "candidate.py",
+        "fixtures/input.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 113,
+      "output_sha256": "ce9bfc56aa4d3a4e7927b80d1400c30c52932c79c64d5b6b198576992cf98d2e"
+    },
+    {
+      "name": "baseline/transfer",
+      "argv": [
+        "baseline.py",
+        "fixtures/transfer.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 142,
+      "output_sha256": "3a673ab1396840615378ec8482597585a82d7dd967a08dec6d328a77585603d4"
+    },
+    {
+      "name": "candidate/transfer",
+      "argv": [
+        "candidate.py",
+        "fixtures/transfer.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 141,
+      "output_sha256": "107357a77953d6d55b883d4f0e9848ae02f1e78dd938c6ee1e5deb13ec6e76e2"
+    },
+    {
+      "name": "test",
+      "argv": [
+        "test.py"
+      ],
+      "exit": 0,
+      "elapsed_ms": 1130,
+      "output_sha256": "f98c412d22c1940d4ab01b2e35e49c4a8fd50247687933994a5317aa31401d78"
+    }
+  ]
+}
