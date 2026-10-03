@@ -27,13 +27,15 @@ python3 scripts/synthesis-drift.py check --json
 # a worktree. Run by a person/agent, never from CI.
 python3 scripts/synthesis-drift.py check --file-beads
 
-# Tests (planted packet edit, planted tally edit, dropped claim row)
+# Tests (planted packet edit, planted tally edit, dropped claim row,
+# CI-requirements / negative-patterns / hurdles header edits, and the
+# --file-beads path against a stubbed br)
 python3 scripts/test_synthesis_drift.py
 ```
 
 Runtime is seconds. Stdlib only.
 
-## What is checked (22 findings)
+## What is checked (47 findings)
 
 Packet-derived facts, extracted from each packet's own verdict line,
 §4.9 factsheet, license statements and contribution-policy statements:
@@ -68,16 +70,47 @@ name for name), and the P4 named-instance list, which must cover
 exactly the 44-packet corpus (`negpat-p1-bus`, `negpat-p2-rider`,
 `negpat-p3-nocontrib`, `negpat-p4-corpus`).
 
+Against `synthesis/ci-requirements.md`: each C1–C6 section's header
+count and full membership table against the per-packet CI codes in
+the master matrix (`ci-req-c1` … `ci-req-c6`) — a header edit, a
+dropped table row, or a matrix recode each surface as drift.
+
+Against `synthesis/negative-patterns.md` P5–P7: the P5
+cannot-certify total (44 − C1), the green-at-pin pair, and each CI
+class sub-count with its named list, against the matrix CI codes;
+the P6 release total (R1 + R2), the 23-name no-release list against
+the matrix R1 set, and the earlier-commit + phantom lists against
+the R2 set; the P7 zero-validation header against the packet-derived
+rings (Invest, the ring that requires independent validation, is
+empty) (`negpat-p5-*`, `negpat-p6-*`, `negpat-p7-no-validation`).
+
+Against `synthesis/hurdles-issues.md`: the H1 rider count against
+the packet license tally; H2 bus-factor and no-contrib counts
+against the packets, and its not-executing-in-CI count against
+44 − C1; H3's zero-third-party-validation against the Invest set,
+its analyst-reproduction claim against the packets that assert
+assessor-executed tests (exactly `franken_threed`, matching
+ci-requirements' "only packet" statement), and its private-CI count
+against C6; the H4 CI breakdown and H5 release breakdown against
+the matrix classes and the P6 lists (`hurdles-h1-rider`,
+`hurdles-h2-*`, `hurdles-h3-*`, `hurdles-h4-ci-breakdown`,
+`hurdles-h5-release`).
+
+Against `synthesis/external-validation-2026-09.md`: the
+cannot-show-green count against 44 − C1 (`extval-ci-not-green`).
+
 ## What is not checked, on purpose
 
 The report inventories every `n/44` claim in every top-level
 `synthesis/*.md` (59 at the time of writing) so the unchecked residue
-is explicit. Semantic pattern counts — most of `hurdles-issues.md`,
-`ci-requirements.md`, the uniqueness catalog's mechanism claims —
-have no structured per-packet field to re-derive from; they are
-inventoried, not verified. CI and release classes are synthesis
-judgments coded C1–C6 / R1–R3 in the matrix, so the monitor checks
-their tallies for internal consistency and against the matrix, not
+is explicit. Every header tally, membership list, and cross-document
+restatement in the six synthesis documents is now re-derived or
+cross-checked as above. What remains unchecked is prose that is not
+tally-shaped: named instances inside pattern sections (P8–P11), the
+uniqueness catalog's mechanism claims, download/commit counts quoted
+inside arguments. CI and release classes are synthesis judgments
+coded C1–C6 / R1–R3 in the matrix, so the monitor checks their
+tallies for internal consistency and against the matrix, not
 against a packet field (packets carry CI prose, not codes). The
 known site-side divergence (README: `site/` data classifies
 frankenjax C6 where the matrix says C4) is out of scope here; the
@@ -85,9 +118,13 @@ site has its own verify gates.
 
 ## Cadence
 
-- **Weekly**, as part of the morning DAG pass: run the check; if it
-  exits 1, run it again with `--file-beads` from the main checkout so
-  each drifted claim becomes a bead in the DAG, then work the beads.
+- **Weekly, scheduled**: launchd job `com.jyeswak.franken-synthesis-drift`
+  (Mondays 07:05 local, ahead of the morning DAG pass) runs
+  `/Users/josh/Developer/franken-nightly/bin/synthesis-drift-weekly.py`,
+  which runs the check in the main checkout and, on drift, files one
+  bead per drifted claim via `--file-beads`. Logs:
+  `franken-nightly/logs/synthesis-drift.log`. The morning DAG pass
+  works any beads it files.
 - **On any packet or synthesis change**: any commit touching
   `packets/` or `synthesis/` gets a check run before the commit is
   pushed; a synthesis fix and the packet change that forced it land

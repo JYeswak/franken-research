@@ -22,10 +22,19 @@ current packets and compares it against the claim as written:
     against the derived sets;
   * restatements of the same claims in synthesis/negative-patterns.md
     (P1, P2, P3 headers and exception lists; the P4 named-instance list
-    must cover exactly the corpus).
+    must cover exactly the corpus);
+  * the CI-requirements classes in synthesis/ci-requirements.md: each
+    C1-C6 header count and membership table against the per-packet CI
+    codes in the master matrix;
+  * the negative-patterns P5 CI breakdown, P6 release breakdown and
+    P7 zero-validation header, re-derived from the matrix CI/release
+    codes and the packet-derived NODUS rings;
+  * the cross-packet tallies restated in synthesis/hurdles-issues.md
+    (rider, bus factor, no-contrib, CI and release breakdowns) and in
+    synthesis/external-validation-2026-09.md.
 
 Claims that are semantic pattern counts rather than structured tallies
-(most of hurdles-issues.md, ci-requirements.md, the uniqueness catalog)
+(the uniqueness catalog, the prose instances inside the patterns)
 cannot be re-derived mechanically; the monitor inventories every n/44
 claim across the synthesis docs in its report and marks which checks
 cover it, so the unchecked residue is explicit, never silent.
@@ -195,6 +204,11 @@ def packet_facts(root: Path):
             "trl": trl, "trl_how": trl_how, "ring": ring, "ring_how": ring_how,
             "license": lic, "license_how": lic_how, "bus": bus, "bus_how": bus_how,
             "no_contrib": nc, "no_contrib_how": nc_how,
+            # The packet's own statement that the assessor executed its
+            # test suite (franken_threed's marching-cubes trio); the
+            # hurdles/negative-patterns analyst-reproduction claims rest
+            # on exactly this marker.
+            "analyst_repro": "Executed by the assessor" in text,
         }
     return facts
 
@@ -342,6 +356,19 @@ def parse_overview(text: str):
     return out
 
 
+def _section(text: str, start_pat: str, end_pat: str):
+    m = re.search(start_pat + r"(.*?)" + end_pat, text, re.S)
+    return m.group(1) if m else ""
+
+
+def _item_names(segment: str):
+    """Project names at list-item starts: '`name`' at the segment start
+    or right after a ', ' separator. Backticked tokens inside an item's
+    parenthetical (commit hashes like `c577c0ae`) are not item starts
+    and are excluded."""
+    return re.findall(r"(?:^|,\s+)`([a-z0-9_\-]+)`", segment)
+
+
 def parse_negative_patterns(text: str):
     out = {}
     m = re.search(r"## P1 [^\n]*:\s*(\d+)/44", text)
@@ -370,6 +397,141 @@ def parse_negative_patterns(text: str):
     sec = re.search(r"## P4 .*?\n(.*?)\n## ", text, re.S)
     if sec:
         out["p4_named"] = re.findall(r"^- ([a-z0-9_\-]+) \u2014", sec.group(1), re.M)
+
+    # -- P5: CI that cannot certify the pin (restates the CI classes)
+    m = re.search(r"## P5 [^\n]*:\s*(\d+)/44", text)
+    if m:
+        out["p5_total"] = int(m.group(1))
+    sec5 = _section(text, r"## P5 ", r"\n## P6 ")
+    m = re.search(r"Only (.*?) have public CI green at the assessed commit:"
+                  r"\s*\*\*(\d+)/44\*\*", sec5, re.S)
+    if m:
+        out["p5_green_named"] = BACKTICK.findall(m.group(1))
+        out["p5_green"] = int(m.group(2))
+    for key, pat in (
+        ("p5_c2", r"red at pin \*\*(\d+)/44\*\*(?:\s*\(([^)]*)\))?"),
+        ("p5_c3", r"no pin verdict \*\*(\d+)/44\*\*(?:\s*\(([^)]*)\))?"),
+        ("p5_c4", r"no test CI or deploy-only \*\*(\d+)/44\*\*"),
+        ("p5_c5", r"CI disabled or deleted \*\*(\d+)/44\*\*(?:\s*\(([^)]*)\))?"),
+        ("p5_c6", r"private DSR/RCH/self-hosted-only, unobservable "
+                  r"\*\*(\d+)/44\*\*(?:\s*\(([^)]*)\))?"),
+    ):
+        m = re.search(pat, sec5)
+        if m:
+            out[key] = int(m.group(1))
+            if m.re.groups >= 2 and m.group(2):
+                out[key + "_named"] = BACKTICK.findall(m.group(2))
+
+    # -- P6: release artifact missing or not covering the pin (R classes)
+    m = re.search(r"## P6 [^\n]*:\s*(\d+)/44", text)
+    if m:
+        out["p6_total"] = int(m.group(1))
+    sec6 = _section(text, r"## P6 ", r"\n## P7 ")
+    m = re.search(r"No release or tag \*\*(\d+)/44\*\*:\s*(.*?)\.\s+Release targets",
+                  sec6, re.S)
+    if m:
+        out["p6_r1"] = int(m.group(1))
+        out["p6_r1_named"] = _item_names(m.group(2))
+    m = re.search(r"Release targets an earlier commit \*\*(\d+)/44\*\*:\s*"
+                  r"(.*?)\.\s+Phantom release", sec6, re.S)
+    if m:
+        out["p6_earlier"] = int(m.group(1))
+        out["p6_earlier_named"] = _item_names(m.group(2))
+    m = re.search(r"Phantom release \*\*(\d+)/44\*\*:\s*(.*?)\.\s*(?:\n|$)",
+                  sec6, re.S)
+    if m:
+        out["p6_phantom"] = int(m.group(1))
+        out["p6_phantom_named"] = _item_names(m.group(2))
+
+    # -- P7: zero independent validation across the corpus
+    m = re.search(r"## P7 [^\n]*:\s*(\d+)/44", text)
+    if m:
+        out["p7_total"] = int(m.group(1))
+    return out
+
+
+def parse_ci_requirements(text: str):
+    """## C1..C6 sections: header count + membership table per class."""
+    out = {"sections": {}}
+    parts = re.split(r"^## (C[1-6])\b", text, flags=re.M)
+    for i in range(1, len(parts) - 1, 2):
+        code, body = parts[i], parts[i + 1]
+        first = body.splitlines()[0] if body.splitlines() else ""
+        m = re.search(r"(\d+)\s*/\s*44", first)
+        members = []
+        for ln in body.splitlines():
+            if not ln.startswith("|") or ln.startswith("| Project") \
+                    or ln.startswith("|-"):
+                continue
+            cell = ln.strip().strip("|").split("|")[0].strip().strip("`")
+            if cell:
+                members.append(cell)
+        out["sections"][code] = {
+            "count": int(m.group(1)) if m else None,
+            "members": members,
+        }
+    m = re.search(r"(\S+) is additionally the only packet with "
+                  r"analyst-executed behavioral reproduction", text)
+    if m:
+        out["analyst_only"] = m.group(1)
+    return out
+
+
+def parse_hurdles(text: str):
+    out = {}
+    m = re.search(r"(\d+)/44 repos carry a non-OSI MIT\+OpenAI/Anthropic rider", text)
+    if m:
+        out["rider"] = int(m.group(1))
+    m = re.search(r"Bus factor 1 in (\d+)/44", text)
+    if m:
+        out["bus"] = int(m.group(1))
+    m = re.search(r"Explicit refusal of outside contributions in (\d+)/44", text)
+    if m:
+        out["nocontrib"] = int(m.group(1))
+    m = re.search(r"in (\d+)/44 cases it is not even executing in public CI", text)
+    if m:
+        out["ci_not_executing"] = int(m.group(1))
+    m = re.search(r"Independent third-party validation is (\d+)/44", text)
+    if m:
+        out["validation_zero"] = int(m.group(1))
+    m = re.search(r"analyst-executed behavioral reproduction is (\d+)/44 "
+                  r"\(`([a-z0-9_\-]+)`", text)
+    if m:
+        out["analyst_repro"] = int(m.group(1))
+        out["analyst_repro_named"] = [m.group(2)]
+    m = re.search(r"unobservable in (\d+)/44 cases", text)
+    if m:
+        out["private_ci"] = int(m.group(1))
+    m = re.search(r"(\d+)/44 projects cannot demonstrate public CI green at "
+                  r"the assessed commit \((\d+) red, (\d+) no pin verdict, "
+                  r"(\d+) no test CI, (\d+) disabled/deleted, "
+                  r"(\d+) private-only\)", text)
+    if m:
+        out["ci_breakdown"] = {
+            "total": int(m.group(1)), "C2": int(m.group(2)),
+            "C3": int(m.group(3)), "C4": int(m.group(4)),
+            "C5": int(m.group(5)), "C6": int(m.group(6)),
+        }
+    m = re.search(r"(\d+)/44 projects have no release at the pin: (\d+) with "
+                  r"no release or tag at all, (\d+) whose release artifacts "
+                  r"target an earlier commit \(([^)]*)\), and (\d+) phantom "
+                  r"\(`([a-z0-9_\-]+)`", text)
+    if m:
+        out["release_breakdown"] = {
+            "total": int(m.group(1)), "r1": int(m.group(2)),
+            "earlier": int(m.group(3)),
+            "earlier_named": BACKTICK.findall(m.group(4)),
+            "phantom": int(m.group(5)), "phantom_named": [m.group(6)],
+        }
+    return out
+
+
+def parse_external_validation(text: str):
+    out = {}
+    m = re.search(r"(\d+)/44 repos cannot show public CI green at the "
+                  r"assessed commit", text)
+    if m:
+        out["ci_not_green"] = int(m.group(1))
     return out
 
 
@@ -548,6 +710,133 @@ def check(root: Path):
     setcheck("negpat-p4-corpus", "synthesis/negative-patterns.md",
              f"P4 drift instances named per project ({neg.get('p4_count')}/44)",
              neg.get("p4_named"), corpus)
+
+    # -- ci-requirements classes vs the per-packet matrix codes
+    cire = parse_ci_requirements(
+        (root / "synthesis" / "ci-requirements.md").read_text(encoding="utf-8"))
+
+    def ci_set(code):
+        return {s for s, r in matrix.items() if r["ci"] == code}
+
+    def rel_set(code):
+        return {s for s, r in matrix.items() if r["rel"] == code}
+
+    for code in ("C1", "C2", "C3", "C4", "C5", "C6"):
+        sec = cire["sections"].get(code) or {}
+        want = ci_set(code)
+        got = sec.get("members") or []
+        add(f"ci-req-{code.lower()}", "synthesis/ci-requirements.md",
+            f"{code} header {sec.get('count')}/44; membership table "
+            f"({len(got)} rows)",
+            f"per-packet matrix {code} set ({len(want)}): {sorted(want)}; "
+            f"table-only={sorted(set(got) - want)}; "
+            f"matrix-only={sorted(want - set(got))}",
+            sec.get("count") == len(want) and set(got) == want
+            and len(got) == len(want))
+
+    # -- negative-patterns P5/P6/P7 re-derived from the matrix codes
+    add("negpat-p5-total", "synthesis/negative-patterns.md",
+        f"P5 cannot-certify {neg.get('p5_total')}/44; green "
+        f"{neg.get('p5_green')}/44 named {neg.get('p5_green_named')}",
+        f"44 - C1 = {44 - len(ci_set('C1'))}; C1 set {sorted(ci_set('C1'))}",
+        neg.get("p5_total") == 44 - len(ci_set("C1"))
+        and neg.get("p5_green") == len(ci_set("C1"))
+        and set(neg.get("p5_green_named") or []) == ci_set("C1"))
+    for code, key in (("C2", "p5_c2"), ("C3", "p5_c3"), ("C4", "p5_c4"),
+                      ("C5", "p5_c5"), ("C6", "p5_c6")):
+        named = neg.get(key + "_named")
+        if named is not None:
+            setcheck(f"negpat-p5-{code.lower()}", "synthesis/negative-patterns.md",
+                     f"P5 {code} {neg.get(key)}/44 named list", named, ci_set(code))
+        else:
+            add(f"negpat-p5-{code.lower()}", "synthesis/negative-patterns.md",
+                f"P5 {code} {neg.get(key)}/44",
+                f"matrix {code} count {len(ci_set(code))}",
+                neg.get(key) == len(ci_set(code)))
+    add("negpat-p6-total", "synthesis/negative-patterns.md",
+        f"P6 missing/stale release {neg.get('p6_total')}/44",
+        f"R1 + R2 from matrix = {len(rel_set('R1')) + len(rel_set('R2'))}",
+        neg.get("p6_total") == len(rel_set("R1")) + len(rel_set("R2")))
+    setcheck("negpat-p6-r1", "synthesis/negative-patterns.md",
+             f"P6 no release or tag {neg.get('p6_r1')}/44 named list",
+             neg.get("p6_r1_named"), rel_set("R1"))
+    r2_claimed = set(neg.get("p6_earlier_named") or []) | set(neg.get("p6_phantom_named") or [])
+    add("negpat-p6-r2", "synthesis/negative-patterns.md",
+        f"P6 earlier-commit {neg.get('p6_earlier')}/44 "
+        f"({neg.get('p6_earlier_named')}) + phantom {neg.get('p6_phantom')}/44 "
+        f"({neg.get('p6_phantom_named')})",
+        f"matrix R2 set {sorted(rel_set('R2'))}",
+        r2_claimed == rel_set("R2")
+        and neg.get("p6_earlier") == len(neg.get("p6_earlier_named") or [])
+        and neg.get("p6_phantom") == len(neg.get("p6_phantom_named") or []))
+    invest = {s for s, f in facts.items() if f["ring"] == "Invest"}
+    add("negpat-p7-no-validation", "synthesis/negative-patterns.md",
+        f"P7 zero independent validation: {neg.get('p7_total')}/44",
+        f"{len(corpus) - len(invest)}/44 with no validation; packets coded "
+        f"Invest (the ring that requires independent validation): "
+        f"{sorted(invest)}",
+        neg.get("p7_total") == len(corpus) - len(invest))
+
+    # -- hurdles-issues restatements
+    hur = parse_hurdles(
+        (root / "synthesis" / "hurdles-issues.md").read_text(encoding="utf-8"))
+    add("hurdles-h1-rider", "synthesis/hurdles-issues.md",
+        f"H1 rider {hur.get('rider')}/44",
+        f"re-derived from packets {derived_lic.get('rider')}/44",
+        hur.get("rider") == derived_lic.get("rider"))
+    add("hurdles-h2-bus-nocontrib", "synthesis/hurdles-issues.md",
+        f"H2 bus factor 1 in {hur.get('bus')}/44; no-contrib refusal "
+        f"{hur.get('nocontrib')}/44",
+        f"re-derived bus {derived_bus}/44, no-contrib {len(derived_nc)}/44",
+        hur.get("bus") == derived_bus
+        and hur.get("nocontrib") == len(derived_nc))
+    add("hurdles-h2-ci-not-executing", "synthesis/hurdles-issues.md",
+        f"H2 not executing in public CI in {hur.get('ci_not_executing')}/44 cases",
+        f"44 - C1 from matrix = {44 - len(ci_set('C1'))}",
+        hur.get("ci_not_executing") == 44 - len(ci_set("C1")))
+    add("hurdles-h3-validation-zero", "synthesis/hurdles-issues.md",
+        f"H3 independent third-party validation is {hur.get('validation_zero')}/44",
+        f"packets coded Invest (requires independent validation): {len(invest)}",
+        hur.get("validation_zero") == len(invest))
+    analyst = {s for s, f in facts.items() if f["analyst_repro"]}
+    add("hurdles-h3-analyst-repro", "synthesis/hurdles-issues.md",
+        f"H3 analyst-executed behavioral reproduction "
+        f"{hur.get('analyst_repro')}/44 ({hur.get('analyst_repro_named')}); "
+        f"ci-requirements names {cire.get('analyst_only')} as the only packet",
+        f"packets asserting assessor-executed tests: {sorted(analyst)}",
+        hur.get("analyst_repro") == len(analyst)
+        and set(hur.get("analyst_repro_named") or []) == analyst
+        and cire.get("analyst_only") in analyst)
+    add("hurdles-h3-private-ci", "synthesis/hurdles-issues.md",
+        f"H3 private CI unobservable in {hur.get('private_ci')}/44 cases",
+        f"matrix C6 count {len(ci_set('C6'))}",
+        hur.get("private_ci") == len(ci_set("C6")))
+    h4 = hur.get("ci_breakdown") or {}
+    h4_want = {"total": 44 - len(ci_set("C1"))}
+    h4_want.update({c: len(ci_set(c)) for c in ("C2", "C3", "C4", "C5", "C6")})
+    add("hurdles-h4-ci-breakdown", "synthesis/hurdles-issues.md",
+        f"H4 cannot demonstrate green {h4}",
+        f"matrix CI classes {h4_want}", h4 == h4_want)
+    h5 = hur.get("release_breakdown") or {}
+    add("hurdles-h5-release", "synthesis/hurdles-issues.md",
+        f"H5 no release at pin {h5}",
+        f"matrix R1 {len(rel_set('R1'))}, R2 {len(rel_set('R2'))}; "
+        f"negative-patterns P6 earlier={neg.get('p6_earlier_named')} "
+        f"phantom={neg.get('p6_phantom_named')}",
+        h5.get("total") == len(rel_set("R1")) + len(rel_set("R2"))
+        and h5.get("r1") == len(rel_set("R1"))
+        and h5.get("earlier") == len(neg.get("p6_earlier_named") or [])
+        and set(h5.get("earlier_named") or []) == set(neg.get("p6_earlier_named") or [])
+        and h5.get("phantom") == len(neg.get("p6_phantom_named") or [])
+        and (h5.get("phantom_named") or []) == (neg.get("p6_phantom_named") or []))
+
+    # -- external-validation restatement
+    ext = parse_external_validation(
+        (root / "synthesis" / "external-validation-2026-09.md").read_text(encoding="utf-8"))
+    add("extval-ci-not-green", "synthesis/external-validation-2026-09.md",
+        f"{ext.get('ci_not_green')}/44 repos cannot show public CI green",
+        f"44 - C1 from matrix = {44 - len(ci_set('C1'))}",
+        ext.get("ci_not_green") == 44 - len(ci_set("C1")))
 
     # -- inventory of every n/44 claim across the synthesis docs
     inventory = []
