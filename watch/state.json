@@ -3,12 +3,12 @@
     "asupersync": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 664,
+      "commits_since_pin": 703,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "7f272795988e80830e89b51789db4f451e6e3e96",
-      "head_date": "2026-10-03T10:55:17Z",
+      "head": "7564bd9652b8f33aef3a2c5c0fd32b00945b88c4",
+      "head_date": "2026-10-03T14:02:50Z",
       "id": 1135442827,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3167,12 +3167,12 @@
     "frankenpandas": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 520,
+      "commits_since_pin": 522,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "5aee2a8aeb63dc1eca39dd3ba6da446718bafd61",
-      "head_date": "2026-10-02T23:47:04Z",
+      "head": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b",
+      "head_date": "2026-10-03T15:14:49Z",
       "id": 1157440729,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3721,7 +3721,104 @@
         }
       },
       "repo": "frankenpandas",
-      "since_pin": [],
+      "since_pin": [
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-columnar-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-dot-kernel-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-expr-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-frame-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-groupby-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-index-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-io-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-join-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-runtime-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "fp-types-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:10Z",
+          "kind": "tag",
+          "name": "v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:11Z",
+          "kind": "tag",
+          "name": "fp-bench-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:11Z",
+          "kind": "tag",
+          "name": "fp-conformance-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:11Z",
+          "kind": "tag",
+          "name": "fp-frankentui-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:11Z",
+          "kind": "tag",
+          "name": "fp-python-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T15:15:11Z",
+          "kind": "tag",
+          "name": "frankenpandas-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        }
+      ],
       "tags": {
         "backup/local-main-pre-rebase-80a36bf9": {
           "date": "2026-06-02T05:59:50Z",
@@ -3751,6 +3848,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-bench-v0.4.0": {
+          "date": "2026-10-03T15:15:11Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-columnar-v0.1.0": {
           "date": "2026-04-23T17:07:34Z",
           "target": "ee5d783735d84c3691ffef3d89bc0484264429ac"
@@ -3770,6 +3871,10 @@
         "fp-columnar-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-columnar-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-conformance-v0.1.0": {
           "date": "2026-04-23T17:07:44Z",
@@ -3791,6 +3896,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-conformance-v0.4.0": {
+          "date": "2026-10-03T15:15:11Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-dot-kernel-v0.2.0": {
           "date": "2026-08-20T18:54:37Z",
           "target": "5420971c9ec00c11b09e351b000476fcaa457eab"
@@ -3798,6 +3907,10 @@
         "fp-dot-kernel-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-dot-kernel-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-expr-v0.1.0": {
           "date": "2026-04-23T17:07:39Z",
@@ -3819,6 +3932,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-expr-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-frame-v0.1.0": {
           "date": "2026-04-23T17:07:38Z",
           "target": "ee5d783735d84c3691ffef3d89bc0484264429ac"
@@ -3838,6 +3955,10 @@
         "fp-frame-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-frame-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-frankentui-v0.1.0": {
           "date": "2026-04-23T17:07:45Z",
@@ -3859,6 +3980,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-frankentui-v0.4.0": {
+          "date": "2026-10-03T15:15:11Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-groupby-v0.1.0": {
           "date": "2026-04-23T17:07:40Z",
           "target": "ee5d783735d84c3691ffef3d89bc0484264429ac"
@@ -3878,6 +4003,10 @@
         "fp-groupby-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-groupby-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-index-v0.1.0": {
           "date": "2026-04-23T17:07:35Z",
@@ -3899,6 +4028,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-index-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-io-v0.1.0": {
           "date": "2026-04-23T17:07:43Z",
           "target": "ee5d783735d84c3691ffef3d89bc0484264429ac"
@@ -3918,6 +4051,10 @@
         "fp-io-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-io-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-join-v0.1.0": {
           "date": "2026-04-23T17:07:42Z",
@@ -3939,6 +4076,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-join-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-python-v0.1.0": {
           "date": "2026-05-25T10:50:05Z",
           "target": "f5cf5ed455cccdf5f8c547009cd57c21b32808f4"
@@ -3958,6 +4099,10 @@
         "fp-python-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-python-v0.4.0": {
+          "date": "2026-10-03T15:15:11Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-runtime-v0.1.0": {
           "date": "2026-04-23T17:07:37Z",
@@ -3979,6 +4124,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-runtime-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-types-v0.1.0": {
           "date": "2026-04-23T17:07:33Z",
           "target": "ee5d783735d84c3691ffef3d89bc0484264429ac"
@@ -3998,6 +4147,10 @@
         "fp-types-v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-types-v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "frankenpandas-v0.1.0": {
           "date": "2026-04-23T17:07:46Z",
@@ -4019,6 +4172,10 @@
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "frankenpandas-v0.4.0": {
+          "date": "2026-10-03T15:15:11Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "v0.1.1": {
           "date": "2026-06-21T05:27:59Z",
           "target": "6ac6ca32c49363b6c7543f9bff26a7ce0cfd38f3"
@@ -4030,6 +4187,10 @@
         "v0.3.0": {
           "date": "2026-09-12T01:24:55Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "v0.4.0": {
+          "date": "2026-10-03T15:15:10Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         }
       },
       "workflows": [
@@ -4651,12 +4812,12 @@
     "frankensqlite": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 273,
+      "commits_since_pin": 278,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "5407407996f2276372b456a26951b586df778d47",
-      "head_date": "2026-10-03T12:12:00Z",
+      "head": "fc1f6a537ea1d1de359f485d8f50a9908d76726f",
+      "head_date": "2026-10-03T15:09:57Z",
       "id": 1151908597,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6523,7 +6684,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-10-03T12:49:18Z",
+  "checked_at": "2026-10-03T15:30:43Z",
   "discovery": [
     {
       "archived": false,
@@ -6663,7 +6824,7 @@
       "id": 1135442827,
       "language": "Rust",
       "name": "asupersync",
-      "pushed_at": "2026-10-03T10:55:25Z"
+      "pushed_at": "2026-10-03T14:02:57Z"
     },
     {
       "archived": false,
@@ -7553,7 +7714,7 @@
       "id": 1157440729,
       "language": "Rust",
       "name": "frankenpandas",
-      "pushed_at": "2026-10-02T23:47:10Z"
+      "pushed_at": "2026-10-03T15:15:12Z"
     },
     {
       "archived": false,
@@ -7613,7 +7774,7 @@
       "id": 1151908597,
       "language": "Rust",
       "name": "frankensqlite",
-      "pushed_at": "2026-10-03T12:20:40Z"
+      "pushed_at": "2026-10-03T15:10:02Z"
     },
     {
       "archived": false,
@@ -17455,6 +17616,27 @@
         "push": null,
         "self_hosted": false
       },
+      "e8c0389bc615583f42873b81fd019f92df979822": {
+        "events": [
+          "pull_request",
+          "push",
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "e920fefdd7fa2552421184917d111bd4fd781f5d": {
         "events": [
           "push"
@@ -18169,6 +18351,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-10-02T11:31:01Z",
+  "previous_checked_at": "2026-10-03T12:49:18Z",
   "schema": 1
 }
