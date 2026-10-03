@@ -35,6 +35,20 @@ def harden(text):
     if count!=3: raise ValueError('credential bootstrap changed')
     for secret in REMOVED:
         text=text.replace('${{ secrets.'+secret+' }}', "''")
+    # The stripped global env block leaves the gateway's OTLP endpoint to
+    # expand empty at runtime; pinned mcpg v0.4.25 schema-rejects an empty
+    # endpoint (minLength/pattern). Pin an inert local collector instead:
+    # export toward an unreachable loopback endpoint is non-fatal for mcpg.
+    endpoint='"endpoint": "${OTEL_EXPORTER_OTLP_ENDPOINT}"'
+    if text.count(endpoint)!=1: raise ValueError('gateway OTLP endpoint placeholder changed')
+    text=text.replace(endpoint,'"endpoint": "http://127.0.0.1:4318/v1/traces"')
+    # gh-aw strips the provider prefix from engine.model, but the prefixed id
+    # is what Groq's Responses API serves (bare id 404s). Restore it in the
+    # two codex model env pins: the agent run and threat detection.
+    for var in ('GH_AW_MODEL_AGENT_CODEX','GH_AW_MODEL_DETECTION_CODEX'):
+        pin='          '+var+': gpt-oss-120b'
+        if text.count(pin)!=1: raise ValueError('codex model env pin changed: '+var)
+        text=text.replace(pin,'          '+var+': openai/gpt-oss-120b')
     # The compiler preloads this pinned image but historically invokes the MCP tag.
     manifest=json.loads(next(x for x in text.splitlines() if x.startswith('# gh-aw-manifest: ')).split(': ',1)[1])
     gateway=next(x for x in manifest['containers'] if x['image'].startswith('ghcr.io/github/gh-aw-mcpg:'))
