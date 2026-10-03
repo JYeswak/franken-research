@@ -3,7 +3,8 @@
 # Each '### A1 — Title' item becomes one open bead: the Done criteria become
 # acceptance_criteria, the rest becomes description. Labels encode the
 # checklist class (day-1-mechanical / day-1-procedural / maturity / provisional).
-# Field names follow the kit's bead schema (templates/bead-schema.md).
+# Field format is the native beads (br) JSONL: every record carries
+# updated_at; `br sync --import-only` adopts the seed unchanged.
 
 function jesc(s,   t) {
   t = s
@@ -21,8 +22,8 @@ function emit(   desc, acc, pri, labs) {
   else if (class_ ~ /PROCEDURAL/) labs = "\"checklist\",\"day-1\",\"procedural\""
   else if (class_ ~ /MATURITY/) labs = "\"checklist\",\"maturity\""
   else labs = "\"checklist\",\"provisional\""
-  printf "{\"id\":\"%s\",\"title\":\"%s\",\"description\":\"%s\",\"acceptance_criteria\":\"%s\",\"status\":\"open\",\"priority\":%d,\"issue_type\":\"task\",\"labels\":[%s],\"dependencies\":[],\"created_by\":\"starter-kit\",\"created_at\":\"%s\",\"closed_at\":\"\",\"close_reason\":\"\",\"source_repo\":\"\"}\n", \
-    "kit-" tolower(id), jesc(title), jesc(desc), jesc(acc), pri, labs, stamp
+  printf "{\"id\":\"%s\",\"title\":\"%s\",\"description\":\"%s\",\"acceptance_criteria\":\"%s\",\"status\":\"open\",\"priority\":%d,\"issue_type\":\"task\",\"labels\":[%s],\"created_by\":\"starter-kit\",\"created_at\":\"%s\",\"updated_at\":\"%s\"}\n", \
+    "kit-" tolower(id), jesc(title), jesc(desc), jesc(acc), pri, labs, stamp, stamp
 }
 
 function fieldval(   v) {

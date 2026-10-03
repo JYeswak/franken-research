@@ -11,8 +11,9 @@ Classes:
 - **MATURITY** — observed in the suite but expensive; adopt when the project earns it.
 - **PROVISIONAL** — thin suite evidence (few projects did it); adopt with eyes open.
 
-`scripts/init.sh` seeds every item as a bead in `.beads/issues.jsonl`, with the
-Done criteria as the bead's acceptance criteria.
+`scripts/init.sh` seeds every item as a bead in the native br tracker
+(`.beads/issues.jsonl` is its committed sync export), with the Done
+criteria as the bead's acceptance criteria.
 
 ## Phase A — Planning: is the plan execution-ready?
 
@@ -143,7 +144,7 @@ Done criteria as the bead's acceptance criteria.
 - **What:** A bead closes only with a close_reason citing the evidence (commit, receipt, ledger row); prose assertions never close beads.
 - **Why:** "It works" closes nothing; a pointer to the artifact that proves it closes the bead.
 - **Done criteria:** every closed bead has a non-empty close_reason naming evidence.
-- **Verified by:** review of closed beads.
+- **Verified by:** review of closed beads (`br show <id>`); `br close` requires `--reason` and refuses to close a bead whose dependencies are still open.
 - **Origin:** asupersync docs/atp_rq_beat_rsync_ledger.md ("closure on cited evidence"); frankentui .beads/policy.yaml (close requires evidence token); franken_whisper done/blocked decision rules.
 - **Class:** DAY-1 PROCEDURAL
 

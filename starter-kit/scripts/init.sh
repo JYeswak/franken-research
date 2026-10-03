@@ -97,13 +97,11 @@ copy_new templates/definition-of-done.md docs/definition-of-done.md
 copy_new templates/planning-packet.md docs/planning/packet.md
 copy_new templates/claims.tsv registries/claims.tsv
 copy_new templates/demotion-rules.md docs/evidence/demotion-rules.md
-copy_new templates/bead-schema.md .beads/SCHEMA.md
 copy_new templates/negative-evidence-entry.md templates/negative-evidence-entry.md
 copy_new templates/agents.md templates/agents.md
 copy_new templates/definition-of-done.md templates/definition-of-done.md
 copy_new templates/planning-packet.md templates/planning-packet.md
 copy_new templates/claims.tsv templates/claims.tsv
-copy_new templates/bead-schema.md templates/bead-schema.md
 copy_new templates/demotion-rules.md templates/demotion-rules.md
 # CI backstop: re-runs every gate where --no-verify cannot reach.
 copy_new templates/kit-gates.yml .github/workflows/kit-gates.yml
@@ -147,17 +145,16 @@ LEDGER_EOF
 fi
 
 # 6. Beads: seed the graph with the checklist items as the first beads.
-if command -v br >/dev/null 2>&1; then
-  say "  beads CLI ('br') detected; JSONL seed written — import with your beads tooling if you like."
-else
-  say "  no beads CLI found; using the JSONL fallback (.beads/issues.jsonl is the database)."
-fi
+# The tracker is the native beads CLI ('br'): its store is the working copy
+# and .beads/issues.jsonl is the committed sync export — never hand-edit it.
+# When br is absent at init time the seed is still written in native format;
+# `br sync --import-only` adopts it unchanged the day br arrives.
 if [ ! -f "$TARGET/.beads/issues.jsonl" ]; then
   STAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   awk -v stamp="$STAMP" -f "$KIT_DIR/scripts/checklist2beads.awk" \
     "$TARGET/docs/CHECKLIST.md" > "$TARGET/.beads/issues.jsonl"
   n=$(grep -c '"status":"open"' "$TARGET/.beads/issues.jsonl" || true)
-  say "  seeded $n checklist beads in .beads/issues.jsonl"
+  say "  seeded $n checklist beads (native br format) in .beads/issues.jsonl"
   if [ "$n" -lt 20 ]; then
     say "ERROR: bead seeding produced only $n beads; expected the full checklist. Aborting."
     exit 1
@@ -165,28 +162,48 @@ if [ ! -f "$TARGET/.beads/issues.jsonl" ]; then
 else
   say "  keep: .beads/issues.jsonl already exists"
 fi
-if [ ! -f "$TARGET/.beads/config.yaml" ]; then
+if command -v br >/dev/null 2>&1; then
+  if [ ! -f "$TARGET/.beads/beads.db" ]; then
+    if (cd "$TARGET" && br init --prefix kit >/dev/null 2>&1) && \
+       (cd "$TARGET" && br sync --import-only >/dev/null 2>&1) && \
+       (cd "$TARGET" && br sync --flush-only >/dev/null 2>&1); then
+      say "  br tracker initialized; seeded beads imported (work them with br list / br ready)."
+    else
+      say "  WARNING: br adoption failed; the seed stays native-format — adopt it with:"
+      say "    br init --prefix kit && br sync --import-only"
+    fi
+  else
+    say "  br tracker already initialized (beads.db present); left untouched."
+  fi
+elif [ ! -f "$TARGET/.beads/config.yaml" ]; then
+  say "  beads CLI ('br') not found — seed written in native format; adopt it later with:"
+  say "    br init --prefix kit && br sync --import-only"
   cat > "$TARGET/.beads/config.yaml" <<'YAML_EOF'
-# Beads tracker config (JSONL-first fallback).
-# Convention (frankensearch, frankenscipy): JSONL is truth; any sqlite
-# database is disposable and rebuilt from issues.jsonl. Commit issues.jsonl.
-issue_prefix: kit
-default_priority: 2
-database: beads.db     # disposable; rebuild from issues.jsonl
-export: issues.jsonl   # source of truth; commit this file
+# Beads tracker config (starter-kit, written before br adoption).
+# Tracker format is the native beads CLI (br); issues.jsonl is its committed
+# sync export — never hand-edit it. Adopt with:
+#   br init --prefix kit && br sync --import-only
+# issue_prefix: kit
+# default_priority: 2
 YAML_EOF
 fi
 if [ ! -f "$TARGET/.beads/README.md" ]; then
   cat > "$TARGET/.beads/README.md" <<'BEADS_EOF'
-# Beads (JSONL fallback)
+# Beads (native br tracker)
 
-No beads CLI was present at init time, so `.beads/issues.jsonl` is the task
-database. One JSON object per line; fields follow `.beads/SCHEMA.md`.
-Close a bead only with a `close_reason` that cites evidence
-(commit, receipt, ledger row) — "closure on cited evidence", not prose.
+The task tracker is the beads CLI (`br`); `.beads/issues.jsonl` is its
+committed sync export. Never hand-edit that file — br owns its format.
+`br sync --flush-only` before committing `.beads/`; close with
+`br close <id> --reason "<evidence>"` so every close cites its proof.
+
+If br was not installed at init time, the seed here is already in native
+format. Adopt it with:
+
+    br init --prefix kit && br sync --import-only
 
 Rules that apply whether or not a beads CLI is installed:
-- This seed is a checklist with no dependency edges; encode and review phase dependencies before dispatch. Prose documents are
+- This seed is a checklist with no dependency edges; encode and review phase
+  dependencies (`br dep add`) before dispatch. Prose documents are
   the rationale of record. (frankensearch)
 - A bead whose acceptance criteria can be satisfied by believing it is not
   a bead. (frankentui: "A step you can satisfy by believing you did it
@@ -212,9 +229,8 @@ say "     one claim is enforced with a real proof (CHECKLIST.md B6)."
 say "  5. Record falsified hypotheses in docs/evidence/NEGATIVE_EVIDENCE.md as you work."
 say "  6. Review AGENTS.md (the 12 forbidden patterns) and docs/definition-of-done.md —"
 say "     both installed for you; tailor them but keep the patterns verbatim."
-say "  7. Work Phase A of docs/CHECKLIST.md; close the seeded beads with cited evidence."
-say "     (JSONL fallback: set \"status\":\"closed\", \"closed_at\":\"<UTC>\","
-say "      \"close_reason\":\"<evidence citation>\" on the bead's line in .beads/issues.jsonl.)"
+say "  7. Work Phase A of docs/CHECKLIST.md; close the seeded beads with cited evidence:"
+say "     br close <bead-id> --reason \"<evidence citation>\"   (br list shows the ids)."
 say "  8. Make your first commit — the pre-commit hook self-tests with a canary false"
 say "     claim before it checks anything real."
 say "  9. When Phase A is green, sign the packet and start Phase B."

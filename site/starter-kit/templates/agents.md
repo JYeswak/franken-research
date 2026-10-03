@@ -46,7 +46,8 @@ Three load-bearing rules sit above the list:
 
 ## Honesty machinery (how to use it)
 
-- The beads graph (`.beads/issues.jsonl`) is the executable form of the plan;
+- The beads graph (native `br` tracker; `.beads/issues.jsonl` is its
+  committed sync export) is the executable form of the plan;
   prose documents are the rationale of record. Close beads only with a
   `close_reason` that cites evidence (commit, receipt, ledger row).
 - Claims go in `registries/claims.tsv` BEFORE the README makes them; set

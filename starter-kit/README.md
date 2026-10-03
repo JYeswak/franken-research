@@ -67,16 +67,14 @@ $EDITOR registries/claims.tsv   # set enforce=yes once the proof exists
 git add -A && git commit -m "chore: initialize with starter kit"
 
 # 8. Work Phase A of docs/CHECKLIST.md, closing the seeded beads with
-#    cited evidence. JSONL fallback: set "status":"closed",
-#    "closed_at":"<UTC timestamp>", "close_reason":"<evidence citation>"
-#    on the bead's line in .beads/issues.jsonl. When Phase A is green,
-#    sign the packet (§12) and start Phase B.
+#    cited evidence: br close <bead-id> --reason "<evidence citation>".
+#    When Phase A is green, sign the packet (§12) and start Phase B.
 ```
 
 What `init.sh` created for you: `docs/planning/`, `docs/evidence/`
 (negative-evidence ledger + demotion rules), `docs/definition-of-done.md`,
 `AGENTS.md` (the 12 forbidden patterns, vendored), `registries/claims.tsv`,
-`.beads/` (28 checklist beads seeded as JSONL — no beads CLI required),
+`.beads/` (28 checklist beads seeded in native br format; the br CLI adopts them via `br sync --import-only`),
 `scripts/` (the shared checkers), `templates/` (read-only reference copies of
 every working file — edit the installed copies, never these),
 `.github/workflows/kit-gates.yml` (the CI backstop that reruns the claim/ledger validators and packet structure check
@@ -126,7 +124,7 @@ reports STRUCTURALLY COMPLETE: its readiness step fails CI until then.
 | `scripts/check-claim-discipline.sh` | cross-checks README claims against proof artifacts |
 | `.githooks/pre-commit` | the honesty gate, tracked source of truth — edit this copy (init.sh reinstalls the live copy) |
 | `.git/hooks/pre-commit` | the live installed copy — this is what git actually executes |
-| `scripts/checklist2beads.awk` | converts the checklist into the beads JSONL seed |
+| `scripts/checklist2beads.awk` | converts the checklist into the native br beads seed (JSONL) |
 | `AGENTS.md` | agent instructions with the 12 forbidden patterns (installed from `templates/agents.md`) |
 | `docs/definition-of-done.md` | the Definition of Done (installed from `templates/definition-of-done.md`) |
 | `templates/planning-packet.md` | REFERENCE COPY of the 12-section packet with machine-checkable markers — edit `docs/planning/packet.md` |
@@ -135,7 +133,6 @@ reports STRUCTURALLY COMPLETE: its readiness step fails CI until then.
 | `templates/definition-of-done.md` | REFERENCE COPY of the DoD — edit `docs/definition-of-done.md` |
 | `templates/kit-gates.yml` | CI workflow template: re-runs the readiness, claim-discipline and ledger gates on every push — the backstop `--no-verify` cannot reach; commented toolchain (fmt/lint/test) steps to fill per language |
 | `templates/negative-evidence-entry.md` | ledger row schema with one filled real-suite example |
-| `templates/bead-schema.md` | bead field schema with one example bead |
 | `templates/demotion-rules.md` | starter demotion rules, mechanical vs procedural marked |
 
 ## Design principles

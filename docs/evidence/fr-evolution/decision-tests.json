@@ -6,11 +6,11 @@
   "exit_code": 0,
   "stdout": "",
   "stderr": ".............\n----------------------------------------------------------------------\nRan 13 tests in 0.011s\n\nOK\n",
-  "source_base": "7f36d0d69ef26f91ae701dd480aacddaf441f7ab",
-  "observed_at": "2026-09-28T20:44:49.582500+00:00",
-  "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "source_base": "4732b40bc2e9087b7f7fc5b532fae96f2302c1e7",
+  "observed_at": "2026-10-03T15:22:44.682053+00:00",
+  "host": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
   "worker": "Codex",
-  "python": "3.12.14",
+  "python": "3.14.5",
   "inputs": {
     "scripts/check-decisions.py": "d8bb2b1599c8060d1e815573ef65539bd60c6911ac15633df19c20a679b3d2a9",
     "scripts/test_decisions.py": "25f3689874a81f286b9e1c14a19b7f552a03813028b774fcd1cac4a52f81e529"

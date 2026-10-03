@@ -1,15 +1,15 @@
 {
-  "archive_bytes": 143921,
-  "archive_sha256": "63bbbcc6c17eca63fc5b050619a9e822c339948c803fe0f2a01946ff563f57fb",
-  "code_revision": "1c32229d7fec2f9f1d274c5cf92294efa7ad6c2e76248f085f761e280c170b96",
+  "archive_bytes": 141372,
+  "archive_sha256": "f36b2de2705fb55aa3189a216fa05c817311ac1d8445f526b4efec8d4b34b2b3",
+  "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
       "command": "sh scripts/init.sh ../my-new-project\ncd ../my-new-project\nsh scripts/check-readiness.sh",
       "expect": "A pristine project reports NOT READY (exit 1). Complete and review the packet before expecting success.",
       "file_sha256": {
-        "CHECKLIST.md": "2ce82a744878ecf497c2bfc9d5242764660b8b08b9a97ca0bea82a73c1d83496",
+        "CHECKLIST.md": "40f7b6a9c085a01f4620ee61b5b2083419a475d5f128863a4d327ace87e95d74",
         "scripts/check-readiness.sh": "6ddf062666ececd4e3b8db8da74c0eef348db7536150ab8ef34187f466b5cbae",
-        "scripts/init.sh": "abb6559a0de61fec1a69f816008f65ce90dc79e6c36853db8e6a240e29cd441b"
+        "scripts/init.sh": "d3b6560f284b031b95937011ee3d64bed067e013f8ba74dc2c308234a2bb13e0"
       },
       "files": [
         "scripts/init.sh",

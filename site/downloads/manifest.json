@@ -1,14 +1,14 @@
 {
   "archive": {
-    "bytes": 143921,
+    "bytes": 141372,
     "path": "fr-starter-kit.zip",
-    "sha256": "63bbbcc6c17eca63fc5b050619a9e822c339948c803fe0f2a01946ff563f57fb"
+    "sha256": "f36b2de2705fb55aa3189a216fa05c817311ac1d8445f526b4efec8d4b34b2b3"
   },
-  "code_revision": "1c32229d7fec2f9f1d274c5cf92294efa7ad6c2e76248f085f761e280c170b96",
+  "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "files": {
     "CHECKLIST.md": {
-      "bytes": 25903,
-      "sha256": "2ce82a744878ecf497c2bfc9d5242764660b8b08b9a97ca0bea82a73c1d83496"
+      "bytes": 26067,
+      "sha256": "40f7b6a9c085a01f4620ee61b5b2083419a475d5f128863a4d327ace87e95d74"
     },
     "DECISIONS.md": {
       "bytes": 3228,
@@ -19,8 +19,8 @@
       "sha256": "76de03c5da5d66029bf522a7dd4cdcfc2fcfb412714eab6a9d56d403a58e0bb9"
     },
     "README.md": {
-      "bytes": 12470,
-      "sha256": "08a4bb9df308360478bb039c334f1d8fcd54de492431b8896ea4d45fbbebedfd"
+      "bytes": 12337,
+      "sha256": "63d54a6560f74c2b7ef2835e451eeca284b543b6ad2854cb02ec345bde54f267"
     },
     "REFERENCES.md": {
       "bytes": 12106,
@@ -40,7 +40,7 @@
     },
     "research/recipes.json": {
       "bytes": 4222,
-      "sha256": "a97c880b166d0f8a7ddb27293698f1b9779877c24459c4f1df78e50891250220"
+      "sha256": "abeac0450e8535d07aea688736384c19b5fe50a0ecd71ece0ec6e7b8109b90fb"
     },
     "research/signals.json": {
       "bytes": 1564,
@@ -63,28 +63,24 @@
       "sha256": "6ddf062666ececd4e3b8db8da74c0eef348db7536150ab8ef34187f466b5cbae"
     },
     "scripts/checklist2beads.awk": {
-      "bytes": 2134,
-      "sha256": "90fe6d685beff7fdf037aac04b7d3ed9feba36964552bea8d762953542990f75"
+      "bytes": 2143,
+      "sha256": "32c70ab2f0d7e58632f5e4731b6b27a8e56136f93ab564e0e51eb74bb9e18516"
     },
     "scripts/hooks/pre-commit": {
       "bytes": 2460,
       "sha256": "858dc3d5ae9d0a944dc88536645a6061aba848ad7de7dc13c68f02e2ac227139"
     },
     "scripts/init.sh": {
-      "bytes": 11180,
-      "sha256": "abb6559a0de61fec1a69f816008f65ce90dc79e6c36853db8e6a240e29cd441b"
+      "bytes": 11948,
+      "sha256": "d3b6560f284b031b95937011ee3d64bed067e013f8ba74dc2c308234a2bb13e0"
     },
     "scripts/review-decisions.py": {
       "bytes": 4041,
       "sha256": "3a154c73f6550f0f46bf4907ac49448f0dc3173ffcf4ca061aceaca639b03b92"
     },
     "templates/agents.md": {
-      "bytes": 2902,
-      "sha256": "f8de5144db1fdb7ac235cc7f2a44791b370268442e2ed39f232bf51c5b6ba537"
-    },
-    "templates/bead-schema.md": {
-      "bytes": 3110,
-      "sha256": "343e490f464c3af7f4a4c2043d8fc079d7b11182c1abc6f62e480a99ca68faad"
+      "bytes": 2954,
+      "sha256": "1871967ee34f00ea55331eb83bfa0a1bb111b9eab16d55e23d1ba1be0fd8f427"
     },
     "templates/claims.tsv": {
       "bytes": 1552,

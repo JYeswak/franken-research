@@ -15,7 +15,6 @@ scripts/hooks/pre-commit
 scripts/init.sh
 scripts/review-decisions.py
 templates/agents.md
-templates/bead-schema.md
 templates/claims.tsv
 templates/definition-of-done.md
 templates/demotion-rules.md
