@@ -1,19 +1,19 @@
 {
-  "version": 1,
-  "compiler": "v0.89.21",
-  "actions_commit": "924af5fdc64061cfbf66fb584c8b07e2ac230c60",
-  "review_status": "reviewed",
-  "files": {
-    ".github/workflows/research-candidate.md": "301de58d55a2ddacaadc4e8d19d9002d91152dc7990e8c3f20b973285eaed1ab",
-    ".github/workflows/research-candidate.lock.yml": "87f264b921b516ac903ffe08a5ba58e1d2980ff486b7d6fb365c0e9ffcef1def",
-    ".github/workflows/research-candidate-evaluate.yml": "da9fecdf3026fec201c40dbace4614c2fc7a90e38e1e077a38a7ad09e07a63a1",
-    ".github/workflows/research-agent-tests.yml": "0c39186cd08f89d1bfbd61ad5dcdef37a4a0ed5f7c2733f66b10a0924de28dcf",
-    "ops/research-agent-harden.py": "af94e9fd912430780b2cc6975db786baba3659bc0f52bd7dae1a1aa0c850c0f6",
-    "ops/research-agent-resolve.py": "2a82fb69c8902986e6f2bf89e44b387fbf4b529fbde0829ca13239bbe4544fbd",
-    "ops/research-agent-evaluate.py": "d71cb8f3bde9b64ca4e9201bd826dd89c951179e3e8e7f86756e847e5551627d",
-    "ops/research-agent-smoke.py": "6aa32b057efd31fe2cd67ca55669319aa4041adc5a791344986d74466bd1cc5c",
-    "ops/research-agent-policy.mjs": "966b539c07a35f7847220f3b7f76f08d430b104d930622a2ec50d2b0ebf81b4d",
-    "ops/test_research_agent.py": "f2ef0f181fecb4416e4405979acb82f526453b54171a9b4f9b2f98fc6bd5942f"
-  },
-  "review_sha256": "d3613f880544b30e60c2343e92ff17ed7840f56d68673bba5f6a081ef67e5b48"
+    "version": 1,
+    "compiler": "v0.89.21",
+    "actions_commit": "924af5fdc64061cfbf66fb584c8b07e2ac230c60",
+    "review_status": "reviewed",
+    "files": {
+        ".github/workflows/research-candidate.md": "4a982362688c0f52a7a9b844ae7095a8ec9acfb3e9edcb75250117f17fe7f21d",
+        ".github/workflows/research-candidate.lock.yml": "8b957485c4bf37b1d8cc021189a9ce269555f0586e365194445f64d6bc839932",
+        ".github/workflows/research-candidate-evaluate.yml": "da9fecdf3026fec201c40dbace4614c2fc7a90e38e1e077a38a7ad09e07a63a1",
+        ".github/workflows/research-agent-tests.yml": "0c39186cd08f89d1bfbd61ad5dcdef37a4a0ed5f7c2733f66b10a0924de28dcf",
+        "ops/research-agent-harden.py": "af94e9fd912430780b2cc6975db786baba3659bc0f52bd7dae1a1aa0c850c0f6",
+        "ops/research-agent-resolve.py": "2a82fb69c8902986e6f2bf89e44b387fbf4b529fbde0829ca13239bbe4544fbd",
+        "ops/research-agent-evaluate.py": "d71cb8f3bde9b64ca4e9201bd826dd89c951179e3e8e7f86756e847e5551627d",
+        "ops/research-agent-smoke.py": "6aa32b057efd31fe2cd67ca55669319aa4041adc5a791344986d74466bd1cc5c",
+        "ops/research-agent-policy.mjs": "966b539c07a35f7847220f3b7f76f08d430b104d930622a2ec50d2b0ebf81b4d",
+        "ops/test_research_agent.py": "f2ef0f181fecb4416e4405979acb82f526453b54171a9b4f9b2f98fc6bd5942f"
+    },
+    "review_sha256": "f704521f40d5281a6fd5f373bfac521c8320770db052b968df84f60ef7f13fc2"
 }

@@ -11,7 +11,12 @@ permissions:
   contents: read
   issues: read
   pull-requests: read
-engine: codex
+engine:
+  id: codex
+  model: openai/gpt-oss-120b
+  env:
+    OPENAI_BASE_URL: "https://api.groq.com/openai/v1"
+    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 timeout-minutes: 20
 max-ai-credits: 500
 max-daily-ai-credits: 500
@@ -21,6 +26,7 @@ checkout:
 network:
   allowed:
     - defaults
+    - api.groq.com
     - github
     - python
     - node
