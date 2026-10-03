@@ -16,6 +16,9 @@ Nothing is due.
 | Repo | Dimension | Why |
 |---|---|---|
 | [asupersync](https://github.com/Dicklesworthstone/asupersync) | CI | no recent commit has finished its push-triggered test runs (now FR-C.3/no-settled-commit) |
+| [franken\_markdown](https://github.com/Dicklesworthstone/franken_markdown) | CI | the GitHub API did not return the runs or workflow files needed (baseline FR-C.3/api-gap) |
+| [franken\_markdown](https://github.com/Dicklesworthstone/franken_markdown) | Release | baseline FR-C.4/api-gap |
+| [franken\_markdown](https://github.com/Dicklesworthstone/franken_markdown) | License | baseline FR-C.5/api-gap |
 | [frankenlibc](https://github.com/Dicklesworthstone/frankenlibc) | CI | no recent commit has finished its push-triggered test runs (now FR-C.3/no-settled-commit) |
 | [frankenpandas](https://github.com/Dicklesworthstone/frankenpandas) | CI | no recent commit has finished its push-triggered test runs (now FR-C.3/no-settled-commit) |
 | [frankensqlite](https://github.com/Dicklesworthstone/frankensqlite) | CI | no recent commit has finished its push-triggered test runs (now FR-C.3/no-settled-commit) |
@@ -34,7 +37,7 @@ None.
 - Events that moved no computed class: 0 today, 0 since the pins.
 - Crossings seen once, not yet open: 5.
 - Open crossings whose class is back at its baseline, withdrawn if the next daily check agrees: 0.
-- Repository states: 39 current, 0 changed, 0 due, 5 unknown.
+- Repository states: 38 current, 0 changed, 0 due, 6 unknown.
 
 ## Vendored snapshots
 

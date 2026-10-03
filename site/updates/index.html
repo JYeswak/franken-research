@@ -6,7 +6,7 @@
 <title>Updates: what moved after the assessment · Franken Research</title>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://fr.zeststream.ai/updates/">
-<meta name="description" content="The 44 FrankenSuite assessments are frozen at one commit each, read on 2026-09-22. This page records what moved afterwards, without rewriting them: a census of all 44 on 2026-09-24 and dated re-checks of franken_code_browser's first release and frankengit's deleted workflows.">
+<meta name="description" content="The 44 FrankenSuite assessments are frozen at one commit each, read on 2026-09-22. This page records what moved afterwards, without rewriting them: a census of all 44 on 2026-09-24 and dated re-checks of franken_code_browser's first release, frankengit's deleted workflows, and franken_markdown's v0.5.0.">
 <meta property="og:title" content="Updates: what moved since the pin · Franken Research">
 <meta property="og:description" content="What moved in the 44 repos after their assessment, checked daily.">
 <meta property="og:type" content="website">
@@ -532,6 +532,24 @@ footer a{color:var(--accent)}
     </tbody>
   </table>
   <div class="callout"><b>Reading the commit counts</b>A large count is not a large change. <code>franken_surveillance_system</code>'s 611 are mostly older commits that became reachable after the pin. Two repositories show commits under new author names, <code>BlackThrush</code> and <code>BoldGorge</code>, not linked to any GitHub account. They look like the maintainer's agent personas, which the packets saw elsewhere in the suite, but git metadata cannot prove who is behind a name, so bus factor is not re-scored on this evidence. <span class="tag">[Inference, Medium]</span></div>
+</div>
+
+<div class="card" id="fmd">
+  <h2><span class="n">Dated re-check</span>franken_markdown shipped v0.5.0; no cell moves</h2>
+  <p>At the pin, <code>franken_markdown</code> was at 0.4.5: a zero-dependency Rust Markdown renderer with a claim-discipline gate, TRL 7, held at Explore by the absence of any independent benchmark or adoption evidence. On 2026-10-02 its maintainer shipped <code>v0.5.0</code>: 135 commits, 443 files changed, multi-chapter books (PDF, EPUB, offline sites), breaking public-API changes, and a fix for highlighted code leaking live markup into the default safe HTML output, a bug present since 0.4.4. The daily census flagged the release; this is the first re-check worked end to end under the drift pipeline in <code>docs/landscape-rigor.md</code>.</p>
+  <p>We re-checked it at the release commit, <code>cc5196d</code>, from a fresh clone: the full commit range, both <code>Cargo.toml</code> versions, and byte-diffs of the license, workflow set, and CommonMark conformance floor, plus the GitHub release record and the crates.io registry. Nothing was compiled or run.</p>
+  <table class="grade cells">
+    <thead><tr><th scope="col">Cell</th><th scope="col">At the pin</th><th scope="col">At the re-check</th></tr></thead>
+    <tbody>
+    <tr><td class="dim">TRL</td><td class="was" data-label="At the pin">7</td><td data-label="At the re-check"><b>7, unchanged.</b> A large feature release is consistent with a released, iterating product; 8 would need production use by someone else. The safe-HTML security fix cuts the other way: the pin&rsquo;s safe-by-default reading was more generous than the code deserved. <span class="tag">[Inference, Medium]</span></td></tr>
+    <tr><td class="dim">NODUS ring</td><td class="was" data-label="At the pin">Explore</td><td data-label="At the re-check"><b>Explore, unchanged.</b> Stars moved 104 to 105 and crates.io downloads 151 to 176; no independent benchmark, review, or deployment appeared. <span class="tag">[Inference, Medium]</span></td></tr>
+    <tr><td class="dim">Release</td><td class="was" data-label="At the pin">R3</td><td data-label="At the re-check"><b>R3, unchanged.</b> <code>v0.5.0</code> targets the re-check commit itself, with 30 assets: five platform archives with sha256 sidecars, a SHA256SUMS file, a manifest, and the npm tarball. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">CI</td><td class="was" data-label="At the pin">C5</td><td data-label="At the re-check"><b>C5, unchanged.</b> The same single, explicitly disabled workflow file at both pins; enforcement still runs on the maintainer&rsquo;s own hosts, unobservable externally. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">License</td><td class="was" data-label="At the pin">MIT + rider</td><td data-label="At the re-check"><b>Unchanged.</b> The LICENSE file is byte-identical to the pin. <span class="tag">[Verified, High]</span></td></tr>
+    <tr><td class="dim">Bus factor</td><td class="was" data-label="At the pin">1</td><td data-label="At the re-check"><b>1, unchanged.</b> All 135 commits in the range are the maintainer&rsquo;s. <span class="tag">[Git-observed, High]</span></td></tr>
+    </tbody>
+  </table>
+  <p>The pinned suite counts are not changed by this: every cell is unchanged, so nothing would move under a re-pin at <code>cc5196d</code> either. The census flag did its job; the reading is the finding. One packet revisit trigger was tested and failed: npm still sits at 0.4.4, so the release-pipeline lag the packet named stands. The full re-check, with every command and its output, is <a href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_markdown-2026-10-03.md">updates/franken_markdown-2026-10-03.md</a>. The <a href="../briefs/franken_markdown.html">brief</a> still describes the pin and now says so at the top.</p>
 </div>
 
 <div class="card" id="fcb">

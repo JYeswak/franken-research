@@ -9,6 +9,14 @@
   <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
   <icon>https://fr.zeststream.ai/favicon.svg</icon>
   <entry>
+    <id>tag:fr.zeststream.ai,2026:recheck/franken_markdown-2026-10-03</id>
+    <title>franken_markdown: re-check after v0.5.0 (addendum, 2026-10-03)</title>
+    <updated>2026-10-03T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/markdown" href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_markdown-2026-10-03.md"/>
+    <summary type="text">A dated re-check of franken_markdown filed beside its pinned packet, which is not edited. Every command and its output are in updates/franken_markdown-2026-10-03.md.</summary>
+  </entry>
+  <entry>
     <id>tag:fr.zeststream.ai,2026:census/2026-10-03</id>
     <title>Daily census: 38 of 44 moved since the pin</title>
     <updated>2026-10-03T00:00:00Z</updated>
