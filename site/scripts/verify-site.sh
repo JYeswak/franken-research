@@ -1446,6 +1446,28 @@ else
   fail "U kit regression controls, decision identities and shipped copies"
 fi
 
+# ============ Gate GP: golden-packet regression (bead fr-itk) ============
+# scripts/golden-packets.py re-derives a small banked set of golden
+# packets from their pinned inputs and fails on any unexplained delta.
+# Unlike receipt-verify, the golden cannot be silently re-pinned: a
+# one-character packet edit fails until the reviewed emit ceremony.
+echo "== GP golden-packet regression =="
+GP_OK=1; GP_DETAIL=""
+GP_T_OUT="$(python3 "$REPO_ROOT/scripts/test_golden_packets.py" 2>&1)"; GP_T_RC=$?
+if [ $GP_T_RC -ne 0 ]; then
+  GP_OK=0; GP_DETAIL="golden-packet tests exit $GP_T_RC; "
+fi
+GP_OUT="$(python3 "$REPO_ROOT/scripts/golden-packets.py" --root "$CANON" verify 2>&1)"; GP_RC=$?
+if [ $GP_RC -ne 0 ]; then
+  GP_OK=0; GP_DETAIL="${GP_DETAIL}golden-packets exit $GP_RC; "
+fi
+if [ $GP_OK -eq 1 ]; then
+  pass "GP golden-packet regression re-derives banked derivations"
+else
+  fail "GP golden-packet regression" "$GP_DETAIL"
+  printf '%s\n' "$GP_OUT" | head -20 | sed 's/^/      /'
+fi
+
 # ============ Gate CV: citation verifier (bead fr-brn) ============
 # scripts/citation-verifier.py re-derives every checkable number a packet cites
 # (packet/RULEBOOK/claim-set hashes, claim counts, numbering, status ratios,

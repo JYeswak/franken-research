@@ -1,0 +1,138 @@
+{
+  "packets": [
+    {
+      "claim_set": {
+        "count": 24,
+        "sha256": "4da77a0e2be03545fb59094550bccba223c3228b8793a995ce955c216e3b1fb8"
+      },
+      "packet": "packets/asupersync-assessment.md",
+      "packet_bytes": 60137,
+      "packet_lines": 270,
+      "packet_sha256": "c49b51a333d89b5ea778e21e46a85d1c0b0cd64354e584db7a3f0ad0c0bc56cd",
+      "pins": {
+        "assessment_date": "2026-08-31",
+        "grader_protocol": {
+          "path": "RULEBOOK.md",
+          "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+          "version": "1.1"
+        },
+        "pinned_commit": "768595203e194573bb713158b5963f55861dfe2d",
+        "repository": "Dicklesworthstone/asupersync"
+      },
+      "schema": "franken-research/packet-receipt@1",
+      "tool": "scripts/packet-receipts.py@1"
+    },
+    {
+      "claim_set": {
+        "count": 16,
+        "sha256": "0018ecfdf24a409d545ae2ce6b4280ad29b581f8e1a48899fccd4f87d0dcd5a9"
+      },
+      "packet": "packets/beads-for-frankentui-assessment.md",
+      "packet_bytes": 46058,
+      "packet_lines": 231,
+      "packet_sha256": "cab215497f297098dc4810c663fb27e923246cba0dd5be478af07e12046f0744",
+      "pins": {
+        "assessment_date": "2026-09-22",
+        "grader_protocol": {
+          "path": "RULEBOOK.md",
+          "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+          "version": "1.1"
+        },
+        "pinned_commit": "e1a842f6a1e37f9c5f9648634652163219aa461e",
+        "repository": "Dicklesworthstone/beads-for-frankentui"
+      },
+      "schema": "franken-research/packet-receipt@1",
+      "tool": "scripts/packet-receipts.py@1"
+    },
+    {
+      "claim_set": {
+        "count": 14,
+        "sha256": "0b43fd4386fbb6cf882af2c359f599b598dfb6fa64765e6e2c2b27fe127b734f"
+      },
+      "packet": "packets/franken_lean-assessment.md",
+      "packet_bytes": 42420,
+      "packet_lines": 149,
+      "packet_sha256": "7ed4387d82e2a254398109b68a31e79de7e13cb02272f286357e1afea325a81d",
+      "pins": {
+        "assessment_date": "2026-09-22",
+        "grader_protocol": {
+          "path": "RULEBOOK.md",
+          "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+          "version": "1.1"
+        },
+        "pinned_commit": "e91da19970591cf5c0ed0c113b475d748577291c",
+        "repository": "Dicklesworthstone/franken_lean"
+      },
+      "schema": "franken-research/packet-receipt@1",
+      "tool": "scripts/packet-receipts.py@1"
+    },
+    {
+      "claim_set": {
+        "count": 14,
+        "sha256": "c39d113e4fdf60b5531e356d68bd97a4f1c1299a0fabfcc8c2b8d54cd908732b"
+      },
+      "packet": "packets/frankenfs-assessment.md",
+      "packet_bytes": 64855,
+      "packet_lines": 226,
+      "packet_sha256": "018ef6d99a383de053d916390a495cb4f5de55e6618683bfe8621213d173dad7",
+      "pins": {
+        "assessment_date": "2026-09-22",
+        "grader_protocol": {
+          "path": "RULEBOOK.md",
+          "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+          "version": "1.1"
+        },
+        "pinned_commit": "49acf5d5a9b7d48d7d459e28bb5a32e8546900b6",
+        "repository": "Dicklesworthstone/frankenfs"
+      },
+      "schema": "franken-research/packet-receipt@1",
+      "tool": "scripts/packet-receipts.py@1"
+    },
+    {
+      "claim_set": {
+        "count": 18,
+        "sha256": "00edb23dfcf33ec579ff1cb797c701aeee6c38549a6f807a9ab44b4ea8b0cfb3"
+      },
+      "packet": "packets/frankenredis-assessment.md",
+      "packet_bytes": 88898,
+      "packet_lines": 299,
+      "packet_sha256": "4ffcf92d3d8216e9fe88af60a3e72fa93efd6d25ede6fa5c5e13a1522c7b6028",
+      "pins": {
+        "assessment_date": "2026-09-22",
+        "grader_protocol": {
+          "path": "RULEBOOK.md",
+          "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+          "version": "1.1"
+        },
+        "pinned_commit": "f78f64e4eea5d0ae7848d917e40aafaef1d60ce6",
+        "repository": "Dicklesworthstone/frankenredis"
+      },
+      "schema": "franken-research/packet-receipt@1",
+      "tool": "scripts/packet-receipts.py@1"
+    },
+    {
+      "claim_set": {
+        "count": 16,
+        "sha256": "1b554d63d0f51d1c8825cbcf7887152ed62c60e3809cfc6c6abf4d5dda08a36d"
+      },
+      "packet": "packets/frankensim-assessment.md",
+      "packet_bytes": 49626,
+      "packet_lines": 251,
+      "packet_sha256": "b97b6bf20832e3099e0871e4f8a44e4bcbdb72dcc3b549608e230ff99de5df38",
+      "pins": {
+        "assessment_date": "2026-09-22",
+        "grader_protocol": {
+          "path": "RULEBOOK.md",
+          "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+          "version": "1.1"
+        },
+        "pinned_commit": "4b004dcd3efa502ef5de84cf2ed118ccdeafde02",
+        "repository": "Dicklesworthstone/frankensim"
+      },
+      "schema": "franken-research/packet-receipt@1",
+      "tool": "scripts/packet-receipts.py@1"
+    }
+  ],
+  "schema": "franken-research/golden-packets@1",
+  "tool": "scripts/golden-packets.py@1"
+}
