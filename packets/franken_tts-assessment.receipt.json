@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 23,
+    "sha256": "25ea8f3c5073b9f0a01adefc3ef29d9b01d3a74cc7e49c5f975391b3274fda6d"
+  },
+  "packet": "packets/franken_tts-assessment.md",
+  "packet_bytes": 59500,
+  "packet_lines": 234,
+  "packet_sha256": "97ae48b59cdbfa2af2e7ec80dae7023fbd2137b541873e6b35acc9be0c30a4f7",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "eafdf4540da7343dbd28d61b9930e8b7bfcaf0d1",
+    "repository": "Dicklesworthstone/franken_tts"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

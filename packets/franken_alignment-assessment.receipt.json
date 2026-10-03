@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 23,
+    "sha256": "6e0c6c2fb13a3c58b3eebe87688a34f7116b18b95788de0aa60065306c88a7ae"
+  },
+  "packet": "packets/franken_alignment-assessment.md",
+  "packet_bytes": 56313,
+  "packet_lines": 249,
+  "packet_sha256": "f399628d6b43420d220f7fcb73404b8db2b8bf1d837fb754e98d176e7a566e5a",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "d05cb8c8dcbf1e5057b9ba208ad3921e8107a487",
+    "repository": "Dicklesworthstone/franken_alignment"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

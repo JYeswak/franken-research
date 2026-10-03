@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 20,
+    "sha256": "f68664a1b45e75b34cbac9f024734f860dccdc6484d9f7cdac94a35ad78bd5d6"
+  },
+  "packet": "packets/franken_code_browser-assessment.md",
+  "packet_bytes": 56883,
+  "packet_lines": 238,
+  "packet_sha256": "862bc7bbdb847ed6fac2b91bba5f983c3d018d6f5796dd5ac0213770ad6cae7b",
+  "pins": {
+    "assessment_date": "2026-09-14",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "cc8330d18b8da7b4ebd3571458fd51ef5d9d0a3e",
+    "repository": "Dicklesworthstone/franken_code_browser"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

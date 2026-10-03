@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 18,
+    "sha256": "22da947ff04e0690b1accc00eed2d3134b11666e38548fa163f86ec4b8785965"
+  },
+  "packet": "packets/frankenscipy-assessment.md",
+  "packet_bytes": 50866,
+  "packet_lines": 218,
+  "packet_sha256": "7910496f1d87abe03d8786dbafb48d99814c566e77e534b58f84aa8baf205b50",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "2fce54d56ee9af37ea8876a5248ce8aa0f882a22",
+    "repository": "Dicklesworthstone/frankenscipy"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

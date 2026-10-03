@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 16,
+    "sha256": "0018ecfdf24a409d545ae2ce6b4280ad29b581f8e1a48899fccd4f87d0dcd5a9"
+  },
+  "packet": "packets/beads-for-frankentui-assessment.md",
+  "packet_bytes": 46058,
+  "packet_lines": 231,
+  "packet_sha256": "cab215497f297098dc4810c663fb27e923246cba0dd5be478af07e12046f0744",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "e1a842f6a1e37f9c5f9648634652163219aa461e",
+    "repository": "Dicklesworthstone/beads-for-frankentui"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

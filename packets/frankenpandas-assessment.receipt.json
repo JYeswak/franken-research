@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 20,
+    "sha256": "7bbe9f5709224325e678cbaf56ce6315cd5244408e135124cda73f273b03da82"
+  },
+  "packet": "packets/frankenpandas-assessment.md",
+  "packet_bytes": 94459,
+  "packet_lines": 303,
+  "packet_sha256": "abe13e7420e6369429feb87b905ba3ebfbf4c6f6fcf870bfe4d9bd2501e74e2e",
+  "pins": {
+    "assessment_date": "2026-09-03",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "ebe79a3b4ae0470402ea76f9547ae93093360b37",
+    "repository": "Dicklesworthstone/frankenpandas"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

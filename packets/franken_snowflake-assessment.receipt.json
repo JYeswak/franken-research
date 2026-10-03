@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 18,
+    "sha256": "6c44a2d76c7a43d6d3a74c87e5b3198399a23813ff1adf3a2e4ca61dd5933328"
+  },
+  "packet": "packets/franken_snowflake-assessment.md",
+  "packet_bytes": 63285,
+  "packet_lines": 234,
+  "packet_sha256": "287cc0127873b2c25f753792a17b80a1a831604aec729b17473b56777dae5b53",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "e5f6312b2aa0fc2a74757b9eab09c6e14ccdef86",
+    "repository": "Dicklesworthstone/franken_snowflake"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

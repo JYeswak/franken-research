@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 16,
+    "sha256": "c8c839fa7a5a8455276dc28318a76e75cd028b2cb13d3b539cc185c9e96762d5"
+  },
+  "packet": "packets/frankengraphdb-assessment.md",
+  "packet_bytes": 66575,
+  "packet_lines": 244,
+  "packet_sha256": "4d6550e1bf58cd232620ebc83184f5f295def1a2e98ff288d5ced3b98e1ffd70",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "f077badcc4c6e201942e3b10cd20d09354afdc79",
+    "repository": "Dicklesworthstone/frankengraphdb"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

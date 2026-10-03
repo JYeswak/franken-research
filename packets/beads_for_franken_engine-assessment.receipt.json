@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 25,
+    "sha256": "2b1408dd6508a1592f8f1f746e5615606244b6d50fe3a87973a3c343eb6e75f7"
+  },
+  "packet": "packets/beads_for_franken_engine-assessment.md",
+  "packet_bytes": 57987,
+  "packet_lines": 254,
+  "packet_sha256": "9d89583aa641cb020bef220c93bac7e02eec993ceea92793bb188bc199ec6bad",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "50e2709a59becd2cf33071f0aa031c5447635c04",
+    "repository": "Dicklesworthstone/beads_for_franken_engine"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

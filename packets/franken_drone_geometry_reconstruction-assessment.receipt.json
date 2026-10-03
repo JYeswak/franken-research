@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 20,
+    "sha256": "815c12d24a22d8d2c841b4914a7f02d40ea1ffb93f99bc8cc2311e8900820bd1"
+  },
+  "packet": "packets/franken_drone_geometry_reconstruction-assessment.md",
+  "packet_bytes": 53973,
+  "packet_lines": 236,
+  "packet_sha256": "8d8798714a21a6209b63410afc6a08baed23913741b7743ecbbc89e645569164",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "90892e931cd7c8d0de179ccdc36569790ccc4030",
+    "repository": "Dicklesworthstone/franken_drone_geometry_reconstruction"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

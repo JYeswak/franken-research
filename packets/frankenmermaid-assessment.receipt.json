@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 21,
+    "sha256": "9782fcdcd3b9a96e9a1647d6c4b0321df5a5ccc5d751e6714443264febe6d31d"
+  },
+  "packet": "packets/frankenmermaid-assessment.md",
+  "packet_bytes": 69177,
+  "packet_lines": 248,
+  "packet_sha256": "18f723a0f573fa6f1d1ad056a140003cbdf367dfdeb5107c69dd7dafe21439fa",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "5e153c1154f18e54d04c3569e5c350804faae14e",
+    "repository": "Dicklesworthstone/frankenmermaid"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

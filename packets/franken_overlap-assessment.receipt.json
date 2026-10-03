@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 17,
+    "sha256": "e876fdb2696db98f02530985dbdbac4de0c9be028bf884222172160ab57ddef1"
+  },
+  "packet": "packets/franken_overlap-assessment.md",
+  "packet_bytes": 58452,
+  "packet_lines": 241,
+  "packet_sha256": "aa8a58b0998d10d3d07748b34e1030b94f7b1cdb3e3f5ea9c2aac7ffb778f77e",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "063182c85d3f3679ef0923a3ce780e8443c9d388",
+    "repository": "Dicklesworthstone/franken_overlap"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

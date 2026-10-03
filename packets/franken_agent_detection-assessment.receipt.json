@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 20,
+    "sha256": "2a35c25f5fd49764939078b4184bd5d20d7fc2e241a9b4adae1a2f0a342ebba3"
+  },
+  "packet": "packets/franken_agent_detection-assessment.md",
+  "packet_bytes": 56327,
+  "packet_lines": 236,
+  "packet_sha256": "b9e684d44e9bc26e72bad5f730b59cb2eceacef571936b79d3fefa8bba33d99d",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "026f60b28784ca77c5b8e47e3dba9b22d154b4d9",
+    "repository": "Dicklesworthstone/franken_agent_detection"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

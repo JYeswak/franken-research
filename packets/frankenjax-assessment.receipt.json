@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 17,
+    "sha256": "9e73aba96d999f89f24f47bb1c6414105393a6218ccd8a246080619914e3d44d"
+  },
+  "packet": "packets/frankenjax-assessment.md",
+  "packet_bytes": 73159,
+  "packet_lines": 358,
+  "packet_sha256": "8c5f43026b6b9f1cc8cab69a67829b64d9cc2ef687d287d2e0bd780b2da40340",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "3e22ef6c0ba2effaeca4295cf1d4af9695c2eabe",
+    "repository": "Dicklesworthstone/frankenjax"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

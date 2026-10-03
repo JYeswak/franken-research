@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 13,
+    "sha256": "3335f1499b6e05a569463c126f1cf9a38f6bebddc406fb05e7b066d317639c12"
+  },
+  "packet": "packets/franken_manim-assessment.md",
+  "packet_bytes": 62229,
+  "packet_lines": 230,
+  "packet_sha256": "dfd1511620bc27dc218738bba465603eb3da3f1f8c285184ad1d95ce99a32318",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "d3a8090e6950a440876f5eb389b6b9fbb5f910d4",
+    "repository": "Dicklesworthstone/franken_manim"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

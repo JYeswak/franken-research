@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 19,
+    "sha256": "e6806df99039813f222b95b26594803b5d2d136a78b2ba687b411193c8cd1f58"
+  },
+  "packet": "packets/franken_whisper-assessment.md",
+  "packet_bytes": 62319,
+  "packet_lines": 240,
+  "packet_sha256": "b0a058485d3f2659c558860b9de3b20de73973349f99e91bde906c63332ee90b",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "408b7e790a7bda4cc6e47bd4b66db8bec0418658",
+    "repository": "Dicklesworthstone/franken_whisper"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 16,
+    "sha256": "02353d7b7bcc46f5acf6d810101de8b57b46ab036444522ea5a407d2abf374a3"
+  },
+  "packet": "packets/franken_surveillance_system-assessment.md",
+  "packet_bytes": 67732,
+  "packet_lines": 253,
+  "packet_sha256": "56fd33f079e5d596818137277f987552867e8ccf697b46a9982e46d25e50b29f",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "3dcc111c67979a0225edbc8f5ff30343aec33388",
+    "repository": "Dicklesworthstone/franken_surveillance_system"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

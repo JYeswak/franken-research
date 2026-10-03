@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 19,
+    "sha256": "b45726cd073cf06d15d4b7279ede0c6aac501911483cbdc21fc7917de01787b6"
+  },
+  "packet": "packets/frankensim_website-assessment.md",
+  "packet_bytes": 49225,
+  "packet_lines": 226,
+  "packet_sha256": "a109dc37f45de0a24b88741f874db58a8834080f8da7fc2fed9169a673339851",
+  "pins": {
+    "assessment_date": "2026-08-21",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "e179bafc123eb45bcd040b5a16a098b0125e4629",
+    "repository": "Dicklesworthstone/frankensim_website"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

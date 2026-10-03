@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 20,
+    "sha256": "c577df37a77b7e2f04284f3afdf54c42f2c812d9ec8c6961a5d2aa21800252a4"
+  },
+  "packet": "packets/frankentui_website-assessment.md",
+  "packet_bytes": 53924,
+  "packet_lines": 259,
+  "packet_sha256": "9a416010df5ce62ae523de6bab2c7d69c6c83f8033a218e89cb238b4df556de4",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "6057a6760b377ad4acf53e00668cf2924e585dfb",
+    "repository": "Dicklesworthstone/frankentui_website"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}

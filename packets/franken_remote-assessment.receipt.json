@@ -1,0 +1,22 @@
+{
+  "claim_set": {
+    "count": 26,
+    "sha256": "9f5c6c54a8855e033e5d570c10c21276296a20fac1c902f48ecc90187d6b9a92"
+  },
+  "packet": "packets/franken_remote-assessment.md",
+  "packet_bytes": 59884,
+  "packet_lines": 279,
+  "packet_sha256": "4a554ddd600f26819535bec3425c6f500e724f668fcb753ff8be23282533ba39",
+  "pins": {
+    "assessment_date": "2026-09-22",
+    "grader_protocol": {
+      "path": "RULEBOOK.md",
+      "sha256": "66de3e17de2fd4a105904fa1d435d3e0407267b44135ff91692d2959bd94005a",
+      "version": "1.1"
+    },
+    "pinned_commit": "fdeb7a2ec079136e4d47a24138ce18d74b30d105",
+    "repository": "Dicklesworthstone/franken_remote"
+  },
+  "schema": "franken-research/packet-receipt@1",
+  "tool": "scripts/packet-receipts.py@1"
+}
