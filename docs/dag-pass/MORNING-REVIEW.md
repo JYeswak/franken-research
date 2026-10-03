@@ -78,3 +78,23 @@ Each morning produces one report at
 | Day | Date | Report | Shortfalls | Gap beads |
 |-----|------|--------|-----------|-----------|
 | 1 | 2026-10-03 | reports/2026-10-03.md | 3 | fr-6hs, fr-xuh, fr-lud |
+
+## Noop cause check (fr-fm5)
+
+Every morning, before implementation, the pass also audits last
+night's noop classification (taxonomy: franken-nightly `RUNBOOK.md`
+"Noop cause taxonomy", `bin/noop_causes.py`):
+
+1. Run `python3 /Users/josh/Developer/franken-nightly/bin/check-noop-causes.py`.
+   It reports the last run's `cause_class`, any `unclassified` noops
+   in the ledger, and any first-seen classes still pending a bead.
+2. Any pending first-seen class gets its own bead this cycle — dedupe
+   with `br search "<class>"` first, then `br create` with a
+   BEAD-ANATOMY description naming the class, first-seen date/outcome,
+   and the last-run receipt; slot it under epic fr-y48. Clear it with
+   `check-noop-causes.py --mark-bead-filed <class> <bead-id>`.
+3. An `unclassified` noop is a shortfall in this report (with the
+   last-run/ledger evidence), beaded the same morning, and the
+   taxonomy in `noop_causes.py` is extended so the class never
+   recurs unnamed. Proof-week bar: 7 nights, every noop classified,
+   zero unclassified.
