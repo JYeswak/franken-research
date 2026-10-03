@@ -5,9 +5,17 @@
   <id>tag:fr.zeststream.ai,2026:feed</id>
   <link rel="self" type="application/atom+xml" href="https://fr.zeststream.ai/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/"/>
-  <updated>2026-10-02T00:00:00Z</updated>
+  <updated>2026-10-03T00:00:00Z</updated>
   <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
   <icon>https://fr.zeststream.ai/favicon.svg</icon>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:census/2026-10-03</id>
+    <title>Daily census: 38 of 44 moved since the pin</title>
+    <updated>2026-10-03T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-10-03.tsv"/>
+    <summary type="text">38 of the 44 assessed repositories have commits after their pinned commit (8910 commits in all). 13 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-10-03.tsv.</summary>
+  </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:digest/2026-W40</id>
     <title>Watch digest 2026-W40: 3 crossings opened, 0 resolved, 1 withdrawn</title>

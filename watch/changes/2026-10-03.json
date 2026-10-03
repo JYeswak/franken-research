@@ -1,0 +1,154 @@
+{
+  "baseline": false,
+  "date": "2026-10-03",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.5.0 -> cc5196d, published 2026-10-02T23:00:51Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/releases/tag/v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/releases/tags/v0.5.0",
+        "https://github.com/Dicklesworthstone/franken_markdown/commit/cc5196d786eae3174c9502eea73ca8dd13c01a37"
+      ],
+      "ident": "v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New GitHub release v0.5.0.",
+      "title": "[watch] franken_markdown: release v0.5.0",
+      "value": "cc5196d786eae3174c9502eea73ca8dd13c01a37"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.2.3 -> cec922a, published 2026-10-03T03:25:23Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_networkx/releases/tag/v0.2.3",
+        "https://api.github.com/repos/Dicklesworthstone/franken_networkx/releases/tags/v0.2.3",
+        "https://github.com/Dicklesworthstone/franken_networkx/commit/cec922aeb1ed8b67762aa1d1f9b58a99a8343b71"
+      ],
+      "ident": "v0.2.3",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_networkx",
+      "summary": "New GitHub release v0.2.3.",
+      "title": "[watch] franken_networkx: release v0.2.3",
+      "value": "cec922aeb1ed8b67762aa1d1f9b58a99a8343b71"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.0.6 -> f3de199, published 2026-10-03T06:03:24Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_snowflake/releases/tag/v0.0.6",
+        "https://api.github.com/repos/Dicklesworthstone/franken_snowflake/releases/tags/v0.0.6",
+        "https://github.com/Dicklesworthstone/franken_snowflake/commit/f3de1991ef3735d381c4eac34fbf0f1721583d5b"
+      ],
+      "ident": "v0.0.6",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_snowflake",
+      "summary": "New GitHub release v0.0.6.",
+      "title": "[watch] franken_snowflake: release v0.0.6",
+      "value": "f3de1991ef3735d381c4eac34fbf0f1721583d5b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.1.11 -> 47b2dd1, published 2026-10-03T02:22:24Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_tts/releases/tag/v0.1.11",
+        "https://api.github.com/repos/Dicklesworthstone/franken_tts/releases/tags/v0.1.11",
+        "https://github.com/Dicklesworthstone/franken_tts/commit/47b2dd1ca79101653fd58b29e0f1b3d137a14454"
+      ],
+      "ident": "v0.1.11",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_tts",
+      "summary": "New GitHub release v0.1.11.",
+      "title": "[watch] franken_tts: release v0.1.11",
+      "value": "47b2dd1ca79101653fd58b29e0f1b3d137a14454"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.1.1 -> 49efe1d, published 2026-10-03T02:57:21Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenredis/releases/tag/v0.1.1",
+        "https://api.github.com/repos/Dicklesworthstone/frankenredis/releases/tags/v0.1.1",
+        "https://github.com/Dicklesworthstone/frankenredis/commit/49efe1d3167d6c692d6c615d262fe4744c05199a"
+      ],
+      "ident": "v0.1.1",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenredis",
+      "summary": "New GitHub release v0.1.1.",
+      "title": "[watch] frankenredis: release v0.1.1",
+      "value": "49efe1d3167d6c692d6c615d262fe4744c05199a"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.4.8 -> 34197f0 (2026-10-02T19:50:43Z)",
+      "before": "tag v0.4.8 -> 0f33d15",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/v0.4.8",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/git/ref/tags/v0.4.8"
+      ],
+      "ident": "v0.4.8",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "Tag v0.4.8 was moved to another commit.",
+      "title": "[watch] frankensqlite: tag v0.4.8",
+      "value": "34197f0f564ba84d892eead05c7b12c26bf72506"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.9.0 -> befbd24, published 2026-10-03T08:10:08Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankentui/releases/tag/v0.9.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankentui/releases/tags/v0.9.0",
+        "https://github.com/Dicklesworthstone/frankentui/commit/befbd2471a1ec4a6b8ce0a0df32116c317cca9db"
+      ],
+      "ident": "v0.9.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankentui",
+      "summary": "New GitHub release v0.9.0.",
+      "title": "[watch] frankentui: release v0.9.0",
+      "value": "befbd2471a1ec4a6b8ce0a0df32116c317cca9db"
+    }
+  ],
+  "since": "2026-10-02T11:31:01Z"
+}
