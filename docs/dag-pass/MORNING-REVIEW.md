@@ -86,8 +86,16 @@ night's noop classification (taxonomy: franken-nightly `RUNBOOK.md`
 "Noop cause taxonomy", `bin/noop_causes.py`):
 
 1. Run `python3 /Users/josh/Developer/franken-nightly/bin/check-noop-causes.py`.
-   It reports the last run's `cause_class`, any `unclassified` noops
-   in the ledger, and any first-seen classes still pending a bead.
+   The checker is STRICT (fr-fm5 repair): it reads the STORED
+   `cause_class` field and never computes one on the fly, so exit 0
+   means every noop in `ledger.jsonl` and `state/last-run.json`
+   actually carries the field. It reports any noops missing the
+   field, any noops stored as `unclassified`, and any first-seen
+   classes still pending a bead. (Historical records predating the
+   driver change were stamped once with
+   `check-noop-causes.py --backfill`, tagged
+   `cause_class_source: "backfill-fr-fm5"`; a missing field on any
+   newer record is a driver bug, not a backfill case.)
 2. Any pending first-seen class gets its own bead this cycle — dedupe
    with `br search "<class>"` first, then `br create` with a
    BEAD-ANATOMY description naming the class, first-seen date/outcome,
