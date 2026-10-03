@@ -2579,12 +2579,12 @@
     "franken_whisper": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 5,
+      "commits_since_pin": 6,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "843c8f41acb4639747b2824c12d7e95248c00ec7",
-      "head_date": "2026-10-03T07:52:33Z",
+      "head": "08c15c08168774c03af300dd755e8b26097253a0",
+      "head_date": "2026-10-03T16:16:44Z",
       "id": 1164301692,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3229,6 +3229,13 @@
           "published_at": "2026-09-12T01:25:21Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-bench-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:11Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:05:45Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-columnar-v0.1.0": {
           "assets": 0,
           "created_at": "2026-04-23T17:07:34Z",
@@ -3263,6 +3270,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:07Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-columnar-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:04:01Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-conformance-v0.1.0": {
           "assets": 0,
@@ -3299,6 +3313,13 @@
           "published_at": "2026-09-12T01:25:19Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-conformance-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:11Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:05:34Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-dot-kernel-v0.2.0": {
           "assets": 0,
           "created_at": "2026-08-20T18:54:37Z",
@@ -3312,6 +3333,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:08Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-dot-kernel-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:03:50Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-expr-v0.1.0": {
           "assets": 0,
@@ -3348,6 +3376,13 @@
           "published_at": "2026-09-12T01:25:14Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-expr-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:04:48Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-frame-v0.1.0": {
           "assets": 0,
           "created_at": "2026-04-23T17:07:38Z",
@@ -3382,6 +3417,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:10Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-frame-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:04:35Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-frankentui-v0.1.0": {
           "assets": 0,
@@ -3418,6 +3460,13 @@
           "published_at": "2026-09-12T01:25:22Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-frankentui-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:11Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:05:56Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-groupby-v0.1.0": {
           "assets": 0,
           "created_at": "2026-04-23T17:07:40Z",
@@ -3452,6 +3501,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:15Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-groupby-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:05:00Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-index-v0.1.0": {
           "assets": 0,
@@ -3488,6 +3544,13 @@
           "published_at": "2026-09-12T01:25:11Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-index-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:04:12Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-io-v0.1.0": {
           "assets": 0,
           "created_at": "2026-04-23T17:07:43Z",
@@ -3522,6 +3585,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:18Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-io-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:05:22Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-join-v0.1.0": {
           "assets": 0,
@@ -3558,6 +3628,13 @@
           "published_at": "2026-09-12T01:25:17Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-join-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:05:11Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-python-v0.1.0": {
           "assets": 0,
           "created_at": "2026-05-25T10:50:05Z",
@@ -3592,6 +3669,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:23Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-python-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:11Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:06:07Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "fp-runtime-v0.1.0": {
           "assets": 0,
@@ -3628,6 +3712,13 @@
           "published_at": "2026-09-12T01:25:13Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "fp-runtime-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:04:24Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "fp-types-v0.1.0": {
           "assets": 0,
           "created_at": "2026-04-23T17:07:33Z",
@@ -3662,6 +3753,13 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:06Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "fp-types-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:03:38Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         "frankenpandas-v0.1.0": {
           "assets": 0,
@@ -3698,6 +3796,13 @@
           "published_at": "2026-09-12T01:25:25Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
         },
+        "frankenpandas-v0.4.0": {
+          "assets": 0,
+          "created_at": "2026-10-03T15:15:11Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:06:19Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
         "v0.1.1": {
           "assets": 0,
           "created_at": "2026-06-21T05:27:59Z",
@@ -3718,104 +3823,111 @@
           "prerelease": false,
           "published_at": "2026-09-12T01:25:04Z",
           "target": "0ad22f914e3a07af07d1197857bb9fa9798b3c4d"
+        },
+        "v0.4.0": {
+          "assets": 7,
+          "created_at": "2026-10-03T15:15:10Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T16:19:05Z",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         }
       },
       "repo": "frankenpandas",
       "since_pin": [
         {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-columnar-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-dot-kernel-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-expr-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-frame-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-groupby-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-index-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-io-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-join-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "fp-runtime-v0.4.0",
-          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
-        },
-        {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
+          "date": "2026-10-03T16:03:38Z",
+          "kind": "release",
           "name": "fp-types-v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         {
-          "date": "2026-10-03T15:15:10Z",
-          "kind": "tag",
-          "name": "v0.4.0",
+          "date": "2026-10-03T16:03:50Z",
+          "kind": "release",
+          "name": "fp-dot-kernel-v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         {
-          "date": "2026-10-03T15:15:11Z",
-          "kind": "tag",
-          "name": "fp-bench-v0.4.0",
+          "date": "2026-10-03T16:04:01Z",
+          "kind": "release",
+          "name": "fp-columnar-v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         {
-          "date": "2026-10-03T15:15:11Z",
-          "kind": "tag",
+          "date": "2026-10-03T16:04:12Z",
+          "kind": "release",
+          "name": "fp-index-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:04:24Z",
+          "kind": "release",
+          "name": "fp-runtime-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:04:35Z",
+          "kind": "release",
+          "name": "fp-frame-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:04:48Z",
+          "kind": "release",
+          "name": "fp-expr-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:05:00Z",
+          "kind": "release",
+          "name": "fp-groupby-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:05:11Z",
+          "kind": "release",
+          "name": "fp-join-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:05:22Z",
+          "kind": "release",
+          "name": "fp-io-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:05:34Z",
+          "kind": "release",
           "name": "fp-conformance-v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         {
-          "date": "2026-10-03T15:15:11Z",
-          "kind": "tag",
+          "date": "2026-10-03T16:05:45Z",
+          "kind": "release",
+          "name": "fp-bench-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:05:56Z",
+          "kind": "release",
           "name": "fp-frankentui-v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         {
-          "date": "2026-10-03T15:15:11Z",
-          "kind": "tag",
+          "date": "2026-10-03T16:06:07Z",
+          "kind": "release",
           "name": "fp-python-v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         },
         {
-          "date": "2026-10-03T15:15:11Z",
-          "kind": "tag",
+          "date": "2026-10-03T16:06:19Z",
+          "kind": "release",
           "name": "frankenpandas-v0.4.0",
+          "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+        },
+        {
+          "date": "2026-10-03T16:19:05Z",
+          "kind": "release",
+          "name": "v0.4.0",
           "target": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
         }
       ],
@@ -6684,7 +6796,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-10-03T15:30:43Z",
+  "checked_at": "2026-10-03T17:00:14Z",
   "discovery": [
     {
       "archived": false,
@@ -7644,7 +7756,7 @@
       "id": 1164301692,
       "language": "Rust",
       "name": "franken_whisper",
-      "pushed_at": "2026-10-03T08:04:37Z"
+      "pushed_at": "2026-10-03T16:28:48Z"
     },
     {
       "archived": false,
@@ -17616,27 +17728,6 @@
         "push": null,
         "self_hosted": false
       },
-      "e8c0389bc615583f42873b81fd019f92df979822": {
-        "events": [
-          "pull_request",
-          "push",
-          "schedule",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "e920fefdd7fa2552421184917d111bd4fd781f5d": {
         "events": [
           "push"
@@ -18351,6 +18442,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-10-03T12:49:18Z",
+  "previous_checked_at": "2026-10-03T15:30:43Z",
   "schema": 1
 }

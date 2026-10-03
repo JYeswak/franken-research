@@ -93,6 +93,342 @@
         "TRL",
         "NODUS"
       ],
+      "after": "release fp-bench-v0.4.0 -> b7e8d75, published 2026-10-03T16:05:45Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-bench-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-bench-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-bench-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-bench-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-bench-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-columnar-v0.4.0 -> b7e8d75, published 2026-10-03T16:04:01Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-columnar-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-columnar-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-columnar-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-columnar-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-columnar-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-conformance-v0.4.0 -> b7e8d75, published 2026-10-03T16:05:34Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-conformance-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-conformance-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-conformance-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-conformance-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-conformance-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-dot-kernel-v0.4.0 -> b7e8d75, published 2026-10-03T16:03:50Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-dot-kernel-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-dot-kernel-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-dot-kernel-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-dot-kernel-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-dot-kernel-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-expr-v0.4.0 -> b7e8d75, published 2026-10-03T16:04:48Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-expr-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-expr-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-expr-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-expr-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-expr-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-frame-v0.4.0 -> b7e8d75, published 2026-10-03T16:04:35Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-frame-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-frame-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-frame-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-frame-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-frame-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-frankentui-v0.4.0 -> b7e8d75, published 2026-10-03T16:05:56Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-frankentui-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-frankentui-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-frankentui-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-frankentui-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-frankentui-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-groupby-v0.4.0 -> b7e8d75, published 2026-10-03T16:05:00Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-groupby-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-groupby-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-groupby-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-groupby-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-groupby-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-index-v0.4.0 -> b7e8d75, published 2026-10-03T16:04:12Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-index-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-index-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-index-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-index-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-index-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-io-v0.4.0 -> b7e8d75, published 2026-10-03T16:05:22Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-io-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-io-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-io-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-io-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-io-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-join-v0.4.0 -> b7e8d75, published 2026-10-03T16:05:11Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-join-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-join-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-join-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-join-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-join-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-python-v0.4.0 -> b7e8d75, published 2026-10-03T16:06:07Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-python-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-python-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-python-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-python-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-python-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-runtime-v0.4.0 -> b7e8d75, published 2026-10-03T16:04:24Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-runtime-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-runtime-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-runtime-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-runtime-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-runtime-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-types-v0.4.0 -> b7e8d75, published 2026-10-03T16:03:38Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-types-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-types-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "fp-types-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-types-v0.4.0.",
+      "title": "[watch] frankenpandas: release fp-types-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release frankenpandas-v0.4.0 -> b7e8d75, published 2026-10-03T16:06:19Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/frankenpandas-v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/frankenpandas-v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "frankenpandas-v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release frankenpandas-v0.4.0.",
+      "title": "[watch] frankenpandas: release frankenpandas-v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.0 -> b7e8d75, published 2026-10-03T16:19:05Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+      ],
+      "ident": "v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release v0.4.0.",
+      "title": "[watch] frankenpandas: release v0.4.0",
+      "value": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
       "after": "tag fp-bench-v0.4.0 -> b7e8d75 (2026-10-03T15:15:11Z)",
       "before": "no such tag",
       "evidence": [
