@@ -20,6 +20,11 @@ them before it implements anything.
 DECISION beads are Josh's queue and are never executed by agents. Epics
 depend on their children; children never depend on epics.
 
+Finished work reaches Josh by push under the one notification contract
+([docs/NOTIFICATION-CONTRACT.md](../NOTIFICATION-CONTRACT.md), bead
+fr-i5u): one summary per merged PR and per closed bead, one morning
+digest, silence only for true no-ops.
+
 ## Step zero: the morning skill-library review
 
 Before any implementation, audit yesterday's work against the jsm skill
