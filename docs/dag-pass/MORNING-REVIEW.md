@@ -18,7 +18,7 @@ America/Denver unless noted.
 | Nightly candidate cycle (Mac launchd) | 06:20 daily | launchd com.jyeswak.franken-nightly (Mac, ~/Library/LaunchAgents/com.jyeswak.franken-nightly.plist) | Runs locally on the Mac: candidate selection, sandbox, evaluator, PR/merge under Josh's auto-merge authorization. Writes franken-nightly/state/last-run.json + report. |
 | Nightly report (VM cron, read-only) | 07:20 daily | VM cron franken-nightly | Reads franken-nightly/state/last-run.json + matching report; posts one tight summary. Never runs the driver, never mutates the repo. Flags a stale/missing last-run (>26h) as a failure. |
 | **DAG work pass (VM cron) - this document** | **08:20 daily** | VM cron franken-dag-work | Step zero: morning skill-library review (below) -> read the frontier -> auto-bead new gaps -> work ONE top ready non-DECISION, non-epic bead in an isolated worktree -> evidence comment + needs-verification label; the implementer never closes their own work. |
-| DAG verify pass (VM cron, independent closer) | **16:20 daily** | VM cron franken-dag-verify | Independently reproduces evidence on needs-verification beads (max 3/pass), closes or bounces; checks br dep cycles + bv --robot-insights Cycles empty. Never implements fixes. |
+| DAG verify pass (VM cron, independent closer) | **16:20 daily** | VM cron franken-dag-verify | Independently reproduces evidence on needs-verification beads (max 3/pass), closes or bounces; checks br dep cycles + bv --robot-insights Cycles empty. Never implements fixes. Also runs the noop re-grade lane (fr-xwc, see below): samples evaluator-revise + gate-red noops, triages every sampled noop. |
 | Weekly DAG retro (VM cron) | Sun 17:20 | VM cron franken-dag-retro | Graph health census, staleness sweep, proof-week progress; files beads for drift found before reporting. DECISION beads are listed for Josh, never executed. |
 
 Historical note: fr-m4x originally cited an 08:10 work pass and the work-pass
@@ -213,3 +213,37 @@ night's noop classification (taxonomy: franken-nightly `RUNBOOK.md`
    taxonomy in `noop_causes.py` is extended so the class never
    recurs unnamed. Proof-week bar: 7 nights, every noop classified,
    zero unclassified.
+
+## Noop re-grade lane (fr-xwc) — 16:20 verify pass
+
+False accepts are measured downstream; false rejects were invisible.
+The afternoon verify pass independently re-grades a sample of the
+noops the nightly discarded (driver detail: franken-nightly
+`RUNBOOK.md` "Noop re-grade sampling", `bin/noop_regrade.py`):
+
+1. **Sample** — `python3 /Users/josh/Developer/franken-nightly/bin/noop_regrade.py sample`:
+   ALL `evaluator-revise` noops, plus a deterministic stable-hash
+   50% sample of `gate-red` noops, into
+   `state/noop-regrades.jsonl`. Idempotent; no new cron — this is
+   judgement work inside the existing 16:20 verify pass.
+2. **Re-grade + triage** — each pending sampled noop is re-graded
+   independently (replay via `bin/replay-eval.py` where a committed
+   candidate exists, else the ledger verdict / gate receipt) and
+   MUST carry exactly one triage label before the pass ends:
+   `model-error` (candidate defective, reject correct),
+   `grader-error` (candidate sound, evaluator/gate wrong — a false
+   reject), or `task-error` (task ill-posed, reject correct).
+   `noop_regrade.py check` exits 1 while any sampled noop is
+   untriaged. A `grader-error` finding files a bead the same pass
+   (gate fix or judge note); a label that changes nothing is a
+   failed re-grade.
+3. **Morning panel** — the weekly false-reject rate
+   (`grader-error / triaged`, trailing 7 days) is published by
+   `bin/morning_digest.py` on the morning digest alongside the
+   night's merge outcome (`false_reject_rate_weekly`, JSON twin
+   `noop_regrade_weekly`), and the morning DAG report records the
+   same line verbatim from
+   `noop_regrade.py report --markdown`. The first lane run
+   (2026-10-04) sampled 5 historical noops, triaged 3 as
+   `model-error` (0.0% weekly false-reject rate), 2 gate-red
+   records pending artifact-free triage by the verify pass.
