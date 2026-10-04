@@ -119,7 +119,10 @@ depend on their children; children never depend on epics.
 Finished work reaches Josh by push under the one notification contract
 ([docs/NOTIFICATION-CONTRACT.md](../NOTIFICATION-CONTRACT.md), bead
 fr-i5u): one summary per merged PR and per closed bead, one morning
-digest, silence only for true no-ops.
+digest, silence only for true no-ops. Every push is recorded at push
+time with `scripts/notify-push.py` in the main checkout (exactly-once
+per event id); a pass that pushed a summary without logging it has not
+finished the step.
 
 ## Step zero: the morning skill-library review
 

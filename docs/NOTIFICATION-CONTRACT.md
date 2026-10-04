@@ -67,6 +67,13 @@ Every push under this contract appends one line to
 `state/notification-log.jsonl` in this repo:
 `{"ts": ..., "kind": "pr"|"bead"|"digest", "event_id": ..., "chat": ...}`.
 The log is append-only; the dedupe key above is the line's `event_id`.
+
+`scripts/notify-push.py` is the only writer. The agent that pushes a
+summary runs it in the main checkout at push time
+(`--kind pr|bead|digest --event-id <id> --chat <owning chat>`); a
+repeat call for the same event id appends nothing, so a retry or
+re-delivery cannot create a duplicate, and kinds outside the three
+contract events are rejected outright.
 Without this log there is no citable sample to audit - chat scrollback
 alone does not count as evidence.
 
@@ -75,7 +82,11 @@ alone does not count as evidence.
 `python3 scripts/notification-audit.py` (defaults: window
 2026-10-04..2026-10-10, log `state/notification-log.jsonl`) counts
 merges from `git log --merges` and closures from the bead store, then
-reports missing, duplicate, extra, and broadcast-style entries. Until
+reports missing, duplicate, extra, and broadcast-style entries. Log entries
+dated outside the window are ignored, so the 2026-10-03 opening entry
+never pollutes the sample. Merges are counted with explicit day-bound
+timestamps (a bare `--since=YYYY-MM-DD` silently drops same-day
+merges). Until
 the window has fully elapsed it reports `WINDOW_INCOMPLETE` and cannot
 PASS - a partial week is never presented as proof. Unit tests:
 `python3 scripts/test_notification_audit.py`.

@@ -10,6 +10,10 @@ the pushed-summary log (state/notification-log.jsonl) and reports:
   - broadcast-style entries (kind outside {pr, bead, digest})
   - extra summaries (pushed summary with no matching event)
 
+Log entries whose day (ts, else a date-shaped digest event_id) falls
+outside the window are ignored, so a pre-window opening entry can never
+fail an otherwise clean week.
+
 Honesty rule: if the window end is today or in the future the verdict is
 WINDOW_INCOMPLETE - the counts are partial and cannot PASS. Only a fully
 elapsed window can PASS or FAIL.
@@ -30,6 +34,7 @@ from pathlib import Path
 
 ALLOWED_KINDS = {"pr", "bead", "digest"}
 PR_RE = re.compile(r"#(\d+)")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}")
 
 
 def parse_log(text):
@@ -46,9 +51,35 @@ def parse_log(text):
     return entries, bad
 
 
-def audit(merges, closures, entries, window_complete):
+def entry_day(entry):
+    """Best-known day of a log entry as a date, else None.
+
+    Prefers the ts field; falls back to a date-shaped event_id (digests
+    are keyed by their date). Entries with no parseable day return None
+    and are always counted (they cannot be proven out-of-window).
+    """
+    for raw in (entry.get("ts"), entry.get("event_id")):
+        if isinstance(raw, str) and DATE_RE.match(raw):
+            try:
+                return date.fromisoformat(raw[:10])
+            except ValueError:
+                continue
+    return None
+
+
+def in_window(entry, start, end):
+    """True when the entry belongs to [start, end] (unknown day = inside)."""
+    if start is None or end is None:
+        return True
+    day = entry_day(entry)
+    return day is None or start <= day <= end
+
+
+def audit(merges, closures, entries, window_complete, start=None, end=None):
     """Pure audit core. merges/closures: lists of event-id strings.
-    entries: list of dicts with kind/event_id. Returns verdict dict."""
+    entries: list of dicts with kind/event_id. When start/end are given,
+    out-of-window entries are ignored. Returns verdict dict."""
+    entries = [e for e in entries if in_window(e, start, end)]
     want = {"pr": list(merges), "bead": list(closures)}
     got = {"pr": [], "bead": []}
     digests = 0
@@ -100,11 +131,18 @@ def audit(merges, closures, entries, window_complete):
 
 
 def git_merges(repo, start, end):
-    """Merged-PR event ids (PR numbers) from git log in [start, end]."""
-    until = (end + timedelta(days=1)).isoformat()
+    """Merged-PR event ids (PR numbers) from git log in [start, end].
+
+    Bounds carry explicit times: bare --since=YYYY-MM-DD is parsed by
+    git approxidate in a way that can exclude same-day merges (verified
+    2026-10-04: PR #25 merged 06:39 MDT was invisible to a bare-date
+    --since), so this always passes full timestamps.
+    """
+    since = f"{start.isoformat()}T00:00:00"
+    until = f"{(end + timedelta(days=1)).isoformat()}T00:00:00"
     out = subprocess.run(
         ["git", "-C", str(repo), "log", "--merges",
-         f"--since={start.isoformat()}", f"--until={until}",
+         f"--since={since}", f"--until={until}",
          "--format=%s"],
         capture_output=True, text=True, timeout=60,
     )
@@ -159,7 +197,8 @@ def main(argv=None):
     if log_path.exists():
         entries, bad = parse_log(log_path.read_text(encoding="utf-8"))
 
-    result = audit(merges, closures, entries, window_complete=end < today)
+    result = audit(merges, closures, entries, window_complete=end < today,
+                   start=start, end=end)
     result["window"] = {"start": args.start, "end": args.end, "today": today.isoformat()}
     result["log_path"] = str(log_path)
     result["log_entries"] = len(entries)
