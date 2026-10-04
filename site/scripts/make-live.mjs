@@ -16,7 +16,7 @@
 // Prints LIVE_OK briefs=N regions=N, or LIVE_BAD and one indented line per problem. Exit 0 ok, 1 problems.
 // No dependencies beyond node's standard library.
 
-import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { LiveError, applyCard, briefFiles, checkBriefs, readLive, recordFor } from '../../watch/freshness/card.mjs';
@@ -59,4 +59,4 @@ export function main(argv) {
   }
 }
 
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) process.exit(main(process.argv.slice(2)));
+if (process.argv[1] && pathToFileURL(realpathSync(process.argv[1])).href === import.meta.url) process.exit(main(process.argv.slice(2)));

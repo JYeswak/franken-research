@@ -23,7 +23,7 @@
 // Output is deterministic (fixed or sorted order, no dates, no build time): a rerun on unchanged files is
 // byte-identical. verify-site.sh gate T runs --check. No dependencies beyond node's standard library.
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import vm from 'node:vm';
@@ -219,7 +219,7 @@ function main(argv) {
   return 0;
 }
 
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
+if (process.argv[1] && pathToFileURL(realpathSync(process.argv[1])).href === import.meta.url) {
   try { process.exitCode = main(process.argv.slice(2)); } catch (e) {
     if (!(e instanceof LlmsError)) throw e;
     console.log('LLMS_BAD'); console.log('  ' + e.message); process.exitCode = 1;

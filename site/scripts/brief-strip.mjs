@@ -20,7 +20,7 @@
 // on a brief means what it means on the map. make-og.mjs imports the same palette for the share cards.
 // verify-site.sh gate V runs --check. No dependencies beyond node's standard library.
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import vm from 'node:vm';
@@ -349,4 +349,4 @@ function main(argv) {
   }
 }
 
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) process.exit(main(process.argv.slice(2)));
+if (process.argv[1] && pathToFileURL(realpathSync(process.argv[1])).href === import.meta.url) process.exit(main(process.argv.slice(2)));

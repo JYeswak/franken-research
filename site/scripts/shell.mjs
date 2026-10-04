@@ -27,7 +27,7 @@
 // they do. Links to assets that are not loaded (an <a href> citing data.js) are left alone.
 // verify-site.sh gate S runs --check. No dependencies beyond node's standard library.
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -419,4 +419,4 @@ function main(argv) {
   return 0;
 }
 
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) process.exit(main(process.argv.slice(2)));
+if (process.argv[1] && pathToFileURL(realpathSync(process.argv[1])).href === import.meta.url) process.exit(main(process.argv.slice(2)));

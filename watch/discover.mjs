@@ -23,7 +23,7 @@
 // Token: GITHUB_TOKEN or GH_TOKEN, else `gh auth token`. The token is never printed.
 // Node 22 built-ins only.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, mkdtempSync, rmSync, realpathSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
@@ -834,7 +834,7 @@ async function main(argv) {
   return EXIT.OK;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   main(process.argv.slice(2)).then(
     (code) => { process.exitCode = code; },
     (e) => {
