@@ -74,5 +74,33 @@ class TestVoI(unittest.TestCase):
         self.assertNotIn("old", table["families"])
 
 
+class TestCliNightPlumbing(unittest.TestCase):
+    # The driver invokes the CLI with --night <date ordinal>; the
+    # 1-in-7 exploration pick must fire through that exact path.
+
+    def run_cli(self, night):
+        import subprocess
+        with tempfile.NamedTemporaryFile('w', suffix='.tsv',
+                                         delete=False) as f:
+            f.write(CENSUS)
+            path = f.name
+        try:
+            out = subprocess.run(
+                [sys.executable,
+                 os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              'selection_v2.py'),
+                 'score', '--census', path, '--night', str(night)],
+                capture_output=True, text=True, timeout=60)
+        finally:
+            os.unlink(path)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        return json.loads(out.stdout)
+
+    def test_cli_exploration_night_fires(self):
+        # ordinals: night % 7 == 6 explores, night % 7 == 0 exploits
+        self.assertEqual(self.run_cli(739899)['mode'], 'explore')
+        self.assertEqual(self.run_cli(739893)['mode'], 'exploit')
+
+
 if __name__ == "__main__":
     unittest.main()

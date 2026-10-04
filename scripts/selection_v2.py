@@ -37,6 +37,13 @@ Usage:
   selection_v2.py update-bandit [--events state/artifact-events.jsonl]
                                 [--out state/bandit-rewards.json]
                                 [--now ISO]
+
+Production wiring (fr-jga repair, 2026-10-04): the nightly driver
+(franken-nightly/bin/run-nightly.py build_night) always passes
+--night <run-date ordinal>, so exploration nights fire in
+production; the bandit table is refreshed weekly by launchd job
+com.jyeswak.franken-bandit-update (Mondays 06:05 local, ahead of
+the 06:20 nightly) running franken-nightly/bin/bandit-update-weekly.py.
 """
 import argparse
 import json
