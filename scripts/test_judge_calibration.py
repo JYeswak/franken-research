@@ -128,3 +128,36 @@ def test_registry_roundtrip():
     f.close()
     g = JC.can_auto_merge(JC.load_json(f.name), "groq/openai/gpt-oss-20b", v)
     assert g["auto_merge_allowed"]
+
+def test_lane_scores_groq_below_bar():
+    report = JC.lane_scores_from_set()
+    groq = report["lanes"]["groq/openai/gpt-oss-20b"]
+    # Verifier-reproduced headline: n=19, kappa 0.406, below the 0.6 bar.
+    assert groq["n"] == 19
+    assert abs(groq["kappa"] - 0.4062) < 0.001
+    assert groq["precision"]["green"] == 0.7647
+    assert groq["recall"]["revise"] == 0.3333
+    assert not groq["passes_bar"] and not groq["kappa_meets_bar"]
+    sens = groq["sensitivity_excluding_expected_decision"]
+    assert sens["n"] == 14 and sens["kappa"] < JC.KAPPA_BAR
+
+
+def test_lane_scores_partial_coverage_never_grants():
+    report = JC.lane_scores_from_set()
+    nvidia = report["lanes"]["nvidia/z-ai/glm-5.3-flash"]
+    assert nvidia["n"] == 1 and nvidia["kappa"] == 1.0
+    assert not nvidia["coverage_complete"] and not nvidia["passes_bar"]
+    assert "fleet/bulk-tier" in report["non_lane_groups"]
+    assert "fleet/bulk-tier" not in report["lanes"]
+    assert report["excluded_missing_raw_verdict"] == 4
+
+
+def test_gate_blocks_partial_coverage_entry():
+    v = JC.judge_version(prompt_text="p")
+    reg = {"lanes": {"nvidia/z-ai/glm-5.3-flash":
+                     {"judge_version": v, "kappa": 1.0,
+                      "coverage_complete": False, "n": 1, "n_set": 32}}}
+    g = JC.can_auto_merge(reg, "nvidia/z-ai/glm-5.3-flash", v)
+    assert not g["auto_merge_allowed"]
+    assert any("partial frozen-set coverage" in r for r in g["reasons"])
+

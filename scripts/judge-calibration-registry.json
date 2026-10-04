@@ -22,6 +22,102 @@
       },
       "judge_version": "judge-v1-0fbecf6a7c05",
       "prediction_kind": "deterministic-rules (evaluate.md rules 1-4)"
+    },
+    "groq/openai/gpt-oss-20b": {
+      "lane": "groq/openai/gpt-oss-20b",
+      "n": 19,
+      "agreement": 0.7894736842105263,
+      "kappa": 0.4062,
+      "bar": 0.6,
+      "passes_bar": false,
+      "precision": {
+        "green": 0.7647,
+        "revise": 1.0
+      },
+      "recall": {
+        "green": 1.0,
+        "revise": 0.3333
+      },
+      "n_set": 32,
+      "coverage": 0.5938,
+      "coverage_complete": false,
+      "kappa_meets_bar": false,
+      "prediction_kind": "frozen-set embedded historical raw judge verdicts",
+      "judge_version": null,
+      "calibration_status": "measured_below_bar",
+      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version.",
+      "sensitivity_excluding_expected_decision": {
+        "n": 14,
+        "kappa": 0.4615,
+        "precision": {
+          "green": 0.75,
+          "revise": 1.0
+        },
+        "recall": {
+          "green": 1.0,
+          "revise": 0.4
+        }
+      }
+    },
+    "nvidia/z-ai/glm-5.3-flash": {
+      "lane": "nvidia/z-ai/glm-5.3-flash",
+      "n": 1,
+      "agreement": 1.0,
+      "kappa": 1.0,
+      "bar": 0.6,
+      "passes_bar": false,
+      "precision": {
+        "green": 1.0,
+        "revise": 0.0
+      },
+      "recall": {
+        "green": 1.0,
+        "revise": 0.0
+      },
+      "n_set": 32,
+      "coverage": 0.0312,
+      "coverage_complete": false,
+      "kappa_meets_bar": true,
+      "prediction_kind": "frozen-set embedded historical raw judge verdicts",
+      "judge_version": null,
+      "calibration_status": "insufficient_coverage",
+      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version."
     }
-  }
+  },
+  "frozen_set_pin": {
+    "judge": "stage-c-evaluator",
+    "prompt": "prompts/evaluate.md (franken-nightly)",
+    "decoding": {
+      "temperature": 0,
+      "max_tokens": 16000
+    },
+    "version_derivation": "scripts/judge-calibration.py judge_version() hashes prompt+rubric+decoding so any change bumps the version and invalidates calibration"
+  },
+  "non_lane_groups": {
+    "fleet/bulk-tier": {
+      "lane": "fleet/bulk-tier",
+      "n": 8,
+      "agreement": 1.0,
+      "kappa": 1.0,
+      "bar": 0.6,
+      "passes_bar": false,
+      "precision": {
+        "green": 1.0,
+        "revise": 1.0
+      },
+      "recall": {
+        "green": 1.0,
+        "revise": 1.0
+      },
+      "n_set": 32,
+      "coverage": 0.25,
+      "coverage_complete": false,
+      "kappa_meets_bar": true,
+      "prediction_kind": "frozen-set embedded historical raw judge verdicts",
+      "judge_version": null,
+      "calibration_status": "insufficient_coverage",
+      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version."
+    }
+  },
+  "excluded_missing_raw_verdict": 4
 }
