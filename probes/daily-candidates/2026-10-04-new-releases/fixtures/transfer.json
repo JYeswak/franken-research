@@ -1,0 +1,32 @@
+{
+  "material": [
+    {
+      "kind": "release",
+      "repo": "epsilon/api",
+      "tag": "v2.1.0",
+      "commit": "11223344",
+      "published": "2026-10-04T06:00:00Z"
+    },
+    {
+      "kind": "release",
+      "repo": "zeta/cli",
+      "tag": "v4.0.0",
+      "commit": "55667788",
+      "published": "2026-10-04T12:00:00Z"
+    },
+    {
+      "kind": "issue",
+      "repo": "eta/web",
+      "id": 123,
+      "title": "Broken link",
+      "opened": "2026-10-04T11:00:00Z"
+    },
+    {
+      "kind": "release",
+      "repo": "theta/db",
+      "tag": "v5.5.5",
+      "commit": "99aabbcc",
+      "published": "2026-10-04T09:30:00Z"
+    }
+  ]
+}
