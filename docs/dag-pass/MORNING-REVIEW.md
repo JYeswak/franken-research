@@ -5,6 +5,27 @@ Canonical instructions for the daily bead-DAG work pass. Bead: fr-m4x
 library encodes hard-won standards, and the pass audits yesterday against
 them before it implements anything.
 
+## Canonical day rhythm (single source of truth - bead fr-xuh)
+
+Every pass time in this section was diffed against the live schedules on
+2026-10-03 (VM cron.list + Mac launchctl/plist read). This document is
+the canonical record: when any other record disagrees with this section,
+this section wins and the other record gets fixed. All times
+America/Denver unless noted.
+
+| Pass | Time | Trigger | Step order |
+|------|------|---------|------------|
+| Nightly candidate cycle (Mac launchd) | 06:20 daily | launchd com.jyeswak.franken-nightly (Mac, ~/Library/LaunchAgents/com.jyeswak.franken-nightly.plist) | Runs locally on the Mac: candidate selection, sandbox, evaluator, PR/merge under Josh's auto-merge authorization. Writes franken-nightly/state/last-run.json + report. |
+| Nightly report (VM cron, read-only) | 07:20 daily | VM cron franken-nightly | Reads franken-nightly/state/last-run.json + matching report; posts one tight summary. Never runs the driver, never mutates the repo. Flags a stale/missing last-run (>26h) as a failure. |
+| **DAG work pass (VM cron) - this document** | **08:20 daily** | VM cron franken-dag-work | Step zero: morning skill-library review (below) -> read the frontier -> auto-bead new gaps -> work ONE top ready non-DECISION, non-epic bead in an isolated worktree -> evidence comment + needs-verification label; the implementer never closes their own work. |
+| DAG verify pass (VM cron, independent closer) | **16:20 daily** | VM cron franken-dag-verify | Independently reproduces evidence on needs-verification beads (max 3/pass), closes or bounces; checks br dep cycles + bv --robot-insights Cycles empty. Never implements fixes. |
+| Weekly DAG retro (VM cron) | Sun 17:20 | VM cron franken-dag-retro | Graph health census, staleness sweep, proof-week progress; files beads for drift found before reporting. DECISION beads are listed for Josh, never executed. |
+
+Historical note: fr-m4x originally cited an 08:10 work pass and the work-pass
+cron body once named a 16:40 verify pass; both were stale text. The live
+schedules (08:20 work / 16:20 verify) were kept as canonical - no cron times
+moved - and the stale references were corrected on 2026-10-03 under fr-xuh.
+
 ## The pass
 
 1. **Step zero — morning skill-library review (this document).**
