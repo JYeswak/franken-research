@@ -55,3 +55,6 @@ redirect
 
 # bv (beads viewer) lock file
 .bv.lock
+
+# br fsqlite write-ahead index dirs (runtime state)
+.br-wal-index-*/
