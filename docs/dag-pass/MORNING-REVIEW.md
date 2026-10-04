@@ -92,7 +92,7 @@ commit; start status was not recorded then).
 | 3 | 2026-10-03 fr-xuh verify/close wave | wave coordinator | not recorded (pre-rule) | clean | `a34bb28` |
 | 4 | 2026-10-03 fr-lud implementation pass (first under this rule) | implementing agent (this pass) | ` M .beads/issues.jsonl` (fr-lud claim, 2026-10-03 18:15 MDT) | clean — transcribed in reports/2026-10-03.md (fr-lud repair pass, 2026-10-03; previously only in bead comment 84, bounced by verifier comment 87) | `e47f3a5` |
 | 5 | 2026-10-03 fr-lud repair pass (second under this rule) | fr-lud repair agent (ad-hoc wave) | ` M .beads/issues.jsonl` (verifier grade comment 87 + fr-miv close, flushed at pass start) | clean — recorded in reports/2026-10-03.md (repair-pass section) | `5cb4aca` (start flush), `e24f8d0` (evidence/pass-end flush) |
-| 6 | 2026-10-03 fr-lud pass-3 (third under this rule, ad-hoc burn-down wave) | fr-lud pass-3 agent (ad-hoc wave coordinator) | ` M .beads/issues.jsonl` (parallel fr-bh3/fr-m5m claims + fr-lud re-claim, 2026-10-03 19:03 MDT, flushed at pass start) | clean — recorded in reports/2026-10-03.md (pass-3 section) | `cbbb936` (start flush), `EVIDENCE_FLUSH_HASH` (evidence/pass-end flush) |
+| 6 | 2026-10-03 fr-lud pass-3 (third under this rule, ad-hoc burn-down wave) | fr-lud pass-3 agent (ad-hoc wave coordinator) | ` M .beads/issues.jsonl` (parallel fr-bh3/fr-m5m claims + fr-lud re-claim, 2026-10-03 19:03 MDT, flushed at pass start) | clean — recorded in reports/2026-10-03.md (pass-3 section) | `cbbb936` (start flush), `2c10d90` (evidence flush, carried in parallel fr-bh3 commit), `e2d1b30` (pass-end flush) |
 
 Rows 1–3 are pre-rule and do NOT count toward the three-pass recorded
 streak (verifier, fr-lud comment 87). The under-rule streak stands at
