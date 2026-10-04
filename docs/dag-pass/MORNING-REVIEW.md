@@ -90,7 +90,14 @@ commit; start status was not recorded then).
 | 1 | 2026-10-03 fr-landscape-rigor close wave | wave coordinator | not recorded (pre-rule) | clean | `66890e7` |
 | 2 | 2026-10-03 fr-6hs implement + verify waves | wave coordinator | not recorded (pre-rule) | clean | `e1989cf`, `17a458b` |
 | 3 | 2026-10-03 fr-xuh verify/close wave | wave coordinator | not recorded (pre-rule) | clean | `a34bb28` |
-| 4 | 2026-10-03 fr-lud implementation pass (first under this rule) | implementing agent (this pass) | ` M .beads/issues.jsonl` (fr-lud claim, 2026-10-03 18:15 MDT) | clean — recorded in the fr-lud evidence comment on the bead | see fr-lud evidence comment |
+| 4 | 2026-10-03 fr-lud implementation pass (first under this rule) | implementing agent (this pass) | ` M .beads/issues.jsonl` (fr-lud claim, 2026-10-03 18:15 MDT) | clean — transcribed in reports/2026-10-03.md (fr-lud repair pass, 2026-10-03; previously only in bead comment 84, bounced by verifier comment 87) | `e47f3a5` |
+| 5 | 2026-10-03 fr-lud repair pass (second under this rule) | fr-lud repair agent (ad-hoc wave) | ` M .beads/issues.jsonl` (verifier grade comment 87 + fr-miv close, flushed at pass start) | clean — recorded in reports/2026-10-03.md (repair-pass section) | `5cb4aca` (start flush; final flush appended at pass end) |
+
+Rows 1–3 are pre-rule and do NOT count toward the three-pass recorded
+streak (verifier, fr-lud comment 87). The under-rule streak stands at
+2 of 3 after row 5; the third consecutive recorded pass is the next
+scheduled DAG pass (2026-10-04 08:20 work pass or the next consecutive
+pass thereafter) and gets ledger row 6 when it lands.
 
 DECISION beads are Josh's queue and are never executed by agents. Epics
 depend on their children; children never depend on epics.
