@@ -61,5 +61,24 @@ mission chat logs against `git log --merges` on `main` and
 - Zero broadcast-style messages (tips, promos, status noise) in the
   sample.
 
+## The pushed-summary log
+
+Every push under this contract appends one line to
+`state/notification-log.jsonl` in this repo:
+`{"ts": ..., "kind": "pr"|"bead"|"digest", "event_id": ..., "chat": ...}`.
+The log is append-only; the dedupe key above is the line's `event_id`.
+Without this log there is no citable sample to audit - chat scrollback
+alone does not count as evidence.
+
+## Running the proof
+
+`python3 scripts/notification-audit.py` (defaults: window
+2026-10-04..2026-10-10, log `state/notification-log.jsonl`) counts
+merges from `git log --merges` and closures from the bead store, then
+reports missing, duplicate, extra, and broadcast-style entries. Until
+the window has fully elapsed it reports `WINDOW_INCOMPLETE` and cannot
+PASS - a partial week is never presented as proof. Unit tests:
+`python3 scripts/test_notification_audit.py`.
+
 The audit is run by the independent verifier, not the contract's
 author, and its counts are commented on fr-i5u before closure.
