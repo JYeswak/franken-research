@@ -1,0 +1,32 @@
+{
+  "material": [
+    {
+      "kind": "release",
+      "repo": "alpha/project",
+      "tag": "v1.2.0",
+      "commit": "a1b2c3d4",
+      "published": "2026-10-04T08:15:00Z"
+    },
+    {
+      "kind": "commit",
+      "repo": "beta/lib",
+      "hash": "deadbeef",
+      "message": "Refactor core",
+      "timestamp": "2026-10-04T09:00:00Z"
+    },
+    {
+      "kind": "release",
+      "repo": "gamma/tool",
+      "tag": "v0.9.5",
+      "commit": "d4c3b2a1",
+      "published": "2026-10-04T07:45:00Z"
+    },
+    {
+      "kind": "release",
+      "repo": "delta/service",
+      "tag": "v3.0.1",
+      "commit": "ff00ff11",
+      "published": "2026-10-04T10:30:00Z"
+    }
+  ]
+}
