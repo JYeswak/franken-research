@@ -1,8 +1,6 @@
 ---
 name: Daily research candidate
 on:
-  schedule:
-    - cron: '43 12 * * *'
   workflow_dispatch:
   skip-if-match: 'is:pr is:open in:title "[research-candidate]"'
   github-token: ${{ secrets.GITHUB_TOKEN }}

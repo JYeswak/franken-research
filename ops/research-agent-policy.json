@@ -4,8 +4,8 @@
     "actions_commit": "924af5fdc64061cfbf66fb584c8b07e2ac230c60",
     "review_status": "reviewed",
     "files": {
-        ".github/workflows/research-candidate.md": "4a982362688c0f52a7a9b844ae7095a8ec9acfb3e9edcb75250117f17fe7f21d",
-        ".github/workflows/research-candidate.lock.yml": "db517c066a7ec4da50cfb9034b0a7e303bdf8c565331c1d95445d2223ccdb49f",
+        ".github/workflows/research-candidate.md": "5274d5e6237ee9103414de6808a122f841dbea8d4394f45290258490aaf1c51c",
+        ".github/workflows/research-candidate.lock.yml": "e38509ff85c27143594d80a72ce286b0044c48a367479e3a4fbee8160784ed9e",
         ".github/workflows/research-candidate-evaluate.yml": "da9fecdf3026fec201c40dbace4614c2fc7a90e38e1e077a38a7ad09e07a63a1",
         ".github/workflows/research-agent-tests.yml": "0c39186cd08f89d1bfbd61ad5dcdef37a4a0ed5f7c2733f66b10a0924de28dcf",
         "ops/research-agent-harden.py": "e787cf533eb38f29c7a4b56b0d2516225c43cc46520d077208f5061b03810e2d",
@@ -15,5 +15,5 @@
         "ops/research-agent-policy.mjs": "966b539c07a35f7847220f3b7f76f08d430b104d930622a2ec50d2b0ebf81b4d",
         "ops/test_research_agent.py": "f2ef0f181fecb4416e4405979acb82f526453b54171a9b4f9b2f98fc6bd5942f"
     },
-    "review_sha256": "292776cf25f36a1c38232ec208f874abeeae825d9ee3d5975b44b5ad28e35b1a"
+    "review_sha256": "70272f26393cc18b791581eb009d7c5d09904fd6b9985d231c20b55c39a1cbca"
 }

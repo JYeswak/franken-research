@@ -100,8 +100,11 @@ gh run list --workflow research-candidate-evaluate.yml -R JYeswak/franken-resear
 The first command requests a secret value privately; it is not needed when a
 working CODEX_API_KEY or OPENAI_API_KEY is already present. Inspect the agent run,
 its draft PR, then the evaluator's `candidate-evaluation-<exact SHA>` artifact.
-A missing/failed evaluator is not validation. The scheduled run is daily at
-12:43 UTC. To pause, disable the workflow in Actions; to resume after a candidate,
-review and merge or close its open draft. Do not merge merely because its own
+A missing/failed evaluator is not validation. The workflow is dispatch-only:
+the daily schedule trigger was removed 2026-10-03 (bead
+fr-ghaw-dispatch-only-spare-ocj, DECISION fr-decision-ghaw-sunset), so the lane
+runs only when manually dispatched and stands as a spare behind the local
+launchd nightly. To resume after a candidate, review and merge or close its
+open draft. Do not merge merely because its own
 authored tests reproduce. Accepted recipes still need source/outcome review and
 inclusion in the approved application catalog.
