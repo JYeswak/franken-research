@@ -9,6 +9,68 @@
         "TRL",
         "NODUS"
       ],
+      "after": "release v0.2.0 -> 2b3bfb6, published 2026-10-04T12:35:25Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_engine/releases/tag/v0.2.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_engine/releases/tags/v0.2.0",
+        "https://github.com/Dicklesworthstone/franken_engine/commit/2b3bfb6366ba1bd267ce92bad5466b1c105a91ee"
+      ],
+      "ident": "v0.2.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_engine",
+      "summary": "New GitHub release v0.2.0.",
+      "title": "[watch] franken_engine: release v0.2.0",
+      "value": "2b3bfb6366ba1bd267ce92bad5466b1c105a91ee"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.5.0 -> 8b6fdbf, published 2026-10-04T03:56:16Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/releases/tag/v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_manim/releases/tags/v0.5.0",
+        "https://github.com/Dicklesworthstone/franken_manim/commit/8b6fdbf0f23c84b8e811240f80350e3c17d4af47"
+      ],
+      "ident": "v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_manim",
+      "summary": "New GitHub release v0.5.0 (prerelease).",
+      "title": "[watch] franken_manim: release v0.5.0",
+      "value": "8b6fdbf0f23c84b8e811240f80350e3c17d4af47"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.2.0 -> 577591c (2026-10-04T13:17:13Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_node/tree/v0.2.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_node/git/ref/tags/v0.2.0"
+      ],
+      "ident": "v0.2.0",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_node",
+      "summary": "New tag v0.2.0 (no GitHub release for it at this check).",
+      "title": "[watch] franken_node: tag v0.2.0",
+      "value": "577591cf9a17ca65a6084242722b6feb28470797"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
       "after": "release v0.10.0 -> 08c15c0, published 2026-10-03T23:15:52Z",
       "before": "no such release",
       "evidence": [
@@ -23,6 +85,48 @@
       "summary": "New GitHub release v0.10.0.",
       "title": "[watch] franken_whisper: release v0.10.0",
       "value": "08c15c08168774c03af300dd755e8b26097253a0"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.0 -> fb9f16b, published 2026-10-04T02:00:38Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenmermaid/releases/tag/v0.3.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenmermaid/releases/tags/v0.3.0",
+        "https://github.com/Dicklesworthstone/frankenmermaid/commit/fb9f16b0232ee9c5b426e0dd91e6911e01ed986b"
+      ],
+      "ident": "v0.3.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenmermaid",
+      "summary": "New GitHub release v0.3.0.",
+      "title": "[watch] frankenmermaid: release v0.3.0",
+      "value": "fb9f16b0232ee9c5b426e0dd91e6911e01ed986b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.0 -> 9f845e7, published 2026-10-04T02:44:40Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenscipy/releases/tag/v0.3.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenscipy/releases/tags/v0.3.0",
+        "https://github.com/Dicklesworthstone/frankenscipy/commit/9f845e73479029ae29c86e11029035ca07fdfd68"
+      ],
+      "ident": "v0.3.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenscipy",
+      "summary": "New GitHub release v0.3.0.",
+      "title": "[watch] frankenscipy: release v0.3.0",
+      "value": "9f845e73479029ae29c86e11029035ca07fdfd68"
     },
     {
       "affects": [

@@ -22,7 +22,7 @@
     <updated>2026-10-04T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
     <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-10-04.tsv"/>
-    <summary type="text">38 of the 44 assessed repositories have commits after their pinned commit (9002 commits in all). 15 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-10-04.tsv.</summary>
+    <summary type="text">38 of the 44 assessed repositories have commits after their pinned commit (9046 commits in all). 20 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-10-04.tsv.</summary>
   </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:recheck/franken_markdown-2026-10-03</id>
