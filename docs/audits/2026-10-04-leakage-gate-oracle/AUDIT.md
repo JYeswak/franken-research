@@ -202,3 +202,83 @@ fixed, the temp copy already contains no `.git`.
    `grep -c sandbox_profile franken-nightly/ledger.jsonl` = 0 (F2 gap).
 3. Confirm the three fix beads exist with fr-6bv referenced, and that no
    code changed in this audit (report + probe only).
+
+## Repair addendum (2026-10-04, fr-6bv bounce fix)
+
+An independent verifier bounced the first implementation (750/1000,
+Partial): criterion 3 was half-met (no sandbox profile in the ledger) and
+criterion 2 was only partial (F1 holes still open). Both cited defects
+are now fixed in the driver (`franken-nightly`, canonical), and the
+evidence below was re-derived live on the Mac:
+
+### F1 fixed — deny-by-default seatbelt + env scrub (de9)
+
+`bin/sandbox-run.sh` now runs candidate code under a deny-by-default
+profile (network still denied; 60s watchdog unchanged). The child may
+read/write only the candidate temp tree (now under
+`/Users/josh/.cache/fr-tmp/franken-cand`, a constant base so the profile
+string — and therefore its sha — is constant), read the Python runtime
+trees (`/opt/homebrew`, `/usr`, `/System`, `/Library`, `/bin`, `/sbin`,
+`/etc`) and `/dev`. Two macOS quirks cost real debugging and are recorded
+here: dyld needs `(allow file-read* (literal "/"))`, and the scrubbed
+PATH must put `/opt/homebrew/bin` first or `python3` resolves to the
+`/usr/bin` Xcode shim, whose `libxcrun` load the sandbox correctly
+blocks. The seatbelt path now also scrubs the child environment
+(`env -i`, `HOME`/`TMPDIR` pointed at the temp dir), matching the
+fallback path. New profile sha256:
+`6415eb80012538d5a7031090cfb02129fb2ee07300a5bfa051de549d22552c67`,
+recorded in every `execution.json` exactly as before (fr-beu contract).
+
+Probe re-run (this directory's `probe.py`, executed under the new
+profile from a temp dir inside the allowed tree): every target DENIED —
+gate definitions, gate tests, expected hashes, grader and writer
+prompts, nightly ledger, other candidates, repo `.git/HEAD`, the harness
+itself, the router code, and `~/.ssh/id_ed25519` (checked both via the
+scrubbed `HOME` and by absolute path); `git log` rc=1 (denied); NETWORK
+DENIED; `ENV_KEYS` = only `HOME`, `LANG`, `PATH`, `TMPDIR`,
+`__CF_USER_TEXT_ENCODING` (no inherited tokens).
+
+No-regression proof: `bin/sandbox-run.sh` on the known-good candidate
+`probes/daily-candidates/2026-10-04-new-releases` reproduces the
+committed `execution.json` exactly on the deterministic fields
+(inputs hash, per-run exit + output hash; all 5 runs exit 0, network
+probe `denied`).
+
+### F2 fixed — ledger records the sandbox profile per run (0y0)
+
+`bin/run-nightly.py`: `run_sandbox()` stashes
+`sandbox_profile_sha256`, `isolation`, and the `network_probe` result
+from the harness-generated `execution.json` (never model output), and
+`ledger()` merges them into every subsequent ledger entry.
+`bin/replay-eval.py` appends a `mode: replay` ledger entry carrying the
+same three fields for every sandbox replay. Field-additive and
+append-only; no historical entries backfilled.
+
+Proof: replaying `2026-10-04-new-releases` appended
+`{"mode": "replay", "outcome": "sandbox-replay", "slug":
+"2026-10-04-new-releases", "sandbox_profile_sha256": "6415eb80…",
+"isolation": "seatbelt-no-network", "network_probe": "denied", …}` and
+`grep -c sandbox_profile franken-nightly/ledger.jsonl` went 0 → 1, with
+the sha matching the run's `execution.json`. Existing ledger consumers
+still run clean (`bin/check-noop-causes.py` rc=0; `test_noop_causes.py`,
+`test_evaluate_isolation.py`, `test_stage_budgets.py` all pass).
+
+One honest consequence: the Stage C judge prompt embeds the normalized
+`execution.json`, so its prompt hash now binds the new profile sha —
+replaying the pre-fix receipt reports `PROMPT_HASH_MISMATCH` (rc=3)
+after the sandbox stage passes. That is the receipt contract working as
+designed (a profile change is a grading-context change), not a
+regression; the sandbox comparison itself reproduces exactly.
+
+### Updated acceptance-criteria disposition
+
+- [x] Written audit report committed to the repo — this file plus this
+  addendum, with the re-runnable probe (`probe.py`).
+- [x] Every gate artifact either unreachable from the sandbox or
+  explicitly justified — now unreachable under the deny-by-default
+  profile (probe above); F3's writer-authored test oracle remains
+  justified by design, with its improvement bead still filed.
+- [x] Network rules stated and logged per run (argv + profile + ledger
+  entry) — stated in `sandbox-run.sh`, logged per run in
+  `execution.json` (argv + profile + sha + probe), and now present in
+  `ledger.jsonl` for sandbox-backed entries.
