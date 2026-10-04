@@ -229,21 +229,31 @@ noops the nightly discarded (driver detail: franken-nightly
 2. **Re-grade + triage** — each pending sampled noop is re-graded
    independently (replay via `bin/replay-eval.py` where a committed
    candidate exists, else the ledger verdict / gate receipt) and
-   MUST carry exactly one triage label before the pass ends:
+   MUST carry exactly one disposition before the pass ends:
    `model-error` (candidate defective, reject correct),
    `grader-error` (candidate sound, evaluator/gate wrong — a false
-   reject), or `task-error` (task ill-posed, reject correct).
+   reject), `task-error` (task ill-posed, reject correct), or
+   `ungradeable` (no candidate, verdict, gate receipt, or worktree
+   survives to re-grade against — requires a rationale naming the
+   missing artifacts; excluded from the false-reject denominator
+   and reported separately). Never assign model/grader/task to
+   cover a missing artifact.
    `noop_regrade.py check` exits 1 while any sampled noop is
-   untriaged. A `grader-error` finding files a bead the same pass
+   undisposed. A `grader-error` finding files a bead the same pass
    (gate fix or judge note); a label that changes nothing is a
    failed re-grade.
 3. **Morning panel** — the weekly false-reject rate
-   (`grader-error / triaged`, trailing 7 days) is published by
+   (`grader-error / triaged`, trailing 7 days, ungradeable excluded
+   from the denominator) is published by
    `bin/morning_digest.py` on the morning digest alongside the
    night's merge outcome (`false_reject_rate_weekly`, JSON twin
    `noop_regrade_weekly`), and the morning DAG report records the
    same line verbatim from
    `noop_regrade.py report --markdown`. The first lane run
    (2026-10-04) sampled 5 historical noops, triaged 3 as
-   `model-error` (0.0% weekly false-reject rate), 2 gate-red
-   records pending artifact-free triage by the verify pass.
+   `model-error` (0.0% weekly false-reject rate); the 2 remaining
+   gate-red records (2026-10-02-top-repo-list,
+   2026-10-03-aggregate-agent-signals) were formally marked
+   `ungradeable` in the fr-xwc repair pass — ledger-only backfill
+   stubs with no surviving candidate/verdict/receipt — so
+   `noop_regrade.py check` exits 0 with 0 pending.
