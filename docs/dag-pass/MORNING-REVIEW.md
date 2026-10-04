@@ -28,15 +28,69 @@ moved - and the stale references were corrected on 2026-10-03 under fr-xuh.
 
 ## The pass
 
+0. **Pre-pass bead-state check (sync owner, see Bead-state sync below).**
+   In the main checkout, run `git status --short -- .beads/` and record
+   the exact output in the pass report. If `.beads/` is dirty at pass
+   start, the sync owner flushes and commits it (or records why the
+   dirty state is intentional) before any other step runs — no pass
+   starts on bead state git does not have.
 1. **Step zero — morning skill-library review (this document).**
 2. Claim the top ready non-DECISION, non-epic bead (`bv --robot-next`,
-   never bare `bv`; all `br` queries with `--json`).
+   never bare `bv`; all `br` queries with `--json`). Immediately after
+   the claim batch, the sync owner flushes and commits `.beads/` so the
+   claim is in git before worktree work begins.
 3. Implement in an isolated worktree; the implementer never closes
    their own work.
 4. Independent verification pass (a different agent) closes or bounces.
+   After any close/bounce batch, the sync owner flushes and commits
+   `.beads/` again.
 5. End clean: no scratch dirs, no staged leftovers, `.beads/` flushed
    and committed (`br sync --flush-only`, then manual `git add .beads/`
-   and a commit carrying the repo verification token).
+   and a commit carrying the repo verification token). The sync owner
+   re-runs `git status --short -- .beads/` at pass end and records the
+   output in the pass report; the pass is not done while that output is
+   non-empty and unexplained.
+
+## Bead-state sync (fr-lud)
+
+**Sync owner: the agent running the pass.** For the 08:20 work pass the
+owner is the `franken-dag-work` session; for the 16:20 verify pass, the
+`franken-dag-verify` session; for any ad-hoc burn-down wave, the wave
+coordinator. The owner is named in every pass report. Only the sync
+owner commits `.beads/` (always in the main checkout — bead commands
+never run inside a worktree), which serializes bead-state commits when
+agents work in parallel. Workers and sub-agents mutate bead state only
+through `br` and hand the flush/commit to the owner; whoever makes the
+last bead mutation before a handoff tells the owner, and the owner is
+accountable for the commit landing in the same pass regardless.
+
+**Cadence — the owner flushes and commits `.beads/` three times in
+every pass:** (1) after the claim batch, before worktree work starts;
+(2) after any evidence-comment / close / bounce batch; (3) at pass end.
+Each flush is the operator ritual: `br sync --flush-only`, then
+`git add .beads/`, then a commit whose subject carries the repo
+verification token. `br` never runs git and `issues.jsonl` is never
+hand-edited.
+
+**Checks.** `git status --short -- .beads/` runs at pass start (step 0)
+and at pass end (step 5); both outputs are recorded verbatim in the
+pass report's Bead-state sync block (see Output below), with the
+resulting beads commit hash when a commit was needed. A dirty pass end
+is explained and committed within the same pass, or the pass reports
+itself incomplete — a later pass never inherits silent bead debt.
+
+### Sync ledger
+
+Consecutive passes with `.beads/` clean at pass end. Rows before the
+fr-lud rule are git-evidenced only (pass end = the pass's beads
+commit; start status was not recorded then).
+
+| # | Pass (America/Denver) | Sync owner | Start `.beads/` | End `.beads/` | Beads commit |
+|---|------------------------|------------|------------------|----------------|--------------|
+| 1 | 2026-10-03 fr-landscape-rigor close wave | wave coordinator | not recorded (pre-rule) | clean | `66890e7` |
+| 2 | 2026-10-03 fr-6hs implement + verify waves | wave coordinator | not recorded (pre-rule) | clean | `e1989cf`, `17a458b` |
+| 3 | 2026-10-03 fr-xuh verify/close wave | wave coordinator | not recorded (pre-rule) | clean | `a34bb28` |
+| 4 | 2026-10-03 fr-lud implementation pass (first under this rule) | implementing agent (this pass) | ` M .beads/issues.jsonl` (fr-lud claim, 2026-10-03 18:15 MDT) | clean — recorded in the fr-lud evidence comment on the bead | see fr-lud evidence comment |
 
 DECISION beads are Josh's queue and are never executed by agents. Epics
 depend on their children; children never depend on epics.
@@ -87,6 +141,11 @@ Each morning produces one report at
    fr-m4x). The report names each bead id.
 3. **Streak line** — consecutive mornings with a report, day N of 7
    toward the fr-m4x acceptance streak.
+4. **Bead-state sync block (fr-lud)** — sync owner (session/role),
+   the verbatim `git status --short -- .beads/` output at pass start
+   and at pass end, and the beads commit hash for any flush commit
+   made during the pass. The pass end output must be empty, or the
+   dirty state is explained and its commit named in the same block.
 
 ### Rules
 
