@@ -1,0 +1,529 @@
+{
+  "schema": "franken-research/judge-calibration-set@1",
+  "bead": "fr-o8i",
+  "frozen": true,
+  "judge_version_pin": {
+    "judge": "stage-c-evaluator",
+    "prompt": "prompts/evaluate.md (franken-nightly)",
+    "decoding": {
+      "temperature": 0,
+      "max_tokens": 16000
+    },
+    "version_derivation": "scripts/judge-calibration.py judge_version() hashes prompt+rubric+decoding so any change bumps the version and invalidates calibration"
+  },
+  "label_rubric": "Label = verdict derived by evaluate.md deterministic rules 1-4 (green iff reproduced AND fair_baseline AND no blocking issues; else revise, with reject folded into revise - no rejects in the historical record).",
+  "items": [
+    {
+      "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-102641",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-eval-20261003-102641.json",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 1,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "revise",
+      "label": "revise",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'revise' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-103401",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-eval-20261003-103401.json",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 1
+      },
+      "raw_judge_verdict": "green",
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "Edge case: raw judge emitted 'green' but evaluate.md rules 1-4 derive 'revise' (reproduced=True, fair_baseline=False, blocking=0). The harness canonicalization (evaluate.py canonicalize_verdict) re-derives the verdict, so an inconsistent raw verdict is a labelling trap for calibration."
+    },
+    {
+      "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-105040",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-eval-20261003-105040.json",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "Edge case: raw judge emitted 'green' but evaluate.md rules 1-4 derive 'revise' (reproduced=True, fair_baseline=False, blocking=0). The harness canonicalization (evaluate.py canonicalize_verdict) re-derives the verdict, so an inconsistent raw verdict is a labelling trap for calibration."
+    },
+    {
+      "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-120049",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-eval-20261003-120049.json",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "nvidia/z-ai/glm-5.3-flash",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 6
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "replay-2026-10-02-top-agent-repos-replay-20261003-104042",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-104042.json (replayed_verdict)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 1,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "revise",
+      "label": "revise",
+      "category": "standard",
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=False."
+    },
+    {
+      "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-104042",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-104042.json (expected_decision)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+    },
+    {
+      "id": "replay-2026-10-02-top-agent-repos-replay-20261003-105719",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-105719.json (replayed_verdict)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 1
+      },
+      "raw_judge_verdict": "green",
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=False."
+    },
+    {
+      "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-105719",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-105719.json (expected_decision)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+    },
+    {
+      "id": "replay-2026-10-02-top-agent-repos-replay-20261003-120747",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-120747.json (replayed_verdict)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True."
+    },
+    {
+      "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-120747",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-120747.json (expected_decision)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+    },
+    {
+      "id": "replay-2026-10-02-top-agent-repos-replay-20261003-124104",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-124104.json (replayed_verdict)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True."
+    },
+    {
+      "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-124104",
+      "source": "franken-nightly/receipts/2026-10-02-top-agent-repos-replay-20261003-124104.json (expected_decision)",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+    },
+    {
+      "id": "rcpt-2026-10-03-2026-10-03-seeded-word-sort-cw-stage-C-r1",
+      "source": "franken-nightly/receipts/2026-10-03-2026-10-03-seeded-word-sort-cw-stage-C-r1.json",
+      "candidate": null,
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "rcpt-2026-10-03-2026-10-03-seeded-word-sort-mf-stage-C-r1",
+      "source": "franken-nightly/receipts/2026-10-03-2026-10-03-seeded-word-sort-mf-stage-C-r1.json",
+      "candidate": null,
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "rcpt-2026-10-03-2026-10-03-seeded-word-sort-stage-C-r1",
+      "source": "franken-nightly/receipts/2026-10-03-2026-10-03-seeded-word-sort-stage-C-r1.json",
+      "candidate": null,
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "rcpt-2026-10-03-seeded-word-sort-eval-20261003-121534",
+      "source": "franken-nightly/receipts/2026-10-03-seeded-word-sort-eval-20261003-121534.json",
+      "candidate": "2026-10-03-seeded-word-sort",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "rcpt-2026-10-03-seeded-word-sort-regrade-fr-ugw-20261003",
+      "source": "franken-nightly/receipts/2026-10-03-seeded-word-sort-regrade-fr-ugw-20261003.json",
+      "candidate": "2026-10-03-seeded-word-sort",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "replay-2026-10-03-seeded-word-sort-replay-20261003-122309",
+      "source": "franken-nightly/receipts/2026-10-03-seeded-word-sort-replay-20261003-122309.json (replayed_verdict)",
+      "candidate": "2026-10-03-seeded-word-sort",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True."
+    },
+    {
+      "id": "replayexp-2026-10-03-seeded-word-sort-replay-20261003-122309",
+      "source": "franken-nightly/receipts/2026-10-03-seeded-word-sort-replay-20261003-122309.json (expected_decision)",
+      "candidate": "2026-10-03-seeded-word-sort",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+    },
+    {
+      "id": "rcpt-2026-10-04-2026-10-04-new-releases-stage-C-r1",
+      "source": "franken-nightly/receipts/2026-10-04-2026-10-04-new-releases-stage-C-r1.json",
+      "candidate": null,
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+    },
+    {
+      "id": "ledger-01-2026-10-02-py-reachability-gate",
+      "source": "franken-nightly/ledger.jsonl line 1",
+      "candidate": "2026-10-02-py-reachability-gate",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": false,
+        "fair_baseline": false,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "revise",
+      "label": "revise",
+      "category": "standard",
+      "label_rationale": "Stage C verdict recorded in the nightly ledger with its evidence fields; outcome was NO PR (candidate not green)."
+    },
+    {
+      "id": "ledger-04-2026-10-02-discovery-filter",
+      "source": "franken-nightly/ledger.jsonl line 4",
+      "candidate": "2026-10-02-discovery-filter",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+    },
+    {
+      "id": "ledger-06-2026-10-02-top-agent-repos",
+      "source": "franken-nightly/ledger.jsonl line 6",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Merged PR; human-completed manual merge after a green evaluator verdict (PR #20). Label is the merged, human-accepted green."
+    },
+    {
+      "id": "ledger-11-2026-10-03-seeded-word-sort",
+      "source": "franken-nightly/ledger.jsonl line 11",
+      "candidate": "2026-10-03-seeded-word-sort",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+    },
+    {
+      "id": "ledger-12-2026-10-03-seeded-word-sort",
+      "source": "franken-nightly/ledger.jsonl line 12",
+      "candidate": "2026-10-03-seeded-word-sort",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+    },
+    {
+      "id": "ledger-13-2026-10-03-seeded-word-sort-mf",
+      "source": "franken-nightly/ledger.jsonl line 13",
+      "candidate": "2026-10-03-seeded-word-sort-mf",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+    },
+    {
+      "id": "ledger-17-2026-10-03-seeded-word-sort-cw",
+      "source": "franken-nightly/ledger.jsonl line 17",
+      "candidate": "2026-10-03-seeded-word-sort-cw",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+    },
+    {
+      "id": "ledger-18-2026-10-04-new-releases",
+      "source": "franken-nightly/ledger.jsonl line 18",
+      "candidate": "2026-10-04-new-releases",
+      "judged_by_lane": "fleet/bulk-tier",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": "green",
+      "label": "green",
+      "category": "standard",
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+    },
+    {
+      "id": "edge-2026-10-02-top-agent-repos-strawman-blocking",
+      "source": "franken-nightly/receipts (variant of 2026-10-02-top-agent-repos-eval-20261003-102641) + evaluate.md deterministic rules",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": false,
+        "blocking_issue_count": 1,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": null,
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "Grader-bug class: an evaluator once called this baseline a strawman. Under evaluate.md rule 2, a baseline defined in recipe.md as the manual approach is judged as defined; blocking must be concrete. The durable lesson (the 2026-10-02 misgrade) is pinned here as a blocking revise."
+    },
+    {
+      "id": "edge-2026-10-02-top-agent-repos-fair-only-non-blocking",
+      "source": "franken-nightly/receipts (variant of 2026-10-02-top-agent-repos-eval-20261003-102641) + evaluate.md deterministic rules",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": true,
+        "fair_baseline": true,
+        "blocking_issue_count": 0,
+        "non_blocking_count": 1
+      },
+      "raw_judge_verdict": null,
+      "label": "green",
+      "category": "edge",
+      "label_rationale": "A stronger imaginable comparator belongs in non_blocking, never blocking (evaluate.md rule 2/3); with no blocking issues the verdict is green. Trap for judges that inflate notes into blockers."
+    },
+    {
+      "id": "edge-2026-10-02-py-reachability-not-reproduced",
+      "source": "franken-nightly/receipts (variant of 2026-10-02-top-agent-repos-eval-20261003-102641) + evaluate.md deterministic rules",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": false,
+        "fair_baseline": false,
+        "blocking_issue_count": 2,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": null,
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "The 2026-10-02 dry-run candidate: cross-module name leakage + non-top-level reporting, test exit 1. Not reproduced, so it can never be green (evaluate.md rule 1/4)."
+    },
+    {
+      "id": "edge-2026-10-02-py-reachability-test-only-fail",
+      "source": "franken-nightly/receipts (variant of 2026-10-02-top-agent-repos-eval-20261003-102641) + evaluate.md deterministic rules",
+      "candidate": "2026-10-02-top-agent-repos",
+      "judged_by_lane": "groq/openai/gpt-oss-20b",
+      "features": {
+        "reproduced": false,
+        "fair_baseline": true,
+        "blocking_issue_count": 1,
+        "non_blocking_count": 0
+      },
+      "raw_judge_verdict": null,
+      "label": "revise",
+      "category": "edge",
+      "label_rationale": "Minimal non-green variant: only the reproduction fact fails. Rule 1 makes reproduced a machine fact; a judge may not green an unreproduced candidate on plausibility."
+    }
+  ]
+}

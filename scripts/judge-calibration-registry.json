@@ -1,0 +1,27 @@
+{
+  "schema": "franken-research/judge-calibration-registry@1",
+  "bead": "fr-o8i",
+  "judge_version": "judge-v1-0fbecf6a7c05",
+  "prediction_kind": "deterministic-rules (evaluate.md rules 1-4)",
+  "frozen_set": "judge-calibration-set.json",
+  "lanes": {
+    "offline/deterministic-rules": {
+      "lane": "frozen-set",
+      "n": 32,
+      "agreement": 1.0,
+      "kappa": 1.0,
+      "bar": 0.6,
+      "passes_bar": true,
+      "precision": {
+        "green": 1.0,
+        "revise": 1.0
+      },
+      "recall": {
+        "green": 1.0,
+        "revise": 1.0
+      },
+      "judge_version": "judge-v1-0fbecf6a7c05",
+      "prediction_kind": "deterministic-rules (evaluate.md rules 1-4)"
+    }
+  }
+}
