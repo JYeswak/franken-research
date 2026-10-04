@@ -34,6 +34,15 @@ moved - and the stale references were corrected on 2026-10-03 under fr-xuh.
    start, the sync owner flushes and commits it (or records why the
    dirty state is intentional) before any other step runs — no pass
    starts on bead state git does not have.
+   Then the ff-only main sync (fr-6i1): `git fetch origin`; record
+   ahead/behind counts (`git rev-list --left-right --count
+   main...origin/main`) in the pass report's Bead-state sync block.
+   When the tree is clean and local main is strictly behind
+   origin/main, `git merge --ff-only origin/main` so every worktree
+   branches from current main (the 06:20 nightly merges from its
+   Stage D worktree and never advances this checkout). When diverged
+   or dirty: STOP the pass and report the state — never a merge
+   commit, never a silent stash.
 1. **Step zero — morning skill-library review (this document).**
 2. Claim the top ready non-DECISION, non-epic bead (`bv --robot-next`,
    never bare `bv`; all `br` queries with `--json`). Immediately after
