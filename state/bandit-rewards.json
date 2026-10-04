@@ -1,0 +1,46 @@
+{
+  "families": {
+    "new-releases": {
+      "citation": 0,
+      "import": 0,
+      "merged": 1,
+      "re-run": 0,
+      "revert": 0,
+      "reward": 0.0
+    },
+    "seeded-word-sort": {
+      "citation": 0,
+      "import": 0,
+      "merged": 1,
+      "re-run": 0,
+      "revert": 0,
+      "reward": 0.0
+    },
+    "seeded-word-sort-cw": {
+      "citation": 0,
+      "import": 0,
+      "merged": 1,
+      "re-run": 0,
+      "revert": 0,
+      "reward": 0.0
+    },
+    "seeded-word-sort-mf": {
+      "citation": 0,
+      "import": 0,
+      "merged": 1,
+      "re-run": 0,
+      "revert": 0,
+      "reward": 0.0
+    },
+    "top-agent-repos": {
+      "citation": 0,
+      "import": 0,
+      "merged": 1,
+      "re-run": 0,
+      "revert": 0,
+      "reward": 0.0
+    }
+  },
+  "generated_at": "2026-10-04T18:00:00+00:00",
+  "window_days": 30
+}
