@@ -3,12 +3,12 @@
     "asupersync": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 703,
+      "commits_since_pin": 739,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "7564bd9652b8f33aef3a2c5c0fd32b00945b88c4",
-      "head_date": "2026-10-03T14:02:50Z",
+      "head": "2c6b91a8591aecf7e2de908fe322fb294fa035bd",
+      "head_date": "2026-10-03T22:50:01Z",
       "id": 1135442827,
       "license_changed_since_pin": false,
       "license_files": [
@@ -762,12 +762,12 @@
     "franken_engine": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 517,
+      "commits_since_pin": 521,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d2e15a52d9dd27a739e94458312ee9514ae550b2",
-      "head_date": "2026-10-03T11:20:06Z",
+      "head": "893ac6a104a9b44835b69b1dff08a94c5eecd941",
+      "head_date": "2026-10-03T21:42:06Z",
       "id": 1161313144,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2579,12 +2579,12 @@
     "franken_whisper": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 6,
+      "commits_since_pin": 7,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "08c15c08168774c03af300dd755e8b26097253a0",
-      "head_date": "2026-10-03T16:16:44Z",
+      "head": "9bf4d9e1be8a667fa12be96259bf9debe407ffbe",
+      "head_date": "2026-10-03T23:50:37Z",
       "id": 1164301692,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2619,6 +2619,13 @@
           "prerelease": false,
           "published_at": "2026-03-04T07:14:46Z",
           "target": "6a51618d0da9b69421f4bc1b7deccb1780b0b558"
+        },
+        "v0.10.0": {
+          "assets": 19,
+          "created_at": "2026-10-03T16:16:44Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T23:15:52Z",
+          "target": "08c15c08168774c03af300dd755e8b26097253a0"
         },
         "v0.2.0": {
           "assets": 6,
@@ -2713,7 +2720,14 @@
         }
       },
       "repo": "franken_whisper",
-      "since_pin": [],
+      "since_pin": [
+        {
+          "date": "2026-10-03T23:15:52Z",
+          "kind": "release",
+          "name": "v0.10.0",
+          "target": "08c15c08168774c03af300dd755e8b26097253a0"
+        }
+      ],
       "tags": {
         "sortformer-v2.1-f32-v1": {
           "date": "2026-08-08T01:24:01Z",
@@ -2722,6 +2736,10 @@
         "v0.1.0": {
           "date": "2026-03-04T07:03:13Z",
           "target": "6a51618d0da9b69421f4bc1b7deccb1780b0b558"
+        },
+        "v0.10.0": {
+          "date": "2026-10-03T16:16:44Z",
+          "target": "08c15c08168774c03af300dd755e8b26097253a0"
         },
         "v0.2.0": {
           "date": "2026-06-05T18:13:50Z",
@@ -4456,12 +4474,12 @@
     "frankensearch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 385,
+      "commits_since_pin": 389,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "4a8d5774517df5609178f595d83b6360ef1e0686",
-      "head_date": "2026-10-03T00:41:06Z",
+      "head": "c7ee3196a20e2a644913a8087f658d7af5c6bae1",
+      "head_date": "2026-10-03T23:26:37Z",
       "id": 1157453895,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4496,6 +4514,13 @@
           "prerelease": false,
           "published_at": "2026-09-08T21:13:03Z",
           "target": "9c5d8867cbbc7edf696a24410a86af08402fc468"
+        },
+        "crates-v0.7.1": {
+          "assets": 2,
+          "created_at": "2026-10-03T19:31:47Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T23:14:18Z",
+          "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
         },
         "v0.1.0": {
           "assets": 10,
@@ -4552,6 +4577,13 @@
           "prerelease": false,
           "published_at": "2026-09-08T19:36:49Z",
           "target": "9c5d8867cbbc7edf696a24410a86af08402fc468"
+        },
+        "v1.12.1": {
+          "assets": 50,
+          "created_at": "2026-10-03T19:31:47Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T22:57:35Z",
+          "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
         },
         "v1.2.0": {
           "assets": 26,
@@ -4671,6 +4703,30 @@
           "kind": "tag",
           "name": "frankensearch-quill-v0.3.4",
           "target": "5651e2c6ad959086aaf2f175b3ba3270a71f0b83"
+        },
+        {
+          "date": "2026-10-03T18:07:24Z",
+          "kind": "tag",
+          "name": "crates-v0.7.0",
+          "target": "fd3c976e95077d1a69f75a489e57d90922d10b3d"
+        },
+        {
+          "date": "2026-10-03T18:07:24Z",
+          "kind": "tag",
+          "name": "v1.12.0",
+          "target": "fd3c976e95077d1a69f75a489e57d90922d10b3d"
+        },
+        {
+          "date": "2026-10-03T22:57:35Z",
+          "kind": "release",
+          "name": "v1.12.1",
+          "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+        },
+        {
+          "date": "2026-10-03T23:14:18Z",
+          "kind": "release",
+          "name": "crates-v0.7.1",
+          "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
         }
       ],
       "tags": {
@@ -4689,6 +4745,14 @@
         "crates-v0.5.0": {
           "date": "2026-09-08T03:14:29Z",
           "target": "9c5d8867cbbc7edf696a24410a86af08402fc468"
+        },
+        "crates-v0.7.0": {
+          "date": "2026-10-03T18:07:24Z",
+          "target": "fd3c976e95077d1a69f75a489e57d90922d10b3d"
+        },
+        "crates-v0.7.1": {
+          "date": "2026-10-03T19:31:47Z",
+          "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
         },
         "frankensearch-quill-v0.3.2": {
           "date": "2026-09-24T20:13:45Z",
@@ -4753,6 +4817,14 @@
         "v1.10.0": {
           "date": "2026-09-08T03:14:29Z",
           "target": "9c5d8867cbbc7edf696a24410a86af08402fc468"
+        },
+        "v1.12.0": {
+          "date": "2026-10-03T18:07:24Z",
+          "target": "fd3c976e95077d1a69f75a489e57d90922d10b3d"
+        },
+        "v1.12.1": {
+          "date": "2026-10-03T19:31:47Z",
+          "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
         },
         "v1.2.0": {
           "date": "2026-04-07T20:36:50Z",
@@ -5111,6 +5183,13 @@
           "prerelease": false,
           "published_at": "2026-09-29T18:53:13Z",
           "target": "347c965adc94e6e704e2f349f23178b9e85b18f7"
+        },
+        "v0.4.9": {
+          "assets": 17,
+          "created_at": "2026-10-03T19:33:02Z",
+          "prerelease": false,
+          "published_at": "2026-10-03T21:10:00Z",
+          "target": "1eacdbe0d4bd1d864b106c096c904d2a3933ab46"
         }
       },
       "repo": "frankensqlite",
@@ -5144,6 +5223,12 @@
           "kind": "tag",
           "name": "v0.4.8",
           "target": "34197f0f564ba84d892eead05c7b12c26bf72506"
+        },
+        {
+          "date": "2026-10-03T21:10:00Z",
+          "kind": "release",
+          "name": "v0.4.9",
+          "target": "1eacdbe0d4bd1d864b106c096c904d2a3933ab46"
         }
       ],
       "tags": {
@@ -5346,6 +5431,10 @@
         "v0.4.8": {
           "date": "2026-10-02T19:50:43Z",
           "target": "34197f0f564ba84d892eead05c7b12c26bf72506"
+        },
+        "v0.4.9": {
+          "date": "2026-10-03T19:33:02Z",
+          "target": "1eacdbe0d4bd1d864b106c096c904d2a3933ab46"
         }
       },
       "workflows": [
@@ -6796,7 +6885,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-10-03T17:00:14Z",
+  "checked_at": "2026-10-04T00:23:40Z",
   "discovery": [
     {
       "archived": false,
@@ -6886,7 +6975,7 @@
       "id": 1119883856,
       "language": "Shell",
       "name": "agentic_coding_flywheel_setup",
-      "pushed_at": "2026-10-03T08:42:14Z"
+      "pushed_at": "2026-10-03T23:01:11Z"
     },
     {
       "archived": false,
@@ -6936,7 +7025,7 @@
       "id": 1135442827,
       "language": "Rust",
       "name": "asupersync",
-      "pushed_at": "2026-10-03T14:02:57Z"
+      "pushed_at": "2026-10-03T22:50:17Z"
     },
     {
       "archived": false,
@@ -7586,7 +7675,7 @@
       "id": 1161313144,
       "language": "Rust",
       "name": "franken_engine",
-      "pushed_at": "2026-10-03T11:20:09Z"
+      "pushed_at": "2026-10-03T21:42:09Z"
     },
     {
       "archived": false,
@@ -7756,7 +7845,7 @@
       "id": 1164301692,
       "language": "Rust",
       "name": "franken_whisper",
-      "pushed_at": "2026-10-03T16:28:48Z"
+      "pushed_at": "2026-10-03T23:50:54Z"
     },
     {
       "archived": false,
@@ -7856,7 +7945,7 @@
       "id": 1157453895,
       "language": "Rust",
       "name": "frankensearch",
-      "pushed_at": "2026-10-03T00:41:17Z"
+      "pushed_at": "2026-10-03T23:26:48Z"
     },
     {
       "archived": false,
@@ -7886,7 +7975,7 @@
       "id": 1151908597,
       "language": "Rust",
       "name": "frankensqlite",
-      "pushed_at": "2026-10-03T15:10:02Z"
+      "pushed_at": "2026-10-03T19:33:08Z"
     },
     {
       "archived": false,
@@ -8076,7 +8165,7 @@
       "id": 1113976259,
       "language": "Shell",
       "name": "homebrew-tap",
-      "pushed_at": "2026-10-03T04:02:11Z"
+      "pushed_at": "2026-10-03T23:19:36Z"
     },
     {
       "archived": false,
@@ -8636,7 +8725,7 @@
       "id": 1113976280,
       "language": "Shell",
       "name": "scoop-bucket",
-      "pushed_at": "2026-10-02T18:16:33Z"
+      "pushed_at": "2026-10-03T23:00:16Z"
     },
     {
       "archived": false,
@@ -8806,7 +8895,7 @@
       "id": 1137823150,
       "language": "Rust",
       "name": "toon_rust",
-      "pushed_at": "2026-09-28T19:50:09Z"
+      "pushed_at": "2026-10-03T22:04:11Z"
     },
     {
       "archived": false,
@@ -18442,6 +18531,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-10-03T15:30:43Z",
+  "previous_checked_at": "2026-10-03T17:00:14Z",
   "schema": 1
 }

@@ -1,0 +1,132 @@
+{
+  "baseline": false,
+  "date": "2026-10-04",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.10.0 -> 08c15c0, published 2026-10-03T23:15:52Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_whisper/releases/tag/v0.10.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_whisper/releases/tags/v0.10.0",
+        "https://github.com/Dicklesworthstone/franken_whisper/commit/08c15c08168774c03af300dd755e8b26097253a0"
+      ],
+      "ident": "v0.10.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_whisper",
+      "summary": "New GitHub release v0.10.0.",
+      "title": "[watch] franken_whisper: release v0.10.0",
+      "value": "08c15c08168774c03af300dd755e8b26097253a0"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release crates-v0.7.1 -> d1cb86e, published 2026-10-03T23:14:18Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/releases/tag/crates-v0.7.1",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/releases/tags/crates-v0.7.1",
+        "https://github.com/Dicklesworthstone/frankensearch/commit/d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+      ],
+      "ident": "crates-v0.7.1",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New GitHub release crates-v0.7.1.",
+      "title": "[watch] frankensearch: release crates-v0.7.1",
+      "value": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v1.12.1 -> d1cb86e, published 2026-10-03T22:57:35Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/releases/tag/v1.12.1",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/releases/tags/v1.12.1",
+        "https://github.com/Dicklesworthstone/frankensearch/commit/d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+      ],
+      "ident": "v1.12.1",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New GitHub release v1.12.1.",
+      "title": "[watch] frankensearch: release v1.12.1",
+      "value": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag crates-v0.7.0 -> fd3c976 (2026-10-03T18:07:24Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/crates-v0.7.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/crates-v0.7.0"
+      ],
+      "ident": "crates-v0.7.0",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag crates-v0.7.0 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag crates-v0.7.0",
+      "value": "fd3c976e95077d1a69f75a489e57d90922d10b3d"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v1.12.0 -> fd3c976 (2026-10-03T18:07:24Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/v1.12.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/v1.12.0"
+      ],
+      "ident": "v1.12.0",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag v1.12.0 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag v1.12.0",
+      "value": "fd3c976e95077d1a69f75a489e57d90922d10b3d"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.9 -> 1eacdbe, published 2026-10-03T21:10:00Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/releases/tag/v0.4.9",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/releases/tags/v0.4.9",
+        "https://github.com/Dicklesworthstone/frankensqlite/commit/1eacdbe0d4bd1d864b106c096c904d2a3933ab46"
+      ],
+      "ident": "v0.4.9",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New GitHub release v0.4.9.",
+      "title": "[watch] frankensqlite: release v0.4.9",
+      "value": "1eacdbe0d4bd1d864b106c096c904d2a3933ab46"
+    }
+  ],
+  "since": "2026-10-03T17:00:14Z"
+}

@@ -5,9 +5,25 @@
   <id>tag:fr.zeststream.ai,2026:feed</id>
   <link rel="self" type="application/atom+xml" href="https://fr.zeststream.ai/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/"/>
-  <updated>2026-10-03T00:00:00Z</updated>
+  <updated>2026-10-04T00:00:00Z</updated>
   <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
   <icon>https://fr.zeststream.ai/favicon.svg</icon>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:digest/2026-W40</id>
+    <title>Watch digest 2026-W40: 4 crossings opened, 0 resolved, 1 withdrawn</title>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/plain" href="https://github.com/JYeswak/franken-research/blob/main/watch/crossings.jsonl"/>
+    <summary type="text">Opened: franken_node CI C2 → C1 (2026-10-01, class); frankenscipy CI C1 → C2 (2026-10-01, class); frankenfs CI C2 → C1 (2026-10-02, class); franken_numpy CI C2 → C1 (2026-10-04, class). Withdrawn: franken_node CI returned to C2 after moving to C1 (2026-10-02). A crossing is a computed class, or the repository itself, moving since the pin. It is a flag, not a verdict: only a dated re-check changes a verdict. A withdrawn crossing moved back to its baseline class for two daily checks, so it needs no re-check. Source: watch/crossings.jsonl.</summary>
+  </entry>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:census/2026-10-04</id>
+    <title>Daily census: 38 of 44 moved since the pin</title>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-10-04.tsv"/>
+    <summary type="text">38 of the 44 assessed repositories have commits after their pinned commit (9002 commits in all). 15 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-10-04.tsv.</summary>
+  </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:recheck/franken_markdown-2026-10-03</id>
     <title>franken_markdown: re-check after v0.5.0 (addendum, 2026-10-03)</title>
@@ -23,14 +39,6 @@
     <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
     <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-10-03.tsv"/>
     <summary type="text">38 of the 44 assessed repositories have commits after their pinned commit (8957 commits in all). 14 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-10-03.tsv.</summary>
-  </entry>
-  <entry>
-    <id>tag:fr.zeststream.ai,2026:digest/2026-W40</id>
-    <title>Watch digest 2026-W40: 3 crossings opened, 0 resolved, 1 withdrawn</title>
-    <updated>2026-10-02T00:00:00Z</updated>
-    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
-    <link rel="related" type="text/plain" href="https://github.com/JYeswak/franken-research/blob/main/watch/crossings.jsonl"/>
-    <summary type="text">Opened: franken_node CI C2 → C1 (2026-10-01, class); frankenscipy CI C1 → C2 (2026-10-01, class); frankenfs CI C2 → C1 (2026-10-02, class). Withdrawn: franken_node CI returned to C2 after moving to C1 (2026-10-02). A crossing is a computed class, or the repository itself, moving since the pin. It is a flag, not a verdict: only a dated re-check changes a verdict. A withdrawn crossing moved back to its baseline class for two daily checks, so it needs no re-check. Source: watch/crossings.jsonl.</summary>
   </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:census/2026-10-02</id>
