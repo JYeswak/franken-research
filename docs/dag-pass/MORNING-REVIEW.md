@@ -213,6 +213,13 @@ night's noop classification (taxonomy: franken-nightly `RUNBOOK.md`
    taxonomy in `noop_causes.py` is extended so the class never
    recurs unnamed. Proof-week bar: 7 nights, every noop classified,
    zero unclassified.
+4. Read the checker's `proof_week` block and record the night's
+   count in the pass report. Backfilled ledger records
+   (`cause_class_source: "backfill-fr-fm5"`, predating the driver
+   change) are excluded by construction: only live-driver nights
+   count. fr-fm5 stays in progress until `proof_week.complete` is
+   true on a fresh checker run — do not close it on a clean audit
+   alone; a clean audit is not the 7-night proof week.
 
 ## Noop re-grade lane (fr-xwc) — 16:20 verify pass
 
