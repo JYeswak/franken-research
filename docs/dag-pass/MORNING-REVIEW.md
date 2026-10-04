@@ -93,6 +93,7 @@ commit; start status was not recorded then).
 | 4 | 2026-10-03 fr-lud implementation pass (first under this rule) | implementing agent (this pass) | ` M .beads/issues.jsonl` (fr-lud claim, 2026-10-03 18:15 MDT) | clean — transcribed in reports/2026-10-03.md (fr-lud repair pass, 2026-10-03; previously only in bead comment 84, bounced by verifier comment 87) | `e47f3a5` |
 | 5 | 2026-10-03 fr-lud repair pass (second under this rule) | fr-lud repair agent (ad-hoc wave) | ` M .beads/issues.jsonl` (verifier grade comment 87 + fr-miv close, flushed at pass start) | clean — recorded in reports/2026-10-03.md (repair-pass section) | `5cb4aca` (start flush), `e24f8d0` (evidence/pass-end flush) |
 | 6 | 2026-10-03 fr-lud pass-3 (third under this rule, ad-hoc burn-down wave) | fr-lud pass-3 agent (ad-hoc wave coordinator) | ` M .beads/issues.jsonl` (parallel fr-bh3/fr-m5m claims + fr-lud re-claim, 2026-10-03 19:03 MDT, flushed at pass start) | clean — recorded in reports/2026-10-03.md (pass-3 section) | `cbbb936` (start flush), `2c10d90` (evidence flush, carried in parallel fr-bh3 commit), `e2d1b30` (pass-end flush) |
+| 7 | 2026-10-04 franken-dag-work (08:20 DAG work pass) | franken-dag-work session | (no output — clean) | clean — recorded in reports/2026-10-04.md | `6980d74` (claim batch), `a6269a3` (evidence batch) |
 
 Rows 1–3 are pre-rule and do NOT count toward the three-pass recorded
 streak (verifier, fr-lud comment 87). The under-rule streak stands at
@@ -174,6 +175,7 @@ Each morning produces one report at
 | Day | Date | Report | Shortfalls | Gap beads |
 |-----|------|--------|-----------|-----------|
 | 1 | 2026-10-03 | reports/2026-10-03.md | 3 | fr-6hs, fr-xuh, fr-lud |
+| 2 | 2026-10-04 | reports/2026-10-04.md | 1 | fr-6i1 |
 
 ## Noop cause check (fr-fm5)
 
