@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 141503,
-  "archive_sha256": "ac293ae9ac32b3f9c4547db285eb4de320cfa463fd32f97a3686d428e3cc2571",
+  "archive_bytes": 141775,
+  "archive_sha256": "2d434e6d9ba5bd9f87ec3afa3d070b81ce5063779ef94b0e4ece82b965c0aed4",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-10-04T13:20:17Z",
+    "checked_at": "2026-10-05T11:32:16Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -81,6 +81,11 @@
         "repo": "franken_agent_detection",
         "state": "changed",
         "state_reason": "open crossing franken_agent_detection:ci:C2>C1"
+      },
+      {
+        "repo": "franken_node",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
       },
       {
         "repo": "franken_numpy",
@@ -113,6 +118,11 @@
         "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
       },
       {
+        "repo": "frankenredis",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+      },
+      {
         "repo": "frankenscipy",
         "state": "changed",
         "state_reason": "open crossing frankenscipy:ci:C1>C2"
@@ -129,7 +139,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "bc385ef342fd91917459e918dcfe4c69ef0d56518410d71e01cf9b81700daf87"
+    "source_sha256": "7cd450e643a2b462cf64ce24358cfc54e0966fe6298c0ba5ed39bd7cab26b9a7"
   },
   "version": 1
 }

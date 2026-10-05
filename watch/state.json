@@ -3,12 +3,12 @@
     "asupersync": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 739,
+      "commits_since_pin": 858,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "2c6b91a8591aecf7e2de908fe322fb294fa035bd",
-      "head_date": "2026-10-03T22:50:01Z",
+      "head": "5ae9d443e73588fc1a56961b9e50aa03f07344dc",
+      "head_date": "2026-10-05T11:04:00Z",
       "id": 1135442827,
       "license_changed_since_pin": false,
       "license_files": [
@@ -629,12 +629,12 @@
     "franken_alignment": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 136,
+      "commits_since_pin": 149,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "58299a4751937ca91a4955aaecec0fe9dbc40780",
-      "head_date": "2026-09-30T22:00:56Z",
+      "head": "1a579710e80bf56ecaa6e3503ba7a0f9eaeb1070",
+      "head_date": "2026-10-05T06:10:07Z",
       "id": 1359645474,
       "license_changed_since_pin": false,
       "license_files": [
@@ -666,12 +666,12 @@
     "franken_code_browser": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 58,
+      "commits_since_pin": 67,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "8962a395aefa6eea2ae45058a36f313f0683273c",
-      "head_date": "2026-09-28T23:12:12Z",
+      "head": "a88a07d8e9f84872d4fbb570ed7a7c6257ae7ef4",
+      "head_date": "2026-10-05T03:22:33Z",
       "id": 1367629743,
       "license_changed_since_pin": false,
       "license_files": [
@@ -762,12 +762,12 @@
     "franken_engine": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 525,
+      "commits_since_pin": 2494,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "2b3bfb6366ba1bd267ce92bad5466b1c105a91ee",
-      "head_date": "2026-10-04T12:00:14Z",
+      "head": "a0d7ba207e27a429c5e6b13f15fc0d69e4e1ebc4",
+      "head_date": "2026-10-05T06:23:03Z",
       "id": 1161313144,
       "license_changed_since_pin": false,
       "license_files": [
@@ -834,6 +834,7 @@
         "engine-object-id-versioning-guard.yml",
         "evidence_refresh.yml",
         "host-effect-journal.yml",
+        "host-effect-work-budget.yml",
         "json-runtime.yml",
         "main-safety.yml",
         "native-runtime.yml",
@@ -850,19 +851,20 @@
         "version_matrix_conformance.yml"
       ],
       "workflows_added_since_pin": [
-        "collection-runtime.yml"
+        "collection-runtime.yml",
+        "host-effect-work-budget.yml"
       ],
       "workflows_removed_since_pin": []
     },
     "franken_lean": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 338,
+      "commits_since_pin": 481,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "8c769ed0c1e6a4f008446292b2582159c26faa92",
-      "head_date": "2026-10-01T00:23:42Z",
+      "head": "c61d665e2a69c7ddd9f2b8912dc717480ecbbd99",
+      "head_date": "2026-10-05T11:23:34Z",
       "id": 1307841640,
       "license_changed_since_pin": false,
       "license_files": [
@@ -901,6 +903,7 @@
         "fln-elab-native.yml",
         "fln-equality-source.yml",
         "fln-field-defaults-reconcile.yml",
+        "fln-free-binding-reuse-u1vk.yml",
         "fln-frontier-tools-selfhosted.yml",
         "fln-heterogeneous-landing.yml",
         "fln-if-let-transfer.yml",
@@ -998,6 +1001,7 @@
         "windows-functional.yml"
       ],
       "workflows_added_since_pin": [
+        "fln-free-binding-reuse-u1vk.yml",
         "fln-if-let-transfer.yml",
         "fln-native-if-transfer.yml",
         "fln-offline-native-workspace.yml",
@@ -1022,12 +1026,12 @@
     "franken_manim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 497,
+      "commits_since_pin": 544,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "8b6fdbf0f23c84b8e811240f80350e3c17d4af47",
-      "head_date": "2026-10-04T03:09:32Z",
+      "head": "6c5dd1c97e11299b329c9aa802694d5c66299542",
+      "head_date": "2026-10-05T04:43:07Z",
       "id": 1306217133,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1252,12 +1256,12 @@
     "franken_markdown": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 135,
+      "commits_since_pin": 146,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "cc5196d786eae3174c9502eea73ca8dd13c01a37",
-      "head_date": "2026-10-02T21:54:58Z",
+      "head": "f800a09ed1c84fdba932a7ab0e461b77e41ce350",
+      "head_date": "2026-10-05T06:06:25Z",
       "id": 1281851258,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1511,12 +1515,12 @@
     "franken_networkx": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 276,
+      "commits_since_pin": 284,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "6267b926a9595d4fea97dad8537f0b0e2eec7039",
-      "head_date": "2026-10-03T04:01:44Z",
+      "head": "b9023a88035c2597fb556ad54cf97ba7426e6f56",
+      "head_date": "2026-10-05T05:03:41Z",
       "id": 1157430632,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1611,12 +1615,12 @@
     "franken_nlp": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 39,
+      "commits_since_pin": 47,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "8f8ae35dfc787346adc58a068a0e512c1418db74",
-      "head_date": "2026-09-29T00:02:22Z",
+      "head": "9fb9c08a8308d410cdf18bc74a6a03fd6dd6305f",
+      "head_date": "2026-10-05T05:13:50Z",
       "id": 1317838147,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1650,12 +1654,12 @@
     "franken_node": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 164,
+      "commits_since_pin": 185,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "577591cf9a17ca65a6084242722b6feb28470797",
-      "head_date": "2026-10-04T13:17:05Z",
+      "head": "f449bc7ec0f9bda28f25efde6937b7a2c36542a1",
+      "head_date": "2026-10-05T05:52:28Z",
       "id": 1161313216,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1683,13 +1687,20 @@
           "prerelease": false,
           "published_at": "2026-05-29T03:52:00Z",
           "target": "08e1edf11f262693202d6466ba2392de9f3f3e4b"
+        },
+        "v0.2.0": {
+          "assets": 6,
+          "created_at": "2026-10-04T13:17:13Z",
+          "prerelease": false,
+          "published_at": "2026-10-04T14:27:49Z",
+          "target": "577591cf9a17ca65a6084242722b6feb28470797"
         }
       },
       "repo": "franken_node",
       "since_pin": [
         {
-          "date": "2026-10-04T13:17:13Z",
-          "kind": "tag",
+          "date": "2026-10-04T14:27:49Z",
+          "kind": "release",
           "name": "v0.2.0",
           "target": "577591cf9a17ca65a6084242722b6feb28470797"
         }
@@ -1750,6 +1761,7 @@
         "release-perf-profile-gate.yml",
         "replay-coverage-gate.yml",
         "rollback-command-gate.yml",
+        "rollout-source-recovery.yml",
         "runtime-watchdog.yml",
         "security-golden-artifacts.yml",
         "tnr-ci-verification-gate.yml",
@@ -1762,6 +1774,7 @@
       ],
       "workflows_added_since_pin": [
         "reachability-gate.yml",
+        "rollout-source-recovery.yml",
         "verifier-sdk-standalone.yml",
         "workflow-lint.yml"
       ],
@@ -1770,12 +1783,12 @@
     "franken_numpy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 351,
+      "commits_since_pin": 403,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ed0385b9a5532bd345867baa335e5a294d0627fc",
-      "head_date": "2026-10-03T04:33:49Z",
+      "head": "f3198a4ce901bceabc8d9c47cf12d905d220bc2c",
+      "head_date": "2026-10-05T10:54:01Z",
       "id": 1157432826,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2149,12 +2162,12 @@
     "franken_remote": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 278,
+      "commits_since_pin": 285,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ed7bcdadd7351e816db5b9305334dda887baf3d6",
-      "head_date": "2026-10-02T01:27:38Z",
+      "head": "cb93bdb19cc5d2c806b0bae5addfdf94685472d0",
+      "head_date": "2026-10-05T02:04:47Z",
       "id": 1360842907,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2223,12 +2236,12 @@
     "franken_snowflake": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 120,
+      "commits_since_pin": 126,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "f3de1991ef3735d381c4eac34fbf0f1721583d5b",
-      "head_date": "2026-10-03T03:31:30Z",
+      "head": "ea03bdad72fe0308b6c98a3cf41380a4f64c2007",
+      "head_date": "2026-10-04T23:55:23Z",
       "id": 1279720977,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2347,12 +2360,12 @@
     "franken_surveillance_system": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1143,
+      "commits_since_pin": 1274,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "e4c68b7433724b72ce04290ca6f69d3829544142",
-      "head_date": "2026-10-03T05:08:08Z",
+      "head": "349cb42ad50ba18fec3d9ccc31aabe3eb9ec2a7a",
+      "head_date": "2026-10-05T07:38:49Z",
       "id": 1352817606,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2379,20 +2392,23 @@
       "tags": {},
       "workflows": [
         "ci.yml",
-        "release.yml"
+        "release.yml",
+        "retention-reference.yml"
       ],
-      "workflows_added_since_pin": [],
+      "workflows_added_since_pin": [
+        "retention-reference.yml"
+      ],
       "workflows_removed_since_pin": []
     },
     "franken_threed": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 69,
+      "commits_since_pin": 87,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "7bf2ef005999a70433acfa1becdd63e911cd36c4",
-      "head_date": "2026-09-27T16:46:47Z",
+      "head": "48bb3053611da265ef4391ce585f81fe1f70ca09",
+      "head_date": "2026-10-05T06:29:08Z",
       "id": 1362884098,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2860,12 +2876,12 @@
     "frankenfs": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 273,
+      "commits_since_pin": 348,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "1b6f7f8953279a36bcec5b46434b1779c5ab72ff",
-      "head_date": "2026-10-03T05:06:18Z",
+      "head": "8b67b606c5096795dd7d94d3a57c6067a605ec1a",
+      "head_date": "2026-10-05T05:14:02Z",
       "id": 1154130483,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2922,12 +2938,12 @@
     "frankengit": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 380,
+      "commits_since_pin": 385,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "10e4870f9f1d0064c6aff760d31150ebfb76d42e",
-      "head_date": "2026-10-01T20:42:38Z",
+      "head": "ad22d89bd169b66e6b8783986966f372c31bde6b",
+      "head_date": "2026-10-05T05:21:58Z",
       "id": 1340123236,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3042,12 +3058,12 @@
     "frankengraphdb": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 440,
+      "commits_since_pin": 473,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "5df67f66cb6d7eb131fa170f20b330f13bc0ab43",
-      "head_date": "2026-10-01T01:02:33Z",
+      "head": "29ea604d35fdfce0330e63e3486f95ed2354400e",
+      "head_date": "2026-10-05T09:13:49Z",
       "id": 1301293102,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3082,12 +3098,12 @@
     "frankenjax": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1,
+      "commits_since_pin": 2,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "be8e83c300aec2462c702dff9d1f9b2152cdc293",
-      "head_date": "2026-09-22T17:22:55Z",
+      "head": "4f04dd82ace83f609eedd232839244ce872bb4ce",
+      "head_date": "2026-10-05T02:53:46Z",
       "id": 1157516615,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3119,12 +3135,12 @@
     "frankenlibc": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 391,
+      "commits_since_pin": 457,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "dda5609c4466c9fdd6e33777d7d4464ad9c8b400",
-      "head_date": "2026-10-03T08:35:51Z",
+      "head": "d30532ee34435303093101792b28e8b52df2b4cb",
+      "head_date": "2026-10-05T11:29:46Z",
       "id": 1153199323,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3152,6 +3168,7 @@
       "workflows": [
         "addrinfo.yml",
         "ci.yml",
+        "fromfp-abi.yml",
         "hostent-portable-check.yml",
         "legacy-host-dns.yml",
         "locale-objects.yml",
@@ -3160,12 +3177,14 @@
         "native-loader-inspection.yml",
         "native-loader.yml",
         "native-resolver.yml",
+        "native-size-relocations.yml",
         "nss-hosts.yml",
         "shared-sync.yml",
         "stdio-file-layout.yml"
       ],
       "workflows_added_since_pin": [
         "addrinfo.yml",
+        "fromfp-abi.yml",
         "hostent-portable-check.yml",
         "legacy-host-dns.yml",
         "locale-objects.yml",
@@ -3173,6 +3192,7 @@
         "native-hostent.yml",
         "native-loader-inspection.yml",
         "native-loader.yml",
+        "native-size-relocations.yml",
         "nss-hosts.yml",
         "shared-sync.yml",
         "stdio-file-layout.yml"
@@ -3182,12 +3202,12 @@
     "frankenmermaid": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 33,
+      "commits_since_pin": 41,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "fb9f16b0232ee9c5b426e0dd91e6911e01ed986b",
-      "head_date": "2026-10-04T00:45:34Z",
+      "head": "171a2903cd28bc7489732404d97ccf349c808d90",
+      "head_date": "2026-10-05T05:26:47Z",
       "id": 1155643809,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3250,12 +3270,12 @@
     "frankenpandas": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 522,
+      "commits_since_pin": 614,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "b7e8d752e7b814a8bfdad29c0fad08d0d57c7d2b",
-      "head_date": "2026-10-03T15:14:49Z",
+      "head": "d4f9f2a89cf5a5f9849320e8ecab9d8d79f2d2e7",
+      "head_date": "2026-10-05T08:56:59Z",
       "id": 1157440729,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4403,12 +4423,12 @@
     "frankenredis": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 5,
+      "commits_since_pin": 15,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "49efe1d3167d6c692d6c615d262fe4744c05199a",
-      "head_date": "2026-10-02T21:21:55Z",
+      "head": "28067b3abb22e25d88976b3346ee4dc3cabbe3bb",
+      "head_date": "2026-10-05T01:23:56Z",
       "id": 1157430439,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4474,12 +4494,12 @@
     "frankenscipy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 364,
+      "commits_since_pin": 365,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ca33fab2f9771b4ace13a41fa9499d89ddbe3464",
-      "head_date": "2026-10-04T03:14:42Z",
+      "head": "c5024372ef28feb8097e88c9ddfe12271da55bad",
+      "head_date": "2026-10-05T00:05:33Z",
       "id": 1157509554,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4557,12 +4577,12 @@
     "frankensearch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 389,
+      "commits_since_pin": 442,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "c7ee3196a20e2a644913a8087f658d7af5c6bae1",
-      "head_date": "2026-10-03T23:26:37Z",
+      "head": "25a674579874c4835bcc16a88783afa7186d1099",
+      "head_date": "2026-10-05T06:19:01Z",
       "id": 1157453895,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4667,6 +4687,13 @@
           "prerelease": false,
           "published_at": "2026-10-03T22:57:35Z",
           "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+        },
+        "v1.12.2": {
+          "assets": 50,
+          "created_at": "2026-10-05T03:07:42Z",
+          "prerelease": false,
+          "published_at": "2026-10-05T03:08:17Z",
+          "target": "3bfb37541a141d511e15a8f8ec56e306a6983233"
         },
         "v1.2.0": {
           "assets": 26,
@@ -4810,6 +4837,12 @@
           "kind": "release",
           "name": "crates-v0.7.1",
           "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
+        },
+        {
+          "date": "2026-10-05T03:08:17Z",
+          "kind": "release",
+          "name": "v1.12.2",
+          "target": "3bfb37541a141d511e15a8f8ec56e306a6983233"
         }
       ],
       "tags": {
@@ -4909,6 +4942,10 @@
           "date": "2026-10-03T19:31:47Z",
           "target": "d1cb86e1848309fe39fb7c8c4c4d7356ebd878aa"
         },
+        "v1.12.2": {
+          "date": "2026-10-05T03:07:42Z",
+          "target": "3bfb37541a141d511e15a8f8ec56e306a6983233"
+        },
         "v1.2.0": {
           "date": "2026-04-07T20:36:50Z",
           "target": "b8d38101974aa675b6ab9263e6a24e463c8b5257"
@@ -4994,12 +5031,12 @@
     "frankensim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 509,
+      "commits_since_pin": 535,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d8de8a60af6a27528d33ea969e1b68056034d992",
-      "head_date": "2026-10-01T23:08:17Z",
+      "head": "2aa41a07c45ea767978452f04354441c381931e5",
+      "head_date": "2026-10-05T06:48:00Z",
       "id": 1290489583,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5079,12 +5116,12 @@
     "frankensqlite": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 293,
+      "commits_since_pin": 349,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "0035a8ff99b0bcfeed5a1bcc7c2b2ace1830db6f",
-      "head_date": "2026-10-04T12:10:32Z",
+      "head": "07cf6c5a6b9f033217581405cf1ffdd11c9f9d44",
+      "head_date": "2026-10-05T10:04:09Z",
       "id": 1151908597,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5604,12 +5641,12 @@
     "frankenterm": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 420,
+      "commits_since_pin": 435,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "c78c7b89d630b3fd2ddeed42dbcc878648adb910",
-      "head_date": "2026-10-04T04:02:00Z",
+      "head": "f24ddcd3cf4cd91f542cff61fd2c4522ec730b6c",
+      "head_date": "2026-10-05T10:30:15Z",
       "id": 1137047020,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6859,7 +6896,7 @@
           "target": "2d09e22e8b0b8603a83614e559f59b4851a4f9b9"
         },
         "v0.9.0": {
-          "assets": 14,
+          "assets": 13,
           "created_at": "2026-10-03T06:53:34Z",
           "prerelease": false,
           "published_at": "2026-10-03T08:10:08Z",
@@ -6968,7 +7005,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-10-04T13:20:17Z",
+  "checked_at": "2026-10-05T11:32:16Z",
   "discovery": [
     {
       "archived": false,
@@ -6988,7 +7025,7 @@
       "id": 1155882142,
       "language": "Python",
       "name": "Dicklesworthstone",
-      "pushed_at": "2026-10-04T09:42:30Z"
+      "pushed_at": "2026-10-05T09:45:00Z"
     },
     {
       "archived": false,
@@ -7058,7 +7095,7 @@
       "id": 1119883856,
       "language": "Shell",
       "name": "agentic_coding_flywheel_setup",
-      "pushed_at": "2026-10-03T23:01:11Z"
+      "pushed_at": "2026-10-05T06:19:30Z"
     },
     {
       "archived": false,
@@ -7068,7 +7105,7 @@
       "id": 1370613700,
       "language": "TypeScript",
       "name": "annus-mirabilis.com",
-      "pushed_at": "2026-10-03T05:14:24Z"
+      "pushed_at": "2026-10-05T11:30:47Z"
     },
     {
       "archived": false,
@@ -7088,7 +7125,7 @@
       "id": 1142089553,
       "language": "Python",
       "name": "ascii_art_mini_transformer",
-      "pushed_at": "2026-09-28T04:03:24Z"
+      "pushed_at": "2026-10-05T01:00:34Z"
     },
     {
       "archived": false,
@@ -7098,7 +7135,7 @@
       "id": 1333421030,
       "language": "TypeScript",
       "name": "asimposium.org",
-      "pushed_at": "2026-10-03T04:10:00Z"
+      "pushed_at": "2026-10-05T05:23:08Z"
     },
     {
       "archived": false,
@@ -7108,7 +7145,7 @@
       "id": 1135442827,
       "language": "Rust",
       "name": "asupersync",
-      "pushed_at": "2026-10-03T22:50:17Z"
+      "pushed_at": "2026-10-05T11:04:13Z"
     },
     {
       "archived": false,
@@ -7368,7 +7405,7 @@
       "id": 1239473418,
       "language": "Rust",
       "name": "bun",
-      "pushed_at": "2026-10-01T20:44:06Z"
+      "pushed_at": "2026-10-05T00:00:23Z"
     },
     {
       "archived": false,
@@ -7428,7 +7465,7 @@
       "id": 1137261908,
       "language": "Rust",
       "name": "charmed_rust",
-      "pushed_at": "2026-09-28T20:17:25Z"
+      "pushed_at": "2026-10-05T04:01:21Z"
     },
     {
       "archived": false,
@@ -7498,7 +7535,7 @@
       "id": 1100945668,
       "language": "Rust",
       "name": "coding_agent_session_search",
-      "pushed_at": "2026-10-03T09:51:52Z"
+      "pushed_at": "2026-10-05T07:34:54Z"
     },
     {
       "archived": false,
@@ -7568,7 +7605,7 @@
       "id": 1146170115,
       "language": "Shell",
       "name": "doodlestein_self_releaser",
-      "pushed_at": "2026-10-04T04:57:41Z"
+      "pushed_at": "2026-10-05T03:34:45Z"
     },
     {
       "archived": false,
@@ -7578,7 +7615,7 @@
       "id": 1350973046,
       "language": "Rust",
       "name": "dwarf_fortress_mcp",
-      "pushed_at": "2026-09-28T22:58:50Z"
+      "pushed_at": "2026-10-05T05:39:05Z"
     },
     {
       "archived": false,
@@ -7618,7 +7655,7 @@
       "id": 1224408143,
       "language": "Rust",
       "name": "eidetic_engine_cli",
-      "pushed_at": "2026-10-03T04:35:30Z"
+      "pushed_at": "2026-10-05T11:30:35Z"
     },
     {
       "archived": false,
@@ -7658,7 +7695,7 @@
       "id": 1138658114,
       "language": "Rust",
       "name": "fastapi_rust",
-      "pushed_at": "2026-09-22T17:21:27Z"
+      "pushed_at": "2026-10-05T03:50:32Z"
     },
     {
       "archived": false,
@@ -7668,7 +7705,7 @@
       "id": 1137083276,
       "language": "Rust",
       "name": "fastmcp_rust",
-      "pushed_at": "2026-10-03T10:44:35Z"
+      "pushed_at": "2026-10-05T07:44:23Z"
     },
     {
       "archived": false,
@@ -7728,7 +7765,7 @@
       "id": 1359645474,
       "language": "Rust",
       "name": "franken_alignment",
-      "pushed_at": "2026-09-30T22:39:40Z"
+      "pushed_at": "2026-10-05T06:10:52Z"
     },
     {
       "archived": false,
@@ -7738,7 +7775,7 @@
       "id": 1367629743,
       "language": "Rust",
       "name": "franken_code_browser",
-      "pushed_at": "2026-09-28T23:45:37Z"
+      "pushed_at": "2026-10-05T03:48:20Z"
     },
     {
       "archived": false,
@@ -7758,7 +7795,7 @@
       "id": 1161313144,
       "language": "Rust",
       "name": "franken_engine",
-      "pushed_at": "2026-10-04T12:00:23Z"
+      "pushed_at": "2026-10-05T06:23:48Z"
     },
     {
       "archived": false,
@@ -7768,7 +7805,7 @@
       "id": 1307841640,
       "language": "Rust",
       "name": "franken_lean",
-      "pushed_at": "2026-10-01T00:23:44Z"
+      "pushed_at": "2026-10-05T11:23:42Z"
     },
     {
       "archived": false,
@@ -7778,7 +7815,7 @@
       "id": 1306217133,
       "language": "Rust",
       "name": "franken_manim",
-      "pushed_at": "2026-10-04T03:09:40Z"
+      "pushed_at": "2026-10-05T04:44:58Z"
     },
     {
       "archived": false,
@@ -7788,7 +7825,7 @@
       "id": 1281851258,
       "language": "HTML",
       "name": "franken_markdown",
-      "pushed_at": "2026-10-02T22:02:21Z"
+      "pushed_at": "2026-10-05T06:19:49Z"
     },
     {
       "archived": false,
@@ -7818,7 +7855,7 @@
       "id": 1157430632,
       "language": "Python",
       "name": "franken_networkx",
-      "pushed_at": "2026-10-03T04:01:57Z"
+      "pushed_at": "2026-10-05T05:03:42Z"
     },
     {
       "archived": false,
@@ -7828,7 +7865,7 @@
       "id": 1317838147,
       "language": "Rust",
       "name": "franken_nlp",
-      "pushed_at": "2026-09-29T00:30:24Z"
+      "pushed_at": "2026-10-05T05:17:00Z"
     },
     {
       "archived": false,
@@ -7838,7 +7875,7 @@
       "id": 1161313216,
       "language": "Rust",
       "name": "franken_node",
-      "pushed_at": "2026-10-04T13:17:13Z"
+      "pushed_at": "2026-10-05T05:53:25Z"
     },
     {
       "archived": false,
@@ -7848,7 +7885,7 @@
       "id": 1157432826,
       "language": "Rust",
       "name": "franken_numpy",
-      "pushed_at": "2026-10-03T04:33:52Z"
+      "pushed_at": "2026-10-05T11:00:31Z"
     },
     {
       "archived": false,
@@ -7878,7 +7915,7 @@
       "id": 1360842907,
       "language": "Rust",
       "name": "franken_remote",
-      "pushed_at": "2026-10-02T18:37:40Z"
+      "pushed_at": "2026-10-05T02:50:05Z"
     },
     {
       "archived": false,
@@ -7888,7 +7925,7 @@
       "id": 1279720977,
       "language": "Rust",
       "name": "franken_snowflake",
-      "pushed_at": "2026-10-03T04:18:50Z"
+      "pushed_at": "2026-10-04T23:55:28Z"
     },
     {
       "archived": false,
@@ -7898,7 +7935,7 @@
       "id": 1352817606,
       "language": "Rust",
       "name": "franken_surveillance_system",
-      "pushed_at": "2026-10-04T01:40:26Z"
+      "pushed_at": "2026-10-05T07:38:55Z"
     },
     {
       "archived": false,
@@ -7908,7 +7945,7 @@
       "id": 1362884098,
       "language": "JavaScript",
       "name": "franken_threed",
-      "pushed_at": "2026-09-27T18:06:00Z"
+      "pushed_at": "2026-10-05T06:29:16Z"
     },
     {
       "archived": false,
@@ -7938,7 +7975,7 @@
       "id": 1154130483,
       "language": "Rust",
       "name": "frankenfs",
-      "pushed_at": "2026-10-03T05:06:21Z"
+      "pushed_at": "2026-10-05T05:14:05Z"
     },
     {
       "archived": false,
@@ -7948,7 +7985,7 @@
       "id": 1340123236,
       "language": "Rust",
       "name": "frankengit",
-      "pushed_at": "2026-10-01T20:43:16Z"
+      "pushed_at": "2026-10-05T05:31:56Z"
     },
     {
       "archived": false,
@@ -7958,7 +7995,7 @@
       "id": 1301293102,
       "language": "Rust",
       "name": "frankengraphdb",
-      "pushed_at": "2026-10-01T01:29:41Z"
+      "pushed_at": "2026-10-05T09:13:52Z"
     },
     {
       "archived": false,
@@ -7968,7 +8005,7 @@
       "id": 1157516615,
       "language": "Rust",
       "name": "frankenjax",
-      "pushed_at": "2026-09-22T17:22:58Z"
+      "pushed_at": "2026-10-05T02:53:51Z"
     },
     {
       "archived": false,
@@ -7978,7 +8015,7 @@
       "id": 1153199323,
       "language": "Rust",
       "name": "frankenlibc",
-      "pushed_at": "2026-10-03T08:35:54Z"
+      "pushed_at": "2026-10-05T11:29:48Z"
     },
     {
       "archived": false,
@@ -7988,7 +8025,7 @@
       "id": 1155643809,
       "language": "HTML",
       "name": "frankenmermaid",
-      "pushed_at": "2026-10-04T00:46:00Z"
+      "pushed_at": "2026-10-05T05:31:57Z"
     },
     {
       "archived": false,
@@ -7998,7 +8035,7 @@
       "id": 1157440729,
       "language": "Rust",
       "name": "frankenpandas",
-      "pushed_at": "2026-10-03T15:15:12Z"
+      "pushed_at": "2026-10-05T08:57:02Z"
     },
     {
       "archived": false,
@@ -8008,7 +8045,7 @@
       "id": 1157430439,
       "language": "Rust",
       "name": "frankenredis",
-      "pushed_at": "2026-10-02T21:22:46Z"
+      "pushed_at": "2026-10-05T01:23:59Z"
     },
     {
       "archived": false,
@@ -8018,7 +8055,7 @@
       "id": 1157509554,
       "language": "Rust",
       "name": "frankenscipy",
-      "pushed_at": "2026-10-04T03:14:59Z"
+      "pushed_at": "2026-10-05T00:05:57Z"
     },
     {
       "archived": false,
@@ -8028,7 +8065,7 @@
       "id": 1157453895,
       "language": "Rust",
       "name": "frankensearch",
-      "pushed_at": "2026-10-03T23:26:48Z"
+      "pushed_at": "2026-10-05T06:19:38Z"
     },
     {
       "archived": false,
@@ -8038,7 +8075,7 @@
       "id": 1290489583,
       "language": "Rust",
       "name": "frankensim",
-      "pushed_at": "2026-10-02T18:16:26Z"
+      "pushed_at": "2026-10-05T06:48:02Z"
     },
     {
       "archived": false,
@@ -8058,7 +8095,7 @@
       "id": 1151908597,
       "language": "Rust",
       "name": "frankensqlite",
-      "pushed_at": "2026-10-04T12:10:34Z"
+      "pushed_at": "2026-10-05T10:08:43Z"
     },
     {
       "archived": false,
@@ -8088,7 +8125,7 @@
       "id": 1137047020,
       "language": "Rust",
       "name": "frankenterm",
-      "pushed_at": "2026-10-04T04:02:15Z"
+      "pushed_at": "2026-10-05T10:30:20Z"
     },
     {
       "archived": false,
@@ -8248,7 +8285,7 @@
       "id": 1113976259,
       "language": "Shell",
       "name": "homebrew-tap",
-      "pushed_at": "2026-10-04T01:40:29Z"
+      "pushed_at": "2026-10-04T20:34:47Z"
     },
     {
       "archived": false,
@@ -8278,7 +8315,7 @@
       "id": 949709375,
       "language": "TypeScript",
       "name": "jazz_chord_progression_editor_html",
-      "pushed_at": "2026-09-29T02:28:45Z"
+      "pushed_at": "2026-10-05T05:47:25Z"
     },
     {
       "archived": false,
@@ -8288,7 +8325,7 @@
       "id": 1101616050,
       "language": "TypeScript",
       "name": "jeffrey_emanuel_personal_site",
-      "pushed_at": "2026-10-04T09:28:24Z"
+      "pushed_at": "2026-10-04T14:13:32Z"
     },
     {
       "archived": false,
@@ -8448,7 +8485,7 @@
       "id": 1150296802,
       "language": "Rust",
       "name": "mcp_agent_mail_rust",
-      "pushed_at": "2026-10-02T07:14:30Z"
+      "pushed_at": "2026-10-05T06:03:17Z"
     },
     {
       "archived": false,
@@ -8478,7 +8515,7 @@
       "id": 1133846056,
       "language": "Rust",
       "name": "meta_skill",
-      "pushed_at": "2026-10-03T00:56:50Z"
+      "pushed_at": "2026-10-04T23:36:44Z"
     },
     {
       "archived": false,
@@ -8568,7 +8605,7 @@
       "id": 1113577240,
       "language": "Go",
       "name": "ntm",
-      "pushed_at": "2026-10-02T05:37:39Z"
+      "pushed_at": "2026-10-05T07:02:10Z"
     },
     {
       "archived": false,
@@ -8608,7 +8645,7 @@
       "id": 1111397595,
       "language": "TypeScript",
       "name": "phage_explorer",
-      "pushed_at": "2026-10-04T04:04:50Z"
+      "pushed_at": "2026-10-05T06:19:41Z"
     },
     {
       "archived": false,
@@ -8618,7 +8655,7 @@
       "id": 1148330949,
       "language": "Rust",
       "name": "pi_agent_rust",
-      "pushed_at": "2026-10-03T04:51:13Z"
+      "pushed_at": "2026-10-05T06:00:48Z"
     },
     {
       "archived": false,
@@ -8668,7 +8705,7 @@
       "id": 1134675465,
       "language": "Rust",
       "name": "process_triage",
-      "pushed_at": "2026-10-01T02:28:15Z"
+      "pushed_at": "2026-10-05T05:55:42Z"
     },
     {
       "archived": false,
@@ -8718,7 +8755,7 @@
       "id": 1135510028,
       "language": "Rust",
       "name": "remote_compilation_helper",
-      "pushed_at": "2026-10-02T18:15:39Z"
+      "pushed_at": "2026-10-05T05:09:53Z"
     },
     {
       "archived": false,
@@ -8748,7 +8785,7 @@
       "id": 1316294228,
       "language": "Rust",
       "name": "rust-block",
-      "pushed_at": "2026-07-29T15:37:42Z"
+      "pushed_at": "2026-10-05T03:01:23Z"
     },
     {
       "archived": false,
@@ -8768,7 +8805,7 @@
       "id": 1080612965,
       "language": "Rust",
       "name": "rust_scriptbots",
-      "pushed_at": "2026-10-04T08:02:55Z"
+      "pushed_at": "2026-10-05T06:11:05Z"
     },
     {
       "archived": false,
@@ -8818,7 +8855,7 @@
       "id": 1374059973,
       "language": "Rust",
       "name": "skillranker",
-      "pushed_at": "2026-10-03T05:00:40Z"
+      "pushed_at": "2026-10-05T06:14:25Z"
     },
     {
       "archived": false,
@@ -8868,7 +8905,7 @@
       "id": 1139471738,
       "language": "Rust",
       "name": "sqlmodel_rust",
-      "pushed_at": "2026-10-04T01:43:46Z"
+      "pushed_at": "2026-10-05T09:34:27Z"
     },
     {
       "archived": false,
@@ -8878,7 +8915,7 @@
       "id": 1158080555,
       "language": "Rust",
       "name": "storage_ballast_helper",
-      "pushed_at": "2026-10-01T21:47:12Z"
+      "pushed_at": "2026-10-05T06:19:43Z"
     },
     {
       "archived": false,
@@ -8998,7 +9035,7 @@
       "id": 1097502375,
       "language": "Python",
       "name": "ultimate_bug_scanner",
-      "pushed_at": "2026-10-02T05:49:03Z"
+      "pushed_at": "2026-10-05T06:30:17Z"
     },
     {
       "archived": false,
@@ -9338,6 +9375,11 @@
         "total": 3
       },
       "franken_markdown@88a6a99ed1ebc48c7910c28213005d8b35963079": {
+        "complete": true,
+        "list": [],
+        "total": 0
+      },
+      "franken_markdown@cc5196d786eae3174c9502eea73ca8dd13c01a37": {
         "complete": true,
         "list": [],
         "total": 0
@@ -9916,6 +9958,26 @@
         },
         "self_hosted": false
       },
+      "01b2ac4301fc7b9342a42c33d6747eddeedb1be3": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "01c165f09a24d8684cbf4eb9463ed5e1424d10c8": {
         "events": [
           "push",
@@ -10269,6 +10331,21 @@
         },
         "self_hosted": true
       },
+      "0b575ddca00638acab89ca5872d5260cc4bf3cb6": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "0b60ca93438d23018b4bba7c227db6ab7f08fcb0": {
         "events": [
           "push",
@@ -10490,6 +10567,10 @@
         "push": null,
         "self_hosted": false
       },
+      "0f02d5286cc70f582010a6619b6a637295c47370": {
+        "error": "line 147: while scanning a simple key: could not find expected ':'",
+        "ok": false
+      },
       "0f6a91704cb5b215d0757b6e7e0f2f03489bc79e": {
         "events": [
           "pull_request",
@@ -10605,6 +10686,21 @@
         "kind": "test",
         "ok": true,
         "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "15645bca10731fe27aef5e4fa9d098153a101362": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
         "push": {
           "branches": [
             "main"
@@ -11543,21 +11639,6 @@
         "push": null,
         "self_hosted": false
       },
-      "346154e47198a889107d052d5e5c6d8cde35babf": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "other",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "3546207535ed3d17e97d49deb90db61f56c79362": {
         "events": [
           "pull_request",
@@ -11740,6 +11821,25 @@
         },
         "self_hosted": false
       },
+      "3a74b1c2553ff6c4b5d8798026a0969717a73934": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "3a7a7e8d8644ebce29607196fddcf650db843387": {
         "events": [
           "push"
@@ -11762,40 +11862,6 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "3ae66a0cf085c0154b00ec52926d1c9da7cc1cc0": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "3b586fcd94da0335c06b6a34d750b5834d1b68d0": {
-        "events": [
-          "pull_request",
-          "push"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
         "push": {
           "branches": [
             "main"
@@ -12271,6 +12337,17 @@
         },
         "self_hosted": false
       },
+      "4678bcd01af08d60b364d77faf97324354dfa811": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "46ca48b60745d398341c1fded397d6e466d8cbef": {
         "events": [
           "push",
@@ -12295,6 +12372,40 @@
         "kind": "test",
         "ok": true,
         "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "4779373c01bd02adb06e44be6912ae8b61ee6d50": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "479f2c80a42b2841604f48b1a086b9c76bea5c52": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
         "push": {
           "branches": [
             "main"
@@ -12665,6 +12776,22 @@
         "push": null,
         "self_hosted": false
       },
+      "50cbfc146d6598aa478e2830032e6d18c0c60f56": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "51151ae3973a922d099737f2520cee5f4421442a": {
         "events": [
           "pull_request",
@@ -12775,6 +12902,25 @@
         "kind": "test",
         "ok": true,
         "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "57c247ea7023b38abe68f0dc55c7532d9066d544": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
         "push": {
           "branches": [
             "main"
@@ -13232,6 +13378,21 @@
         "ok": true,
         "pull_request": {},
         "push": null,
+        "self_hosted": false
+      },
+      "68f8e3a76c41d7f9c6cfde72ac05716f2d631e62": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
         "self_hosted": false
       },
       "69338ec799e2b062fba1d25dc1d4afb01061261f": {
@@ -13700,6 +13861,17 @@
         "push": null,
         "self_hosted": false
       },
+      "733cf5e45497addee118ad86bd7ba09729a77a6f": {
+        "events": [
+          "schedule",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": null,
+        "self_hosted": false
+      },
       "738a4bc5c37544aed92dd13cbb3e072140e56c90": {
         "events": [
           "push",
@@ -13745,6 +13917,10 @@
           ]
         },
         "self_hosted": false
+      },
+      "75189f395aa981069fa952d23cf32d7d076b8eb2": {
+        "error": "line 214: while scanning a simple key: could not find expected ':'",
+        "ok": false
       },
       "75367c7e18ac4b76641d88926a77907d734f31de": {
         "events": [
@@ -14453,6 +14629,21 @@
         },
         "self_hosted": false
       },
+      "8802a4d8d75a1ba08655318bcc475e5eb416ad7f": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "tags": [
+            "v*"
+          ]
+        },
+        "self_hosted": false
+      },
       "885676fa725c98ebcc220cc0fbea3c6194d6de40": {
         "events": [
           "push"
@@ -14591,6 +14782,21 @@
           "workflow_dispatch"
         ],
         "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "8d4e2879942874da484f8543253eebe59dea7fae": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -15417,6 +15623,22 @@
         "push": null,
         "self_hosted": false
       },
+      "a5b8dffdc63de2e82d00aa0d0c8010ba6bd5b3da": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "a5cf91e06ea9f5ffbe5424e395949cbdd7c63f6d": {
         "first_line": "MIT License (with OpenAI/Anthropic Rider)",
         "mit": true,
@@ -15698,6 +15920,21 @@
         "pull_request": null,
         "push": null,
         "self_hosted": false
+      },
+      "ae03ed32d98b59e6c0c142eebde50699d1ffa4ab": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": true
       },
       "ae1e254fdc12ba781d78a0a3df005068410a5b97": {
         "events": [
@@ -16182,6 +16419,22 @@
         },
         "self_hosted": false
       },
+      "b9521d77e1c49052816debc0f00072a50fc60d83": {
+        "events": [
+          "push",
+          "release",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "tags": [
+            "v*"
+          ]
+        },
+        "self_hosted": false
+      },
       "b957678af943e293eae0901fe52a74488a2734e3": {
         "events": [
           "push",
@@ -16431,6 +16684,22 @@
         "push": {
           "branches": [
             "tooling/partial-clone-b9fcbd2d"
+          ]
+        },
+        "self_hosted": false
+      },
+      "c036064d532e015a039536dc25badf4bb1066e95": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {},
+        "push": {
+          "branches": [
+            "main"
           ]
         },
         "self_hosted": false
@@ -17612,6 +17881,21 @@
         },
         "self_hosted": false
       },
+      "de7cdfc0e6fda5df2b3409401de2f63cc8a9f69d": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "tags": [
+            "v*"
+          ]
+        },
+        "self_hosted": false
+      },
       "de9609d59addea105bf0bd1a32d5733d612098dd": {
         "events": [
           "push",
@@ -18138,6 +18422,21 @@
         },
         "self_hosted": false
       },
+      "ee3e60634491d3331ed2809ab8002480089473e8": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "ef50d9be23884cf93548d01cbc5e4fc7760bc048": {
         "events": [
           "push",
@@ -18399,6 +18698,21 @@
         "push": null,
         "self_hosted": false
       },
+      "fb58dc912efc8bfd703abb8c76b3ddf672666b29": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "fbaee0642d044bcca39accb10b8d3175baf4636d": {
         "events": [
           "push",
@@ -18614,6 +18928,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-10-04T00:23:40Z",
+  "previous_checked_at": "2026-10-04T13:20:17Z",
   "schema": 1
 }

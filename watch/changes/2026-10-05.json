@@ -1,0 +1,146 @@
+{
+  "baseline": false,
+  "date": "2026-10-05",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "25 files at a0d7ba2",
+      "before": "24 files at 2b3bfb6",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_engine/tree/a0d7ba207e27a429c5e6b13f15fc0d69e4e1ebc4/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_engine/compare/2b3bfb6366ba1bd267ce92bad5466b1c105a91ee...a0d7ba207e27a429c5e6b13f15fc0d69e4e1ebc4",
+        "https://github.com/Dicklesworthstone/franken_engine/actions"
+      ],
+      "ident": "dca14e9eb9f8",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_engine",
+      "summary": "The .github/workflows file set changed: +host-effect-work-budget.yml.",
+      "title": "[watch] franken_engine: workflows +1 -0 (25 now)",
+      "value": "dca14e9eb9f8"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "109 files at c61d665",
+      "before": "108 files at 8c769ed",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/c61d665e2a69c7ddd9f2b8912dc717480ecbbd99/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/8c769ed0c1e6a4f008446292b2582159c26faa92...c61d665e2a69c7ddd9f2b8912dc717480ecbbd99",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "0affb923e8bb",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +fln-free-binding-reuse-u1vk.yml.",
+      "title": "[watch] franken_lean: workflows +1 -0 (109 now)",
+      "value": "0affb923e8bb"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "55 files at f449bc7",
+      "before": "54 files at 577591c",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_node/tree/f449bc7ec0f9bda28f25efde6937b7a2c36542a1/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_node/compare/577591cf9a17ca65a6084242722b6feb28470797...f449bc7ec0f9bda28f25efde6937b7a2c36542a1",
+        "https://github.com/Dicklesworthstone/franken_node/actions"
+      ],
+      "ident": "df0323616e11",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_node",
+      "summary": "The .github/workflows file set changed: +rollout-source-recovery.yml.",
+      "title": "[watch] franken_node: workflows +1 -0 (55 now)",
+      "value": "df0323616e11"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "3 files at 349cb42",
+      "before": "2 files at e4c68b7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/349cb42ad50ba18fec3d9ccc31aabe3eb9ec2a7a/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/compare/e4c68b7433724b72ce04290ca6f69d3829544142...349cb42ad50ba18fec3d9ccc31aabe3eb9ec2a7a",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/actions"
+      ],
+      "ident": "a16dd0cb5970",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_surveillance_system",
+      "summary": "The .github/workflows file set changed: +retention-reference.yml.",
+      "title": "[watch] franken_surveillance_system: workflows +1 -0 (3 now)",
+      "value": "a16dd0cb5970"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "15 files at d30532e",
+      "before": "13 files at dda5609",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/d30532ee34435303093101792b28e8b52df2b4cb/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/dda5609c4466c9fdd6e33777d7d4464ad9c8b400...d30532ee34435303093101792b28e8b52df2b4cb",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "ef50e457cd4d",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +fromfp-abi.yml, +native-size-relocations.yml.",
+      "title": "[watch] frankenlibc: workflows +2 -0 (15 now)",
+      "value": "ef50e457cd4d"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.2.0 -> 577591c, published 2026-10-04T14:27:49Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_node/releases/tag/v0.2.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_node/releases/tags/v0.2.0",
+        "https://github.com/Dicklesworthstone/franken_node/commit/577591cf9a17ca65a6084242722b6feb28470797"
+      ],
+      "ident": "v0.2.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_node",
+      "summary": "New GitHub release v0.2.0.",
+      "title": "[watch] franken_node: release v0.2.0",
+      "value": "577591cf9a17ca65a6084242722b6feb28470797"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v1.12.2 -> 3bfb375, published 2026-10-05T03:08:17Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/releases/tag/v1.12.2",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/releases/tags/v1.12.2",
+        "https://github.com/Dicklesworthstone/frankensearch/commit/3bfb37541a141d511e15a8f8ec56e306a6983233"
+      ],
+      "ident": "v1.12.2",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New GitHub release v1.12.2.",
+      "title": "[watch] frankensearch: release v1.12.2",
+      "value": "3bfb37541a141d511e15a8f8ec56e306a6983233"
+    }
+  ],
+  "since": "2026-10-04T13:20:17Z"
+}
