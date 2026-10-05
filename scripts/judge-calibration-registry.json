@@ -2,7 +2,7 @@
   "schema": "franken-research/judge-calibration-registry@1",
   "bead": "fr-o8i",
   "judge_version": "judge-v1-0fbecf6a7c05",
-  "prediction_kind": "deterministic-rules (evaluate.md rules 1-4)",
+  "prediction_kind": "full-prompt replay under pinned judge version (fr-y3s)",
   "frozen_set": "judge-calibration-set.json",
   "lanes": {
     "offline/deterministic-rules": {
@@ -25,39 +25,41 @@
     },
     "groq/openai/gpt-oss-20b": {
       "lane": "groq/openai/gpt-oss-20b",
-      "n": 19,
-      "agreement": 0.7894736842105263,
-      "kappa": 0.4062,
+      "n": 22,
+      "agreement": 0.7272727272727273,
+      "kappa": 0.0,
       "bar": 0.6,
       "passes_bar": false,
       "precision": {
-        "green": 0.7647,
-        "revise": 1.0
+        "green": 0.7273,
+        "revise": 0.0
       },
       "recall": {
         "green": 1.0,
-        "revise": 0.3333
+        "revise": 0.0
       },
       "n_set": 32,
-      "coverage": 0.5938,
+      "coverage": 0.6875,
       "coverage_complete": false,
       "kappa_meets_bar": false,
-      "prediction_kind": "frozen-set embedded historical raw judge verdicts",
-      "judge_version": null,
+      "prediction_kind": "full-prompt replay under pinned judge version (fr-y3s)",
+      "judge_version": "judge-v1-0fbecf6a7c05",
       "calibration_status": "measured_below_bar",
-      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version.",
-      "sensitivity_excluding_expected_decision": {
-        "n": 14,
-        "kappa": 0.4615,
-        "precision": {
-          "green": 0.75,
-          "revise": 1.0
-        },
-        "recall": {
-          "green": 1.0,
-          "revise": 0.4
-        }
-      }
+      "note": "2026-10-05 fr-y3s replay: 22/32 items replayed with rebuilt prompts (build_eval_prompt, current evaluate.md). Judge predicted green on all 22 (revise recall 0.0). Supersedes the 2026-10-04 historical row (n=19, kappa 0.4062, pre-pinning prompts). Missing 10: 2 candidates gone, 4 synthetic edge variants, 4 rate-limited/parse-failed.",
+      "missing_item_ids": [
+        "rcpt-2026-10-03-seeded-word-sort-eval-20261003-121534",
+        "ledger-01-2026-10-02-py-reachability-gate",
+        "ledger-04-2026-10-02-discovery-filter",
+        "ledger-13-2026-10-03-seeded-word-sort-mf",
+        "ledger-17-2026-10-03-seeded-word-sort-cw",
+        "ledger-18-2026-10-04-new-releases",
+        "edge-2026-10-02-top-agent-repos-strawman-blocking",
+        "edge-2026-10-02-top-agent-repos-fair-only-non-blocking",
+        "edge-2026-10-02-py-reachability-not-reproduced",
+        "edge-2026-10-02-py-reachability-test-only-fail"
+      ],
+      "replay_date": "2026-10-05",
+      "replay_predictions": "/tmp/preds-groq-openai-gpt-oss-20b.json"
     },
     "nvidia/z-ai/glm-5.3-flash": {
       "lane": "nvidia/z-ai/glm-5.3-flash",
@@ -81,7 +83,9 @@
       "prediction_kind": "frozen-set embedded historical raw judge verdicts",
       "judge_version": null,
       "calibration_status": "insufficient_coverage",
-      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version."
+      "note": "Historical n=1 (degenerate kappa 1.0). 2026-10-05 fr-y3s full-replay attempt ABORTED: lane unhealthy - nv-run.py timed out after 60s on 2 consecutive attempts (first item); 53 lane errors on the 2026-10-05 quota board. No new predictions; historical row retained.",
+      "replay_attempt_date": "2026-10-05",
+      "replay_attempt_outcome": "aborted_lane_timeout"
     }
   },
   "frozen_set_pin": {
