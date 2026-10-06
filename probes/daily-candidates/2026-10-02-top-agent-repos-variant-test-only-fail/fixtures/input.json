@@ -1,0 +1,76 @@
+{
+  "candidates": [
+    {
+      "repo": "owner12/repo12",
+      "stars": 500,
+      "score": 9.9,
+      "signals": { "ci": true, "security": true, "docs": true }
+    },
+    {
+      "repo": "owner3/repo3",
+      "stars": 300,
+      "score": 9.6,
+      "signals": { "ci": true, "security": false, "tests": true }
+    },
+    {
+      "repo": "owner7/repo7",
+      "stars": 250,
+      "score": 9.4,
+      "signals": { "ci": false, "security": true, "docs": true }
+    },
+    {
+      "repo": "owner1/repo1",
+      "stars": 200,
+      "score": 9.2,
+      "signals": { "ci": true, "security": true }
+    },
+    {
+      "repo": "owner5/repo5",
+      "stars": 180,
+      "score": 9.0,
+      "signals": { "ci": false, "security": false, "docs": true }
+    },
+    {
+      "repo": "owner8/repo8",
+      "stars": 160,
+      "score": 8.8,
+      "signals": { "ci": true }
+    },
+    {
+      "repo": "owner2/repo2",
+      "stars": 150,
+      "score": 8.7,
+      "signals": { "ci": true, "security": true }
+    },
+    {
+      "repo": "owner9/repo9",
+      "stars": 140,
+      "score": 8.5,
+      "signals": { "ci": false }
+    },
+    {
+      "repo": "owner4/repo4",
+      "stars": 120,
+      "score": 8.2,
+      "signals": { "ci": true }
+    },
+    {
+      "repo": "owner6/repo6",
+      "stars": 110,
+      "score": 8.0,
+      "signals": {}
+    },
+    {
+      "repo": "owner10/repo10",
+      "stars": 100,
+      "score": 7.8,
+      "signals": { "security": true }
+    },
+    {
+      "repo": "owner11/repo11",
+      "stars": 90,
+      "score": 7.5,
+      "signals": { "ci": true, "docs": false }
+    }
+  ]
+}

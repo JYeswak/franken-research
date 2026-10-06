@@ -1,0 +1,63 @@
+{
+  "generated_by": "franken-nightly sandbox-run.sh (harness, not the model)",
+  "isolation": "seatbelt-no-network",
+  "python": "Python 3.14.5",
+  "uname": "Darwin Joshs-Mac-Studio.local 25.5.0 Darwin Kernel Version 25.5.0: Tue Jun  9 22:26:15 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T6031 arm64",
+  "inputs_sha256": "37c3cce5cbc2614d365e91fa2dff67d6b27c09cefc464e4d32cebfe6db0cd657",
+  "runs": [
+    {
+      "name": "baseline/input",
+      "argv": [
+        "baseline.py",
+        "fixtures/input.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 94,
+      "output_sha256": "b27ae11bf4180d1bc158d3df15ea766afd9bfc4ef54a139351c4067cdba05e1e",
+      "stderr_excerpt": ""
+    },
+    {
+      "name": "candidate/input",
+      "argv": [
+        "candidate.py",
+        "fixtures/input.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 93,
+      "output_sha256": "b27ae11bf4180d1bc158d3df15ea766afd9bfc4ef54a139351c4067cdba05e1e",
+      "stderr_excerpt": ""
+    },
+    {
+      "name": "baseline/transfer",
+      "argv": [
+        "baseline.py",
+        "fixtures/transfer.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 118,
+      "output_sha256": "95021a49fa609a2778016a39187f705c505f75483f599c90e507421801272146",
+      "stderr_excerpt": ""
+    },
+    {
+      "name": "candidate/transfer",
+      "argv": [
+        "candidate.py",
+        "fixtures/transfer.json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 105,
+      "output_sha256": "95021a49fa609a2778016a39187f705c505f75483f599c90e507421801272146",
+      "stderr_excerpt": ""
+    },
+    {
+      "name": "test",
+      "argv": [
+        "test.py"
+      ],
+      "exit": 1,
+      "elapsed_ms": 402,
+      "output_sha256": "f98c412d22c1940d4ab01b2e35e49c4a8fd50247687933994a5317aa31401d78",
+      "stderr_excerpt": ""
+    }
+  ]
+}
