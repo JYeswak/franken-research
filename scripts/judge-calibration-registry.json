@@ -25,41 +25,28 @@
     },
     "groq/openai/gpt-oss-20b": {
       "lane": "groq/openai/gpt-oss-20b",
-      "n": 22,
-      "agreement": 0.7272727272727273,
-      "kappa": 0.0,
+      "n": 6,
+      "n_set": 32,
+      "agreement": 0.3333,
+      "kappa": 0.0769,
       "bar": 0.6,
       "passes_bar": false,
       "precision": {
-        "green": 0.7273,
-        "revise": 0.0
+        "green": 0.2,
+        "revise": 1.0
       },
       "recall": {
         "green": 1.0,
-        "revise": 0.0
+        "revise": 0.2
       },
-      "n_set": 32,
-      "coverage": 0.6875,
+      "coverage": 0.1875,
       "coverage_complete": false,
       "kappa_meets_bar": false,
-      "prediction_kind": "full-prompt replay under pinned judge version (fr-y3s)",
-      "judge_version": "judge-v1-0fbecf6a7c05",
       "calibration_status": "measured_below_bar",
-      "note": "2026-10-05 fr-y3s replay: 22/32 items replayed with rebuilt prompts (build_eval_prompt, current evaluate.md). Judge predicted green on all 22 (revise recall 0.0). Supersedes the 2026-10-04 historical row (n=19, kappa 0.4062, pre-pinning prompts). Missing 10: 2 candidates gone, 4 synthetic edge variants, 4 rate-limited/parse-failed.",
-      "missing_item_ids": [
-        "rcpt-2026-10-03-seeded-word-sort-eval-20261003-121534",
-        "ledger-01-2026-10-02-py-reachability-gate",
-        "ledger-04-2026-10-02-discovery-filter",
-        "ledger-13-2026-10-03-seeded-word-sort-mf",
-        "ledger-17-2026-10-03-seeded-word-sort-cw",
-        "ledger-18-2026-10-04-new-releases",
-        "edge-2026-10-02-top-agent-repos-strawman-blocking",
-        "edge-2026-10-02-top-agent-repos-fair-only-non-blocking",
-        "edge-2026-10-02-py-reachability-not-reproduced",
-        "edge-2026-10-02-py-reachability-test-only-fail"
-      ],
-      "replay_date": "2026-10-05",
-      "replay_predictions": "/tmp/preds-groq-openai-gpt-oss-20b.json"
+      "judge_version": "judge-v1-0fbecf6a7c05",
+      "prediction_kind": "fresh calls, pinned prompt, scored vs deliberate labels (fr-y3s 2026-10-06)",
+      "note": "2026-10-06 fr-y3s: 6 items scored vs deliberate labels (4 strawman misses, 1 not-reproduced hit, 1 green hit). Judge respects mechanical rule 1 (reproduced) but systematically greens strawman baselines (4/4 misses). Set cleaned: content_id + deliberate_label per content group; 14 items shared identical content with contradictory historical labels. Supersedes 2026-10-05 row (kappa 0.0 vs noisy historical labels).",
+      "calibrated_at": "2026-10-06T22:56:58.557656+00:00"
     },
     "nvidia/z-ai/glm-5.3-flash": {
       "lane": "nvidia/z-ai/glm-5.3-flash",
