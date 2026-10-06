@@ -42,6 +42,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -74,6 +75,40 @@ def judge_version(prompt_text=None, prompt_sha=None, decoding=None):
     payload = json.dumps({"prompt_sha256": prompt_sha, "decoding": dec},
                          sort_keys=True)
     return "judge-v1-" + hashlib.sha256(payload.encode()).hexdigest()[:12]
+
+
+def verify_replay_fidelity(item, prompt_text, receipts_base=None):
+    """True-replay guard (fr-y3s, 2026-10-06).
+
+    A replayed prompt must be byte-identical to the prompt the original
+    judge saw; otherwise the replay measures prompt drift, not judge
+    fidelity. Compares sha256(prompt_text) against the receipt's
+    prompt_sha256 (Stage C receipts record it).
+
+    Returns (ok, detail). ok is False when the item has no receipt, the
+    receipt has no prompt_sha256, or the hashes differ. Callers must
+    refuse to score fidelity-failed items, not silently include them.
+    """
+    src = (item or {}).get("source", "")
+    m = re.search(r"receipts/([^/]+\.json)", src)
+    if not m:
+        return False, "no receipt backing for item %s" % (item or {}).get("id")
+    base = receipts_base or os.environ.get(
+        "FRANKEN_RECEIPTS_DIR", "/Users/josh/Developer/franken-nightly/receipts")
+    rp = os.path.join(base, m.group(1))
+    try:
+        with open(rp) as f:
+            receipt = json.load(f)
+    except OSError as e:
+        return False, "receipt unreadable %s: %s" % (rp, e)
+    want = receipt.get("prompt_sha256")
+    if not want:
+        return False, "receipt %s has no prompt_sha256" % m.group(1)
+    got = hashlib.sha256(prompt_text.encode()).hexdigest()
+    if got != want:
+        return False, ("prompt drift on %s: rebuilt %s != receipt %s"
+                       % ((item or {}).get("id"), got[:12], want[:12]))
+    return True, "prompt bytes match receipt %s" % m.group(1)
 
 
 def frozen_set(path=DEFAULT_SET):

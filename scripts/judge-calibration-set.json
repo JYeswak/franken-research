@@ -27,7 +27,12 @@
       "raw_judge_verdict": "revise",
       "label": "revise",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'revise' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'revise' agrees with the evaluate.md deterministic rules.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-103401",
@@ -43,7 +48,12 @@
       "raw_judge_verdict": "green",
       "label": "revise",
       "category": "edge",
-      "label_rationale": "Edge case: raw judge emitted 'green' but evaluate.md rules 1-4 derive 'revise' (reproduced=True, fair_baseline=False, blocking=0). The harness canonicalization (evaluate.py canonicalize_verdict) re-derives the verdict, so an inconsistent raw verdict is a labelling trap for calibration."
+      "label_rationale": "Edge case: raw judge emitted 'green' but evaluate.md rules 1-4 derive 'revise' (reproduced=True, fair_baseline=False, blocking=0). The harness canonicalization (evaluate.py canonicalize_verdict) re-derives the verdict, so an inconsistent raw verdict is a labelling trap for calibration.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-105040",
@@ -59,7 +69,12 @@
       "raw_judge_verdict": "green",
       "label": "revise",
       "category": "edge",
-      "label_rationale": "Edge case: raw judge emitted 'green' but evaluate.md rules 1-4 derive 'revise' (reproduced=True, fair_baseline=False, blocking=0). The harness canonicalization (evaluate.py canonicalize_verdict) re-derives the verdict, so an inconsistent raw verdict is a labelling trap for calibration."
+      "label_rationale": "Edge case: raw judge emitted 'green' but evaluate.md rules 1-4 derive 'revise' (reproduced=True, fair_baseline=False, blocking=0). The harness canonicalization (evaluate.py canonicalize_verdict) re-derives the verdict, so an inconsistent raw verdict is a labelling trap for calibration.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "rcpt-2026-10-02-top-agent-repos-eval-20261003-120049",
@@ -75,7 +90,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replay-2026-10-02-top-agent-repos-replay-20261003-104042",
@@ -91,7 +111,12 @@
       "raw_judge_verdict": "revise",
       "label": "revise",
       "category": "standard",
-      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=False."
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=False.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-104042",
@@ -107,7 +132,12 @@
       "raw_judge_verdict": "green",
       "label": "revise",
       "category": "edge",
-      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match).",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replay-2026-10-02-top-agent-repos-replay-20261003-105719",
@@ -123,7 +153,12 @@
       "raw_judge_verdict": "green",
       "label": "revise",
       "category": "edge",
-      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=False."
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=False.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-105719",
@@ -139,7 +174,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match).",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replay-2026-10-02-top-agent-repos-replay-20261003-120747",
@@ -155,7 +195,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True."
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-120747",
@@ -171,7 +216,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match).",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replay-2026-10-02-top-agent-repos-replay-20261003-124104",
@@ -187,7 +237,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True."
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "replayexp-2026-10-02-top-agent-repos-replay-20261003-124104",
@@ -203,7 +258,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match).",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "rcpt-2026-10-03-2026-10-03-seeded-word-sort-cw-stage-C-r1",
@@ -219,7 +279,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "unresolved:rcpt-2026-10-03-2026-10-03-seeded-word-s",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "rcpt-2026-10-03-2026-10-03-seeded-word-sort-mf-stage-C-r1",
@@ -235,7 +300,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "unresolved:rcpt-2026-10-03-2026-10-03-seeded-word-s",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "rcpt-2026-10-03-2026-10-03-seeded-word-sort-stage-C-r1",
@@ -251,7 +321,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "unresolved:rcpt-2026-10-03-2026-10-03-seeded-word-s",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "rcpt-2026-10-03-seeded-word-sort-eval-20261003-121534",
@@ -267,7 +342,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "unresolved:rcpt-2026-10-03-seeded-word-sort-eval-20",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "rcpt-2026-10-03-seeded-word-sort-regrade-fr-ugw-20261003",
@@ -283,7 +363,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "434e7162bd45",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": true
     },
     {
       "id": "replay-2026-10-03-seeded-word-sort-replay-20261003-122309",
@@ -299,7 +384,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True."
+      "label_rationale": "fr-beu replay verdict; expected=green, replay reproduced=True.",
+      "content_id": "unresolved:replay-2026-10-03-seeded-word-sort-repla",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "replayexp-2026-10-03-seeded-word-sort-replay-20261003-122309",
@@ -315,7 +405,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match)."
+      "label_rationale": "fr-beu replay expectation (the pinned pre-replay decision this replay had to match).",
+      "content_id": "unresolved:replayexp-2026-10-03-seeded-word-sort-re",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "rcpt-2026-10-04-2026-10-04-new-releases-stage-C-r1",
@@ -331,7 +426,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules."
+      "label_rationale": "Raw judge verdict 'green' agrees with the evaluate.md deterministic rules.",
+      "content_id": "unresolved:rcpt-2026-10-04-2026-10-04-new-releases-",
+      "content_family": "family:new-releases",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "ledger-01-2026-10-02-py-reachability-gate",
@@ -347,7 +447,12 @@
       "raw_judge_verdict": "revise",
       "label": "revise",
       "category": "standard",
-      "label_rationale": "Stage C verdict recorded in the nightly ledger with its evidence fields; outcome was NO PR (candidate not green)."
+      "label_rationale": "Stage C verdict recorded in the nightly ledger with its evidence fields; outcome was NO PR (candidate not green).",
+      "content_id": "unresolved:ledger-01-2026-10-02-py-reachability-gat",
+      "content_family": "family:py-reachability",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "not reproduced (rule 1, mechanical)",
+      "candidate_resolvable": false
     },
     {
       "id": "ledger-04-2026-10-02-discovery-filter",
@@ -363,7 +468,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules.",
+      "content_id": "unresolved:ledger-04-2026-10-02-discovery-filter",
+      "content_family": "family:discovery-filter",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": false
     },
     {
       "id": "ledger-06-2026-10-02-top-agent-repos",
@@ -379,7 +489,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Merged PR; human-completed manual merge after a green evaluator verdict (PR #20). Label is the merged, human-accepted green."
+      "label_rationale": "Merged PR; human-completed manual merge after a green evaluator verdict (PR #20). Label is the merged, human-accepted green.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true
     },
     {
       "id": "ledger-11-2026-10-03-seeded-word-sort",
@@ -395,7 +510,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules.",
+      "content_id": "434e7162bd45",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": true
     },
     {
       "id": "ledger-12-2026-10-03-seeded-word-sort",
@@ -411,7 +531,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules.",
+      "content_id": "434e7162bd45",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": true
     },
     {
       "id": "ledger-13-2026-10-03-seeded-word-sort-mf",
@@ -427,7 +552,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules.",
+      "content_id": "422cd342ff9d",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": true
     },
     {
       "id": "ledger-17-2026-10-03-seeded-word-sort-cw",
@@ -443,7 +573,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules.",
+      "content_id": "4aa4fa72aeb5",
+      "content_family": "family:seeded-word-sort",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": true
     },
     {
       "id": "ledger-18-2026-10-04-new-releases",
@@ -459,7 +594,12 @@
       "raw_judge_verdict": "green",
       "label": "green",
       "category": "standard",
-      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules."
+      "label_rationale": "Ledger-embedded evaluator verdict; label derived from the evaluate.md rules.",
+      "content_id": "191241df5b1f",
+      "content_family": "family:new-releases",
+      "deliberate_label": "green",
+      "deliberate_rationale": "no contradictory labels; consensus green",
+      "candidate_resolvable": true
     },
     {
       "id": "edge-2026-10-02-top-agent-repos-strawman-blocking",
@@ -475,7 +615,13 @@
       "raw_judge_verdict": null,
       "label": "revise",
       "category": "edge",
-      "label_rationale": "Grader-bug class: an evaluator once called this baseline a strawman. Under evaluate.md rule 2, a baseline defined in recipe.md as the manual approach is judged as defined; blocking must be concrete. The durable lesson (the 2026-10-02 misgrade) is pinned here as a blocking revise."
+      "label_rationale": "Grader-bug class: an evaluator once called this baseline a strawman. Under evaluate.md rule 2, a baseline defined in recipe.md as the manual approach is judged as defined; blocking must be concrete. The durable lesson (the 2026-10-02 misgrade) is pinned here as a blocking revise.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "strawman baseline per deliberate edge judgment; historical green labels on identical content are verdict variance, superseded",
+      "candidate_resolvable": true,
+      "variant_status": "deliberate-base-content-label"
     },
     {
       "id": "edge-2026-10-02-top-agent-repos-fair-only-non-blocking",
@@ -491,7 +637,13 @@
       "raw_judge_verdict": null,
       "label": "green",
       "category": "edge",
-      "label_rationale": "A stronger imaginable comparator belongs in non_blocking, never blocking (evaluate.md rule 2/3); with no blocking issues the verdict is green. Trap for judges that inflate notes into blockers."
+      "label_rationale": "A stronger imaginable comparator belongs in non_blocking, never blocking (evaluate.md rule 2/3); with no blocking issues the verdict is green. Trap for judges that inflate notes into blockers.",
+      "content_id": "e5f5ba0de9cd",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": null,
+      "deliberate_rationale": "variant not materialized: identical candidate content to base; the distinguishing modification was never built (2026-10-06). Untestable as constructed; do not score. Original label green preserved for history.",
+      "candidate_resolvable": true,
+      "variant_status": "not-materialized"
     },
     {
       "id": "edge-2026-10-02-py-reachability-not-reproduced",
@@ -507,7 +659,14 @@
       "raw_judge_verdict": null,
       "label": "revise",
       "category": "edge",
-      "label_rationale": "The 2026-10-02 dry-run candidate: cross-module name leakage + non-top-level reporting, test exit 1. Not reproduced, so it can never be green (evaluate.md rule 1/4)."
+      "label_rationale": "The 2026-10-02 dry-run candidate: cross-module name leakage + non-top-level reporting, test exit 1. Not reproduced, so it can never be green (evaluate.md rule 1/4).",
+      "content_id": "2f527a952327",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "materialized 2026-10-06: execution.json test exit=1; rule 1 makes reproduced a machine fact, judge may not green (fr-y3s)",
+      "candidate_resolvable": true,
+      "variant_status": "materialized",
+      "variant_dir": "/Users/josh/Developer/franken-research/probes/daily-candidates/2026-10-02-top-agent-repos-variant-not-reproduced"
     },
     {
       "id": "edge-2026-10-02-py-reachability-test-only-fail",
@@ -523,7 +682,14 @@
       "raw_judge_verdict": null,
       "label": "revise",
       "category": "edge",
-      "label_rationale": "Minimal non-green variant: only the reproduction fact fails. Rule 1 makes reproduced a machine fact; a judge may not green an unreproduced candidate on plausibility."
+      "label_rationale": "Minimal non-green variant: only the reproduction fact fails. Rule 1 makes reproduced a machine fact; a judge may not green an unreproduced candidate on plausibility.",
+      "content_id": "2f527a952327",
+      "content_family": "family:top-agent-repos",
+      "deliberate_label": "revise",
+      "deliberate_rationale": "materialized 2026-10-06: minimal non-green variant, only reproduction fails (fr-y3s)",
+      "candidate_resolvable": true,
+      "variant_status": "materialized",
+      "variant_dir": "/Users/josh/Developer/franken-research/probes/daily-candidates/2026-10-02-top-agent-repos-variant-test-only-fail"
     }
   ]
 }
