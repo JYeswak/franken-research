@@ -1170,8 +1170,9 @@ fi
 k_report K5 "adopted incumbents have a checked license, named when not permissive"
 
 # ============ Gate L: no personal email addresses ============
-# Every git-tracked text file in the repo. Allowed: noreply@*, *@users.noreply.github.com, and the
-# starter kit's documented placeholder you@example.com (starter-kit/README.md, starter-kit/scripts/init.sh).
+# Every git-tracked text file in the repo. Allowed: noreply@*, *@users.noreply.github.com, the
+# starter kit's documented placeholder you@example.com (starter-kit/README.md, starter-kit/scripts/init.sh),
+# and git@github.com (an SSH remote host reference, not a personal address).
 echo "== L  no personal email addresses =="
 L_OUT="$(python3 - <<'PYEOF'
 import re, os, subprocess
@@ -1179,7 +1180,8 @@ root = os.environ['REPO_ROOT']
 EMAIL = re.compile(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}')
 def allowed(e):
     e = e.lower()
-    return e.startswith('noreply@') or e.endswith('@users.noreply.github.com') or e == 'you@example.com'
+    return (e.startswith('noreply@') or e.endswith('@users.noreply.github.com')
+            or e == 'you@example.com' or e == 'git@github.com')
 p = subprocess.run(['git', '-C', root, 'ls-files', '-z'], capture_output=True)
 files = [f for f in p.stdout.decode('utf-8', 'replace').split('\0') if f] if p.returncode == 0 else []
 hits, scanned = [], 0

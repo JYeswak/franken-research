@@ -79,6 +79,21 @@ class CandidateShape(unittest.TestCase):
             self.assertEqual(cs.check_candidate(candidate), [],
                              candidate.name)
 
+    def test_calibration_fixture_marker_is_excluded(self):
+        root = pathlib.Path(self.t.name) / "fakeroot"
+        dc = root / "probes" / "daily-candidates"
+        marked = dc / "2026-10-02-some-variant"
+        marked.mkdir(parents=True)
+        (marked / "CALIBRATION-FIXTURE.md").write_text(
+            "# calibration fixture\n")
+        plain = dc / "2026-10-03-normal"
+        plain.mkdir()
+        self.assertEqual([p.name for p in cs.find_candidates(root)],
+                         ["2026-10-03-normal"])
+        self.assertEqual(
+            [p.name for p in cs.find_calibration_fixtures(root)],
+            ["2026-10-02-some-variant"])
+
 
 if __name__ == "__main__":
     unittest.main()

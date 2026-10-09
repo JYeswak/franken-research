@@ -316,10 +316,12 @@ copy of the tree (see History).
 **What:** every git-tracked text file in the repository (`git ls-files`,
 binary files skipped by a NUL byte in the first 8 KB) is scanned for
 `[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}`. Allowed: `noreply@*`,
-`*@users.noreply.github.com`, and `you@example.com`, the starter kit's
-documented placeholder in its `git config --global user.email` instructions
-(`starter-kit/README.md:36`, `starter-kit/scripts/init.sh:53`, and their
-`site/starter-kit/` copies). Any other address fails with `file:line`. A
+`*@users.noreply.github.com`, `you@example.com` (the starter kit's
+documented placeholder in its `git config --global user.email` instructions:
+`starter-kit/README.md:36`, `starter-kit/scripts/init.sh:53`, and their
+`site/starter-kit/` copies), and `git@github.com` (an SSH remote host
+reference, e.g. in bead descriptions about switching the git remote - not a
+personal address). Any other address fails with `file:line`. A
 failed `git ls-files` or zero scanned files fails.
 **Why:** commit-author email addresses leaked into published files twice:
 first in the original assessment packets, then in a movement census of the

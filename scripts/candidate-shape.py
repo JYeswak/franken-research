@@ -21,7 +21,10 @@ Commands (run from the repo root):
   python3 scripts/candidate-shape.py verify [--root PATH] [DIR ...]
 
 With no DIR, every directory under <root>/probes/daily-candidates/ is
-checked. Exit status: 0 iff every candidate conforms.
+checked, except directories carrying a CALIBRATION-FIXTURE.md marker file:
+those are intentional negative calibration fixtures (fr-y3s), not nightly
+candidates, and find_candidates() skips them. Exit status: 0 iff every
+candidate conforms.
 Stdlib only. See docs/fixtures.md.
 """
 import argparse
@@ -53,6 +56,11 @@ EXPECTED_RUNS = (
     "candidate/transfer",
     "test",
 )
+
+# Directories containing this marker file are intentional negative
+# calibration fixtures (fr-y3s): find_candidates() skips them so the
+# conformance gate stays green without deleting calibration material.
+CALIBRATION_MARKER = "CALIBRATION-FIXTURE.md"
 
 
 def sha256(data: bytes) -> str:
@@ -152,11 +160,26 @@ def find_candidates(root: Path) -> list[Path]:
     base = root / "probes" / "daily-candidates"
     if not base.is_dir():
         return []
-    return sorted(p for p in base.iterdir() if p.is_dir())
+    return sorted(
+        p for p in base.iterdir()
+        if p.is_dir() and not (p / CALIBRATION_MARKER).is_file()
+    )
+
+
+def find_calibration_fixtures(root: Path) -> list[Path]:
+    """Intentional negative fixtures: dirs carrying the marker file."""
+    base = root / "probes" / "daily-candidates"
+    if not base.is_dir():
+        return []
+    return sorted(
+        p for p in base.iterdir()
+        if p.is_dir() and (p / CALIBRATION_MARKER).is_file()
+    )
 
 
 def cmd_verify(root: Path, dirs: list[Path]) -> int:
     candidates = dirs or find_candidates(root)
+    excluded = [] if dirs else find_calibration_fixtures(root)
     if not candidates:
         print("candidate-shape: no candidate directories found")
         return 1
@@ -170,8 +193,12 @@ def cmd_verify(root: Path, dirs: list[Path]) -> int:
                 print(f"  {problem}")
         else:
             print(f"CONFORMING  {candidate.name}")
-    print(f"candidate-shape: {len(candidates) - failed}/{len(candidates)} "
-          f"conforming")
+    summary = (f"candidate-shape: {len(candidates) - failed}/{len(candidates)} "
+               f"conforming")
+    if excluded:
+        summary += (" (calibration fixtures excluded: "
+                    + ", ".join(p.name for p in excluded) + ")")
+    print(summary)
     return 1 if failed else 0
 
 
