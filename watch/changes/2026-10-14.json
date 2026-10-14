@@ -1,0 +1,1022 @@
+{
+  "baseline": false,
+  "date": "2026-10-14",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "6 files at b67dad4",
+      "before": "5 files at f3c00b7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/b67dad417c1826b82b3d15777238b9a4fb9b9649/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/compare/f3c00b742756692567539037c48745dfc3e87f5a...b67dad417c1826b82b3d15777238b9a4fb9b9649",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/actions"
+      ],
+      "ident": "41772941de6b",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_agent_detection",
+      "summary": "The .github/workflows file set changed: +remote-mirror-520.yml.",
+      "title": "[watch] franken_agent_detection: workflows +1 -0 (6 now)",
+      "value": "41772941de6b"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "28 files at f8e2d49",
+      "before": "25 files at a0d7ba2",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_engine/tree/f8e2d49178ed326a4c3563c239ed909f7a68adae/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_engine/compare/a0d7ba207e27a429c5e6b13f15fc0d69e4e1ebc4...f8e2d49178ed326a4c3563c239ed909f7a68adae",
+        "https://github.com/Dicklesworthstone/franken_engine/actions"
+      ],
+      "ident": "3afefadbdf96",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_engine",
+      "summary": "The .github/workflows file set changed: +runtime-builtin-semantics.yml, +runtime-value-provenance.yml, +set-algebra-runtime.yml.",
+      "title": "[watch] franken_engine: workflows +3 -0 (28 now)",
+      "value": "3afefadbdf96"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "140 files at b78c5e4",
+      "before": "109 files at c61d665",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/b78c5e4cdac7c0e3d65120f1be266c12b4c31f5e/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/c61d665e2a69c7ddd9f2b8912dc717480ecbbd99...b78c5e4cdac7c0e3d65120f1be266c12b4c31f5e",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "c0b1a42d630a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +captured-context-pruning.yml, +checker-instantiation.yml, +fln-array-construction-landing.yml, +fln-array-fold-model.yml, +fln-array-fold.yml, +fln-array-updates-landing.yml, +fln-checker-shared-arenas-selfhosted.yml, +fln-checker-shared-arenas.yml, +fln-empty-matches-landing.yml, +fln-ground-conversion-landing.yml, +fln-initializer-metadata.yml, +fln-instance-selection-landing.yml, +fln-namespace-opens.yml, +fln-notation-scope.yml, +fln-numeric-transparency-landing.yml, +fln-runtime-bare-universes.yml, +fln-runtime-universe-landing.yml, +fln-source-session.yml, +fln-text-patterns-transfer.yml, +fln-well-founded.yml, +guard-spec-landing.yml, +ir-archive-landing.yml, +ir-validation.yml, +native-loop-integration.yml, +native-matrix-regressions.yml, +native-proof-work-session.yml, +native-runtime-reliability.yml, +native-stream-execution.yml, +offline-development-inputs.yml, +partial-source-transfer.yml, +repeat-until-regressions.yml.",
+      "title": "[watch] franken_lean: workflows +31 -0 (140 now)",
+      "value": "c0b1a42d630a"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "115 files at 0b5fcb7",
+      "before": "107 files at 6c5dd1c",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/0b5fcb7f9f2327bb3157ee33b0e4e4c709099e9d/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/6c5dd1c97e11299b329c9aa802694d5c66299542...0b5fcb7f9f2327bb3157ee33b0e4e4c709099e9d",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "d2638eb83774",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +audio-fidelity.yml, +native-coordinate-placement.yml, +native-default-records.yml, +native-frame-preparation.yml, +native-methods.yml, +native-text-matching-regressions.yml, +native-text-matching-tests.yml, +video-fidelity.yml.",
+      "title": "[watch] franken_manim: workflows +8 -0 (115 now)",
+      "value": "d2638eb83774"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "57 files at 3056380",
+      "before": "55 files at f449bc7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_node/tree/3056380846bcfb5ec838dacd4d81c5a60825887c/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_node/compare/f449bc7ec0f9bda28f25efde6937b7a2c36542a1...3056380846bcfb5ec838dacd4d81c5a60825887c",
+        "https://github.com/Dicklesworthstone/franken_node/actions"
+      ],
+      "ident": "80d900c16bc7",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_node",
+      "summary": "The .github/workflows file set changed: +native-dependency-admission.yml, +release-installation.yml.",
+      "title": "[watch] franken_node: workflows +2 -0 (57 now)",
+      "value": "80d900c16bc7"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "11 files at 1f4df32",
+      "before": "10 files at f3198a4",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_numpy/tree/1f4df32e7fbe038e884acec8a7fe903130654ff6/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_numpy/compare/f3198a4ce901bceabc8d9c47cf12d905d220bc2c...1f4df32e7fbe038e884acec8a7fe903130654ff6",
+        "https://github.com/Dicklesworthstone/franken_numpy/actions"
+      ],
+      "ident": "ab96ff6532e4",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_numpy",
+      "summary": "The .github/workflows file set changed: +dropin.yml.",
+      "title": "[watch] franken_numpy: workflows +1 -0 (11 now)",
+      "value": "ab96ff6532e4"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "37 files at 4403619",
+      "before": "36 files at cb93bdb",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_remote/tree/44036192104cfc33b5b89dce1a0f205cd4847f82/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_remote/compare/cb93bdb19cc5d2c806b0bae5addfdf94685472d0...44036192104cfc33b5b89dce1a0f205cd4847f82",
+        "https://github.com/Dicklesworthstone/franken_remote/actions"
+      ],
+      "ident": "0d747a449a88",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_remote",
+      "summary": "The .github/workflows file set changed: +observation-indicator.yml.",
+      "title": "[watch] franken_remote: workflows +1 -0 (37 now)",
+      "value": "0d747a449a88"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "13 files at e269fb9",
+      "before": "3 files at 349cb42",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/e269fb92a777aa5519ff2f5f611bda1fc547dea6/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/compare/349cb42ad50ba18fec3d9ccc31aabe3eb9ec2a7a...e269fb92a777aa5519ff2f5f611bda1fc547dea6",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/actions"
+      ],
+      "ident": "141481776cc6",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_surveillance_system",
+      "summary": "The .github/workflows file set changed: +acquisition-recovery-reference.yml, +belief-provenance.yml, +file-video-stream.yml, +native-supervision.yml, +reference-rust.yml, +rtp-decode.yml, +rtp-tracking-smoke.yml, +rtsp-capture-smoke.yml, +rtsp-reconnect-recovery.yml, +video-publication.yml.",
+      "title": "[watch] franken_surveillance_system: workflows +10 -0 (13 now)",
+      "value": "141481776cc6"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "8 files at d7cee62",
+      "before": "7 files at 8b67b60",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenfs/tree/d7cee62f1ba087f902c98cbeeeea9643efca0b02/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenfs/compare/8b67b606c5096795dd7d94d3a57c6067a605ec1a...d7cee62f1ba087f902c98cbeeeea9643efca0b02",
+        "https://github.com/Dicklesworthstone/frankenfs/actions"
+      ],
+      "ident": "f4bc387ad395",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenfs",
+      "summary": "The .github/workflows file set changed: +btrfs-free-space.yml.",
+      "title": "[watch] frankenfs: workflows +1 -0 (8 now)",
+      "value": "f4bc387ad395"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "30 files at caca3c0",
+      "before": "15 files at d30532e",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/caca3c0a59655ee452b6fa17c0c762abc50fc2fc/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/d30532ee34435303093101792b28e8b52df2b4cb...caca3c0a59655ee452b6fa17c0c762abc50fc2fc",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "3db55973a01d",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +ebr-safety.yml, +membrane-access.yml, +native-caller-lookup.yml, +native-global-resolver.yml, +native-initfirst.yml, +native-kernel-dns-entropy.yml, +native-raw-resolver.yml, +native-resolver-completion.yml, +native-stateful-resolver.yml, +native-unique-symbols.yml, +recvmsg-safety.yml, +segment-mapping.yml, +socket-address-safety.yml, +socket-message-safety.yml, +vectored-io-safety.yml.",
+      "title": "[watch] frankenlibc: workflows +15 -0 (30 now)",
+      "value": "3db55973a01d"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "10 files at 3a34d3e",
+      "before": "8 files at 25a6745",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/3a34d3e1c4537a1e3b59ae226133a00cea71f444/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensearch/compare/25a674579874c4835bcc16a88783afa7186d1099...3a34d3e1c4537a1e3b59ae226133a00cea71f444",
+        "https://github.com/Dicklesworthstone/frankensearch/actions"
+      ],
+      "ident": "b6bcff9a178a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensearch",
+      "summary": "The .github/workflows file set changed: +apply-reviewed-quill-receipts.yml, +quill-local-receipts.yml.",
+      "title": "[watch] frankensearch: workflows +2 -0 (10 now)",
+      "value": "b6bcff9a178a"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "16 files at 39808d7",
+      "before": "11 files at 2aa41a0",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/39808d73d7ec31860740884b1bfc12dca3bab990/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/2aa41a07c45ea767978452f04354441c381931e5...39808d73d7ec31860740884b1bfc12dca3bab990",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "8d2505b12582",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +cooling-design.yml, +deposition-physics.yml, +factor-assimilation.yml, +physics-newton.yml, +source-snapshot.yml.",
+      "title": "[watch] frankensim: workflows +5 -0 (16 now)",
+      "value": "8d2505b12582"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "13 files at 2a3d66e",
+      "before": "9 files at 07cf6c5",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/2a3d66e463b8c4efc70ac2b3f1e58fc888e522b1/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensqlite/compare/07cf6c5a6b9f033217581405cf1ffdd11c9f9d44...2a3d66e463b8c4efc70ac2b3f1e58fc888e522b1",
+        "https://github.com/Dicklesworthstone/frankensqlite/actions"
+      ],
+      "ident": "1c2cae77cf64",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensqlite",
+      "summary": "The .github/workflows file set changed: +gh493-schema-only-cte.yml, +gh494-memory-commit.yml, +gh510-savepoint-wal.yml, +gh510-wal-savepoint.yml.",
+      "title": "[watch] frankensqlite: workflows +4 -0 (13 now)",
+      "value": "1c2cae77cf64"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "3 files at bb922f4",
+      "before": "2 files at 02abeae",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankentorch/tree/bb922f4168342ddf3ee38fdaa1d2655538ef1862/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankentorch/compare/02abeae1339c78fcb6a27102b1edc12e30fc2b67...bb922f4168342ddf3ee38fdaa1d2655538ef1862",
+        "https://github.com/Dicklesworthstone/frankentorch/actions"
+      ],
+      "ident": "3e981b74b41b",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankentorch",
+      "summary": "The .github/workflows file set changed: +registry-dependency-packages.yml.",
+      "title": "[watch] frankentorch: workflows +1 -0 (3 now)",
+      "value": "3e981b74b41b"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1412549980",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1412549980",
+        "https://github.com/Dicklesworthstone/franken_accounting"
+      ],
+      "ident": "1412549980",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "franken_accounting",
+      "summary": "New public repository Dicklesworthstone/franken_accounting (Rust, created 2026-10-09; description: \"Universal, evidence-native double-entry accounting system of record in Rust on FrankenGraphDB: bitemporal, append-only with first-class restatements, exact money algebra, counterfactual branches, in-database forensic analytics, outsider-verifiable proofs, and an agent-first CLI/MCP surface for CPAs, regulators, litigators, and investigators.\"). Assessment candidate: the name starts with franken; its primary language is Rust; its description says \"in Rust\".",
+      "title": "[watch] franken_accounting: new public repo",
+      "value": "1412549980"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.8 -> 99ae86c, published 2026-10-11T05:33:34Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/releases/tag/v0.3.8",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/releases/tags/v0.3.8",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/commit/99ae86cdf8c71c53cec1df5760766038eca20375"
+      ],
+      "ident": "v0.3.8",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New GitHub release v0.3.8.",
+      "title": "[watch] franken_agent_detection: release v0.3.8",
+      "value": "99ae86cdf8c71c53cec1df5760766038eca20375"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.9 -> 615c418, published 2026-10-11T05:33:36Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/releases/tag/v0.3.9",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/releases/tags/v0.3.9",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/commit/615c418e90576a7889eb2080332d2ed860bf7bcc"
+      ],
+      "ident": "v0.3.9",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New GitHub release v0.3.9.",
+      "title": "[watch] franken_agent_detection: release v0.3.9",
+      "value": "615c418e90576a7889eb2080332d2ed860bf7bcc"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.3.10 -> 52bd86c (2026-10-11T08:42:40Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/v0.3.10",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/git/ref/tags/v0.3.10"
+      ],
+      "ident": "v0.3.10",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New tag v0.3.10 (no GitHub release for it at this check).",
+      "title": "[watch] franken_agent_detection: tag v0.3.10",
+      "value": "52bd86c710a1f1512f399f795e79be8f2623ca7c"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.3.4 -> efe0cd6 (2026-10-05T22:19:14Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/v0.3.4",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/git/ref/tags/v0.3.4"
+      ],
+      "ident": "v0.3.4",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New tag v0.3.4 (no GitHub release for it at this check).",
+      "title": "[watch] franken_agent_detection: tag v0.3.4",
+      "value": "efe0cd6c6a7f47d42cd42ccaec8dc14148e8dd91"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.3.5 -> 4a2c4d0 (2026-10-05T22:57:29Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/v0.3.5",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/git/ref/tags/v0.3.5"
+      ],
+      "ident": "v0.3.5",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New tag v0.3.5 (no GitHub release for it at this check).",
+      "title": "[watch] franken_agent_detection: tag v0.3.5",
+      "value": "4a2c4d035d74049655872673cbbc75965fcb9d39"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.3.6 -> c4ea8ba (2026-10-07T04:25:51Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/v0.3.6",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/git/ref/tags/v0.3.6"
+      ],
+      "ident": "v0.3.6",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New tag v0.3.6 (no GitHub release for it at this check).",
+      "title": "[watch] franken_agent_detection: tag v0.3.6",
+      "value": "c4ea8ba30590a3f442e2a30e09d5172052cff138"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.3.7 -> 6e115ec (2026-10-07T09:54:04Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/tree/v0.3.7",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/git/ref/tags/v0.3.7"
+      ],
+      "ident": "v0.3.7",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New tag v0.3.7 (no GitHub release for it at this check).",
+      "title": "[watch] franken_agent_detection: tag v0.3.7",
+      "value": "6e115ecfd5b55dfed2fb95c3c2abf3c5ccee0ea2"
+    },
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1408320298",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1408320298",
+        "https://github.com/Dicklesworthstone/franken_manim_hoeffding_explainer"
+      ],
+      "ident": "1408320298",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "franken_manim_hoeffding_explainer",
+      "summary": "New public repository Dicklesworthstone/franken_manim_hoeffding_explainer (Rust, created 2026-10-07; description: \"A narrated 3Blue1Brown-style explainer of Hoeffding's D, rendered end to end in Rust by franken_manim\"). Assessment candidate: the name starts with franken; its primary language is Rust; its description says \"in Rust\".",
+      "title": "[watch] franken_manim_hoeffding_explainer: new public repo",
+      "value": "1408320298"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.6.0 -> e6508bf, published 2026-10-14T08:09:53Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/releases/tag/v0.6.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/releases/tags/v0.6.0",
+        "https://github.com/Dicklesworthstone/franken_markdown/commit/e6508bf82f3df7844c2aca23f5fa8379197e8267"
+      ],
+      "ident": "v0.6.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New GitHub release v0.6.0.",
+      "title": "[watch] franken_markdown: release v0.6.0",
+      "value": "e6508bf82f3df7844c2aca23f5fa8379197e8267"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.0 -> e84c526, published 2026-10-08T01:43:22Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_numpy/releases/tag/v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_numpy/releases/tags/v0.4.0",
+        "https://github.com/Dicklesworthstone/franken_numpy/commit/e84c5267c43f875786039f23a97e3b6e8981cf5e"
+      ],
+      "ident": "v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_numpy",
+      "summary": "New GitHub release v0.4.0.",
+      "title": "[watch] franken_numpy: release v0.4.0",
+      "value": "e84c5267c43f875786039f23a97e3b6e8981cf5e"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.5.0 -> 08c2446, published 2026-10-14T10:10:52Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_numpy/releases/tag/v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_numpy/releases/tags/v0.5.0",
+        "https://github.com/Dicklesworthstone/franken_numpy/commit/08c2446cf2913504457b18805d7b01ee7705581e"
+      ],
+      "ident": "v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_numpy",
+      "summary": "New GitHub release v0.5.0.",
+      "title": "[watch] franken_numpy: release v0.5.0",
+      "value": "08c2446cf2913504457b18805d7b01ee7705581e"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "2 files at 3d4fc31",
+      "before": "0 files at 063182c",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_overlap/tree/3d4fc31696dd764076ae98ec02f52e16aa45026f/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_overlap/compare/063182c85d3f3679ef0923a3ce780e8443c9d388...3d4fc31696dd764076ae98ec02f52e16aa45026f",
+        "https://github.com/Dicklesworthstone/franken_overlap/actions"
+      ],
+      "ident": "97581eabfe59",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_overlap",
+      "summary": "The .github/workflows file set changed: +release.yml, +verify-release.yml.",
+      "title": "[watch] franken_overlap: workflows +2 -0 (2 now)",
+      "value": "97581eabfe59"
+    },
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1416212647",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1416212647",
+        "https://github.com/Dicklesworthstone/franken_textiles"
+      ],
+      "ident": "1416212647",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "franken_textiles",
+      "summary": "New public repository Dicklesworthstone/franken_textiles (Rust, created 2026-10-12; description: \"Sewing patterns that demonstrably sew together and fit a specific body, in Rust/Wasm: measured drafting and seam/ease validation, the Anny body model (newborn to adult) fitted from tape, photos and video, a contact-correct cloth drape solver, and print-at-home PDF, DXF, HPGL, cutter and embroidery exports.\"). Assessment candidate: the name starts with franken; its primary language is Rust; its description says \"in Rust\".",
+      "title": "[watch] franken_textiles: new public repo",
+      "value": "1416212647"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.11.0 -> ceb5020, published 2026-10-13T23:07:54Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_whisper/releases/tag/v0.11.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_whisper/releases/tags/v0.11.0",
+        "https://github.com/Dicklesworthstone/franken_whisper/commit/ceb5020e46af22d4f33768326a06b95137e7878f"
+      ],
+      "ident": "v0.11.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_whisper",
+      "summary": "New GitHub release v0.11.0.",
+      "title": "[watch] franken_whisper: release v0.11.0",
+      "value": "ceb5020e46af22d4f33768326a06b95137e7878f"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "1 files at c6ac6f5",
+      "before": "0 files at 9bf4d9e",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_whisper/tree/c6ac6f5bc217a7bebdf1e1d2b73722914eafb9b6/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_whisper/compare/9bf4d9e1be8a667fa12be96259bf9debe407ffbe...c6ac6f5bc217a7bebdf1e1d2b73722914eafb9b6",
+        "https://github.com/Dicklesworthstone/franken_whisper/actions"
+      ],
+      "ident": "e946a98ee917",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_whisper",
+      "summary": "The .github/workflows file set changed: +registry-release.yml.",
+      "title": "[watch] franken_whisper: workflows +1 -0 (1 now)",
+      "value": "e946a98ee917"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "1 files at acde8c5",
+      "before": "0 files at 4f04dd8",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenjax/tree/acde8c553b35ee2dbd054a1316bd721706644793/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenjax/compare/4f04dd82ace83f609eedd232839244ce872bb4ce...acde8c553b35ee2dbd054a1316bd721706644793",
+        "https://github.com/Dicklesworthstone/frankenjax/actions"
+      ],
+      "ident": "a87c29165628",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenjax",
+      "summary": "The .github/workflows file set changed: +registry-dependency-packages.yml.",
+      "title": "[watch] frankenjax: workflows +1 -0 (1 now)",
+      "value": "a87c29165628"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.0 -> d5ade10, published 2026-10-08T15:52:13Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenmermaid/releases/tag/v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenmermaid/releases/tags/v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenmermaid/commit/d5ade10ac414a8c9eb07bd42b3df6a62c6474f6f"
+      ],
+      "ident": "v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenmermaid",
+      "summary": "New GitHub release v0.4.0.",
+      "title": "[watch] frankenmermaid: release v0.4.0",
+      "value": "d5ade10ac414a8c9eb07bd42b3df6a62c6474f6f"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-frankentui-v0.5.0 -> 0bb95bc, published 2026-10-08T13:29:13Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-frankentui-v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-frankentui-v0.5.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+      ],
+      "ident": "fp-frankentui-v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-frankentui-v0.5.0.",
+      "title": "[watch] frankenpandas: release fp-frankentui-v0.5.0",
+      "value": "0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-frankentui-v0.6.0 -> 0d5d693, published 2026-10-14T08:59:56Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-frankentui-v0.6.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-frankentui-v0.6.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0d5d693036254cdf578918b885098afa705fdaa0"
+      ],
+      "ident": "fp-frankentui-v0.6.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-frankentui-v0.6.0.",
+      "title": "[watch] frankenpandas: release fp-frankentui-v0.6.0",
+      "value": "0d5d693036254cdf578918b885098afa705fdaa0"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-python-v0.5.0 -> 0bb95bc, published 2026-10-08T13:29:14Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-python-v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-python-v0.5.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+      ],
+      "ident": "fp-python-v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-python-v0.5.0.",
+      "title": "[watch] frankenpandas: release fp-python-v0.5.0",
+      "value": "0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release fp-python-v0.6.0 -> 0d5d693, published 2026-10-14T08:59:55Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/fp-python-v0.6.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/fp-python-v0.6.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0d5d693036254cdf578918b885098afa705fdaa0"
+      ],
+      "ident": "fp-python-v0.6.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release fp-python-v0.6.0.",
+      "title": "[watch] frankenpandas: release fp-python-v0.6.0",
+      "value": "0d5d693036254cdf578918b885098afa705fdaa0"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release frankenpandas-v0.5.0 -> 0bb95bc, published 2026-10-08T13:29:15Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/frankenpandas-v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/frankenpandas-v0.5.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+      ],
+      "ident": "frankenpandas-v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release frankenpandas-v0.5.0.",
+      "title": "[watch] frankenpandas: release frankenpandas-v0.5.0",
+      "value": "0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release frankenpandas-v0.6.0 -> 0d5d693, published 2026-10-14T08:59:53Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/frankenpandas-v0.6.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/frankenpandas-v0.6.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0d5d693036254cdf578918b885098afa705fdaa0"
+      ],
+      "ident": "frankenpandas-v0.6.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release frankenpandas-v0.6.0.",
+      "title": "[watch] frankenpandas: release frankenpandas-v0.6.0",
+      "value": "0d5d693036254cdf578918b885098afa705fdaa0"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.5.0 -> 0bb95bc, published 2026-10-11T15:27:12Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/v0.5.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/v0.5.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+      ],
+      "ident": "v0.5.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release v0.5.0.",
+      "title": "[watch] frankenpandas: release v0.5.0",
+      "value": "0bb95bcef74d3a4e7315e13cf5b7a1e1674f7dc8"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.6.0 -> 0d5d693, published 2026-10-14T09:02:43Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenpandas/releases/tag/v0.6.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenpandas/releases/tags/v0.6.0",
+        "https://github.com/Dicklesworthstone/frankenpandas/commit/0d5d693036254cdf578918b885098afa705fdaa0"
+      ],
+      "ident": "v0.6.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenpandas",
+      "summary": "New GitHub release v0.6.0.",
+      "title": "[watch] frankenpandas: release v0.6.0",
+      "value": "0d5d693036254cdf578918b885098afa705fdaa0"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.1.2 -> e7ab7cf, published 2026-10-13T23:28:49Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenredis/releases/tag/v0.1.2",
+        "https://api.github.com/repos/Dicklesworthstone/frankenredis/releases/tags/v0.1.2",
+        "https://github.com/Dicklesworthstone/frankenredis/commit/e7ab7cfabbebaf70f31f6a6415efed190279c11e"
+      ],
+      "ident": "v0.1.2",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenredis",
+      "summary": "New GitHub release v0.1.2.",
+      "title": "[watch] frankenredis: release v0.1.2",
+      "value": "e7ab7cfabbebaf70f31f6a6415efed190279c11e"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.0 -> 1a9014d, published 2026-10-14T15:34:50Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenscipy/releases/tag/v0.4.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankenscipy/releases/tags/v0.4.0",
+        "https://github.com/Dicklesworthstone/frankenscipy/commit/1a9014dfbea653be88cefd3e5aa8de796df2c48e"
+      ],
+      "ident": "v0.4.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankenscipy",
+      "summary": "New GitHub release v0.4.0.",
+      "title": "[watch] frankenscipy: release v0.4.0",
+      "value": "1a9014dfbea653be88cefd3e5aa8de796df2c48e"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v1.12.3 -> cc52826, published 2026-10-05T19:46:51Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/releases/tag/v1.12.3",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/releases/tags/v1.12.3",
+        "https://github.com/Dicklesworthstone/frankensearch/commit/cc528269c66ce89f640b860aff80992cc2333704"
+      ],
+      "ident": "v1.12.3",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New GitHub release v1.12.3.",
+      "title": "[watch] frankensearch: release v1.12.3",
+      "value": "cc528269c66ce89f640b860aff80992cc2333704"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag frankensearch-index-v0.4.1 -> 7476c3e (2026-10-11T01:21:28Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/frankensearch-index-v0.4.1",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/frankensearch-index-v0.4.1"
+      ],
+      "ident": "frankensearch-index-v0.4.1",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag frankensearch-index-v0.4.1 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag frankensearch-index-v0.4.1",
+      "value": "7476c3e011e40fa4a9cd01fb4efa7bc3c0686258"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag frankensearch-index-v0.4.2 -> 6441195 (2026-10-12T14:37:09Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/frankensearch-index-v0.4.2",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/frankensearch-index-v0.4.2"
+      ],
+      "ident": "frankensearch-index-v0.4.2",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag frankensearch-index-v0.4.2 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag frankensearch-index-v0.4.2",
+      "value": "6441195a8597efb8592712a93aaaa87699078cb3"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag frankensearch-quill-v0.4.1 -> 735701a (2026-10-12T11:08:21Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensearch/tree/frankensearch-quill-v0.4.1",
+        "https://api.github.com/repos/Dicklesworthstone/frankensearch/git/ref/tags/frankensearch-quill-v0.4.1"
+      ],
+      "ident": "frankensearch-quill-v0.4.1",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensearch",
+      "summary": "New tag frankensearch-quill-v0.4.1 (no GitHub release for it at this check).",
+      "title": "[watch] frankensearch: tag frankensearch-quill-v0.4.1",
+      "value": "735701afe3ff9823c043d6d5e44b079a1729d540"
+    },
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1408019360",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1408019360",
+        "https://github.com/Dicklesworthstone/frankensonos"
+      ],
+      "ident": "1408019360",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "frankensonos",
+      "summary": "New public repository Dicklesworthstone/frankensonos (Rust, created 2026-10-06; description: \"Memory-safe Rust controller for your own Sonos speakers on your own LAN — reliable SSDP/UPnP-SOAP/GENA interoperability (S1 + S2), a Spotify-library classical DJ, and a CLI + HTTP API + MCP server so AI agents can run the house, including off-LAN over Tailscale.\"). Assessment candidate: the name starts with franken; its primary language is Rust.",
+      "title": "[watch] frankensonos: new public repo",
+      "value": "1408019360"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.10 -> 92aeb2b, published 2026-10-07T23:32:41Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/releases/tag/v0.4.10",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/releases/tags/v0.4.10",
+        "https://github.com/Dicklesworthstone/frankensqlite/commit/92aeb2b9762f2f38154fde74c4055959c6ebe294"
+      ],
+      "ident": "v0.4.10",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New GitHub release v0.4.10.",
+      "title": "[watch] frankensqlite: release v0.4.10",
+      "value": "92aeb2b9762f2f38154fde74c4055959c6ebe294"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.12 -> 26aa19a, published 2026-10-13T07:29:33Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/releases/tag/v0.4.12",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/releases/tags/v0.4.12",
+        "https://github.com/Dicklesworthstone/frankensqlite/commit/26aa19afcbd5afdb01658a10bb33417ad0b513be"
+      ],
+      "ident": "v0.4.12",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New GitHub release v0.4.12.",
+      "title": "[watch] frankensqlite: release v0.4.12",
+      "value": "26aa19afcbd5afdb01658a10bb33417ad0b513be"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fsqlite-vfs-v0.4.11 -> 3bb28e7 (2026-10-10T01:11:30Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/fsqlite-vfs-v0.4.11",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/git/ref/tags/fsqlite-vfs-v0.4.11"
+      ],
+      "ident": "fsqlite-vfs-v0.4.11",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New tag fsqlite-vfs-v0.4.11 (no GitHub release for it at this check).",
+      "title": "[watch] frankensqlite: tag fsqlite-vfs-v0.4.11",
+      "value": "3bb28e73168991913974c1a7b4bb0414b48765fa"
+    },
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1412716083",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1412716083",
+        "https://github.com/Dicklesworthstone/jeffs_math_explainer_videos"
+      ],
+      "ident": "1412716083",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "jeffs_math_explainer_videos",
+      "summary": "New public repository Dicklesworthstone/jeffs_math_explainer_videos (Rust, created 2026-10-10; description: \"Narrated, 3Blue1Brown-style 4K math explainer videos built in Rust with franken_manim (native TeX, no LaTeX, no Python) and voiced by FrankenTTS. Every number computed and oracle-checked, every line ASR-verified and never time-stretched, every frame looked at, with a warm procedural score under the voice.\"). Assessment candidate: its primary language is Rust; its description says \"in Rust\".",
+      "title": "[watch] jeffs_math_explainer_videos: new public repo",
+      "value": "1412716083"
+    }
+  ],
+  "since": "2026-10-05T11:32:16Z"
+}
