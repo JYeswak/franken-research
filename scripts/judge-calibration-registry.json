@@ -25,28 +25,39 @@
     },
     "groq/openai/gpt-oss-20b": {
       "lane": "groq/openai/gpt-oss-20b",
-      "n": 6,
-      "n_set": 32,
-      "agreement": 0.3333,
-      "kappa": 0.0769,
+      "n": 19,
+      "agreement": 0.7894736842105263,
+      "kappa": 0.4062,
       "bar": 0.6,
       "passes_bar": false,
       "precision": {
-        "green": 0.2,
+        "green": 0.7647,
         "revise": 1.0
       },
       "recall": {
         "green": 1.0,
-        "revise": 0.2
+        "revise": 0.3333
       },
-      "coverage": 0.1875,
+      "n_set": 32,
+      "coverage": 0.5938,
       "coverage_complete": false,
       "kappa_meets_bar": false,
+      "prediction_kind": "frozen-set embedded historical raw judge verdicts",
+      "judge_version": null,
       "calibration_status": "measured_below_bar",
-      "judge_version": "judge-v1-0fbecf6a7c05",
-      "prediction_kind": "fresh calls, pinned prompt, scored vs deliberate labels (fr-y3s 2026-10-06)",
-      "note": "2026-10-06 fr-y3s: 6 items scored vs deliberate labels (4 strawman misses, 1 not-reproduced hit, 1 green hit). Judge respects mechanical rule 1 (reproduced) but systematically greens strawman baselines (4/4 misses). Set cleaned: content_id + deliberate_label per content group; 14 items shared identical content with contradictory historical labels. Supersedes 2026-10-05 row (kappa 0.0 vs noisy historical labels).",
-      "calibrated_at": "2026-10-06T22:56:58.557656+00:00"
+      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version.",
+      "sensitivity_excluding_expected_decision": {
+        "n": 14,
+        "kappa": 0.4615,
+        "precision": {
+          "green": 0.75,
+          "revise": 1.0
+        },
+        "recall": {
+          "green": 1.0,
+          "revise": 0.4
+        }
+      }
     },
     "nvidia/z-ai/glm-5.3-flash": {
       "lane": "nvidia/z-ai/glm-5.3-flash",
@@ -70,9 +81,7 @@
       "prediction_kind": "frozen-set embedded historical raw judge verdicts",
       "judge_version": null,
       "calibration_status": "insufficient_coverage",
-      "note": "Historical n=1 (degenerate kappa 1.0). 2026-10-05 fr-y3s full-replay attempt ABORTED: lane unhealthy - nv-run.py timed out after 60s on 2 consecutive attempts (first item); 53 lane errors on the 2026-10-05 quota board. No new predictions; historical row retained.",
-      "replay_attempt_date": "2026-10-05",
-      "replay_attempt_outcome": "aborted_lane_timeout"
+      "note": "Historical verdicts predate judge-version pinning; measured for drift detection, not a grant under the current judge version."
     }
   },
   "frozen_set_pin": {
