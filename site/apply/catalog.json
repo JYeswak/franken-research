@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 141923,
-  "archive_sha256": "52e6b999e4a4a3be9227b3d5c585ed375dea87b6b8f8617b37bbef318c6a3be9",
+  "archive_bytes": 141994,
+  "archive_sha256": "0351e7ff7ff64fff5a8b90dbd596c436faea4f8d8b90cc23b8567643fc097b15",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-10-14T15:54:57Z",
+    "checked_at": "2026-10-15T11:29:54Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -83,11 +83,6 @@
         "state_reason": "open crossing franken_agent_detection:ci:C2>C1"
       },
       {
-        "repo": "franken_numpy",
-        "state": "changed",
-        "state_reason": "open crossing franken_numpy:ci:C2>C1"
-      },
-      {
         "repo": "franken_remote",
         "state": "changed",
         "state_reason": "open crossing franken_remote:ci:C3>C2"
@@ -96,6 +91,11 @@
         "repo": "franken_snowflake",
         "state": "changed",
         "state_reason": "open crossing franken_snowflake:ci:C3>C5"
+      },
+      {
+        "repo": "franken_surveillance_system",
+        "state": "changed",
+        "state_reason": "open crossing franken_surveillance_system:ci:C6>C2"
       },
       {
         "repo": "franken_threed",
@@ -108,14 +108,14 @@
         "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
       },
       {
-        "repo": "frankenfs",
+        "repo": "frankenjax",
         "state": "changed",
-        "state_reason": "open crossing frankenfs:ci:C2>C1"
+        "state_reason": "open crossing frankenjax:ci:C4>C2"
       },
       {
         "repo": "frankenmermaid",
         "state": "changed",
-        "state_reason": "open crossing frankenmermaid:rel:event:release:v0.3.0"
+        "state_reason": "open crossing frankenmermaid:rel:event:release:v0.3.0, frankenmermaid:rel:event:release:v0.4.0"
       },
       {
         "repo": "frankenpandas",
@@ -144,7 +144,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "d836933e788d7c5f79ff0978077b15190fee4124a0541e185103d9f1c3244f7c"
+    "source_sha256": "0f63204e595a5b93fad8564cb73d6414df37ff206afe2d8e650779bce833a446"
   },
   "version": 1
 }

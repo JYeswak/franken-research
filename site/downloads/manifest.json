@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 141923,
+    "bytes": 141994,
     "path": "fr-starter-kit.zip",
-    "sha256": "52e6b999e4a4a3be9227b3d5c585ed375dea87b6b8f8617b37bbef318c6a3be9"
+    "sha256": "0351e7ff7ff64fff5a8b90dbd596c436faea4f8d8b90cc23b8567643fc097b15"
   },
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "files": {
@@ -43,8 +43,8 @@
       "sha256": "abeac0450e8535d07aea688736384c19b5fe50a0ecd71ece0ec6e7b8109b90fb"
     },
     "research/signals.json": {
-      "bytes": 2115,
-      "sha256": "ede2a89296cca1866487c79b139175bd7b7317fd3bbf3f436f453eb966dee314"
+      "bytes": 2186,
+      "sha256": "30452d3dc32fbc562a08ccd015a087387e452e720415deb999bf4ad6273c04e9"
     },
     "scripts/check-claim-discipline.sh": {
       "bytes": 5584,
@@ -108,7 +108,7 @@
     }
   },
   "license": "MIT (first-party kit files only)",
-  "observed_at": "2026-10-14T15:54:57Z",
+  "observed_at": "2026-10-15T11:29:54Z",
   "schema": "fr.public-kit/v1",
   "scope": "MANIFEST.json lists every other archive member; no private receipts or upstream source bytes."
 }

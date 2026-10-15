@@ -1,0 +1,124 @@
+{
+  "baseline": false,
+  "date": "2026-10-15",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "141 files at 408050e",
+      "before": "140 files at b78c5e4",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/408050eaab36bb33e7b15e7336946b7a670b9fc3/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/b78c5e4cdac7c0e3d65120f1be266c12b4c31f5e...408050eaab36bb33e7b15e7336946b7a670b9fc3",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "c4bff6fdcdb1",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +native-source-repro.yml.",
+      "title": "[watch] franken_lean: workflows +1 -0 (141 now)",
+      "value": "c4bff6fdcdb1"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "34 files at cfd732f",
+      "before": "30 files at caca3c0",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/cfd732f26a55b5752a57cb2d74fd8f8c7bc830e1/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/caca3c0a59655ee452b6fa17c0c762abc50fc2fc...cfd732f26a55b5752a57cb2d74fd8f8c7bc830e1",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "eb56302129d5",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +rpc-udp-native.yml, +socket-option-contracts.yml, +socket-required-outputs.yml, +wait-inputs.yml.",
+      "title": "[watch] frankenlibc: workflows +4 -0 (34 now)",
+      "value": "eb56302129d5"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "4 files at e718b8f",
+      "before": "3 files at 09337a9",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenscipy/tree/e718b8fbca91a993b60067b6af76f26e4412893f/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenscipy/compare/09337a9375f8f0898edd2f73ac3a70a9cf9d01a8...e718b8fbca91a993b60067b6af76f26e4412893f",
+        "https://github.com/Dicklesworthstone/frankenscipy/actions"
+      ],
+      "ident": "452326c9b901",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenscipy",
+      "summary": "The .github/workflows file set changed: +sparse-toggle-regression.yml.",
+      "title": "[watch] frankenscipy: workflows +1 -0 (4 now)",
+      "value": "452326c9b901"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "20 files at 59c8437",
+      "before": "16 files at 39808d7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/59c8437e0501d9e9fad438797031388678f2b4d1/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/39808d73d7ec31860740884b1bfc12dca3bab990...59c8437e0501d9e9fad438797031388678f2b4d1",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "9ef52b56d897",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +instrument-materials.yml, +integrate-neutral-ports.yml, +material-inertia.yml, +shared-thermal.yml.",
+      "title": "[watch] frankensim: workflows +4 -0 (20 now)",
+      "value": "9ef52b56d897"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "14 files at ba77d8f",
+      "before": "13 files at 2a3d66e",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/ba77d8f2000abcd8037ae2c7b622b8e9d47b347e/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensqlite/compare/2a3d66e463b8c4efc70ac2b3f1e58fc888e522b1...ba77d8f2000abcd8037ae2c7b622b8e9d47b347e",
+        "https://github.com/Dicklesworthstone/frankensqlite/actions"
+      ],
+      "ident": "24a6e2c74cf6",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensqlite",
+      "summary": "The .github/workflows file set changed: +gh516-insert-batch.yml.",
+      "title": "[watch] frankensqlite: workflows +1 -0 (14 now)",
+      "value": "24a6e2c74cf6"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.15.21 -> 1fab09a (2026-10-14T22:18:23Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenterm/tree/v0.15.21",
+        "https://api.github.com/repos/Dicklesworthstone/frankenterm/git/ref/tags/v0.15.21"
+      ],
+      "ident": "v0.15.21",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankenterm",
+      "summary": "New tag v0.15.21 (no GitHub release for it at this check).",
+      "title": "[watch] frankenterm: tag v0.15.21",
+      "value": "1fab09a55a5658a98e952ef727667d2221c2b0a2"
+    }
+  ],
+  "since": "2026-10-14T15:54:57Z"
+}
