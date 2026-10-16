@@ -1,0 +1,84 @@
+{
+  "baseline": false,
+  "date": "2026-10-16",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "13 files at d99579e",
+      "before": "12 files at 896bf18",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/asupersync/tree/d99579e89ab882d4bb89ab038ebfd8864eec216f/.github/workflows",
+        "https://github.com/Dicklesworthstone/asupersync/compare/896bf1898d270ae1de480c6c43a0d15605aa5453...d99579e89ab882d4bb89ab038ebfd8864eec216f",
+        "https://github.com/Dicklesworthstone/asupersync/actions"
+      ],
+      "ident": "3e2f17890d2d",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "asupersync",
+      "summary": "The .github/workflows file set changed: +reactor-handoff.yml.",
+      "title": "[watch] asupersync: workflows +1 -0 (13 now)",
+      "value": "3e2f17890d2d"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "143 files at 8be4ad7",
+      "before": "141 files at 408050e",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/8be4ad797881d2103b8acce0778aaee04e2e649f/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/408050eaab36bb33e7b15e7336946b7a670b9fc3...8be4ad797881d2103b8acce0778aaee04e2e649f",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "ba9921f53288",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +fln-default-search.yml, +native-goal-traces.yml.",
+      "title": "[watch] franken_lean: workflows +2 -0 (143 now)",
+      "value": "ba9921f53288"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "19 files at 50f8c28",
+      "before": "13 files at dc4e702",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/50f8c283ed2275bbca6e51a8c69b75654ed87f70/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/compare/dc4e70260c732553b5bb4d2d8bdeafbd2e7e80ec...50f8c283ed2275bbca6e51a8c69b75654ed87f70",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/actions"
+      ],
+      "ident": "3feff01f3706",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_surveillance_system",
+      "summary": "The .github/workflows file set changed: +dashboard.yml, +native-debug-bundle.yml, +onnx-import.yml, +rtsp-batch-import.yml, +rtsp-capture-regression.yml, +rtsp-control-regression.yml.",
+      "title": "[watch] franken_surveillance_system: workflows +6 -0 (19 now)",
+      "value": "3feff01f3706"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "37 files at 48c6a86",
+      "before": "34 files at cfd732f",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/48c6a8666fb700a4015b70fb233605135f96322c/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/cfd732f26a55b5752a57cb2d74fd8f8c7bc830e1...48c6a8666fb700a4015b70fb233605135f96322c",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "0317af828870",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +aio-completion.yml, +c11-thread-cancellation.yml, +native-rpc-frontends.yml.",
+      "title": "[watch] frankenlibc: workflows +3 -0 (37 now)",
+      "value": "0317af828870"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-15T11:29:54Z"
+}
