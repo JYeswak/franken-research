@@ -5,6 +5,7 @@
   "judge_version_pin": {
     "judge": "stage-c-evaluator",
     "prompt": "prompts/evaluate.md (franken-nightly)",
+    "judge_version": "judge-v1-db2e4d184187",
     "decoding": {
       "temperature": 0,
       "max_tokens": 16000

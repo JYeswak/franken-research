@@ -1,7 +1,7 @@
 {
   "schema": "franken-research/judge-calibration-registry@1",
   "bead": "fr-o8i",
-  "judge_version": "judge-v1-0fbecf6a7c05",
+  "judge_version": "judge-v1-db2e4d184187",
   "prediction_kind": "full-prompt replay under pinned judge version (fr-y3s)",
   "frozen_set": "judge-calibration-set.json",
   "lanes": {
@@ -20,7 +20,7 @@
         "green": 1.0,
         "revise": 1.0
       },
-      "judge_version": "judge-v1-0fbecf6a7c05",
+      "judge_version": "judge-v1-db2e4d184187",
       "prediction_kind": "deterministic-rules (evaluate.md rules 1-4)"
     },
     "groq/openai/gpt-oss-20b": {
@@ -87,6 +87,7 @@
   "frozen_set_pin": {
     "judge": "stage-c-evaluator",
     "prompt": "prompts/evaluate.md (franken-nightly)",
+    "judge_version": "judge-v1-db2e4d184187",
     "decoding": {
       "temperature": 0,
       "max_tokens": 16000

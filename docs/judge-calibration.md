@@ -46,6 +46,22 @@ construction. Every Stage C verdict is stamped with
 evaluation receipt) by `franken-nightly/bin/evaluate.py`, which carries
 the identical version derivation so stamps agree.
 
+**Current pin: `judge-v1-db2e4d184187`** (re-pinned 2026-10-16,
+fr-judge-version-repin-zd3). This is the version the live
+franken-nightly `prompts/evaluate.md` hashes to, including the
+fr-0xa held-out-transfer check added to that prompt on 2026-10-10 —
+a deliberate rubric improvement (provenance: the pre-change prompt
+is preserved in franken-nightly/backups/2026-10-10-fr-0xa/ and hashes
+to the superseded pin; the deterministic decision rules 1-4 and the
+frozen-set labels are unchanged by that diff, so the
+deterministic-rules reference measurement carries over). The repo
+registry (`scripts/judge-calibration-registry.json`) and the frozen
+set pin (`scripts/judge-calibration-set.json`) name this same
+version. Any future prompt change bumps the version by construction
+and must be re-pinned in the same pass that changes the prompt;
+historical lane entries keep `judge_version: null` and remain drift
+measurements, never grants.
+
 ## Enforcement
 
 The driver gate (`franken-nightly/bin/judge_calibration.py`, consulted
