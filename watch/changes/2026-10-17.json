@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-10-17",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "145 files at 1267784",
+      "before": "143 files at 8be4ad7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/12677842efaa79508d583b2bd60f0d69ec039199/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/8be4ad797881d2103b8acce0778aaee04e2e649f...12677842efaa79508d583b2bd60f0d69ec039199",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "207b74ab8869",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +fln-contradiction-tactic.yml, +native-default-prerequisites.yml.",
+      "title": "[watch] franken_lean: workflows +2 -0 (145 now)",
+      "value": "207b74ab8869"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-16T11:30:19Z"
+}
