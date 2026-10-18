@@ -1,0 +1,46 @@
+{
+  "baseline": false,
+  "date": "2026-10-18",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "117 files at c38f2ff",
+      "before": "115 files at 0a0a4c6",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/c38f2ff0dab1eb93f4eeba781f5530d9eb4dc14e/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/0a0a4c6b30ae54696e1ff577c08dcf4e71b14bd5...c38f2ff0dab1eb93f4eeba781f5530d9eb4dc14e",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "02e40dcfe09e",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +native-project-cli.yml, +studio-project-reload.yml.",
+      "title": "[watch] franken_manim: workflows +2 -0 (117 now)",
+      "value": "02e40dcfe09e"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "38 files at 4a8abe3",
+      "before": "37 files at 716c18d",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/4a8abe341fa3982da9dd649269940bc1329c01da/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/716c18dd2549b66035e922e8fa04ecae867d1353...4a8abe341fa3982da9dd649269940bc1329c01da",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "e75014096477",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +native-semaphore.yml.",
+      "title": "[watch] frankenlibc: workflows +1 -0 (38 now)",
+      "value": "e75014096477"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-17T11:27:44Z"
+}
