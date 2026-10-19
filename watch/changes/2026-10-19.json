@@ -1,0 +1,84 @@
+{
+  "baseline": false,
+  "date": "2026-10-19",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "146 files at 3dfcf8f",
+      "before": "145 files at 2027f94",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/3dfcf8fd5ec9c751bfe97acfbe77a51eaba2e201/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/2027f948a7b46056e2911810b4a7797ee599a815...3dfcf8fd5ec9c751bfe97acfbe77a51eaba2e201",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "bc0ac134f069",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +native-imported-simp.yml.",
+      "title": "[watch] franken_lean: workflows +1 -0 (146 now)",
+      "value": "bc0ac134f069"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "118 files at 77e7369",
+      "before": "117 files at c38f2ff",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/77e73694b78f38afdcb0a630407b71254c40bb0f/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/c38f2ff0dab1eb93f4eeba781f5530d9eb4dc14e...77e73694b78f38afdcb0a630407b71254c40bb0f",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "fdb37d9d96ff",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +cli-pure-segments.yml.",
+      "title": "[watch] franken_manim: workflows +1 -0 (118 now)",
+      "value": "fdb37d9d96ff"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "38 files at e559602",
+      "before": "37 files at 98509a7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_remote/tree/e559602e57aba545130a9aa404deaabe228366e8/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_remote/compare/98509a7ed357d0ace3a14afa5a4781ab602b2020...e559602e57aba545130a9aa404deaabe228366e8",
+        "https://github.com/Dicklesworthstone/franken_remote/actions"
+      ],
+      "ident": "36d7643252c3",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_remote",
+      "summary": "The .github/workflows file set changed: +source-format.yml.",
+      "title": "[watch] franken_remote: workflows +1 -0 (38 now)",
+      "value": "36d7643252c3"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "43 files at 36676ed",
+      "before": "38 files at 4a8abe3",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/36676ed26375c769e23d5f279218f377be4edbee/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/4a8abe341fa3982da9dd649269940bc1329c01da...36676ed26375c769e23d5f279218f377be4edbee",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "c51ea613e0b7",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +aio-pool.yml, +aio-queue.yml, +gai-async.yml, +rpc-service.yml, +rpc-svc.yml.",
+      "title": "[watch] frankenlibc: workflows +5 -0 (43 now)",
+      "value": "c51ea613e0b7"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-18T11:27:56Z"
+}
