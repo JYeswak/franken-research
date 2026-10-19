@@ -1,0 +1,444 @@
+{
+  "week": "2026-W43",
+  "checked_on": "2026-10-19",
+  "query": "language:Rust pushed:>=2026-09-19 created:>=2026-04-22 stars:>=25 fork:false",
+  "rule": "candidates/README.md",
+  "search": {
+    "total_count": 1987,
+    "fetched": 300,
+    "incomplete_results": false
+  },
+  "excluded": {
+    "owner": 1,
+    "fork": 0,
+    "archived": 0,
+    "assessed": 0,
+    "already_candidate": 38
+  },
+  "checked": 40,
+  "no_signal": 13,
+  "candidates": [
+    {
+      "repo": "tangency-labs/solidcraft",
+      "url": "https://github.com/tangency-labs/solidcraft",
+      "stars": 6498,
+      "pushed_at": "2026-10-19T12:39:42Z",
+      "created_at": "2026-10-07T18:57:48Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 7,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.381
+    },
+    {
+      "repo": "storytold/craft-launcher",
+      "url": "https://github.com/storytold/craft-launcher",
+      "stars": 3420,
+      "pushed_at": "2026-10-19T10:15:45Z",
+      "created_at": "2026-10-09T23:21:59Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 3,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.353
+    },
+    {
+      "repo": "egoist/waku",
+      "url": "https://github.com/egoist/waku",
+      "stars": 1581,
+      "pushed_at": "2026-10-02T12:15:24Z",
+      "created_at": "2026-07-31T09:38:33Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 3,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.32
+    },
+    {
+      "repo": "xerj-org/xerj",
+      "url": "https://github.com/xerj-org/xerj",
+      "stars": 8804,
+      "pushed_at": "2026-10-19T11:44:59Z",
+      "created_at": "2026-06-30T04:32:45Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 16,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.394
+    },
+    {
+      "repo": "storytold/figcraft",
+      "url": "https://github.com/storytold/figcraft",
+      "stars": 2741,
+      "pushed_at": "2026-10-19T10:18:39Z",
+      "created_at": "2026-10-09T16:02:13Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.344
+    },
+    {
+      "repo": "liseami/CCBaga",
+      "url": "https://github.com/liseami/CCBaga",
+      "stars": 2708,
+      "pushed_at": "2026-10-19T11:52:34Z",
+      "created_at": "2026-10-11T03:47:06Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": true,
+        "agent_trailers": 4,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.343
+    },
+    {
+      "repo": "yyjeqhc/webcodex",
+      "url": "https://github.com/yyjeqhc/webcodex",
+      "stars": 2356,
+      "pushed_at": "2026-10-19T11:38:57Z",
+      "created_at": "2026-05-28T11:46:23Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 2,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.337
+    },
+    {
+      "repo": "nklmilojevic/sofka",
+      "url": "https://github.com/nklmilojevic/sofka",
+      "stars": 1764,
+      "pushed_at": "2026-10-19T12:14:37Z",
+      "created_at": "2026-07-01T12:31:02Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.325
+    },
+    {
+      "repo": "opengeos/RustGIS",
+      "url": "https://github.com/opengeos/RustGIS",
+      "stars": 1638,
+      "pushed_at": "2026-10-19T12:40:21Z",
+      "created_at": "2026-10-10T18:45:41Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 3,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.321
+    },
+    {
+      "repo": "perplexityai/SPACE",
+      "url": "https://github.com/perplexityai/SPACE",
+      "stars": 1621,
+      "pushed_at": "2026-10-19T09:05:03Z",
+      "created_at": "2026-10-01T18:43:46Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.321
+    },
+    {
+      "repo": "archestra-ai/OpenAPPA",
+      "url": "https://github.com/archestra-ai/OpenAPPA",
+      "stars": 1585,
+      "pushed_at": "2026-10-19T12:14:12Z",
+      "created_at": "2026-08-18T10:58:50Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": true,
+        "agent_trailers": 13,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.32
+    },
+    {
+      "repo": "exoharness/exo",
+      "url": "https://github.com/exoharness/exo",
+      "stars": 1513,
+      "pushed_at": "2026-10-19T00:35:24Z",
+      "created_at": "2026-05-20T06:21:50Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.318
+    },
+    {
+      "repo": "penso/herdr-gpui",
+      "url": "https://github.com/penso/herdr-gpui",
+      "stars": 1509,
+      "pushed_at": "2026-10-19T07:14:50Z",
+      "created_at": "2026-09-20T05:22:39Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.318
+    },
+    {
+      "repo": "t8y2/dbx",
+      "url": "https://github.com/t8y2/dbx",
+      "stars": 27222,
+      "pushed_at": "2026-10-19T12:01:39Z",
+      "created_at": "2026-04-29T03:00:36Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.443
+    },
+    {
+      "repo": "firecrawl/anydoc",
+      "url": "https://github.com/firecrawl/anydoc",
+      "stars": 22956,
+      "pushed_at": "2026-10-18T15:38:28Z",
+      "created_at": "2026-08-03T16:36:14Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 3,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.436
+    },
+    {
+      "repo": "zvec-ai/zvec-grep",
+      "url": "https://github.com/zvec-ai/zvec-grep",
+      "stars": 4120,
+      "pushed_at": "2026-10-19T08:17:14Z",
+      "created_at": "2026-07-10T02:58:07Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.361
+    },
+    {
+      "repo": "Open-Less/openless",
+      "url": "https://github.com/Open-Less/openless",
+      "stars": 3895,
+      "pushed_at": "2026-10-19T09:44:59Z",
+      "created_at": "2026-04-27T07:25:49Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 8,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.359
+    },
+    {
+      "repo": "Kuddev/pebrel",
+      "url": "https://github.com/Kuddev/pebrel",
+      "stars": 3506,
+      "pushed_at": "2026-10-19T12:38:17Z",
+      "created_at": "2026-07-05T12:17:36Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.354
+    },
+    {
+      "repo": "nullmoth/nvidia-macos-driver",
+      "url": "https://github.com/nullmoth/nvidia-macos-driver",
+      "stars": 3430,
+      "pushed_at": "2026-10-18T22:01:56Z",
+      "created_at": "2026-10-07T08:13:12Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.354
+    },
+    {
+      "repo": "zeronsh/zeron",
+      "url": "https://github.com/zeronsh/zeron",
+      "stars": 3302,
+      "pushed_at": "2026-10-19T07:20:39Z",
+      "created_at": "2026-07-20T15:04:04Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 20,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.352
+    },
+    {
+      "repo": "openlake-project/openlake",
+      "url": "https://github.com/openlake-project/openlake",
+      "stars": 2641,
+      "pushed_at": "2026-10-09T02:57:00Z",
+      "created_at": "2026-04-27T04:07:33Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.342
+    },
+    {
+      "repo": "yhan-sun/p2wlan",
+      "url": "https://github.com/yhan-sun/p2wlan",
+      "stars": 2632,
+      "pushed_at": "2026-10-19T12:03:02Z",
+      "created_at": "2026-07-16T01:53:38Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.342
+    },
+    {
+      "repo": "crmne/zapfast",
+      "url": "https://github.com/crmne/zapfast",
+      "stars": 2014,
+      "pushed_at": "2026-10-19T00:54:54Z",
+      "created_at": "2026-08-29T15:52:40Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.33
+    },
+    {
+      "repo": "elliothux/open-compute",
+      "url": "https://github.com/elliothux/open-compute",
+      "stars": 1981,
+      "pushed_at": "2026-10-19T04:24:10Z",
+      "created_at": "2026-08-23T04:34:25Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.33
+    },
+    {
+      "repo": "Folkbench/folkbench",
+      "url": "https://github.com/Folkbench/folkbench",
+      "stars": 1936,
+      "pushed_at": "2026-10-19T08:08:25Z",
+      "created_at": "2026-10-02T09:50:45Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.329
+    },
+    {
+      "repo": "gi-dellav/zerostack",
+      "url": "https://github.com/gi-dellav/zerostack",
+      "stars": 1713,
+      "pushed_at": "2026-10-19T11:48:56Z",
+      "created_at": "2026-05-12T19:31:49Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.323
+    },
+    {
+      "repo": "chojs23/concord",
+      "url": "https://github.com/chojs23/concord",
+      "stars": 1616,
+      "pushed_at": "2026-10-18T13:40:47Z",
+      "created_at": "2026-05-08T15:51:03Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.321
+    }
+  ],
+  "listed": [
+    "tangency-labs/solidcraft",
+    "storytold/craft-launcher",
+    "egoist/waku",
+    "xerj-org/xerj",
+    "storytold/figcraft",
+    "liseami/CCBaga",
+    "yyjeqhc/webcodex",
+    "nklmilojevic/sofka",
+    "opengeos/RustGIS",
+    "perplexityai/SPACE",
+    "archestra-ai/OpenAPPA",
+    "exoharness/exo",
+    "penso/herdr-gpui",
+    "t8y2/dbx",
+    "firecrawl/anydoc"
+  ]
+}
