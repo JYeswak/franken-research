@@ -3,12 +3,12 @@
     "asupersync": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2471,
+      "commits_since_pin": 2495,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "df86296fd54d4f4e4906afd7280f1ff69bb15b86",
-      "head_date": "2026-10-19T03:08:23Z",
+      "head": "34ae1b1513d80738b4ea1b7355ed3eccb1d2eaf2",
+      "head_date": "2026-10-20T03:39:30Z",
       "id": 1135442827,
       "license_changed_since_pin": false,
       "license_files": [
@@ -398,12 +398,12 @@
     "franken_agent_detection": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 74,
+      "commits_since_pin": 84,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "96587145e6741dffabb76abee50a1fa61cea47c0",
-      "head_date": "2026-10-18T02:08:27Z",
+      "head": "7fbfe9b52397f36cbbb2707559c314c3e09e200c",
+      "head_date": "2026-10-20T03:57:43Z",
       "id": 1158875990,
       "license_changed_since_pin": false,
       "license_files": [
@@ -756,12 +756,12 @@
     "franken_code_browser": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 117,
+      "commits_since_pin": 124,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a1e3692ef65e89a89689b6e2b79a8ea25ef429c5",
-      "head_date": "2026-10-19T03:09:08Z",
+      "head": "8b8b803377c1747e3e06bd674db8cfe88440d957",
+      "head_date": "2026-10-19T19:12:07Z",
       "id": 1367629743,
       "license_changed_since_pin": false,
       "license_files": [
@@ -852,12 +852,12 @@
     "franken_engine": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 3427,
+      "commits_since_pin": 3433,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "21d19929ab8bb477e2da9436af223cf0b07ab0d9",
-      "head_date": "2026-10-19T03:13:49Z",
+      "head": "98d27be7cd10fff4b6ea572bd251be3b652b01c2",
+      "head_date": "2026-10-20T03:00:10Z",
       "id": 1161313144,
       "license_changed_since_pin": false,
       "license_files": [
@@ -955,12 +955,12 @@
     "franken_lean": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1592,
+      "commits_since_pin": 1624,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "3dfcf8fd5ec9c751bfe97acfbe77a51eaba2e201",
-      "head_date": "2026-10-19T07:03:52Z",
+      "head": "62f11d0c3701fda8b4bd2af8d1a1a73184148237",
+      "head_date": "2026-10-20T08:37:04Z",
       "id": 1307841640,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1196,12 +1196,12 @@
     "franken_manim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1058,
+      "commits_since_pin": 1131,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "77e73694b78f38afdcb0a630407b71254c40bb0f",
-      "head_date": "2026-10-19T03:18:38Z",
+      "head": "577c21339b3843b974cd199681579ca18027e7c3",
+      "head_date": "2026-10-20T11:09:50Z",
       "id": 1306217133,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1393,6 +1393,7 @@
         "repair-rng-job-public-interface.yml",
         "repair-rng-reservation-imports.yml",
         "repair-rng-reservations.yml",
+        "retained-camera-regressions.yml",
         "retained-profile-recovery.yml",
         "retry-fm-ai1-when-upstream-ready.yml",
         "scene-bundle-export.yml",
@@ -1438,6 +1439,7 @@
         "position-contract.yml",
         "publish-native-geometry-lifecycles.yml",
         "python-scene-bundle-export.yml",
+        "retained-camera-regressions.yml",
         "scene-bundle-export.yml",
         "studio-project-reload.yml",
         "svg-paint-ingress.yml",
@@ -1448,12 +1450,12 @@
     "franken_markdown": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 338,
+      "commits_since_pin": 341,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "35af104882fb5b28dc2243238a6948e5cc608b2e",
-      "head_date": "2026-10-17T18:56:07Z",
+      "head": "23c4d0c546a93e83c00770b9654a9def3ce1c297",
+      "head_date": "2026-10-19T22:44:32Z",
       "id": 1281851258,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1724,12 +1726,12 @@
     "franken_networkx": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 319,
+      "commits_since_pin": 328,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "de16fbdd2b4315d374f6ef5966dbf011ccb3b239",
-      "head_date": "2026-10-19T04:37:05Z",
+      "head": "dd415552eb7ef97d2dad3353448c353bb5a35b4d",
+      "head_date": "2026-10-20T00:24:14Z",
       "id": 1157430632,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1996,12 +1998,12 @@
     "franken_numpy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 620,
+      "commits_since_pin": 627,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "51bcabb63599b1b90b5fe8072e26682dc9d79c78",
-      "head_date": "2026-10-19T05:34:34Z",
+      "head": "dbd9c2c35c17c7522e331aa5327ec39d46224b5b",
+      "head_date": "2026-10-20T05:38:06Z",
       "id": 1157432826,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2096,10 +2098,12 @@
         "make-random-core-no-std.yml",
         "persist-random-core-portability-gate.yml",
         "repair-centralize-pcg64dxsm.yml",
-        "upgrade-canonical-branch-policy.yml"
+        "upgrade-canonical-branch-policy.yml",
+        "wheels.yml"
       ],
       "workflows_added_since_pin": [
-        "dropin.yml"
+        "dropin.yml",
+        "wheels.yml"
       ],
       "workflows_removed_since_pin": []
     },
@@ -2419,12 +2423,12 @@
     "franken_remote": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 644,
+      "commits_since_pin": 665,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "e559602e57aba545130a9aa404deaabe228366e8",
-      "head_date": "2026-10-19T04:28:23Z",
+      "head": "e09083aa86fc9d55ba80590f04806b7136bb1fd6",
+      "head_date": "2026-10-20T03:59:36Z",
       "id": 1360842907,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2498,12 +2502,12 @@
     "franken_snowflake": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 147,
+      "commits_since_pin": 151,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "62656bfe63d678c77283342be44d5c86b555ed7c",
-      "head_date": "2026-10-16T04:44:11Z",
+      "head": "ca5bdc31ae37ad6d7c9c61b77813aaf9b6e614e6",
+      "head_date": "2026-10-20T02:55:14Z",
       "id": 1279720977,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2622,12 +2626,12 @@
     "franken_surveillance_system": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2097,
+      "commits_since_pin": 2179,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "2e2860defcb1c22b55709bf1984c3d118c58c6a6",
-      "head_date": "2026-10-19T03:49:43Z",
+      "head": "a291f0139355c59267433325c11cdf2482aa7393",
+      "head_date": "2026-10-20T05:21:52Z",
       "id": 1352817606,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2663,6 +2667,7 @@
         "onnx-import.yml",
         "reference-rust.yml",
         "release.yml",
+        "retained-perception.yml",
         "retention-reference.yml",
         "rtp-decode.yml",
         "rtp-tracking-smoke.yml",
@@ -2682,6 +2687,7 @@
         "native-supervision.yml",
         "onnx-import.yml",
         "reference-rust.yml",
+        "retained-perception.yml",
         "retention-reference.yml",
         "rtp-decode.yml",
         "rtp-tracking-smoke.yml",
@@ -2697,12 +2703,12 @@
     "franken_threed": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 253,
+      "commits_since_pin": 265,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a42d0e1749551e5d3ee18dd777c5bdd37fd9e9b0",
-      "head_date": "2026-10-19T02:15:20Z",
+      "head": "e5bafb2a2b6dfe7497dffe611d84d43cbd5b4ebf",
+      "head_date": "2026-10-20T01:04:51Z",
       "id": 1362884098,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3191,12 +3197,12 @@
     "frankenfs": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 804,
+      "commits_since_pin": 833,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "fea4d7710147e8f0d277c44bd0038c8819a0d196",
-      "head_date": "2026-10-19T07:02:39Z",
+      "head": "b5d2a5212cfac81d9add8a7a06666edf4b13949b",
+      "head_date": "2026-10-20T02:47:25Z",
       "id": 1154130483,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3255,12 +3261,12 @@
     "frankengit": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 709,
+      "commits_since_pin": 767,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "31daf98f423184e03d07d1db85e28c208e844b20",
-      "head_date": "2026-10-19T07:20:04Z",
+      "head": "9e18d4334f21f6c614fe33b3ba165823b0b897d9",
+      "head_date": "2026-10-20T10:30:30Z",
       "id": 1340123236,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3375,12 +3381,12 @@
     "frankengraphdb": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1540,
+      "commits_since_pin": 1685,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "5d78c6ed083c997fd45b74415839c87d4a73f168",
-      "head_date": "2026-10-19T03:50:39Z",
+      "head": "f50a2003e50b9f228864a19b48ea03dfb22625af",
+      "head_date": "2026-10-20T07:54:39Z",
       "id": 1301293102,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3415,12 +3421,12 @@
     "frankenjax": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 31,
+      "commits_since_pin": 45,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "0c6f028ba7d1fcc82d0cac350557bf9aec5219eb",
-      "head_date": "2026-10-19T05:40:00Z",
+      "head": "8a17ab00182bdbc7dd738c996ce139eadb2c9f0c",
+      "head_date": "2026-10-20T04:15:46Z",
       "id": 1157516615,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3456,12 +3462,12 @@
     "frankenlibc": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 793,
+      "commits_since_pin": 836,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "36676ed26375c769e23d5f279218f377be4edbee",
-      "head_date": "2026-10-19T03:18:07Z",
+      "head": "9e97da908489a5f8e9b85cfd1f877ab4b40fef52",
+      "head_date": "2026-10-20T03:03:41Z",
       "id": 1153199323,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3494,6 +3500,8 @@
         "c11-thread-cancellation.yml",
         "ci.yml",
         "ebr-safety.yml",
+        "exit-lifecycle.yml",
+        "exit-tls.yml",
         "fromfp-abi.yml",
         "gai-async.yml",
         "hostent-portable-check.yml",
@@ -3518,6 +3526,7 @@
         "native-unique-symbols.yml",
         "nss-hosts.yml",
         "recvmsg-safety.yml",
+        "rpc-client-create.yml",
         "rpc-service.yml",
         "rpc-svc.yml",
         "rpc-udp-native.yml",
@@ -3538,6 +3547,8 @@
         "aio-queue.yml",
         "c11-thread-cancellation.yml",
         "ebr-safety.yml",
+        "exit-lifecycle.yml",
+        "exit-tls.yml",
         "fromfp-abi.yml",
         "gai-async.yml",
         "hostent-portable-check.yml",
@@ -3561,6 +3572,7 @@
         "native-unique-symbols.yml",
         "nss-hosts.yml",
         "recvmsg-safety.yml",
+        "rpc-client-create.yml",
         "rpc-service.yml",
         "rpc-svc.yml",
         "rpc-udp-native.yml",
@@ -3579,12 +3591,12 @@
     "frankenmermaid": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 147,
+      "commits_since_pin": 151,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "41afadc7a021ab6e75e5d4ec25656f6ec5696449",
-      "head_date": "2026-10-19T03:08:06Z",
+      "head": "29536a1308acd1bae4da8b72b4cebffb39709ae0",
+      "head_date": "2026-10-20T01:51:40Z",
       "id": 1155643809,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3664,12 +3676,12 @@
     "frankenpandas": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1045,
+      "commits_since_pin": 1069,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "93a8ac3c4b6ac0cc41635d4bf01620686d0edb44",
-      "head_date": "2026-10-18T02:25:51Z",
+      "head": "9775780a8d7f32748110a802493d7b6122c4fb63",
+      "head_date": "2026-10-20T00:57:54Z",
       "id": 1157440729,
       "license_changed_since_pin": false,
       "license_files": [
@@ -4953,12 +4965,12 @@
     "frankenredis": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 41,
+      "commits_since_pin": 56,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d4742748dc859a091456d8db63969d677591231b",
-      "head_date": "2026-10-19T03:47:29Z",
+      "head": "f6c7a5a72f9c420c13b8d88b53d9d55106129002",
+      "head_date": "2026-10-20T10:57:38Z",
       "id": 1157430439,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5144,12 +5156,12 @@
     "frankensearch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 845,
+      "commits_since_pin": 866,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "eaef67243c7f4c04917bcb07e55debd120924961",
-      "head_date": "2026-10-19T03:01:23Z",
+      "head": "2b29f83fb829189cb3451ce1b70e922d9044a4a4",
+      "head_date": "2026-10-20T03:54:31Z",
       "id": 1157453895,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5650,12 +5662,12 @@
     "frankensim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2127,
+      "commits_since_pin": 2261,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "75d259cc68145a0b1ed513a2a5eed81850261389",
-      "head_date": "2026-10-19T10:37:38Z",
+      "head": "7f05bc636fd688258ea324119205532da5cbe1e6",
+      "head_date": "2026-10-20T11:26:21Z",
       "id": 1290489583,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5753,12 +5765,12 @@
     "frankensqlite": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 704,
+      "commits_since_pin": 720,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "34e88222688f94701af9fec57b1576289f1942ca",
-      "head_date": "2026-10-19T09:22:31Z",
+      "head": "58ddae0debad1fe58e372c91bb0bdbd5c60f150b",
+      "head_date": "2026-10-20T11:13:39Z",
       "id": 1151908597,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6333,12 +6345,12 @@
     "frankenterm": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1291,
+      "commits_since_pin": 1321,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "aca2b4ee0947149edbc7b007065d9ca84fcce0d4",
-      "head_date": "2026-10-19T08:48:32Z",
+      "head": "f98696912a34cefde5cc82aeff1c2b45294d06d3",
+      "head_date": "2026-10-20T10:06:53Z",
       "id": 1137047020,
       "license_changed_since_pin": false,
       "license_files": [
@@ -7474,12 +7486,12 @@
     "frankentorch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 27,
+      "commits_since_pin": 35,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "7db01cfb83705775ae4fbe1c3ed883dc1438886e",
-      "head_date": "2026-10-18T03:15:59Z",
+      "head": "74395af4df7499f3a39aeffbe201b8e80eb42003",
+      "head_date": "2026-10-20T00:57:57Z",
       "id": 1157429978,
       "license_changed_since_pin": false,
       "license_files": [
@@ -7517,12 +7529,12 @@
     "frankentui": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 194,
+      "commits_since_pin": 229,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "23926c857e97539dd0b56836c18214a2ed12a929",
-      "head_date": "2026-10-19T06:47:10Z",
+      "head": "bb8c49f105fd223deee12e2101468a5f08c805b3",
+      "head_date": "2026-10-20T04:13:28Z",
       "id": 1146846864,
       "license_changed_since_pin": false,
       "license_files": [
@@ -7710,7 +7722,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-10-19T11:31:41Z",
+  "checked_at": "2026-10-20T11:30:42Z",
   "discovery": [
     {
       "archived": false,
@@ -7730,7 +7742,7 @@
       "id": 1155882142,
       "language": "Python",
       "name": "Dicklesworthstone",
-      "pushed_at": "2026-10-19T09:43:21Z"
+      "pushed_at": "2026-10-20T09:43:33Z"
     },
     {
       "archived": false,
@@ -7800,7 +7812,7 @@
       "id": 1119883856,
       "language": "Shell",
       "name": "agentic_coding_flywheel_setup",
-      "pushed_at": "2026-10-18T19:27:55Z"
+      "pushed_at": "2026-10-20T01:45:55Z"
     },
     {
       "archived": false,
@@ -7810,7 +7822,7 @@
       "id": 1370613700,
       "language": "TypeScript",
       "name": "annus-mirabilis.com",
-      "pushed_at": "2026-10-19T03:35:11Z"
+      "pushed_at": "2026-10-20T03:37:27Z"
     },
     {
       "archived": false,
@@ -7840,7 +7852,7 @@
       "id": 1333421030,
       "language": "TypeScript",
       "name": "asimposium.org",
-      "pushed_at": "2026-10-19T03:20:46Z"
+      "pushed_at": "2026-10-20T04:09:33Z"
     },
     {
       "archived": false,
@@ -7850,7 +7862,7 @@
       "id": 1135442827,
       "language": "Rust",
       "name": "asupersync",
-      "pushed_at": "2026-10-19T03:16:12Z"
+      "pushed_at": "2026-10-20T03:40:55Z"
     },
     {
       "archived": false,
@@ -7920,7 +7932,7 @@
       "id": 1133129841,
       "language": "Shell",
       "name": "automated_plan_reviser_pro",
-      "pushed_at": "2026-10-17T18:30:00Z"
+      "pushed_at": "2026-10-19T18:48:16Z"
     },
     {
       "archived": false,
@@ -8030,7 +8042,7 @@
       "id": 1137022621,
       "language": "Rust",
       "name": "beads_rust",
-      "pushed_at": "2026-10-19T02:09:16Z"
+      "pushed_at": "2026-10-19T20:36:18Z"
     },
     {
       "archived": false,
@@ -8040,7 +8052,7 @@
       "id": 1104804402,
       "language": "Go",
       "name": "beads_viewer",
-      "pushed_at": "2026-10-16T04:45:03Z"
+      "pushed_at": "2026-10-19T18:42:52Z"
     },
     {
       "archived": false,
@@ -8070,7 +8082,7 @@
       "id": 1169015078,
       "language": "Rust",
       "name": "beads_viewer_rust",
-      "pushed_at": "2026-10-18T19:30:43Z"
+      "pushed_at": "2026-10-20T03:16:13Z"
     },
     {
       "archived": false,
@@ -8140,7 +8152,7 @@
       "id": 1111896892,
       "language": "TypeScript",
       "name": "cass_memory_system",
-      "pushed_at": "2026-10-15T04:27:11Z"
+      "pushed_at": "2026-10-19T18:43:58Z"
     },
     {
       "archived": false,
@@ -8170,7 +8182,7 @@
       "id": 1137261908,
       "language": "Rust",
       "name": "charmed_rust",
-      "pushed_at": "2026-10-19T03:24:30Z"
+      "pushed_at": "2026-10-19T17:24:51Z"
     },
     {
       "archived": false,
@@ -8230,7 +8242,7 @@
       "id": 1118006238,
       "language": "Go",
       "name": "coding_agent_account_manager",
-      "pushed_at": "2026-10-14T18:40:04Z"
+      "pushed_at": "2026-10-19T20:23:52Z"
     },
     {
       "archived": false,
@@ -8240,7 +8252,7 @@
       "id": 1100945668,
       "language": "Rust",
       "name": "coding_agent_session_search",
-      "pushed_at": "2026-10-19T10:12:06Z"
+      "pushed_at": "2026-10-20T11:23:05Z"
     },
     {
       "archived": false,
@@ -8300,7 +8312,7 @@
       "id": 1130004860,
       "language": "Rust",
       "name": "destructive_command_guard",
-      "pushed_at": "2026-10-19T02:23:28Z"
+      "pushed_at": "2026-10-20T08:38:26Z"
     },
     {
       "archived": false,
@@ -8310,7 +8322,7 @@
       "id": 1146170115,
       "language": "Shell",
       "name": "doodlestein_self_releaser",
-      "pushed_at": "2026-10-19T03:45:44Z"
+      "pushed_at": "2026-10-20T03:36:40Z"
     },
     {
       "archived": false,
@@ -8320,7 +8332,7 @@
       "id": 1350973046,
       "language": "Rust",
       "name": "dwarf_fortress_mcp",
-      "pushed_at": "2026-10-19T02:57:15Z"
+      "pushed_at": "2026-10-20T03:41:46Z"
     },
     {
       "archived": false,
@@ -8360,7 +8372,7 @@
       "id": 1224408143,
       "language": "Rust",
       "name": "eidetic_engine_cli",
-      "pushed_at": "2026-10-19T07:20:35Z"
+      "pushed_at": "2026-10-20T09:30:10Z"
     },
     {
       "archived": false,
@@ -8400,7 +8412,7 @@
       "id": 1138658114,
       "language": "Rust",
       "name": "fastapi_rust",
-      "pushed_at": "2026-10-19T09:12:07Z"
+      "pushed_at": "2026-10-19T17:24:55Z"
     },
     {
       "archived": false,
@@ -8410,7 +8422,7 @@
       "id": 1137083276,
       "language": "Rust",
       "name": "fastmcp_rust",
-      "pushed_at": "2026-10-19T02:54:00Z"
+      "pushed_at": "2026-10-20T03:31:57Z"
     },
     {
       "archived": false,
@@ -8430,7 +8442,7 @@
       "id": 1132030374,
       "language": "Rust",
       "name": "flywheel_connectors",
-      "pushed_at": "2026-10-19T02:07:24Z"
+      "pushed_at": "2026-10-19T18:34:05Z"
     },
     {
       "archived": false,
@@ -8440,7 +8452,7 @@
       "id": 1130104821,
       "language": "TypeScript",
       "name": "flywheel_gateway",
-      "pushed_at": "2026-10-18T02:26:27Z"
+      "pushed_at": "2026-10-20T01:00:23Z"
     },
     {
       "archived": false,
@@ -8460,7 +8472,7 @@
       "id": 1412549980,
       "language": "Rust",
       "name": "franken_accounting",
-      "pushed_at": "2026-10-19T10:10:37Z"
+      "pushed_at": "2026-10-20T11:23:37Z"
     },
     {
       "archived": false,
@@ -8470,7 +8482,7 @@
       "id": 1158875990,
       "language": "Rust",
       "name": "franken_agent_detection",
-      "pushed_at": "2026-10-18T02:09:29Z"
+      "pushed_at": "2026-10-20T04:09:35Z"
     },
     {
       "archived": false,
@@ -8490,7 +8502,7 @@
       "id": 1367629743,
       "language": "Rust",
       "name": "franken_code_browser",
-      "pushed_at": "2026-10-19T03:20:49Z"
+      "pushed_at": "2026-10-19T19:14:02Z"
     },
     {
       "archived": false,
@@ -8510,7 +8522,7 @@
       "id": 1161313144,
       "language": "Rust",
       "name": "franken_engine",
-      "pushed_at": "2026-10-19T03:15:02Z"
+      "pushed_at": "2026-10-20T03:34:34Z"
     },
     {
       "archived": false,
@@ -8520,7 +8532,7 @@
       "id": 1307841640,
       "language": "Rust",
       "name": "franken_lean",
-      "pushed_at": "2026-10-19T07:06:10Z"
+      "pushed_at": "2026-10-20T08:37:13Z"
     },
     {
       "archived": false,
@@ -8530,7 +8542,7 @@
       "id": 1306217133,
       "language": "Rust",
       "name": "franken_manim",
-      "pushed_at": "2026-10-19T03:19:05Z"
+      "pushed_at": "2026-10-20T11:10:14Z"
     },
     {
       "archived": false,
@@ -8540,7 +8552,7 @@
       "id": 1408320298,
       "language": "Rust",
       "name": "franken_manim_hoeffding_explainer",
-      "pushed_at": "2026-10-12T06:48:41Z"
+      "pushed_at": "2026-10-19T18:46:07Z"
     },
     {
       "archived": false,
@@ -8550,7 +8562,7 @@
       "id": 1281851258,
       "language": "HTML",
       "name": "franken_markdown",
-      "pushed_at": "2026-10-17T19:08:15Z"
+      "pushed_at": "2026-10-20T00:03:58Z"
     },
     {
       "archived": false,
@@ -8580,7 +8592,7 @@
       "id": 1157430632,
       "language": "Python",
       "name": "franken_networkx",
-      "pushed_at": "2026-10-19T04:37:10Z"
+      "pushed_at": "2026-10-20T00:58:31Z"
     },
     {
       "archived": false,
@@ -8610,7 +8622,7 @@
       "id": 1157432826,
       "language": "Rust",
       "name": "franken_numpy",
-      "pushed_at": "2026-10-19T05:34:38Z"
+      "pushed_at": "2026-10-20T05:38:10Z"
     },
     {
       "archived": false,
@@ -8640,7 +8652,7 @@
       "id": 1360842907,
       "language": "Rust",
       "name": "franken_remote",
-      "pushed_at": "2026-10-19T04:28:28Z"
+      "pushed_at": "2026-10-20T04:19:38Z"
     },
     {
       "archived": false,
@@ -8650,7 +8662,7 @@
       "id": 1279720977,
       "language": "Rust",
       "name": "franken_snowflake",
-      "pushed_at": "2026-10-16T04:45:02Z"
+      "pushed_at": "2026-10-20T03:34:34Z"
     },
     {
       "archived": false,
@@ -8660,7 +8672,7 @@
       "id": 1352817606,
       "language": "Rust",
       "name": "franken_surveillance_system",
-      "pushed_at": "2026-10-19T03:49:45Z"
+      "pushed_at": "2026-10-20T05:28:03Z"
     },
     {
       "archived": false,
@@ -8670,7 +8682,7 @@
       "id": 1416212647,
       "language": "Rust",
       "name": "franken_textiles",
-      "pushed_at": "2026-10-19T03:35:35Z"
+      "pushed_at": "2026-10-20T04:08:39Z"
     },
     {
       "archived": false,
@@ -8680,7 +8692,7 @@
       "id": 1362884098,
       "language": "JavaScript",
       "name": "franken_threed",
-      "pushed_at": "2026-10-19T02:19:58Z"
+      "pushed_at": "2026-10-20T03:41:41Z"
     },
     {
       "archived": false,
@@ -8710,7 +8722,7 @@
       "id": 1154130483,
       "language": "Rust",
       "name": "frankenfs",
-      "pushed_at": "2026-10-19T07:02:43Z"
+      "pushed_at": "2026-10-20T02:47:57Z"
     },
     {
       "archived": false,
@@ -8720,7 +8732,7 @@
       "id": 1340123236,
       "language": "Rust",
       "name": "frankengit",
-      "pushed_at": "2026-10-19T07:21:30Z"
+      "pushed_at": "2026-10-20T10:30:37Z"
     },
     {
       "archived": false,
@@ -8730,7 +8742,7 @@
       "id": 1301293102,
       "language": "Rust",
       "name": "frankengraphdb",
-      "pushed_at": "2026-10-19T03:50:52Z"
+      "pushed_at": "2026-10-20T07:54:41Z"
     },
     {
       "archived": false,
@@ -8740,7 +8752,7 @@
       "id": 1157516615,
       "language": "Rust",
       "name": "frankenjax",
-      "pushed_at": "2026-10-19T05:40:02Z"
+      "pushed_at": "2026-10-20T04:15:49Z"
     },
     {
       "archived": false,
@@ -8750,7 +8762,7 @@
       "id": 1153199323,
       "language": "Rust",
       "name": "frankenlibc",
-      "pushed_at": "2026-10-19T03:18:08Z"
+      "pushed_at": "2026-10-20T03:04:10Z"
     },
     {
       "archived": false,
@@ -8760,7 +8772,7 @@
       "id": 1155643809,
       "language": "HTML",
       "name": "frankenmermaid",
-      "pushed_at": "2026-10-19T03:08:37Z"
+      "pushed_at": "2026-10-20T01:51:54Z"
     },
     {
       "archived": false,
@@ -8770,7 +8782,7 @@
       "id": 1157440729,
       "language": "Rust",
       "name": "frankenpandas",
-      "pushed_at": "2026-10-19T06:10:43Z"
+      "pushed_at": "2026-10-20T00:58:37Z"
     },
     {
       "archived": false,
@@ -8780,7 +8792,7 @@
       "id": 1157430439,
       "language": "Rust",
       "name": "frankenredis",
-      "pushed_at": "2026-10-19T03:47:34Z"
+      "pushed_at": "2026-10-20T10:57:43Z"
     },
     {
       "archived": false,
@@ -8800,7 +8812,7 @@
       "id": 1157453895,
       "language": "Rust",
       "name": "frankensearch",
-      "pushed_at": "2026-10-19T03:01:58Z"
+      "pushed_at": "2026-10-20T04:06:28Z"
     },
     {
       "archived": false,
@@ -8810,7 +8822,7 @@
       "id": 1290489583,
       "language": "Rust",
       "name": "frankensim",
-      "pushed_at": "2026-10-19T10:37:39Z"
+      "pushed_at": "2026-10-20T11:26:22Z"
     },
     {
       "archived": false,
@@ -8830,7 +8842,7 @@
       "id": 1408019360,
       "language": "Rust",
       "name": "frankensonos",
-      "pushed_at": "2026-10-19T03:51:47Z"
+      "pushed_at": "2026-10-20T06:39:07Z"
     },
     {
       "archived": false,
@@ -8840,7 +8852,7 @@
       "id": 1151908597,
       "language": "Rust",
       "name": "frankensqlite",
-      "pushed_at": "2026-10-19T09:22:38Z"
+      "pushed_at": "2026-10-20T11:13:50Z"
     },
     {
       "archived": false,
@@ -8870,7 +8882,7 @@
       "id": 1137047020,
       "language": "Rust",
       "name": "frankenterm",
-      "pushed_at": "2026-10-19T08:48:36Z"
+      "pushed_at": "2026-10-20T10:06:53Z"
     },
     {
       "archived": false,
@@ -8880,7 +8892,7 @@
       "id": 1157429978,
       "language": "Rust",
       "name": "frankentorch",
-      "pushed_at": "2026-10-19T02:55:32Z"
+      "pushed_at": "2026-10-20T00:58:46Z"
     },
     {
       "archived": false,
@@ -8890,7 +8902,7 @@
       "id": 1146846864,
       "language": "Rust",
       "name": "frankentui",
-      "pushed_at": "2026-10-19T06:47:14Z"
+      "pushed_at": "2026-10-20T04:13:32Z"
     },
     {
       "archived": false,
@@ -9090,7 +9102,7 @@
       "id": 1412716083,
       "language": "Rust",
       "name": "jeffs_math_explainer_videos",
-      "pushed_at": "2026-10-19T03:16:24Z"
+      "pushed_at": "2026-10-20T03:36:43Z"
     },
     {
       "archived": false,
@@ -9120,7 +9132,7 @@
       "id": 1052368729,
       "language": "HTML",
       "name": "letter_learning_game",
-      "pushed_at": "2026-10-14T07:09:32Z"
+      "pushed_at": "2026-10-20T04:26:43Z"
     },
     {
       "archived": false,
@@ -9220,7 +9232,7 @@
       "id": 1091900863,
       "language": "Python",
       "name": "markdown_web_browser",
-      "pushed_at": "2026-10-15T12:38:17Z"
+      "pushed_at": "2026-10-20T05:01:54Z"
     },
     {
       "archived": false,
@@ -9240,7 +9252,7 @@
       "id": 1150296802,
       "language": "Rust",
       "name": "mcp_agent_mail_rust",
-      "pushed_at": "2026-10-19T07:24:17Z"
+      "pushed_at": "2026-10-20T10:38:12Z"
     },
     {
       "archived": false,
@@ -9270,7 +9282,7 @@
       "id": 1133846056,
       "language": "Rust",
       "name": "meta_skill",
-      "pushed_at": "2026-10-19T03:13:29Z"
+      "pushed_at": "2026-10-19T20:42:38Z"
     },
     {
       "archived": false,
@@ -9380,7 +9392,7 @@
       "id": 1137859136,
       "language": "Rust",
       "name": "opentui_rust",
-      "pushed_at": "2026-10-14T18:48:57Z"
+      "pushed_at": "2026-10-19T17:25:08Z"
     },
     {
       "archived": false,
@@ -9410,7 +9422,7 @@
       "id": 1148330949,
       "language": "Rust",
       "name": "pi_agent_rust",
-      "pushed_at": "2026-10-19T03:55:25Z"
+      "pushed_at": "2026-10-20T03:16:07Z"
     },
     {
       "archived": false,
@@ -9480,7 +9492,7 @@
       "id": 1138687779,
       "language": "Rust",
       "name": "rano",
-      "pushed_at": "2026-10-14T18:54:49Z"
+      "pushed_at": "2026-10-19T17:25:09Z"
     },
     {
       "archived": false,
@@ -9510,7 +9522,7 @@
       "id": 1135510028,
       "language": "Rust",
       "name": "remote_compilation_helper",
-      "pushed_at": "2026-10-19T07:03:40Z"
+      "pushed_at": "2026-10-20T03:43:59Z"
     },
     {
       "archived": false,
@@ -9520,7 +9532,7 @@
       "id": 1127417455,
       "language": "Shell",
       "name": "repo_updater",
-      "pushed_at": "2026-10-19T03:01:43Z"
+      "pushed_at": "2026-10-20T03:00:43Z"
     },
     {
       "archived": false,
@@ -9560,7 +9572,7 @@
       "id": 1080612965,
       "language": "Rust",
       "name": "rust_scriptbots",
-      "pushed_at": "2026-10-19T03:18:29Z"
+      "pushed_at": "2026-10-20T08:06:40Z"
     },
     {
       "archived": false,
@@ -9610,7 +9622,7 @@
       "id": 1374059973,
       "language": "Rust",
       "name": "skillranker",
-      "pushed_at": "2026-10-17T19:18:47Z"
+      "pushed_at": "2026-10-19T19:05:30Z"
     },
     {
       "archived": false,
@@ -9620,7 +9632,7 @@
       "id": 1115948980,
       "language": "Go",
       "name": "slb",
-      "pushed_at": "2026-10-14T18:55:45Z"
+      "pushed_at": "2026-10-19T18:53:52Z"
     },
     {
       "archived": false,
@@ -9660,7 +9672,7 @@
       "id": 1139471738,
       "language": "Rust",
       "name": "sqlmodel_rust",
-      "pushed_at": "2026-10-19T09:36:56Z"
+      "pushed_at": "2026-10-19T17:25:12Z"
     },
     {
       "archived": false,
@@ -9670,7 +9682,7 @@
       "id": 1158080555,
       "language": "Rust",
       "name": "storage_ballast_helper",
-      "pushed_at": "2026-10-19T03:16:20Z"
+      "pushed_at": "2026-10-20T05:58:49Z"
     },
     {
       "archived": false,
@@ -9770,7 +9782,7 @@
       "id": 1137823150,
       "language": "Rust",
       "name": "toon_rust",
-      "pushed_at": "2026-10-14T18:51:55Z"
+      "pushed_at": "2026-10-19T17:50:44Z"
     },
     {
       "archived": false,
@@ -9790,7 +9802,7 @@
       "id": 1097502375,
       "language": "Python",
       "name": "ultimate_bug_scanner",
-      "pushed_at": "2026-10-19T04:41:04Z"
+      "pushed_at": "2026-10-20T05:04:40Z"
     },
     {
       "archived": false,
@@ -9820,7 +9832,7 @@
       "id": 1100905564,
       "language": "Rust",
       "name": "ultrasearch",
-      "pushed_at": "2026-10-19T03:24:56Z"
+      "pushed_at": "2026-10-20T01:37:17Z"
     },
     {
       "archived": false,
@@ -10989,21 +11001,6 @@
         "ok": true,
         "pull_request": {},
         "push": null,
-        "self_hosted": false
-      },
-      "07c902e5f3df0e42df1b212168db16858a1b775a": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
         "self_hosted": false
       },
       "0822bc38b0825f4a8a771c1280ae158d2c3a46c4": {
@@ -12547,6 +12544,21 @@
         },
         "self_hosted": false
       },
+      "2bfe0bf2327d4a39766320f2fce2609a090d5d1a": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "2c41087a3fa58ff8b69bc749bb34154309ed94bc": {
         "events": [
           "push"
@@ -12562,6 +12574,26 @@
         "self_hosted": false
       },
       "2ca9f3e900d54030cd1f231b9cf0037f14351f33": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "2e6a877c605dbdba15fb8332e0be9571d76da86b": {
         "events": [
           "pull_request",
           "push",
@@ -12844,6 +12876,21 @@
         "push": null,
         "self_hosted": false
       },
+      "32ee785d84ac7e8dae3d84038de3b65b6782c747": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "32fdcd30799aba393eacb4eee2c286ae9fa8078d": {
         "events": [
           "push"
@@ -12921,6 +12968,21 @@
         "ok": true,
         "pull_request": null,
         "push": null,
+        "self_hosted": false
+      },
+      "34736079aefac9e0347033b8ef541647c97036cc": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
         "self_hosted": false
       },
       "3546207535ed3d17e97d49deb90db61f56c79362": {
@@ -13065,6 +13127,200 @@
         },
         "self_hosted": false
       },
+      "37ed36b2274cc3224d2d127c804833418971d848": {
+        "packages": [
+          "aead",
+          "aes",
+          "aes-gcm",
+          "allocator-api2",
+          "anyhow",
+          "asupersync",
+          "autocfg",
+          "base64",
+          "base64ct",
+          "bincode-next",
+          "bincode_derive-next",
+          "bitflags",
+          "block-buffer",
+          "bumpalo",
+          "bytes",
+          "cfg-if",
+          "cfg_aliases",
+          "chacha20",
+          "chacha20poly1305",
+          "cipher",
+          "cmov",
+          "concurrent-queue",
+          "const-oid",
+          "cpubits",
+          "cpufeatures",
+          "crc32fast",
+          "crossbeam-queue",
+          "crossbeam-utils",
+          "crypto-common",
+          "ctr",
+          "ctutils",
+          "curve25519-dalek",
+          "curve25519-dalek-derive",
+          "data-encoding",
+          "der",
+          "digest",
+          "dispatch2",
+          "ed25519",
+          "ed25519-dalek",
+          "either",
+          "equivalent",
+          "errno",
+          "fastrand",
+          "fiat-crypto",
+          "foldhash",
+          "franken-decision",
+          "franken-evidence",
+          "franken-kernel",
+          "fss-cli",
+          "fss-codec-h264",
+          "fss-codec-h265",
+          "fss-codec-mjpeg",
+          "fss-container",
+          "fss-core",
+          "fss-fusion",
+          "fss-geometry",
+          "fss-graph-algorithms",
+          "fss-ledger",
+          "fss-model-ir",
+          "fss-object",
+          "fss-packet",
+          "fss-provision",
+          "fss-publication",
+          "fss-reference",
+          "fss-runtime",
+          "fss-tensor",
+          "fss-tutk",
+          "fss-tuya",
+          "fss-twin",
+          "futures-core",
+          "futures-io",
+          "futures-lite",
+          "futures-task",
+          "futures-util",
+          "generic-array",
+          "getrandom",
+          "ghash",
+          "hashbrown",
+          "hermit-abi",
+          "hex",
+          "hmac",
+          "hybrid-array",
+          "inout",
+          "itertools",
+          "itoa",
+          "js-sys",
+          "libc",
+          "linux-raw-sys",
+          "lock_api",
+          "log",
+          "memchr",
+          "memoffset",
+          "nix",
+          "nkeys",
+          "ntapi",
+          "num-traits",
+          "objc2",
+          "objc2-core-foundation",
+          "objc2-encode",
+          "objc2-foundation",
+          "objc2-io-kit",
+          "objc2-open-directory",
+          "once_cell",
+          "parking",
+          "parking_lot",
+          "parking_lot_core",
+          "pastey",
+          "pem-rfc7468",
+          "pin-project",
+          "pin-project-internal",
+          "pin-project-lite",
+          "pkcs8",
+          "polling",
+          "poly1305",
+          "polyval",
+          "ppv-lite86",
+          "proc-macro2",
+          "prost",
+          "prost-derive",
+          "quote",
+          "r-efi",
+          "rand",
+          "rand_chacha",
+          "rand_core",
+          "rapidhash",
+          "redox_syscall",
+          "rmp",
+          "rmp-serde",
+          "rustc_version",
+          "rustix",
+          "rustversion",
+          "scopeguard",
+          "semver",
+          "serde",
+          "serde_core",
+          "serde_derive",
+          "serde_json",
+          "sha1",
+          "sha2",
+          "signal-hook",
+          "signal-hook-registry",
+          "signatory",
+          "signature",
+          "slab",
+          "smallvec",
+          "socket2",
+          "spki",
+          "subtle",
+          "syn",
+          "sysinfo",
+          "tempfile",
+          "thiserror",
+          "thiserror-impl",
+          "tinyvec",
+          "tokio",
+          "typenum",
+          "unicode-ident",
+          "unicode-normalization",
+          "universal-hash",
+          "unty-next",
+          "version_check",
+          "virtue-next",
+          "wasi",
+          "wasm-bindgen",
+          "wasm-bindgen-futures",
+          "wasm-bindgen-macro",
+          "wasm-bindgen-macro-support",
+          "wasm-bindgen-shared",
+          "web-sys",
+          "winapi",
+          "winapi-i686-pc-windows-gnu",
+          "winapi-x86_64-pc-windows-gnu",
+          "windows",
+          "windows-collections",
+          "windows-core",
+          "windows-future",
+          "windows-implement",
+          "windows-interface",
+          "windows-link",
+          "windows-numerics",
+          "windows-result",
+          "windows-strings",
+          "windows-sys",
+          "windows-threading",
+          "xattr",
+          "zerocopy",
+          "zerocopy-derive",
+          "zeroize",
+          "zeroize_derive",
+          "zmij"
+        ]
+      },
       "381e8f59c182eb17c5a6509649baa7ab459d642c": {
         "events": [
           "pull_request",
@@ -13146,21 +13402,6 @@
         "self_hosted": false
       },
       "38e9adc7e9f85e7b7d342672c82fddbccb0670da": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "391ea2f0265c8664b056bb3ca896d1cde3f6f68e": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -13507,21 +13748,6 @@
         },
         "self_hosted": false
       },
-      "4350a49bba97eddd5d0fd2d4154b333657873616": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "4363c27d2180f8de25c06d73868f4df8eee40bbd": {
         "events": [
           "push",
@@ -13557,6 +13783,26 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "43ba8b47515c61176fb72ee37e1d65104a113bc3": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
         "push": {
           "branches": [
             "main"
@@ -14202,6 +14448,21 @@
         },
         "self_hosted": false
       },
+      "4edd4e28e51153aa0d6bd822724eb6a5567ac6d4": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "4f27ec84e3f184fa3d96de10023ff5d33768ca6f": {
         "events": [
           "push"
@@ -14826,21 +15087,6 @@
         "push": null,
         "self_hosted": false
       },
-      "60a9081950a0fafd3dfd7779738008c7efb26f38": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "60e0878b7eb567bf193c91a4a20b68b77f635b87": {
         "events": [
           "push",
@@ -15071,6 +15317,21 @@
         },
         "self_hosted": false
       },
+      "69a7bdb285b74379fcb9792dc039d3907b7145e1": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "69bb2a4082590be85e4767cf7ff75ec1007b7f1a": {
         "events": [
           "push",
@@ -15127,6 +15388,21 @@
         "push": null,
         "self_hosted": false
       },
+      "6a28fde3930615b32a4a13441fe88546de9399b8": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "6a6e2223afa7d9d05d6d7f7ced6fecf8d96704f3": {
         "events": [
           "pull_request"
@@ -15179,26 +15455,6 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "6b4928cd34e42f9a658542a71a091f3e686fcdc4": {
-        "events": [
-          "pull_request",
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
         "push": {
           "branches": [
             "main"
@@ -15926,21 +16182,6 @@
         },
         "self_hosted": false
       },
-      "7ace7fe5a7df24706ddb6fe5fb8fb7f370c5b4b6": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "7aea5b8b63db9113504f04230adc10fb8cb3754f": {
         "error": "line 43: expected a single document",
         "ok": false
@@ -16330,6 +16571,21 @@
         "ok": true,
         "pull_request": null,
         "push": null,
+        "self_hosted": false
+      },
+      "82e2baaaf71112aceaab24187527d9c60fef85aa": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
         "self_hosted": false
       },
       "830872b32f6a30d60383a4597d88e694294991e2": {
@@ -17371,6 +17627,21 @@
         },
         "self_hosted": true
       },
+      "99515c087f1b6ca29f1a2e8d08b43769f234515f": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "9994716288db003706c335e67d2b4b268fa843b1": {
         "events": [
           "push"
@@ -17806,6 +18077,21 @@
         "rider": true
       },
       "a636957e0c0ce50e7580fa0113b01280c2ba068c": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "a6c7ae4c14161c4784f2d4a3726f37fa97733582": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -19266,6 +19552,21 @@
         },
         "self_hosted": false
       },
+      "c4f6c8adfcd88815a2f28cca69edbca08fd0f1e3": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "c50905a517f4d116999bf6b794cf91aedd4d0e25": {
         "events": [
           "pull_request"
@@ -19462,200 +19763,6 @@
           ]
         },
         "self_hosted": false
-      },
-      "c8d039d86bc5a7bea4090e888c938fcb98307df4": {
-        "packages": [
-          "aead",
-          "aes",
-          "aes-gcm",
-          "allocator-api2",
-          "anyhow",
-          "asupersync",
-          "autocfg",
-          "base64",
-          "base64ct",
-          "bincode-next",
-          "bincode_derive-next",
-          "bitflags",
-          "block-buffer",
-          "bumpalo",
-          "bytes",
-          "cfg-if",
-          "cfg_aliases",
-          "chacha20",
-          "chacha20poly1305",
-          "cipher",
-          "cmov",
-          "concurrent-queue",
-          "const-oid",
-          "cpubits",
-          "cpufeatures",
-          "crc32fast",
-          "crossbeam-queue",
-          "crossbeam-utils",
-          "crypto-common",
-          "ctr",
-          "ctutils",
-          "curve25519-dalek",
-          "curve25519-dalek-derive",
-          "data-encoding",
-          "der",
-          "digest",
-          "dispatch2",
-          "ed25519",
-          "ed25519-dalek",
-          "either",
-          "equivalent",
-          "errno",
-          "fastrand",
-          "fiat-crypto",
-          "foldhash",
-          "franken-decision",
-          "franken-evidence",
-          "franken-kernel",
-          "fss-cli",
-          "fss-codec-h264",
-          "fss-codec-h265",
-          "fss-codec-mjpeg",
-          "fss-container",
-          "fss-core",
-          "fss-fusion",
-          "fss-geometry",
-          "fss-graph-algorithms",
-          "fss-ledger",
-          "fss-model-ir",
-          "fss-object",
-          "fss-packet",
-          "fss-provision",
-          "fss-publication",
-          "fss-reference",
-          "fss-runtime",
-          "fss-tensor",
-          "fss-tutk",
-          "fss-tuya",
-          "fss-twin",
-          "futures-core",
-          "futures-io",
-          "futures-lite",
-          "futures-task",
-          "futures-util",
-          "generic-array",
-          "getrandom",
-          "ghash",
-          "hashbrown",
-          "hermit-abi",
-          "hex",
-          "hmac",
-          "hybrid-array",
-          "inout",
-          "itertools",
-          "itoa",
-          "js-sys",
-          "libc",
-          "linux-raw-sys",
-          "lock_api",
-          "log",
-          "memchr",
-          "memoffset",
-          "nix",
-          "nkeys",
-          "ntapi",
-          "num-traits",
-          "objc2",
-          "objc2-core-foundation",
-          "objc2-encode",
-          "objc2-foundation",
-          "objc2-io-kit",
-          "objc2-open-directory",
-          "once_cell",
-          "parking",
-          "parking_lot",
-          "parking_lot_core",
-          "pastey",
-          "pem-rfc7468",
-          "pin-project",
-          "pin-project-internal",
-          "pin-project-lite",
-          "pkcs8",
-          "polling",
-          "poly1305",
-          "polyval",
-          "ppv-lite86",
-          "proc-macro2",
-          "prost",
-          "prost-derive",
-          "quote",
-          "r-efi",
-          "rand",
-          "rand_chacha",
-          "rand_core",
-          "rapidhash",
-          "redox_syscall",
-          "rmp",
-          "rmp-serde",
-          "rustc_version",
-          "rustix",
-          "rustversion",
-          "scopeguard",
-          "semver",
-          "serde",
-          "serde_core",
-          "serde_derive",
-          "serde_json",
-          "sha1",
-          "sha2",
-          "signal-hook",
-          "signal-hook-registry",
-          "signatory",
-          "signature",
-          "slab",
-          "smallvec",
-          "socket2",
-          "spki",
-          "subtle",
-          "syn",
-          "sysinfo",
-          "tempfile",
-          "thiserror",
-          "thiserror-impl",
-          "tinyvec",
-          "tokio",
-          "typenum",
-          "unicode-ident",
-          "unicode-normalization",
-          "universal-hash",
-          "unty-next",
-          "version_check",
-          "virtue-next",
-          "wasi",
-          "wasm-bindgen",
-          "wasm-bindgen-futures",
-          "wasm-bindgen-macro",
-          "wasm-bindgen-macro-support",
-          "wasm-bindgen-shared",
-          "web-sys",
-          "winapi",
-          "winapi-i686-pc-windows-gnu",
-          "winapi-x86_64-pc-windows-gnu",
-          "windows",
-          "windows-collections",
-          "windows-core",
-          "windows-future",
-          "windows-implement",
-          "windows-interface",
-          "windows-link",
-          "windows-numerics",
-          "windows-result",
-          "windows-strings",
-          "windows-sys",
-          "windows-threading",
-          "xattr",
-          "zerocopy",
-          "zerocopy-derive",
-          "zeroize",
-          "zeroize_derive",
-          "zmij"
-        ]
       },
       "c91bcb78bea9670053ccacf18b6a46d1d5834e24": {
         "events": [
@@ -20535,6 +20642,21 @@
         },
         "self_hosted": true
       },
+      "dc8337355671d2e56b06a5c7d20cbb7e29595c78": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "tags": [
+            "v*"
+          ]
+        },
+        "self_hosted": false
+      },
       "dca1e2198c4455bb0d345cb52e9dcee1493df1ae": {
         "events": [
           "push",
@@ -21360,6 +21482,21 @@
         },
         "self_hosted": false
       },
+      "f0fb662710d4d4f838bea58a8dbd46c92f01b464": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "f1d27c58c7b7b4b0d7d6d1cdc670e95776cd33a7": {
         "events": [
           "push",
@@ -21707,21 +21844,6 @@
         },
         "self_hosted": false
       },
-      "fc157fe7355a3723c0f29c7cb538c3bb4978e621": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "fc3caa29eec70e39c1943304856e4ac90a6f5cff": {
         "events": [
           "pull_request",
@@ -21926,6 +22048,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-10-18T11:27:56Z",
+  "previous_checked_at": "2026-10-19T11:31:41Z",
   "schema": 1
 }

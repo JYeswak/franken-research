@@ -1,0 +1,84 @@
+{
+  "baseline": false,
+  "date": "2026-10-20",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "119 files at 577c213",
+      "before": "118 files at 77e7369",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/577c21339b3843b974cd199681579ca18027e7c3/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/77e73694b78f38afdcb0a630407b71254c40bb0f...577c21339b3843b974cd199681579ca18027e7c3",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "3121c57a0e88",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +retained-camera-regressions.yml.",
+      "title": "[watch] franken_manim: workflows +1 -0 (119 now)",
+      "value": "3121c57a0e88"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "12 files at dbd9c2c",
+      "before": "11 files at 51bcabb",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_numpy/tree/dbd9c2c35c17c7522e331aa5327ec39d46224b5b/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_numpy/compare/51bcabb63599b1b90b5fe8072e26682dc9d79c78...dbd9c2c35c17c7522e331aa5327ec39d46224b5b",
+        "https://github.com/Dicklesworthstone/franken_numpy/actions"
+      ],
+      "ident": "2c142f4c840b",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_numpy",
+      "summary": "The .github/workflows file set changed: +wheels.yml.",
+      "title": "[watch] franken_numpy: workflows +1 -0 (12 now)",
+      "value": "2c142f4c840b"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "20 files at a291f01",
+      "before": "19 files at 2e2860d",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/a291f0139355c59267433325c11cdf2482aa7393/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/compare/2e2860defcb1c22b55709bf1984c3d118c58c6a6...a291f0139355c59267433325c11cdf2482aa7393",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/actions"
+      ],
+      "ident": "1413bfb40ebd",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_surveillance_system",
+      "summary": "The .github/workflows file set changed: +retained-perception.yml.",
+      "title": "[watch] franken_surveillance_system: workflows +1 -0 (20 now)",
+      "value": "1413bfb40ebd"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "46 files at 9e97da9",
+      "before": "43 files at 36676ed",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/9e97da908489a5f8e9b85cfd1f877ab4b40fef52/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/36676ed26375c769e23d5f279218f377be4edbee...9e97da908489a5f8e9b85cfd1f877ab4b40fef52",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "e11c657f861a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +exit-lifecycle.yml, +exit-tls.yml, +rpc-client-create.yml.",
+      "title": "[watch] frankenlibc: workflows +3 -0 (46 now)",
+      "value": "e11c657f861a"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-19T11:31:41Z"
+}

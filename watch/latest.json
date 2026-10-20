@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "checked_at": "2026-10-19T11:31:41Z",
-  "previous_checked_at": "2026-10-18T11:27:56Z",
+  "checked_at": "2026-10-20T11:30:42Z",
+  "previous_checked_at": "2026-10-19T11:31:41Z",
   "assessed": 44,
   "found": 44,
   "moved_since_pin": 40,
-  "commits_since_pin_total": 25116,
+  "commits_since_pin_total": 25982,
   "material_since_pin_count": 87,
   "material_new_today_count": 0,
   "public_repos": 221,
   "new_public_repos_today": [],
-  "census_path": "watch/census/2026-10-19.tsv",
-  "changes_path": "watch/changes/2026-10-19.json"
+  "census_path": "watch/census/2026-10-20.tsv",
+  "changes_path": "watch/changes/2026-10-20.json"
 }
