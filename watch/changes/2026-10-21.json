@@ -1,0 +1,46 @@
+{
+  "baseline": false,
+  "date": "2026-10-21",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "147 files at 2aa013a",
+      "before": "146 files at 62f11d0",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/2aa013a68f39248863b1ed7147f5c0b57a47226a/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/62f11d0c3701fda8b4bd2af8d1a1a73184148237...2aa013a68f39248863b1ed7147f5c0b57a47226a",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "1468d93e295a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +native-panic-notation.yml.",
+      "title": "[watch] franken_lean: workflows +1 -0 (147 now)",
+      "value": "1468d93e295a"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "121 files at dbfa492",
+      "before": "119 files at 577c213",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_manim/tree/dbfa492a4c7d07d88c3d81ad783dfc5adf3395a5/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_manim/compare/577c21339b3843b974cd199681579ca18027e7c3...dbfa492a4c7d07d88c3d81ad783dfc5adf3395a5",
+        "https://github.com/Dicklesworthstone/franken_manim/actions"
+      ],
+      "ident": "59518d95f3ae",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_manim",
+      "summary": "The .github/workflows file set changed: +provenance-integrity.yml, +python-portal-performance.yml.",
+      "title": "[watch] franken_manim: workflows +2 -0 (121 now)",
+      "value": "59518d95f3ae"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-20T11:30:42Z"
+}
