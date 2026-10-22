@@ -1,6 +1,6 @@
 {
   "archive_bytes": 142033,
-  "archive_sha256": "7b0d5b300250aaa78261c5f332893ba8c19c7fc48ae0d32cb6295199ba068758",
+  "archive_sha256": "ccf0780075ba744c1768467b295819b0a2591be19aac8a19aea5dac3fe8d9d04",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-10-21T11:31:41Z",
+    "checked_at": "2026-10-22T11:31:21Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -144,7 +144,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "b486ad9d154d4d5d3caa1bf0c665497cfe57fd8a7c0c59b95f73cbb1b03c694e"
+    "source_sha256": "4f1ba739a6e1383a4d27ada79f6f2a9a2073ead3a6feb7f08b60cfcb6cde827c"
   },
   "version": 1
 }
