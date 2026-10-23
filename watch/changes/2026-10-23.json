@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-10-23",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "2 files at fbbd9d4",
+      "before": "1 files at ec76cdf",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_threed/tree/fbbd9d44d0e1ff5b7725c28ab6b327f88a4ea31b/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_threed/compare/ec76cdf419442b1eb6bd08ebc0cecef5457ef2aa...fbbd9d44d0e1ff5b7725c28ab6b327f88a4ea31b",
+        "https://github.com/Dicklesworthstone/franken_threed/actions"
+      ],
+      "ident": "b975769d18dd",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_threed",
+      "summary": "The .github/workflows file set changed: +source-cube-environment.yml.",
+      "title": "[watch] franken_threed: workflows +1 -0 (2 now)",
+      "value": "b975769d18dd"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-22T11:31:21Z"
+}
