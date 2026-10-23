@@ -4,10 +4,10 @@
 This reruns author-authored tests. It neither judges their semantic correctness nor
 promotes recipes. No candidate output is emitted as GitHub workflow commands.
 """
-import argparse, hashlib, json, os, pathlib, re, shutil, subprocess, tempfile, time, resource, uuid
-from importlib.machinery import SourceFileLoader
+import argparse, hashlib, importlib.util, json, os, pathlib, re, shutil, subprocess, tempfile, time, resource, uuid
 HERE = pathlib.Path(__file__).resolve().parent
-resolver = SourceFileLoader('research_resolver', str(HERE / 'research-agent-resolve.py')).load_module()
+_resolver_spec = importlib.util.spec_from_file_location('research_resolver', HERE / 'research-agent-resolve.py')
+resolver = importlib.util.module_from_spec(_resolver_spec); _resolver_spec.loader.exec_module(resolver)
 IMAGE = 'ghcr.io/github/gh-aw-firewall/agent:0.28.23@sha256:2c78aaba1c108e130e2d6d01e4f2cca334ea04c53e6f258913ac34173fe7e3b2'
 LIMIT_BYTES = 256 * 1024
 
