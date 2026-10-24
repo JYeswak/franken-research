@@ -10,10 +10,10 @@
         ".github/workflows/research-agent-tests.yml": "0c39186cd08f89d1bfbd61ad5dcdef37a4a0ed5f7c2733f66b10a0924de28dcf",
         "ops/research-agent-harden.py": "e787cf533eb38f29c7a4b56b0d2516225c43cc46520d077208f5061b03810e2d",
         "ops/research-agent-resolve.py": "2a82fb69c8902986e6f2bf89e44b387fbf4b529fbde0829ca13239bbe4544fbd",
-        "ops/research-agent-evaluate.py": "d71cb8f3bde9b64ca4e9201bd826dd89c951179e3e8e7f86756e847e5551627d",
+        "ops/research-agent-evaluate.py": "5ea2881c456a7ec389318b3643aad46bfacc3054cac8ab657e1fa7d0fff17de3",
         "ops/research-agent-smoke.py": "6aa32b057efd31fe2cd67ca55669319aa4041adc5a791344986d74466bd1cc5c",
         "ops/research-agent-policy.mjs": "966b539c07a35f7847220f3b7f76f08d430b104d930622a2ec50d2b0ebf81b4d",
         "ops/test_research_agent.py": "f2ef0f181fecb4416e4405979acb82f526453b54171a9b4f9b2f98fc6bd5942f"
     },
-    "review_sha256": "70272f26393cc18b791581eb009d7c5d09904fd6b9985d231c20b55c39a1cbca"
+    "review_sha256": "bab0e9a4e8e993af39ec3a8752859fbd0cb4a8152d784b2032a2546cca19a1c1"
 }
