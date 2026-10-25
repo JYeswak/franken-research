@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-10-25",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "47 files at 1e7a412",
+      "before": "46 files at e8802f5",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenlibc/tree/1e7a4122adae9ebb72753dc879427722353f8740/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenlibc/compare/e8802f5d075c2b0bc6c567b3c7eb003a11301897...1e7a4122adae9ebb72753dc879427722353f8740",
+        "https://github.com/Dicklesworthstone/frankenlibc/actions"
+      ],
+      "ident": "87ed3cd8eaad",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenlibc",
+      "summary": "The .github/workflows file set changed: +native-pthread-stacks.yml.",
+      "title": "[watch] frankenlibc: workflows +1 -0 (47 now)",
+      "value": "87ed3cd8eaad"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-23T11:31:47Z"
+}
