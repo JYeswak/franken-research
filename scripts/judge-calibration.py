@@ -52,6 +52,7 @@ DEFAULT_REGISTRY = os.path.join(HERE, "judge-calibration-registry.json")
 KAPPA_BAR = 0.6  # bead starting bar; tightening is a later decision bead
 CLASSES = ("green", "revise")
 PREDICTION_KIND = "deterministic-rules (evaluate.md rules 1-4)"
+REPLAY_PREDICTION_KIND = "full-prompt replay under pinned judge version"
 
 
 def load_json(path):
@@ -334,12 +335,17 @@ def cmd_report(args):
     reg = load_json(out) if os.path.exists(out) else {}
     reg.update({"schema": "franken-research/judge-calibration-registry@1",
                 "bead": "fr-o8i", "judge_version": args.judge_version,
-                "prediction_kind": PREDICTION_KIND,
                 "frozen_set": os.path.basename(args.set)})
+    # fr-71z: a per-lane report must not stomp the registry top-level
+    # prediction_kind (it describes the registry reference measurement,
+    # not this lane's replay); only a fresh registry inherits this
+    # report's kind at top level.
+    reg.setdefault("prediction_kind", REPLAY_PREDICTION_KIND)
     reg.setdefault("lanes", {})
     sc = dict(s)
+    sc["lane"] = args.lane
     sc["judge_version"] = args.judge_version
-    sc["prediction_kind"] = PREDICTION_KIND
+    sc["prediction_kind"] = REPLAY_PREDICTION_KIND
     sc["n_set"] = len(data["items"])
     sc["coverage"] = 1.0
     sc["coverage_complete"] = True

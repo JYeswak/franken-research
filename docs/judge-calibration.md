@@ -95,7 +95,11 @@ by evaluate.py) reads `franken-nightly/judge-calibration.json`:
 3. Record: `scripts/judge-calibration.py report --predictions P.json
    --lane <provider/model> --judge-version <v>` — updates the repo
    registry `scripts/judge-calibration-registry.json` and, with
-   `--grant`, the driver file.
+   `--grant`, the driver file. The recorded lane row is stamped with
+   the `--lane` value and prediction_kind `full-prompt replay under
+   pinned judge version` (fr-71z); a per-lane report never overwrites
+   the registry top-level prediction_kind, which describes the
+   registry reference measurement.
 4. Independent verification (a different agent) re-runs the report and
    checks kappa before the lane auto-merges again.
 

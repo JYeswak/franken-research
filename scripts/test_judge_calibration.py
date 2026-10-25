@@ -161,3 +161,36 @@ def test_gate_blocks_partial_coverage_entry():
     assert not g["auto_merge_allowed"]
     assert any("partial frozen-set coverage" in r for r in g["reasons"])
 
+
+def test_report_stamps_lane_and_replay_kind():
+    """fr-71z: report with a predictions file stamps the --lane value and
+    a full-prompt-replay prediction_kind on the lane row, and does not
+    stomp the registry top-level prediction_kind or existing rows."""
+    import argparse
+    data = JC.frozen_set()
+    preds = {i["id"]: i["label"] for i in data["items"]}
+    with tempfile.TemporaryDirectory() as td:
+        pred_path = os.path.join(td, "preds.json")
+        with open(pred_path, "w") as f:
+            json.dump(preds, f)
+        reg_path = os.path.join(td, "registry.json")
+        sentinel_top = "pre-existing top-level kind (fr-71z sentinel)"
+        det_row = {"lane": "frozen-set", "kappa": 1.0,
+                   "prediction_kind": JC.PREDICTION_KIND}
+        with open(reg_path, "w") as f:
+            json.dump({"prediction_kind": sentinel_top,
+                       "lanes": {"offline/deterministic-rules": det_row}}, f)
+        args = argparse.Namespace(predictions=pred_path,
+                                  lane="groq/openai/gpt-oss-120b",
+                                  judge_version="judge-v1-test",
+                                  registry=reg_path, grant=None,
+                                  set=JC.DEFAULT_SET)
+        assert JC.cmd_report(args) == 0
+        reg = JC.load_json(reg_path)
+        row = reg["lanes"]["groq/openai/gpt-oss-120b"]
+        assert row["lane"] == "groq/openai/gpt-oss-120b"
+        assert row["prediction_kind"] == JC.REPLAY_PREDICTION_KIND
+        assert "full-prompt replay" in row["prediction_kind"]
+        assert row["kappa"] == 1.0
+        assert reg["prediction_kind"] == sentinel_top
+        assert reg["lanes"]["offline/deterministic-rules"] == det_row
