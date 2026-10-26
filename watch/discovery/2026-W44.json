@@ -1,0 +1,354 @@
+{
+  "week": "2026-W44",
+  "checked_on": "2026-10-26",
+  "query": "language:Rust pushed:>=2026-09-26 created:>=2026-04-29 stars:>=25 fork:false",
+  "rule": "candidates/README.md",
+  "search": {
+    "total_count": 2142,
+    "fetched": 300,
+    "incomplete_results": false
+  },
+  "excluded": {
+    "owner": 0,
+    "fork": 0,
+    "archived": 2,
+    "assessed": 0,
+    "already_candidate": 50
+  },
+  "checked": 40,
+  "no_signal": 19,
+  "candidates": [
+    {
+      "repo": "ludovic111/horizon",
+      "url": "https://github.com/ludovic111/horizon",
+      "stars": 2434,
+      "pushed_at": "2026-10-26T14:02:13Z",
+      "created_at": "2026-10-03T17:08:48Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 4,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.339
+    },
+    {
+      "repo": "crmne/zapfast",
+      "url": "https://github.com/crmne/zapfast",
+      "stars": 2232,
+      "pushed_at": "2026-10-26T13:38:08Z",
+      "created_at": "2026-08-29T15:52:40Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.335
+    },
+    {
+      "repo": "Ephemeral-AI-Lab/layerfs",
+      "url": "https://github.com/Ephemeral-AI-Lab/layerfs",
+      "stars": 2122,
+      "pushed_at": "2026-10-24T18:10:34Z",
+      "created_at": "2026-08-10T00:26:10Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 25,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.333
+    },
+    {
+      "repo": "xevrion/hatchzip",
+      "url": "https://github.com/xevrion/hatchzip",
+      "stars": 2011,
+      "pushed_at": "2026-10-25T17:45:27Z",
+      "created_at": "2026-10-21T17:29:28Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.33
+    },
+    {
+      "repo": "pingdotgg/ts-rust",
+      "url": "https://github.com/pingdotgg/ts-rust",
+      "stars": 1527,
+      "pushed_at": "2026-10-26T13:12:59Z",
+      "created_at": "2026-10-07T05:17:07Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 28,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.318
+    },
+    {
+      "repo": "pch/rawmakase",
+      "url": "https://github.com/pch/rawmakase",
+      "stars": 1512,
+      "pushed_at": "2026-10-26T13:46:29Z",
+      "created_at": "2026-09-26T13:44:32Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 22,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.318
+    },
+    {
+      "repo": "peetzweg/opendisplay",
+      "url": "https://github.com/peetzweg/opendisplay",
+      "stars": 5909,
+      "pushed_at": "2026-10-24T16:48:20Z",
+      "created_at": "2026-06-10T09:08:00Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.377
+    },
+    {
+      "repo": "yynxxxxx/Codex-X",
+      "url": "https://github.com/yynxxxxx/Codex-X",
+      "stars": 4316,
+      "pushed_at": "2026-10-24T12:56:33Z",
+      "created_at": "2026-07-04T03:28:35Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.364
+    },
+    {
+      "repo": "nullmoth/nvidia-macos-driver",
+      "url": "https://github.com/nullmoth/nvidia-macos-driver",
+      "stars": 3759,
+      "pushed_at": "2026-10-26T10:34:37Z",
+      "created_at": "2026-10-07T08:13:12Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.358
+    },
+    {
+      "repo": "Folkbench/folkbench",
+      "url": "https://github.com/Folkbench/folkbench",
+      "stars": 3728,
+      "pushed_at": "2026-10-25T09:27:52Z",
+      "created_at": "2026-10-02T09:50:45Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.357
+    },
+    {
+      "repo": "Kuddev/pebrel",
+      "url": "https://github.com/Kuddev/pebrel",
+      "stars": 3602,
+      "pushed_at": "2026-10-26T13:01:02Z",
+      "created_at": "2026-07-05T12:17:36Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.356
+    },
+    {
+      "repo": "zeronsh/zeron",
+      "url": "https://github.com/zeronsh/zeron",
+      "stars": 3371,
+      "pushed_at": "2026-10-26T10:19:44Z",
+      "created_at": "2026-07-20T15:04:04Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 21,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.353
+    },
+    {
+      "repo": "t4t5/owly",
+      "url": "https://github.com/t4t5/owly",
+      "stars": 3077,
+      "pushed_at": "2026-10-26T11:14:35Z",
+      "created_at": "2026-10-08T06:38:33Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.349
+    },
+    {
+      "repo": "yhan-sun/p2wlan",
+      "url": "https://github.com/yhan-sun/p2wlan",
+      "stars": 2958,
+      "pushed_at": "2026-10-26T12:07:20Z",
+      "created_at": "2026-07-16T01:53:38Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.347
+    },
+    {
+      "repo": "deeplethe/forkd",
+      "url": "https://github.com/deeplethe/forkd",
+      "stars": 2900,
+      "pushed_at": "2026-10-26T08:58:10Z",
+      "created_at": "2026-05-11T17:42:24Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 30,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.346
+    },
+    {
+      "repo": "mesamirh/MovieBox-Tui",
+      "url": "https://github.com/mesamirh/MovieBox-Tui",
+      "stars": 2640,
+      "pushed_at": "2026-10-23T08:34:59Z",
+      "created_at": "2026-07-16T07:09:47Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.342
+    },
+    {
+      "repo": "oxc-project/tsrs",
+      "url": "https://github.com/oxc-project/tsrs",
+      "stars": 2331,
+      "pushed_at": "2026-10-26T13:40:34Z",
+      "created_at": "2026-10-01T15:14:18Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.337
+    },
+    {
+      "repo": "elliothux/open-compute",
+      "url": "https://github.com/elliothux/open-compute",
+      "stars": 2164,
+      "pushed_at": "2026-10-26T13:52:28Z",
+      "created_at": "2026-08-23T04:34:25Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.334
+    },
+    {
+      "repo": "gi-dellav/zerostack",
+      "url": "https://github.com/gi-dellav/zerostack",
+      "stars": 1724,
+      "pushed_at": "2026-10-26T13:09:10Z",
+      "created_at": "2026-05-12T19:31:49Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.324
+    },
+    {
+      "repo": "chojs23/concord",
+      "url": "https://github.com/chojs23/concord",
+      "stars": 1631,
+      "pushed_at": "2026-10-23T15:53:23Z",
+      "created_at": "2026-05-08T15:51:03Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.321
+    },
+    {
+      "repo": "iAmCorey/Wake",
+      "url": "https://github.com/iAmCorey/Wake",
+      "stars": 1489,
+      "pushed_at": "2026-10-25T13:48:18Z",
+      "created_at": "2026-08-18T09:46:23Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 23,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.317
+    }
+  ],
+  "listed": [
+    "ludovic111/horizon",
+    "crmne/zapfast",
+    "Ephemeral-AI-Lab/layerfs",
+    "xevrion/hatchzip",
+    "pingdotgg/ts-rust",
+    "pch/rawmakase",
+    "peetzweg/opendisplay",
+    "yynxxxxx/Codex-X",
+    "nullmoth/nvidia-macos-driver",
+    "Folkbench/folkbench",
+    "Kuddev/pebrel",
+    "zeronsh/zeron",
+    "t4t5/owly",
+    "yhan-sun/p2wlan",
+    "deeplethe/forkd"
+  ]
+}
