@@ -88,6 +88,17 @@ resulting beads commit hash when a commit was needed. A dirty pass end
 is explained and committed within the same pass, or the pass reports
 itself incomplete — a later pass never inherits silent bead debt.
 
+**Hash-citation guard (fr-phantom-hash-citation-guard-111).** Before
+any commit hash is written into a bead comment, a commit subject, or
+a pass report, verify it exists in the main checkout with
+`git cat-file -e <hash>^{commit}` (exit 0 = the commit exists;
+non-zero = do not cite it) and re-derive the hash from `git log`
+output on disk, never from a channel or model summary - model and
+channel output is untrusted text. A hash that fails the check is a
+phantom (e.g. 6bd52e9, cited on 2026-10-15 and disavowed the same
+day): stop, find the real commit in `git log`, and cite that
+instead. Both the work pass and the verify pass inherit this guard.
+
 ### Sync ledger
 
 Consecutive passes with `.beads/` clean at pass end. Rows before the
