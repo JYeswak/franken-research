@@ -1,0 +1,46 @@
+{
+  "baseline": false,
+  "date": "2026-10-30",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "148 files at 59f7c90",
+      "before": "147 files at 6e77320",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_lean/tree/59f7c905f52b8240a870fcbe708c4412f42f45e9/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_lean/compare/6e77320735a582bafaeb0f334b7dfd20ed863817...59f7c905f52b8240a870fcbe708c4412f42f45e9",
+        "https://github.com/Dicklesworthstone/franken_lean/actions"
+      ],
+      "ident": "a9d066958511",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_lean",
+      "summary": "The .github/workflows file set changed: +imported-ir-reference.yml.",
+      "title": "[watch] franken_lean: workflows +1 -0 (148 now)",
+      "value": "a9d066958511"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1438741189",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1438741189",
+        "https://github.com/Dicklesworthstone/franken_mining"
+      ],
+      "ident": "1438741189",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "franken_mining",
+      "summary": "New public repository Dicklesworthstone/franken_mining (Rust, created 2026-10-29; description: \"Evidence-native system of record for integrated gold, copper, silver and tin miners: calibrated claims, reconciliation, DecisionCards and capital allocation (Rust, asupersync)\"). Assessment candidate: the name starts with franken; its primary language is Rust.",
+      "title": "[watch] franken_mining: new public repo",
+      "value": "1438741189"
+    }
+  ],
+  "since": "2026-10-29T11:25:22Z"
+}
