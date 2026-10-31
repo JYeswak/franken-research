@@ -1,17 +1,15 @@
 {
   "schema": 1,
-  "checked_at": "2026-10-30T11:24:24Z",
-  "previous_checked_at": "2026-10-29T11:25:22Z",
+  "checked_at": "2026-10-31T11:24:35Z",
+  "previous_checked_at": "2026-10-30T11:24:24Z",
   "assessed": 44,
   "found": 44,
   "moved_since_pin": 41,
-  "commits_since_pin_total": 34967,
+  "commits_since_pin_total": 36556,
   "material_since_pin_count": 87,
-  "material_new_today_count": 1,
+  "material_new_today_count": 0,
   "public_repos": 222,
-  "new_public_repos_today": [
-    "franken_mining"
-  ],
-  "census_path": "watch/census/2026-10-30.tsv",
-  "changes_path": "watch/changes/2026-10-30.json"
+  "new_public_repos_today": [],
+  "census_path": "watch/census/2026-10-31.tsv",
+  "changes_path": "watch/changes/2026-10-31.json"
 }

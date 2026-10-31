@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-10-31",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "9 files at fb3394c",
+      "before": "8 files at 91e0163",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengit/tree/fb3394c3c6731ba9e6e6542175de42f3a2813d18/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankengit/compare/91e01634035f9d514bb999e3de149705811515b5...fb3394c3c6731ba9e6e6542175de42f3a2813d18",
+        "https://github.com/Dicklesworthstone/frankengit/actions"
+      ],
+      "ident": "996924a82461",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankengit",
+      "summary": "The .github/workflows file set changed: +authenticated-publication.yml.",
+      "title": "[watch] frankengit: workflows +1 -0 (9 now)",
+      "value": "996924a82461"
+    }
+  ],
+  "material": [],
+  "since": "2026-10-30T11:24:24Z"
+}
