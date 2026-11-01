@@ -1,0 +1,29 @@
+{
+  "baseline": false,
+  "date": "2026-11-01",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.4.13 -> e4137af, published 2026-11-01T09:41:46Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/releases/tag/v0.4.13",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/releases/tags/v0.4.13",
+        "https://github.com/Dicklesworthstone/frankensqlite/commit/e4137af304002ac0b57a948c9e0005f9161475d7"
+      ],
+      "ident": "v0.4.13",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New GitHub release v0.4.13.",
+      "title": "[watch] frankensqlite: release v0.4.13",
+      "value": "e4137af304002ac0b57a948c9e0005f9161475d7"
+    }
+  ],
+  "since": "2026-10-31T11:24:35Z"
+}
