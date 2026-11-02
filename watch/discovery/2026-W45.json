@@ -1,0 +1,309 @@
+{
+  "week": "2026-W45",
+  "checked_on": "2026-11-02",
+  "query": "language:Rust pushed:>=2026-10-03 created:>=2026-05-06 stars:>=25 fork:false",
+  "rule": "candidates/README.md",
+  "search": {
+    "total_count": 2290,
+    "fetched": 300,
+    "incomplete_results": false
+  },
+  "excluded": {
+    "owner": 0,
+    "fork": 0,
+    "archived": 2,
+    "assessed": 0,
+    "already_candidate": 61
+  },
+  "checked": 40,
+  "no_signal": 22,
+  "candidates": [
+    {
+      "repo": "horizon-rust/horizon",
+      "url": "https://github.com/horizon-rust/horizon",
+      "stars": 5824,
+      "pushed_at": "2026-11-02T12:25:18Z",
+      "created_at": "2026-10-03T17:08:48Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 11,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.377
+    },
+    {
+      "repo": "storytold/craft-anything",
+      "url": "https://github.com/storytold/craft-anything",
+      "stars": 2392,
+      "pushed_at": "2026-11-02T10:24:16Z",
+      "created_at": "2026-10-31T14:50:00Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.338
+    },
+    {
+      "repo": "elliothux/open-compute",
+      "url": "https://github.com/elliothux/open-compute",
+      "stars": 2807,
+      "pushed_at": "2026-11-02T12:15:00Z",
+      "created_at": "2026-08-23T04:34:25Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 30,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.345
+    },
+    {
+      "repo": "indexable-inc/blaze",
+      "url": "https://github.com/indexable-inc/blaze",
+      "stars": 1892,
+      "pushed_at": "2026-11-02T03:29:59Z",
+      "created_at": "2026-10-19T23:31:09Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 11,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.328
+    },
+    {
+      "repo": "lgse/strata",
+      "url": "https://github.com/lgse/strata",
+      "stars": 1529,
+      "pushed_at": "2026-11-02T12:19:13Z",
+      "created_at": "2026-08-28T22:41:07Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.318
+    },
+    {
+      "repo": "ollaya-dev/ollaya",
+      "url": "https://github.com/ollaya-dev/ollaya",
+      "stars": 1434,
+      "pushed_at": "2026-11-02T11:56:45Z",
+      "created_at": "2026-09-23T22:11:15Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": true,
+        "agent_trailers": 30,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.316
+    },
+    {
+      "repo": "paradigmxyz/centaur",
+      "url": "https://github.com/paradigmxyz/centaur",
+      "stars": 1416,
+      "pushed_at": "2026-11-02T05:36:25Z",
+      "created_at": "2026-05-18T17:30:29Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 2,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.315
+    },
+    {
+      "repo": "deeplethe/sandstorm",
+      "url": "https://github.com/deeplethe/sandstorm",
+      "stars": 4010,
+      "pushed_at": "2026-11-01T20:27:58Z",
+      "created_at": "2026-05-11T17:42:24Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 30,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.36
+    },
+    {
+      "repo": "anomalyco/hex",
+      "url": "https://github.com/anomalyco/hex",
+      "stars": 3828,
+      "pushed_at": "2026-11-02T11:52:08Z",
+      "created_at": "2026-07-17T23:48:56Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.358
+    },
+    {
+      "repo": "mesamirh/MovieBox-Tui",
+      "url": "https://github.com/mesamirh/MovieBox-Tui",
+      "stars": 2735,
+      "pushed_at": "2026-10-29T08:32:45Z",
+      "created_at": "2026-07-16T07:09:47Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 4,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.344
+    },
+    {
+      "repo": "oxc-project/tsrs",
+      "url": "https://github.com/oxc-project/tsrs",
+      "stars": 2715,
+      "pushed_at": "2026-11-02T09:22:34Z",
+      "created_at": "2026-10-01T15:14:18Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.343
+    },
+    {
+      "repo": "gi-dellav/zerostack",
+      "url": "https://github.com/gi-dellav/zerostack",
+      "stars": 1734,
+      "pushed_at": "2026-10-28T15:26:13Z",
+      "created_at": "2026-05-12T19:31:49Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.324
+    },
+    {
+      "repo": "chojs23/concord",
+      "url": "https://github.com/chojs23/concord",
+      "stars": 1642,
+      "pushed_at": "2026-10-30T08:32:35Z",
+      "created_at": "2026-05-08T15:51:03Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 2,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.322
+    },
+    {
+      "repo": "herdrdev/herdr-app",
+      "url": "https://github.com/herdrdev/herdr-app",
+      "stars": 1531,
+      "pushed_at": "2026-11-02T01:43:59Z",
+      "created_at": "2026-10-16T20:36:36Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.318
+    },
+    {
+      "repo": "iAmCorey/Wake",
+      "url": "https://github.com/iAmCorey/Wake",
+      "stars": 1521,
+      "pushed_at": "2026-10-25T13:48:18Z",
+      "created_at": "2026-08-18T09:46:23Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 23,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.318
+    },
+    {
+      "repo": "colinhacks/reylo",
+      "url": "https://github.com/colinhacks/reylo",
+      "stars": 1469,
+      "pushed_at": "2026-11-02T07:49:35Z",
+      "created_at": "2026-10-21T00:16:54Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.317
+    },
+    {
+      "repo": "l0ng-ai/tty7",
+      "url": "https://github.com/l0ng-ai/tty7",
+      "stars": 1414,
+      "pushed_at": "2026-11-02T10:11:16Z",
+      "created_at": "2026-07-06T12:51:10Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 7,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.315
+    },
+    {
+      "repo": "valkor-ai/loom",
+      "url": "https://github.com/valkor-ai/loom",
+      "stars": 1378,
+      "pushed_at": "2026-10-28T02:46:16Z",
+      "created_at": "2026-06-09T03:46:34Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.314
+    }
+  ],
+  "listed": [
+    "horizon-rust/horizon",
+    "storytold/craft-anything",
+    "elliothux/open-compute",
+    "indexable-inc/blaze",
+    "lgse/strata",
+    "ollaya-dev/ollaya",
+    "paradigmxyz/centaur",
+    "deeplethe/sandstorm",
+    "anomalyco/hex",
+    "mesamirh/MovieBox-Tui",
+    "oxc-project/tsrs",
+    "gi-dellav/zerostack",
+    "chojs23/concord",
+    "herdrdev/herdr-app",
+    "iAmCorey/Wake"
+  ]
+}
