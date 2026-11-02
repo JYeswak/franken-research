@@ -1,0 +1,48 @@
+{
+  "baseline": false,
+  "date": "2026-11-02",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.6.0 -> f9e5c17 (2026-11-01T12:43:05Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/asupersync/tree/v0.6.0",
+        "https://api.github.com/repos/Dicklesworthstone/asupersync/git/ref/tags/v0.6.0"
+      ],
+      "ident": "v0.6.0",
+      "kind": "tag",
+      "label": "release",
+      "repo": "asupersync",
+      "summary": "New tag v0.6.0 (no GitHub release for it at this check).",
+      "title": "[watch] asupersync: tag v0.6.0",
+      "value": "f9e5c17e45939818eeb025f7c6ab440ca7f7174e"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag v0.6.1 -> 4d0ef0e (2026-11-01T19:46:34Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/asupersync/tree/v0.6.1",
+        "https://api.github.com/repos/Dicklesworthstone/asupersync/git/ref/tags/v0.6.1"
+      ],
+      "ident": "v0.6.1",
+      "kind": "tag",
+      "label": "release",
+      "repo": "asupersync",
+      "summary": "New tag v0.6.1 (no GitHub release for it at this check).",
+      "title": "[watch] asupersync: tag v0.6.1",
+      "value": "4d0ef0e79a6efa36023f32fcd81615122c809d3d"
+    }
+  ],
+  "since": "2026-11-01T11:24:30Z"
+}
