@@ -1,0 +1,92 @@
+{
+  "baseline": false,
+  "date": "2026-11-03",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.6.2 -> a5d23e8, published 2026-11-03T03:07:30Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/asupersync/releases/tag/v0.6.2",
+        "https://api.github.com/repos/Dicklesworthstone/asupersync/releases/tags/v0.6.2",
+        "https://github.com/Dicklesworthstone/asupersync/commit/a5d23e8dd2c8d776bd02e2da8e38e6296600e84c"
+      ],
+      "ident": "v0.6.2",
+      "kind": "release",
+      "label": "release",
+      "repo": "asupersync",
+      "summary": "New GitHub release v0.6.2.",
+      "title": "[watch] asupersync: release v0.6.2",
+      "value": "a5d23e8dd2c8d776bd02e2da8e38e6296600e84c"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.7.0 -> ddbdefd, published 2026-11-03T04:00:20Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/releases/tag/v0.7.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/releases/tags/v0.7.0",
+        "https://github.com/Dicklesworthstone/franken_markdown/commit/ddbdefd8c35770766838a735c554119ff0ef39e3"
+      ],
+      "ident": "v0.7.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New GitHub release v0.7.0.",
+      "title": "[watch] franken_markdown: release v0.7.0",
+      "value": "ddbdefd8c35770766838a735c554119ff0ef39e3"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release models-unlimited-ocr-2-v1 -> a58b6ea, published 2026-11-02T17:38:10Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_ocr/releases/tag/models-unlimited-ocr-2-v1",
+        "https://api.github.com/repos/Dicklesworthstone/franken_ocr/releases/tags/models-unlimited-ocr-2-v1",
+        "https://github.com/Dicklesworthstone/franken_ocr/commit/a58b6ea8c2990aeb3d680cfe6c6f7bb44348ab75"
+      ],
+      "ident": "models-unlimited-ocr-2-v1",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_ocr",
+      "summary": "New GitHub release models-unlimited-ocr-2-v1.",
+      "title": "[watch] franken_ocr: release models-unlimited-ocr-2-v1",
+      "value": "a58b6ea8c2990aeb3d680cfe6c6f7bb44348ab75"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.10.0 -> 24ba3c3, published 2026-11-03T03:38:06Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankentui/releases/tag/v0.10.0",
+        "https://api.github.com/repos/Dicklesworthstone/frankentui/releases/tags/v0.10.0",
+        "https://github.com/Dicklesworthstone/frankentui/commit/24ba3c387a9d4f735b2d3b16284458ca22545d1d"
+      ],
+      "ident": "v0.10.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "frankentui",
+      "summary": "New GitHub release v0.10.0.",
+      "title": "[watch] frankentui: release v0.10.0",
+      "value": "24ba3c387a9d4f735b2d3b16284458ca22545d1d"
+    }
+  ],
+  "since": "2026-11-02T11:24:21Z"
+}

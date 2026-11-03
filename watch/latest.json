@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "checked_at": "2026-11-02T11:24:21Z",
-  "previous_checked_at": "2026-11-01T11:24:30Z",
+  "checked_at": "2026-11-03T11:24:28Z",
+  "previous_checked_at": "2026-11-02T11:24:21Z",
   "assessed": 44,
   "found": 44,
   "moved_since_pin": 41,
-  "commits_since_pin_total": 38236,
-  "material_since_pin_count": 90,
-  "material_new_today_count": 2,
+  "commits_since_pin_total": 39413,
+  "material_since_pin_count": 94,
+  "material_new_today_count": 4,
   "public_repos": 222,
   "new_public_repos_today": [],
-  "census_path": "watch/census/2026-11-02.tsv",
-  "changes_path": "watch/changes/2026-11-02.json"
+  "census_path": "watch/census/2026-11-03.tsv",
+  "changes_path": "watch/changes/2026-11-03.json"
 }
