@@ -1,0 +1,88 @@
+{
+  "baseline": false,
+  "date": "2026-11-04",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "21 files at 0f5d7a2",
+      "before": "20 files at 94a6045",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/0f5d7a2bec07b20bc7c487d03d53e7416a79f2e1/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/94a6045f171646101e3eca82e771c80ecadb03c6...0f5d7a2bec07b20bc7c487d03d53e7416a79f2e1",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "ac54f1c258f4",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +mining-original-modules.yml.",
+      "title": "[watch] frankensim: workflows +1 -0 (21 now)",
+      "value": "ac54f1c258f4"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.6.1 -> 4d0ef0e, published 2026-11-03T16:42:49Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/asupersync/releases/tag/v0.6.1",
+        "https://api.github.com/repos/Dicklesworthstone/asupersync/releases/tags/v0.6.1",
+        "https://github.com/Dicklesworthstone/asupersync/commit/4d0ef0e79a6efa36023f32fcd81615122c809d3d"
+      ],
+      "ident": "v0.6.1",
+      "kind": "release",
+      "label": "release",
+      "repo": "asupersync",
+      "summary": "New GitHub release v0.6.1.",
+      "title": "[watch] asupersync: release v0.6.1",
+      "value": "4d0ef0e79a6efa36023f32fcd81615122c809d3d"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.3.11 -> bf4c455, published 2026-11-03T19:14:04Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_agent_detection/releases/tag/v0.3.11",
+        "https://api.github.com/repos/Dicklesworthstone/franken_agent_detection/releases/tags/v0.3.11",
+        "https://github.com/Dicklesworthstone/franken_agent_detection/commit/bf4c45538c48890bde60fc3de6e1874c2b471b37"
+      ],
+      "ident": "v0.3.11",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_agent_detection",
+      "summary": "New GitHub release v0.3.11.",
+      "title": "[watch] franken_agent_detection: release v0.3.11",
+      "value": "bf4c45538c48890bde60fc3de6e1874c2b471b37"
+    },
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1444589029",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1444589029",
+        "https://github.com/Dicklesworthstone/franken_doppler_finder"
+      ],
+      "ident": "1444589029",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "franken_doppler_finder",
+      "summary": "New public repository Dicklesworthstone/franken_doppler_finder (Rust, created 2026-11-03; description: \"Locate an audio or video recording from the Doppler curves of propeller aircraft, matched against archived ADS-B flight tracks. Rust, on frankenscipy and asupersync.\"). Assessment candidate: the name starts with franken; its primary language is Rust.",
+      "title": "[watch] franken_doppler_finder: new public repo",
+      "value": "1444589029"
+    }
+  ],
+  "since": "2026-11-03T11:24:28Z"
+}

@@ -1,15 +1,17 @@
 {
   "schema": 1,
-  "checked_at": "2026-11-03T11:24:28Z",
-  "previous_checked_at": "2026-11-02T11:24:21Z",
+  "checked_at": "2026-11-04T11:25:12Z",
+  "previous_checked_at": "2026-11-03T11:24:28Z",
   "assessed": 44,
   "found": 44,
   "moved_since_pin": 41,
-  "commits_since_pin_total": 39413,
-  "material_since_pin_count": 94,
-  "material_new_today_count": 4,
-  "public_repos": 222,
-  "new_public_repos_today": [],
-  "census_path": "watch/census/2026-11-03.tsv",
-  "changes_path": "watch/changes/2026-11-03.json"
+  "commits_since_pin_total": 41386,
+  "material_since_pin_count": 95,
+  "material_new_today_count": 3,
+  "public_repos": 223,
+  "new_public_repos_today": [
+    "franken_doppler_finder"
+  ],
+  "census_path": "watch/census/2026-11-04.tsv",
+  "changes_path": "watch/changes/2026-11-04.json"
 }
