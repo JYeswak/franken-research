@@ -3,12 +3,12 @@
     "asupersync": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2807,
+      "commits_since_pin": 2901,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ddda2bf82cc8b3f3946c63f2ffc44177a4e34824",
-      "head_date": "2026-11-04T02:55:46Z",
+      "head": "8940119023c0e01b4d6d3e2c1399f41417c2ad24",
+      "head_date": "2026-11-04T22:55:16Z",
       "id": 1135442827,
       "license_changed_since_pin": false,
       "license_files": [
@@ -781,12 +781,12 @@
     "franken_alignment": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 537,
+      "commits_since_pin": 561,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "2e8f69c708e8100d61099ea8490e5f570baf03b1",
-      "head_date": "2026-11-04T07:23:18Z",
+      "head": "ef65c85c1028e1c845ff4a987d84e7d8b245def4",
+      "head_date": "2026-11-04T23:36:38Z",
       "id": 1359645474,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1017,12 +1017,12 @@
     "franken_lean": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2414,
+      "commits_since_pin": 2477,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a0ec19709ed3c6e7988dc9166106355161211c77",
-      "head_date": "2026-11-04T06:54:21Z",
+      "head": "af3d6d69c8207f1400ae3f70adb800658c61290d",
+      "head_date": "2026-11-05T10:43:36Z",
       "id": 1307841640,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1262,12 +1262,12 @@
     "franken_manim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1848,
+      "commits_since_pin": 1871,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "5eacaaabb2eddecb0e61e08a8bfca76c79054072",
-      "head_date": "2026-11-04T06:00:08Z",
+      "head": "7d57edc69d111c58092fbb2628b301d2101f30a7",
+      "head_date": "2026-11-05T06:49:58Z",
       "id": 1306217133,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1520,12 +1520,12 @@
     "franken_markdown": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 627,
+      "commits_since_pin": 646,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a51ac80a9c4c1016a25ea9f80fe6011124eace71",
-      "head_date": "2026-11-04T04:00:13Z",
+      "head": "7d0472b240372922384b9e19765f5c785d78ae3a",
+      "head_date": "2026-11-05T02:57:04Z",
       "id": 1281851258,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1672,9 +1672,39 @@
           "kind": "release",
           "name": "v0.7.0",
           "target": "ddbdefd8c35770766838a735c554119ff0ef39e3"
+        },
+        {
+          "date": "2026-11-04T18:23:23Z",
+          "kind": "tag",
+          "name": "fmn-native-cross-candidate-20261104",
+          "target": "222c3d4a8c29f0f92555667df369c10cb1e73240"
+        },
+        {
+          "date": "2026-11-05T01:23:12Z",
+          "kind": "tag",
+          "name": "fmn-script-metrics-candidate-20261105",
+          "target": "5aa9e44f09e4501329aa82e676564e3c1fc6154e"
+        },
+        {
+          "date": "2026-11-05T07:12:45Z",
+          "kind": "tag",
+          "name": "fmn-underline-candidate-20261105",
+          "target": "3ca2ebac7e2d5e657f6e6d6877784fc051f19501"
         }
       ],
       "tags": {
+        "fmn-native-cross-candidate-20261104": {
+          "date": "2026-11-04T18:23:23Z",
+          "target": "222c3d4a8c29f0f92555667df369c10cb1e73240"
+        },
+        "fmn-script-metrics-candidate-20261105": {
+          "date": "2026-11-05T01:23:12Z",
+          "target": "5aa9e44f09e4501329aa82e676564e3c1fc6154e"
+        },
+        "fmn-underline-candidate-20261105": {
+          "date": "2026-11-05T07:12:45Z",
+          "target": "3ca2ebac7e2d5e657f6e6d6877784fc051f19501"
+        },
         "v0.1.0": {
           "date": "2026-06-30T01:46:37Z",
           "target": "128ac1fb274db7a49f0e7f1a39db62046fb7c446"
@@ -1913,12 +1943,12 @@
     "franken_nlp": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 318,
+      "commits_since_pin": 319,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "f13e9a8c951b58b193506d0e7e21ca3cd237df22",
-      "head_date": "2026-11-01T17:37:31Z",
+      "head": "44428a6df717c01668609e2427abce43d40563d0",
+      "head_date": "2026-11-04T22:48:48Z",
       "id": 1317838147,
       "license_changed_since_pin": false,
       "license_files": [
@@ -1952,12 +1982,12 @@
     "franken_node": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 671,
+      "commits_since_pin": 672,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ff4f4b314ff933537c7868892380fa6b30eeb3bd",
-      "head_date": "2026-11-04T02:53:20Z",
+      "head": "8036be716d5e981a27d8a8b396ea55546062265c",
+      "head_date": "2026-11-04T22:05:45Z",
       "id": 1161313216,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2154,9 +2184,19 @@
           "kind": "release",
           "name": "v0.5.0",
           "target": "08c2446cf2913504457b18805d7b01ee7705581e"
+        },
+        {
+          "date": "2026-11-04T21:49:42Z",
+          "kind": "tag",
+          "name": "rescue/pre-sync-20261104",
+          "target": "8588c2d612b75c43c9b0447a4129dfadc50341f9"
         }
       ],
       "tags": {
+        "rescue/pre-sync-20261104": {
+          "date": "2026-11-04T21:49:42Z",
+          "target": "8588c2d612b75c43c9b0447a4129dfadc50341f9"
+        },
         "v0.2.0": {
           "date": "2026-07-11T13:03:20Z",
           "target": "ab42b77f6ef6a86ec4e49052e6e9aa95803267e2"
@@ -2197,12 +2237,12 @@
     "franken_ocr": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 189,
+      "commits_since_pin": 192,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "79b23e02296dee004809c7203310bf12463f4875",
-      "head_date": "2026-11-03T18:05:02Z",
+      "head": "b77ba7ac6de17aeb82f104cf4a54eda86913b094",
+      "head_date": "2026-11-04T22:15:02Z",
       "id": 1279749812,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2527,12 +2567,12 @@
     "franken_remote": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 806,
+      "commits_since_pin": 829,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "873f4827355dc571df50b04a486be3d5764c6e1d",
-      "head_date": "2026-11-04T04:14:23Z",
+      "head": "04f0c0851880d15b992020f3030f4dec77608ea4",
+      "head_date": "2026-11-05T07:28:21Z",
       "id": 1360842907,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2730,12 +2770,12 @@
     "franken_surveillance_system": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 3097,
+      "commits_since_pin": 3211,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "78e52902a6ea66fb29c6c4aeeae8d94a0110a13d",
-      "head_date": "2026-11-04T07:51:25Z",
+      "head": "955562d03290395612e2bd59eaa8066de79ddd72",
+      "head_date": "2026-11-05T08:01:03Z",
       "id": 1352817606,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2758,8 +2798,90 @@
       "pin_reachable": true,
       "releases": {},
       "repo": "franken_surveillance_system",
-      "since_pin": [],
-      "tags": {},
+      "since_pin": [
+        {
+          "date": "2026-10-07T17:02:59Z",
+          "kind": "tag",
+          "name": "archive/rescue-exec-47-49-wip",
+          "target": "403e3e3b7e6bf94b2b3e1c141a119c2c79e765cc"
+        },
+        {
+          "date": "2026-10-07T18:50:21Z",
+          "kind": "tag",
+          "name": "archive/review-mut-nested-fill",
+          "target": "31eea81f50d478d947749ddfab183363d9e985c7"
+        },
+        {
+          "date": "2026-10-28T22:34:47Z",
+          "kind": "tag",
+          "name": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_2",
+          "target": "1c6d4151388d7d2c2f673065b310c5a6f9b67a8f"
+        },
+        {
+          "date": "2026-10-28T23:27:32Z",
+          "kind": "tag",
+          "name": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_1",
+          "target": "31a724cb4bd0a2105a63675d04b6fc56d7e35817"
+        },
+        {
+          "date": "2026-10-29T00:04:06Z",
+          "kind": "tag",
+          "name": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_6",
+          "target": "3ca62b0872990465376667604c3046559178e7b1"
+        },
+        {
+          "date": "2026-10-29T00:05:09Z",
+          "kind": "tag",
+          "name": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_3",
+          "target": "aff7a3a9fb5ed52eee013dbc928fbc527876e535"
+        },
+        {
+          "date": "2026-10-29T02:35:54Z",
+          "kind": "tag",
+          "name": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_5",
+          "target": "7056fbbebd3503cabcf5b63f4265470dd3c48281"
+        },
+        {
+          "date": "2026-11-03T18:54:32Z",
+          "kind": "tag",
+          "name": "archive/20261104-ntm-franken_surveillance_system--liberation3-omp_3",
+          "target": "854102886547a6637b65a740f35370853f46a667"
+        }
+      ],
+      "tags": {
+        "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_1": {
+          "date": "2026-10-28T23:27:32Z",
+          "target": "31a724cb4bd0a2105a63675d04b6fc56d7e35817"
+        },
+        "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_2": {
+          "date": "2026-10-28T22:34:47Z",
+          "target": "1c6d4151388d7d2c2f673065b310c5a6f9b67a8f"
+        },
+        "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_3": {
+          "date": "2026-10-29T00:05:09Z",
+          "target": "aff7a3a9fb5ed52eee013dbc928fbc527876e535"
+        },
+        "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_5": {
+          "date": "2026-10-29T02:35:54Z",
+          "target": "7056fbbebd3503cabcf5b63f4265470dd3c48281"
+        },
+        "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_6": {
+          "date": "2026-10-29T00:04:06Z",
+          "target": "3ca62b0872990465376667604c3046559178e7b1"
+        },
+        "archive/20261104-ntm-franken_surveillance_system--liberation3-omp_3": {
+          "date": "2026-11-03T18:54:32Z",
+          "target": "854102886547a6637b65a740f35370853f46a667"
+        },
+        "archive/rescue-exec-47-49-wip": {
+          "date": "2026-10-07T17:02:59Z",
+          "target": "403e3e3b7e6bf94b2b3e1c141a119c2c79e765cc"
+        },
+        "archive/review-mut-nested-fill": {
+          "date": "2026-10-07T18:50:21Z",
+          "target": "31eea81f50d478d947749ddfab183363d9e985c7"
+        }
+      },
       "workflows": [
         "acquisition-recovery-reference.yml",
         "belief-provenance.yml",
@@ -2807,12 +2929,12 @@
     "franken_threed": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 558,
+      "commits_since_pin": 582,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "781f27bea920c78b20126e09112d5c396c61b8b9",
-      "head_date": "2026-11-04T07:02:23Z",
+      "head": "03c4a6c27c103c00115c6fc782ec6426d1ef221f",
+      "head_date": "2026-11-05T04:33:23Z",
       "id": 1362884098,
       "license_changed_since_pin": false,
       "license_files": [
@@ -2849,12 +2971,12 @@
     "franken_tts": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 23,
+      "commits_since_pin": 24,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "9d4034676d69138cec2037f2b92d6fa3e74e84b0",
-      "head_date": "2026-11-01T17:37:35Z",
+      "head": "16eafe52ef33d5b71b77d5378058e4e0c485aac8",
+      "head_date": "2026-11-04T22:06:09Z",
       "id": 1324669155,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3049,12 +3171,12 @@
     "franken_whisper": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 173,
+      "commits_since_pin": 174,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "1d4d932849dce98de4e93b40d708b600387e4d9b",
-      "head_date": "2026-10-24T02:40:30Z",
+      "head": "03060695ccf11c5f03cf450311254bf06267e203",
+      "head_date": "2026-11-04T22:48:34Z",
       "id": 1164301692,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3304,12 +3426,12 @@
     "frankenfs": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1117,
+      "commits_since_pin": 1139,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "7f90d834478f8beb7d04666d974fcc95c3631ac5",
-      "head_date": "2026-11-04T07:04:29Z",
+      "head": "b849d6f31620515aa9eeeedc4bceecafefc2f89a",
+      "head_date": "2026-11-05T06:49:45Z",
       "id": 1154130483,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3368,12 +3490,12 @@
     "frankengit": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1765,
+      "commits_since_pin": 1794,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a535999ea7496abd6593bfdc6f85d802e255392d",
-      "head_date": "2026-11-04T07:20:11Z",
+      "head": "0ef5e8d892fd4982e4a907bc008f8df6090aa889",
+      "head_date": "2026-11-05T07:15:12Z",
       "id": 1340123236,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3396,8 +3518,30 @@
       "pin_reachable": true,
       "releases": {},
       "repo": "frankengit",
-      "since_pin": [],
-      "tags": {},
+      "since_pin": [
+        {
+          "date": "2026-10-26T19:40:00Z",
+          "kind": "tag",
+          "name": "archive/20261104-codex-remote-issue-append-20261026",
+          "target": "33c410793e879653c9dc6d25f9189d798cd86a60"
+        },
+        {
+          "date": "2026-11-04T21:54:13Z",
+          "kind": "tag",
+          "name": "rescue/pre-sync-20261104",
+          "target": "2db4f97bb8ddb05ae1fc3e22df5d2becb830b1d6"
+        }
+      ],
+      "tags": {
+        "archive/20261104-codex-remote-issue-append-20261026": {
+          "date": "2026-10-26T19:40:00Z",
+          "target": "33c410793e879653c9dc6d25f9189d798cd86a60"
+        },
+        "rescue/pre-sync-20261104": {
+          "date": "2026-11-04T21:54:13Z",
+          "target": "2db4f97bb8ddb05ae1fc3e22df5d2becb830b1d6"
+        }
+      },
       "workflows": [
         "authenticated-publication.yml",
         "docs-integrity.yml",
@@ -3490,12 +3634,12 @@
     "frankengraphdb": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2804,
+      "commits_since_pin": 2829,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "7a02946ad0eb5dce80bceacae2f3103160f02d6e",
-      "head_date": "2026-11-04T06:14:58Z",
+      "head": "5b0554e0d7fcb25ddaf39090ac04135b5b9cb110",
+      "head_date": "2026-11-05T06:08:11Z",
       "id": 1301293102,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3518,8 +3662,70 @@
       "pin_reachable": true,
       "releases": {},
       "repo": "frankengraphdb",
-      "since_pin": [],
-      "tags": {},
+      "since_pin": [
+        {
+          "date": "2026-10-13T00:41:21Z",
+          "kind": "tag",
+          "name": "archive/20261104-stranded-2ef0d2f2-lane19",
+          "target": "70585d1b60d462e40694e66a40f360b0c8b3a7e4"
+        },
+        {
+          "date": "2026-10-13T00:41:21Z",
+          "kind": "tag",
+          "name": "archive/stranded-2ef0d2f2-lane19",
+          "target": "70585d1b60d462e40694e66a40f360b0c8b3a7e4"
+        },
+        {
+          "date": "2026-10-13T19:47:43Z",
+          "kind": "tag",
+          "name": "archive/20261104-stranded-2ef0d2f2-lane37",
+          "target": "b1397fae7431b8b9405454d2d1207115c527f97a"
+        },
+        {
+          "date": "2026-10-13T19:47:43Z",
+          "kind": "tag",
+          "name": "archive/stranded-2ef0d2f2-lane37",
+          "target": "b1397fae7431b8b9405454d2d1207115c527f97a"
+        },
+        {
+          "date": "2026-10-23T14:11:20Z",
+          "kind": "tag",
+          "name": "archive/20261104-staging",
+          "target": "9823f6a82045567ec0807bf48293587fc8f1e767"
+        },
+        {
+          "date": "2026-10-23T14:11:20Z",
+          "kind": "tag",
+          "name": "archive/staging",
+          "target": "9823f6a82045567ec0807bf48293587fc8f1e767"
+        }
+      ],
+      "tags": {
+        "archive/20261104-staging": {
+          "date": "2026-10-23T14:11:20Z",
+          "target": "9823f6a82045567ec0807bf48293587fc8f1e767"
+        },
+        "archive/20261104-stranded-2ef0d2f2-lane19": {
+          "date": "2026-10-13T00:41:21Z",
+          "target": "70585d1b60d462e40694e66a40f360b0c8b3a7e4"
+        },
+        "archive/20261104-stranded-2ef0d2f2-lane37": {
+          "date": "2026-10-13T19:47:43Z",
+          "target": "b1397fae7431b8b9405454d2d1207115c527f97a"
+        },
+        "archive/staging": {
+          "date": "2026-10-23T14:11:20Z",
+          "target": "9823f6a82045567ec0807bf48293587fc8f1e767"
+        },
+        "archive/stranded-2ef0d2f2-lane19": {
+          "date": "2026-10-13T00:41:21Z",
+          "target": "70585d1b60d462e40694e66a40f360b0c8b3a7e4"
+        },
+        "archive/stranded-2ef0d2f2-lane37": {
+          "date": "2026-10-13T19:47:43Z",
+          "target": "b1397fae7431b8b9405454d2d1207115c527f97a"
+        }
+      },
       "workflows": [
         "agent-context.yml",
         "check.yml"
@@ -3571,12 +3777,12 @@
     "frankenlibc": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1153,
+      "commits_since_pin": 1182,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a77173e433d675f25d5240f9dc4f0e05cc748ffa",
-      "head_date": "2026-11-03T23:59:07Z",
+      "head": "cee93d9912257809642850d6b82909cf4be24d60",
+      "head_date": "2026-11-05T07:58:25Z",
       "id": 1153199323,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3704,12 +3910,12 @@
     "frankenmermaid": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 290,
+      "commits_since_pin": 292,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "d76321f8877c57048c17859f0d82129bc09c4b03",
-      "head_date": "2026-11-03T21:59:07Z",
+      "head": "d1c960bb40bc3e23fddd16874fe0d6c6e8eca27d",
+      "head_date": "2026-11-04T22:17:03Z",
       "id": 1155643809,
       "license_changed_since_pin": false,
       "license_files": [
@@ -3789,12 +3995,12 @@
     "frankenpandas": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1095,
+      "commits_since_pin": 1096,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "5fbf30b6878f895aabd3aff02ea5d3db77ac1360",
-      "head_date": "2026-11-02T16:22:29Z",
+      "head": "8cfe64176ee60c69ece0dd86f4a78fbdaac043aa",
+      "head_date": "2026-11-05T04:33:34Z",
       "id": 1157440729,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5078,12 +5284,12 @@
     "frankenredis": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 79,
+      "commits_since_pin": 87,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "79b61ed52489b940e4164e45a2883738559aaf31",
-      "head_date": "2026-10-26T17:05:20Z",
+      "head": "9d1dd4b8109226cfa2d2a36b8f2d0798f719f68d",
+      "head_date": "2026-11-05T04:52:18Z",
       "id": 1157430439,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5166,12 +5372,12 @@
     "frankenscipy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 483,
+      "commits_since_pin": 487,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "df04967837bcd74302bf0f9d27ae27fee4dc0b94",
-      "head_date": "2026-10-27T01:51:40Z",
+      "head": "73af3bc62efaaeffa321361f1b0a0044e29d31a6",
+      "head_date": "2026-11-05T04:32:45Z",
       "id": 1157509554,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5258,10 +5464,12 @@
       "workflows": [
         "ci.yml",
         "fuzz_nightly.yml",
+        "numerical-regressions.yml",
         "release.yml",
         "sparse-toggle-regression.yml"
       ],
       "workflows_added_since_pin": [
+        "numerical-regressions.yml",
         "sparse-toggle-regression.yml"
       ],
       "workflows_removed_since_pin": []
@@ -5269,12 +5477,12 @@
     "frankensearch": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 1131,
+      "commits_since_pin": 1144,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "ac21eecbb550b5e129651de9def13d57c462b0f1",
-      "head_date": "2026-11-04T08:00:19Z",
+      "head": "9c41b6fb8da47c58a3866db3379282d30681a64f",
+      "head_date": "2026-11-05T06:58:55Z",
       "id": 1157453895,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5775,12 +5983,12 @@
     "frankensim": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 8277,
+      "commits_since_pin": 9145,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "0f5d7a2bec07b20bc7c487d03d53e7416a79f2e1",
-      "head_date": "2026-11-04T10:37:18Z",
+      "head": "4b74f971aee50841bd85449b7634b41043922f14",
+      "head_date": "2026-11-05T07:20:59Z",
       "id": 1290489583,
       "license_changed_since_pin": false,
       "license_files": [
@@ -5803,8 +6011,20 @@
       "pin_reachable": true,
       "releases": {},
       "repo": "frankensim",
-      "since_pin": [],
-      "tags": {},
+      "since_pin": [
+        {
+          "date": "2026-11-04T21:59:49Z",
+          "kind": "tag",
+          "name": "rescue/pre-sync-20261104",
+          "target": "f2b0a73f1baa9f2f8db5548eaeeafa8f9acbe049"
+        }
+      ],
+      "tags": {
+        "rescue/pre-sync-20261104": {
+          "date": "2026-11-04T21:59:49Z",
+          "target": "f2b0a73f1baa9f2f8db5548eaeeafa8f9acbe049"
+        }
+      },
       "workflows": [
         "activate-cooling-publication.yml",
         "adaptive-time.yml",
@@ -6154,6 +6374,12 @@
           "target": "26aa19afcbd5afdb01658a10bb33417ad0b513be"
         },
         {
+          "date": "2026-10-25T16:00:02Z",
+          "kind": "tag",
+          "name": "archive/master-312dc354d",
+          "target": "312dc354d7f8e499a15d916bc011baeac062f066"
+        },
+        {
           "date": "2026-11-01T09:41:46Z",
           "kind": "release",
           "name": "v0.4.13",
@@ -6172,6 +6398,10 @@
         "am-wal-compat-20260912": {
           "date": "2026-09-12T20:11:25Z",
           "target": "dedf3e1be376b9b8bd90e458912aa9b226b86bf9"
+        },
+        "archive/master-312dc354d": {
+          "date": "2026-10-25T16:00:02Z",
+          "target": "312dc354d7f8e499a15d916bc011baeac062f066"
         },
         "fsqlite-pager-v0.4.3": {
           "date": "2026-09-16T18:22:39Z",
@@ -6437,12 +6667,12 @@
     "frankensympy": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 228,
+      "commits_since_pin": 253,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "a52959c4c5f7351dfe846e23493907ce4a5cc7c6",
-      "head_date": "2026-11-04T07:13:25Z",
+      "head": "be566b5657a0c87da350d9592b222de731eefaaa",
+      "head_date": "2026-11-05T06:26:30Z",
       "id": 1340141039,
       "license_changed_since_pin": false,
       "license_files": [
@@ -6477,12 +6707,12 @@
     "frankenterm": {
       "archived": false,
       "commits_behind_pin": 0,
-      "commits_since_pin": 2245,
+      "commits_since_pin": 2274,
       "compare_status": "ahead",
       "default_branch": "main",
       "found": true,
-      "head": "515ec240ab562c51cfc4597d2e90493055775d2c",
-      "head_date": "2026-11-04T07:54:38Z",
+      "head": "85b1355ab98dadddad05b54829d2f46485027a00",
+      "head_date": "2026-11-05T06:59:20Z",
       "id": 1137047020,
       "license_changed_since_pin": false,
       "license_files": [
@@ -7646,8 +7876,20 @@
       "pin_reachable": true,
       "releases": {},
       "repo": "frankentorch",
-      "since_pin": [],
-      "tags": {},
+      "since_pin": [
+        {
+          "date": "2026-11-04T21:50:33Z",
+          "kind": "tag",
+          "name": "rescue/pre-sync-20261104",
+          "target": "01dad38b19cea9bdff863f61aec3b50e906c6efd"
+        }
+      ],
+      "tags": {
+        "rescue/pre-sync-20261104": {
+          "date": "2026-11-04T21:50:33Z",
+          "target": "01dad38b19cea9bdff863f61aec3b50e906c6efd"
+        }
+      },
       "workflows": [
         "dynamic_int8_exact.yml",
         "phase2c_reliability_gates.yml",
@@ -7871,7 +8113,7 @@
       "workflows_removed_since_pin": []
     }
   },
-  "checked_at": "2026-11-04T11:25:12Z",
+  "checked_at": "2026-11-05T11:24:47Z",
   "discovery": [
     {
       "archived": false,
@@ -7891,7 +8133,7 @@
       "id": 1155882142,
       "language": "Python",
       "name": "Dicklesworthstone",
-      "pushed_at": "2026-11-04T10:44:57Z"
+      "pushed_at": "2026-11-05T10:44:11Z"
     },
     {
       "archived": false,
@@ -7951,7 +8193,7 @@
       "id": 1139984749,
       "language": "Shell",
       "name": "agent_settings_backup_script",
-      "pushed_at": "2026-11-03T21:33:03Z"
+      "pushed_at": "2026-11-04T19:59:28Z"
     },
     {
       "archived": false,
@@ -7961,7 +8203,7 @@
       "id": 1119883856,
       "language": "Shell",
       "name": "agentic_coding_flywheel_setup",
-      "pushed_at": "2026-11-04T05:16:45Z"
+      "pushed_at": "2026-11-05T00:03:51Z"
     },
     {
       "archived": false,
@@ -8001,7 +8243,7 @@
       "id": 1333421030,
       "language": "TypeScript",
       "name": "asimposium.org",
-      "pushed_at": "2026-10-31T04:36:21Z"
+      "pushed_at": "2026-11-05T05:52:29Z"
     },
     {
       "archived": false,
@@ -8011,7 +8253,7 @@
       "id": 1135442827,
       "language": "Rust",
       "name": "asupersync",
-      "pushed_at": "2026-11-04T02:55:52Z"
+      "pushed_at": "2026-11-04T22:55:22Z"
     },
     {
       "archived": false,
@@ -8191,7 +8433,7 @@
       "id": 1137022621,
       "language": "Rust",
       "name": "beads_rust",
-      "pushed_at": "2026-11-04T05:16:42Z"
+      "pushed_at": "2026-11-05T07:30:45Z"
     },
     {
       "archived": false,
@@ -8201,7 +8443,7 @@
       "id": 1104804402,
       "language": "Go",
       "name": "beads_viewer",
-      "pushed_at": "2026-11-03T14:25:39Z"
+      "pushed_at": "2026-11-04T23:41:57Z"
     },
     {
       "archived": false,
@@ -8241,7 +8483,7 @@
       "id": 1099244133,
       "language": "Python",
       "name": "bio_inspired_nanochat",
-      "pushed_at": "2026-11-01T20:02:00Z"
+      "pushed_at": "2026-11-04T22:47:47Z"
     },
     {
       "archived": false,
@@ -8301,7 +8543,7 @@
       "id": 1111896892,
       "language": "TypeScript",
       "name": "cass_memory_system",
-      "pushed_at": "2026-11-01T20:02:06Z"
+      "pushed_at": "2026-11-04T23:33:21Z"
     },
     {
       "archived": false,
@@ -8391,7 +8633,7 @@
       "id": 1118006238,
       "language": "Go",
       "name": "coding_agent_account_manager",
-      "pushed_at": "2026-11-04T05:09:52Z"
+      "pushed_at": "2026-11-04T21:39:14Z"
     },
     {
       "archived": false,
@@ -8401,7 +8643,7 @@
       "id": 1100945668,
       "language": "Rust",
       "name": "coding_agent_session_search",
-      "pushed_at": "2026-11-04T08:42:14Z"
+      "pushed_at": "2026-11-05T06:59:20Z"
     },
     {
       "archived": false,
@@ -8461,7 +8703,7 @@
       "id": 1130004860,
       "language": "Rust",
       "name": "destructive_command_guard",
-      "pushed_at": "2026-11-04T06:28:08Z"
+      "pushed_at": "2026-11-05T07:22:32Z"
     },
     {
       "archived": false,
@@ -8471,7 +8713,7 @@
       "id": 1146170115,
       "language": "Shell",
       "name": "doodlestein_self_releaser",
-      "pushed_at": "2026-11-04T03:43:49Z"
+      "pushed_at": "2026-11-05T06:59:41Z"
     },
     {
       "archived": false,
@@ -8481,7 +8723,7 @@
       "id": 1350973046,
       "language": "Rust",
       "name": "dwarf_fortress_mcp",
-      "pushed_at": "2026-11-03T17:05:47Z"
+      "pushed_at": "2026-11-04T21:46:10Z"
     },
     {
       "archived": false,
@@ -8521,7 +8763,7 @@
       "id": 1224408143,
       "language": "Rust",
       "name": "eidetic_engine_cli",
-      "pushed_at": "2026-11-04T04:34:55Z"
+      "pushed_at": "2026-11-05T06:20:40Z"
     },
     {
       "archived": false,
@@ -8571,7 +8813,7 @@
       "id": 1137083276,
       "language": "Rust",
       "name": "fastmcp_rust",
-      "pushed_at": "2026-11-04T03:06:21Z"
+      "pushed_at": "2026-11-05T06:59:03Z"
     },
     {
       "archived": false,
@@ -8621,7 +8863,7 @@
       "id": 1412549980,
       "language": "Rust",
       "name": "franken_accounting",
-      "pushed_at": "2026-11-04T07:30:21Z"
+      "pushed_at": "2026-11-05T07:03:13Z"
     },
     {
       "archived": false,
@@ -8641,7 +8883,7 @@
       "id": 1359645474,
       "language": "Rust",
       "name": "franken_alignment",
-      "pushed_at": "2026-11-04T07:23:23Z"
+      "pushed_at": "2026-11-04T23:37:02Z"
     },
     {
       "archived": false,
@@ -8661,7 +8903,7 @@
       "id": 1444589029,
       "language": "Rust",
       "name": "franken_doppler_finder",
-      "pushed_at": "2026-11-04T11:11:44Z"
+      "pushed_at": "2026-11-05T07:23:07Z"
     },
     {
       "archived": false,
@@ -8685,13 +8927,23 @@
     },
     {
       "archived": false,
+      "created_at": "2026-11-04T18:35:50Z",
+      "description": "Memory-safe Rust replacement firmware for the Sonos hardware you already own — BE-PowerPC + BE-MIPS, S1 + S2. Research workspace: toolchain bake-offs, QEMU proofs, board evidence. Companion to frankensonos.",
+      "fork": false,
+      "id": 1446052509,
+      "language": "Python",
+      "name": "franken_firmware",
+      "pushed_at": "2026-11-05T07:22:38Z"
+    },
+    {
+      "archived": false,
       "created_at": "2026-07-21T15:21:17Z",
       "description": "A ground-up, native-Rust reimplementation of the entire Lean 4 toolchain — drop-in at the binary surfaces (.olean, C ABI, LSP, CLI), deterministic under parallelism, declaration-granular incremental, with a ≤12 KLOC dual-engine kernel that ships receipts.",
       "fork": false,
       "id": 1307841640,
       "language": "Rust",
       "name": "franken_lean",
-      "pushed_at": "2026-11-04T06:54:24Z"
+      "pushed_at": "2026-11-05T10:43:39Z"
     },
     {
       "archived": false,
@@ -8701,7 +8953,7 @@
       "id": 1306217133,
       "language": "Rust",
       "name": "franken_manim",
-      "pushed_at": "2026-11-04T06:00:11Z"
+      "pushed_at": "2026-11-05T07:03:33Z"
     },
     {
       "archived": false,
@@ -8721,7 +8973,7 @@
       "id": 1281851258,
       "language": "HTML",
       "name": "franken_markdown",
-      "pushed_at": "2026-11-04T04:09:31Z"
+      "pushed_at": "2026-11-05T07:12:46Z"
     },
     {
       "archived": false,
@@ -8741,7 +8993,7 @@
       "id": 1438741189,
       "language": "Rust",
       "name": "franken_mining",
-      "pushed_at": "2026-11-04T02:56:50Z"
+      "pushed_at": "2026-11-05T06:52:40Z"
     },
     {
       "archived": false,
@@ -8771,7 +9023,7 @@
       "id": 1317838147,
       "language": "Rust",
       "name": "franken_nlp",
-      "pushed_at": "2026-11-01T20:04:07Z"
+      "pushed_at": "2026-11-04T22:48:52Z"
     },
     {
       "archived": false,
@@ -8781,7 +9033,7 @@
       "id": 1161313216,
       "language": "Rust",
       "name": "franken_node",
-      "pushed_at": "2026-11-04T02:53:35Z"
+      "pushed_at": "2026-11-04T22:05:53Z"
     },
     {
       "archived": false,
@@ -8791,7 +9043,7 @@
       "id": 1157432826,
       "language": "Rust",
       "name": "franken_numpy",
-      "pushed_at": "2026-10-31T04:44:36Z"
+      "pushed_at": "2026-11-04T22:27:38Z"
     },
     {
       "archived": false,
@@ -8801,7 +9053,7 @@
       "id": 1279749812,
       "language": "Rust",
       "name": "franken_ocr",
-      "pushed_at": "2026-11-03T18:16:19Z"
+      "pushed_at": "2026-11-04T22:15:06Z"
     },
     {
       "archived": false,
@@ -8821,7 +9073,7 @@
       "id": 1360842907,
       "language": "Rust",
       "name": "franken_remote",
-      "pushed_at": "2026-11-04T04:35:00Z"
+      "pushed_at": "2026-11-05T07:28:22Z"
     },
     {
       "archived": false,
@@ -8841,7 +9093,7 @@
       "id": 1352817606,
       "language": "Rust",
       "name": "franken_surveillance_system",
-      "pushed_at": "2026-11-04T07:56:53Z"
+      "pushed_at": "2026-11-05T08:01:05Z"
     },
     {
       "archived": false,
@@ -8851,7 +9103,7 @@
       "id": 1416212647,
       "language": "Rust",
       "name": "franken_textiles",
-      "pushed_at": "2026-11-04T05:19:20Z"
+      "pushed_at": "2026-11-05T07:55:09Z"
     },
     {
       "archived": false,
@@ -8861,7 +9113,7 @@
       "id": 1362884098,
       "language": "JavaScript",
       "name": "franken_threed",
-      "pushed_at": "2026-11-04T07:09:12Z"
+      "pushed_at": "2026-11-05T05:54:35Z"
     },
     {
       "archived": false,
@@ -8871,7 +9123,7 @@
       "id": 1324669155,
       "language": "Rust",
       "name": "franken_tts",
-      "pushed_at": "2026-11-01T20:12:37Z"
+      "pushed_at": "2026-11-04T22:06:13Z"
     },
     {
       "archived": false,
@@ -8881,7 +9133,7 @@
       "id": 1164301692,
       "language": "Rust",
       "name": "franken_whisper",
-      "pushed_at": "2026-10-24T02:40:40Z"
+      "pushed_at": "2026-11-04T22:48:37Z"
     },
     {
       "archived": false,
@@ -8891,7 +9143,7 @@
       "id": 1154130483,
       "language": "Rust",
       "name": "frankenfs",
-      "pushed_at": "2026-11-04T07:08:01Z"
+      "pushed_at": "2026-11-05T06:50:04Z"
     },
     {
       "archived": false,
@@ -8901,7 +9153,7 @@
       "id": 1340123236,
       "language": "Rust",
       "name": "frankengit",
-      "pushed_at": "2026-11-04T08:00:23Z"
+      "pushed_at": "2026-11-05T11:15:02Z"
     },
     {
       "archived": false,
@@ -8911,7 +9163,7 @@
       "id": 1301293102,
       "language": "Rust",
       "name": "frankengraphdb",
-      "pushed_at": "2026-11-04T06:16:23Z"
+      "pushed_at": "2026-11-05T06:08:22Z"
     },
     {
       "archived": false,
@@ -8931,7 +9183,7 @@
       "id": 1153199323,
       "language": "Rust",
       "name": "frankenlibc",
-      "pushed_at": "2026-11-03T23:59:26Z"
+      "pushed_at": "2026-11-05T07:58:41Z"
     },
     {
       "archived": false,
@@ -8941,7 +9193,7 @@
       "id": 1155643809,
       "language": "HTML",
       "name": "frankenmermaid",
-      "pushed_at": "2026-11-03T21:59:17Z"
+      "pushed_at": "2026-11-04T22:17:06Z"
     },
     {
       "archived": false,
@@ -8951,7 +9203,7 @@
       "id": 1157440729,
       "language": "Rust",
       "name": "frankenpandas",
-      "pushed_at": "2026-11-02T16:22:35Z"
+      "pushed_at": "2026-11-05T05:51:29Z"
     },
     {
       "archived": false,
@@ -8961,7 +9213,7 @@
       "id": 1157430439,
       "language": "Rust",
       "name": "frankenredis",
-      "pushed_at": "2026-10-26T17:05:29Z"
+      "pushed_at": "2026-11-05T04:52:21Z"
     },
     {
       "archived": false,
@@ -8971,7 +9223,7 @@
       "id": 1157509554,
       "language": "Rust",
       "name": "frankenscipy",
-      "pushed_at": "2026-10-27T01:51:46Z"
+      "pushed_at": "2026-11-05T05:51:29Z"
     },
     {
       "archived": false,
@@ -8981,7 +9233,7 @@
       "id": 1157453895,
       "language": "Rust",
       "name": "frankensearch",
-      "pushed_at": "2026-11-04T08:13:19Z"
+      "pushed_at": "2026-11-05T06:59:32Z"
     },
     {
       "archived": false,
@@ -8991,7 +9243,7 @@
       "id": 1290489583,
       "language": "Rust",
       "name": "frankensim",
-      "pushed_at": "2026-11-04T10:37:28Z"
+      "pushed_at": "2026-11-05T07:21:01Z"
     },
     {
       "archived": false,
@@ -9011,7 +9263,7 @@
       "id": 1408019360,
       "language": "Rust",
       "name": "frankensonos",
-      "pushed_at": "2026-11-04T07:33:39Z"
+      "pushed_at": "2026-11-05T10:30:08Z"
     },
     {
       "archived": false,
@@ -9021,7 +9273,7 @@
       "id": 1151908597,
       "language": "Rust",
       "name": "frankensqlite",
-      "pushed_at": "2026-11-03T22:23:58Z"
+      "pushed_at": "2026-11-05T02:05:37Z"
     },
     {
       "archived": false,
@@ -9041,7 +9293,7 @@
       "id": 1340141039,
       "language": "Rust",
       "name": "frankensympy",
-      "pushed_at": "2026-11-04T07:13:27Z"
+      "pushed_at": "2026-11-05T06:26:33Z"
     },
     {
       "archived": false,
@@ -9051,7 +9303,7 @@
       "id": 1137047020,
       "language": "Rust",
       "name": "frankenterm",
-      "pushed_at": "2026-11-04T07:54:42Z"
+      "pushed_at": "2026-11-05T06:59:27Z"
     },
     {
       "archived": false,
@@ -9061,7 +9313,7 @@
       "id": 1157429978,
       "language": "Rust",
       "name": "frankentorch",
-      "pushed_at": "2026-11-04T03:04:09Z"
+      "pushed_at": "2026-11-04T22:27:48Z"
     },
     {
       "archived": false,
@@ -9241,7 +9493,7 @@
       "id": 949709375,
       "language": "TypeScript",
       "name": "jazz_chord_progression_editor_html",
-      "pushed_at": "2026-11-01T20:02:40Z"
+      "pushed_at": "2026-11-04T22:09:48Z"
     },
     {
       "archived": false,
@@ -9271,7 +9523,7 @@
       "id": 1412716083,
       "language": "Rust",
       "name": "jeffs_math_explainer_videos",
-      "pushed_at": "2026-10-27T23:18:42Z"
+      "pushed_at": "2026-11-05T07:05:35Z"
     },
     {
       "archived": false,
@@ -9411,7 +9663,7 @@
       "id": 1081623471,
       "language": "Python",
       "name": "mcp_agent_mail",
-      "pushed_at": "2026-11-01T20:02:53Z"
+      "pushed_at": "2026-11-05T02:10:46Z"
     },
     {
       "archived": false,
@@ -9421,7 +9673,7 @@
       "id": 1150296802,
       "language": "Rust",
       "name": "mcp_agent_mail_rust",
-      "pushed_at": "2026-11-04T03:24:28Z"
+      "pushed_at": "2026-11-05T11:05:43Z"
     },
     {
       "archived": false,
@@ -9451,7 +9703,7 @@
       "id": 1133846056,
       "language": "Rust",
       "name": "meta_skill",
-      "pushed_at": "2026-11-02T15:58:30Z"
+      "pushed_at": "2026-11-04T22:03:11Z"
     },
     {
       "archived": false,
@@ -9551,7 +9803,7 @@
       "id": 1386583841,
       "language": "TypeScript",
       "name": "opentui",
-      "pushed_at": "2026-11-03T14:34:28Z"
+      "pushed_at": "2026-11-04T23:58:08Z"
     },
     {
       "archived": false,
@@ -9591,7 +9843,7 @@
       "id": 1148330949,
       "language": "Rust",
       "name": "pi_agent_rust",
-      "pushed_at": "2026-11-04T07:26:40Z"
+      "pushed_at": "2026-11-05T02:04:33Z"
     },
     {
       "archived": false,
@@ -9641,7 +9893,7 @@
       "id": 1134675465,
       "language": "Rust",
       "name": "process_triage",
-      "pushed_at": "2026-11-04T04:04:36Z"
+      "pushed_at": "2026-11-05T03:54:53Z"
     },
     {
       "archived": false,
@@ -9691,7 +9943,7 @@
       "id": 1135510028,
       "language": "Rust",
       "name": "remote_compilation_helper",
-      "pushed_at": "2026-11-04T09:43:42Z"
+      "pushed_at": "2026-11-05T08:01:40Z"
     },
     {
       "archived": false,
@@ -9741,7 +9993,7 @@
       "id": 1080612965,
       "language": "Rust",
       "name": "rust_scriptbots",
-      "pushed_at": "2026-11-04T07:51:46Z"
+      "pushed_at": "2026-11-05T06:45:54Z"
     },
     {
       "archived": false,
@@ -9801,7 +10053,7 @@
       "id": 1115948980,
       "language": "Go",
       "name": "slb",
-      "pushed_at": "2026-11-03T06:21:58Z"
+      "pushed_at": "2026-11-04T17:55:01Z"
     },
     {
       "archived": false,
@@ -9851,7 +10103,7 @@
       "id": 1158080555,
       "language": "Rust",
       "name": "storage_ballast_helper",
-      "pushed_at": "2026-11-04T07:58:02Z"
+      "pushed_at": "2026-11-04T22:20:55Z"
     },
     {
       "archived": false,
@@ -9971,7 +10223,7 @@
       "id": 1097502375,
       "language": "Python",
       "name": "ultimate_bug_scanner",
-      "pushed_at": "2026-11-04T06:17:43Z"
+      "pushed_at": "2026-11-05T07:15:28Z"
     },
     {
       "archived": false,
@@ -10001,7 +10253,7 @@
       "id": 1100905564,
       "language": "Rust",
       "name": "ultrasearch",
-      "pushed_at": "2026-11-01T20:03:32Z"
+      "pushed_at": "2026-11-04T22:48:00Z"
     },
     {
       "archived": false,
@@ -11010,6 +11262,25 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "02d111880140d9627a477e2040bb116bf030ab9a": {
+        "events": [
+          "pull_request",
+          "push"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
         "push": {
           "branches": [
             "main"
@@ -15179,21 +15450,6 @@
         },
         "self_hosted": false
       },
-      "5c1a675276de1cac55349841552d8eec3cd47397": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "5c51462077eaae564d4a92939cdb17ad7a3c34fd": {
         "events": [
           "push"
@@ -15232,21 +15488,6 @@
         "ok": true,
         "pull_request": null,
         "push": null,
-        "self_hosted": false
-      },
-      "5d3bf06cb7dbad1b9db04122e235e9af9bd70447": {
-        "events": [
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
         "self_hosted": false
       },
       "5d5944daec44575e5e96871d60f08655ba4fb535": {
@@ -16290,26 +16531,6 @@
         },
         "self_hosted": false
       },
-      "756c872a37d7b7a51f5ba0286412f0934a88d803": {
-        "events": [
-          "pull_request",
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "75ef862d1aca522ba8b3a8167051ddb28117cfe7": {
         "events": [
           "push",
@@ -16421,6 +16642,21 @@
           "workflow_dispatch"
         ],
         "kind": "other",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "78c91da80a8f2fc3f2fb3782878e28fce6086a92": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
         "ok": true,
         "pull_request": null,
         "push": {
@@ -16779,26 +17015,6 @@
         "kind": "test",
         "ok": true,
         "pull_request": null,
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
-      "80fee4f3e769ab78d53d84d93236f5c9f60c0b21": {
-        "events": [
-          "pull_request",
-          "push",
-          "workflow_dispatch"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
         "push": {
           "branches": [
             "main"
@@ -17369,25 +17585,6 @@
         "push": null,
         "self_hosted": false
       },
-      "8b397445eda16a2b1ea645c199cf5c9c51e3e693": {
-        "events": [
-          "pull_request",
-          "push"
-        ],
-        "kind": "test",
-        "ok": true,
-        "pull_request": {
-          "branches": [
-            "main"
-          ]
-        },
-        "push": {
-          "branches": [
-            "main"
-          ]
-        },
-        "self_hosted": false
-      },
       "8b48957e0283d3a9e6af1d14e3eeb33ab8b21785": {
         "events": [
           "push",
@@ -17860,6 +18057,200 @@
         },
         "self_hosted": false
       },
+      "94389c8ec58c61adcaf0e14c9a100e1c438065fa": {
+        "packages": [
+          "aead",
+          "aes",
+          "aes-gcm",
+          "allocator-api2",
+          "anyhow",
+          "asupersync",
+          "autocfg",
+          "base64",
+          "base64ct",
+          "bincode-next",
+          "bincode_derive-next",
+          "bitflags",
+          "block-buffer",
+          "bumpalo",
+          "bytes",
+          "cfg-if",
+          "cfg_aliases",
+          "chacha20",
+          "chacha20poly1305",
+          "cipher",
+          "cmov",
+          "concurrent-queue",
+          "const-oid",
+          "cpubits",
+          "cpufeatures",
+          "crc32fast",
+          "crossbeam-queue",
+          "crossbeam-utils",
+          "crypto-common",
+          "ctr",
+          "ctutils",
+          "curve25519-dalek",
+          "curve25519-dalek-derive",
+          "data-encoding",
+          "der",
+          "digest",
+          "dispatch2",
+          "ed25519",
+          "ed25519-dalek",
+          "either",
+          "equivalent",
+          "errno",
+          "fastrand",
+          "fiat-crypto",
+          "foldhash",
+          "franken-decision",
+          "franken-evidence",
+          "franken-kernel",
+          "fss-cli",
+          "fss-codec-h264",
+          "fss-codec-h265",
+          "fss-codec-mjpeg",
+          "fss-container",
+          "fss-core",
+          "fss-fusion",
+          "fss-geometry",
+          "fss-graph-algorithms",
+          "fss-ledger",
+          "fss-model-ir",
+          "fss-object",
+          "fss-packet",
+          "fss-provision",
+          "fss-publication",
+          "fss-reference",
+          "fss-runtime",
+          "fss-tensor",
+          "fss-tutk",
+          "fss-tuya",
+          "fss-twin",
+          "futures-core",
+          "futures-io",
+          "futures-lite",
+          "futures-task",
+          "futures-util",
+          "generic-array",
+          "getrandom",
+          "ghash",
+          "hashbrown",
+          "hermit-abi",
+          "hex",
+          "hmac",
+          "hybrid-array",
+          "inout",
+          "itertools",
+          "itoa",
+          "js-sys",
+          "libc",
+          "linux-raw-sys",
+          "lock_api",
+          "log",
+          "memchr",
+          "memoffset",
+          "nix",
+          "nkeys",
+          "ntapi",
+          "num-traits",
+          "objc2",
+          "objc2-core-foundation",
+          "objc2-encode",
+          "objc2-foundation",
+          "objc2-io-kit",
+          "objc2-open-directory",
+          "once_cell",
+          "parking",
+          "parking_lot",
+          "parking_lot_core",
+          "pastey",
+          "pem-rfc7468",
+          "pin-project",
+          "pin-project-internal",
+          "pin-project-lite",
+          "pkcs8",
+          "polling",
+          "poly1305",
+          "polyval",
+          "ppv-lite86",
+          "proc-macro2",
+          "prost",
+          "prost-derive",
+          "quote",
+          "r-efi",
+          "rand",
+          "rand_chacha",
+          "rand_core",
+          "rapidhash",
+          "redox_syscall",
+          "rmp",
+          "rmp-serde",
+          "rustc_version",
+          "rustix",
+          "rustversion",
+          "scopeguard",
+          "semver",
+          "serde",
+          "serde_core",
+          "serde_derive",
+          "serde_json",
+          "sha1",
+          "sha2",
+          "signal-hook",
+          "signal-hook-registry",
+          "signatory",
+          "signature",
+          "slab",
+          "smallvec",
+          "socket2",
+          "spki",
+          "subtle",
+          "syn",
+          "sysinfo",
+          "tempfile",
+          "thiserror",
+          "thiserror-impl",
+          "tinyvec",
+          "tokio",
+          "typenum",
+          "unicode-ident",
+          "unicode-normalization",
+          "universal-hash",
+          "unty-next",
+          "version_check",
+          "virtue-next",
+          "wasi",
+          "wasm-bindgen",
+          "wasm-bindgen-futures",
+          "wasm-bindgen-macro",
+          "wasm-bindgen-macro-support",
+          "wasm-bindgen-shared",
+          "web-sys",
+          "winapi",
+          "winapi-i686-pc-windows-gnu",
+          "winapi-x86_64-pc-windows-gnu",
+          "windows",
+          "windows-collections",
+          "windows-core",
+          "windows-future",
+          "windows-implement",
+          "windows-interface",
+          "windows-link",
+          "windows-numerics",
+          "windows-result",
+          "windows-strings",
+          "windows-sys",
+          "windows-threading",
+          "xattr",
+          "zerocopy",
+          "zerocopy-derive",
+          "zeroize",
+          "zeroize_derive",
+          "zmij"
+        ]
+      },
       "946897f26b2ae50e6a7c1fadb066caddaf20d0c3": {
         "events": [
           "push"
@@ -18302,200 +18693,6 @@
           ]
         },
         "self_hosted": false
-      },
-      "9d1a11e4336c9289744dcd7a976bc2e9464e5649": {
-        "packages": [
-          "aead",
-          "aes",
-          "aes-gcm",
-          "allocator-api2",
-          "anyhow",
-          "asupersync",
-          "autocfg",
-          "base64",
-          "base64ct",
-          "bincode-next",
-          "bincode_derive-next",
-          "bitflags",
-          "block-buffer",
-          "bumpalo",
-          "bytes",
-          "cfg-if",
-          "cfg_aliases",
-          "chacha20",
-          "chacha20poly1305",
-          "cipher",
-          "cmov",
-          "concurrent-queue",
-          "const-oid",
-          "cpubits",
-          "cpufeatures",
-          "crc32fast",
-          "crossbeam-queue",
-          "crossbeam-utils",
-          "crypto-common",
-          "ctr",
-          "ctutils",
-          "curve25519-dalek",
-          "curve25519-dalek-derive",
-          "data-encoding",
-          "der",
-          "digest",
-          "dispatch2",
-          "ed25519",
-          "ed25519-dalek",
-          "either",
-          "equivalent",
-          "errno",
-          "fastrand",
-          "fiat-crypto",
-          "foldhash",
-          "franken-decision",
-          "franken-evidence",
-          "franken-kernel",
-          "fss-cli",
-          "fss-codec-h264",
-          "fss-codec-h265",
-          "fss-codec-mjpeg",
-          "fss-container",
-          "fss-core",
-          "fss-fusion",
-          "fss-geometry",
-          "fss-graph-algorithms",
-          "fss-ledger",
-          "fss-model-ir",
-          "fss-object",
-          "fss-packet",
-          "fss-provision",
-          "fss-publication",
-          "fss-reference",
-          "fss-runtime",
-          "fss-tensor",
-          "fss-tutk",
-          "fss-tuya",
-          "fss-twin",
-          "futures-core",
-          "futures-io",
-          "futures-lite",
-          "futures-task",
-          "futures-util",
-          "generic-array",
-          "getrandom",
-          "ghash",
-          "hashbrown",
-          "hermit-abi",
-          "hex",
-          "hmac",
-          "hybrid-array",
-          "inout",
-          "itertools",
-          "itoa",
-          "js-sys",
-          "libc",
-          "linux-raw-sys",
-          "lock_api",
-          "log",
-          "memchr",
-          "memoffset",
-          "nix",
-          "nkeys",
-          "ntapi",
-          "num-traits",
-          "objc2",
-          "objc2-core-foundation",
-          "objc2-encode",
-          "objc2-foundation",
-          "objc2-io-kit",
-          "objc2-open-directory",
-          "once_cell",
-          "parking",
-          "parking_lot",
-          "parking_lot_core",
-          "pastey",
-          "pem-rfc7468",
-          "pin-project",
-          "pin-project-internal",
-          "pin-project-lite",
-          "pkcs8",
-          "polling",
-          "poly1305",
-          "polyval",
-          "ppv-lite86",
-          "proc-macro2",
-          "prost",
-          "prost-derive",
-          "quote",
-          "r-efi",
-          "rand",
-          "rand_chacha",
-          "rand_core",
-          "rapidhash",
-          "redox_syscall",
-          "rmp",
-          "rmp-serde",
-          "rustc_version",
-          "rustix",
-          "rustversion",
-          "scopeguard",
-          "semver",
-          "serde",
-          "serde_core",
-          "serde_derive",
-          "serde_json",
-          "sha1",
-          "sha2",
-          "signal-hook",
-          "signal-hook-registry",
-          "signatory",
-          "signature",
-          "slab",
-          "smallvec",
-          "socket2",
-          "spki",
-          "subtle",
-          "syn",
-          "sysinfo",
-          "tempfile",
-          "thiserror",
-          "thiserror-impl",
-          "tinyvec",
-          "tokio",
-          "typenum",
-          "unicode-ident",
-          "unicode-normalization",
-          "universal-hash",
-          "unty-next",
-          "version_check",
-          "virtue-next",
-          "wasi",
-          "wasm-bindgen",
-          "wasm-bindgen-futures",
-          "wasm-bindgen-macro",
-          "wasm-bindgen-macro-support",
-          "wasm-bindgen-shared",
-          "web-sys",
-          "winapi",
-          "winapi-i686-pc-windows-gnu",
-          "winapi-x86_64-pc-windows-gnu",
-          "windows",
-          "windows-collections",
-          "windows-core",
-          "windows-future",
-          "windows-implement",
-          "windows-interface",
-          "windows-link",
-          "windows-numerics",
-          "windows-result",
-          "windows-strings",
-          "windows-sys",
-          "windows-threading",
-          "xattr",
-          "zerocopy",
-          "zerocopy-derive",
-          "zeroize",
-          "zeroize_derive",
-          "zmij"
-        ]
       },
       "9d4f083a8fec3ea9f7cf2215e32ba0f65904c63a": {
         "events": [
@@ -20468,6 +20665,21 @@
         "push": null,
         "self_hosted": false
       },
+      "c942539e671c8cefe898191e8a5d70e78e8964f7": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "c96dc05c74772459e7fad29fbd6110eb7d07ba12": {
         "events": [
           "push",
@@ -21234,6 +21446,26 @@
         },
         "self_hosted": false
       },
+      "dac4edd699c6ac4ab67843a6a2f8f51f3b8b64ba": {
+        "events": [
+          "pull_request",
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": {
+          "branches": [
+            "main"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
       "dafa04313dc516ea0548b86a133d8eb16d119804": {
         "events": [
           "push"
@@ -21629,6 +21861,21 @@
         "self_hosted": false
       },
       "e3f5aead491945ddf487915e50ea9ef837a0037c": {
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "kind": "test",
+        "ok": true,
+        "pull_request": null,
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "self_hosted": false
+      },
+      "e495310e56ea22dac5c0295af2eb204405ff5bae": {
         "events": [
           "push",
           "workflow_dispatch"
@@ -22823,6 +23070,6 @@
     "version": 1
   },
   "owner": "Dicklesworthstone",
-  "previous_checked_at": "2026-11-03T11:24:28Z",
+  "previous_checked_at": "2026-11-04T11:25:12Z",
   "schema": 1
 }

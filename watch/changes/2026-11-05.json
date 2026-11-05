@@ -1,0 +1,506 @@
+{
+  "baseline": false,
+  "date": "2026-11-05",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "5 files at 73af3bc",
+      "before": "4 files at df04967",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenscipy/tree/73af3bc62efaaeffa321361f1b0a0044e29d31a6/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenscipy/compare/df04967837bcd74302bf0f9d27ae27fee4dc0b94...73af3bc62efaaeffa321361f1b0a0044e29d31a6",
+        "https://github.com/Dicklesworthstone/frankenscipy/actions"
+      ],
+      "ident": "3bdf23c0b714",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenscipy",
+      "summary": "The .github/workflows file set changed: +numerical-regressions.yml.",
+      "title": "[watch] frankenscipy: workflows +1 -0 (5 now)",
+      "value": "3bdf23c0b714"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Set"
+      ],
+      "after": "public, id 1446052509",
+      "before": "not listed",
+      "evidence": [
+        "https://api.github.com/repositories/1446052509",
+        "https://github.com/Dicklesworthstone/franken_firmware"
+      ],
+      "ident": "1446052509",
+      "kind": "new_repo",
+      "label": "new-repo",
+      "repo": "franken_firmware",
+      "summary": "New public repository Dicklesworthstone/franken_firmware (Python, created 2026-11-04; description: \"Memory-safe Rust replacement firmware for the Sonos hardware you already own — BE-PowerPC + BE-MIPS, S1 + S2. Research workspace: toolchain bake-offs, QEMU proofs, board evidence. Companion to frankensonos.\"). Assessment candidate: the name starts with franken.",
+      "title": "[watch] franken_firmware: new public repo",
+      "value": "1446052509"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-native-cross-candidate-20261104 -> 222c3d4 (2026-11-04T18:23:23Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-native-cross-candidate-20261104",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-native-cross-candidate-20261104"
+      ],
+      "ident": "fmn-native-cross-candidate-20261104",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-native-cross-candidate-20261104 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-native-cross-candidate-20261104",
+      "value": "222c3d4a8c29f0f92555667df369c10cb1e73240"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-script-metrics-candidate-20261105 -> 5aa9e44 (2026-11-05T01:23:12Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-script-metrics-candidate-20261105",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-script-metrics-candidate-20261105"
+      ],
+      "ident": "fmn-script-metrics-candidate-20261105",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-script-metrics-candidate-20261105 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-script-metrics-candidate-20261105",
+      "value": "5aa9e44f09e4501329aa82e676564e3c1fc6154e"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-underline-candidate-20261105 -> 3ca2eba (2026-11-05T07:12:45Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-underline-candidate-20261105",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-underline-candidate-20261105"
+      ],
+      "ident": "fmn-underline-candidate-20261105",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-underline-candidate-20261105 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-underline-candidate-20261105",
+      "value": "3ca2ebac7e2d5e657f6e6d6877784fc051f19501"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag rescue/pre-sync-20261104 -> 8588c2d (2026-11-04T21:49:42Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_numpy/tree/rescue%2Fpre-sync-20261104",
+        "https://api.github.com/repos/Dicklesworthstone/franken_numpy/git/ref/tags/rescue%2Fpre-sync-20261104"
+      ],
+      "ident": "rescue/pre-sync-20261104",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_numpy",
+      "summary": "New tag rescue/pre-sync-20261104 (no GitHub release for it at this check).",
+      "title": "[watch] franken_numpy: tag rescue/pre-sync-20261104",
+      "value": "8588c2d612b75c43c9b0447a4129dfadc50341f9"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_1 -> 31a724c (2026-10-28T23:27:32Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_1",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_1"
+      ],
+      "ident": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_1",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_1 (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_1",
+      "value": "31a724cb4bd0a2105a63675d04b6fc56d7e35817"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_2 -> 1c6d415 (2026-10-28T22:34:47Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_2",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_2"
+      ],
+      "ident": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_2",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_2 (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_2",
+      "value": "1c6d4151388d7d2c2f673065b310c5a6f9b67a8f"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_3 -> aff7a3a (2026-10-29T00:05:09Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_3",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_3"
+      ],
+      "ident": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_3",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_3 (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_3",
+      "value": "aff7a3a9fb5ed52eee013dbc928fbc527876e535"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_5 -> 7056fbb (2026-10-29T02:35:54Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_5",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_5"
+      ],
+      "ident": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_5",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_5 (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_5",
+      "value": "7056fbbebd3503cabcf5b63f4265470dd3c48281"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_6 -> 3ca62b0 (2026-10-29T00:04:06Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_6",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2F20261104-ntm-franken_surveillance_system--liberation2-omp_6"
+      ],
+      "ident": "archive/20261104-ntm-franken_surveillance_system--liberation2-omp_6",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_6 (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/20261104-ntm-franken_surveillance_system--liberation2-omp_6",
+      "value": "3ca62b0872990465376667604c3046559178e7b1"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-ntm-franken_surveillance_system--liberation3-omp_3 -> 8541028 (2026-11-03T18:54:32Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2F20261104-ntm-franken_surveillance_system--liberation3-omp_3",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2F20261104-ntm-franken_surveillance_system--liberation3-omp_3"
+      ],
+      "ident": "archive/20261104-ntm-franken_surveillance_system--liberation3-omp_3",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/20261104-ntm-franken_surveillance_system--liberation3-omp_3 (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/20261104-ntm-franken_surveillance_system--liberation3-omp_3",
+      "value": "854102886547a6637b65a740f35370853f46a667"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/rescue-exec-47-49-wip -> 403e3e3 (2026-10-07T17:02:59Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2Frescue-exec-47-49-wip",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2Frescue-exec-47-49-wip"
+      ],
+      "ident": "archive/rescue-exec-47-49-wip",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/rescue-exec-47-49-wip (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/rescue-exec-47-49-wip",
+      "value": "403e3e3b7e6bf94b2b3e1c141a119c2c79e765cc"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/review-mut-nested-fill -> 31eea81 (2026-10-07T18:50:21Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/archive%2Freview-mut-nested-fill",
+        "https://api.github.com/repos/Dicklesworthstone/franken_surveillance_system/git/ref/tags/archive%2Freview-mut-nested-fill"
+      ],
+      "ident": "archive/review-mut-nested-fill",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_surveillance_system",
+      "summary": "New tag archive/review-mut-nested-fill (no GitHub release for it at this check).",
+      "title": "[watch] franken_surveillance_system: tag archive/review-mut-nested-fill",
+      "value": "31eea81f50d478d947749ddfab183363d9e985c7"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-codex-remote-issue-append-20261026 -> 33c4107 (2026-10-26T19:40:00Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengit/tree/archive%2F20261104-codex-remote-issue-append-20261026",
+        "https://api.github.com/repos/Dicklesworthstone/frankengit/git/ref/tags/archive%2F20261104-codex-remote-issue-append-20261026"
+      ],
+      "ident": "archive/20261104-codex-remote-issue-append-20261026",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengit",
+      "summary": "New tag archive/20261104-codex-remote-issue-append-20261026 (no GitHub release for it at this check).",
+      "title": "[watch] frankengit: tag archive/20261104-codex-remote-issue-append-20261026",
+      "value": "33c410793e879653c9dc6d25f9189d798cd86a60"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag rescue/pre-sync-20261104 -> 2db4f97 (2026-11-04T21:54:13Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengit/tree/rescue%2Fpre-sync-20261104",
+        "https://api.github.com/repos/Dicklesworthstone/frankengit/git/ref/tags/rescue%2Fpre-sync-20261104"
+      ],
+      "ident": "rescue/pre-sync-20261104",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengit",
+      "summary": "New tag rescue/pre-sync-20261104 (no GitHub release for it at this check).",
+      "title": "[watch] frankengit: tag rescue/pre-sync-20261104",
+      "value": "2db4f97bb8ddb05ae1fc3e22df5d2becb830b1d6"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-staging -> 9823f6a (2026-10-23T14:11:20Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengraphdb/tree/archive%2F20261104-staging",
+        "https://api.github.com/repos/Dicklesworthstone/frankengraphdb/git/ref/tags/archive%2F20261104-staging"
+      ],
+      "ident": "archive/20261104-staging",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengraphdb",
+      "summary": "New tag archive/20261104-staging (no GitHub release for it at this check).",
+      "title": "[watch] frankengraphdb: tag archive/20261104-staging",
+      "value": "9823f6a82045567ec0807bf48293587fc8f1e767"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-stranded-2ef0d2f2-lane19 -> 70585d1 (2026-10-13T00:41:21Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengraphdb/tree/archive%2F20261104-stranded-2ef0d2f2-lane19",
+        "https://api.github.com/repos/Dicklesworthstone/frankengraphdb/git/ref/tags/archive%2F20261104-stranded-2ef0d2f2-lane19"
+      ],
+      "ident": "archive/20261104-stranded-2ef0d2f2-lane19",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengraphdb",
+      "summary": "New tag archive/20261104-stranded-2ef0d2f2-lane19 (no GitHub release for it at this check).",
+      "title": "[watch] frankengraphdb: tag archive/20261104-stranded-2ef0d2f2-lane19",
+      "value": "70585d1b60d462e40694e66a40f360b0c8b3a7e4"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261104-stranded-2ef0d2f2-lane37 -> b1397fa (2026-10-13T19:47:43Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengraphdb/tree/archive%2F20261104-stranded-2ef0d2f2-lane37",
+        "https://api.github.com/repos/Dicklesworthstone/frankengraphdb/git/ref/tags/archive%2F20261104-stranded-2ef0d2f2-lane37"
+      ],
+      "ident": "archive/20261104-stranded-2ef0d2f2-lane37",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengraphdb",
+      "summary": "New tag archive/20261104-stranded-2ef0d2f2-lane37 (no GitHub release for it at this check).",
+      "title": "[watch] frankengraphdb: tag archive/20261104-stranded-2ef0d2f2-lane37",
+      "value": "b1397fae7431b8b9405454d2d1207115c527f97a"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/staging -> 9823f6a (2026-10-23T14:11:20Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengraphdb/tree/archive%2Fstaging",
+        "https://api.github.com/repos/Dicklesworthstone/frankengraphdb/git/ref/tags/archive%2Fstaging"
+      ],
+      "ident": "archive/staging",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengraphdb",
+      "summary": "New tag archive/staging (no GitHub release for it at this check).",
+      "title": "[watch] frankengraphdb: tag archive/staging",
+      "value": "9823f6a82045567ec0807bf48293587fc8f1e767"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/stranded-2ef0d2f2-lane19 -> 70585d1 (2026-10-13T00:41:21Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengraphdb/tree/archive%2Fstranded-2ef0d2f2-lane19",
+        "https://api.github.com/repos/Dicklesworthstone/frankengraphdb/git/ref/tags/archive%2Fstranded-2ef0d2f2-lane19"
+      ],
+      "ident": "archive/stranded-2ef0d2f2-lane19",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengraphdb",
+      "summary": "New tag archive/stranded-2ef0d2f2-lane19 (no GitHub release for it at this check).",
+      "title": "[watch] frankengraphdb: tag archive/stranded-2ef0d2f2-lane19",
+      "value": "70585d1b60d462e40694e66a40f360b0c8b3a7e4"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/stranded-2ef0d2f2-lane37 -> b1397fa (2026-10-13T19:47:43Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengraphdb/tree/archive%2Fstranded-2ef0d2f2-lane37",
+        "https://api.github.com/repos/Dicklesworthstone/frankengraphdb/git/ref/tags/archive%2Fstranded-2ef0d2f2-lane37"
+      ],
+      "ident": "archive/stranded-2ef0d2f2-lane37",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengraphdb",
+      "summary": "New tag archive/stranded-2ef0d2f2-lane37 (no GitHub release for it at this check).",
+      "title": "[watch] frankengraphdb: tag archive/stranded-2ef0d2f2-lane37",
+      "value": "b1397fae7431b8b9405454d2d1207115c527f97a"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag rescue/pre-sync-20261104 -> f2b0a73 (2026-11-04T21:59:49Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/rescue%2Fpre-sync-20261104",
+        "https://api.github.com/repos/Dicklesworthstone/frankensim/git/ref/tags/rescue%2Fpre-sync-20261104"
+      ],
+      "ident": "rescue/pre-sync-20261104",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensim",
+      "summary": "New tag rescue/pre-sync-20261104 (no GitHub release for it at this check).",
+      "title": "[watch] frankensim: tag rescue/pre-sync-20261104",
+      "value": "f2b0a73f1baa9f2f8db5548eaeeafa8f9acbe049"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/master-312dc354d -> 312dc35 (2026-10-25T16:00:02Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensqlite/tree/archive%2Fmaster-312dc354d",
+        "https://api.github.com/repos/Dicklesworthstone/frankensqlite/git/ref/tags/archive%2Fmaster-312dc354d"
+      ],
+      "ident": "archive/master-312dc354d",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankensqlite",
+      "summary": "New tag archive/master-312dc354d (no GitHub release for it at this check).",
+      "title": "[watch] frankensqlite: tag archive/master-312dc354d",
+      "value": "312dc354d7f8e499a15d916bc011baeac062f066"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag rescue/pre-sync-20261104 -> 01dad38 (2026-11-04T21:50:33Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankentorch/tree/rescue%2Fpre-sync-20261104",
+        "https://api.github.com/repos/Dicklesworthstone/frankentorch/git/ref/tags/rescue%2Fpre-sync-20261104"
+      ],
+      "ident": "rescue/pre-sync-20261104",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankentorch",
+      "summary": "New tag rescue/pre-sync-20261104 (no GitHub release for it at this check).",
+      "title": "[watch] frankentorch: tag rescue/pre-sync-20261104",
+      "value": "01dad38b19cea9bdff863f61aec3b50e906c6efd"
+    }
+  ],
+  "since": "2026-11-04T11:25:12Z"
+}
