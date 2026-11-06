@@ -1,0 +1,48 @@
+{
+  "baseline": false,
+  "date": "2026-11-06",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-widehat-candidate-20261106 -> 26b268f (2026-11-06T06:13:34Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-widehat-candidate-20261106",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-widehat-candidate-20261106"
+      ],
+      "ident": "fmn-widehat-candidate-20261106",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-widehat-candidate-20261106 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-widehat-candidate-20261106",
+      "value": "26b268f601a915bf407263223bd1706540fee3c2"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag archive/20261105-codex-http-canonical-bearer -> 76afd61 (2026-11-05T08:44:23Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankengit/tree/archive%2F20261105-codex-http-canonical-bearer",
+        "https://api.github.com/repos/Dicklesworthstone/frankengit/git/ref/tags/archive%2F20261105-codex-http-canonical-bearer"
+      ],
+      "ident": "archive/20261105-codex-http-canonical-bearer",
+      "kind": "tag",
+      "label": "release",
+      "repo": "frankengit",
+      "summary": "New tag archive/20261105-codex-http-canonical-bearer (no GitHub release for it at this check).",
+      "title": "[watch] frankengit: tag archive/20261105-codex-http-canonical-bearer",
+      "value": "76afd61bfd8e5a793cac234c9c2a6750ed376933"
+    }
+  ],
+  "since": "2026-11-05T11:24:47Z"
+}

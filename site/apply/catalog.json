@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 142207,
-  "archive_sha256": "8a2f5e67a75702e5310a4c04739015b412e3afee9e1321af645d48182a35a07e",
+  "archive_bytes": 142632,
+  "archive_sha256": "bf8d3239edcff88c3f3c1e6fb48a1773a08e3bc7212a8294f8069bb92e643494",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-11-05T11:24:47Z",
+    "checked_at": "2026-11-06T11:24:14Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -100,7 +100,7 @@
       {
         "repo": "franken_surveillance_system",
         "state": "changed",
-        "state_reason": "open crossing franken_surveillance_system:ci:C6>C2, franken_surveillance_system:ci:C6>C3, franken_surveillance_system:revisit:3"
+        "state_reason": "open crossing franken_surveillance_system:ci:C6>C2, franken_surveillance_system:ci:C6>C3, franken_surveillance_system:rel:R1>R2, franken_surveillance_system:revisit:3"
       },
       {
         "repo": "franken_threed",
@@ -111,6 +111,16 @@
         "repo": "franken_whisper",
         "state": "unknown",
         "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
+      },
+      {
+        "repo": "frankengit",
+        "state": "changed",
+        "state_reason": "open crossing frankengit:rel:R1>R2"
+      },
+      {
+        "repo": "frankengraphdb",
+        "state": "changed",
+        "state_reason": "open crossing frankengraphdb:rel:R1>R2"
       },
       {
         "repo": "frankenjax",
@@ -138,6 +148,11 @@
         "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
       },
       {
+        "repo": "frankensim",
+        "state": "changed",
+        "state_reason": "open crossing frankensim:rel:R1>R2"
+      },
+      {
         "repo": "frankensqlite",
         "state": "unknown",
         "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
@@ -149,7 +164,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "6b232c16ff66bc62ef9ab7846fa679c6d80a2fd6665f47e38a5ed0e979a7e60f"
+    "source_sha256": "be9c198150e34fa3a432ff4bd622a075b366dce0a70c1a92d7ce6e07bd661853"
   },
   "version": 1
 }
