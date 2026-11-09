@@ -1,0 +1,128 @@
+{
+  "baseline": false,
+  "date": "2026-11-09",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-mathml-text-faces-candidate-20261108 -> 33ff7d7 (2026-11-08T18:11:10Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-mathml-text-faces-candidate-20261108",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-mathml-text-faces-candidate-20261108"
+      ],
+      "ident": "fmn-mathml-text-faces-candidate-20261108",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-mathml-text-faces-candidate-20261108 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-mathml-text-faces-candidate-20261108",
+      "value": "33ff7d7db9a671b92c34fb8e55f79e498797cb28"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-mathml-text-islands-candidate-20261108 -> 4075c8c (2026-11-08T17:55:50Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-mathml-text-islands-candidate-20261108",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-mathml-text-islands-candidate-20261108"
+      ],
+      "ident": "fmn-mathml-text-islands-candidate-20261108",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-mathml-text-islands-candidate-20261108 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-mathml-text-islands-candidate-20261108",
+      "value": "4075c8ccdeb720616802b97d536bbfc43c768bd5"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-preamble-document-width-candidate-20261108 -> 401172c (2026-11-08T22:38:19Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-preamble-document-width-candidate-20261108",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-preamble-document-width-candidate-20261108"
+      ],
+      "ident": "fmn-preamble-document-width-candidate-20261108",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-preamble-document-width-candidate-20261108 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-preamble-document-width-candidate-20261108",
+      "value": "401172c625f6d3acaf269503e09ea02208f43794"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-text-boxed-display-candidate-20261108 -> 7840e8e (2026-11-08T11:50:41Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-text-boxed-display-candidate-20261108",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-text-boxed-display-candidate-20261108"
+      ],
+      "ident": "fmn-text-boxed-display-candidate-20261108",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-text-boxed-display-candidate-20261108 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-text-boxed-display-candidate-20261108",
+      "value": "7840e8e0c9ca82ec0d7763f074d952edebd7befd"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-text-ellipsis-candidate-20261108 -> b6cc942 (2026-11-08T16:01:30Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-text-ellipsis-candidate-20261108",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-text-ellipsis-candidate-20261108"
+      ],
+      "ident": "fmn-text-ellipsis-candidate-20261108",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-text-ellipsis-candidate-20261108 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-text-ellipsis-candidate-20261108",
+      "value": "b6cc942ca58d44c65c2944e4f1e9046c56989a1b"
+    },
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "tag fmn-text-underline-faces-candidate-20261108 -> 142fa69 (2026-11-08T21:39:16Z)",
+      "before": "no such tag",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_markdown/tree/fmn-text-underline-faces-candidate-20261108",
+        "https://api.github.com/repos/Dicklesworthstone/franken_markdown/git/ref/tags/fmn-text-underline-faces-candidate-20261108"
+      ],
+      "ident": "fmn-text-underline-faces-candidate-20261108",
+      "kind": "tag",
+      "label": "release",
+      "repo": "franken_markdown",
+      "summary": "New tag fmn-text-underline-faces-candidate-20261108 (no GitHub release for it at this check).",
+      "title": "[watch] franken_markdown: tag fmn-text-underline-faces-candidate-20261108",
+      "value": "142fa69bc2f9b09b997064bca0799e3603fad85a"
+    }
+  ],
+  "since": "2026-11-08T11:24:11Z"
+}

@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 142626,
-  "archive_sha256": "7d4cb89704f57b006be7a9eb16d26a89e9b1ac9cf44e0d36a7c1a2fa10ca7f1a",
+  "archive_bytes": 142667,
+  "archive_sha256": "a1bd65df1f4adbbb776a8a7d180edb3b57e25dfd1516bf66205c21a302e724e4",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-11-08T11:24:11Z",
+    "checked_at": "2026-11-09T11:24:47Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -125,7 +125,7 @@
       {
         "repo": "frankenmermaid",
         "state": "changed",
-        "state_reason": "open crossing frankenmermaid:rel:event:release:v0.3.0, frankenmermaid:rel:event:release:v0.4.0"
+        "state_reason": "open crossing frankenmermaid:rel:event:release:v0.3.0, frankenmermaid:rel:event:release:v0.4.0, frankenmermaid:rel:event:release:v0.5.0"
       },
       {
         "repo": "frankenpandas",
@@ -164,7 +164,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "2a2d60dcafca68447bd65a728aa96bf7f1885b520a2ca62771aa7b73c9f49133"
+    "source_sha256": "d03d9a0fdc6274eea38a975404c2bda8993fdaad3aa55bd4d31af1136c64c6f5"
   },
   "version": 1
 }
