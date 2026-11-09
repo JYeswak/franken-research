@@ -1,0 +1,324 @@
+{
+  "week": "2026-W46",
+  "checked_on": "2026-11-09",
+  "query": "language:Rust pushed:>=2026-10-10 created:>=2026-05-13 stars:>=25 fork:false",
+  "rule": "candidates/README.md",
+  "search": {
+    "total_count": 2458,
+    "fetched": 300,
+    "incomplete_results": false
+  },
+  "excluded": {
+    "owner": 0,
+    "fork": 0,
+    "archived": 2,
+    "assessed": 0,
+    "already_candidate": 70
+  },
+  "checked": 40,
+  "no_signal": 21,
+  "candidates": [
+    {
+      "repo": "longbridge/nsh",
+      "url": "https://github.com/longbridge/nsh",
+      "stars": 2209,
+      "pushed_at": "2026-11-09T11:46:59Z",
+      "created_at": "2026-10-14T14:59:36Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 14,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.334
+    },
+    {
+      "repo": "s1dashu/quiet-md",
+      "url": "https://github.com/s1dashu/quiet-md",
+      "stars": 1468,
+      "pushed_at": "2026-11-09T03:05:09Z",
+      "created_at": "2026-11-01T14:22:53Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 3,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.317
+    },
+    {
+      "repo": "storytold/artcraft-services",
+      "url": "https://github.com/storytold/artcraft-services",
+      "stars": 1407,
+      "pushed_at": "2026-11-09T12:25:07Z",
+      "created_at": "2026-09-11T12:59:21Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 1,
+        "readme_statement": false
+      },
+      "signal_count": 3,
+      "score": 3.315
+    },
+    {
+      "repo": "anomalyco/rune",
+      "url": "https://github.com/anomalyco/rune",
+      "stars": 5676,
+      "pushed_at": "2026-11-09T12:05:35Z",
+      "created_at": "2026-10-22T05:51:40Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.375
+    },
+    {
+      "repo": "OpenSelena/omniget",
+      "url": "https://github.com/OpenSelena/omniget",
+      "stars": 5138,
+      "pushed_at": "2026-11-09T11:47:45Z",
+      "created_at": "2026-07-08T06:17:59Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 5,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.371
+    },
+    {
+      "repo": "anefzaoui/misterdownloadmanager",
+      "url": "https://github.com/anefzaoui/misterdownloadmanager",
+      "stars": 2911,
+      "pushed_at": "2026-11-09T12:23:05Z",
+      "created_at": "2026-10-29T01:25:19Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": true,
+        "agent_trailers": 19,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.346
+    },
+    {
+      "repo": "sheprd-labs/sheprd",
+      "url": "https://github.com/sheprd-labs/sheprd",
+      "stars": 2239,
+      "pushed_at": "2026-11-09T10:57:05Z",
+      "created_at": "2026-09-20T05:22:39Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.335
+    },
+    {
+      "repo": "ELY-Open-Source/ElyOffice",
+      "url": "https://github.com/ELY-Open-Source/ElyOffice",
+      "stars": 1427,
+      "pushed_at": "2026-11-07T18:43:39Z",
+      "created_at": "2026-10-19T23:04:42Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": true,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 2,
+      "score": 2.315
+    },
+    {
+      "repo": "EpicGames/lore",
+      "url": "https://github.com/EpicGames/lore",
+      "stars": 9120,
+      "pushed_at": "2026-11-09T11:43:16Z",
+      "created_at": "2026-05-21T19:32:07Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.396
+    },
+    {
+      "repo": "AhmadHassan-BTed/OpenHeart",
+      "url": "https://github.com/AhmadHassan-BTed/OpenHeart",
+      "stars": 5928,
+      "pushed_at": "2026-11-09T12:16:44Z",
+      "created_at": "2026-08-08T16:11:06Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 2,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.377
+    },
+    {
+      "repo": "hardbeat920/monocode",
+      "url": "https://github.com/hardbeat920/monocode",
+      "stars": 3812,
+      "pushed_at": "2026-11-09T09:12:36Z",
+      "created_at": "2026-08-20T09:16:02Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 13,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.358
+    },
+    {
+      "repo": "physicsdolphin/nv-uefi-unlocker",
+      "url": "https://github.com/physicsdolphin/nv-uefi-unlocker",
+      "stars": 2151,
+      "pushed_at": "2026-11-09T11:29:11Z",
+      "created_at": "2026-10-26T06:22:24Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.333
+    },
+    {
+      "repo": "aimod-cc/Agent2API",
+      "url": "https://github.com/aimod-cc/Agent2API",
+      "stars": 2049,
+      "pushed_at": "2026-11-07T10:48:13Z",
+      "created_at": "2026-09-11T07:42:14Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.331
+    },
+    {
+      "repo": "daeuniverse/honk",
+      "url": "https://github.com/daeuniverse/honk",
+      "stars": 1641,
+      "pushed_at": "2026-11-08T18:27:27Z",
+      "created_at": "2026-07-20T13:05:16Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.322
+    },
+    {
+      "repo": "colinhacks/reylo",
+      "url": "https://github.com/colinhacks/reylo",
+      "stars": 1558,
+      "pushed_at": "2026-11-08T01:47:21Z",
+      "created_at": "2026-10-21T00:16:54Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.319
+    },
+    {
+      "repo": "l0ng-ai/tty7",
+      "url": "https://github.com/l0ng-ai/tty7",
+      "stars": 1476,
+      "pushed_at": "2026-11-09T09:45:21Z",
+      "created_at": "2026-07-06T12:51:10Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 7,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.317
+    },
+    {
+      "repo": "yjid/kensaku",
+      "url": "https://github.com/yjid/kensaku",
+      "stars": 1454,
+      "pushed_at": "2026-11-09T10:21:41Z",
+      "created_at": "2026-10-24T21:00:26Z",
+      "signals": {
+        "agents_md": false,
+        "claude_md": false,
+        "agent_trailers": 15,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.316
+    },
+    {
+      "repo": "valkor-ai/loom",
+      "url": "https://github.com/valkor-ai/loom",
+      "stars": 1451,
+      "pushed_at": "2026-11-03T06:48:00Z",
+      "created_at": "2026-06-09T03:46:34Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.316
+    },
+    {
+      "repo": "denialwm/denial",
+      "url": "https://github.com/denialwm/denial",
+      "stars": 1429,
+      "pushed_at": "2026-11-07T18:37:52Z",
+      "created_at": "2026-07-17T15:38:48Z",
+      "signals": {
+        "agents_md": true,
+        "claude_md": false,
+        "agent_trailers": 0,
+        "readme_statement": false
+      },
+      "signal_count": 1,
+      "score": 1.316
+    }
+  ],
+  "listed": [
+    "longbridge/nsh",
+    "s1dashu/quiet-md",
+    "storytold/artcraft-services",
+    "anomalyco/rune",
+    "OpenSelena/omniget",
+    "anefzaoui/misterdownloadmanager",
+    "sheprd-labs/sheprd",
+    "ELY-Open-Source/ElyOffice",
+    "EpicGames/lore",
+    "AhmadHassan-BTed/OpenHeart",
+    "hardbeat920/monocode",
+    "physicsdolphin/nv-uefi-unlocker",
+    "aimod-cc/Agent2API",
+    "daeuniverse/honk",
+    "colinhacks/reylo"
+  ]
+}
