@@ -1,0 +1,68 @@
+{
+  "baseline": false,
+  "date": "2026-11-10",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "21 files at f502f95",
+      "before": "20 files at 55e3c0e",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/tree/f502f95764b9134d4acde24cd1e25075e838fc06/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/compare/55e3c0ebb0c403682738007b1a50972a86ea78b2...f502f95764b9134d4acde24cd1e25075e838fc06",
+        "https://github.com/Dicklesworthstone/franken_surveillance_system/actions"
+      ],
+      "ident": "146b1601dee1",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_surveillance_system",
+      "summary": "The .github/workflows file set changed: +recording-lifecycle.yml.",
+      "title": "[watch] franken_surveillance_system: workflows +1 -0 (21 now)",
+      "value": "146b1601dee1"
+    },
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "22 files at 9de3644",
+      "before": "21 files at de36143",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankensim/tree/9de364427b35eaf10a96f27a3b10f254033d65df/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankensim/compare/de361438a840af969ea7e7e30a6d37ff58933e71...9de364427b35eaf10a96f27a3b10f254033d65df",
+        "https://github.com/Dicklesworthstone/frankensim/actions"
+      ],
+      "ident": "96b4af74a38a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankensim",
+      "summary": "The .github/workflows file set changed: +composition-kernel.yml.",
+      "title": "[watch] frankensim: workflows +1 -0 (22 now)",
+      "value": "96b4af74a38a"
+    }
+  ],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.10.0 -> dcae291, published 2026-11-09T13:15:31Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_ocr/releases/tag/v0.10.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_ocr/releases/tags/v0.10.0",
+        "https://github.com/Dicklesworthstone/franken_ocr/commit/dcae29126274388d2ad7dfc1730be8d0bd56eb29"
+      ],
+      "ident": "v0.10.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_ocr",
+      "summary": "New GitHub release v0.10.0.",
+      "title": "[watch] franken_ocr: release v0.10.0",
+      "value": "dcae29126274388d2ad7dfc1730be8d0bd56eb29"
+    }
+  ],
+  "since": "2026-11-09T11:24:47Z"
+}
