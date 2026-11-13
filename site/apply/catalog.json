@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 142667,
-  "archive_sha256": "5118bfae5c19f8aac3da3a3ff573c86c46948f0ffb4e38fbda2f0c385ff361a4",
+  "archive_bytes": 142807,
+  "archive_sha256": "c99c67e06d7fbe3295bff1d53260742bdc80d2b6f61a35c8de0010c40df6c7c7",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-11-12T11:24:19Z",
+    "checked_at": "2026-11-13T11:24:19Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -81,6 +81,11 @@
         "repo": "franken_agent_detection",
         "state": "changed",
         "state_reason": "open crossing franken_agent_detection:ci:C2>C1"
+      },
+      {
+        "repo": "franken_networkx",
+        "state": "unknown",
+        "state_reason": "unknown: ci now (FR-C.3/no-settled-commit)"
       },
       {
         "repo": "franken_remote",
@@ -164,7 +169,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "b949cea1695b1e92fcff23dc0cc6856b968a333ede15f2a01027aedfc7d303aa"
+    "source_sha256": "5dbd2ce7346efc28ef56a03160b8fac78245a7e2342e38e633d0b38c4c14b23e"
   },
   "version": 1
 }

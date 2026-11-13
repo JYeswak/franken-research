@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-11-13",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "10 files at 7fd6da7",
+      "before": "8 files at 8098cd7",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/frankenfs/tree/7fd6da7b8e1996be5d0da845efc86c1aa6c56123/.github/workflows",
+        "https://github.com/Dicklesworthstone/frankenfs/compare/8098cd79a6b61f0230bff1ae2a7ecad257a30edf...7fd6da7b8e1996be5d0da845efc86c1aa6c56123",
+        "https://github.com/Dicklesworthstone/frankenfs/actions"
+      ],
+      "ident": "c45f99c49e8b",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "frankenfs",
+      "summary": "The .github/workflows file set changed: +ffs-integrity-arm-validation.yml, +ffs-integrity-validation.yml.",
+      "title": "[watch] frankenfs: workflows +2 -0 (10 now)",
+      "value": "c45f99c49e8b"
+    }
+  ],
+  "material": [],
+  "since": "2026-11-12T11:24:19Z"
+}
