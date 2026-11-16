@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-11-16",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "39 files at 40c1a96",
+      "before": "38 files at cbe5ccf",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_remote/tree/40c1a9604ae415af99d7228e47304c320190492a/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_remote/compare/cbe5ccf24c1ef80d0a765ec3d69a16728feb11e6...40c1a9604ae415af99d7228e47304c320190492a",
+        "https://github.com/Dicklesworthstone/franken_remote/actions"
+      ],
+      "ident": "1136a4a9c3cd",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_remote",
+      "summary": "The .github/workflows file set changed: +ios-client.yml.",
+      "title": "[watch] franken_remote: workflows +1 -0 (39 now)",
+      "value": "1136a4a9c3cd"
+    }
+  ],
+  "material": [],
+  "since": "2026-11-15T11:24:17Z"
+}
