@@ -1,0 +1,27 @@
+{
+  "baseline": false,
+  "date": "2026-11-17",
+  "informational": [
+    {
+      "affects": [
+        "CI"
+      ],
+      "after": "40 files at 0a02eaa",
+      "before": "39 files at 40c1a96",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_remote/tree/0a02eaa0d41d4b5b8d0c081dd239d71d2bc87449/.github/workflows",
+        "https://github.com/Dicklesworthstone/franken_remote/compare/40c1a9604ae415af99d7228e47304c320190492a...0a02eaa0d41d4b5b8d0c081dd239d71d2bc87449",
+        "https://github.com/Dicklesworthstone/franken_remote/actions"
+      ],
+      "ident": "edbb702b3e0a",
+      "kind": "workflows",
+      "label": "ci",
+      "repo": "franken_remote",
+      "summary": "The .github/workflows file set changed: +release.yml.",
+      "title": "[watch] franken_remote: workflows +1 -0 (40 now)",
+      "value": "edbb702b3e0a"
+    }
+  ],
+  "material": [],
+  "since": "2026-11-16T11:29:12Z"
+}
