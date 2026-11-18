@@ -5,9 +5,17 @@
   <id>tag:fr.zeststream.ai,2026:feed</id>
   <link rel="self" type="application/atom+xml" href="https://fr.zeststream.ai/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/"/>
-  <updated>2026-11-17T00:00:00Z</updated>
+  <updated>2026-11-18T00:00:00Z</updated>
   <author><name>Franken Research</name><uri>https://fr.zeststream.ai/</uri></author>
   <icon>https://fr.zeststream.ai/favicon.svg</icon>
+  <entry>
+    <id>tag:fr.zeststream.ai,2026:census/2026-11-18</id>
+    <title>Daily census: 41 of 44 moved since the pin</title>
+    <updated>2026-11-18T00:00:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
+    <link rel="related" type="text/tab-separated-values" href="https://github.com/JYeswak/franken-research/blob/main/watch/census/2026-11-18.tsv"/>
+    <summary type="text">41 of the 44 assessed repositories have commits after their pinned commit (54488 commits in all). 29 flagged a change that could move a verdict cell (a release, tag, license, or workflow-set change), which is what triggers a re-check. Commits alone never change a verdict. Source: watch/census/2026-11-18.tsv.</summary>
+  </entry>
   <entry>
     <id>tag:fr.zeststream.ai,2026:census/2026-11-17</id>
     <title>Daily census: 41 of 44 moved since the pin</title>
@@ -399,13 +407,5 @@
     <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
     <link rel="related" type="text/markdown" href="https://github.com/JYeswak/franken-research/blob/main/updates/frankengit-2026-09-24.md"/>
     <summary type="text">A dated re-check of frankengit filed beside its pinned packet, which is not edited. Every command and its output are in updates/frankengit-2026-09-24.md.</summary>
-  </entry>
-  <entry>
-    <id>tag:fr.zeststream.ai,2026:recheck/franken_code_browser-2026-09-24</id>
-    <title>franken_code_browser: re-check after v0.1.0 (addendum, 2026-09-24)</title>
-    <updated>2026-09-24T00:00:00Z</updated>
-    <link rel="alternate" type="text/html" href="https://fr.zeststream.ai/updates/"/>
-    <link rel="related" type="text/markdown" href="https://github.com/JYeswak/franken-research/blob/main/updates/franken_code_browser-2026-09-24.md"/>
-    <summary type="text">A dated re-check of franken_code_browser filed beside its pinned packet, which is not edited. Every command and its output are in updates/franken_code_browser-2026-09-24.md.</summary>
   </entry>
 </feed>

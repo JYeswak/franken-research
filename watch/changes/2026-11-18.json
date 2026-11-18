@@ -1,0 +1,29 @@
+{
+  "baseline": false,
+  "date": "2026-11-18",
+  "informational": [],
+  "material": [
+    {
+      "affects": [
+        "Rel",
+        "TRL",
+        "NODUS"
+      ],
+      "after": "release v0.1.0 -> 1d40725, published 2026-11-18T06:35:42Z",
+      "before": "no such release",
+      "evidence": [
+        "https://github.com/Dicklesworthstone/franken_remote/releases/tag/v0.1.0",
+        "https://api.github.com/repos/Dicklesworthstone/franken_remote/releases/tags/v0.1.0",
+        "https://github.com/Dicklesworthstone/franken_remote/commit/1d40725c6480b1df61cedc11d2201f26b0b00bd0"
+      ],
+      "ident": "v0.1.0",
+      "kind": "release",
+      "label": "release",
+      "repo": "franken_remote",
+      "summary": "New GitHub release v0.1.0.",
+      "title": "[watch] franken_remote: release v0.1.0",
+      "value": "1d40725c6480b1df61cedc11d2201f26b0b00bd0"
+    }
+  ],
+  "since": "2026-11-17T11:24:24Z"
+}
