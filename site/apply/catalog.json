@@ -1,6 +1,6 @@
 {
-  "archive_bytes": 142833,
-  "archive_sha256": "acc4598f4b01e2871733b819bf5e2e116540f4e679ecb4d1a3d3019c4b37b19e",
+  "archive_bytes": 142858,
+  "archive_sha256": "3fc82af004b2bd70ab3a3a59d1f987af3af8445f1fe7281b17b4055ec65bf236",
   "code_revision": "bb105a93280a1b58101f7d54c60908266b32e903c712c26697958e3aa77f30e2",
   "recipes": [
     {
@@ -70,7 +70,7 @@
   ],
   "scope": "First-party FR tools. Each result applies only to its stated checks; no measured overall research-value multiplier.",
   "signals": {
-    "checked_at": "2026-11-19T11:24:44Z",
+    "checked_at": "2026-11-20T11:24:27Z",
     "queue": [
       {
         "repo": "asupersync",
@@ -90,7 +90,7 @@
       {
         "repo": "franken_remote",
         "state": "changed",
-        "state_reason": "open crossing franken_remote:ci:C3>C2, franken_remote:rel:R1>R3"
+        "state_reason": "open crossing franken_remote:ci:C3>C1, franken_remote:ci:C3>C2, franken_remote:rel:R1>R3"
       },
       {
         "repo": "franken_snowflake",
@@ -169,7 +169,7 @@
       }
     ],
     "scope": "Unresolved upstream signals, not adopted techniques.",
-    "source_sha256": "2c817f85d68693069ebe4b6cbff3398d9fc0868ff2bce62921be5d1fabd9824b"
+    "source_sha256": "cd74eac09b21ebe8982f65754a3fe5f04a877ed186673bd0021e4be5ad5db7df"
   },
   "version": 1
 }
